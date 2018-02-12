@@ -1,0 +1,1154 @@
+<PortalPartners>
+	<PortalPartner>
+		<Id>35</Id>
+		<Name>Visite Hoteles La Paz</Name>
+		<Key>http://www.visitehoteleslapaz.com</Key>
+		<SecureKey>https://secure.visitehotelesdemexico.com/visitehoteleslapaz</SecureKey>
+		<StyleSheets>~/Partners/visitehotelesdemexico/css/</StyleSheets>
+		<Site>http://www.visitehoteleslapaz.com</Site>
+		<SecureSite>https://secure.visitehotelesdemexico.com/visitehoteleslapaz</SecureSite>
+		<CurrencyCode>MXN</CurrencyCode>
+		<RSS>~/Partners/VisiteHoteleslapaz/RSS/</RSS>
+		<AllowAgency>false</AllowAgency>
+		<SharedFiles>~/Partners/Default/SharedFiles/</SharedFiles>
+		<EmailHeader>
+			<![CDATA[<p> <img class="logol" src="http://www.visitehotelesdemexico.com/CallCenter/Logos/logo_vhm_lapaz.gif" />]]>
+		</EmailHeader>
+		<EmailFooter>
+			<![CDATA[No es necesario responder a este correo, Si requiere de asistencia puede contactarse a: M&eacute;xico: 01-800-590-4887 Estados Unidos y Canad&aacute;: 1-800-485-4959 Otros Pa&iacute;ses: 559-431-7300]]>
+		</EmailFooter>
+		<ImagesSystem>~/ImagesSystem/</ImagesSystem>
+		<SecureCertificationScript>
+			<![CDATA[<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript" SRC="//smarticon.geotrust.com/si.js"></SCRIPT>]]>
+		</SecureCertificationScript>
+		<PortalTrackingCodeNonSecure></PortalTrackingCodeNonSecure>
+		<PortalTrackingCodeSecure></PortalTrackingCodeSecure>
+		<RedirectionFile>~/Partners/VisiteHotelesLaPaz/</RedirectionFile>
+		<DomainName>VisiteHotelesLaPaz.com</DomainName>
+		<EmailReservas>clientes@visitehoteleslapaz.com</EmailReservas>
+	</PortalPartner>
+	<PortalPartner>
+		<Id>35</Id>
+		<Name>Visite Hoteles La Paz</Name>
+		<Key>http://visitehoteleslapaz.com</Key>
+		<SecureKey>https://secure.visitehotelesdemexico.com/visitehoteleslapaz</SecureKey>
+		<StyleSheets>~/Partners/visitehotelesdemexico/css/</StyleSheets>
+		<Site>http://visitehoteleslapaz.com</Site>
+		<SecureSite>https://secure.visitehotelesdemexico.com/visitehoteleslapaz</SecureSite>
+		<CurrencyCode>MXN</CurrencyCode>
+		<RSS>~/Partners/VisiteHoteleslapaz/RSS/</RSS>
+		<AllowAgency>false</AllowAgency>
+		<SharedFiles>~/Partners/Default/SharedFiles/</SharedFiles>
+		<EmailHeader>
+			<![CDATA[<p> <img class="logol" src="http://www.visitehotelesdemexico.com/CallCenter/Logos/logo_vhm_lapaz.gif" />]]>
+		</EmailHeader>
+		<EmailFooter>
+			<![CDATA[No es necesario responder a este correo, Si requiere de asistencia puede contactarse a: M&eacute;xico: 01-800-590-4887 Estados Unidos y Canad&aacute;: 1-800-485-4959 Otros Pa&iacute;ses: 559-431-7300]]>
+		</EmailFooter>
+		<ImagesSystem>~/ImagesSystem/</ImagesSystem>
+		<SecureCertificationScript>
+			<![CDATA[<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript" SRC="//smarticon.geotrust.com/si.js"></SCRIPT>]]>
+		</SecureCertificationScript>
+		<PortalTrackingCodeNonSecure></PortalTrackingCodeNonSecure>
+		<PortalTrackingCodeSecure></PortalTrackingCodeSecure>
+		<RedirectionFile>~/Partners/VisiteHotelesLaPaz/</RedirectionFile>
+		<DomainName>VisiteHotelesLaPaz.com</DomainName>
+		<EmailReservas>clientes@visitehoteleslapaz.com</EmailReservas>
+	</PortalPartner>
+	<PortalPartner>
+		<Id>26</Id>
+		<Name>Visite Hoteles Culiacan</Name>
+		<Key>http://www.visitehotelesculiacan.com</Key>
+		<SecureKey>https://secure.visitehotelesdemexico.com/visitehotelesculiacan</SecureKey>
+		<StyleSheets>~/Partners/visitehotelesdemexico/css/</StyleSheets>
+		<Site>http://www.visitehotelesculiacan.com</Site>
+		<SecureSite>https://secure.visitehotelesdemexico.com/visitehotelesculiacan</SecureSite>
+		<CurrencyCode>MXN</CurrencyCode>
+		<RSS>~/Partners/VisiteHotelesculiacan/RSS/</RSS>
+		<AllowAgency>false</AllowAgency>
+		<SharedFiles>~/Partners/Default/SharedFiles/</SharedFiles>
+		<EmailHeader>
+			<![CDATA[<p> <img class="logol" src="http://www.visitehotelesdemexico.com/CallCenter/Logos/logo_vhm_culiacan.gif" />]]>
+		</EmailHeader>
+		<EmailFooter>
+			<![CDATA[No es necesario responder a este correo, Si requiere de asistencia puede contactarse a: M&eacute;xico: 01-800-590-4887 Estados Unidos y Canad&aacute;: 1-800-485-4959 Otros Pa&iacute;ses: 559-431-7300]]>
+		</EmailFooter>
+		<ImagesSystem>~/ImagesSystem/</ImagesSystem>
+		<SecureCertificationScript>
+			<![CDATA[<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript" SRC="//smarticon.geotrust.com/si.js"></SCRIPT>]]>
+		</SecureCertificationScript>
+		<PortalTrackingCodeNonSecure></PortalTrackingCodeNonSecure>
+		<PortalTrackingCodeSecure></PortalTrackingCodeSecure>
+		<DomainName>VisiteHotelesCuliacan.com</DomainName>
+		<RedirectionFile>~/Partners/VisiteHotelesculiacan/</RedirectionFile>
+		<BlockActivies>false</BlockActivies>
+		<EmailReservas>clientes@visitehotelesculiacan.com</EmailReservas>
+	</PortalPartner>
+	<PortalPartner>
+		<Id>26</Id>
+		<Name>Visite Hoteles Culiacan</Name>
+		<Key>http://visitehotelesculiacan.com</Key>
+		<SecureKey>https://secure.visitehotelesdemexico.com/visitehotelesculiacan</SecureKey>
+		<StyleSheets>~/Partners/visitehotelesdemexico/css/</StyleSheets>
+		<Site>http://visitehotelesculiacan.com</Site>
+		<SecureSite>https://secure.visitehotelesdemexico.com/visitehotelesculiacan</SecureSite>
+		<CurrencyCode>MXN</CurrencyCode>
+		<RSS>~/Partners/VisiteHotelesculiacan/RSS/</RSS>
+		<AllowAgency>false</AllowAgency>
+		<SharedFiles>~/Partners/Default/SharedFiles/</SharedFiles>
+		<EmailHeader>
+			<![CDATA[<p> <img class="logol" src="http://www.visitehotelesdemexico.com/CallCenter/Logos/logo_vhm_culiacan.gif" />]]>
+		</EmailHeader>
+		<EmailFooter>
+			<![CDATA[No es necesario responder a este correo, Si requiere de asistencia puede contactarse a: M&eacute;xico: 01-800-590-4887 Estados Unidos y Canad&aacute;: 1-800-485-4959 Otros Pa&iacute;ses: 559-431-7300]]>
+		</EmailFooter>
+		<ImagesSystem>~/ImagesSystem/</ImagesSystem>
+		<SecureCertificationScript>
+			<![CDATA[<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript" SRC="//smarticon.geotrust.com/si.js"></SCRIPT>]]>
+		</SecureCertificationScript>
+		<PortalTrackingCodeNonSecure></PortalTrackingCodeNonSecure>
+		<PortalTrackingCodeSecure></PortalTrackingCodeSecure>
+		<DomainName>VisiteHotelesCuliacan.com</DomainName>
+		<RedirectionFile>~/Partners/VisiteHotelesculiacan/</RedirectionFile>
+		<BlockActivies>false</BlockActivies>
+		<EmailReservas>clientes@visitehotelesculiacan.com</EmailReservas>
+	</PortalPartner>
+	<PortalPartner>
+		<Id>23</Id>
+		<Name>Visite Hoteles del Estado de Mexico</Name>
+		<Key>http://www.visitehotelesedomex.com</Key>
+		<SecureKey>https://secure.visitehotelesdemexico.com/VisiteHotelesEdoMex</SecureKey>
+		<StyleSheets>~/Partners/visitehotelesdemexico/css/</StyleSheets>
+		<Site>http://www.visitehotelesedomex.com</Site>
+		<SecureSite>https://secure.visitehotelesdemexico.com/VisiteHotelesEdoMex</SecureSite>
+		<CurrencyCode>MXN</CurrencyCode>
+		<RSS>~/Partners/VisiteHotelesEdomex/RSS/</RSS>
+		<AllowAgency>false</AllowAgency>
+		<SharedFiles>~/Partners/Default/SharedFiles/</SharedFiles>
+		<EmailHeader>
+			<![CDATA[<p><img class="logol" src="http://www.visitehotelesdemexico.com/CallCenter/Logos/logo_vhm_edomex.gif" />]]>
+		</EmailHeader>
+		<EmailFooter>
+			<![CDATA[No es necesario responder a este correo, Si requiere de asistencia puede contactarse a: M&eacute;xico: 01-800-590-4887 Estados Unidos y Canad&aacute;: 1-800-485-4959 Otros Pa&iacute;ses: 559-431-7300]]>
+		</EmailFooter>
+		<ImagesSystem>~/ImagesSystem/</ImagesSystem>
+		<SecureCertificationScript>
+			<![CDATA[<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript" SRC="//smarticon.geotrust.com/si.js"></SCRIPT>]]>
+		</SecureCertificationScript>
+		<PortalTrackingCodeNonSecure></PortalTrackingCodeNonSecure>
+		<PortalTrackingCodeSecure></PortalTrackingCodeSecure>
+		<DomainName>VisiteHotelesEdomex.com</DomainName>
+		<RedirectionFile>~/Partners/VisiteHotelesEdomex/</RedirectionFile>
+		<BlockActivies>false</BlockActivies>
+		<EmailReservas>clientes@visitehotelesedomex.com</EmailReservas>
+	</PortalPartner>
+	<PortalPartner>
+		<Id>23</Id>
+		<Name>Visite Hoteles del Estado de Mexico</Name>
+		<Key>http://visitehotelesedomex.com</Key>
+		<SecureKey>https://secure.visitehotelesdemexico.com/VisiteHotelesEdoMex</SecureKey>
+		<StyleSheets>~/Partners/visitehotelesdemexico/css/</StyleSheets>
+		<Site>http://visitehotelesedomex.com</Site>
+		<SecureSite>https://secure.visitehotelesdemexico.com/VisiteHotelesEdoMex</SecureSite>
+		<CurrencyCode>MXN</CurrencyCode>
+		<RSS>~/Partners/VisiteHotelesEdomex/RSS/</RSS>
+		<AllowAgency>false</AllowAgency>
+		<SharedFiles>~/Partners/Default/SharedFiles/</SharedFiles>
+		<EmailHeader>
+			<![CDATA[<p><img class="logol" src="http://www.visitehotelesdemexico.com/CallCenter/Logos/logo_vhm_edomex.gif" />]]>
+		</EmailHeader>
+		<EmailFooter>
+			<![CDATA[No es necesario responder a este correo, Si requiere de asistencia puede contactarse a: M&eacute;xico: 01-800-590-4887 Estados Unidos y Canad&aacute;: 1-800-485-4959 Otros Pa&iacute;ses: 559-431-7300]]>
+		</EmailFooter>
+		<ImagesSystem>~/ImagesSystem/</ImagesSystem>
+		<SecureCertificationScript>
+			<![CDATA[<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript" SRC="//smarticon.geotrust.com/si.js"></SCRIPT>]]>
+		</SecureCertificationScript>
+		<PortalTrackingCodeNonSecure></PortalTrackingCodeNonSecure>
+		<PortalTrackingCodeSecure></PortalTrackingCodeSecure>
+		<DomainName>VisiteHotelesEdomex.com</DomainName>
+		<RedirectionFile>~/Partners/VisiteHotelesEdomex/</RedirectionFile>
+		<BlockActivies>false</BlockActivies>
+		<EmailReservas>clientes@visitehotelesedomex.com</EmailReservas>
+	</PortalPartner>
+	<PortalPartner>
+		<Id>20</Id>
+		<Name>Visite Hoteles Nuevo Leon</Name>
+		<Key>http://www.visitehotelesnuevoleon.com</Key>
+		<SecureKey>https://secure.visitehotelesdemexico.com/visitehotelesnuevoleon</SecureKey>
+		<StyleSheets>~/Partners/visitehotelesdemexico/css/</StyleSheets>
+		<Site>http://www.visitehotelesnuevoleon.com</Site>
+		<SecureSite>https://secure.visitehotelesdemexico.com/visitehotelesnuevoleon</SecureSite>
+		<CurrencyCode>MXN</CurrencyCode>
+		<RSS>~/Partners/VisiteHotelesnuevoleon/RSS/</RSS>
+		<AllowAgency>false</AllowAgency>
+		<SharedFiles>~/Partners/Default/SharedFiles/</SharedFiles>
+		<EmailHeader>
+			<![CDATA[<p><img class="logol" src="http://www.visitehotelesdemexico.com/CallCenter/Logos/logo_vhm_nuevoleon.gif" />]]>
+		</EmailHeader>
+		<EmailFooter>
+			<![CDATA[No es necesario responder a este correo, Si requiere de asistencia puede contactarse a: M&eacute;xico: 01-800-590-4887 Estados Unidos y Canad&aacute;: 1-800-485-4959 Otros Pa&iacute;ses: 559-431-7300]]>
+		</EmailFooter>
+		<ImagesSystem>~/ImagesSystem/</ImagesSystem>
+		<SecureCertificationScript>
+			<![CDATA[<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript" SRC="//smarticon.geotrust.com/si.js"></SCRIPT>]]>
+		</SecureCertificationScript>
+		<PortalTrackingCodeNonSecure></PortalTrackingCodeNonSecure>
+		<PortalTrackingCodeSecure></PortalTrackingCodeSecure>
+		<DomainName>VisiteHotelesNuevoLeon.com</DomainName>
+		<RedirectionFile>~/Partners/VisiteHotelesnuevoleon/</RedirectionFile>
+		<BlockActivies>false</BlockActivies>
+		<EmailReservas>clientes@visitehotelesnuevoleon.com</EmailReservas>
+	</PortalPartner>
+	<PortalPartner>
+		<Id>20</Id>
+		<Name>Visite Hoteles Nuevo Leon</Name>
+		<Key>http://visitehotelesnuevoleon.com</Key>
+		<SecureKey>https://secure.visitehotelesdemexico.com/visitehotelesnuevoleon</SecureKey>
+		<StyleSheets>~/Partners/visitehotelesdemexico/css/</StyleSheets>
+		<Site>http://visitehotelesnuevoleon.com</Site>
+		<SecureSite>https://secure.visitehotelesdemexico.com/visitehotelesnuevoleon</SecureSite>
+		<CurrencyCode>MXN</CurrencyCode>
+		<RSS>~/Partners/VisiteHotelesnuevoleon/RSS/</RSS>
+		<AllowAgency>false</AllowAgency>
+		<SharedFiles>~/Partners/Default/SharedFiles/</SharedFiles>
+		<EmailHeader>
+			<![CDATA[<p><img class="logol" src="http://www.visitehotelesdemexico.com/CallCenter/Logos/logo_vhm_nuevoleon.gif" />]]>
+		</EmailHeader>
+		<EmailFooter>
+			<![CDATA[No es necesario responder a este correo, Si requiere de asistencia puede contactarse a: M&eacute;xico: 01-800-590-4887 Estados Unidos y Canad&aacute;: 1-800-485-4959 Otros Pa&iacute;ses: 559-431-7300]]>
+		</EmailFooter>
+		<ImagesSystem>~/ImagesSystem/</ImagesSystem>
+		<SecureCertificationScript>
+			<![CDATA[<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript" SRC="//smarticon.geotrust.com/si.js"></SCRIPT>]]>
+		</SecureCertificationScript>
+		<PortalTrackingCodeNonSecure></PortalTrackingCodeNonSecure>
+		<PortalTrackingCodeSecure></PortalTrackingCodeSecure>
+		<DomainName>VisiteHotelesNuevoLeon.com</DomainName>
+		<RedirectionFile>~/Partners/VisiteHotelesnuevoleon/</RedirectionFile>
+		<BlockActivies>false</BlockActivies>
+		<EmailReservas>clientes@visitehotelesnuevoleon.com</EmailReservas>
+	</PortalPartner>
+	<PortalPartner>
+		<Id>13</Id>
+		<Name>Visite Hoteles Hidalgo</Name>
+		<Key>http://www.visitehoteleshidalgo.com</Key>
+		<SecureKey>https://secure.visitehotelesdemexico.com/VisiteHotelesHidalgo</SecureKey>
+		<StyleSheets>~/Partners/visitehotelesdemexico/css/</StyleSheets>
+		<Site>http://www.visitehoteleshidalgo.com</Site>
+		<SecureSite>https://secure.visitehotelesdemexico.com/VisiteHotelesHidalgo</SecureSite>
+		<CurrencyCode>MXN</CurrencyCode>
+		<RSS>~/Partners/VisiteHotelesHidalgo/RSS/</RSS>
+		<AllowAgency>false</AllowAgency>
+		<SharedFiles>~/Partners/Default/SharedFiles/</SharedFiles>
+		<EmailHeader>
+			<![CDATA[<p><img class="logol" src="http://www.visitehotelesdemexico.com/CallCenter/Logos/logo_vhm_hidalgo.gif" />]]>
+		</EmailHeader>
+		<EmailFooter>
+			<![CDATA[No es necesario responder a este correo, Si requiere de asistencia puede contactarse a: M&eacute;xico: 01-800-590-4887 Estados Unidos y Canad&aacute;: 1-800-485-4959 Otros Pa&iacute;ses: 559-431-7300]]>
+		</EmailFooter>
+		<ImagesSystem>~/ImagesSystem/</ImagesSystem>
+		<SecureCertificationScript>
+			<![CDATA[<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript" SRC="//smarticon.geotrust.com/si.js"></SCRIPT>]]>
+		</SecureCertificationScript>
+		<PortalTrackingCodeNonSecure>
+			<![CDATA[
+			<script type="text/javascript">
+			var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+			document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+			</script>
+			<script type="text/javascript">
+			var pageTracker = _gat._getTracker("UA-605324-4");
+			pageTracker._initData();
+			pageTracker._trackPageview();
+			</script>
+			]]>
+		</PortalTrackingCodeNonSecure>
+		<PortalTrackingCodeSecure></PortalTrackingCodeSecure>
+		<DomainName>VisiteHotelesHidalgo.com</DomainName>
+		<RedirectionFile>~/Partners/VisiteHotelesHidalgo/</RedirectionFile>
+		<BlockActivies>true</BlockActivies>
+		<EmailReservas>clientes@visitehoteleshidalgo.com</EmailReservas>
+	</PortalPartner>
+	<PortalPartner>
+		<Id>13</Id>
+		<Name>Visite Hoteles Hidalgo</Name>
+		<Key>http://visitehoteleshidalgo.com</Key>
+		<SecureKey>https://secure.visitehotelesdemexico.com/VisiteHotelesHidalgo</SecureKey>
+		<StyleSheets>~/Partners/visitehotelesdemexico/css/</StyleSheets>
+		<Site>http://visitehoteleshidalgo.com</Site>
+		<SecureSite>https://secure.visitehotelesdemexico.com/VisiteHotelesHidalgo</SecureSite>
+		<CurrencyCode>MXN</CurrencyCode>
+		<RSS>~/Partners/VisiteHotelesHidalgo/RSS/</RSS>
+		<AllowAgency>false</AllowAgency>
+		<SharedFiles>~/Partners/Default/SharedFiles/</SharedFiles>
+		<EmailHeader>
+			<![CDATA[<p><img class="logol" src="http://www.visitehotelesdemexico.com/CallCenter/Logos/logo_vhm_hidalgo.gif" />]]>
+		</EmailHeader>
+		<EmailFooter>
+			<![CDATA[No es necesario responder a este correo, Si requiere de asistencia puede contactarse a: M&eacute;xico: 01-800-590-4887 Estados Unidos y Canad&aacute;: 1-800-485-4959 Otros Pa&iacute;ses: 559-431-7300]]>
+		</EmailFooter>
+		<ImagesSystem>~/ImagesSystem/</ImagesSystem>
+		<SecureCertificationScript>
+			<![CDATA[<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript" SRC="//smarticon.geotrust.com/si.js"></SCRIPT>]]>
+		</SecureCertificationScript>
+		<PortalTrackingCodeNonSecure>
+			<![CDATA[
+			<script type="text/javascript">
+			var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+			document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+			</script>
+			<script type="text/javascript">
+			var pageTracker = _gat._getTracker("UA-605324-4");
+			pageTracker._initData();
+			pageTracker._trackPageview();
+			</script>
+			]]>
+		</PortalTrackingCodeNonSecure>
+		<PortalTrackingCodeSecure></PortalTrackingCodeSecure>
+		<DomainName>VisiteHotelesHidalgo.com</DomainName>
+		<RedirectionFile>~/Partners/VisiteHotelesHidalgo/</RedirectionFile>
+		<BlockActivies>true</BlockActivies>
+		<EmailReservas>clientes@visitehoteleshidalgo.com</EmailReservas>
+	</PortalPartner>
+	<PortalPartner>
+		<Id>10</Id>
+		<Name>Visite Hoteles Michoacan</Name>
+		<Key>http://www.visitehotelesmichoacan.com</Key>
+		<SecureKey>https://secure.visitehotelesdemexico.com/visitehotelesmichoacan</SecureKey>
+		<StyleSheets>~/Partners/visitehotelesdemexico/css/</StyleSheets>
+		<Site>http://www.visitehotelesmichoacan.com</Site>
+		<SecureSite>https://secure.visitehotelesdemexico.com/visitehotelesmichoacan</SecureSite>
+		<CurrencyCode>MXN</CurrencyCode>
+		<RSS>~/Partners/VisiteHotelesmichoacan/RSS/</RSS>
+		<AllowAgency>false</AllowAgency>
+		<SharedFiles>~/Partners/Default/SharedFiles/</SharedFiles>
+		<EmailHeader>
+			<![CDATA[<p><img class="logol" src="http://www.visitehotelesdemexico.com/CallCenter/Logos/logo_vhm_michoacan.gif" />]]>
+		</EmailHeader>
+		<EmailFooter>
+			<![CDATA[No es necesario responder a este correo, Si requiere de asistencia puede contactarse a: M&eacute;xico: 01-800-590-4887 Estados Unidos y Canad&aacute;: 1-800-485-4959 Otros Pa&iacute;ses: 559-431-7300]]>
+		</EmailFooter>
+		<ImagesSystem>~/ImagesSystem/</ImagesSystem>
+		<SecureCertificationScript>
+			<![CDATA[<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript" SRC="//smarticon.geotrust.com/si.js"></SCRIPT>]]>
+		</SecureCertificationScript>
+		<PortalTrackingCodeNonSecure></PortalTrackingCodeNonSecure>
+		<PortalTrackingCodeSecure></PortalTrackingCodeSecure>
+		<DomainName>VisiteHotelesMichoacan.com</DomainName>
+		<RedirectionFile>~/Partners/VisiteHotelesmichoacan/</RedirectionFile>
+		<BlockActivies>false</BlockActivies>
+		<EmailReservas>clientes@visitehotelesmichoacan.com</EmailReservas>
+	</PortalPartner>
+	<PortalPartner>
+		<Id>10</Id>
+		<Name>Visite Hoteles Michoacan</Name>
+		<Key>http://visitehotelesmichoacan.com</Key>
+		<SecureKey>https://secure.visitehotelesdemexico.com/visitehotelesmichoacan</SecureKey>
+		<StyleSheets>~/Partners/visitehotelesdemexico/css/</StyleSheets>
+		<Site>http://visitehotelesmichoacan.com</Site>
+		<SecureSite>https://secure.visitehotelesdemexico.com/visitehotelesmichoacan</SecureSite>
+		<CurrencyCode>MXN</CurrencyCode>
+		<RSS>~/Partners/VisiteHotelesmichoacan/RSS/</RSS>
+		<AllowAgency>false</AllowAgency>
+		<SharedFiles>~/Partners/Default/SharedFiles/</SharedFiles>
+		<EmailHeader>
+			<![CDATA[<p><img class="logol" src="http://www.visitehotelesdemexico.com/CallCenter/Logos/logo_vhm_michoacan.gif" />]]>
+		</EmailHeader>
+		<EmailFooter>
+			<![CDATA[No es necesario responder a este correo, Si requiere de asistencia puede contactarse a: M&eacute;xico: 01-800-590-4887 Estados Unidos y Canad&aacute;: 1-800-485-4959 Otros Pa&iacute;ses: 559-431-7300]]>
+		</EmailFooter>
+		<ImagesSystem>~/ImagesSystem/</ImagesSystem>
+		<SecureCertificationScript>
+			<![CDATA[<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript" SRC="//smarticon.geotrust.com/si.js"></SCRIPT>]]>
+		</SecureCertificationScript>
+		<PortalTrackingCodeNonSecure></PortalTrackingCodeNonSecure>
+		<PortalTrackingCodeSecure></PortalTrackingCodeSecure>
+		<DomainName>VisiteHotelesMichoacan.com</DomainName>
+		<RedirectionFile>~/Partners/VisiteHotelesmichoacan/</RedirectionFile>
+		<BlockActivies>false</BlockActivies>
+		<EmailReservas>clientes@visitehotelesmichoacan.com</EmailReservas>
+	</PortalPartner>
+	<PortalPartner>
+		<Id>28</Id>
+		<Name>Visite Hoteles San Luis Potosi</Name>
+		<Key>http://www.visitehotelessanluispotosi.com</Key>
+		<SecureKey>https://secure.visitehotelesdemexico.com/visitehotelessanluispotosi</SecureKey>
+		<StyleSheets>~/Partners/visitehotelesdemexico/css/</StyleSheets>
+		<Site>http://www.visitehotelessanluispotosi.com</Site>
+		<SecureSite>https://secure.visitehotelesdemexico.com/visitehotelessanluispotosi</SecureSite>
+		<CurrencyCode>MXN</CurrencyCode>
+		<RSS>~/Partners/VisiteHotelessanluispotosi/RSS/</RSS>
+		<AllowAgency>false</AllowAgency>
+		<SharedFiles>~/Partners/Default/SharedFiles/</SharedFiles>
+		<EmailHeader>
+			<![CDATA[<p><img class="logol" src="http://www.visitehotelesdemexico.com/CallCenter/Logos/logo_vhm_sanluispotosi.gif" />]]>
+		</EmailHeader>
+		<EmailFooter>
+			<![CDATA[No es necesario responder a este correo, Si requiere de asistencia puede contactarse a: M&eacute;xico: 01-800-590-4887 Estados Unidos y Canad&aacute;: 1-800-485-4959 Otros Pa&iacute;ses: 559-431-7300]]>
+		</EmailFooter>
+		<ImagesSystem>~/ImagesSystem/</ImagesSystem>
+		<SecureCertificationScript>
+			<![CDATA[<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript" SRC="//smarticon.geotrust.com/si.js"></SCRIPT>]]>
+		</SecureCertificationScript>
+		<PortalTrackingCodeNonSecure></PortalTrackingCodeNonSecure>
+		<PortalTrackingCodeSecure></PortalTrackingCodeSecure>
+		<DomainName>VisiteHotelessanLuisPotosi.com</DomainName>
+		<RedirectionFile>~/Partners/VisiteHotelessanluispotosi/</RedirectionFile>
+		<BlockActivies>false</BlockActivies>
+		<EmailReservas>clientes@visitehotelessanluispotosi.com</EmailReservas>
+	</PortalPartner>
+	<PortalPartner>
+		<Id>28</Id>
+		<Name>Visite Hoteles San Luis Potosi</Name>
+		<Key>http://visitehotelessanluispotosi.com</Key>
+		<SecureKey>https://secure.visitehotelesdemexico.com/visitehotelessanluispotosi</SecureKey>
+		<StyleSheets>~/Partners/visitehotelesdemexico/css/</StyleSheets>
+		<Site>http://visitehotelessanluispotosi.com</Site>
+		<SecureSite>https://secure.visitehotelesdemexico.com/visitehotelessanluispotosi</SecureSite>
+		<CurrencyCode>MXN</CurrencyCode>
+		<RSS>~/Partners/VisiteHotelessanluispotosi/RSS/</RSS>
+		<AllowAgency>false</AllowAgency>
+		<SharedFiles>~/Partners/Default/SharedFiles/</SharedFiles>
+		<EmailHeader>
+			<![CDATA[<p><img class="logol" src="http://www.visitehotelesdemexico.com/CallCenter/Logos/logo_vhm_sanluispotosi.gif" />]]>
+		</EmailHeader>
+		<EmailFooter>
+			<![CDATA[No es necesario responder a este correo, Si requiere de asistencia puede contactarse a: M&eacute;xico: 01-800-590-4887 Estados Unidos y Canad&aacute;: 1-800-485-4959 Otros Pa&iacute;ses: 559-431-7300]]>
+		</EmailFooter>
+		<ImagesSystem>~/ImagesSystem/</ImagesSystem>
+		<SecureCertificationScript>
+			<![CDATA[<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript" SRC="//smarticon.geotrust.com/si.js"></SCRIPT>]]>
+		</SecureCertificationScript>
+		<PortalTrackingCodeNonSecure></PortalTrackingCodeNonSecure>
+		<PortalTrackingCodeSecure></PortalTrackingCodeSecure>
+		<DomainName>VisiteHotelessanLuisPotosi.com</DomainName>
+		<RedirectionFile>~/Partners/VisiteHotelessanluispotosi/</RedirectionFile>
+		<BlockActivies>false</BlockActivies>
+		<EmailReservas>clientes@visitehotelessanluispotosi.com</EmailReservas>
+	</PortalPartner>
+	<PortalPartner>
+		<Id>32</Id>
+		<Name>Visite Hoteles Guanajuato</Name>
+		<Key>http://www.visitehotelesguanajuato.com</Key>
+		<SecureKey>https://secure.visitehotelesdemexico.com/visitehotelesguanajuato</SecureKey>
+		<StyleSheets>~/Partners/visitehotelesdemexico/css/</StyleSheets>
+		<Site>http://www.visitehotelesguanajuato.com</Site>
+		<SecureSite>https://secure.visitehotelesdemexico.com/visitehotelesguanajuato</SecureSite>
+		<CurrencyCode>MXN</CurrencyCode>
+		<RSS>~/Partners/VisiteHotelesguanajuato/RSS/</RSS>
+		<AllowAgency>false</AllowAgency>
+		<SharedFiles>~/Partners/Default/SharedFiles/</SharedFiles>
+		<EmailHeader>
+			<![CDATA[<p><img class="logol" src="http://www.visitehotelesdemexico.com/CallCenter/Logos/logo_vhm_guanajuato.gif" />]]>
+		</EmailHeader>
+		<EmailFooter>
+			<![CDATA[No es necesario responder a este correo, Si requiere de asistencia puede contactarse a: M&eacute;xico: 01-800-590-4887 Estados Unidos y Canad&aacute;: 1-800-485-4959 Otros Pa&iacute;ses: 559-431-7300]]>
+		</EmailFooter>
+		<ImagesSystem>~/ImagesSystem/</ImagesSystem>
+		<SecureCertificationScript>
+			<![CDATA[<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript" SRC="//smarticon.geotrust.com/si.js"></SCRIPT>]]>
+		</SecureCertificationScript>
+		<PortalTrackingCodeNonSecure>
+		<![CDATA[
+		<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+		<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-605324-16");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+		</script>
+		]]>
+		</PortalTrackingCodeNonSecure>
+		<PortalTrackingCodeSecure></PortalTrackingCodeSecure>
+		<DomainName>VisiteHotelesGuanajuato.com</DomainName>
+		<RedirectionFile>~/Partners/VisiteHotelesguanajuato/</RedirectionFile>
+		<BlockActivies>false</BlockActivies>
+		<EmailReservas>clientes@visitehotelesguanajuato.com</EmailReservas>
+	</PortalPartner>
+	<PortalPartner>
+		<Id>32</Id>
+		<Name>Visite Hoteles Guanajuato</Name>
+		<Key>http://visitehotelesguanajuato.com</Key>
+		<SecureKey>https://secure.visitehotelesdemexico.com/visitehotelesguanajuato</SecureKey>
+		<StyleSheets>~/Partners/visitehotelesdemexico/css/</StyleSheets>
+		<Site>http://visitehotelesguanajuato.com</Site>
+		<SecureSite>https://secure.visitehotelesdemexico.com/visitehotelesguanajuato</SecureSite>
+		<CurrencyCode>MXN</CurrencyCode>
+		<RSS>~/Partners/VisiteHotelesguanajuato/RSS/</RSS>
+		<AllowAgency>false</AllowAgency>
+		<SharedFiles>~/Partners/Default/SharedFiles/</SharedFiles>
+		<EmailHeader>
+			<![CDATA[<p><img class="logol" src="http://www.visitehotelesdemexico.com/CallCenter/Logos/logo_vhm_guanajuato.gif" />]]>
+		</EmailHeader>
+		<EmailFooter>
+			<![CDATA[No es necesario responder a este correo, Si requiere de asistencia puede contactarse a: M&eacute;xico: 01-800-590-4887 Estados Unidos y Canad&aacute;: 1-800-485-4959 Otros Pa&iacute;ses: 559-431-7300]]>
+		</EmailFooter>
+		<ImagesSystem>~/ImagesSystem/</ImagesSystem>
+		<SecureCertificationScript>
+			<![CDATA[<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript" SRC="//smarticon.geotrust.com/si.js"></SCRIPT>]]>
+		</SecureCertificationScript>
+		<PortalTrackingCodeNonSecure>
+		<![CDATA[
+		<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+		<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-605324-16");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+		</script>
+		]]>
+		</PortalTrackingCodeNonSecure>
+		<PortalTrackingCodeSecure></PortalTrackingCodeSecure>
+		<DomainName>VisiteHotelesGuanajuato.com</DomainName>
+		<RedirectionFile>~/Partners/VisiteHotelesguanajuato/</RedirectionFile>
+		<BlockActivies>false</BlockActivies>
+		<EmailReservas>clientes@visitehotelesguanajuato.com</EmailReservas>
+	</PortalPartner>
+	<PortalPartner>
+		<Id>31</Id>
+		<Name>Visite Hoteles Irapuato</Name>
+		<Key>http://www.visitehotelesirapuato.com</Key>
+		<SecureKey>https://secure.visitehotelesdemexico.com/visitehotelesirapuato</SecureKey>
+		<StyleSheets>~/Partners/visitehotelesdemexico/css/</StyleSheets>
+		<Site>http://www.visitehotelesirapuato.com</Site>
+		<SecureSite>https://secure.visitehotelesdemexico.com/visitehotelesirapuato</SecureSite>
+		<CurrencyCode>MXN</CurrencyCode>
+		<RSS>~/Partners/VisiteHotelesirapuato/RSS/</RSS>
+		<AllowAgency>false</AllowAgency>
+		<SharedFiles>~/Partners/Default/SharedFiles/</SharedFiles>
+		<EmailHeader>
+			<![CDATA[<p><img class="logol" src="http://www.visitehotelesdemexico.com/CallCenter/Logos/logo_vhm_irapuato.gif" />]]>
+		</EmailHeader>
+		<EmailFooter>
+			<![CDATA[No es necesario responder a este correo, Si requiere de asistencia puede contactarse a: M&eacute;xico: 01-800-590-4887 Estados Unidos y Canad&aacute;: 1-800-485-4959 Otros Pa&iacute;ses: 559-431-7300]]>
+		</EmailFooter>
+		<ImagesSystem>~/ImagesSystem/</ImagesSystem>
+		<SecureCertificationScript>
+			<![CDATA[<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript" SRC="//smarticon.geotrust.com/si.js"></SCRIPT>]]>
+		</SecureCertificationScript>
+		<PortalTrackingCodeNonSecure></PortalTrackingCodeNonSecure>
+		<PortalTrackingCodeSecure></PortalTrackingCodeSecure>
+		<DomainName>VisiteHotelesIrapuato.com</DomainName>
+		<RedirectionFile>~/Partners/VisiteHotelesirapuato/</RedirectionFile>
+		<BlockActivies>false</BlockActivies>
+		<EmailReservas>clientes@visitehotelesirapuato.com</EmailReservas>
+	</PortalPartner>
+	<PortalPartner>
+		<Id>31</Id>
+		<Name>Visite Hoteles Irapuato</Name>
+		<Key>http://visitehotelesirapuato.com</Key>
+		<SecureKey>https://secure.visitehotelesdemexico.com/visitehotelesirapuato</SecureKey>
+		<StyleSheets>~/Partners/visitehotelesdemexico/css/</StyleSheets>
+		<Site>http://visitehotelesirapuato.com</Site>
+		<SecureSite>https://secure.visitehotelesdemexico.com/visitehotelesirapuato</SecureSite>
+		<CurrencyCode>MXN</CurrencyCode>
+		<RSS>~/Partners/VisiteHotelesirapuato/RSS/</RSS>
+		<AllowAgency>false</AllowAgency>
+		<SharedFiles>~/Partners/Default/SharedFiles/</SharedFiles>
+		<EmailHeader>
+			<![CDATA[<p><img class="logol" src="http://www.visitehotelesdemexico.com/CallCenter/Logos/logo_vhm_irapuato.gif" />]]>
+		</EmailHeader>
+		<EmailFooter>
+			<![CDATA[No es necesario responder a este correo, Si requiere de asistencia puede contactarse a: M&eacute;xico: 01-800-590-4887 Estados Unidos y Canad&aacute;: 1-800-485-4959 Otros Pa&iacute;ses: 559-431-7300]]>
+		</EmailFooter>
+		<ImagesSystem>~/ImagesSystem/</ImagesSystem>
+		<SecureCertificationScript>
+			<![CDATA[<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript" SRC="//smarticon.geotrust.com/si.js"></SCRIPT>]]>
+		</SecureCertificationScript>
+		<PortalTrackingCodeNonSecure></PortalTrackingCodeNonSecure>
+		<PortalTrackingCodeSecure></PortalTrackingCodeSecure>
+		<DomainName>VisiteHotelesIrapuato.com</DomainName>
+		<RedirectionFile>~/Partners/VisiteHotelesirapuato/</RedirectionFile>
+		<BlockActivies>false</BlockActivies>
+		<EmailReservas>clientes@visitehotelesirapuato.com</EmailReservas>
+	</PortalPartner>
+	<PortalPartner>
+		<Id>19</Id>
+		<Name>Visite Hoteles de Mexico</Name>
+		<Key>http://www.visitehotelesdemexico.com</Key>
+		<SecureKey>https://secure.visitehotelesdemexico.com/visitehotelesdemexico</SecureKey>
+		<StyleSheets>~/Partners/visitehotelesdemexico/css/</StyleSheets>
+		<Site>http://www.visitehotelesdemexico.com</Site>
+		<SecureSite>https://secure.visitehotelesdemexico.com/visitehotelesdemexico</SecureSite>
+		<CurrencyCode>MXN</CurrencyCode>
+		<RSS>~/Partners/VisiteHotelesdemexico/RSS/</RSS>
+		<AllowAgency>true</AllowAgency>
+		<SharedFiles>~/Partners/Default/SharedFiles/</SharedFiles>
+		<EmailHeader>
+			<![CDATA[<p><img class="logol" src="http://www.visitehotelesdemexico.com/CallCenter/Logos/logo_vhm.gif" />]]>
+		</EmailHeader>
+		<EmailFooter>
+			<![CDATA[No es necesario responder a este correo, Si requiere de asistencia puede contactarse a: M&eacute;xico: 01-800-590-4887 Estados Unidos y Canad&aacute;: 1-800-485-4959 Otros Pa&iacute;ses: 559-431-7300]]>
+		</EmailFooter>
+		<ImagesSystem>~/ImagesSystem/</ImagesSystem>
+		<SecureCertificationScript>
+			<![CDATA[<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript" SRC="//smarticon.geotrust.com/si.js"></SCRIPT>]]>
+		</SecureCertificationScript>
+		<PortalTrackingCodeNonSecure>
+			<![CDATA[
+			<script type="text/javascript">
+			var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+			document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+			</script>
+			<script type="text/javascript">
+			var pageTracker = _gat._getTracker("UA-605324-4");
+			pageTracker._initData();
+			pageTracker._trackPageview();
+			</script>
+			]]>
+		</PortalTrackingCodeNonSecure>
+		<PortalTrackingCodeSecure></PortalTrackingCodeSecure>
+		<DomainName>VisiteHotelesdeMexico.com</DomainName>
+		<RedirectionFile>~/Partners/VisiteHotelesDeMexico/</RedirectionFile>
+		<BlockActivies>true</BlockActivies>
+		<EmailReservas>clientes@visitehotelesdemexico.com</EmailReservas>
+	</PortalPartner>
+	<PortalPartner>
+		<Id>41</Id>
+		<Name>Visite Hoteles Aguascalientes</Name>
+		<Key>http://www.visitehotelesaguascalientes.com</Key>
+		<SecureKey>https://secure.visitehotelesdemexico.com/VisiteHotelesAguascalientes</SecureKey>
+		<StyleSheets>~/Partners/VisiteHotelesdemexico/css/</StyleSheets>
+		<Site>http://www.visitehotelesaguascalientes.com</Site>
+		<SecureSite>https://secure.visitehotelesdemexico.com/VisiteHotelesAguascalientes</SecureSite>
+		<CurrencyCode>MXN</CurrencyCode>
+		<RSS>~/Partners/VisiteHotelesAguascalientes/RSS/</RSS>
+		<AllowAgency>false</AllowAgency>
+		<SharedFiles>~/Partners/Default/SharedFiles/</SharedFiles>
+		<EmailHeader>
+			<![CDATA[<p> <img class="logol" src="http://demo.visitehotelesdemexico.com/Partners/visitehotelesdemexico/RSS/Images/logo_portal.gif" />]]>
+		</EmailHeader>
+		<EmailFooter>
+			<![CDATA[No es necesario responder a este correo, Si requiere de asistencia puede contactarse a: M&eacute;xico: 01-800-590-4887 Estados Unidos y Canad&aacute;: 1-800-485-4959 Otros Pa&iacute;ses: 559-431-7300]]>
+		</EmailFooter>
+		<ImagesSystem>~/ImagesSystem/</ImagesSystem>
+		<SecureCertificationScript>
+			<![CDATA[<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript" SRC="//smarticon.geotrust.com/si.js"></SCRIPT>]]>
+		</SecureCertificationScript>
+		<PortalTrackingCodeNonSecure></PortalTrackingCodeNonSecure>
+		<PortalTrackingCodeSecure></PortalTrackingCodeSecure>
+		<RedirectionFile>~/Partners/VisiteHotelesAguascalientes/</RedirectionFile>
+		<DomainName>VisiteHotelesAguascalientes.com</DomainName>
+		<EmailReservas>clientes@visitehotelesaguascalientes.com</EmailReservas>
+	</PortalPartner>
+	<PortalPartner>
+		<Id>41</Id>
+		<Name>Visite Hoteles Aguascalientes</Name>
+		<Key>http://visitehotelesaguascalientes.com</Key>
+		<SecureKey>https://secure.visitehotelesdemexico.com/VisiteHotelesAguascalientes</SecureKey>
+		<StyleSheets>~/Partners/VisiteHotelesdemexico/css/</StyleSheets>
+		<Site>http://visitehotelesaguascalientes.com</Site>
+		<SecureSite>https://secure.visitehotelesdemexico.com/VisiteHotelesAguascalientes</SecureSite>
+		<CurrencyCode>MXN</CurrencyCode>
+		<RSS>~/Partners/VisiteHotelesAguascalientes/RSS/</RSS>
+		<AllowAgency>false</AllowAgency>
+		<SharedFiles>~/Partners/Default/SharedFiles/</SharedFiles>
+		<EmailHeader>
+			<![CDATA[<p> <img class="logol" src="http://demo.visitehotelesdemexico.com/Partners/visitehotelesdemexico/RSS/Images/logo_portal.gif" />]]>
+		</EmailHeader>
+		<EmailFooter>
+			<![CDATA[No es necesario responder a este correo, Si requiere de asistencia puede contactarse a: M&eacute;xico: 01-800-590-4887 Estados Unidos y Canad&aacute;: 1-800-485-4959 Otros Pa&iacute;ses: 559-431-7300]]>
+		</EmailFooter>
+		<ImagesSystem>~/ImagesSystem/</ImagesSystem>
+		<SecureCertificationScript>
+			<![CDATA[<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript" SRC="//smarticon.geotrust.com/si.js"></SCRIPT>]]>
+		</SecureCertificationScript>
+		<PortalTrackingCodeNonSecure></PortalTrackingCodeNonSecure>
+		<PortalTrackingCodeSecure></PortalTrackingCodeSecure>
+		<RedirectionFile>~/Partners/VisiteHotelesAguascalientes/</RedirectionFile>
+		<DomainName>VisiteHotelesAguascalientes.com</DomainName>
+		<EmailReservas>clientes@visitehotelesaguascalientes.com</EmailReservas>
+	</PortalPartner>
+	<PortalPartner>
+		<Id>42</Id>
+		<Name>Visite Hoteles Chihuahua</Name>
+		<Key>http://www.visitehoteleschihuahua.com</Key>
+		<SecureKey>https://secure.visitehotelesdemexico.com/visitehoteleschihuahua</SecureKey>
+		<StyleSheets>~/Partners/visitehotelesdemexico/css/</StyleSheets>
+		<Site>http://www.visitehoteleschihuahua.com</Site>
+		<SecureSite>https://secure.visitehotelesdemexico.com/visitehoteleschihuahua</SecureSite>
+		<CurrencyCode>MXN</CurrencyCode>
+		<RSS>~/Partners/VisiteHotelesChihuahua/RSS/</RSS>
+		<AllowAgency>false</AllowAgency>
+		<SharedFiles>~/Partners/Default/SharedFiles/</SharedFiles>
+		<EmailHeader>
+			<![CDATA[<p> <img class="logol" src="http://demo.visitehotelesdemexico.com/Partners/visitehotelesdemexico/RSS/Images/logo_portal.gif" />]]>
+		</EmailHeader>
+		<EmailFooter>
+			<![CDATA[No es necesario responder a este correo, Si requiere de asistencia puede contactarse a: M&eacute;xico: 01-800-590-4887 Estados Unidos y Canad&aacute;: 1-800-485-4959 Otros Pa&iacute;ses: 559-431-7300]]>
+		</EmailFooter>
+		<ImagesSystem>~/ImagesSystem/</ImagesSystem>
+		<SecureCertificationScript>
+			<![CDATA[<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript" SRC="//smarticon.geotrust.com/si.js"></SCRIPT>]]>
+		</SecureCertificationScript>
+		<PortalTrackingCodeNonSecure></PortalTrackingCodeNonSecure>
+		<PortalTrackingCodeSecure></PortalTrackingCodeSecure>
+		<DomainName>VisiteHotelesChihuahua.com</DomainName>
+		<RedirectionFile>~/Partners/VisiteHotelesChihuahua/</RedirectionFile>
+		<BlockActivies>false</BlockActivies>
+		<EmailReservas>clientes@visitehoteleschihuahua.com</EmailReservas>
+	</PortalPartner>
+	<PortalPartner>
+		<Id>42</Id>
+		<Name>Visite Hoteles Chihuahua</Name>
+		<Key>http://visitehoteleschihuahua.com</Key>
+		<SecureKey>https://secure.visitehotelesdemexico.com/visitehoteleschihuahua</SecureKey>
+		<StyleSheets>~/Partners/visitehotelesdemexico/css/</StyleSheets>
+		<Site>http://visitehoteleschihuahua.com</Site>
+		<SecureSite>https://secure.visitehotelesdemexico.com/visitehoteleschihuahua</SecureSite>
+		<CurrencyCode>MXN</CurrencyCode>
+		<RSS>~/Partners/VisiteHotelesChihuahua/RSS/</RSS>
+		<AllowAgency>false</AllowAgency>
+		<SharedFiles>~/Partners/Default/SharedFiles/</SharedFiles>
+		<EmailHeader>
+			<![CDATA[<p> <img class="logol" src="http://demo.visitehotelesdemexico.com/Partners/visitehotelesdemexico/RSS/Images/logo_portal.gif" />]]>
+		</EmailHeader>
+		<EmailFooter>
+			<![CDATA[No es necesario responder a este correo, Si requiere de asistencia puede contactarse a: M&eacute;xico: 01-800-590-4887 Estados Unidos y Canad&aacute;: 1-800-485-4959 Otros Pa&iacute;ses: 559-431-7300]]>
+		</EmailFooter>
+		<ImagesSystem>~/ImagesSystem/</ImagesSystem>
+		<SecureCertificationScript>
+			<![CDATA[<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript" SRC="//smarticon.geotrust.com/si.js"></SCRIPT>]]>
+		</SecureCertificationScript>
+		<PortalTrackingCodeNonSecure></PortalTrackingCodeNonSecure>
+		<PortalTrackingCodeSecure></PortalTrackingCodeSecure>
+		<DomainName>VisiteHotelesChihuahua.com</DomainName>
+		<RedirectionFile>~/Partners/VisiteHotelesChihuahua/</RedirectionFile>
+		<BlockActivies>false</BlockActivies>
+		<EmailReservas>clientes@visitehoteleschihuahua.com</EmailReservas>
+	</PortalPartner>
+	<PortalPartner>
+		<Id>43</Id>
+		<Name>Visite Hoteles Monterrey</Name>
+		<Key>http://www.visitehotelesmonterrey.com</Key>
+		<SecureKey>https://secure.visitehotelesdemexico.com/visitehotelesmonterrey</SecureKey>
+		<StyleSheets>~/Partners/visitehotelesdemexico/css/</StyleSheets>
+		<Site>http://www.visitehotelesmonterrey.com</Site>
+		<SecureSite>https://secure.visitehotelesdemexico.com/visitehotelesmonterrey</SecureSite>
+		<CurrencyCode>MXN</CurrencyCode>
+		<RSS>~/Partners/VisiteHotelesmonterrey/RSS/</RSS>
+		<AllowAgency>false</AllowAgency>
+		<SharedFiles>~/Partners/Default/SharedFiles/</SharedFiles>
+		<EmailHeader>
+			<![CDATA[<p> <img class="logol" src="http://demo.visitehotelesdemexico.com/Partners/visitehotelesdemexico/RSS/Images/logo_portal.gif" />]]>
+		</EmailHeader>
+		<EmailFooter>
+			<![CDATA[No es necesario responder a este correo, Si requiere de asistencia puede contactarse a: M&eacute;xico: 01-800-590-4887 Estados Unidos y Canad&aacute;: 1-800-485-4959 Otros Pa&iacute;ses: 559-431-7300]]>
+		</EmailFooter>
+		<ImagesSystem>~/ImagesSystem/</ImagesSystem>
+		<SecureCertificationScript>
+			<![CDATA[<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript" SRC="//smarticon.geotrust.com/si.js"></SCRIPT>]]>
+		</SecureCertificationScript>
+		<PortalTrackingCodeNonSecure></PortalTrackingCodeNonSecure>
+		<PortalTrackingCodeSecure></PortalTrackingCodeSecure>
+		<DomainName>VisiteHotelesMonterrey.com</DomainName>
+		<RedirectionFile>~/Partners/VisiteHotelesmonterrey/</RedirectionFile>
+		<BlockActivies>false</BlockActivies>
+		<EmailReservas>clientes@visitehotelesmonterrey.com</EmailReservas>
+	</PortalPartner>
+	<PortalPartner>
+		<Id>43</Id>
+		<Name>Visite Hoteles Monterrey</Name>
+		<Key>http://visitehotelesmonterrey.com</Key>
+		<SecureKey>https://secure.visitehotelesdemexico.com/visitehotelesmonterrey</SecureKey>
+		<StyleSheets>~/Partners/visitehotelesdemexico/css/</StyleSheets>
+		<Site>http://visitehotelesmonterrey.com</Site>
+		<SecureSite>https://secure.visitehotelesdemexico.com/visitehotelesmonterrey</SecureSite>
+		<CurrencyCode>MXN</CurrencyCode>
+		<RSS>~/Partners/VisiteHotelesmonterrey/RSS/</RSS>
+		<AllowAgency>false</AllowAgency>
+		<SharedFiles>~/Partners/Default/SharedFiles/</SharedFiles>
+		<EmailHeader>
+			<![CDATA[<p> <img class="logol" src="http://demo.visitehotelesdemexico.com/Partners/visitehotelesdemexico/RSS/Images/logo_portal.gif" />]]>
+		</EmailHeader>
+		<EmailFooter>
+			<![CDATA[No es necesario responder a este correo, Si requiere de asistencia puede contactarse a: M&eacute;xico: 01-800-590-4887 Estados Unidos y Canad&aacute;: 1-800-485-4959 Otros Pa&iacute;ses: 559-431-7300]]>
+		</EmailFooter>
+		<ImagesSystem>~/ImagesSystem/</ImagesSystem>
+		<SecureCertificationScript>
+			<![CDATA[<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript" SRC="//smarticon.geotrust.com/si.js"></SCRIPT>]]>
+		</SecureCertificationScript>
+		<PortalTrackingCodeNonSecure></PortalTrackingCodeNonSecure>
+		<PortalTrackingCodeSecure></PortalTrackingCodeSecure>
+		<DomainName>VisiteHotelesMonterrey.com</DomainName>
+		<RedirectionFile>~/Partners/VisiteHotelesmonterrey/</RedirectionFile>
+		<BlockActivies>false</BlockActivies>
+		<EmailReservas>clientes@visitehotelesmonterrey.com</EmailReservas>
+	</PortalPartner>
+	<PortalPartner>
+		<Id>19</Id>
+		<Name>Visite Hoteles de Mexico</Name>
+		<Key>http://visitehotelesdemexico.com</Key>
+		<SecureKey>https://secure.visitehotelesdemexico.com/visitehotelesdemexico</SecureKey>
+		<StyleSheets>~/Partners/visitehotelesdemexico/css/</StyleSheets>
+		<Site>http://visitehotelesdemexico.com</Site>
+		<SecureSite>https://secure.visitehotelesdemexico.com/visitehotelesdemexico</SecureSite>
+		<CurrencyCode>MXN</CurrencyCode>
+		<RSS>~/Partners/VisiteHotelesdemexico/RSS/</RSS>
+		<AllowAgency>true</AllowAgency>
+		<SharedFiles>~/Partners/Default/SharedFiles/</SharedFiles>
+		<EmailHeader>
+			<![CDATA[<p><img class="logol" src="http://www.visitehotelesdemexico.com/CallCenter/Logos/logo_vhm.gif" />]]>
+		</EmailHeader>
+		<EmailFooter>
+			<![CDATA[No es necesario responder a este correo, Si requiere de asistencia puede contactarse a: M&eacute;xico: 01-800-590-4887 Estados Unidos y Canad&aacute;: 1-800-485-4959 Otros Pa&iacute;ses: 559-431-7300]]>
+		</EmailFooter>
+		<ImagesSystem>~/ImagesSystem/</ImagesSystem>
+		<SecureCertificationScript>
+			<![CDATA[<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript" SRC="//smarticon.geotrust.com/si.js"></SCRIPT>]]>
+		</SecureCertificationScript>
+		<PortalTrackingCodeNonSecure></PortalTrackingCodeNonSecure>
+		<PortalTrackingCodeSecure></PortalTrackingCodeSecure>
+		<DomainName>VisiteHotelesdeMexico.com</DomainName>
+		<RedirectionFile>~/Partners/VisiteHotelesDeMexico/</RedirectionFile>
+		<BlockActivies>true</BlockActivies>
+		<EmailReservas>clientes@visitehotelesdemexico.com</EmailReservas>
+	</PortalPartner>
+	<!-- CONFIGURACION DE PARTNERS PARA AGENCIAS -->
+	<PortalPartner>
+		<Id>12</Id>
+		<Name>Viaju La Paz</Name>
+		<Key>http://www.viajulapaz.com</Key>
+		<SecureKey>https://secure.viaju.net/viajulapaz</SecureKey>
+		<StyleSheets>~/Partners/viaju/css/</StyleSheets>
+		<Site>http://www.viajulapaz.com</Site>
+		<SecureSite>https://secure.viaju.net/viajulapaz</SecureSite>
+		<CurrencyCode>MXN</CurrencyCode>
+		<RSS>~/Partners/ViajuLaPaz/RSS/</RSS>
+		<AllowAgency>true</AllowAgency>
+		<SharedFiles>~/Partners/Default/SharedFiles/</SharedFiles>
+		<EmailHeader>
+      <![CDATA[<p><img class="logol" src="http://www.visitehotelesdemexico.com/CallCenter/logos/logo_viaju_lapaz.gif" />]]>
+    </EmailHeader>
+		<EmailFooter>
+      <![CDATA[No es necesario responder a este correo, Si requiere de asistencia puede contactarse a: M&eacute;xico: 01-800-590-4887 Estados Unidos y Canad&aacute;: 1-800-485-4959 Otros Pa&iacute;ses: 559-431-7300]]>
+    </EmailFooter>
+		<ImagesSystem>~/ImagesSystem/</ImagesSystem>
+		<SecureCertificationScript>
+      <![CDATA[<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript" SRC="//smarticon.geotrust.com/si.js"></SCRIPT>]]>
+    </SecureCertificationScript>
+		<PortalTrackingCodeNonSecure>
+	<![CDATA[
+		<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+		<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-605324-21");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+		</script>
+	]]>
+	</PortalTrackingCodeNonSecure>
+		<PortalTrackingCodeSecure></PortalTrackingCodeSecure>
+		<RedirectionFile>~/Partners/viajuLaPaz/</RedirectionFile>
+		<DomainName>ViajuLaPaz.com</DomainName>
+		<DefaultActivitiesCityName>La Paz,Baja California Sur</DefaultActivitiesCityName>
+		<DefaultActivitiesCityRefPoint>La paz</DefaultActivitiesCityRefPoint>
+		<DefaultActivitiesCityIATA>LAP</DefaultActivitiesCityIATA>
+		<EmailReservas>clientes@viajulapaz.com</EmailReservas>
+	</PortalPartner>
+	<PortalPartner>
+		<Id>14</Id>
+		<Name>Viaju Los cabos</Name>
+		<Key>http://www.viajuloscabos.com</Key>
+		<SecureKey>https://secure.viaju.net/viajuLosCabos</SecureKey>
+		<StyleSheets>~/Partners/viaju/css/</StyleSheets>
+		<Site>http://www.viajuloscabos.com</Site>
+		<SecureSite>https://secure.viaju.net/viajuLosCabos</SecureSite>
+		<CurrencyCode>MXN</CurrencyCode>
+		<RSS>~/Partners/ViajuLosCabos/RSS/</RSS>
+		<AllowAgency>true</AllowAgency>
+		<SharedFiles>~/Partners/Default/SharedFiles/</SharedFiles>
+		<EmailHeader>
+      <![CDATA[<p> <img class="logol" src="http://www.visitehotelesdemexico.com/CallCenter/logos/logo_viaju_loscabos.gif" />]]>
+    </EmailHeader>
+		<EmailFooter>
+      <![CDATA[No es necesario responder a este correo, Si requiere de asistencia puede contactarse a: M&eacute;xico: 01-800-590-4887 Estados Unidos y Canad&aacute;: 1-800-485-4959 Otros Pa&iacute;ses: 559-431-7300]]>
+    </EmailFooter>
+		<ImagesSystem>~/ImagesSystem/</ImagesSystem>
+		<SecureCertificationScript>
+      <![CDATA[<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript" SRC="//smarticon.geotrust.com/si.js"></SCRIPT>]]>
+    </SecureCertificationScript>
+		<PortalTrackingCodeNonSecure>
+	<![CDATA[
+		<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+		<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-605324-22");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+		</script>
+	]]>		
+	</PortalTrackingCodeNonSecure>
+		<PortalTrackingCodeSecure></PortalTrackingCodeSecure>
+		<RedirectionFile>~/Partners/viajuLoscabos/</RedirectionFile>
+		<DomainName>ViajulosCabos.com</DomainName>
+		<EmailReservas>clientes@viajuloscabos.com</EmailReservas>
+	</PortalPartner>
+	<PortalPartner>
+		<Id>22</Id>
+		<Name>Viaju Acapulco</Name>
+		<Key>http://www.viajuacapulco.com</Key>
+		<SecureKey>https://secure.viaju.net/viajuacapulco</SecureKey>
+		<StyleSheets>~/Partners/viaju/css/</StyleSheets>
+		<Site>http://www.viajuacapulco.com</Site>
+		<SecureSite>https://secure.viaju.net/viajuacapulco</SecureSite>
+		<CurrencyCode>MXN</CurrencyCode>
+		<RSS>~/Partners/ViajuAcapulco/RSS/</RSS>
+		<AllowAgency>false</AllowAgency>
+		<SharedFiles>~/Partners/Default/SharedFiles/</SharedFiles>
+		<EmailHeader>
+      <![CDATA[<p> <img class="logol" src="http://www.visitehotelesdemexico.com/CallCenter/logos/logo_viaju_acapulco.gif" />]]>
+    </EmailHeader>
+		<EmailFooter>
+      <![CDATA[No es necesario responder a este correo, Si requiere de asistencia puede contactarse a: M&eacute;xico: 01-800-590-4887 Estados Unidos y Canad&aacute;: 1-800-485-4959 Otros Pa&iacute;ses: 559-431-7300]]>
+    </EmailFooter>
+		<ImagesSystem>~/ImagesSystem/</ImagesSystem>
+		<SecureCertificationScript>
+      <![CDATA[<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript" SRC="//smarticon.geotrust.com/si.js"></SCRIPT>]]>
+    </SecureCertificationScript>
+		<PortalTrackingCodeNonSecure>
+	<![CDATA[
+		<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+		<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-605324-23");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+		</script>
+	]]>				
+	</PortalTrackingCodeNonSecure>
+		<PortalTrackingCodeSecure></PortalTrackingCodeSecure>
+		<RedirectionFile>~/Partners/viajuAcapulco/</RedirectionFile>
+		<DomainName>ViajuAcapulco.com</DomainName>
+		<EmailReservas>clientes@viajuacapulco.com</EmailReservas>
+	</PortalPartner>
+	<PortalPartner>
+		<Id>16</Id>
+		<Name>Viaju</Name>
+		<Key>http://www.viaju.com</Key>
+		<SecureKey>https://secure.viaju.net/viaju</SecureKey>
+		<StyleSheets>~/Partners/viaju/css/</StyleSheets>
+		<Site>http://www.viaju.com</Site>
+		<SecureSite>https://secure.viaju.net/viaju</SecureSite>
+		<CurrencyCode>MXN</CurrencyCode>
+		<RSS>~/Partners/viaju/RSS/</RSS>
+		<AllowAgency>true</AllowAgency>
+		<SharedFiles>~/Partners/Default/SharedFiles/</SharedFiles>
+		<EmailHeader>
+      <![CDATA[<p> <img class="logol" src="http://www.visitehotelesdemexico.com/CallCenter/logos/logo_viaju.gif" />]]>
+    </EmailHeader>
+		<EmailFooter>
+      <![CDATA[No es necesario responder a este correo, Si requiere de asistencia puede contactarse a: M&eacute;xico: 01-800-590-4887 Estados Unidos y Canad&aacute;: 1-800-485-4959 Otros Pa&iacute;ses: 559-431-7300]]>
+    </EmailFooter>
+		<ImagesSystem>~/ImagesSystem/</ImagesSystem>
+		<SecureCertificationScript>
+      <![CDATA[<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript" SRC="//smarticon.geotrust.com/si.js"></SCRIPT>]]>
+    </SecureCertificationScript>
+		<PortalTrackingCodeNonSecure>
+	<![CDATA[
+		<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+		<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-605324-20");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+		</script>
+	]]>
+	</PortalTrackingCodeNonSecure>
+		<PortalTrackingCodeSecure></PortalTrackingCodeSecure>
+		<RedirectionFile>~/Partners/viaju/</RedirectionFile>
+		<DomainName>Viaju.com</DomainName>
+		<EmailReservas>clientes@viaju.com</EmailReservas>
+	</PortalPartner>
+	<!-- UNIVISIT ACAPULCO CONFIGURATION -->
+	<PortalPartner>
+		<Id>21</Id>
+		<Name>UniVisit Acapulco</Name>
+		<Key>http://www.univisitacapulco.com</Key>
+		<SecureKey>https://secure.univisit.net/univisitacapulco</SecureKey>
+		<StyleSheets>~/Partners/univisit/css/</StyleSheets>
+		<Site>http://www.univisitacapulco.com</Site>
+		<SecureSite>https://secure.univisit.net/univisitacapulco</SecureSite>
+		<CurrencyCode>USD</CurrencyCode>
+		<RSS>~/Partners/univisitacapulco/RSS/</RSS>
+		<SharedFiles>~/Partners/Default/univisitacapulco/</SharedFiles>
+		<EmailHeader><![CDATA[<p> <img class="logol" src="http://www.UniVisitAcapulco.com/Partners/UniVisitAcapulco/RSS/Images/logo_portal.jpg" />]]></EmailHeader>
+		<EmailFooter><![CDATA[Please do not reply to this email. This email was automatically generated by Univisit Acapulco. If you require assistance, please contact us by email at <a href="mailto:custsrvc@univisit.com">custsrvc@univisit.com</a> or by phone at <strong>1-800-485-4959</strong>.]]></EmailFooter>
+		<ImagesSystem>~/ImagesSystem/</ImagesSystem>
+		<SecureCertificationScript><![CDATA[<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript" SRC="//smarticon.geotrust.com/si.js"></SCRIPT>]]></SecureCertificationScript>
+		<AllowAgency>false</AllowAgency>
+		<PortalTrackingCodeNonSecure>
+			<![CDATA[
+				<script type="text/javascript">
+				var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+				document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+				</script>
+				<script type="text/javascript">
+				var pageTracker = _gat._getTracker("UA-605324-9");
+				pageTracker._initData();
+				pageTracker._trackPageview();
+				</script>
+			]]>		
+		</PortalTrackingCodeNonSecure>
+		<PortalTrackingCodeSecure></PortalTrackingCodeSecure>
+		<RedirectionFile>~/Partners/UniVisitAcapulco/</RedirectionFile>
+		<DomainName>UniVisitAcapulco.com</DomainName>
+		<EmailReservas>custsrvc@univisit.com</EmailReservas>
+	</PortalPartner>
+	<!-- UNIVISIT LOS CABOS CONFIGURATION -->
+	<PortalPartner>
+		<Id>8</Id>
+		<Name>UniVisit Los Cabos</Name>
+		<Key>http://www.univisitloscabos.com</Key>
+		<SecureKey>https://secure.univisit.net/univisitLosCabos</SecureKey>
+		<StyleSheets>~/Partners/univisit/css/</StyleSheets>
+		<Site>http://www.univisitloscabos.com</Site>
+		<SecureSite>https://secure.univisit.net/univisitLosCabos</SecureSite>
+		<CurrencyCode>USD</CurrencyCode>
+		<RSS>~/Partners/univisitLosCabos/RSS/</RSS>
+		<AllowAgency>false</AllowAgency>
+		<SharedFiles>~/Partners/Default/SharedFiles/</SharedFiles>
+		<EmailHeader>
+			<![CDATA[<p> <img class="logol" src="http://www.visitehotelesdemexico.com/CallCenter/logos/logo_univisit_loscabos.gif" />]]>
+		</EmailHeader>
+		<EmailFooter>
+			<![CDATA[Please do not reply to this email. This email was automatically 
+			generated by Univisit. If you require assistance, please contact us by 
+			email at <a 
+			href="mailto:custsrvc@univisit.com">custsrvc@univisit.com</a> or by 
+			phone at <strong>1-800-485-4959</strong>.]]>
+		</EmailFooter>
+		<ImagesSystem>~/ImagesSystem/</ImagesSystem>
+		<SecureCertificationScript>
+			<![CDATA[<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript" SRC="//smarticon.geotrust.com/si.js"></SCRIPT>]]>
+		</SecureCertificationScript>
+		<PortalTrackingCodeNonSecure>
+			<![CDATA[
+				<script type="text/javascript">
+				var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+				document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+				</script>
+				<script type="text/javascript">
+				var pageTracker = _gat._getTracker("UA-605324-10");
+				pageTracker._initData();
+				pageTracker._trackPageview();
+				</script>
+			]]>
+		</PortalTrackingCodeNonSecure>
+		<PortalTrackingCodeSecure></PortalTrackingCodeSecure>
+		<RedirectionFile>~/Partners/univisitLosCabos/</RedirectionFile>
+		<DomainName>UniVisitLosCabos.com</DomainName>
+		<DefaultActivitiesCityName></DefaultActivitiesCityName>
+		<DefaultActivitiesCityRefPoint></DefaultActivitiesCityRefPoint>
+		<DefaultActivitiesCityIATA></DefaultActivitiesCityIATA>
+		<EmailReservas>custsrvc@univisit.com</EmailReservas>
+	</PortalPartner>
+	<!-- UNIVISIT LA PAZ CONFIGURATION -->
+	<PortalPartner>
+		<Id>1</Id>
+		<Name>UniVisit La Paz</Name>
+		<Key>http://www.univisitlapaz.com</Key>
+		<SecureKey>https://secure.univisit.net/univisitlapaz</SecureKey>
+		<StyleSheets>~/Partners/univisit/css/</StyleSheets>
+		<Site>http://www.univisitlapaz.com</Site>
+		<SecureSite>https://secure.univisit.net/univisitlapaz</SecureSite>
+		<CurrencyCode>USD</CurrencyCode>
+		<RSS>~/Partners/univisitLaPaz/RSS/</RSS>
+		<AllowAgency>false</AllowAgency>
+		<SharedFiles>~/Partners/Default/SharedFiles/</SharedFiles>
+		<EmailHeader>
+			<![CDATA[<p> <img class="logol" src="http://www.visitehotelesdemexico.com/CallCenter/logos/logo_univisit_lapaz.gif" />]]>
+		</EmailHeader>
+		<EmailFooter>
+			<![CDATA[Please do not reply to this email. This email was automatically 
+			generated by Univisit. If you require assistance, please contact us by 
+			email at <a 
+			href="mailto:custsrvc@univisit.com">custsrvc@univisit.com</a> or by 
+			phone at <strong>1-800-485-4959</strong>.]]>
+		</EmailFooter>
+		<ImagesSystem>~/ImagesSystem/</ImagesSystem>
+		<SecureCertificationScript>
+			<![CDATA[<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript" SRC="//smarticon.geotrust.com/si.js"></SCRIPT>]]>
+		</SecureCertificationScript>
+		<PortalTrackingCodeNonSecure>
+		<![CDATA[
+			<script type="text/javascript">
+			var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+			document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+			</script>
+			<script type="text/javascript">
+			var pageTracker = _gat._getTracker("UA-605324-3");
+			pageTracker._initData();
+			pageTracker._trackPageview();
+			</script>
+		]]>
+		</PortalTrackingCodeNonSecure>
+		<PortalTrackingCodeSecure></PortalTrackingCodeSecure>
+		<RedirectionFile>~/Partners/univisitLaPaz/</RedirectionFile>
+		<DomainName>UniVisitLaPaz.com</DomainName>
+		<DefaultActivitiesCityName></DefaultActivitiesCityName>
+		<DefaultActivitiesCityRefPoint></DefaultActivitiesCityRefPoint>
+		<DefaultActivitiesCityIATA></DefaultActivitiesCityIATA>
+		<EmailReservas>custsrvc@univisit.com</EmailReservas>
+	</PortalPartner>
+	<PortalPartner>
+		<Id>2</Id>
+		<Name>UniVisit</Name>
+		<Key>http://www.univisit.com</Key>
+		<SecureKey>https://secure.univisit.net/univisit</SecureKey>
+		<StyleSheets>~/Partners/univisit/css/</StyleSheets>
+		<Site>http://www.univisit.com</Site>
+		<SecureSite>https://secure.univisit.net/univisit</SecureSite>
+		<CurrencyCode>USD</CurrencyCode>
+		<RSS>~/Partners/univisitLaPaz/RSS/</RSS>
+		<AllowAgency>false</AllowAgency>
+		<SharedFiles>~/Partners/Default/SharedFiles/</SharedFiles>
+		<EmailHeader>
+			<![CDATA[<p> <img class="logol" src="http://www.visitehotelesdemexico.com/CallCenter/logos/logo_univisit_lapaz.gif" />]]>
+		</EmailHeader>
+		<EmailFooter>
+			<![CDATA[Please do not reply to this email. This email was automatically 
+			generated by Univisit. If you require assistance, please contact us by 
+			email at <a 
+			href="mailto:custsrvc@univisit.com">custsrvc@univisit.com</a> or by 
+			phone at <strong>1-800-485-4959</strong>.]]>
+		</EmailFooter>
+		<ImagesSystem>~/ImagesSystem/</ImagesSystem>
+		<SecureCertificationScript>
+			<![CDATA[<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript" SRC="//smarticon.geotrust.com/si.js"></SCRIPT>]]>
+		</SecureCertificationScript>
+		<PortalTrackingCodeNonSecure>
+		<![CDATA[
+			<script type="text/javascript">
+			var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+			document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+			</script>
+			<script type="text/javascript">
+			var pageTracker = _gat._getTracker("UA-605324-3");
+			pageTracker._initData();
+			pageTracker._trackPageview();
+			</script>
+		]]>
+		</PortalTrackingCodeNonSecure>
+		<PortalTrackingCodeSecure></PortalTrackingCodeSecure>
+		<RedirectionFile>~/Partners/univisitLaPaz/</RedirectionFile>
+		<DomainName>UniVisitLaPaz.com</DomainName>
+		<DefaultActivitiesCityName></DefaultActivitiesCityName>
+		<DefaultActivitiesCityRefPoint></DefaultActivitiesCityRefPoint>
+		<DefaultActivitiesCityIATA></DefaultActivitiesCityIATA>
+		<EmailReservas>custsrvc@univisit.com</EmailReservas>
+	</PortalPartner>
+</PortalPartners>

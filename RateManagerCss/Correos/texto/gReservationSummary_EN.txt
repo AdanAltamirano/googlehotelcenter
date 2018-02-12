@@ -1,0 +1,33 @@
+UniVisit.com                       
+---------------------------------------------------------------------------
+Summary
+
+[UNIVISITPORTAL]
+Hotel Reserved.
+---------------------------------------------------------------------------
+
+Reservation ID:[ID_RESERVACION]
+
+[HOTEL_NOMBRE]
+[HOTEL_DIRECCION]
+[HOTEL_CIUDAD],[HOTEL_PAIS]
+
+Check-In Date : [CHECKIN]
+Check-Out Date: [CHECKOUT]
+
+Rooms and Guest:
+	[ADULTOS]  Adult(s) , [NINIOS] Children
+	[HABITACIONES]  Rooms, [NOCHES]  nights 
+
+Total of reservation :  [TOTAL] [MONEDA]
+
+Main Contact:    [CONTACTO]
+E-Mail Address:  [EMAIL_CONTACTO]
+Home Phone:  [TEL_CASA]
+Work Phone:  [TEL_TRABAJO]
+
+-----------------------------------------------------------------------------
+This email was created automaticamente by UniVisit.com, does not 
+require answer of this email.
+
+if you need technical support, contact support@univisit.com

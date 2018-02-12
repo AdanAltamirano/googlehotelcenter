@@ -1,0 +1,20 @@
+<div class="insiderightside">
+ 
+				<p>Adem&aacute;s de las pol&iacute;ticas de cada hotel y proveedor de viaje, {SiteName} tiene las  siguientes pol&iacute;ticas de reservaci&oacute;n:</p>
+	            <p><strong>Precio y Pago</strong></p>
+	            <p>Todos los hoteles y proveedores de viaje disponibles a  trav&eacute;s de {SiteName}  tienen el control total sobre sus precios. El hotel y el proveedor de viajes  son responsables de todos los reembolsos o cr&eacute;ditos que surjan. De ser  necesario {SiteName}  lo asistir&aacute; en este proceso.</p>
+	            <p><strong>Cancelaciones </strong></p>
+	            <p>Si usted necesita cancelar su reservaci&oacute;n de Hotel, Auto,  Vuelo o Actividad, haga clic en el icono de <strong>&quot;Mis Viajes&quot;</strong>&nbsp; en la parte superior de la p&aacute;gina de {SiteName}. Elija la  reservaci&oacute;n que necesita cancelar. Todos los cambios y cancelaciones ser&aacute;n  conforme a las pol&iacute;ticas del proveedor de servicios. Por ejemplo, un Hotel  puede tener como penalizaci&oacute;n el cobro de una noche de estancia si la  reservaci&oacute;n no se cancela en determinado tiempo. Aseg&uacute;rese de leer las  pol&iacute;ticas de cancelaci&oacute;n de proveedor de servicios antes de realizar la cancelaci&oacute;n  o cambio de su reservaci&oacute;n.</p>
+	            <p><strong>Privacidad de su Informaci&oacute;n </strong></p>
+	            <p>En {SiteName}, su privacidad es prioridad. Por esta raz&oacute;n hemos tomado  importantes medidas de seguridad para cerciorarnos de que su informaci&oacute;n se  encuentre segura y con ello tener su confianza. Su Informaci&oacute;n Personal de  Identificaci&oacute;n (eje. Nombre, direcci&oacute;n, tel&eacute;fono, etc.) S&oacute;lo ser&aacute; recolectada  con su permiso. No vendemos o rentamos su informaci&oacute;n a terceros.</p>
+	            <p>Si tiene cualquier tipo de problema con la reservaci&oacute;n, por  favor llame inmediatamente al Centro de Servicio a Clientes de {SiteName}.</p>
+	            <p>Por  Tel&eacute;fono:</p>
+	            <p><strong>De los Estados Unidos y Canad&aacute;</strong>:  1-800-485-4959<br />
+                    <strong>De M&eacute;xico:</strong> 01-800-590-4887<br />
+                    <strong>De otros pa&iacute;ses</strong>:  1-559-431-7300</p>
+	            <p>Por  Correo Electr&oacute;nico:</p>
+	            <p><strong>Correo:</strong> <a href="mailto:clientes@{DomainName}">clientes@{DomainName}</a></p>
+	            <p><strong>Horario del centro de atenci&oacute;n telef&oacute;nica:</strong></p>
+	            <p><strong>Estados Unidos:</strong> de 8:00 AM a 5:00 PM hora del Pac&iacute;fico, de  lunes a s&aacute;bado.<br />
+                  <strong>M&eacute;xico:</strong> 8:00 AM a 9:00 PM hora de la  Monta&ntilde;a, de lunes a s&aacute;bado. </p>
+</div>     

@@ -1,0 +1,1429 @@
+1.	En el detalle de reservación se agregó que se mostrara el rateplan
+	Fecha: Lunes 30 de Octubre 2006
+	Archivo: ReservationDetails.aspx
+	Ruta:{RateManager}/HotelAdministrator/Pages/ReservationDetails.aspx
+	
+2.	Se agregaron opciones para filtrar en el reporte de reservaciones por canal de distribución
+	(reservaciones canceladas, activas, por fecha de reservación, por fecha de checkIn)
+	Fecha: Lunes 30 de Octubre 2006
+	Archivo: ReservationsReport.aspx
+	Ruta:{RateManager}/HotelAdministrator/Pages/ReservationsReport.aspx
+	
+	
+3.	Se creó el reporte de logs, las páginas que implican algún tipo de cambio de los datos (ya sea
+	eliminación, modificación ó crear algo nuevo) mandan llamar una función para guardar en el log,
+	el log es diario con el nombre de DDMMYYYY, guardado en la carpeta Logs.
+	Fecha: Lunes 30 de Octubre 2006
+	Archivo: LogReport.aspx
+	Ruta:{RateManager}/Portal/Pages/LogReport.aspx
+	
+4.	Se agregó a la página de la información general del hotel las políticas de cancelación por días
+	antes del checkin, por horas antes del checkin y por hora específica, así como por default 1 día de 
+	estancia mínima si este campo viene en null.
+	Fecha: Martes 31 de Octubre 2006
+	Archivo: Hotel.aspx
+	Ruta:{RateManager}/HotelAdministrator/PagesGeneral/Hotel.aspx
+ 
+5.	Se puso por default que el rateplan esté disponible para gds, esto se da cuando no tiene definido en  
+	donde aplicará la tarifa
+	Fecha: Martes 31 de Octubre 2006
+	Archivo: ctrRatePlan.ascx
+	Ruta:{RateManager}/Modulos/ctrRatePlan.ascx
+
+6.	Se agregó la página de tarjetas de crédito que acepta el hotel
+	Fecha: Martes 31 de Octubre 2006
+	Archivo: TarjetasHotel.aspx
+	Ruta:{RateManager}/HotelAdministrator/Pages/TarjetasHotel.aspx
+	
+7.	Se agregó que el reporte se mostrara vertical u horizontalmente
+	Fecha: Martes 31 de Octubre 2006
+	Archivo: RateChart.aspx
+	Ruta:{RateManager}/Pages/RateChart.aspx
+
+8.	Se corrigió un error que ocurria cuando el hotel no tiene habitaciones.
+	Fecha: Miercoles 01 de Noviembre 2006
+	Archivo: FaresCatalogue.aspx
+	Ruta:{RateManager}/Pages/FaresCatalogue.aspx
+
+9.	Se está mejorando el diseño y los recursos.Uniformidad a los datagrids
+	Fecha: Miercoles 01 de Noviembre 2006/el sábado 04 Noviembre
+	Archivos: páginas del ratemanager.
+	
+10.	Se agregó que se guarde el bloqueo siempre que esté activo un textbox aunque el valor no
+	se haya modificado, esto es por que si no hay valor en la tabla del bloqueo de la habitación
+	por rate plan la disponibilidad la toma del inventario habitaciones  y cuando dan guardar el
+	usuario puede suponer que guardó ese dato como bloqueo.
+	Fecha: Jueves 02 de Noviembre 2006
+	Archivo: SegmentsRoomsAvailability.aspx
+	Ruta:{RateManager}/Pages/SegmentsRoomsAvailability.aspx
+	
+
+11. Se agregó el envio de correo al hacer la reserva por callcenter 	
+	Fecha: Lunes 06 de Noviembre 2006
+	Archivo: Polities.aspx
+	Ruta:{RateManager}/CallCenter/Polities.aspx
+	
+12. Se modificó un error en el reporte de tarifas no definidas, se repetían las fechas en el reporte.
+	Fecha: Martes 07 de Noviembre 2006
+	Archivo: SegmentRoomsAvailability.aspx
+	Ruta:{RateManager}/Pages/SegmentRoomsAvailability.aspx
+	
+13. Se modificó la pagina de tarifas, había error cuando guardabas y no tenias activo un cuarto.
+	Fecha: Miercoles 08 de Noviembre 2006
+	Archivo: FaresCatalogue.aspx
+	Ruta:{RateManager}/Pages/FaresCatalogue.aspx
+
+14. Se agregó que mostrara en las políticas la política de cancelación con su correspondiente
+	formato (por día, hora u hora específica). Se destacan los campos que son requeridos para
+	hacer el book-it
+	Fecha: Miercoles 08 de Noviembre 2006
+	Archivo: Polities.aspx
+	Ruta:{RateManager}/Callcenter/Polities.aspx
+	
+	
+15. Se agregó que mostrara cuando no hay disponibilidad para una habitación la razón por la cual no la hay.
+	Fecha: Miercoles 08 de Noviembre 2006
+	Archivo: Booking.aspx
+	Ruta:{RateManager}/Callcenter/Booking.aspx
+	
+16. Se cambiaron los linkbuttons de cambiar idioma para que no hagan postback por hyperlink.
+	Fecha: Jueves 09 de Noviembre 2006
+	Archivo: CtrlHeader.ascx
+	Ruta:{RateManager}/Portal/Modules/CtrlHeader.ascx
+
+17. Se agregó el campo usar reglas default que aplica de la siguiente manera: si la tarifa permite
+	usar las reglas default y no define un dato(maxdias, mindias,advbooking) ese valor se tomará de
+	la regla del rate plan. De lo contrario la tarifa no tiene política definida. --Aplicado a los reportes
+	Fecha: Jueves 09 de Noviembre 2006
+	Archivo: CtrRateAplication.ascx
+	Ruta:{RateManager}/Modulos/CtrRateAplication.ascx
+
+18. Se agregó en el book-it peticion especial de la habitación.
+	Fecha: Jueves 09 de Noviembre 2006
+	Archivo: Polities.aspx
+	Ruta:{RateManager}/Callcenter/Polities.aspx
+
+19. Se modificaron las páginas para mostrar cuando todas las habitaciones han sido vendidas.
+	Fecha: Martes 14 de Noviembre 2006
+	Archivo: RateChart.aspx, availabilityrestrictions.aspx
+	
+20. Se modificó por que no se habilitaba el botón de eliminar la habitación.
+	Fecha: Miercoles 22 de Noviembre 2006
+	Archivo: Room.aspx
+	Ruta:{RateManager}/Pages/Rooms.aspx
+	
+21. Se cambió la página de habitaciones se eliminó que se autogenerara del codigo de habitación. 
+	ahora solo puede haber una por cada tipo de habitación por hotel.
+	Fecha: Miercoles 22 de Noviembre 2006
+	Archivo: Room.aspx
+	Ruta:{RateManager}/Pages/Rooms.aspx
+
+22.	Se agregó que solo Iv puede cancelar una reservación, el hotel no puede.
+    Fecha: Miercoles 22 de Noviembre 2006
+    Archivo: ReservationDetails.aspx
+	Ruta:{RateManager}/HotelAdministrator/Pages
+
+23.	Se Modificó la página de room types para hacerla más facil.
+    Fecha: Sabado 25 de Noviembre 2006
+    Archivo: ReservationDetails.aspx
+	Ruta:{RateManager}/HotelAdministrator/Pages
+
+24. Se modificaron algunas páginas para que la opción de eliminar esté dentro de los datagrid y que 
+	el usuario no tenga que primero editar y luego eliminar.	
+	Archivo: Rooms,Farescatalogue
+	Ruta:{RateManager}/Pages/
+	
+25. Se modificaron los scripts para que funcionaran en firefox.
+	Fecha: Sabado 26 Noviembre 2006.
+	Archivos: Varios
+
+26. Se modifico la función que muestra los status del hotel para que cuando un rateplan no tiene definido la cantidad de cuartos que se puede vender no se 
+    muestre que está todo vendido.
+	Fecha: Jueves 30 Noviembre 2006.
+	Archivo: availabilityrestrictions.aspx
+	Ruta:{RateManager}/Pages/
+
+27.	Se agregó un control que muestra un mensaje de confirmación para cuando se quiera eliminar algo
+	Fecha: Martes 19 Diciembre 2006.
+	Archivos: ctlMensajes.ascx,
+	Ruta:{RateManager}/Modulos/
+	Archivos: Utils_Iframe.js,ucBase.vb
+
+28. Se agregó el control de confirmación de eliminación a las páginas que tienen esta opción.
+	Fecha: Martes 19 Diciembre 2006.
+	Archivos: RatePlansLinks.aspx,RatePlansRules.aspx,RatesPlans.aspx,RoomsLinks.aspx,Users.aspx,RoomType.aspx
+
+29. Se agregó un link de editar en los datagrid para darle uniformidad al proyecto.
+	Fecha: Jueves 21 Diciembre 2006
+	Archivos: RoomsLinks.aspx,RatePlansRules.aspx,RatesPlans.aspx,RatePlansLinks.aspx
+	Ruta:{RateManager}/Pages/
+	
+30. Se cambió el funcionamiento del control de confirmación de eliminación para que el show y el cancel se hicera con
+	javascript.
+	Fecha: Martes 26 Diciembre 2006
+	Archivos:RatePlansLinks.aspx,RatePlansRules.aspx,RatesPlans.aspx,RoomsLinks.aspx,Users.aspx
+	Ruta:{RateManager}/Pages/
+	
+	Archivo: RoomType.aspx
+	Ruta:{RateManager}/HotelAdministrator/PagesGeneral/
+	
+	Archivos: ctlMensajes.ascx
+	Ruta:{RateManager}/Modulos/
+	
+31. Se activaron los links que se pueden ver dependiendo del perfil del usuario logueado.
+	Fecha: Miercoles 27 Diciembre 2006
+	Archivo: Home.aspx
+	Ruta:{RateManager}/Portal/Pages
+	
+32. Se modificó la manera agregar la imagen de las habitaciones ya que marcaban error con el SP2
+	Fecha: Miercoles 27 Diciembre 2006
+	Archivo: ctrlRooms.ascx
+	Ruta:{RateManager}/Modulos/
+	
+	Archivo: rooms.aspx
+	Ruta:{RateManager}/Pages/
+
+33. Se modificó la manera de cambiar el logo ya que marcaban error con el SP2
+	Fecha: Jueves 28 Diciembre 2006
+	Archivo: ChangeLogo.aspx
+	Ruta:{RateManager}/Registro
+	
+34. Se modificó para que el envio de correos se haga con el idioma que se especificó en la información general del hotel.
+	Fecha: Martes 02 Enero 2007
+	Archivo: Polities.aspx
+	Ruta:{RateManager}/CallCenter
+	
+	Archivo: ReservationDetails.aspx
+	Ruta: {RateManager}/HotelAdministrator/Pages
+	
+35. Se agregó en la lista de despliegue de tarifas la tarifa máxima y mínima
+	Archivo: FaresCatalogue.aspx
+	Ruta: {RateManager}/Pages
+	Fecha: Miercoles 24 enero
+	
+36. Se agregó el módulo de copiar tarifas de un rateplan dado
+	Archivo: FaresCopy.aspx
+	Ruta: {RateManager}/Pages
+	Fecha: Miercoles 24 enero
+	Procedimientos : spTarifasGetByIdRatePlan, spTarifasCopy
+
+37. Se quitó location path="HotelAdministrator/PagesGeneral/Hotel.aspx" del webconfig tenia derecho para usuario hotel
+	Archivo: WebConfig
+	Ruta: {RateManager}
+	Fecha: Miercoles 24 enero
+
+	
+38. Procedimientos Modificados por que les faltaba SET DATEFIRST 1 (que tomara como el lunes el primer dia de la semana)
+	spGetLocksAndAvailByRP 
+	spHotelGetAvaibyRoomAndRatePlan
+	spHotelGetStatusAvailability
+	spLockGralGetByDays
+	spLockRatePlanGetByDates
+	spTarifasGetByDates
+	Fecha: Viernes 26 enero
+
+39. Version 9.0 Beta
+	Fecha: 30 Eneror 2007
+	
+40. Version 1.0 Release.
+	Fecha 6 Febrero 2007
+
+Version 1.1. 	
+1. Se agregaron a las paginas	el nombre del rateplan y el nombre de las habitaciones
+    cada vez que se mostraba el codigo de habitacion y el codigo del rateplan.
+	sp_BookingGetBySegment
+	spLinkedRatePlansGetList
+	spTarifasGetByIdRatePlan
+	
+2. Se creó una interfaz para configurar los datos requeridos por unipantalla.
+	Fecha 24 Marzo 2007
+	se agregaron los campos a la tabla hoteles: 
+		emailComments, urlWebSite,idDiccUrlWebSite,idDiccemailComments  
+	se crearon los procedimientos:
+		spOnePageConfigurationGet
+		spOnePageConfigurationUpdate
+
+3. Se modificó el agregado del punto 1 de esta versión, los nombres se han puesto en los combos y no
+	en una etiqueta por javascript como estaba.
+	Fecha: 26 Marzo 2007
+	Procedimientos modificados:
+		spLinkedRatePlansGetList
+		spLinkedRoomGetList
+		
+Version 1.1.2
+1. Se Modifico los calendarios y donde se se muestran los dias de la semana en checkbox, para que todos desplieguen en domingo
+   fecha: 25 ABRIL 2007
+   Hotel.aspx
+    /RateManager/Modulos/ctrlPlanFares.ascx
+    /RateManager/Modulos/CtrlPlanFaresExc.ascx
+    /RateManager/Pages/AvailabilityRestrictions.aspx
+    /RateManager/Pages/FaresCatalogue.aspx
+    /RateManager/Pages/RatePlanInventory.aspx
+    /RateManager/Pages/RatePlansRules.aspx
+      
+   
+2. Se Modifico el reporte de status de disponibilidad ya que cuando se mostraba la disponibilidad y haia una restriccion en applyweek no mostraba los dias si no toda la reservacion.
+    fecha: 25 ABRIL 2007	
+    clsGetavail.vb
+	
+3. Se dio derechos para que los usuarios avanzados puedan dar de alta, modificar, crear plane y reglas
+   fecha: 25 ABRIL 2007	
+   /RateManager/Portal/Modules/Menu_en.xml
+   /RateManager/Portal/Modules/Menu_es.xml
+   
+4. Se cambio en el grid del Room Fares que se mostrara los nombres de los RatePlans.
+	fecha: 25 ABRIL 2007	
+	spTarifasGetByRoomTypeId
+	/RateManager/Pages/FaresCatalogue.aspx
+
+Version 1.1.2.2
+1. se modifico e header de los calendarios ya que mostraba martes en vez del lunes.
+fecha: 3 Mayo 2007	
+	http://localhost/RateManager/Pages/AvailabilityRestrictions.aspx	
+
+Version 1.1.2.3
+fecha: 5 MAYO 2007
+1. se modifico en la conciliacion ya que en los hoteles del header manda los datos del hotel mal en el detalle	
+2. se modifico para que al dar de alta hoteles cuando se crea su segmento no diga rac principal y el nombre del plan diga Standard Rate
+
+Version 1.1..4
+3.	Se modificó la interfaz de Aeropuertos cercanos, de tal forma que se puedan agregar aeropuertos que no estén en la ciudad
+	donde se encuentra el hotel.
+	Archivo: NearAirports.aspx
+	Ruta: {RateManager}/HotelAdministrator/Pages
+	Fecha: Sabado 26 Mayo 2007
+	Procedimientos:	spAirport_CompanyGetListByIdCompany
+					spaeropuertoSearchByName
+					spaeropuertoSearchbyIata
+										
+4.	Se creó la interfaz de Ciudades cercanas para poder relacionar más de una ciudad con el hotel.
+	Archivo: NearCities.aspx
+	Ruta: {RateManager}/HotelAdministrator/Pages
+	Fecha: Sabado 26 Mayo 2007
+	Procedimientos:	Creacion de tabla empresas_ciudades ozunivisit
+					spCiudadesSearchByName
+					spNearCitiesGetByEmpresa
+					spNearCitiesDelete
+					spNearCitiesUpdate
+					
+Version 1.1.3
+1. se agrego en los XML de las tarjetas la tarjeta IK. que es una Master Card combinada con una validacion PriceLine
+Archivo: Tarjetas.xml
+Ruta: (ratemanager)/
+Fecha: martes 5 junio 2007
+
+2. Se le agregó en la búsqueda de reservaciones la opcion de filtrar la búsqueda por checkin, checkout y fecha reservacion.
+	Tarea: 162
+	Archivo: ctrlReservationsQuery.ascx
+	Ruta: {Ratemanager}/HotelAdministrator/Modules
+	Procedimiento: spReservations_GetByHotel
+
+3. Se corrigió el nombre de la habitación para que al seleccionar el tipo de habitación se cargue en el campo “nombre” el nombre del tipo de habitacion seleccionada en la sección ingles y español en su idioma correspondiente
+	Defecto: 35
+	Archivo:{Ratemanager}/Modulos/ctrlRooms.ascx
+	Procedimiento: spRoomType_GetAll
+
+4. Se corrigió el guardado del log al dar de alta una tarifa por que se guardaba el id de la habitación(numerico) y no el nombre.
+	Defecto: 32
+	Archivo: ctrRateAplication.ascx
+	Ruta:{Ratemanager}/Modulos/
+
+5. Se  le agregó recurso de los dias de la semana mostrado en la sección de cerrar fechas y cambiar status.
+	Defecto:89
+	Archivo: AvailabilityRestrictions.aspx
+	Ruta: {Ratemanager}/Pages
+
+6. Se corrigió un error al momento de establecer las fechas tomadas del dropdowlist del mes, no se le sumaba 1 por lo que tronaba en la conversion cuando el mes era enero.
+	Archivo: HomePage.aspx
+	Ruta: {Ratemanager}/Pages
+
+7. Se le agregó recurso al encabezado del datagrid de los ratesplans
+	Defecto:89
+	Archivo: RatesPlans.aspx
+	Ruta: {Ratemanager}/Pages	
+
+8. Se le agregó la version del sistema en el header
+	Defecto: 45
+	Archivos: ctrlHeader.ascx, Version.xml
+	Ruta: { Ratemanager }/Portal/Modules
+
+9. Se le dio acceso al rol de Unibilling al sistema
+	Tarea: 144
+	Archivos: Search.aspx, Welcome.aspx, PaginaBase.vb
+	Ruta: { Ratemanager }/Portal/Pages
+	Menu y webconfig
+
+
+10. Se agregó la lectura de la sesión que se manda del proyecto de reports por querystring “lgid” para que no pida loguearse nuevamente al ver el detalle de la reservación.
+	Tarea: 162
+	Archivo: cSessionTracking.vb
+	Ruta: { Ratemanager }/ Security
+	PaginaBase.vb
+
+11.	Se agregó un script para que tome los datos de la sesión del hotel y actualize el div con ese contenido al cambiar el idioma.
+	Defecto: 113
+	Archivo: ctrlHeader
+	Ruta: {Ratemanager}/Portal/Modules
+
+12. Se corrigio el nombre de la Tarjeta Diners club
+	Defecto:105
+	Archivo: ReservationDetails.aspx
+	Ruta: {Ratemanager}/HotelAdministrator/Pages
+	Archivo: Tarjetas.vb
+	Ruta: { Ratemanager }/ Security
+
+
+13. Se modificó la variable que maneja la disponibilidad de habitaciones al encontrar que no hay disponibilidad en el caso de que haya un bloqueo por lockrateplanroom
+	Defecto: 103
+	Archivo: clsGetAvail.vb
+	Ruta: {Ratemanager}/HotelAdministrator
+
+14. Se agregó el roll de Contenido
+	Search.aspx, Welcome.aspx, , PaginaBase.vb
+	Ruta: { Ratemanager }/Portal/Pages
+	Menu y webconfig
+	Tarea:175
+
+15. Se modificó para que tuviera un link que te regresara al la pagina del logueo
+	Defecto 85
+	passwordReminder.aspx
+	Ruta: { Ratemanager }/ Security
+	
+16. En el ratemanager se agrego un email para envido a norma para que vea el pago de los hoteles para la recepcion del correo
+
+Version 1.1.4
+1.	Se validó que cuando el hotel no tiene habitaciones no truene. 
+	Pagina: SegmentRoomsAvailability.aspx
+	Fecha: 11 Julio 2007
+	Defecto:  114
+
+2.	Se agregó la pagina para bajar los manuales del crs
+	Pagina: Ayuda.aspx, ctrlHeader.ascx,menu
+	Fecha: 11 Julio 2007
+	Tarea: 207
+
+3.	Se agregó en el datagrid donde se muestran las tarifas si la tarifa aplica a portal, unipantalla o gds.
+	Pagina: FaresCatalogue.aspx
+	Procedimiento: spTarifasGetByRoomTypeId
+	Fecha: 12 Julio 2007
+	Tarea: 225
+
+4.	Se agregó más espacio en la seccion de Descripcion del catalogo de Habitaciones.
+	Archivo:  ctrlRooms.ascx
+	Fecha: 11 Julio 2007
+	Tarea: 219
+
+5.	En comisiones/ Imprimir facturas, se agregó el filtro para mostrar facturas activas, canceladas ó todas.
+	Archivo: PrintInvoice.aspx
+	Fecha: 13 Julio 2007
+	Tarea:228
+
+6.	Se modificó la manera de agregar y modificar tarifas, si solo es una fecha no hay necesidad de agregarla a la lista de fechas, toma por default las que están en el cuadro de texto inicio, fin.
+	Pagina: FaresCatalogue.aspx
+	Fecha: 12 Julio 2007
+	Tarea: 220
+
+7.	Se quitó la pantalla intermedia al agregar habitaciones que pregunta si deseas seguir dando de alta habitaciones ó agregarle tarifas
+	Rooms.aspx
+	Fecha: 12 Julio 2007
+	Tarea 222
+
+8.	Se agregó una pantalla para ver las facturas por periodo aunque ya hayan sido conciliadas
+	InvoiceByPeriod.aspx
+	Fecha: 14 Julio 2007
+	Tarea 224
+
+9.	Se desabilitó el botón de corregir factura cuando la fecha actual es mayor que la fecha limite para conciliar, se agregó un link para ir a la pagina de facturas por periodo, se muestran los detalles de la factura aunque esta haya sido generada
+	InvoiceToConciliateDetails.aspx
+	Fecha: 14 Julio 2007
+	Tarea 224
+
+10.	Se oculto la etiqueta de cargo de servicio por que no se aplica y crea confusion.
+	Hotel.aspx
+	Fecha: 16 Julio 2007
+	Defecto: 126
+
+11. Se agregó el parametro del idioma para mostrar el texto del nombre y descripción de habitaciones y ratesplans en el idioma correspondiente. 
+	Defecto: 138		
+	Archivos:	RoomLink.ascx				ctrlRooms.ascx				ctrRateAplication.ascx				SegmentRoomsAvailability.aspx				RoomsLinks.aspx				RatesPlans.aspx
+				RatePlansLinks.aspx			RatePlanInventory.aspx		RateChart.aspx						NoRatesReport.aspx							HomePage.aspx				FaresCatalogue.aspx
+				Portal.Hotel.Common.dll		Portal.Hotel.DataAccess.dll	Portal.Hotel.Facade.dll				Portal.Hotel.Rules.dll						ctrlReservationsQuery.ascx
+				AvailabilityRestrictions.aspx
+
+... mis documentos
+scripts idioma ratemanager.sql
+
+Version 1.1.5
+Programador: Adrian
+1. Se agrego los datos de soporte en el login
+	Archivos: 
+	
+2. Correccion cuando los hoteles no pueden imprimir sus facturas en el ratemanager.
+	Archivos:  HotelInvoiceDetails.aspx
+	Fecha: 13-Sep-2007
+	
+3. En la página de Registro de pagos, se establecio la moneda default MXN.
+	Archivos:  HotelInvoiceDetails.aspx
+	Fecha: 13-Sep-2007
+	
+4.	No se ha colocado el botón de Imprimir en la página DETALLES de reservación.
+	Archivos:  ReservationDetails.aspx
+	Fecha: 20-Nov-2007
+
+5.	La pagina de Listado de Reservaciones,  mostrara  “las reservaciones a llegar dentro del próximo mes”.
+	Fecha: 20-Nov-2007
+	Archivos: ReservationList.aspx
+	
+6.	Después de cancelar una reservación se cambia el idioma del frame inferior. Quedando el sistema mitad en ingles y mitad en español.
+	Fecha: 20-Nov-2007
+	Archivos: reservationdetails.aspx
+		
+7.	Los usuarios no deberían de ver la opción de Configurar Unipantalla que aparece en el menú de herramientas.
+	Fecha: 20-Nov-2007
+	Archivos: menu.xml
+	
+
+8.	El usuario con Perfil Avanzado NO puede crear Habitaciones, debería poder hacerlo.
+	Fecha: 20-Nov-2007
+	Archivos: menu.xml
+
+9.	Esta marcando Error en Conciliar facturas para algunos hoteles. Adrian dice que se perdieron estados de cuenta, iré enviando cada hotel que marque el error para corregirse manualmente
+
+10.	Es necesario colocar mensajes de confirmación cuando el hotel desea colocar el inventario en CERO para TODAS sus habitaciones “Al establecer CERO TODOS los tipos de habitaciones NO podrá recibir reservaciones, ¿Esta seguro que desea cerrar su disponibilidad? “
+
+11.	En la opción de Habitaciones por plan tarifario, no debería almacenarse CERO en todos los planes, por lo menos algún plan debe tener disponibilidad, ya que ha habido hoteles que por error han puesto CERO en todos los planes y se ha cerrado el hotel por completo,  porque no saben usar bien esta opción. Esta opción NO ES PARA CERRAR hotel
+
+12.	En la pantalla de tarifas debe ampliarse el numero de periodos que se visualizan, ahorita solo se muestran 5 por pantalla, creo que seria mejor se motrarán de 10 en 10, porque se crean muchas tarifas, aunque podría usarse una configuración de tarifas dinámica, que dependiendo la cantidad de registros se visualicen de 5 en 5 o 10 en 10
+
+13.	Cuando borro un plan quedan las tarifas huérfanas, seria bueno hacer borrado en cascada pero antes enviar un mensaje de confirmación, informando que tiene tarifas.  “ El plan que deseas eliminar tiene tarifas asociadas, ¿realmente deseas borrarlas?”
+
+14.	En la opción de Tarifas, al crear tarifas deberá confirmar cuando un hotel introduzca una tarifa para menos de 3 días,  algunos hoteles piensan que ya introdujeron su tarifa pero no cambian las fechas desde y hasta y la crean con vigencia 1 día.
+
+15.	En la sección de tarifas debe mostrar un mensaje según la configuración de tarifas “ INGRESE SUS TARIFAS EN PESOS Y SIN IMPUESTOS INCLUIDOS” O “ EN DOLARES CON IMPUESTOS” ; ya que todos los hoteles tienen configuración diferente y ellos no pueden saber cual es su configuración
+
+16.	Poner un link en Facturas pendientes de pagar para que vean el detalle de la facturación; es decir que los lleve hacia lo que conciliaron.
+
+17.	Incluir un botón de impresión en la pantalla de Conciliar facturas, para que el hotel obtenga el listado impreso de reservas que se le están cobrando y tenga oportunidad de transportarlo y conciliar en recepción.
+
+18.	Mostrar mensajes  de confirmación, de avisos cuando el hotel Esta cerrando por más de 15 días ya sea por estatus o en el inventario, ya que a veces por equivocación cierran muchas fechas y no se dan cuenta
+
+19.Interfaz para Administrar los paquetes.
+
+20. Reportes de disponibilidad mensual del hotel
+
+21. Alertas X Email cuando no hay disponibilidad cuando alguien busco disponibilidad en el hotel.
+
+22. Ciudades Cercanas para los hoteles.
+
+23. Buscar la manera de no permitir que se copio informacion de la reservcaion.
+
+Version 1.1.6
+1. Personalizacion de RateManager para grupos y cadenas.
+2. Mostrar los extras en el detalle de la reservacion.
+3. Correccion del los paquetes ya que no se guardaba al modificar los paquetes y algunas ocaciones tronaba.
+4. Campos de latitud y longitud en el hotel ...
+
+
+Version 1.1.7
+1. Actualizacion de los datos de soporte para ExpressTravels en el login del RateManager.
+2. Se agrego un Campo de Politicas de Cancelacion para las reglas de los Rates Plans.
+3. se pueda ver estatus(cerrado o abierto) del hotel del año pasado(Reporte Home Status).
+
+
+Version 1.1.8
+
+1.- Se agregaron las reservaciones pasivas que permite al hotelero sobrevender sus habitaciones.
+	Archivos:PassiveBooking.aspx,ModifyPassiveReservation.aspx,CtlReservaMsj.ascx,WSHotelCommon.dll
+	Programador:Maira
+	Fecha:10 Enero 08
+2.- Se agrego la leyenda que las tarifas que contengan decimales seran truncadas en pesos para los GDS(Galileo y Amadeus)
+   Archivos:  ctrlPackage.ascx, ctrRateAplication.ascx
+   Fecha : 17 enero 2008
+3.- Se corrigio el calculo de los totales y tarifas en el detalle de la reservación
+	Archivos:ReservationDetails.aspx
+	 Fecha : 17 enero 2008
+4.- Se agrego una etiqueta en los planes para que indique la moneda del precio
+	ctrlPackage.ascx
+	Fecha : 17 enero 2008
+5.- Se corrigio cuando cambia la ocupacion del paquete se perdian tarifas por ocupacion
+	ctrlPackage.ascx
+	Fecha : 17 enero 2008
+
+ .. Version 1.1.9 .. 
+ 1. Se Agrego el Idioma en los recursos de ingles para la pagina de ayuda.
+    Ayuda.aspx
+	Programador: Adrian
+	Fecha: 21 Enero 2008
+	
+ 2. Se Agrego que la imagen de paquetes para su pronta implementacion en los unipantallas y portales
+    CtrlPackage.ascx
+    programador: Adrian
+    Fecha: 21 enero 2008
+	
+ 3. Se Regenero el reporte de logs de no disponibilidad para las peticiones del departamento de produccion
+	LogHotelNoAvailable.aspx
+	programador: Adrian
+	Fecha: 22 Enero 2008
+	
+	
+Version 1.1.9
+1. Se agregó el filtro de canal de reservación en la consulta de las reservaciones
+	Archivo: ctrlReservationsQuery.ascx
+	Programador: Maira
+	Fecha: 15 Febrero 2008.
+	sp: spReservations_GetByHotel
+	
+2. Se cambió el nombre de reservacion pasiva  a reservaciones de recepción y front desk
+	Archivos: strings.en,strings.es
+	Programador: Maira
+	Fecha: 15 Febrero 2008.
+	
+3. Se agregó que las reservaciones de recepción se puedan cancelar
+	Archivo: ReservationDetails.aspx
+	Programador: maira
+	Fecha:	16 febrero 2008
+	
+4. Se agrego la ordenacion en la pagina de Conciliar reservaciones
+
+5. Se Agrego la exportacion a excel en el listado de reservaciones.
+	
+6. se agrego en el call center se puedan reservar 5 habitaciones.
+
+7. se puedan cancelar las reservaciones de unipantalla por el hotel.
+
+8. se agregaron news para las publicaciones de produccion
+
+Version 1.1.10
+1. Se agregó a la información general del hotel los campos referentes a Emprhotur y asociado a Amhm reservaciones
+	Archivos: Hotel.aspx, portal.hotel.common.dll, portal.hotel.dataaccess.dll, portal.hotel.facade.dll, portal.hotel.rules.dll
+	sp:	spHotelUpdate
+
+Version 1.1.11
+1. Se agregó a la información general del hotel un campo que indica si el hotel permite depósito bancario para realizar la reservación.
+	Archivos: Hotel.aspx, portal.hotel.common.dll, portal.hotel.dataaccess.dll, portal.hotel.facade.dll, portal.hotel.rules.dll
+	sp:	spHotelUpdate
+
+2. Se agregó una pagina para exportar reportes a exel.
+	Archivos: Reports.aspx, Report.xml
+	Programador: Rommel
+
+3. Se agregó una pagina para noticias.
+	Archivos: Noticas.aspx, Noticias_en.xml y Noticias_es.xml
+	Programador: Rommel
+
+Version 1.1.12
+1. Se Modifico la cancelación de la reservación, para que grabara en la tabla de reservaciones el motivo de la cancelación. 
+	Archivos: ReservationDetails.aspx, spReservationCancel, Reservaciones
+	Programador: Rommel
+	
+Version 1.1.13
+1. Se validó que cuando definan tarifas sea mayor que cero.
+	Archivos: FaresCatalogue.aspx,ctrlPlanFares.ascx,CtrlPlanFaresExc.ascx,strings.en.resx,strings.es.resx
+	
+Version 1.1.14
+1. Se cambió la información del customer por la información del viajero de la primera habitación.
+	Archivos:ReservationDetails.aspx
+	
+2. Se agregó el status en proceso de las reservaciones.
+	Archivos: ReservationDetails.aspx, Reservations.aspx
+	
+3. Se ocultó el campo de permite depósito bancario para los hoteles que no están en méxico.
+	Archivo: Hotel.aspx
+	
+4. se agregó el tipo de depósito en el rateplan para los hoteles que están en méxico.
+	Archivo: ctrRatePlan.ascx
+	
+5. Se limitó el home status para mostrarse por trimestre
+	Archivo: AvailabilityRestrictions.aspx
+
+6. Se agregaron los siguientes datos a la exportación de excel:
+	Guest Name,	Guest Address,	City,	State,	Zip	Phone,	Phone,	Reservation Number,	Arrival,	Room Type,	IATA
+
+	Archivos:spReservations_GetByHotel, ExportExcel.aspx
+	
+7. Se agregó a la página de confirmación de reservaciones los filtros de búsqueda como en el listado
+	Archivos: ctrlReservationsQuery.ascx,ConfirmReservas.aspx
+
+8. Se agrego modulo para confirmar depositos de reservaciones, se marcan con texto en rojo
+	las reservaciones a las cuales ya se vencio la fecha limite para depositar, asi mismo es posible cancelar
+	dichas reservaciones con fecha vencida.
+	-Se envia correo al cliente y al hotel al momento de confirmar
+	-Se implemento que el correo vaya con el formato usado en el portal donde se rservo, por lo que se tuvo que implementar
+	la estrucutura usada en el portal para la configuracion de los partners (asi que cada que se modifique en el portal
+	se debe modificar tambien aqui)
+	
+	Archivos:
+	HotelAdministrator\Modules\ctrlDeposits.ascx
+	HotelAdministrator\Modules\ctrlReservationsQueryDeposits.ascx
+	HotelAdministrator\Pages\Deposits.aspx
+	Portal\PortalPartners.xml
+	Portal\PortalPartners.xsd
+	Portal\PortalPartnersCfg.vb
+	Templates.xml (T14_RESERVATION,T15_ReservationToHotel)
+	correos\html\ReservationSummaryHotel_ES.txt
+	correos\html\ReservationToHotel_ES
+	
+	Programador:Jara
+	Fecha:13 Marzo 2008
+	
+Version 1.1.16
+	1. Se agregó a la página de  reservaciones no confirmadas los filtros de búsqueda como en el listado
+	Archivos: ctrlReservationsQuery.ascx,NoConfirmReservas.aspx
+	Programador: Maira
+	
+	2. Se agregó a la sección de creación de usuarios el permiso de confirmación de reservaciones.
+	Archivos:PaginaBase.vb,Welcome.aspx,Users.aspx,ConfirmReservas.aspx,ReservationDetails.aspx
+	
+	3. Se agregó recurso al bótón de guardar en las reservaciones de recepción.
+	Archivo:PassiveBooking.aspx
+	
+	4. Se agregó la posibilidad de cancelar reservaciones que tienen el estatus "en proceso"
+	Archivo: ReservationDetails.aspx
+	
+	5. Se agregó al home status el link de regresar 3 meses atras y el link de cargar se cambió a botón.
+	Archivo: AvailabilityRestrictions.aspx
+	
+	6. Se quitó del menú la opción de Configuración de comisión de agencias, por error se subió a producción y no 
+	es página válida.
+	Arhivo: Menu_en.xml,Menu_es.xml
+	
+Version 1.1.17
+	1. Se agregó un div que muestra el motivo por la cual fué cancelada en las reservaciones canceladas
+	Archivo:ReservationDetails.aspx
+	2. Se estableció que las reservaciones que pueden ser confirmadas son únicamente las del estatus reservado y se
+	quitó la opción de filtrar por estatus.
+	Archivos:ConfirmReservas.aspx, ctrlReservationsQuery.ascx
+	3. Se agergó a la sección de noticias en españól la opcion de descargar el manual de Ayuda para Conciliación y Pagos
+	Noticias_es.xml
+	4. Se agregó página para crear Tarifas de Agencias de Viajes.
+	Archivo: AgencyRates.aspx
+	5. Se agregó la opcion de seleccinar el Portal de Origen y poner como requerido el correo del cliente.
+	Archivo: Polities.aspx
+		
+Version 1.1.18
+	1. Se agregó el idpais perteneciente al hotel seleccionado en la sesión activa.
+	   Archivos: Welcome.aspx,Search.aspx
+	   Procedimientos: ozunivisit..spCompanySearchCompanys,ozhoteles..spHotelGetListByUserId,spHotelGetListByUsuarioHotel
+	   
+	2. Se agregó a la página de inicio en la sección de noticias el link para bajar el manual de ayuda
+	   de conciliación y pagos disponible únicamente cuando el hotel seleccionado está en méxico.
+	   Archivos: Welcome.aspx
+	   
+Version 1.1.19
+	1. Se agregó a la pagina de Welcome del Hotel link para confirmar reservación.
+	   Archivos: Welcome.aspx, ConfirmReservas.aspx.
+	   
+Version 1.2.0
+	1. Se modificaron las páginas que muestran listados de reservaciones para que en la sección del cliente muestren el de la primera habitación
+	al igual que en la página del detalle de la reservación
+	Archivos: ConfirmReservas.aspx, NoConfirmReservas.aspx, Reservations.aspx
+	
+	2. Se agregó al motivo de la cancelación el usuario que la ha cancelado.
+	Archivos: ReservationDetails.aspx, PaginaBase.vb
+	
+version 1.2.1
+	1. Se agregó el soporte para configurar por tarifa los datos del depósito bancario(tipo, a quien se hace el depósito e información gral)
+	Archivos:DepositRatesPlan.aspx
+	Programador: Maira
+
+version 1.2.2
+	
+	1. Se agrego la prioridad de cancelacion, por dias, horas, u hora especifica, dentro de las restricciones.
+	Archivos.  AvailabilityRestrictions.aspx, spLockGralInsert.sql, spLockGralUpdate.sql, spLockRatePlanInsert.sql, spLockRatePlanUpdate.sql,
+			   OZ iv SOlution - HaCommon - clsCommonAvailibilityGral.vb, OZ iv SOlution - HaCommon - lockRatePlanData.vb,  OZ iv SOlution - haDataAccess - ClsDataAccessAvailibilityGral.vb,OZ iv SOlution - haDataAccess - LockRatePlanAccess.vb
+	Programador: Rommel.			   
+	
+	2. Se agregó una libreria que realiza el envio de correos al cliente y al hotel.
+	Archivos:	Hotel/Emails/html/HotelReservationCancellation_EN.htm,
+								  HotelReservationCancellation_ES.htm,
+								  ReservationSummaryHotel_EN.htm,
+								  ReservationSummaryHotel_ES.htm,
+								  ReservationSummaryHotelUNI_CCT_EN.htm,
+								  ReservationSummaryHotelUNI_CCT_ES.htm,
+								  ReservationToHotel_EN.htm
+								  ReservationToHotel_ES.htm
+				Hotel/Emails/TemplatesHotels.xml
+				bin/Miscelaneos.dll
+				bin/es/Miscelaneos.resources.dll
+				bin/en/Miscelaneos.resources.dll
+				Politicas/es/HotelPolicies.txt
+				Politicas/en/HotelPolicies.txt
+	
+	2. Se agregó el envio del correo al cliente cuando es reservación de call center implementando la nueva clase de correos de la libreria miscelaneos
+	Archivos: callcenter/Polities.aspx
+				
+	
+	3. Se corrigió al reservar por call center el holder de la tarjeta, se estaba mandando el nombre del cliente en este campo.
+	Archivos: callcenter/Polities.aspx
+	
+	4. Se ocultaron los datos del depósito en la pantalla de rates plan.
+	Archivos: Modulos/ctrRatePlan.ascx
+	
+	
+	5. Se implementó en la página de pago de depósitos que si se loguea un usuario de hotel solo pueda ver aquellas reservaciones que Se hicieron por depósito y que el depósito
+	se hará al hotelero. Si se loguea Uv puede ver todas las reservaciones de depósito.
+	Archivos: HotelAdministrator/Pages/Deposits.aspx
+	
+	
+	6. Se le quitó la posibilidad de modificar la referencia del depósito.
+	Archivos: HotelAdministrator/MOdules/ ctrlDeposits.ascx
+	
+	7. Se implementó el envio de correo al confirmar el pago para el cliente y el hotelero.
+	Archivos: HotelAdministrator/MOdules/ ctrlDeposits.ascx
+	
+	Version 1.2.3
+	1. Se agregó que el depósito bancario de la información general sea visible en todos los hoteles.
+	Fecha: 12 Mayo 2008
+	Archivo:Hotel.aspx
+	
+	Version 1.2.4
+	1. Se agregó al listado de reservaciones por depósito que solo puedan verse las del hotel que está seleccionado.
+	Archivos: Deposits.aspx , sp: spReservationsByDeposit_GetByNoReservation
+	
+	Version 1.2.5
+	1. Se quitaron las reservaciones hechas por front-desk del listado del welcome para verificar
+	Archivos:spHotelGetRecordatorios
+	
+	2. se le dió acceso a la configuración de depósitos por plan tarifario al usuario de hotel medio.
+	Archivos: Portal/Modules/Menu_en.xml y Menu_es.xml
+	
+	3. Se quitó la posibilidad de modificar la tarifa desde la página de paquetes.
+	Archivos: Modulos/ctrlPackage.ascx
+	
+	4. Se agregaron a la lista de Tareas comunes el link para reservaciones de front desk y modificación de las mismas, así como una etiqueta que indica que son opciones nuevas.
+	Archivos: Portal/Pages/Welcome.aspx
+	
+	5. Se cambió la fecha "desde" la primera vez que se carga la página por la fecha actual + 1 día. (antes tenía la fecha actual + 1 año)
+	Archivos:Modulos/ctrRateAplication.ascx
+	
+	6. se Quitó la noticia de “Notificación de tarifas 2008” y colocó el nuevo manual de “Reservaciones garantizadas con depósito”. 
+	Archivos: Portal/Pages/Welcome.aspx
+	
+	7. Se cambió del menú de herramientas la opción de reservaciones por depósito al menu de reservaciones.
+	Archivos: Portal/Modules/Menu_en.xml y Menu_es.xml
+	
+	8. Se agregó a la página de ayuda el manual de conciliación y comisiones y el de promociones y paquetes(en español)
+		Archivos: Ayuda.aspx
+	
+	Version 1.2.6
+	
+	1.La referencia no puede ser modificada, se le dió la opción de seleccionar la moneda en que fue hecho el depósito 
+	Archivos:	spReservationsByDeposit_Update, spReservationsByDeposit_GetInfoByNoReservation
+				ctrlDeposits.ascx
+	Fecha: Lunes 14 Julio 2008
+	
+	
+	2.Verificación de reservaciones, cuando buscaba X número de reservación el nombre del cliente que salia era el del customer.
+	ARchivos: spReservations_GetByHotel
+	Fecha: Lunes 14 Julio 2008
+	
+	
+	3.Se agregó el source ADS al catálogo de planes tarifarios.
+	Archivos:Portal.Hotel.Common.dll, Portal.Hotel.DataAccess.dll, Portal.Hotel.Facade.dll,Portal.Hotel.Rules.dll,ctrRatePlan.ascx,
+			spInsertRatePlan,spRatePlanUpdate, tabla ratesplan, spRatePlanGetData,spTarifasGetByRoomTypeId
+
+	Fecha: Lunes 14 Julio 2008
+	
+	4.Se agregaron las preguntas frecuentes en español.
+	Archivos: Documentacion/preguntasfrecuentes.htm
+			Pages/Welcome.aspx,styles.css,ctrlHeader.ascx
+	Fecha: Lunes 14 Julio 2008		
+			
+	5.Se agregó el filtro del status en proceso a la consulta de reservaciones, y se le cambió el nombre a las de wizcom que no tienen end transaction a "no confirmada"
+	Archivos: ctrlReservationsQuery.ascx,Reservations.aspx
+	Fecha: Lunes 14 Julio 2008
+	
+	6.SE agregó en el detalle de la reservacion de aquellas que fueron hechas por depósito bancario, el monto que el cliente depositó.
+	Archivos:ReservationDetails.aspx 
+	Fecha: Lunes 14 Julio 2008
+	
+	7.Se agregó la categoría especial a la información general de los hoteles.
+	ARchivos: HotelAdministrator/PagesGeneral/Hotel.aspx
+	Fecha: Lunes 14 Julio 2008
+	
+	8. Se le dió acceso a la opción de usuarios a los usuarios con roles HotelAvanzado y HotelCompany.
+	Archivos: Portal/Modules/Menu_en.xml,Menu_es.xml,Web.config
+	
+		
+	Version 1.2.7
+		
+	1. Se modifico la opción de usuarios (usuarios de hotel),  ahora a los usuarios de hotel se les pueden asignar uno o varios hoteles (Solo hoteles asiganados al usuario que lo esta dando de alta) y  configurar a que opciones tendrá perimo de acceder.
+	Archivos: Users.aspx,PaginaBase.vb,Welcome.aspx,Search.aspx,Web.config,
+			  Portal.Hotel.Facade.dll, Portal.Hotel.Rules.dll,Portal.Hotel.DataAccess.dll,Portal.Hotel.Common.dll
+	SP Nuvos: spUsuarioHotelGetByIdMainUser,spHoteles_UsuarioHotelGetByIdUser,spHoteles_UsuarioHotelDelete,spUsuarioHotelDelete,spHotelGetListByUserHotelID,spPermisoDeleteByUserID
+	SP Modif: spPermisosInsert,spUsuarioHotelInsert
+	
+	versión 1.2.8
+	1. Se agregó a la página de bienvenida el link para ir al sistema de información del hotel cuando el usuario logueado es supervisor.
+	Archivos: Web.config,Welcome.aspx
+	Fecha: 28 Agosto 2008
+	Programador: Maira Paz Cabrera
+	
+	2.- Se modifico la interfaz para agregar tarifas a Agencias, para permitir agregar tarifas a TourOperadores., permitiendo hacer busquedas por nombre de agencia.
+	Archivos: AgencyRates.aspx
+	Fecha: 6 Septiembre 2008
+	Programador: Rommel
+	
+	3.- Se le dio acceso a un nuevo rol de usuario (UserChain)
+	Archivos: PaginaBase.vb,cSecurity.vb,Web.config,Menu_en.xml,Menu_es.xml
+	Fecha : 12 Septiembre 2008
+	Programador: Francisco
+	
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Versión 1.2.9
+	Archivos:
+		Page/SegmentRoomsAvailability.aspx
+			- Se modifico la forma de mostrar la informacion de Habitaciones por Plan Tarifario:
+				* Se agrego un calendario, el cual se habilita para modificación del dia actual hasta el ultimo dia del mes.
+			- La información puede ser modificada: 
+				* Por un periodo (Fecha inicio - Fecha Final)
+				* Por dia, directamente en el calendario
+		Modulos/ctrRoomRatePlan.aspx
+			- Se agrego control de usuario ctrRoomRatePlan, muestra:																															
+				* Dia del mes																														
+				* Número de reservaciones, el toolTip de la etiqueta muestra la tarifa.
+				* Número de habitaciones dsponibles (En una etiqueta y un cuadro de texto, el toolTip de ambos se muestra la tarifa)	
+	Prodecimiento almacenado:
+		Nuevos:
+			- spInventarioHabitacion_PlanTarifario
+	Fecha:		 Octubre Ø8, 2ØØ8.
+	Programador: Norma 
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	
+	Se agregó la creación y edición de hoteles así como la asociación de hoteles, tareas que sólo soportaba el siteadmin.
+	
+	
+	Se Agregó el corporativo en los datos de configuración de hotel.
+	Archivos:Hotel.aspx
+	
+	TaskManager.Rules.dll
+	TaskManager.Facade.dll
+	TaskManager.DataAccess.dll
+	TaskManager.Common.dll
+	Portal.Hotel.Rules.dll
+	Portal.Hotel.Facade.dll
+	Portal.Hotel.DataAccess.dll
+	Portal.Hotel.Common.dll
+	Portal.General.Rules.dll
+	Portal.General.Facade.dll
+	Portal.General.Empresas.Facade.dll
+	Portal.General.Empresas.DataAccess.dll
+	Portal.General.Empresas.Common.dll
+	Portal.General.DataAccess.dll
+	Portal.General.Common.dll
+	Portal.Catalogos.Rules.dll
+	Anthem.dll
+	
+	UserAsociate.aspx
+	SearchCompany.aspx
+	CompanyRegister.aspx
+	ctrlSearchCompany.ascx
+	EmpresaModulo.ascx
+	Menu_en.xml
+	Menu_es.xml
+	Templates.xml
+	NewAcountUser_EN.htm,NewAcountUser_ES.htm,AsociateProfileHotel_EN.htm
+	
+	se agregó la información del ads en los paquetes y tarifas para agencias
+	ctrlAgencyRates.ascx,ctrlPackage.ascx
+	
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Versión 1.3.0
+	Archivos:
+		RateManager/HotelAdministrator/PagesGeneral/Hotel.aspx
+			- Se agrego multiIdioma a:
+				º Políticas de Cancelación Previa (txtCancelPolitiesReview)
+				º Políticas de Cancelación Detallada (txtCancelPolitiesFull)
+				º Políticas de Tarjeta de Crédito (txtCreditCardPolicies)
+				º Políticas de Garantía (txtGuarantyPolicies)
+				º Cargos Extras (txtExtraCharges)
+		RateManager/Modulos/ctrRatePlanRules.ascx
+			- Se agrego multiIdioma a:
+				º Políticas de Cancelación Previa (txtCancelPolitiesReview)
+				º Políticas de Cancelación Detallada (txtCancelPolitiesFull)
+		RateManager/Modulos/CtrlIdioma.ascx	
+			- Se agrego:
+				º Propiedad MaxLength
+				º Función Update (Es sobrecarga)				
+		RateManager/Bin
+			º Portal.Hotel.Common.ddl
+			º Portal.Hotel.DataAccess.ddl
+			º Portal.Hotel.Facade.ddl
+			º Portal.Hotel.Rules.ddl		
+	Prodecimiento almacenado:
+		Modificados:
+			- spRatePlanRulesUpdate
+			- spRatePlanRulesInsert			
+			- spHotelUpdate		
+	Tablas:
+		ozHoteles..ratesPlanRules
+			- Se agrego los campos:
+				º idDiccionarioPoliticaCancelacionReview	
+				º idDiccionarioPoliticaCancelacionFull	
+		ozHoteles..hoteles
+			- Se agrego los campos:
+				º idDiccExtraCargos
+				º idDiccPoliticaGarantia
+				º idDiccPoliticaCreditCard
+				º idDiccPoliticaCancelacionFull
+				º idDiccPoliticaCancelacionReview
+					
+	Fecha:		 Octubre 15, 2ØØ8.
+	Programador: Norma 
+	
+	2.- Se agrego un pagina que genera un script para mostrar las temporadas de un hotel.
+	Archivos: GeneratorScriptSeason.aspx,Web.config,Menu_en.xml,Menu_es.xml
+	Fecha : 22 Octubre 2008
+	Programador: Francisco	
+	
+	3. Se agregó en pagina de bienvenida aviso de Fecha de caducidad del Contrato del hotel, Estado de Cuenta y Facturas Activas Pendiente de Pago.
+	Archivos:
+		RateManager/Portal/Pages/Welcome.aspx
+			- Se agrego:
+				º Estado de Cuenta, muestra:					
+					Saldo
+					Tipo Saldo					
+				º Mensajes:
+					* Facturas Activas Pendiente de Pago.
+					* Fecha de caducidad del contrato.
+		RateManager/Bin
+			- Se actualizo:
+				º Portal.General.Empresas.Common.dll
+				º Portal.General.Empresas.DataAccess.dll
+				º Portal.General.Empresas.Facade.dll
+				º Portal.General.Empresas.Rules.dll
+		RateManager/strings.es.resx y strings.en.resx
+			- Se agregaron los recursos:
+				º ("00856") Estado de Cuenta / Account State
+				º ("00857") Total Facturado / Total Invoiced
+				º ("00858") Notas Crédito / Credit Notes
+				º ("00859") Saldo / Balance
+				º ("00860") Tipo Saldo / Type Balance
+				º ("00861") Total Pagos / Total Payments
+				º ("00862") Pagos verificados / Payments Verified
+				º ("00863") Pagos aplicados / Payments Applied
+				º ("00864") Pagos No aplicados / No payments applied
+				º ("00865") Hay facturas activas pendiente de pago / There are active pending invoices of payment		
+				º ("00866") No. Factura / Invoice Number
+				º ("00867") Fecha / Date
+				º ("00868") Total / Total
+				º ("00869") Saldo / Balance
+				º ("00870") El contrato caduca hoy / The contract expires today
+				º ("00871") El contrato esta caducado desde / The contract that expired since		
+				º ("00872") El contrato caducará en / The contract expires in
+		RateManager/StyleSheets/Styles.css
+			- Se agrego:
+				º DarkRedLabel
+
+	Prodecimiento almacenado modificado:
+		- OzUnivisit..spEmpresaInformacionByIdEmpresa
+	
+	Fecha:		 Octubre 25, 2ØØ8.
+	Programador: Norma 
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	
+4.- Se agrego la pagina HotelAsosiationCars, que permite asociar un cadena corporativo con unao varias franquicias de Autos.
+	Archivos:HotelAsosiationCars.aspx.aspx,Portal.SerahEngine.(commun,DataAcces,Facade).dll,Autorentas.(Commun,Facade,Reglas).dll
+	Programador:Polo
+	Fecha:30 Octubre 08	
+	
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	5. Se agregó en página Portal/Pages/Welcome.vb link al Cuestionario de Certificación de Hoteles 
+	y el logo a los hoteles que ya estan certificados.
+	Archivos:
+		RateManager/Portal/Pages/Welcome.aspx
+			- Se agrego:
+				º Link "4 Acciones para Incrementar mis reservaciones" envia al Cuestionario de Certificación de Hoteles.
+				º Logo de Certificado Profesional, se muestra solo a los hoteles que esten certificados.
+		RateManager/Pages
+			- Se agrego página Certificate.aspx, muestra el Certificado del Hotel.		
+		RateManager/strings.es.resx y strings.en.resx
+			º ("00875") 4 Acciones para Incrementar mis reservaciones./4 Actions to Increase my reservations.
+		RateManager/Bin
+			- Se actualizarón:
+				º Portal.Hotel.Common.ddl
+				º Portal.Hotel.DataAccess.ddl
+				º Portal.Hotel.Facade.ddl
+				º Portal.Hotel.Rules.ddl	
+		RateManager/Web.config	
+			- Se agrego: 
+				º rutaCuestionario
+		RateManager/Images
+			- Se agrego:
+				º logoCertificado.JPG
+				
+
+	Fecha:	     Octubre 30, 2ØØ8.
+	Programador: Norma 
+
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+	6.- Se agrego la pagina HotelAsosiationActivities, que permite asociar un cadena corporativo con unao varias Empresas de actividades.
+	Archivos:HotelAsosiationActivities.aspx.aspx,Portal.SerahEngine.(commun,DataAcces,Facade).dll,Autorentas.(Commun,Facade,Reglas).dll
+	Programador:Polo
+	Fecha:03 Noviembre 08	
+	
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	
+	7.- Se agrego el editor FCK de contenido.	     
+	     /EditorFCk                      Se Agrego Carpeta, que tiene los fuente del editor
+	     /Bin                            Se Agrego dll FredCk.FCKeditorV2.dll
+         /Portal/Modulo/Contenido
+	         Contenido.ascx              Modificado
+	         CambiarContenido.ascx       Modificado       
+	         CtrlIdiomaFCk.ascx          Agregado
+	         ContenidoFCk.ascx           Agregado
+	      /Pages
+		     DepositRatesPlan.aspx       Modificado
+		  /HotelAdministrator/UniFlat
+		     UniFlatConfiguration.aspx   Modificado
+		  /Modulos
+		     CtrlIdiomaRFCk.ascx         Agregado
+		     CtrlRooms.ascx              Modificado
+	Programador: Victor
+	Fecha: 03 Noviembre 08	
+	
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	
+	8. Se agrego en Menu dentro de Comisiones la opción de Facturas.
+		/HotelAdministrator
+			º Se agrego pagina Invoices.aspx, muestra:
+				Estados de Cuesta por Conciliar
+				Facturas Digitales
+				Facturas Manuales
+				Facturas Canceladas	
+				Archivo PDF y XML de la Factura	
+		/bin
+			º Se actualizaron las DLL:
+				Oz.UniBilling.Banking.Business.dll
+				Oz.UniBilling.Banking.DataAccess.dll
+				Oz.UniBilling.Common.dll
+				Oz.UniBilling.CryptoSysPKI.dll
+				Oz.UniBilling.DataSchemas.dll
+				Oz.UniBilling.DigitalInvoicing.Business.dll	
+				Oz.UniBilling.DigitalInvoicing.DataAccess.dll
+				Oz.UniBilling.Hotels.Business.dll
+				Oz.UniBilling.Hotels.DataAccess.dll	
+	
+	Programador: Norma
+	Fecha: Noviembre 22, 2ØØ8.
+	
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	
+	Versión 1.3.5
+	
+	1. Se agrego campo Orden y selección de GDS a Planes Tarifarios.
+		/Modulos/ctrRatePlan.ascx
+			º Se agrego checkBox para seleccionar GDS (Amadeus, Galileo, Sabre, WorldSpan)
+		/Pages/RatesPlans.aspx			
+			º Se agrego al dataGriw la columna de "Orden"
+		/bin
+			º Se actualizaron las DLL:
+				Portal.Hotel.Common.dll
+				Portal.Hotel.DataAccess.dll
+				Portal.Hotel.Facade.dll
+				Portal.Hotel.Rules.dll
+		Procedimientos Almacenados Modificados:	
+			spInsertRatePlan
+			spRatePlanGetData
+			spRatePlanUpdate
+			spRatePlan_Delete
+	
+	Programador: Norma
+	Fecha: Noviembre 29, 2ØØ8.
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	
+
+
+	2. Se implemento login passport. clase involucradas:
+		/portal/pages/search.aaspx.vb
+		/portal/pages/user.aspx.vb
+		/portal/pages/farescopy.aspx.vb, error en selectindex
+		/portal/modulos/opciones.vb		
+		/user/changepassword.aspx.vb
+		/hoteladministrator/modules/ctrlDeposit.ascx.vb
+		/hoteladministrator/invoicing/invoicetoConciliateDetails.aspx.vb
+		/hoteladministrator/pagesgeneral/hotel.aspx.vb
+		/hoteladministrator/pagesgeneral/hotelasociationcars.aspx.vb
+		/hoteladministrator/pagesgeneral/hotelasociationActivity.aspx.vb		
+		/modulos/ctrlIdioma.vb
+		/Documentacion/ayuda.aspx.vb
+		default.aspx
+		string.es.resx
+		string.en.resx
+		paginabase.vb
+		web.config
+		paginabasePss.vb  clase nueva
+
+		Modificacion para nuevas secciones de contenido
+   		/registro/TravelsInformatio.aspx
+		/registro/imagnes.aspx
+		/registro/EventsInformation.aspx
+		
+		Programador: Victor
+		Fecha: Diciembre 11, 2ØØ8.
+		
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	
+	3. Se agrego funcionalidad de ADS.  
+		/HotelAdministrator/PagesGeneral/Hotel.aspx
+			º Se agrego checkBox para disponibilidad de ADS.
+		
+		/Modulos/ctrPortal.ascx
+			º Se creo nuevo control de usuario con lista de portales disponibles.
+		
+		/Modulos/ctrlAgencyRates.ascx, ctrlPackage.ascx y ctrRatePlan.ascx
+			º Se agrego checkBox para disponibilidad de ADS y lista de portales disponibles
+		
+		/Modulos/AgencyRates.aspx, Package.aspx y RatesPlans.aspx
+			ºSe agrego linea para borrar lista de portales cuando se elimina el plan tarifario, 
+			paquete o tarifa para agencia.
+
+		/strings.es.resx y strings.en.resx
+			º Se agregaron recursos
+		
+		/bin
+			º Se actualizaron las DLL:
+				Portal.Hotel.Common.dll
+				Portal.Hotel.DataAccess.dll
+				Portal.Hotel.Facade.dll
+				Portal.Hotel.Rules.dll
+	
+		Procedimientos Almacenados Modificados:	
+			ozUnivisit..spAplicarPortal_ByidHotel
+			ozUnivisit..spAplicarPortal_Eliminar
+			ozUnivisit..spAplicarPortal_Insertar
+			ozUnivisit..spAplicarPortal_Modificar
+			ozHoteles..spHotelUpdate
+			ozHoteles..spAgenciasRates_Seleccionar_idHotel 
+			
+		Base de Datos:
+			º Se agrego el campo AvailOnADS a la tabla ozHoteles..hoteles
+			º Se agrego la tabla AplicacionPortal a ozUnivisit
+		
+			
+	Programador: Norma
+	Fecha: Diciembre 22, 2ØØ8.
+	
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	
+	
+	
+	Versión 2.0.2
+	{Ratemanager}/Data/Airlines.xml
+	{Ratemanager}/Modulos/ctrlPackage.ascx
+	{Ratemanager}/Modulos/CtrlPackageRubros.ascx
+	{Ratemanager}/Modulos/Packages.js
+	{Ratemanager}/Pages/Package.aspx
+	
+	
+	
+	
+	1. Se agregaron los campos de comisiones para agencias en la seccion de Planes Tarifarios.  
+		
+		/Modulos/ctrRatePlan.ascx
+			º Se Agregaron los campos para las comisiones de agencias para GDS, ADS, PORTAL Y UNIPANTALLA.
+		
+		Procedimientos Almacenados Modificados:	
+			ozHoteles..spInsertRatePlan
+			ozHoteles..spRatePlanUpdate
+			
+		Base de Datos:
+			º Se agregaron los campos ComGDS, ComPortal, ComADS, ComOnePage a la tabla ozHoteles..RatesPlan
+
+		Programador: Norma
+		Fecha: Febrero 25, 2ØØ9.
+	
+Versión 2.0.4
+					
+	1. Se modifico la seccion del planes tarifarios para que se pudieran dar de alta paquetes, asi como tambien la seccion
+	   de tarifas de habitacion para que pudieran tomar los paquetes dados de alta en la seccion de planes tarifarios.  
+		
+		/Pages/RatesPlans.aspx
+			Se modifico para que mostrara rateplan's con encabezado de paquetes
+		/Data/Segmentos.xml
+			Se agrego el Segmento con el encabezado "K" para paquetes
+		
+		Procedimientos Almacenados Modificados:	
+			ozHoteles..spRatePlanGetData					
+
+
+		º Se actualizaron las DLL:
+						Portal.General.Facade.dll
+						Portal.General.DataAccess.dll										
+
+		Programador: Rommel
+		Fecha: Marzo 3, 2ØØ9.		
+
+
+	1.	Se podrá cancelar las reservaciones por recepción por cual quien usuario que tenga acceso al detalle de la reservación.
+		El usuario cadena podrá cancelar las reservaciones hechas por sus portales.
+		
+		/HotelAdministrator/Pages/ReservationDetails.aspx
+			Se le dio permiso al user chain  de eliminar las reservaciones de sus portales
+		PaginaBasePss.vb
+			Se agrego la propiedad de IdCorporativoUserChain
+		
+		
+		Procedimientos Almacenados Modificados:	
+			ozHoteles..spGetDataReservations	
+			
+			
+		Programador: Francisco
+		Fecha: Marzo 5, 2009
+		
+Versión 2.0.5
+
+	1. Se agregó la restricción de precio mínimo y máximo a nivel de hotel por fechas.
+	Archivos: AvailabilityRestrictions.aspx
+	SQL: spLockGralUpdate,spLockGralInsert, tabla lockgral
+	Programador: Maira
+	Fecha: 06 Marzo 2009
+	
+	
+	2. Se restringió el desplegado de tarifas unicamente a aquellas que pertenecen a una fecha mayor o igual que la actual, 
+	se muestran todas cuando se activa su correspondiente checkbox.
+	Archivos:FaresCatalogue.aspx
+	SQL: spTarifasGetByRoomTypeId
+	Programador: Maira
+	Fecha: 06 Marzo 2009
+	
+	
+	3. Se modificó la página del detalle de la reservación ya que cuando era por recepción y estaba cancelada no se mostraba
+	la fuente.
+	Archivos: ReservationDetails.aspx
+	Programador: Maira
+	Fecha: 06 Marzo 2009
+	
+	4.Se modificó la página de Reporte de Reservaciones Verificadas., para que tome en cuenta las cancelaciones de reservaciones en la verificacion.
+	Archivos: ConfirmReservas.aspx
+	Procedimiento Almacenados: OzHoteles..spReservacionesGetConfirm
+							   OzHoteles..spReservations_GetByHotel
+	Programador: Rommel
+	Fecha: 23 Marzo 2009.
+		
+Versión 2.0.6
+	 
+	1. Se agregó control, que revisa si la reservacion de hotel pertenece a un itinerario de paquete.
+	Archivos: ctrLinckPackage.ascx
+	SQL: spCheckReservvationPackgages
+	Programador: Polo
+	Fecha: 01 Abril 2009
+	
+	1. Se modifico la pagina del detalle de reservaciones, para que lleve el control de ctrLinckPackage (descripto en el punto 1)
+	Archivos: ReservationDetails.aspx
+	Programador: Polo
+	Fecha: 01 Abril 2009
+	
+	3. Se agregó pagina, que mostrara la descripcion del paquete l cual pertenece la reservacion del hotel.
+	Archivos: DisplayCarReservation.aspx	
+	Programador: Polo
+	Fecha: 02 Abril 2009
+		
+	4. Se agregó un cuadro de dialogo, para mostrar las reglas y bloqueos del hotel en la seccion "status hotel".
+	   Se agrego el status "No disponible" en reglas y bloqueos, en la seccion "status hotel"
+	Archivos: AvailabilityRestrictions.aspx, LoadAvailabilityRestrictions.aspx
+	Procedimientos Almacenados: spGetRatePlanAvailability, spGetRatePlanAvailabilityRules, spGetHotelLockGralAvailability
+								spLockGralInsert, spLockGralUpdate
+	Tablas: LockRatePlans
+	Programador: Rommel
+	Fecha: 04 Mayo 2009			
+	
+	5. Se modifico para que en imagenes del banner se pueda agregar mas de una imagen.
+	Archivos: Portal/Modules/Contenido/ContenidoFCK.ascx.vb
+			  Portal/Modules/Contenido/Contenido.ascx
+			  Portal/Modules/Contenido/agregacontenido.ascx
+			  Portal/Modules/Contenido/ctrlImages.ascx
+	Programador: Victor
+	Fecha: 01 Junio 2009
+	
+	6. Se hizo que al guardar la imagen se optimizara ya que estaba guardandola en otro formato que no era jpge y no la optimizaba bien
+	Archivos /Modulos/ctrlPackage.ascx
+			 /Portal/Modules/Contenido/PhotoRooms.ascx
+			 /Modulos/ctrlRooms.ascx
+			 /Modulos/ctrlPackage.ascx
+	Programador: adrian ramirez
+	Fecha: 22 junio 2009
+	
+	Versión 3.0
+	Migración al fx 3.5
+	
+	
+	Versión 3.1 
+	1. Se modificó la página de Tarifas de Habitación ya que cuando mostraba el mensaje de error por guardar una temporada con un rango de fechas inválido y le dabas guardar se saltaba la validación y se guardaba la tarifa.
+	Programador: Maira Cabrera
+	Fecha: 20 septiembre 2010
+	Archivos: FaresCatalogue.aspx
+	
+	
+	
+	Deposito Bancario. Mostrar la reservas con deposito bancario pendiente
+	Programador: Victor Alvarado
+	Fecha: 20 Diciembre 2010
+	Archivos: 
+	\Portal\Pages\Welcome.aspx
+	\HotelAdministrator\Pages\Deposits.aspx.vb
+	
+	Vinculos de planes tarifario, Agregro la descripcion del vinculo destino .
+	Programador: Victor Alvarado
+	Fecha: 21 Diciembre 2010
+	Archivos: 
+	\Modulos\ctrRatePlanLink.ascx
+	\Pages\RatePlansLinks.aspx
+	
+	Manegar el idioma del portal para el contenido para planes tarifarios.
+	Programador: Victor Alvarado
+	Fecha: 22 Diciembre 2010
+	\Pages\RatePlanContentPortal.aspx
+	\Modulos\CtrRatePlanContain.ascx
+	\Modulos\CtrlIdiomaPortalFCK.ascx
+	
+	Ratemanager corregir motivo de cancelacion solo se guarda una parte.
+	Programador: Victor Alvarado
+	Fecha: 06 Enero 2011
+	Archivos: \HotelAdministrator\Pages\ReservationDetails.aspx
+	
+-------------------------------------------------------------------------------------------
+	Ratemanager agregar nombre del plan tarifario en detalle de reservaciones
+	Programador: Victor Alvarado
+	Fecha: 21 junio 2011
+	Archivos: \HotelAdministrator\Pages\ReservationDetails.aspx
+	
+	Ratemanager campo requerido porcentaje de venta en vinculos de planes tarifarios.
+	Programador: Victor Alvarado
+	Fecha: 21 junio 2011
+	Archivos: \HotelAdministrator\Pages\ReservationDetails.aspx
+	
+	Ratemanager corregir listas de pais, estado, ciudad en registro de empresas.
+	Programador: Victor Alvarado
+	Fecha: 24 junio 2011
+	Archivos: \HotelAdministrator\Pages\ReservationDetails.aspx
+	---------------------------------------------------------------------------------------
+	Ratemanager reactivacion de reservaciones canceladas (solo portales).
+	Programador: Victor Alvarado
+	Fecha: 06 Agosto 2011
+	Archivos: \HotelAdministrator\Pages\ReservationDetails.aspx
+	
+	Ratemanager segmentacion de portales.
+	Programador: Victor Alvarado
+	Fecha: 06 Agosto 2011	
+	---------------------------------------------------------------------------------------
+	Ratemanager confirmacion de reservaciones hechas por IDS.
+	Programador: Victor Alvarado
+	Fecha: 23 Agosto 2011
+	---------------------------------------------------------------------------------------
+
+	Correccion para que muestra la reglas de ocupacion por habitacion cuando sea cero
+	Programador: Victor Alvarado
+	Fecha: 25 Agosto 2011
+
+	Fecha correcta en convenios 
+	Se agrego el boton de cancelar cuando guarda convenios.
+	Programador: Victor Alvarado  
+	Fecha: 31 Agosto 2011
+	
+	Stutus hotel  “no arrivos” por plan tarifario
+	guardar log de convenios
+	Programador: Victor Alvarado
+	Fecha: 09 Septiembre 2011
+		
+	Mensaje en inventario por plan tarifario      
+	Prioridad en inventario por plan tarifario
+	Validar en porcentaje de venta el total de inventario 
+	Programador: Victor Alvarado
+	Fecha: 13 Septiembre 2011
+	

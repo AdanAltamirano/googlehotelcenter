@@ -1,0 +1,17 @@
+UniVisit.com
+-----------------------------------------------------------------------------
+Cambio de Email
+-----------------------------------------------------------------------------
+Se realizó un cambio de email de su cuenta en UniVisit.com, 
+le notificamos que el nuevo correo electrónico en el cual recibira nuestra
+información es: 
+
+Correo electrónico: [USEREMAIL]
+
+Su petición se ha completado Exitosamente. 
+
+-----------------------------------------------------------------------------
+Este correo a sido generado automaticamente por UniVisit.com, no se requiere 
+contestación de ningun tipo para este correo.
+
+Si require soporte técnico, puede hacerlo a través de soporte@univisit.com

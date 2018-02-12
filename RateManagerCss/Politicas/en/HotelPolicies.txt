@@ -1,0 +1,17 @@
+﻿<div>
+<br />
+<p>In addition  to the policies of each individual hotel and travel supplier, UniVisit has  the following reservation policies:</p>
+<p align="justify"><strong>Pricing and Payment </strong></p>
+<p>All hotels  and travel suppliers available through UniVisit have total control over pricing. The  hotel or travel supplier is responsible for all refunds or credits which may be  due. UniVisit  will assist in this process if necessary.</p>
+<p><strong>Cancellations</strong></p>
+<p>If you need  to cancel your Hotel, Car, Air or Activity reservation, click on the &ldquo;My Trips&rdquo;  icon at the top of the UniVisit page. Choose the reservation you need to cancel. All  changes and cancellations are subject to the policies of the travel provider.  For example, a Hotel may have a penalty of collecting one night's stay if the  reservation is not cancelled by a certain time. Be sure to read the travel  provider's policy before completing your change or cancellation.</p>
+<p>If you  encounter any problems with a reservation, please call UniVisit Customer Support  immediately.</p>
+<p>By Phone: </p>
+<p><strong>From the United  States and Canada:</strong> 1-800-485-4959<br />
+<strong>From Mexico:</strong> 01-800-590-4887<br />
+<strong>From Other Countries:</strong> 1-559-431-7300</p>
+<p>Email: <a href="mailto:custsrvc@univisit.com">custsrvc@univisit.com</a></p>
+<p>Call Center Hours of Operation:</p>
+<p><strong>US:</strong> 8:00 am  to 5:00 pm Pacific Time (Monday &ndash; Friday)<br />
+<strong>Mexico</strong>: 8:00 a.m. &ndash; 9:00 p.m. Mountain Time (Monday &ndash; Saturday)</p>
+</div>

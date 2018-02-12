@@ -1,0 +1,15 @@
+11:32:41: No hay ninguna fila en la posición 0.   en System.Data.RBTree`1.GetNodeByIndex(Int32 userIndex)
+   en System.Data.DataRowCollection.get_Item(Int32 index)
+   en RateManager.AgencyAsociate.LoadDataUser(String sEmail) en C:\Users\josenunez\Documents\Proyectos Univisit\RateManagerCss\RateManagerCss\RateManagerCss\Registro\AgencyAsociate.aspx.vb:línea 370
+   en RateManager.AgencyAsociate.dgUsuarios_ItemCommand(Object source, DataGridCommandEventArgs e) en C:\Users\josenunez\Documents\Proyectos Univisit\RateManagerCss\RateManagerCss\RateManagerCss\Registro\AgencyAsociate.aspx.vb:línea 490
+   en System.Web.UI.WebControls.DataGrid.OnItemCommand(DataGridCommandEventArgs e)
+   en System.Web.UI.WebControls.DataGrid.OnBubbleEvent(Object source, EventArgs e)
+   en System.Web.UI.Control.RaiseBubbleEvent(Object source, EventArgs args)
+   en System.Web.UI.WebControls.DataGridItem.OnBubbleEvent(Object source, EventArgs e)
+   en System.Web.UI.Control.RaiseBubbleEvent(Object source, EventArgs args)
+   en System.Web.UI.WebControls.LinkButton.OnCommand(CommandEventArgs e)
+   en System.Web.UI.WebControls.LinkButton.RaisePostBackEvent(String eventArgument)
+   en System.Web.UI.WebControls.LinkButton.System.Web.UI.IPostBackEventHandler.RaisePostBackEvent(String eventArgument)
+   en System.Web.UI.Page.RaisePostBackEvent(IPostBackEventHandler sourceControl, String eventArgument)
+   en System.Web.UI.Page.RaisePostBackEvent(NameValueCollection postData)
+   en System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)

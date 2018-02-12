@@ -1,0 +1,27 @@
+Reservation details  
+[UNIVISITPORTAL]
+
+Activity Reserved. [DEPOSITO] [MONEDA] have been charged to your credit card as a deposit. If your plans change, you must cancel or change your company activities reservation in advance in accordance with the UniVisit.com and [EMPRESA] cancellation policies to avoid a no-show charge. 
+
+Reservation ID: [ID_RESERVACION]  
+Main Contact : [CONTACTO]  
+E-mail : [EMAIL_CONTACTO]  
+Home Phone : [TEL_CASA]  
+Work Phone : [TEL_TRABAJO]  
+ 
+Activity summary 
+
+[ACTIVIDAD]
+[EVENTO] 
+
+Rental Valid for: [FECHA]
+
+[EMPRESA]
+[DIRECCION_EMPRESA] 
+
+[NO_VIAJEROS] Travelers : [PRECIO] [MONEDA] 
+SubTotal : [SUBTOTAL] [MONEDA] 
+Tax : [IMPUESTO] [MONEDA] 
+Total : [TOTAL] [MONEDA] 
+ 
+This email was created automatically by UniVisit.com, no answer for this email is required.

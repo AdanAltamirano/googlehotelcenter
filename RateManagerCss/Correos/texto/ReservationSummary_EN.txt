@@ -1,0 +1,39 @@
+UniVisit.com                       
+---------------------------------------------------------------------------
+Summary
+
+[UNIVISITPORTAL]
+Hotel Reserved. [DEPOSITO] [MONEDA] have been charged to your credit card 
+as a deposit. If your plans change, you must cancel or change your hotel 
+reservation in advance in accordance with the UniVisit.com 
+and [EMPRESA] cancellation policies to avoid a no-show charge. 
+---------------------------------------------------------------------------
+
+Reservation ID:[ID_RESERVACION]
+Main Contact:    [CONTACTO]
+E-Mail Address:  [EMAIL_CONTACTO]
+Home Phone:  [TEL_CASA]
+Work Phone:  [TEL_TRABAJO]
+
+[HOTEL_NOMBRE]
+[HOTEL_DIRECCION]
+[HOTEL_CIUDAD],[HOTEL_PAIS]
+
+Check-In Date : [CHECKIN]
+Check-Out Date: [CHECKOUT]
+
+Rooms and Guest:
+	[ADULTOS]  Adult(s) , [NINIOS] Children
+	[HABITACIONES]  Rooms, [NOCHES]  nights 
+
+Subtotal:				[SUBTOTAL]
+Tax:				[TAX]
+Total:				[GRANTOTAL]
+
+
+
+-----------------------------------------------------------------------------
+This email was created automaticamente by UniVisit.com, does not 
+require answer of this email.
+
+if you need technical support, contact support@univisit.com

@@ -1,0 +1,11 @@
+11:51:12: No se puede encontrar la tabla 0.   en System.Data.DataTableCollection.get_Item(Int32 index)
+   en Portal.Hotel.DataAccess.WaitListDataAccess.GetList(Int32 idHotel, DateTime initialDate, DateTime finalDate, Int32 dateType, Int32 status, String name, String reference, Int32 expiredTime, String hotelName)
+   en Portal.Hotel.DataAccess.WaitListDataAccess.GetList(Int32 idHotel, Int32 status, String name, String reference, Int32 expiredTime, String hotelName)
+   en ASP.hoteladministrator_pages_waitlistreport_aspx.GetData() en C:\Users\josenunez\Documents\Proyectos Univisit\RateManagerCss\RateManagerCss\RateManagerCss\HotelAdministrator\Pages\WaitListReport.aspx:línea 94
+   en ASP.hoteladministrator_pages_waitlistreport_aspx.RefreshData(Object sender, EventArgs e) en C:\Users\josenunez\Documents\Proyectos Univisit\RateManagerCss\RateManagerCss\RateManagerCss\HotelAdministrator\Pages\WaitListReport.aspx:línea 108
+   en System.Web.UI.WebControls.Button.OnClick(EventArgs e)
+   en System.Web.UI.WebControls.Button.RaisePostBackEvent(String eventArgument)
+   en System.Web.UI.WebControls.Button.System.Web.UI.IPostBackEventHandler.RaisePostBackEvent(String eventArgument)
+   en System.Web.UI.Page.RaisePostBackEvent(IPostBackEventHandler sourceControl, String eventArgument)
+   en System.Web.UI.Page.RaisePostBackEvent(NameValueCollection postData)
+   en System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)

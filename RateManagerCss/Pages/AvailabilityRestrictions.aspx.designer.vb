@@ -1,0 +1,807 @@
+'------------------------------------------------------------------------------
+' <generado automáticamente>
+'     Este código fue generado por una herramienta.
+'
+'     Los cambios en este archivo podrían causar un comportamiento incorrecto y se perderán si
+'     se vuelve a generar el código. 
+' </generado automáticamente>
+'------------------------------------------------------------------------------
+
+Option Strict On
+Option Explicit On
+
+
+Partial Public Class AvailabilityRestrictions
+
+    '''<summary>
+    '''Control imonth.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents imonth As Global.System.Web.UI.HtmlControls.HtmlInputHidden
+
+    '''<summary>
+    '''Control iyear.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents iyear As Global.System.Web.UI.HtmlControls.HtmlInputHidden
+
+    '''<summary>
+    '''Control lblTitle.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblTitle As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control lblShowAvail.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblShowAvail As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control divRdHotel.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents divRdHotel As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+    '''<summary>
+    '''Control RdHotel.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents RdHotel As Global.System.Web.UI.WebControls.RadioButton
+
+    '''<summary>
+    '''Control RdRatePlan.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents RdRatePlan As Global.System.Web.UI.WebControls.RadioButton
+
+    '''<summary>
+    '''Control divRdRatePlan.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents divRdRatePlan As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+    '''<summary>
+    '''Control DlRatePlan.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents DlRatePlan As Global.System.Web.UI.WebControls.DropDownList
+
+    '''<summary>
+    '''Control lblSegment.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblSegment As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control DlSegment.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents DlSegment As Global.System.Web.UI.WebControls.DropDownList
+
+    '''<summary>
+    '''Control lblStart.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblStart As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control ddlMonth.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents ddlMonth As Global.System.Web.UI.WebControls.DropDownList
+
+    '''<summary>
+    '''Control ddlyear.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents ddlyear As Global.System.Web.UI.WebControls.DropDownList
+
+    '''<summary>
+    '''Control btnLoad.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents btnLoad As Global.System.Web.UI.WebControls.Button
+
+    '''<summary>
+    '''Control lblOpen.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblOpen As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control lblClose.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblClose As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control lblNoArrivals.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblNoArrivals As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control lblAllSold.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblAllSold As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control lblnorates.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblnorates As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control tblMonth1.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents tblMonth1 As Global.System.Web.UI.HtmlControls.HtmlTable
+
+    '''<summary>
+    '''Control lblMonth1.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblMonth1 As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control tblMonth2.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents tblMonth2 As Global.System.Web.UI.HtmlControls.HtmlTable
+
+    '''<summary>
+    '''Control lblMonth2.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblMonth2 As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control tblMonth3.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents tblMonth3 As Global.System.Web.UI.HtmlControls.HtmlTable
+
+    '''<summary>
+    '''Control lblMonth3.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblMonth3 As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control hplPrevius.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents hplPrevius As Global.System.Web.UI.WebControls.HyperLink
+
+    '''<summary>
+    '''Control hplNext.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents hplNext As Global.System.Web.UI.WebControls.HyperLink
+
+    '''<summary>
+    '''Control lblErrorGeneral.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblErrorGeneral As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control hplHide.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents hplHide As Global.System.Web.UI.WebControls.HyperLink
+
+    '''<summary>
+    '''Control hplShow.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents hplShow As Global.System.Web.UI.WebControls.HyperLink
+
+    '''<summary>
+    '''Control divConf.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents divConf As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+    '''<summary>
+    '''Control RbdHotel.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents RbdHotel As Global.System.Web.UI.WebControls.RadioButton
+
+    '''<summary>
+    '''Control RbdRatePlan.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents RbdRatePlan As Global.System.Web.UI.WebControls.RadioButton
+
+    '''<summary>
+    '''Control lblFrom.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblFrom As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control txtInicio.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents txtInicio As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
+    '''Control lblTo.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblTo As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control txtFinal.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents txtFinal As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
+    '''Control lblError.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblError As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control chkMindays.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents chkMindays As Global.System.Web.UI.WebControls.CheckBox
+
+    '''<summary>
+    '''Control lblmindays.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblmindays As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control txtmindays.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents txtmindays As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
+    '''Control RvMindays.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents RvMindays As Global.System.Web.UI.WebControls.RangeValidator
+
+    '''<summary>
+    '''Control divddl.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents divddl As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+    '''<summary>
+    '''Control lblRatePlan.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblRatePlan As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control ddlRateplans.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents ddlRateplans As Global.System.Web.UI.WebControls.DropDownList
+
+    '''<summary>
+    '''Control divApplyAllPlan.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents divApplyAllPlan As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+    '''<summary>
+    '''Control chkApplyAllPlan.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents chkApplyAllPlan As Global.System.Web.UI.WebControls.CheckBox
+
+    '''<summary>
+    '''Control lbldom.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lbldom As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control Lbllun.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents Lbllun As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control lblmar.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblmar As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control lblmie.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblmie As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control lbljue.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lbljue As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control lblvie.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblvie As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control lblsab.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblsab As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control Chk7.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents Chk7 As Global.System.Web.UI.WebControls.CheckBox
+
+    '''<summary>
+    '''Control Chk1.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents Chk1 As Global.System.Web.UI.WebControls.CheckBox
+
+    '''<summary>
+    '''Control Chk2.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents Chk2 As Global.System.Web.UI.WebControls.CheckBox
+
+    '''<summary>
+    '''Control Chk3.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents Chk3 As Global.System.Web.UI.WebControls.CheckBox
+
+    '''<summary>
+    '''Control Chk4.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents Chk4 As Global.System.Web.UI.WebControls.CheckBox
+
+    '''<summary>
+    '''Control Chk5.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents Chk5 As Global.System.Web.UI.WebControls.CheckBox
+
+    '''<summary>
+    '''Control Chk6.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents Chk6 As Global.System.Web.UI.WebControls.CheckBox
+
+    '''<summary>
+    '''Control chkMaxDays.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents chkMaxDays As Global.System.Web.UI.WebControls.CheckBox
+
+    '''<summary>
+    '''Control lblMaxdays.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblMaxdays As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control txtMaxdays.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents txtMaxdays As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
+    '''Control RvMaxDays.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents RvMaxDays As Global.System.Web.UI.WebControls.RangeValidator
+
+    '''<summary>
+    '''Control divOnRequest.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents divOnRequest As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+    '''<summary>
+    '''Control chkOnRequest.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents chkOnRequest As Global.System.Web.UI.WebControls.CheckBox
+
+    '''<summary>
+    '''Control chkEstatus.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents chkEstatus As Global.System.Web.UI.WebControls.CheckBox
+
+    '''<summary>
+    '''Control Label1.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents Label1 As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control ddlStatus.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents ddlStatus As Global.System.Web.UI.WebControls.DropDownList
+
+    '''<summary>
+    '''Control chkAdvBook.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents chkAdvBook As Global.System.Web.UI.WebControls.CheckBox
+
+    '''<summary>
+    '''Control lblAdvBook.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblAdvBook As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control txtAdvBook.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents txtAdvBook As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
+    '''Control RVAdvBook.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents RVAdvBook As Global.System.Web.UI.WebControls.RangeValidator
+
+    '''<summary>
+    '''Control chkPriorCancel.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents chkPriorCancel As Global.System.Web.UI.WebControls.CheckBox
+
+    '''<summary>
+    '''Control lblPriorCancel.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblPriorCancel As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control ddlCancelationPolicy.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents ddlCancelationPolicy As Global.System.Web.UI.WebControls.DropDownList
+
+    '''<summary>
+    '''Control ddlHour.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents ddlHour As Global.System.Web.UI.WebControls.DropDownList
+
+    '''<summary>
+    '''Control lblSep.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblSep As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control ddlMinutes.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents ddlMinutes As Global.System.Web.UI.WebControls.DropDownList
+
+    '''<summary>
+    '''Control lblAux.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblAux As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control txtCancellationPolicy.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents txtCancellationPolicy As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
+    '''Control lblEDaysHour.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblEDaysHour As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control lblErrorHours.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblErrorHours As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control RVCancelation.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents RVCancelation As Global.System.Web.UI.WebControls.RangeValidator
+
+    '''<summary>
+    '''Control btnSave.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents btnSave As Global.System.Web.UI.WebControls.Button
+
+    '''<summary>
+    '''Control spanMSG.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents spanMSG As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+End Class

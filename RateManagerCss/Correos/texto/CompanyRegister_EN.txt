@@ -1,0 +1,18 @@
+﻿UniVisit.com
+-----------------------------------------------------------------------------
+Company register
+-----------------------------------------------------------------------------
+
+Company registered [HOTELNAME]
+
+Contact information
+
+Name: [CONTACTO]
+Phone Number: [CONTACTOTEL]
+Email: [CONTACTOEMAIL]
+
+-----------------------------------------------------------------------------
+This email was created automatically by http://www.univisit.com UniVisit.com, does not
+require an answer to this email.
+
+If you need technical support, contact custsrvc@univisit.com.

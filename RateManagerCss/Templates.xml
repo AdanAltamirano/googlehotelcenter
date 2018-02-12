@@ -1,0 +1,895 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Templates>
+	<T01 descripcion="Template de Usuario Nuevo">
+		<subject>
+			<es-MX valor="[Univisit] Creación de Cuenta." />
+			<en-US valor="[Univisit] Account Created." />
+		</subject>
+		<from valor="custsrvc@univisit.com" />
+		<parametros>
+			<USEREMAIL />
+			<USERPASSWORD />
+			<IMAGEURL />
+			<URLPORTAL />
+		</parametros>
+		<html>
+			<es-MX valor="/correos/html/NewAcountUser_ES.htm" />
+			<en-US valor="/correos/html/NewAcountUser_EN.htm" />
+		</html>
+		<text>
+			<es-MX valor="/correos/texto/NewAcountUser_ES.txt" />
+			<en-US valor="/correos/texto/NewAcountUser_EN.txt" />
+		</text>
+	</T01>
+	<T02 descripcion="Template de Cambio de Password">
+		<subject>
+			<es-MX valor="[Univisit] Cambio de contraseña." />
+			<en-US valor="[Univisit] Password Change." />
+		</subject>
+		<from valor="custsrvc@univisit.com" />
+		<parametros>
+			<USEREMAIL />
+			<USERPASSWORD />
+			<IMAGEURL />
+			<URLPORTAL />
+		</parametros>
+		<html>
+			<es-MX valor="/correos/html/ChangePasswordUser_ES.htm" />
+			<en-US valor="/correos/html/ChangePasswordUser_EN.htm" />
+		</html>
+		<text>
+			<es-MX valor="/correos/texto/ChangePasswordUser_ES.txt" />
+			<en-US valor="/correos/texto/ChangePasswordUser_EN.txt" />
+		</text>
+	</T02>
+	<T03 descripcion="Template de Solicitud de Datos">
+		<subject>
+			<es-MX valor="[Univisit] Solicitud de Datos." />
+			<en-US valor="[Univisit] Data Request." />
+		</subject>
+		<from valor="custsrvc@univisit.com" />
+		<parametros>
+			<USEREMAIL />
+			<USERPASSWORD />
+			<IMAGEURL />
+			<URLPORTAL />
+		</parametros>
+		<html>
+			<es-MX valor="/correos/html/ForgotPasswordUser_ES.htm" />
+			<en-US valor="/correos/html/ForgotPasswordUser_EN.htm" />
+		</html>
+		<text>
+			<es-MX valor="/correos/texto/ForgotPasswordUser_ES.txt" />
+			<en-US valor="/correos/texto/ForgotPasswordUser_EN.txt" />
+		</text>
+	</T03>
+	<T04 descripcion="Template de Cambio de Email">
+		<subject>
+			<es-MX valor="[Univisit] Cambio de Correo Electrónico." />
+			<en-US valor="[Univisit] Email Change." />
+		</subject>
+		<from valor="custsrvc@univisit.com" />
+		<parametros>
+			<USEREMAIL />
+			<IMAGEURL />
+			<URLPORTAL />
+		</parametros>
+		<html>
+			<es-MX valor="/correos/html/ChangeEmailUser_ES.htm" />
+			<en-US valor="/correos/html/ChangeEmailUser_EN.htm" />
+		</html>
+		<text>
+			<es-MX valor="/correos/texto/ChangeEmailUser_ES.txt" />
+			<en-US valor="/correos/texto/ChangeEmailUser_EN.txt" />
+		</text>
+	</T04>
+	<T05 descripcion="Template de Cambio de Contacto">
+		<subject>
+			<es-MX valor="[Univisit] Cambió la Dirección de Correo Electrónico." />
+			<en-US valor="[Univisit] E-mail Address Changed." />
+		</subject>
+		<from valor="custsrvc@univisit.com" />
+		<parametros>
+			<NEWEMAILCONTACT />
+			<OLDEMAILCONTACT />
+			<URLPERFIL />
+		</parametros>
+		<html>
+			<es-MX valor="/correos/html/ChangeUserContact_ES.htm" />
+			<en-US valor="/correos/html/ChangeUserContact_EN.htm" />
+		</html>
+		<text>
+			<es-MX valor="/correos/texto/ChangeUserContact_ES.txt" />
+			<en-US valor="/correos/texto/ChangeUserContact_EN.txt" />
+		</text>
+	</T05>
+	<T06 descripcion="Template de Asociacion de Agente">
+		<subject>
+			<es-MX valor="[Univisit] Asociación de Perfil." />
+			<en-US valor="[Univisit] Profile Asociated." />
+		</subject>
+		<from valor="custsrvc@univisit.com" />
+		<parametros />
+		<html>
+			<es-MX valor="/correos/html/AsociateProfileAgent_ES.htm" />
+			<en-US valor="/correos/html/AsociateProfileAgent_EN.htm" />
+		</html>
+		<text>
+			<es-MX valor="/correos/texto/AsociateProfileAgent_ES.txt" />
+			<en-US valor="/correos/texto/AsociateProfileAgent_EN.txt" />
+		</text>
+	</T06>
+	<T07 descripcion="Template de Asociacion de Usuario/Agente">
+		<subject>
+			<es-MX valor="[Univisit] Asociación de Prefil." />
+			<en-US valor="[Univisit] Profile Associated." />
+		</subject>
+		<from valor="custsrvc@univisit.com" />
+		<parametros>
+			<USEREMAIL />
+			<IMAGEURL />
+			<URLPORTAL />
+			<HOMEUSERPROFILE />
+			<USERPROFILE />
+		</parametros>
+		<html>
+			<es-MX valor="correos/html/AsociateProfileUser_ES.htm" />
+			<en-US valor="correos/html/AsociateProfileUser_EN.htm" />
+		</html>
+		<text>
+			<es-MX valor="correos/texto/AsociateProfileUser_ES.txt" />
+			<en-US valor="correos/texto/AsociateProfileUser_EN.txt" />
+		</text>
+	</T07>
+	<T08 descripcion="Template de Actualización de Usuario">
+		<subject>
+			<es-MX valor="[Univisit] Actualización de Usuario." />
+			<en-US valor="[Univisit] User Update." />
+		</subject>
+		<from valor="custsrvc@univisit.com" />
+		<parametros />
+		<html>
+			<es-MX valor="/correos/html/UserUpdate_ES.htm" />
+			<en-US valor="/correos/html/UserUpdate_EN.htm" />
+		</html>
+		<text>
+			<es-MX valor="/correos/texto/UserUpdate_ES.txt" />
+			<en-US valor="/correos/texto/UserUpdate_EN.txt" />
+		</text>
+	</T08>
+	<T09 descripcion="Template de Reservación">
+		<subject>
+			<es-MX valor="Reservación # {0}" />
+			<en-US valor="Reservation # {0}" />
+		</subject>
+		<from valor="reservations@univisit.com" />
+		<parametros>
+			<BODY />
+		</parametros>
+		<parametros>
+			<ID_RESERVACION />
+			<CONTACTO />
+			<EMAIL_CONTACTO />
+			<TEL_CASA />
+			<TEL_TRABAJO />
+			<HOTEL_NOMBRE />
+			<HOTEL_DIRECCION />
+			<HOTEL_CIUDAD />
+			<HOTEL_PAIS />
+			<CHECKIN />
+			<CHECKOUT />
+			<ADULTOS />
+			<NINIOS />
+			<HABITACIONES />
+			<NOCHES />
+			<SUBTOTAL />
+			<TAX />
+			<GRANTOTAL />
+		</parametros>
+		<html>
+			<es-MX valor="/correos/html/ReservationSummary_ES.htm" />
+			<en-US valor="/correos/html/ReservationSummary_EN.htm" />
+		</html>
+		<text>
+			<es-MX valor="/correos/texto/ReservationSummary_ES.txt" />
+			<en-US valor="/correos/texto/ReservationSummary_EN.txt" />
+		</text>
+	</T09>
+	<T10 descripcion="Template de Reservación">
+		<subject>
+			<es-MX valor="Reservación # {0}" />
+			<en-US valor="Reservation # {0}" />
+		</subject>
+		<from valor="reservations@univisit.com" />
+		<parametros>
+			<BODY />
+		</parametros>
+		<parametros>
+			<ID_RESERVACION />
+			<CONTACTO />
+			<EMAIL_CONTACTO />
+			<TEL_CASA />
+			<TEL_TRABAJO />
+			<HOTEL_NOMBRE />
+			<HOTEL_DIRECCION />
+			<HOTEL_CIUDAD />
+			<HOTEL_PAIS />
+			<CHECKIN />
+			<CHECKOUT />
+			<ADULTOS />
+			<NINIOS />
+			<HABITACIONES />
+			<NOCHES />
+			<TOTAL />
+			<MONEDA />
+		</parametros>
+		<html>
+			<es-MX valor="/correos/html/gReservationSummary_ES.htm" />
+			<en-US valor="/correos/html/gReservationSummary_EN.htm" />
+		</html>
+		<text>
+			<es-MX valor="/correos/texto/gReservationSummary_ES.txt" />
+			<en-US valor="/correos/texto/gReservationSummary_EN.txt" />
+		</text>
+	</T10>
+	<T11 descripcion="Template de Reservación">
+		<subject>
+			<es-MX valor="Reservación # {0}" />
+			<en-US valor="Reservation # {0}" />
+		</subject>
+		<from valor="reservations@univisit.com" />
+		<parametros>
+			<UNIVISITPORTAL />
+			<DEPOSITO />
+			<MONEDA />
+			<EMPRESA />
+			<ID_RESERVACION />
+			<CONTACTO />
+			<EMAIL_CONTACTO />
+			<TEL_CASA />
+			<TEL_TRABAJO />
+			<ACTIVIDAD />
+			<EVENTO />
+			<FECHA />
+			<DIRECCION_EMPRESA />
+			<NO_VIAJEROS />
+			<PRECIO />
+			<SUBTOTAL />
+			<IMPUESTO />
+			<TOTAL />
+		</parametros>
+		<html></html>
+		<html>
+			<es-MX valor="/correos/html/ReservationDone_ES.htm" />
+			<en-US valor="/correos/html/ReservationDone_EN.htm" />
+		</html>
+		<text>
+			<es-MX valor="/correos/texto/ReservationDone_ES.txt" />
+			<en-US valor="/correos/texto/ReservationDone_EN.txt" />
+		</text>
+	</T11>
+	<T12_HOTELCANCELLATION descripcion="Template la cancelacion de hotel">
+		<subject>
+			<es-MX valor="Reservacion de hotel cancelada {0} [Univisit.com]" />
+			<en-US valor="Hotel reservation cancelled {0} [Univisit.com]" />
+		</subject>
+		<from  valor="custsrvc@internetpowerhotel.com" />
+    <smtpServer valor="smtp.mandrillapp.com"/>
+    <userName valor="javier@univisit.com"/>
+    <password valor="NCxlNTHApCDYtSZjtyRvvQ"/>
+    <port valor="587"/>
+    <ssl valor="true"/>
+
+    <parametros>
+			<HOTELNAME/>
+			<RESERVATIONNUMBER />
+			<CANCELLATIONNUMBER />
+			<STARTDATE />
+			<ENDDATE />
+			<CUSTOMERNAME />
+			<REGDATE />
+			<MOTIVO/>
+			<URL />
+			<UNIVISITPORTAL />
+			<UVNRPOLICIES/>
+			
+		</parametros>
+		<html>
+			<es-MX valor="/correos/html/HotelReservationCancellation_ES.htm" />
+			<en-US valor="/correos/html/HotelReservationCancellation_EN.htm" />
+		</html>
+		<text>
+			<es-MX valor="/correos/texto/HotelReservationCancellation_ES.txt" />
+			<en-US valor="/correos/texto/HotelReservationCancellation_EN.txt" />
+		</text>
+	</T12_HOTELCANCELLATION>	
+	<T02_PAYMENTREGISTRATION descripcion="Template registro de pago de hotel">
+		<subject>
+			<es-MX valor="Registro de pago con número de referencia {0}" />
+			<en-US valor="Payment registration with reference number {0}" />
+		</subject>
+		<from valor="norma@oz.com.mx" />		
+		<parametros>
+			<HOTEL_NOMBRE/>
+			<MONTO/>
+            <MONEDA/>
+            <BANCO/>
+            <NOCUENTA/>
+            <TIPOTRANSACCION/>
+            <FECHATRANSACCION/>
+						
+		</parametros>
+		<html>
+			<es-MX valor="/correos/html/PaymentRegistration_ES.htm" />
+			<en-US valor="/correos/html/PaymentRegistration_EN.htm" />
+		</html>
+		<text>
+			<es-MX valor="/correos/texto/PaymentRegistration_ES.txt" />
+			<en-US valor="/correos/texto/PaymentRegistration_EN.txt" />
+		</text>
+	</T02_PAYMENTREGISTRATION>
+	<T13_HOTELDEPOSITCONFIRM descripcion="Template confirmacion de deposito">
+		<subject>
+			<es-MX valor="Reservacion de hotel confirmada {0} [Univisit.com]" />
+			<en-US valor="Hotel reservation confirmed {0} [Univisit.com]" />
+		</subject>
+		<from valor="reservations@univisit.com" />		
+		<parametros>
+			<HOTELNAME/>
+			<RESERVATIONNUMBER />
+			<STARTDATE />
+			<ENDDATE />
+			<CUSTOMERNAME />
+			<REGDATE />
+			<URL />
+			<UNIVISITPORTAL />		
+		</parametros>
+		<html>
+			<es-MX valor="/correos/html/ReservationDepositConfirm_ES.htm" />
+			<en-US valor="/correos/html/ReservationDepositConfirm_EN.htm" />
+		</html>
+		<text>
+			<es-MX valor="/correos/texto/ReservationDepositConfirm_ES.txt" />
+			<en-US valor="/correos/texto/ReservationDepositConfirm_EN.txt" />
+		</text>
+	</T13_HOTELDEPOSITCONFIRM>	
+	<T14_RESERVATION descripcion="Template de Reservación de hotel">
+		<subject>
+			<es-MX valor="Reservación # {0}" />
+			<en-US valor="Reservation # {0}" />
+		</subject>
+		<from valor="javier@oz.com.mx" />
+		<parametros>
+            <LINKCSS/>
+            <HEADER/>
+            <PORTALNAME/>
+            <ID_RESERVACION/>
+            <STATUS/>
+            <REGDATE/>
+            <CONTACTO/>
+            <EMAIL_CONTACTO/>
+            <AGENCYINFO/>
+            <RESERVATIONINFO/>
+            <HOTEL_NOMBRE/>
+            <HOTEL_DIRECCION/>
+            <HOTEL_CIUDAD/>
+            <HOTEL_PAIS/>
+            <CHECKIN/>
+            <CHECKOUT/>
+            <RESERVATIONINFO/>
+            <NOCHES/>
+            <ADULTOS/>
+            <NINIOS/>
+            <HABITACIONES/>
+            <ROOMDETAILS/>
+            <TEXTOTAR/>
+            <VALORESTAR/>
+            <TARJETACREDITO/>
+            <DEPOSITO/>
+            <ESTANCIATOTAL/>
+            <CALCULODETAIL/>
+            <POLITICAS/>
+            <URLPOLICIES/>
+            <URLIMGAIR/>
+            <URLIMGCAR/>
+            <URLIMGACTIVITIES/>
+            <URLAIR/>
+            <URLCAR/>
+            <URLACTIVITIES/>
+            <FOOTER/>		
+		</parametros>
+		<html>
+			<es-MX valor="/correos/html/ReservationSummaryHotel_ES.htm" />
+			<en-US valor="/correos/html/ReservationSummaryHotel_EN.htm" />
+		</html>
+		<text>
+			<es-MX valor="/correos/texto/ReservationSummaryHotel_ES.txt" />
+			<en-US valor="/correos/texto/ReservationSummaryHotel_EN.txt" />
+		</text>
+	</T14_RESERVATION>
+	<T15_ReservationToHotel descripcion="Template de Reservacion que se manda al hotel">		
+		<subject>
+			<es-MX valor="Reservacion # {0}" />
+			<en-US valor="Reservation # {0}" />
+		</subject>
+		<from valor="javier@oz.com.mx" />		
+		<parametros>
+            <LINKCSS/> 
+            <HEADER/>
+            <HOTEL_NOMBRE/>
+            <ID_RESERVACION/>
+            <REGDATE/>
+            <CONTACTO/> 
+            <EMAIL_CONTACTO/> 
+            <AGENCYINFO/>  
+            <HOTEL_NOMBRE/>
+            <HOTEL_DIRECCION/>
+            <HOTEL_CIUDAD/>,<HOTEL_PAIS/>
+            <CHECKIN/>
+            <CHECKOUT/>
+            <ADULTOS/>
+            <NINIOS/>
+            <HABITACIONES/>
+            <NOCHES/>
+            <ROOMDETAILS/>  
+            <TEXTOTAR/>  
+            <VALORESTAR/>   
+            <TARJETACREDITO/> 
+            <ESTANCIATOTAL/>
+            <FOOTER/> 
+		</parametros>		
+		<html>
+			<es-MX valor="/correos/html/ReservationToHotel_ES.htm" />
+			<en-US valor="/correos/html/ReservationToHotel_EN.htm" />
+		</html>
+		<text>
+			<es-MX valor="/correos/texto/ReservationToHotel_ES.txt" />
+			<en-US valor="/correos/texto/ReservationToHotel_EN.txt" />
+		</text>
+	</T15_ReservationToHotel>
+	<T14 descripcion="Asociacion de empresa del rubro hoteles">
+		<subject>
+			<es-MX valor="[Univisit] Administrador de Tarifas y Disponibilidad de hotel" />
+			<en-US valor="[Univisit] Administrator of hotel Rates and Availability" />
+		</subject>
+		<from valor="custsrvc@univisit.com" />
+		<parametros>
+			<USEREMAIL />
+		</parametros>
+		<html>
+			<es-MX valor="correos/html/AsociateProfileHotel_ES.htm" />
+			<en-US valor="correos/html/AsociateProfileHotel_EN.htm" />
+		</html>
+		<text>
+			<es-MX valor="correos/texto/AsociateProfileHotel_ES.txt" />
+			<en-US valor="correos/texto/AsociateProfileHotel_EN.txt" />
+		</text>
+	</T14>
+	<T15 descripcion="Template de Reservación Defaulter Hotel">
+		<subject>
+			<es-MX valor="Reservación UniVisit # {0}" />
+			<en-US valor="UniVisit Reservation # {0}" />
+		</subject>
+		<from valor="custsrvc@univisit.com" />
+		<parametros>
+			<BODY />
+		</parametros>
+
+		<html>
+			<es-MX valor="/correos/html/ReservationSummaryDefaulterHotel_ES.htm" />
+			<en-US valor="/correos/html/ReservationSummaryDefaulterHotel_EN.htm" />
+		</html>
+		<text>
+			<es-MX valor="/correos/texto/ReservationSummaryDefaulterHotel_ES.txt" />
+			<en-US valor="/correos/texto/ReservationSummaryDefaulterHotel_EN.txt" />
+		</text>
+	</T15>
+
+  <T15_LogToHotel descripcion="Template de Reservacion que se manda al hotel">
+    <subject>
+      <es-MX valor="Log {0}" />
+      <en-US valor="Log {0}" />
+    </subject>
+    <from valor="custsrvc@univisit.com" />
+    <bcc valor="victor@oz.com.mx" />
+
+    <from valor="janm_86@hotmail.com"/>
+    <smtpServer valor="smtp.live.com"/>
+    <userName valor="janm_86@hotmail.com"/>
+    <password valor="+170886-janm*"/>
+    <port valor="25"/>
+    <ssl valor="true"/>
+    
+    <parametros>
+      <LINKCSS/>
+      <HEADER/>
+      <HOTEL_NOMBRE/>
+      <DESCRIPTION/>
+      <TEXTOLOG/>
+      <FOOTER/>
+    </parametros>
+    <html>
+      <es-MX valor="/correos/html/HotelLog_ES.htm" />
+      <en-US valor="/correos/html/HotelLog_EN.htm" />
+    </html>
+    <text>
+      <es-MX valor="/correos/texto/HotelLog_ES.txt" />
+      <en-US valor="/correos/texto/HotelLog_EN.txt" />
+    </text>
+  </T15_LogToHotel>
+
+
+  <TH_AvailabilityMail descripcion="Template de notificacion de ">
+        <subject>
+            <es-MX valor="Solicitud de reservación aceptada" />
+            <en-US valor="Booking request accepted" />
+        </subject>
+        <from valor="javier@oz.com.mx" />
+
+
+        <html>
+            <es-MX valor="/Hotel/emails/html/AvailabilityMail_ES.htm" />
+            <en-US valor="/Hotel/emails/html/AvailabilityMail_EN.htm" />
+        </html>
+        <text>
+            <es-MX valor="/Hotel/emails/texto/AvailabilityMail_ES.txt" />
+            <en-US valor="/Hotel/emails/texto/AvailabilityMail_EN.txt" />
+        </text>
+    </TH_AvailabilityMail>
+
+
+    <TK_NotificationCustomer descripcion="Template de notificacion de tickets">
+        <subject>
+            <es-MX valor="Solicitud #'{0}' Recibida" />
+            <en-US valor="Recieved Request #'{0}'" />
+        </subject>
+        <from valor="javier@oz.com.mx" />
+        <html>
+            <es-MX valor="/Hotel/Emails/html/TicketNotifyCustomer_ES.htm" />
+            <en-US valor="/Hotel/emails/html/TicketNotifyCustomer_EN.htm" />
+        </html>
+    </TK_NotificationCustomer>
+
+
+    <TK_NotificationSupport descripcion="Template de notificacion de tickets">
+        <subject>
+            <es-MX valor="CRS - Solicitud de Soporte #{0} [Creado]" />
+            <en-US valor="CRS - Solicitud de Soporte #{0} [Creado]" />
+        </subject>
+        <from valor="javier@oz.com.mx" />
+        <html>
+            <es-MX valor="/Hotel/emails/html/TicketNotifySupport_ES.htm" />
+            <en-US valor="/Hotel/emails/html/TicketNotifySupport_ES.htm" />
+        </html>
+    </TK_NotificationSupport>
+
+
+    <TK_NewCommentSupport descripcion="Template de notificacion de tickets">
+        <subject>
+            <es-MX valor="CRS - Solicitud de Soporte #{0} [Nuevo Comentario]" />
+            <en-US valor="CRS - Solicitud de Soporte #{0} [Nuevo Comentario]" />
+        </subject>
+        <from valor="javier@oz.com.mx" />
+        <html>
+            <es-MX valor="/Hotel/emails/html/TicketNewCommentSupport_ES.htm" />
+            <en-US valor="/Hotel/emails/html/TicketNewCommentSupport_ES.htm" />
+        </html>
+    </TK_NewCommentSupport>
+	
+  
+	<TH_WaitListCancel descripcion="Template de registro en la lista de espera">
+		<subject>
+			<es-MX valor="Solicitud de reservación rechazada" />
+			<en-US valor="Booking request rejected" />
+		</subject>
+	<from valor="javier@oz.com.mx" />
+		<html>
+			<es-MX valor="/Hotel/emails/html/WaitListCancel_Es.htm" />
+			<en-US valor="/Hotel/emails/html/WaitListCancel_En.htm" />
+		</html>
+	</TH_WaitListCancel>
+
+
+    <TH_HotelNetRatesModified descripcion="Template de registro en la lista de espera">
+        <subject>
+            <es-MX valor="Hotel ha cambiado sus tarifas netas" />
+            <en-US valor="Hotel ha cambiado sus tarifas netas" />
+        </subject>
+        <from valor="javier@oz.com.mx" />
+        <html>
+            <es-MX valor="/Hotel/emails/html/HotelNetRatesModified_Es.htm" />
+            <en-US valor="/Hotel/emails/html/HotelNetRatesModified_Es.htm" />
+        </html>
+    </TH_HotelNetRatesModified>
+
+
+    <TH_HotelContentModified descripcion="Template de registro en la lista de espera">
+        <subject>
+            <es-MX valor="Modificación {0} - {1}" />
+            <en-US valor="Modificación {0} - {1}" />
+        </subject>
+        <from valor="javier@oz.com.mx" />
+        <html>
+            <es-MX valor="/Hotel/emails/html/HotelContentModification_ES.htm" />
+            <en-US valor="/Hotel/emails/html/HotelContentModification_ES.htm" />
+        </html>
+    </TH_HotelContentModified>
+  
+  <TH_HOTELREACTIVE descripcion="Template reactivacion reservas de hotel">
+    <subject>
+      <es-MX valor="Reservacion de hotel reactivada {0} [Univisit.com]" />
+      <en-US valor="Hotel reservation reactived {0} [Univisit.com]" />
+    </subject>
+    <from valor="victor@oz.com.mx" />
+    <parametros>
+      <HOTELNAME/>
+      <RESERVATIONNUMBER />
+      <CANCELLATIONNUMBER />
+      <STARTDATE />
+      <ENDDATE />
+      <CUSTOMERNAME />
+      <REGDATE />
+      <MOTIVO/>
+      <URL />
+      <UNIVISITPORTAL />
+      <UVNRPOLICIES/>
+
+    </parametros>
+    <html>
+      <es-MX valor="/correos/html/HotelReservationReactive_ES.htm" />
+      <en-US valor="/correos/html/HotelReservationReactive_EN.htm" />
+    </html>
+    <text>
+      <es-MX valor="/correos/texto/HotelReservationReactive_ES.txt" />
+      <en-US valor="/correos/texto/HotelReservationReactive_EN.txt" />
+    </text>
+  </TH_HOTELREACTIVE>
+
+  <T12_HOTELCANCELLATION_LOGO descripcion="Template la cancelacion de hotel">
+    <subject>
+      <es-MX valor="Reservacion de hotel cancelada {0} [Univisit.com]" />
+      <en-US valor="Hotel reservation cancelled {0} [Univisit.com]" />
+    </subject>
+
+    <from  valor="custsrvc@internetpowerhotel.com" />
+    <smtpServer valor="smtp.mandrillapp.com"/>
+    <userName valor="javier@univisit.com"/>
+    <password valor="NCxlNTHApCDYtSZjtyRvvQ"/>
+    <port valor="587"/>
+    <ssl valor="true"/>
+    
+    <parametros>
+      <HOTELNAME/>
+      <RESERVATIONNUMBER />
+      <CANCELLATIONNUMBER />
+      <STARTDATE />
+      <ENDDATE />
+      <CUSTOMERNAME />
+      <REGDATE />
+      <MOTIVO/>
+      <URL />
+      <UNIVISITPORTAL />
+      <UVNRPOLICIES/>
+
+    </parametros>
+    <html>
+      <es-MX valor="/correos/html/HotelReservationCancellationLogo_ES.htm" />
+      <en-US valor="/correos/html/HotelReservationCancellationLogo_EN.htm" />
+    </html>
+    <text>
+      <es-MX valor="/correos/texto/HotelReservationCancellation_ES.txt" />
+      <en-US valor="/correos/texto/HotelReservationCancellation_EN.txt" />
+    </text>
+  </T12_HOTELCANCELLATION_LOGO>
+
+  <TH_HOTELREACTIVE_LOGO descripcion="Template reactivacion reservas de hotel">
+    <subject>
+      <es-MX valor="Reservacion de hotel reactivada {0} [Univisit.com]" />
+      <en-US valor="Hotel reservation reactived {0} [Univisit.com]" />
+    </subject>
+    <from valor="victor@oz.com.mx" />
+    <parametros>
+      <HOTELNAME/>
+      <RESERVATIONNUMBER />
+      <CANCELLATIONNUMBER />
+      <STARTDATE />
+      <ENDDATE />
+      <CUSTOMERNAME />
+      <REGDATE />
+      <MOTIVO/>
+      <URL />
+      <UNIVISITPORTAL />
+      <UVNRPOLICIES/>
+
+    </parametros>
+    <html>
+      <es-MX valor="/correos/html/HotelReservationReactiveLogo_ES.htm" />
+      <en-US valor="/correos/html/HotelReservationReactiveLogo_EN.htm" />
+    </html>
+    <text>
+      <es-MX valor="/correos/texto/HotelReservationReactive_ES.txt" />
+      <en-US valor="/correos/texto/HotelReservationReactive_EN.txt" />
+    </text>
+  </TH_HOTELREACTIVE_LOGO>
+
+  <TH_REGISTRO_EMPRESA descripcion="Template registro empresas">
+    <subject>
+      <es-MX valor="Registro de empresa" />
+      <en-US valor="Company register" />
+    </subject>
+    <from valor="victor@oz.com.mx" />
+    <parametros>
+      <HOTELNAME/>
+      <CONTACTO />
+      <CONTACTOTEL />
+      <CONTACTOEMAIL />
+    </parametros>
+    <html>
+      <es-MX valor="/correos/html/CompanyRegister_ES.htm" />
+      <en-US valor="/correos/html/CompanyRegister_EN.htm" />
+    </html>
+    <text>
+      <es-MX valor="/correos/texto/CompanyRegister_ES.txt" />
+      <en-US valor="/correos/texto/CompanyRegister_EN.txt" />
+    </text>
+  </TH_REGISTRO_EMPRESA>
+  
+  <TH_WORLDESTINATION_WELCOME descripcion="Template registro usuario">
+    <subject>
+      <es-MX valor="Registro de usuario" />
+      <en-US valor="User register" />
+    </subject>
+    <from valor="javier@oz.com.mx" />
+    <parametros>
+      <USEREMAIL/>
+    </parametros>
+    <html>
+      <es-MX valor="/correos/html/worldDestinationNewUser_ES.html" />
+      <en-US valor="/correos/html/worldDestinationNewUser_EN.html" />
+    </html>
+    <text>
+      <es-MX valor="/correos/texto/CompanyRegister_ES.txt" />
+      <en-US valor="/correos/texto/CompanyRegister_EN.txt" />
+    </text>
+  </TH_WORLDESTINATION_WELCOME>
+
+  <TH_WORLDESTINATION_NEW_AGENCY descripcion="Template registro agencia">
+    <subject>
+      <es-MX valor="Welcome to World Destination Travel Limites" />
+      <en-US valor="Welcome to World Destination Travel Limites" />
+    </subject>
+    <from valor="javier@oz.com.mx" />
+    <parametros>
+      <CONTACTO/>
+      <CONTACTOTEL/>
+      <CONTACTOEMAIL/>
+      <AGENCYNAME/>
+    </parametros>
+    <html>
+      <es-MX valor="/correos/html/AgencyRegister_ES.htm" />
+      <en-US valor="/correos/html/AgencyRegister_EN.htm" />
+    </html>
+    <text>
+      <es-MX valor="/correos/texto/CompanyRegister_ES.txt" />
+      <en-US valor="/correos/texto/CompanyRegister_EN.txt" />
+    </text>
+  </TH_WORLDESTINATION_NEW_AGENCY>
+
+  <TH_WORLDESTINATION_NEW_HOTEL_USER descripcion="Template asociacion usuario de hotel">
+    <subject>
+      <es-MX valor="Nuevo hotel asociado a su cuenta" />
+      <en-US valor="New hotel associated to your account" />
+    </subject>
+    <from valor="javier@oz.com.mx" />
+    <parametros>
+      <HOTELNAME/>
+      <USEREMAIL/>
+      <PASSWORD/>
+    </parametros>
+    <html>
+      <es-MX valor="/correos/html/NewUserHotelAssociation_EN.html" />
+      <en-US valor="/correos/html/NewUserHotelAssociation_EN.html" />
+    </html>
+    <text>
+      <es-MX valor="/correos/texto/CompanyRegister_ES.txt" />
+      <en-US valor="/correos/texto/CompanyRegister_EN.txt" />
+    </text>
+  </TH_WORLDESTINATION_NEW_HOTEL_USER>
+
+  <TH_AvailabilityMail descripcion="Template de notificacion de ">
+    <subject>
+      <es-MX valor="Notificación de disponibilidad" />
+      <en-US valor="Availability Notification" />
+    </subject>
+    <parametros>
+      <HEADER />
+      <FOOTER />
+      <LINKCSS />
+      <CHECKIN />
+      <CHECKOUT />
+      <HOTELNAME />
+      <CUSTOMER />
+      <URL />
+      <REJECTURL />
+      <TOTAL />
+      <CURRENCY />
+      <COMMENT />
+    </parametros>
+    <from valor="univisitreviews@gmail.com" />
+    <smtpServer valor="smtp.live.com"/>
+    <userName valor="xxxx@hotmail.com"/>
+    <password valor="xxxxxx"/>
+    <port valor="587"/>
+    <ssl valor="true"/>
+
+    <html>
+      <es-MX valor="/correos/html/AvailabilityMail_ES.htm" />
+      <en-US valor="/correos/html/AvailabilityMail_EN.htm" />
+    </html>
+    <text>
+      <es-MX valor="/Hotel/emails/texto/AvailabilityMail_ES.txt" />
+      <en-US valor="/Hotel/emails/texto/AvailabilityMail_EN.txt" />
+    </text>
+  </TH_AvailabilityMail>
+  <T16_HOTELMODIFICATION descripcion="Template la modifocación de hotel">
+    <subject>
+      <es-MX valor="Modificación de Reservación - {0}" />
+      <en-US valor="Reservation Modification - {0}" />
+    </subject>
+    <from valor="javier@oz.com.mx" />
+    <parametros>
+      <LINKCSS/>
+      <HEADER/>
+      <PORTALNAME/>
+      <ID_RESERVACION/>
+      <STATUS/>
+      <REGDATE/>
+      <CONTACTO/>
+      <EMAIL_CONTACTO/>
+      <AGENCYINFO/>
+      <RESERVATIONINFO/>
+      <HOTEL_NOMBRE/>
+      <HOTEL_DIRECCION/>
+      <HOTEL_CIUDAD/>
+      <HOTEL_PAIS/>
+      <CHECKIN/>
+      <CHECKOUT/>
+      <RESERVATIONINFO/>
+      <NOCHES/>
+      <ADULTOS/>
+      <NINIOS/>
+      <HABITACIONES/>
+      <ROOMDETAILS/>
+      <TEXTOTAR/>
+      <VALORESTAR/>
+      <TARJETACREDITO/>
+      <DEPOSITO/>
+      <ESTANCIATOTAL/>
+      <CALCULODETAIL/>
+      <POLITICAS/>
+      <URLPOLICIES/>
+      <URLIMGAIR/>
+      <URLIMGCAR/>
+      <URLIMGACTIVITIES/>
+      <URLAIR/>
+      <URLCAR/>
+      <URLACTIVITIES/>
+      <FOOTER/>
+    </parametros>
+    <from  valor="victor@oz.com.mx" />
+    <smtpServer valor="smtp.mandrillapp.com"/>
+    <userName valor="javier@univisit.com"/>
+    <password valor="NCxlNTHApCDYtSZjtyRvvQ"/>
+    <port valor="587"/>
+    <ssl valor="true"/>
+
+    <html>
+      <es-MX valor="/correos/html/ReservationModifyHotel_ES.htm" />
+      <en-US valor="/correos/html/ReservationModifyHotel_EN.htm" />
+    </html>
+    <text>
+      <es-MX valor="/correos/texto/ReservationModifyHotel_ES.txt" />
+      <en-US valor="/correos/texto/ReservationModifyHotel_EN.txt" />
+    </text>
+  </T16_HOTELMODIFICATION>
+</Templates>

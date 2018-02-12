@@ -1,0 +1,108 @@
+<!-- Tipos de habitación agregados a la tabla de TiposHabitaciones -->
+<RoomTypes>
+	<HotelRoomType Code="SEN" Description="Senior"></HotelRoomType>
+	<HotelRoomType Code="SUI" Description="Suite"></HotelRoomType>
+	<HotelRoomType Code="SA1" Description="One Bedroom Suite"></HotelRoomType>
+	<HotelRoomType Code="***" Description="Standard Rate"></HotelRoomType>
+	<HotelRoomType Code="A1D" Description="Deluxe Room  1 Double bed"></HotelRoomType>
+	<HotelRoomType Code="A1K" Description="Deluxe Room  1 King bed"></HotelRoomType>
+	<HotelRoomType Code="A1Q" Description="Deluxe Room  1 Queen bed"></HotelRoomType>
+	<HotelRoomType Code="A1S" Description="Deluxe Room"></HotelRoomType>
+	<HotelRoomType Code="A1T" Description="Deluxe Room  1 Twin bed"></HotelRoomType>
+	<HotelRoomType Code="A2D" Description="Deluxe Room  2 Double beds"></HotelRoomType>
+	<HotelRoomType Code="A2K" Description="Deluxe Room  2 King beds"></HotelRoomType>
+	<HotelRoomType Code="A2Q" Description="Deluxe Room  2 Queen beds"></HotelRoomType>
+	<HotelRoomType Code="A2T" Description="Deluxe Room  2 Twin beds"></HotelRoomType>
+	<HotelRoomType Code="A3S" Description="Deluxe Room Triple Occupancy"></HotelRoomType>
+	<HotelRoomType Code="ADV" Description="Room type confirmed at check in"></HotelRoomType>
+	<HotelRoomType Code="AJS" Description="Deluxe Junior Suite"></HotelRoomType>
+	<HotelRoomType Code="AKT" Description="Deluxe Kitchenette"></HotelRoomType>
+	<HotelRoomType Code="AS1" Description="Deluxe 1 Bedroom Suite"></HotelRoomType>
+	<HotelRoomType Code="AS2" Description="Deluxe 2 Bedroom Suite"></HotelRoomType>
+	<HotelRoomType Code="AST" Description="Deluxe Condo"></HotelRoomType>
+	<HotelRoomType Code="B1D" Description="Superior Room  1 Double bed"></HotelRoomType>
+	<HotelRoomType Code="B1K" Description="Superior Room  1 King bed"></HotelRoomType>
+	<HotelRoomType Code="B1Q" Description="Superior Room  1 Queen bed"></HotelRoomType>
+	<HotelRoomType Code="B1T" Description="Superior Room  1 Twin bed"></HotelRoomType>
+	<HotelRoomType Code="B2D" Description="Superior Room  2 Double beds"></HotelRoomType>
+	<HotelRoomType Code="B2K" Description="Superior Room  2 King beds"></HotelRoomType>
+	<HotelRoomType Code="B2Q" Description="Superior Room  2 Queen beds"></HotelRoomType>
+	<HotelRoomType Code="B2T" Description="Superior Room  2 Twin beds"></HotelRoomType>
+	<HotelRoomType Code="B3S" Description="Superior Room Triple Occupancy"></HotelRoomType>
+	<HotelRoomType Code="BJS" Description="Superior Junior Suite"></HotelRoomType>
+	<HotelRoomType Code="BKT" Description="Moderate Kitchenette"></HotelRoomType>
+	<HotelRoomType Code="BS1" Description="Superior 1 Bedroom Suite"></HotelRoomType>
+	<HotelRoomType Code="BS2" Description="Superior 2 Bedroom Suite"></HotelRoomType>
+	<HotelRoomType Code="BST" Description="Superior Condo"></HotelRoomType>
+	<HotelRoomType Code="C1A" Description="Deluxe 1 Bedroom Condo"></HotelRoomType>
+	<HotelRoomType Code="C1B" Description="Superior 1 Bedroom Condo"></HotelRoomType>
+	<HotelRoomType Code="C1C" Description="Standard 1 Bedroom Condo"></HotelRoomType>
+	<HotelRoomType Code="C1D" Description="Moderate Room  1 Double bed"></HotelRoomType>
+	<HotelRoomType Code="C1K" Description="Moderate Room  1 King bed"></HotelRoomType>
+	<HotelRoomType Code="C1Q" Description="Moderate Room  1 Queen bed"></HotelRoomType>
+	<HotelRoomType Code="C1T" Description="Moderate Room  1 Twin bed"></HotelRoomType>
+	<HotelRoomType Code="C2A" Description="Deluxe 2 Bedroom Condo"></HotelRoomType>
+	<HotelRoomType Code="C2C" Description="Standard 2 Bedroom Condo"></HotelRoomType>
+	<HotelRoomType Code="C2D" Description="Moderate Room  2 Double beds"></HotelRoomType>
+	<HotelRoomType Code="C2K" Description="Moderate Room  2 King beds"></HotelRoomType>
+	<HotelRoomType Code="C2Q" Description="Moderate Room  2 Queen beds"></HotelRoomType>
+	<HotelRoomType Code="C2T" Description="Moderate Room  2 Twin beds"></HotelRoomType>
+	<HotelRoomType Code="CJS" Description="Moderate Junior Suite"></HotelRoomType>
+	<HotelRoomType Code="CKT" Description="Standard Kitchenette"></HotelRoomType>
+	<HotelRoomType Code="COR" Description="Corporate"></HotelRoomType>
+	<HotelRoomType Code="CR1" Description="Studio Room"></HotelRoomType>
+	<HotelRoomType Code="CS1" Description="Standard Suite"></HotelRoomType>
+	<HotelRoomType Code="CST" Description="Standard Condo"></HotelRoomType>
+	<HotelRoomType Code="D1D" Description="Standard Room  1 Double bed"></HotelRoomType>
+	<HotelRoomType Code="SA2" Description="Two Bedroom Suite"></HotelRoomType>
+	<HotelRoomType Code="D1K" Description="Standard Room  1 King bed"></HotelRoomType>
+	<HotelRoomType Code="D1Q" Description="Standard Room  1 Queen bed"></HotelRoomType>
+	<HotelRoomType Code="D1T" Description="Standard Room  1 Twin bed"></HotelRoomType>
+	<HotelRoomType Code="D2D" Description="Standard Room  2 Double beds"></HotelRoomType>
+	<HotelRoomType Code="D2K" Description="Standard Room  2 King beds"></HotelRoomType>
+	<HotelRoomType Code="D2Q" Description="Standard Room  2 Queen beds"></HotelRoomType>
+	<HotelRoomType Code="D2T" Description="Standard Room  2 Twin beds"></HotelRoomType>
+	<HotelRoomType Code="DJS" Description="Standard Junior Suite"></HotelRoomType>
+	<HotelRoomType Code="DLS" Description="Deluxe Suite"></HotelRoomType>
+	<HotelRoomType Code="DLX" Description="Deluxe Room"></HotelRoomType>
+	<HotelRoomType Code="E1K" Description="Executive Room  1 King bed"></HotelRoomType>
+	<HotelRoomType Code="EFF" Description="Efficiency"></HotelRoomType>
+	<HotelRoomType Code="EXC" Description="Executive Room"></HotelRoomType>
+	<HotelRoomType Code="GOV" Description="Government"></HotelRoomType>
+	<HotelRoomType Code="I1K" Description="Non-Smoking Executive 1 King bed"></HotelRoomType>
+	<HotelRoomType Code="J1Q" Description="Non-Smoking Executive 1 Queen bed"></HotelRoomType>
+	<HotelRoomType Code="J2D" Description="Non-Smoking Executive 2 Double beds"></HotelRoomType>
+	<HotelRoomType Code="MIL" Description="Military"></HotelRoomType>
+	<HotelRoomType Code="MIN" Description="Minimum Guest Room"></HotelRoomType>
+	<HotelRoomType Code="MOD" Description="Moderate Room"></HotelRoomType>
+	<HotelRoomType Code="N1D" Description="Non Smoking Room  1 Double bed"></HotelRoomType>
+	<HotelRoomType Code="N1K" Description="Non Smoking Room  1 King bed"></HotelRoomType>
+	<HotelRoomType Code="N1Q" Description="Non Smoking Room  1 Queen bed"></HotelRoomType>
+	<HotelRoomType Code="N1T" Description="Non Smoking Room  1 Twin bed"></HotelRoomType>
+	<HotelRoomType Code="N2D" Description="Non Smoking Room  2 Double beds"></HotelRoomType>
+	<HotelRoomType Code="N2K" Description="Non Smoking Room  2 King beds"></HotelRoomType>
+	<HotelRoomType Code="N2Q" Description="Non Smoking Room  2 Queen beds"></HotelRoomType>
+	<HotelRoomType Code="N2T" Description="Non Smoking Room  2 Twin beds"></HotelRoomType>
+	<HotelRoomType Code="P1K" Description="Executive Room 1 King bed"></HotelRoomType>
+	<HotelRoomType Code="ROH" Description="Room type confirmed at check in"></HotelRoomType>
+	<HotelRoomType Code="S1A" Description="Deluxe 1 Bedroom Suite"></HotelRoomType>
+	<HotelRoomType Code="S1B" Description="Superior 1 Bedroom Suite"></HotelRoomType>
+	<HotelRoomType Code="S1C" Description="Moderate 1 Bedroom Suite"></HotelRoomType>
+	<HotelRoomType Code="S1D" Description="Standard 1 Bedroom Suite"></HotelRoomType>
+	<HotelRoomType Code="S1K" Description="Suite 1 King bed"></HotelRoomType>
+	<HotelRoomType Code="S1Q" Description="Suite with Queen bed"></HotelRoomType>
+	<HotelRoomType Code="S1T" Description="Suite with Twin bed"></HotelRoomType>
+	<HotelRoomType Code="S2A" Description="Deluxe 2 Bedroom Suite"></HotelRoomType>
+	<HotelRoomType Code="S2B" Description="Superior 2 Bedroom Suite"></HotelRoomType>
+	<HotelRoomType Code="S2C" Description="Moderate 2 Bedroom Suite"></HotelRoomType>
+	<HotelRoomType Code="S2D" Description="Standard 2 Bedroom Suite"></HotelRoomType>
+	<HotelRoomType Code="S2T" Description="Suite with 2 Twin beds"></HotelRoomType>
+	<HotelRoomType Code="S3T" Description="Suite with 3 Twin beds"></HotelRoomType>
+	<HotelRoomType Code="S4T" Description="Suite with 4 Twin beds"></HotelRoomType>
+	<HotelRoomType Code="SP1" Description="One Bedroom Suite"></HotelRoomType>
+	<HotelRoomType Code="SU1" Description="One Bedroom Suite"></HotelRoomType>
+	<HotelRoomType Code="SU2" Description="Two Bedroom Suite"></HotelRoomType>
+	<HotelRoomType Code="SUP" Description="Superior Room"></HotelRoomType>
+	<HotelRoomType Code="VEV" Description="Room with a View"></HotelRoomType>
+	<HotelRoomType Code="VEW" Description="Room with a View"></HotelRoomType>
+</RoomTypes>

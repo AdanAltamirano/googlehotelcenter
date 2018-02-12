@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<menu>
+<menuItem>
+		<text> Home </text>
+		<roles>Supervisor,UserChain,HotelCompany,HotelAvanzado,UsuarioHotel,HotelMedio,HotelBasico,Unibilling</roles>
+		<cssclass>menustyle</cssclass>
+		<mouseovercssclass>mousemenu</mouseovercssclass>		
+		<url>Portal/Pages/Home.aspx</url>	
+					
+</menuItem>
+	<menuItem>
+		<text> Reservations </text>
+		<roles>Supervisor,UserChain,HotelCompany,HotelAvanzado,UsuarioHotel,HotelBasico,HotelMedio</roles>
+		<cssclass>menustyle</cssclass>
+		<mouseovercssclass>mousemenu</mouseovercssclass>		
+		<subMenu>
+			<menuItem>				
+				<text>Front Desk Reservation</text>
+				<url>HotelAdministrator/Pages/PassiveBooking.aspx</url>
+			</menuItem>
+			<menuItem>				
+				<text>Modify Front Desk Reservation</text>
+				<url>HotelAdministrator/Pages/ModifyPassiveReservation.aspx</url>
+			</menuItem>		
+		
+			<menuItem>				
+				<text>List</text>
+				<url>HotelAdministrator/Pages/Reservations.aspx</url>					
+			</menuItem>
+			<menuItem>				
+				<text>Verify Reservations</text>
+				<url>HotelAdministrator/Pages/ConfirmReservas.aspx</url>
+					
+			</menuItem>
+			<menuItem>				
+				<text>Nonverified Reservations</text>
+				<url>HotelAdministrator/Pages/NoConfirmReservas.aspx</url>					
+			</menuItem>
+			<menuItem>				
+				<text>Reservations By Distribution Channel</text>
+				<url>HotelAdministrator/Pages/ReservationsReport.aspx</url>				
+			</menuItem>	
+			<menuItem>								
+				<text>Reservations Deposits</text>
+				<roles>Supervisor,UserChain,HotelAvanzado,UsuarioHotel,HotelBasico,HotelMedio</roles>
+				<url>HotelAdministrator/Pages/Deposits.aspx</url>									
+		</menuItem>			
+		</subMenu>
+	</menuItem>	
+	<menuItem>
+		<text> Rooms </text>
+		<roles>Supervisor,UserChain,HotelCompany,HotelAvanzado,UsuarioHotel,HotelMedio,HotelBasico</roles>
+		<cssclass>menustyle</cssclass>		
+		<mouseovercssclass>mousemenu</mouseovercssclass>		
+		<subMenu>					
+			<menuItem>
+				<text>Rooms</text>				
+				<roles>Supervisor,UserChain,HotelAvanzado,UsuarioHotel</roles>
+				<url>Pages/Rooms.aspx</url>			
+			</menuItem>
+			<menuItem>
+				<text>Links</text>
+				<roles>Supervisor,UserChain,HotelCompany,UsuarioHotel,HotelAvanzado</roles>
+				<url>Pages/RoomsLinks.aspx</url>				
+			</menuItem>					
+			<menuItem>				
+				<text>Inventory</text>
+				<url>Pages/HomePage.aspx</url>					
+			</menuItem>
+			<menuItem>
+				<text>Rooms By Rate Plan</text>
+				<roles>Supervisor,UserChain,HotelCompany,HotelAvanzado,UsuarioHotel,HotelMedio</roles>
+				<url>Pages/SegmentRoomsAvailability.aspx</url>									
+			</menuItem>
+			<menuItem>
+				<text>Sold Out Rooms</text>
+				<roles>Supervisor,UserChain,HotelCompany,UsuarioHotel,HotelAvanzado</roles>
+				<url>Pages/RatePlanInventory.aspx</url>									
+			</menuItem>			
+		</subMenu>
+	</menuItem>
+	<menuItem>
+		<text> Rates Plans </text>		
+		<roles>Supervisor,UserChain,HotelCompany,HotelAvanzado,UsuarioHotel,HotelMedio</roles>
+		<cssclass>menustyle</cssclass>		
+		<mouseovercssclass>mousemenu</mouseovercssclass>		
+		<subMenu>
+			<menuItem>
+				<text> Rules </text>
+				<roles>Supervisor,UserChain,UsuarioHotel,HotelAvanzado</roles>
+				<url>Pages/RatePlansRules.aspx</url>						
+			</menuItem>
+			 <menuItem>
+				<text> Rates Plans</text>
+				<roles>Supervisor,UserChain,UsuarioHotel,HotelAvanzado</roles>
+				<url>Pages/RatesPlans.aspx</url>					
+			</menuItem>				
+			<menuItem>
+				<text>Links </text>
+				<roles>Supervisor,UserChain,HotelCompany,UsuarioHotel,HotelAvanzado</roles>
+				<url>Pages/RatePlansLinks.aspx</url>									
+			</menuItem>
+			<menuItem>
+				<text> Package </text>
+				<roles>Supervisor,UserChain,HotelCompany,UsuarioHotel,HotelAvanzado</roles>
+				<url>Pages/package.aspx</url>									
+			</menuItem>
+			<menuItem>
+				<text> Agency </text>
+				<roles>Supervisor,UserChain,HotelCompany,UsuarioHotel,HotelAvanzado</roles>
+				<url>Pages/AgencyRates.aspx</url>									
+			</menuItem>
+			<menuItem>
+				<text> Rates Plan's Deposits </text>
+				<roles>Supervisor,UserChain,HotelCompany,UsuarioHotel,HotelAvanzado,HotelMedio</roles>
+				<url>Pages/DepositRatesPlan.aspx</url>									
+			</menuItem>
+		</subMenu>
+	</menuItem>
+	<menuItem>
+		<text> Rates </text>
+		<roles>Supervisor,UserChain,HotelCompany,UsuarioHotel,HotelAvanzado,HotelMedio,HotelBasico</roles>
+		<cssclass>menustyle</cssclass>
+		<mouseovercssclass>mousemenu</mouseovercssclass>	
+		<subMenu>											
+			<menuItem>						
+				<text>Room Rates</text>
+				<url>Pages/FaresCatalogue.aspx</url>									
+			</menuItem>									
+			<menuItem>								
+				<text>Rates Copy</text>
+				<url>Pages/FaresCopy.aspx</url>									
+			</menuItem>	
+			<menuItem>						
+				<text>Room Rates by day</text>
+				<url>Pages/FaresCatalogueException.aspx</url>									
+			</menuItem>																							
+		</subMenu>
+	</menuItem>
+	<menuItem>
+		<text> Reports </text>
+		<roles>Supervisor,UserChain,HotelCompany,UsuarioHotel,HotelAvanzado,HotelMedio,HotelBasico</roles>
+		<cssclass>menustyle</cssclass>
+		<mouseovercssclass>mousemenu</mouseovercssclass>
+		<subMenu>			
+			<menuItem>				
+				<text>Home Status</text>
+				<url>Pages/AvailabilityRestrictions.aspx</url>					
+				<roles>Supervisor,UserChain,HotelCompany,UsuarioHotel,HotelAvanzado,HotelMedio</roles>
+			</menuItem>
+			<menuItem>
+				<text>Rates Chart</text>
+				<url>Pages/Ratechart.aspx</url>					
+			</menuItem>
+			<menuItem>
+				<text>Non Defined Rates</text>
+				<url>Pages/NoRatesReport.aspx</url>					
+			</menuItem>	
+		</subMenu>
+	</menuItem>
+	<menuItem>
+		<text> Commissions </text>
+		<roles>Supervisor,HotelCompany,UsuarioHotel,HotelAvanzado,HotelMedio,HotelBasico,Unibilling</roles>
+		<cssclass>menustyle</cssclass>
+		<mouseovercssclass>mousemenu</mouseovercssclass>		
+		<subMenu>
+			<menuItem>
+				<text>Conciliate Invoices</text>			
+				<url>HotelAdministrator/Invoicing/InvoicesToConciliate.aspx</url>					
+			</menuItem>
+			<menuItem>
+				<text>Invoices Pending To Pay</text>			
+				<url>HotelAdministrator/Invoicing/Payment/PaymentInvoicesSummary.aspx</url>					
+			</menuItem>
+			<menuItem>
+				<text>Register Payments</text>			
+				<url>HotelAdministrator/Invoicing/Payment/PaymentRegistration.aspx</url>					
+			</menuItem>			
+			<menuItem>
+				<text>Registered Payments</text>			
+				<url>HotelAdministrator/Invoicing/Payment/PaymentsRegisteredByHotel.aspx</url>					
+			</menuItem>
+			<menuItem>
+				<text>Print Invoices</text>			
+				<url>HotelAdministrator/Invoicing/Invoice/PrintInvoice.aspx</url>					
+			</menuItem>
+			<menuItem>
+				<text>Invoices by Period</text>			
+				<url>HotelAdministrator/Invoicing/InvoiceByPeriod.aspx</url>					
+			</menuItem>
+			<menuItem>
+				<text>Invoices **</text>			
+				<url>HotelAdministrator/Invoicing/Invoices.aspx</url>					
+			</menuItem>
+      <menuItem>
+        <text>Payment Methods</text>
+        <url>HotelAdministrator/Invoicing/PaymentMethod/PaymentMethod.aspx</url>
+      </menuItem>
+		</subMenu>
+	</menuItem>
+<menuItem>
+		<roles>Supervisor,UserChain,Content</roles>	
+		<text>Content</text>
+		<cssclass>menustyle</cssclass>
+		<mouseovercssclass>mousemenu</mouseovercssclass>					
+		<subMenu>						
+			<menuItem>				
+				<text>General Information</text>
+				<roles>Supervisor,UserChain</roles>
+				<url>HotelAdministrator/PagesGeneral/Hotel.aspx</url>					
+			</menuItem>
+			<menuItem>				
+				<text>Car Franchises</text>
+				<roles>Supervisor,UserChain</roles>
+				<url>HotelAdministrator/PagesGeneral/HotelAsosiationCars.aspx</url>					
+			</menuItem>
+			<menuItem>				
+				<text>Activities</text>
+				<roles>Supervisor,UserChain</roles>
+				<url>HotelAdministrator/PagesGeneral/HotelAsosiationActivitys.aspx</url>					
+			</menuItem>
+			<menuItem>
+				<text>Change Logo</text>
+				<url>Registro/ChangeLogo.aspx</url>
+			</menuItem>
+			<menuItem>
+				<text>Property Information</text>
+				<url>Registro/InformacionPropiedad.aspx</url>				
+			</menuItem>
+			<menuItem>
+				<text>Hotel Amenities</text>
+				<url>Registro/AmenitiesInformation.aspx</url>					
+			</menuItem>
+			<menuItem>
+				<text>Hotel Activities</text>
+				<url>Registro/ActivitiesInformation.aspx</url>					
+			</menuItem>
+			<menuItem>
+				<text>Hotel Atrractions</text>
+				<url>Registro/AttractionInformation.aspx</url>				
+			</menuItem>
+			<menuItem>
+				<text>Policies Information</text>
+				<url>Registro/PoliciesInformation.aspx</url>					
+			</menuItem>
+			<menuItem>
+				<text>Restaurants Information</text>
+				<url>Registro/FoodInformation.aspx</url>					
+			</menuItem>
+			<menuItem>
+				<text>Room Amenities</text>
+				<url>Registro/RoomAmenitiesInformation.aspx</url>					
+			</menuItem>
+			<menuItem>
+				<text>Room Information</text>
+				<url>Registro/RoomsInformation.aspx</url>					
+			</menuItem>			
+			<menuItem>
+				<text>Map Location</text>
+				<url>Registro/MapLocationInformation.aspx</url>					
+			</menuItem>	
+			<menuItem>
+				<text>Meeting and Events</text>
+				<url>Registro/EventsInformation.aspx</url>
+			</menuItem>	
+			<menuItem>
+				<text>Guia de viajeros</text>
+				<url>Registro/TravelsInformation.aspx</url>
+			</menuItem>			
+			<menuItem>
+				<text>Fotos Galeria Largas</text>
+				<url>Registro/PhotoLargeInformation.aspx</url>
+			</menuItem>					
+			<menuItem>
+				<text>Photos</text>
+				<url>Registro/PhotoInformation.aspx</url>					
+			</menuItem>			
+		</subMenu>
+</menuItem>
+<menuItem>
+		<roles>Supervisor,UserChain,HotelCompany,UsuarioHotel,HotelAvanzado,HotelMedio,HotelBasico,Unibilling,Content</roles>
+		<text>Tools</text>
+		<cssclass>menustyle</cssclass>
+		<mouseovercssclass>mousemenu</mouseovercssclass>					
+		<subMenu>
+		<menuItem>							
+				<text>Hotel Search</text>			
+				<roles>Supervisor,UserChain,UsuarioHotel,HotelAvanzado,HotelBasico,HotelMedio,Unibilling,Content</roles>				
+				<url>Portal/Pages/Search.aspx</url>					
+		</menuItem>	
+		<menuItem>							
+				<text>Production Reports</text>			
+				<roles>Supervisor</roles>				
+				<url>HotelAdministrator/Produccion/Reports.aspx</url>					
+		</menuItem>			
+		<menuItem>
+				<roles>Supervisor,UserChain,HotelCompany,HotelAvanzado,HotelMedio,HotelBasico,Unibilling,Content</roles>
+				<text>Password Change</text>
+				<url>User/ChangePassword.aspx</url>				
+		</menuItem>	
+		<menuItem>			
+				<roles>Supervisor,UserChain,HotelAvanzado,HotelCompany,HotelMedio,HotelBasico</roles>			
+				<text>Users</text>				
+				<url>Pages/Users.aspx</url>					
+		</menuItem>
+		<menuItem>				
+				<text>Room Types</text>				
+				<roles>Supervisor</roles>			
+				<url>HotelAdministrator/PagesGeneral/RoomType.aspx</url>
+			</menuItem>	
+		<menuItem>	
+				<roles>Supervisor</roles>					
+				<text>Book-It</text>
+				<url>CallCenter/Booking.aspx</url>					
+		</menuItem>
+		<menuItem>	
+				<roles>Supervisor</roles>					
+				<text>Logs</text>
+				<url>Portal/Pages/LogReport.aspx</url>	
+		</menuItem>
+		<menuItem>								
+				<text>Credit Card</text>
+				<roles>Supervisor,UserChain</roles>
+				<url>HotelAdministrator/Pages/TarjetasHotel.aspx</url>									
+		</menuItem>	
+		<menuItem>				
+				<text>Near Airport</text>
+				<roles>Supervisor</roles>
+				<url>HotelAdministrator/Pages/NearAirports.aspx</url>					
+			</menuItem>	
+			<menuItem>
+				<text>Near Cities</text>
+				<roles>Supervisor</roles>
+				<url>HotelAdministrator/Pages/NearCities.aspx</url>					
+			</menuItem>
+		<menuItem>
+				<text>OnePage Configuration</text>
+				<roles>Supervisor</roles>
+				<url>HotelAdministrator/UniFlat/UniFlatConfiguration.aspx</url>
+		</menuItem>		
+
+		
+		<menuItem>								
+				<text>OnePage Subscribers List</text>
+				<roles>Supervisor</roles>
+				<url>HotelAdministrator/UniFlat/SubscribersEmailList.aspx</url>
+		</menuItem>
+		
+		<menuItem>								
+				<text>Script of Season</text>
+				<roles>Supervisor,UserChain,UsuarioHotel,HotelAvanzado,HotelCompany,HotelMedio,HotelBasico</roles>
+				<url>HotelAdministrator/Pages/GeneratorScriptSeason.aspx</url>
+		</menuItem>		
+		
+		<menuItem>								
+				<text>Availability Reports</text>
+				<roles>Supervisor,UserChain</roles>
+				<url>Pages/ReportAvailXLS.aspx</url>									
+		</menuItem>	
+		<menuItem>								
+				<text>Log Not Availability</text>
+				<roles>Supervisor</roles>
+				<url>Pages/LogHotelNoAvailable.aspx</url>									
+		</menuItem>	
+		<menuItem>								
+				<text>Registrar empresa</text>
+				<roles>Supervisor,UserChain</roles>
+				<url>Registro/CompanyRegister.aspx</url>									
+		</menuItem>	
+		<menuItem>								
+				<text>Editar Registro de empresa</text>
+				<roles>Supervisor,UserChain,HotelAvanzado,HotelMedio,HotelBasico</roles>
+				<url>Registro/SearchCompany.aspx</url>									
+		</menuItem>			
+		<menuItem>								
+				<text>User's Hotel</text>
+				<roles>Supervisor,UserChain</roles>
+				<url>Registro/UserAsociate.aspx</url>									
+		</menuItem>	
+	</subMenu>		
+</menuItem>
+</menu>
+
+

@@ -1,0 +1,84 @@
+﻿.CrystalTitle1{
+      background-color:transparent ;
+      font-family: arial, helvetica, sans-serif;
+      font-size: 14px;
+      font-weight:bold;
+      color: #336699;
+}
+
+.CrTitleCenter{
+      background-color:transparent ;
+      font-family: arial, helvetica, sans-serif;
+      font-size: 15px;
+      font-weight:bold;
+      color:Navy;
+      text-align: center;
+}
+
+.CrSubTitle{
+      background-color:transparent ;
+      font-family: arial, helvetica, sans-serif;
+      font-size: 13px;
+      font-weight:bold;
+      color: #000;
+}
+
+.CrDescripcion{
+      background-color:transparent ;
+      font-family: arial, helvetica, sans-serif;
+      font-size: 11px;
+      font-weight:bold;
+      color: #000;
+}
+
+.CrLabel{
+      font-family: arial, helvetica, sans-serif;
+      font-size: 11px;
+      color: #000;
+      font-weight: normal !important; 
+}
+
+.CrLabelBold{
+      font-family: arial, helvetica, sans-serif;
+      font-size: 11px;
+      color: #000;
+      font-weight: bold !important; 
+}
+
+.CrLabelRight{
+      font-family: arial, helvetica, sans-serif;
+      font-size: 11px;
+      color: #000;
+      font-weight: normal !important; 
+      text-align:right;
+}
+
+.CrLabelBoldRight{
+      font-family: arial, helvetica, sans-serif;
+      font-size: 11px;
+      color: #000;
+      font-weight: bold !important; 
+      text-align:right;
+}
+
+.CrLabelCenter{
+      font-family: arial, helvetica, sans-serif;
+      font-size: 11px;
+      color: #000;
+      font-weight: normal !important; 
+      text-align: center;
+}
+
+.CrLabelBoldCenter{
+      font-family: arial, helvetica, sans-serif;
+      font-size: 11px;
+      color: #000;
+      font-weight: bold !important; 
+      text-align: center;
+}
+
+
+td
+{
+    padding: 0; 
+}

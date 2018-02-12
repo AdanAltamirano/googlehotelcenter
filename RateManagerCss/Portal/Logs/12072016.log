@@ -1,0 +1,20 @@
+14:49:54: Operator '<>' is not defined for type 'DBNull' and string "".   en Microsoft.VisualBasic.CompilerServices.Operators.ConditionalCompareObjectNotEqual(Object Left, Object Right, Boolean TextCompare)
+   en RateManager.ReservationDetailsV2.enviarcorreo(ReservaDatos dsreservaciones, Boolean isCancel) en C:\Users\josenunez\Documents\Proyectos Univisit\RateManagerCss\RateManagerCss\RateManagerCss\HotelAdministrator\Pages\ReservationDetailsV2.aspx.vb:línea 2061
+   en RateManager.ReservationDetailsV2.makecancel() en C:\Users\josenunez\Documents\Proyectos Univisit\RateManagerCss\RateManagerCss\RateManagerCss\HotelAdministrator\Pages\ReservationDetailsV2.aspx.vb:línea 1824
+   en RateManager.ReservationDetailsV2.hplCancelRes_Click(Object sender, EventArgs e) en C:\Users\josenunez\Documents\Proyectos Univisit\RateManagerCss\RateManagerCss\RateManagerCss\HotelAdministrator\Pages\ReservationDetailsV2.aspx.vb:línea 1573
+   en System.Web.UI.WebControls.LinkButton.OnClick(EventArgs e)
+   en System.Web.UI.WebControls.LinkButton.RaisePostBackEvent(String eventArgument)
+   en System.Web.UI.WebControls.LinkButton.System.Web.UI.IPostBackEventHandler.RaisePostBackEvent(String eventArgument)
+   en System.Web.UI.Page.RaisePostBackEvent(IPostBackEventHandler sourceControl, String eventArgument)
+   en System.Web.UI.Page.RaisePostBackEvent(NameValueCollection postData)
+   en System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+16:5:54: La clase base incluye el campo 'frmPrincipal', pero su tipo (System.Web.UI.HtmlControls.HtmlGenericControl) no es compatible con el tipo de control (System.Web.UI.HtmlControls.HtmlIframe).   en System.Web.Compilation.BaseTemplateCodeDomTreeGenerator.BuildFieldDeclaration(ControlBuilder builder)
+   en System.Web.Compilation.BaseTemplateCodeDomTreeGenerator.BuildSourceDataTreeFromBuilder(ControlBuilder builder, Boolean fInTemplate, Boolean topLevelControlInTemplate, PropertyEntry pse)
+   en System.Web.Compilation.BaseTemplateCodeDomTreeGenerator.BuildSourceDataTreeFromBuilder(ControlBuilder builder, Boolean fInTemplate, Boolean topLevelControlInTemplate, PropertyEntry pse)
+   en System.Web.Compilation.BaseTemplateCodeDomTreeGenerator.BuildSourceDataTreeFromBuilder(ControlBuilder builder, Boolean fInTemplate, Boolean topLevelControlInTemplate, PropertyEntry pse)
+   en System.Web.Compilation.TemplateControlCodeDomTreeGenerator.BuildMiscClassMembers()
+   en System.Web.Compilation.PageCodeDomTreeGenerator.BuildMiscClassMembers()
+   en System.Web.Compilation.BaseCodeDomTreeGenerator.BuildSourceDataTree()
+   en System.Web.Compilation.BaseCodeDomTreeGenerator.GetCodeDomTree(CodeDomProvider codeDomProvider, StringResourceBuilder stringResourceBuilder, VirtualPath virtualPath)
+   en System.Web.Compilation.BaseTemplateBuildProvider.GenerateCode(AssemblyBuilder assemblyBuilder)
+   en System.Web.Compilation.AssemblyBuilder.AddBuildProvider(BuildProvider buildProvider)

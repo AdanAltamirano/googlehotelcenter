@@ -1,0 +1,14 @@
+﻿<Permissions>
+  <Pages id="HOME.ASPX" userHMenu="0" description="00142" />
+  <Pages id="WELCOME.ASPX" userHMenu= "1" description="M000021" />
+  <Pages id="SEARCH.ASPX" userHMenu= "0" description="00247" />  
+  <Pages id="DEFAULT.ASPX" userHMenu= "0" description="00142" />
+  <Pages id="INDEX.ASPX" userHMenu= "0" description="00142" />
+  <Pages id="RESERVATIONDETAILS.ASPX" userHMenu= "0" description="M000117"/>
+  <Pages id="RESERVATIONDETAILSV2.ASPX" userHMenu= "0" description="M000117"/>  
+  <Pages id="INVOICETOCONCILIATEDETAILS.ASPX" userHMenu= "0"  description="M0BT0000146"/>
+  <Pages id="HOTELINVOICEDETAILS.ASPX" userHMenu= "0" description="01514"/>
+  <Pages id="PAYMENTREGISTERED.ASPX" userHMenu= "0" description="01513"/>
+  
+</Permissions>
+

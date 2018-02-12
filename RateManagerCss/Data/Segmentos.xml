@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<Segmentos>		
+	<Segmento>
+		<Desc>Standard</Desc>
+		<Code>R</Code>	
+		<Head>RAC</Head>
+	</Segmento>
+	<Segmento>
+		<Desc>Corporate</Desc>
+		<Code>C</Code>	
+		<Head>COR</Head>	
+	</Segmento>
+	<Segmento>
+		<Desc>Government</Desc>
+		<Code>G</Code>		
+		<Head>GOV</Head>
+	</Segmento>		
+			
+	<Segmento>
+		<Desc>Senior Citizen</Desc>
+		<Code>S</Code>	
+		<Head>SEN</Head>		
+	</Segmento>		
+	<Segmento>
+		<Desc>Special</Desc>
+		<Code>L</Code>	
+		<Head>SPL</Head>		
+	</Segmento>		
+	<Segmento>
+		<Desc>Promotional</Desc>
+		<Code>P</Code>	
+		<Head>PRO</Head>		
+	</Segmento>		
+	<Segmento>
+		<Desc>Weekend</Desc>
+		<Code>W</Code>
+		<Head>WKD</Head>	
+	</Segmento>
+	<Segmento>
+		<Desc>Package</Desc>
+		<Code>K</Code>		
+		<Head>PKG</Head>	
+	</Segmento>
+	<Segmento>
+		<Desc>Family Plan</Desc>
+		<Code>F</Code>	
+		<Head>FAM</Head>		
+	</Segmento>	
+	<Segmento>
+		<Desc>Association</Desc>
+		<Code>A</Code>	
+		<Head>ASN</Head>		
+	</Segmento>	
+	<Segmento>
+		<Desc>Tour</Desc>
+		<Code>T</Code>	
+		<Head>TOR</Head>		
+	</Segmento>	
+	<Segmento>
+		<Desc>Convention</Desc>
+		<Code>V</Code>	
+		<Head>CON</Head>		
+	</Segmento>	
+	<Segmento>
+		<Desc>Negotiate rates</Desc>
+		<Code>N</Code>	
+		<Head>NEG</Head>		
+	</Segmento>
+  <Segmento>
+    <Desc>Contract</Desc>
+    <Code>O</Code>
+    <Head>CNV</Head>
+  </Segmento>
+
+  <Segmento>
+    <Desc>Intercambios</Desc>
+    <Code>M</Code>
+    <Head>INT</Head>
+  </Segmento>
+  
+  <Segmento>
+    <Desc>Travel Industry Bclub</Desc>
+    <Code>I</Code>
+    <Head>TRA</Head>
+  </Segmento>
+</Segmentos>

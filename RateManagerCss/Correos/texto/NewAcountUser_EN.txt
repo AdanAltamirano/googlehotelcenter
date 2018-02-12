@@ -1,0 +1,18 @@
+UniVisit.com
+-----------------------------------------------------------------------------
+New User Account
+-----------------------------------------------------------------------------
+A user's new account has been created.
+
+Email: [USEREMAIL]
+Password: [USERPASSWORD]
+
+Your request has been completed Successfully. 
+
+Thank you for prefering UniVisit.
+
+-----------------------------------------------------------------------------
+This email was created automaticamente by UniVisit.com, does not 
+require answer of this email.
+
+if you need technical support, contact support@univisit.com

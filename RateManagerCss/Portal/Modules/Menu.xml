@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<menu>
+	<menuItem>
+		<text> Home </text>
+		<cssclass>menustyle</cssclass>
+		<mouseovercssclass>mousemenu</mouseovercssclass>		
+		<subMenu>			
+			<menuItem>				
+				<text>Inicio</text>
+				<url>/RateManager/Portal/Pages/Home.aspx</url>
+				<cssclass>menustyle</cssclass><mouseovercssclass>mousemenu</mouseovercssclass>	
+			</menuItem>		
+			<menuItem>				
+				<text>Hotel search</text>
+				<url>/RateManager/Portal/Pages/Search.aspx</url>
+				<cssclass>menustyle</cssclass><mouseovercssclass>mousemenu</mouseovercssclass>	
+			</menuItem>					
+		</subMenu>
+	</menuItem>
+	<menuItem>
+		<text> Reports </text>
+		<cssclass>menustyle</cssclass>
+		<mouseovercssclass>mousemenu</mouseovercssclass>		
+		<subMenu>			
+			<menuItem>				
+				<text>Home status</text>
+				<url>/RateManager/Pages/AvailabilityRestrictions.aspx</url>
+				<cssclass>menustyle</cssclass><mouseovercssclass>mousemenu</mouseovercssclass>	
+			</menuItem>			
+			<menuItem>
+				<text>Non defined rates</text>
+				<url>/RateManager/Pages/NoRatesReport.aspx</url>
+				<cssclass>menustyle</cssclass><mouseovercssclass>mousemenu</mouseovercssclass>	
+			</menuItem>		
+			<menuItem>
+				<text>Rates Chart</text>
+				<url>/RateManager/Pages/Ratechart.aspx</url>
+				<cssclass>menustyle</cssclass><mouseovercssclass>mousemenu</mouseovercssclass>	
+			</menuItem>						
+		</subMenu>
+	</menuItem>
+	<menuItem>
+		<text> Inventory </text>
+		<cssclass>menustyle</cssclass>
+		<mouseovercssclass>mousemenu</mouseovercssclass>				
+		<subMenu>				
+			<menuItem>				
+				<text>Home</text>
+				<url>/RateManager/Pages/HomePage.aspx</url>
+				<cssclass>menustyle</cssclass><mouseovercssclass>mousemenu</mouseovercssclass>	
+			</menuItem>
+			<menuItem>
+				<text>Rooms by rate plan</text>
+				<url>/RateManager/Pages/SegmentRoomsAvailability.aspx</url>
+				<cssclass>menustyle</cssclass><mouseovercssclass>mousemenu</mouseovercssclass>					
+			</menuItem>
+		</subMenu>
+	</menuItem>
+	<menuItem>
+		<text> RatePlans </text>
+		<cssclass>menustyle</cssclass>		
+		<mouseovercssclass>mousemenu</mouseovercssclass>		
+		<subMenu>				
+			<menuItem>
+				<text>links </text>
+				<url>/RateManager/Pages/RatePlansLinks.aspx</url>
+				<cssclass>menustyle</cssclass><mouseovercssclass>mousemenu</mouseovercssclass>					
+			</menuItem>
+			<menuItem>
+				<text> Rules </text>
+				<url>/RateManager/Pages/RatePlansRules.aspx</url>
+				<cssclass>menustyle</cssclass><mouseovercssclass>mousemenu</mouseovercssclass>		
+			</menuItem>
+			<menuItem>
+				<text> RatesPlans </text>
+				<url>/RateManager/Pages/RatesPlans.aspx</url>
+				<cssclass>menustyle</cssclass><mouseovercssclass>mousemenu</mouseovercssclass>	
+			</menuItem>
+		</subMenu>
+	</menuItem>
+	<menuItem>
+		<text> Rooms </text>
+		<cssclass>menustyle</cssclass>		
+		<mouseovercssclass>mousemenu</mouseovercssclass>		
+		<subMenu>					
+			<menuItem>
+				<text>Rooms</text>
+				<url>/RateManager/Pages/Rooms.aspx</url>				
+				<cssclass>menustyle</cssclass><mouseovercssclass>mousemenu</mouseovercssclass>	
+			</menuItem>
+			<menuItem>
+				<text>Links</text>
+				<url>/RateManager/Pages/RoomsLinks.aspx</url>				
+				<cssclass>menustyle</cssclass><mouseovercssclass>mousemenu</mouseovercssclass>	
+			</menuItem>			
+		</subMenu>
+	</menuItem>
+		<menuItem>
+		<text>Catalogue</text>
+		<cssclass>menustyle</cssclass>		
+		<mouseovercssclass>mousemenu</mouseovercssclass>		
+		<subMenu>									
+			<menuItem>				
+				<text>Fares</text>
+				<url>/RateManager/Pages/FaresCatalogue.aspx</url>				
+				<cssclass>menustyle</cssclass><mouseovercssclass>mousemenu</mouseovercssclass>	
+			</menuItem>				
+			<menuItem>				
+				<text>Plans</text>
+				<url>/RateManager/Pages/HotelPlans.aspx</url>				
+				<cssclass>menustyle</cssclass><mouseovercssclass>mousemenu</mouseovercssclass>	
+			</menuItem>				
+		</subMenu>
+	</menuItem>
+
+</menu>

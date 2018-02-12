@@ -1,0 +1,182 @@
+<PortalServiceProviders >
+  <Services>
+    <!-- estos deberan esta fijos no movibles. -->
+    <Service Value="Activity" ServiceId="0" />
+    <Service Value="Auto" ServiceId="1" />
+    <Service Value="Flight" ServiceId="2" />
+    <Service Value="Hotel" ServiceId="3" />
+    <Service Value="Golf" ServiceId="4" />
+    <Service Value="Package" ServiceId="5" />
+    <Service Value="Cruise" ServiceId="6" />
+    <Service Value="Images" ServiceId="7" />
+    <Service Value="Payment" ServiceId="8" />
+    <Service Value="Passport" ServiceId="9" />
+    <Service Value="MoneyChg" ServiceId="10" />
+    <Service Value="WsConectividad" ServiceId="14" />
+  </Services>
+  <Providers>
+    <!-- estos deberan esta fijos no movibles. -->
+    <Provider Value="Univisit" ProviderId="0" />
+    <Provider Value="Galileo" ProviderId="1" />
+  </Providers>
+  <ServiceProvider>
+    <!--WebServices de UV Para Hoteles-->
+    <ProviderId>0</ProviderId>
+    <ServiceId>3</ServiceId>
+    <Profile></Profile>
+    <User>Univisit</User>
+    <Password>POXZ43dxcA34a</Password>  
+    <Url>http://intranet.ozvirtual.net/wshotels/wshotel.asmx</Url>
+    <Corporate>,MISION,</Corporate>
+    <MultiplePages>0</MultiplePages>
+  </ServiceProvider>
+    <ServiceProvider>
+    <!--WebServices de UV Para Hoteles-->
+    <ProviderId>0</ProviderId>
+    <ServiceId>3</ServiceId>
+    <Profile></Profile>
+    <User>WowAgencias</User>
+    <Password>POXZ43dxcA34a</Password>  
+    <Url>http://intranet.ozvirtual.net/wshotels/wshotel.asmx</Url>
+    <Corporate>,WOW AGENCIAS,</Corporate>
+    <MultiplePages>0</MultiplePages>
+  </ServiceProvider>
+ 
+  <ServiceProvider>
+    <!-- WebServices de UV Para Hoteles-->
+    <ProviderId>0</ProviderId>
+    <ServiceId>13</ServiceId>
+    <Profile></Profile>
+    <User></User>
+    <Password></Password>
+    <Url>http://intranet.ozvirtual.net/webpayment/payresponse.aspx</Url>
+    <Corporate>,MISION,ORIGINAL,</Corporate>
+    <MultiplePages>0</MultiplePages>
+  </ServiceProvider>
+  <ServiceProvider>
+    <!-- WebServices de Galileo Para Hoteles-->
+    <ProviderId>1</ProviderId>
+    <ServiceId>3</ServiceId>
+    <Profile>DynApolloCopy_1T9K</Profile>
+    <User>PCC1T9K</User>
+    <Password>ozvi1t9k</Password>
+    <Url>https://americas.copy-webservices.travelport.com/B2BGateway/service/XMLSelect</Url>
+    <MultiplePages>1</MultiplePages>
+    <Corporate>,MISION,</Corporate>
+  </ServiceProvider>
+  <!-- WebServices de Galileo para Vuelos-->
+  <ServiceProvider>
+    <ProviderId>1</ProviderId>
+    <ServiceId>2</ServiceId>
+    <Profile>DynApolloCopy_1T9K</Profile>
+    <User>PCC1T9K</User>
+    <Password>ozvi1t9k</Password>
+    <Url>https://americas.copy-webservices.travelport.com/B2BGateway/service/XMLSelect</Url>
+    <MultiplePages>1</MultiplePages>
+    <Corporate>,MISION,</Corporate>
+    <!--SoportaPaginacion-->
+  </ServiceProvider>
+  <ServiceProvider>
+    <!-- WebServices de Galileo para Imagenes-->
+    <ProviderId>1</ProviderId>
+    <ServiceId>7</ServiceId>
+    <Profile>DynApolloProd_1T9K</Profile>
+    <User>PCC1T9K</User>
+    <Password>ozvi1t9k</Password>
+    <Url>https://americas.webservices.travelport.com/B2BGateway/service/ImageViewer</Url>
+    <MultiplePages>1</MultiplePages>
+    <Corporate>,MISION,</Corporate>
+  </ServiceProvider>
+  <ServiceProvider>
+    <!-- WebServices de Pagos por Tarjeta -->
+    <ProviderId>2</ProviderId>
+    <ServiceId>8</ServiceId>
+    <Profile>true</Profile>
+    <!--true: test, false: production-->
+    <User>4792vRQrfB7p</User>
+    <Password>6GnfT62k6585K8pw</Password>
+    <Url>https://secure.authorize.net/gateway/transact.dll</Url>
+    <MultiplePages>0</MultiplePages>
+    <Corporate>,MISION,</Corporate>
+  </ServiceProvider>
+  <ServiceProvider>
+    <!-- WebServices de UV para Cuentas de usuario Passport-->
+    <ProviderId>0</ProviderId>
+    <ServiceId>9</ServiceId>
+    <Profile></Profile>
+    <User>Univisit</User>
+    <Password>POXZ43dxcA34a</Password>
+    <Url>http://intranet.ozvirtual.net/wspassport/Passport.asmx</Url>
+    <!--<Url>http://crs.univisit.com/wspassportv2/passport.asmx</Url>-->
+    <MultiplePages>0</MultiplePages>
+    <!-- <Corporate>,UNIVISITHOTELS,MISION,HOSPITALITYANDFUN,</Corporate> -->
+  </ServiceProvider>
+  <ServiceProvider>
+    <!-- WebServices de UV para Actividades-->
+    <ProviderId>0</ProviderId>
+    <ServiceId>0</ServiceId>
+    <Profile></Profile>
+    <User>Univisit</User>
+    <Password>POXZ43dxcA34a</Password>
+    <Url>http://intranet.ozvirtual.net/Wsactivities/WsUniVisit.asmx</Url> 
+	<!-- <Url>https://crs.univisit.com/Wsactivitiesuv2/WsUniVisit.asmx</Url> -->
+   <!-- <Corporate>,MISION,</Corporate> -->
+  </ServiceProvider>
+  <ServiceProvider>
+    <!-- WebServices de UV Para Autos-->
+    <ProviderId>0</ProviderId>
+    <ServiceId>1</ServiceId>
+    <Profile></Profile>
+    <User>Univisit</User>
+    <Password>POXZ43dxcA34a</Password>
+    <Url>http://intranet.ozvirtual.net/wscars/wsCars.asmx</Url>
+    <MultiplePages>0</MultiplePages>
+    <Corporate>,MISION,</Corporate>
+  </ServiceProvider>
+  <!-- WebServices de Galileo Para Autos-->
+  <ServiceProvider>
+    <ProviderId>1</ProviderId>
+    <ServiceId>1</ServiceId>
+    <Profile>DynApolloCopy_1T9K</Profile>
+    <User>PCC1T9K</User>
+    <Password>ozvi1t9k</Password>
+    <Url>https://americas.copy-webservices.travelport.com/B2BGateway/service/XMLSelect</Url>
+    <MultiplePages>1</MultiplePages>
+    <Corporate>,MISION,</Corporate>
+    <!--SoportaPaginacion-->
+  </ServiceProvider>
+  <ServiceProvider>
+    <ProviderId>1</ProviderId>
+    <ServiceId>10</ServiceId>
+    <Profile>DynApolloProd_1T9K</Profile>
+    <User>PCC1T9K</User>
+    <Password>ozvi1t9k</Password>
+    <Url>https://americas.webservices.travelport.com/B2BGateway/service/XMLSelect</Url>
+    <MultiplePages>1</MultiplePages>
+    <Corporate>,MISION,</Corporate>
+    <!--SoportaPaginacion-->
+  </ServiceProvider>
+
+  <ServiceProvider>
+    <!-- WebServices de Pagos por Tarjeta de Univisit -->
+    <ProviderId>0</ProviderId>
+    <ServiceId>11</ServiceId>
+    <Profile>true</Profile>
+    <User>Univisit</User>
+    <Password>POXZ43dxcA34a</Password>
+    <Url>http://intranet.ozvirtual.net/wsActivitiesV2Package/WsActivities.asmx</Url>
+    <MultiplePages>0</MultiplePages>
+    <Corporate>,MISION,</Corporate>
+  </ServiceProvider>
+  <ServiceProvider>
+    <!-- WebServices de UV Para Hoteles-->
+    <ProviderId>0</ProviderId>
+    <ServiceId>14</ServiceId>
+    <Profile>WTL</Profile>
+    <User>eqctest1780041</User>
+    <Password>testunivisit</Password>
+    <Url>http://intranet.ozvirtual.net/WSConectividad/wsConnect.asmx</Url>
+    <MultiplePages>0</MultiplePages>
+    <Corporate></Corporate>
+  </ServiceProvider>
+</PortalServiceProviders>

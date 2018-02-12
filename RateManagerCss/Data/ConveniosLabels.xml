@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Labels>
+	<Label key="Presentation">
+		<en-US>Dear Mr. {0}</en-US>
+		<es-MX>Estimado Sr. {0}:</es-MX>	
+	</Label>
+	<Label key="AgreementIntroduction">
+		<en-US></en-US>
+		<es-MX>Nos complace saber que están considerando a {0}, como parte de sus proveedores de servicio de hospedaje dentro de su distinguida empresa, por lo que nos permitimos presentarle nuestra carta convenio:</es-MX>
+	</Label>
+	<Label key="TitleAgreements">
+		<en-US></en-US>
+		<es-MX>TARIFAS CONVENIO {0}</es-MX>
+	</Label>
+	<Label key="TitleRestrictions">
+		<en-US></en-US>
+		<es-MX>RESTRICCIONES:</es-MX>
+	</Label>
+	<Label key="TitleReservations">
+		<en-US></en-US>
+		<es-MX>RESERVACIONES</es-MX>
+	</Label>
+	<Label key="Reservations">
+		<en-US></en-US>
+		<es-MX>
+			Tendremos mucho gusto de recibir sus reservaciones  directamente a la central de reservaciones en la Ciudad de México, ubicadas en Praga No.60 Col. Juárez C.P.06600 México D.F\n
+			Teléfono: 52-09-17-00  con 30 líneas      Lada:         01 800 900 3800\n
+			Fax            55 25- 01-09\n
+			e-mail.        reserve@hotelesmision.com.mx   /     gerenciareser@hotelesmision.com.mx
+		</es-MX>
+	</Label>
+	<Label key="Indications">
+		<en-US></en-US>
+		<es-MX><![CDATA[FAVOR DE INDICAR EL CODIGO NO.{0} AL MOMENTO DE EFECTUAR SU RESERVACION Y OTORGAR LAS TARIFAS ANTES INDICADAS.\nO\nBIEN REASERVA VÍA INTERNET EN:\nwww.hotelesmision.com.mx]]> </es-MX>
+	</Label>
+	<Label key="TitleGaranty">
+		<en-US></en-US>
+		<es-MX>GARANTIA</es-MX>
+	</Label>
+	<Label key="Garanty">
+		<en-US></en-US>
+		<es-MX>
+			Para confirmar su reservación el hotel requiere pago de la primera noche de habitación directamente en la Central de Reservaciones en la Ciudad de México\n
+			\n
+			Así mismo, considerar que cualquier reservación garantizada la cual no sea cancelada con 24 horas de anticipación al día de la llegada, tendrá cargo por la primera noche de renta, más impuestos, por concepto de NO SHOW.
+		</es-MX>
+	</Label>
+	<Label key="TitleSchedule">
+		<en-US></en-US>
+		<es-MX>HORA DE ENTRADA Y SALIDA</es-MX>
+	</Label>
+	<Label key="Schedule">
+		<en-US></en-US>
+		<es-MX>
+			Check inn a partir de las 15:00 hrs. y check out a las 13:00 hrs.\n
+			\n
+			Se aceptan hasta dos menores de 12 años sin cargo compartiendo la habitación de los padres.\n
+			\n
+			Las tarifas para reservaciones Grupales aplican a partir de diez habitaciones, ponemos a sus órdenes nuestra oficina de Grupos y Convenciones en la misma dirección Tel: 52 09 17 17 y 01 800 900 38 01.\n
+			\n
+			Le recordamos que Hoteles Misión cuenta con el personal especializado en Grupos y Convenciones, quienes le atenderán con gusto en la logística de sus eventos.\n
+			\n
+			Agradecemos mucho se sirva firmar en señal de aceptación y así poder incluirlo en nuestro Programa de Tarifas Convenio. Le agradeceremos nos sea devuelta ésta Carta-Convenio, a la brevedad posible, lo invitamos a que nos visite en la red www.hotelesmision.com\n
+			\n
+			Sin otro particular por el momento, y esperando nos brinden la oportunidad de atenderles como se merecen en ésta su casa Hoteles Misión.
+		</es-MX>
+	</Label>
+	<Label key="ATTE">
+		<en-US></en-US>
+		<es-MX>ATENTAMENTE</es-MX>
+	</Label>
+	<Label key="Accept">
+		<en-US></en-US>
+		<es-MX>ACEPTO</es-MX>
+	</Label>
+	<Label key="ContentFooter">
+		<en-US></en-US>
+		<es-MX>
+			Praga No. 60, Col. Juárez, C.P. 06600 México D.F.    Tel.: 5209 17 00 con 20 Líneas, Fax: 5511 4714\n
+			Lada: 01 (800) 900- 3800   http://www.hotelesmision.com
+		</es-MX>
+	</Label>
+	<Label key="chkIsGeneral">
+		<en-US>Is a general agreement</en-US>
+		<es-MX>Es un convenio general</es-MX>
+	</Label>
+	<Label key="">
+		<en-US></en-US>
+		<es-MX></es-MX>
+	</Label>
+</Labels>

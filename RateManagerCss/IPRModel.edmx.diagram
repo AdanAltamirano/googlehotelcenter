@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="8061544e4f714a969533964c88de9621" Name="Diagrama1">
+        <EntityTypeShape EntityType="ozunivisitModel.IPR_Configuracion" Width="1.5" PointX="0.75" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ozunivisitModel.IPR_Estadisticas" Width="1.5" PointX="3" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ozunivisitModel.IPR_Mensajes" Width="1.5" PointX="3" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ozunivisitModel.IPR_MensajesPredefinidos" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ozunivisitModel.IPR_Retencion" Width="1.5" PointX="3" PointY="9" IsExpanded="true" />
+        <EntityTypeShape EntityType="ozunivisitModel.IPR_Sesiones" Width="1.5" PointX="3" PointY="13.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ozunivisitModel.IPR_SesionesComportamiento" Width="1.5" PointX="5.25" PointY="13" IsExpanded="true" />
+        <AssociationConnector Association="ozunivisitModel.FK_IPR_Estadisticas_IPR_Configuracion" ManuallyRouted="false" />
+        <AssociationConnector Association="ozunivisitModel.FK_IPR_Mensajes_IPR_Configuracion" ManuallyRouted="false" />
+        <AssociationConnector Association="ozunivisitModel.FK_IPR_Retencion_IPR_Configuracion" ManuallyRouted="false" />
+        <AssociationConnector Association="ozunivisitModel.FK_IPR_Sesiones_IPR_Configuracion" ManuallyRouted="false" />
+        <AssociationConnector Association="ozunivisitModel.FK_IPR_SesionesComportamiento_IPR_Sesiones" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

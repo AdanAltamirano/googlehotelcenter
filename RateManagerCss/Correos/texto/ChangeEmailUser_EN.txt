@@ -1,0 +1,15 @@
+UniVisit.com
+-----------------------------------------------------------------------------
+Email Change
+-----------------------------------------------------------------------------
+Your UniVisit account e-mail has been changed, 
+we notify you that you will receive our information in this e-mail.
+Email: [USEREMAIL]
+
+Your request has been completed Successfully.
+
+-----------------------------------------------------------------------------
+This email was created automaticamente by UniVisit.com, does not 
+require answer of this email.
+
+if you need technical support, contact support@univisit.com

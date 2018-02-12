@@ -1,0 +1,33 @@
+11:41:2: La cadena de entrada no tiene el formato correcto.No se puede almacenar <> en la columna TipoDescuento. El tipo esperado es Byte.   en System.Data.DataColumn.set_Item(Int32 record, Object value)
+   en System.Data.DataRow.set_Item(DataColumn column, Object value)
+   en System.Data.DataRow.set_Item(String columnName, Object value)
+   en RateManager.Promotions.SavePromo(Boolean publish) en C:\Users\josenunez\Documents\Proyectos Univisit\RateManagerCss\RateManagerCss\RateManagerCss\HotelAdministrator\Pages\Promotions.aspx.vb:línea 385
+   en RateManager.Promotions.btnSave_Click(Object sender, EventArgs e) en C:\Users\josenunez\Documents\Proyectos Univisit\RateManagerCss\RateManagerCss\RateManagerCss\HotelAdministrator\Pages\Promotions.aspx.vb:línea 104
+   en System.Web.UI.WebControls.Button.OnClick(EventArgs e)
+   en System.Web.UI.WebControls.Button.RaisePostBackEvent(String eventArgument)
+   en System.Web.UI.WebControls.Button.System.Web.UI.IPostBackEventHandler.RaisePostBackEvent(String eventArgument)
+   en System.Web.UI.Page.RaisePostBackEvent(IPostBackEventHandler sourceControl, String eventArgument)
+   en System.Web.UI.Page.RaisePostBackEvent(NameValueCollection postData)
+   en System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+15:5:30: No se puede reconocer la cadena como un tipo booleano válido.No se puede almacenar <2> en la columna DaysFreeType. El tipo esperado es Boolean.   en System.Data.DataColumn.set_Item(Int32 record, Object value)
+   en System.Data.DataRow.set_Item(DataColumn column, Object value)
+   en System.Data.DataRow.set_Item(String columnName, Object value)
+   en RateManager.Promotions.SavePromo(Boolean publish) en C:\Users\josenunez\Documents\Proyectos Univisit\RateManagerCss\RateManagerCss\RateManagerCss\HotelAdministrator\Pages\Promotions.aspx.vb:línea 379
+   en RateManager.Promotions.btnSave_Click(Object sender, EventArgs e) en C:\Users\josenunez\Documents\Proyectos Univisit\RateManagerCss\RateManagerCss\RateManagerCss\HotelAdministrator\Pages\Promotions.aspx.vb:línea 104
+   en System.Web.UI.WebControls.Button.OnClick(EventArgs e)
+   en System.Web.UI.WebControls.Button.RaisePostBackEvent(String eventArgument)
+   en System.Web.UI.WebControls.Button.System.Web.UI.IPostBackEventHandler.RaisePostBackEvent(String eventArgument)
+   en System.Web.UI.Page.RaisePostBackEvent(IPostBackEventHandler sourceControl, String eventArgument)
+   en System.Web.UI.Page.RaisePostBackEvent(NameValueCollection postData)
+   en System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+15:24:23: No se puede reconocer la cadena como un tipo booleano válido.No se puede almacenar <1> en la columna DaysFreeType. El tipo esperado es Boolean.   en System.Data.DataColumn.set_Item(Int32 record, Object value)
+   en System.Data.DataRow.set_Item(DataColumn column, Object value)
+   en System.Data.DataRow.set_Item(String columnName, Object value)
+   en RateManager.Promotions.SavePromo(Boolean publish) en C:\Users\josenunez\Documents\Proyectos Univisit\RateManagerCss\RateManagerCss\RateManagerCss\HotelAdministrator\Pages\Promotions.aspx.vb:línea 379
+   en RateManager.Promotions.btnSave_Click(Object sender, EventArgs e) en C:\Users\josenunez\Documents\Proyectos Univisit\RateManagerCss\RateManagerCss\RateManagerCss\HotelAdministrator\Pages\Promotions.aspx.vb:línea 104
+   en System.Web.UI.WebControls.Button.OnClick(EventArgs e)
+   en System.Web.UI.WebControls.Button.RaisePostBackEvent(String eventArgument)
+   en System.Web.UI.WebControls.Button.System.Web.UI.IPostBackEventHandler.RaisePostBackEvent(String eventArgument)
+   en System.Web.UI.Page.RaisePostBackEvent(IPostBackEventHandler sourceControl, String eventArgument)
+   en System.Web.UI.Page.RaisePostBackEvent(NameValueCollection postData)
+   en System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)

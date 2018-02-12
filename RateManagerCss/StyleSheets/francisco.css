@@ -1,0 +1,119 @@
+﻿.largeCalendarTitle
+{
+      background-color:rgb(227, 233, 237);
+}
+.largeCalendarTitle td
+{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    font-weight:bold;
+    color: #666;
+    height: 50px;
+    border:0;
+    padding: 10px;    
+  
+}
+
+/*.dgLink
+{
+    FONT-WEIGHT: normal;
+    CURSOR: pointer;
+    COLOR: #ff6600;
+    TEXT-DECORATION: underline;
+    font-size:12px;
+     
+}
+
+#bookingcontainer h2
+{
+    font-family:Arial, Helvetica, sans-serif;
+	color: #666666;
+	font-size:12px !important;
+ }
+
+
+#bookingcontainer h3
+{
+    font-family:Arial, Helvetica, sans-serif;
+	color: #666666;
+	font-size:12px !important;
+ }
+
+.alertBox
+{
+    display: block;
+    width: 350px;
+    clear: both;
+    background: url('../Images/alert.png') no-repeat left #fcfae9;
+    border: 1px #e9e6c7 solid;
+    background-position: 15px 10px;
+    padding: 20px 20px 15px 60px;
+    margin: 0 auto;
+    color: #FF0000;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+
+.clsDataGrid {
+	/*margin-left: 217px;*/
+   /* width:100%;
+	
+	/*position: absolute;*/
+	/*}
+.clsDataGrid td{
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:12px;
+	color:#666666;
+	background-image:url(imagenes/submenu-division.png);
+	background-position:bottom;
+	background-repeat:repeat-x;
+	height:50px;
+	border:0px;
+	
+
+	}
+	
+.Validators
+{
+    BORDER-RIGHT: #ff6600 1px dashed;
+    PADDING-RIGHT: 2px;
+    BORDER-TOP: #ff6600 1px dashed;
+    PADDING-LEFT: 2px;
+    PADDING-BOTTOM: 2px;
+    MARGIN: 2px;
+    FONT: bold 10px Verdana;
+    BORDER-LEFT: #ff6600 1px dashed;
+    WIDTH: 100%; 
+    COLOR: #ff6600;
+    PADDING-TOP: 2px;
+    BORDER-BOTTOM: #ff6600 1px dashed;
+    BACKGROUND-COLOR: #fffff0
+}
+
+
+.dgitem
+{
+    border-bottom: 1px solid #CCC;
+    margin-top: 30px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    color: #666;
+    font-weight: bold;
+    text-align:left;    
+
+}
+
+.tdContent 
+{
+    background-color:#f9fcff;	
+	padding:10px 15px 10px 15px;
+	border-bottom: 1px solid #e9e9e9;
+	border-left: 1px solid #e9e9e9;
+	border-right: 1px solid #e9e9e9;
+	-moz-border-radius:  0px 0px 7px 7px;
+	-webkit-border-radius: 0px 0px 7px 7px;
+	-khtml-border-radius: 0px 0px 7px 7px;
+	border-radius: 0px 0px 7px 7px;
+}
+*/

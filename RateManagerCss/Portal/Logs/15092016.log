@@ -1,0 +1,26 @@
+10:4:19: 'cmbRubro' tiene un SelectedValue que no es válido porque no existe en la lista de elementos.
+Nombre del parámetro: value   en System.Web.UI.WebControls.ListControl.set_SelectedValue(String value)
+   en RateManager.ctrlSearchCompany.Page_Load(Object sender, EventArgs e) en C:\Users\josenunez\Documents\Proyectos Univisit\RateManagerCss\RateManagerCss\RateManagerCss\Portal\Modules\ctrlSearchCompany.ascx.vb:línea 53
+   en System.Web.UI.Control.OnLoad(EventArgs e)
+   en System.Web.UI.Control.LoadRecursive()
+   en System.Web.UI.Control.LoadRecursive()
+   en System.Web.UI.Control.LoadRecursive()
+   en System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+10:29:58: 'cmbRubro' tiene un SelectedValue que no es válido porque no existe en la lista de elementos.
+Nombre del parámetro: value   en System.Web.UI.WebControls.ListControl.set_SelectedValue(String value)
+   en RateManager.ctrlSearchCompany.Page_Load(Object sender, EventArgs e) en C:\Users\josenunez\Documents\Proyectos Univisit\RateManagerCss\RateManagerCss\RateManagerCss\Portal\Modules\ctrlSearchCompany.ascx.vb:línea 53
+   en System.Web.UI.Control.OnLoad(EventArgs e)
+   en System.Web.UI.Control.LoadRecursive()
+   en System.Web.UI.Control.LoadRecursive()
+   en System.Web.UI.Control.LoadRecursive()
+   en System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+10:32:15: La clase base incluye el campo 'frmPrincipal', pero su tipo (System.Web.UI.HtmlControls.HtmlGenericControl) no es compatible con el tipo de control (System.Web.UI.HtmlControls.HtmlIframe).   en System.Web.Compilation.BaseTemplateCodeDomTreeGenerator.BuildFieldDeclaration(ControlBuilder builder)
+   en System.Web.Compilation.BaseTemplateCodeDomTreeGenerator.BuildSourceDataTreeFromBuilder(ControlBuilder builder, Boolean fInTemplate, Boolean topLevelControlInTemplate, PropertyEntry pse)
+   en System.Web.Compilation.BaseTemplateCodeDomTreeGenerator.BuildSourceDataTreeFromBuilder(ControlBuilder builder, Boolean fInTemplate, Boolean topLevelControlInTemplate, PropertyEntry pse)
+   en System.Web.Compilation.BaseTemplateCodeDomTreeGenerator.BuildSourceDataTreeFromBuilder(ControlBuilder builder, Boolean fInTemplate, Boolean topLevelControlInTemplate, PropertyEntry pse)
+   en System.Web.Compilation.TemplateControlCodeDomTreeGenerator.BuildMiscClassMembers()
+   en System.Web.Compilation.PageCodeDomTreeGenerator.BuildMiscClassMembers()
+   en System.Web.Compilation.BaseCodeDomTreeGenerator.BuildSourceDataTree()
+   en System.Web.Compilation.BaseCodeDomTreeGenerator.GetCodeDomTree(CodeDomProvider codeDomProvider, StringResourceBuilder stringResourceBuilder, VirtualPath virtualPath)
+   en System.Web.Compilation.BaseTemplateBuildProvider.GenerateCode(AssemblyBuilder assemblyBuilder)
+   en System.Web.Compilation.AssemblyBuilder.AddBuildProvider(BuildProvider buildProvider)

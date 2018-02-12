@@ -1,0 +1,38 @@
+UniVisit.com
+-----------------------------------------------------------------------------
+Resumen
+
+[UNIVISITPORTAL]
+Hotel Reservado.  Se han cargado [DEPOSITO] [MONEDA] a su tarjeta de crédito
+como depósito. Si tiene cambio de planes, debe cancelar o cambiar su 
+reservacion de hoteles de acuerdo con las politicas de 
+cancelación de UniVisit.com y [EMPRESA] para evitar cargos.
+-----------------------------------------------------------------------------
+ID de Reservación: [ID_RESERVACION]
+Contacto:              [CONTACTO]
+e-Mail:                [EMAIL_CONTACTO]
+Telefono Particular:   [TEL_CASA]
+Telefono de Oficina:   [TEL_TRABAJO]
+
+
+[HOTEL_NOMBRE]
+[HOTEL_DIRECCION]
+[HOTEL_CIUDAD],[HOTEL_PAIS]
+
+Fecha de arrivo : [CHECKIN]
+Fecha de salida : [CHECKOUT]
+
+Habitaciones y viajeros:
+	[ADULTOS]  Adulto(s) , [NINIOS] Niño(s)
+	[HABITACIONES]  Habitacion(es), [NOCHES]  noche(s)
+
+Subtotal:				[SUBTOTAL]
+Impuesto:				[TAX]
+Total:				[GRANTOTAL]
+
+
+-----------------------------------------------------------------------------
+Este correo a sido generado automaticamente por UniVisit.com, no se requiere 
+contestación de ningun tipo para este correo.
+
+Si require soporte técnico, puede hacerlo a través de soporte@univisit.com

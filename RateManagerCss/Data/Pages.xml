@@ -1,0 +1,3 @@
+<Pages>
+	<UrlPage url="/Portal/Pages/Home.aspx" roles="Supervisor,HotelAvanzado,HotelMedio,HotelBasico,Unibilling,Content,Productor,Capacitor,Consulta,Administrador,Programador,Tester,Implementacion" DescEs="Inicio" DescEn="Home"></UrlPage>
+</Pages>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<CurrenciesCodes >
+<Currency Code="AED" Description ="Arab Emir - Dirham" />
+<Currency Code="ARS" Description ="Argentine - Peso" />
+<Currency Code="AUD" Description ="Australia - Dollars" />
+<Currency Code="BOB" Description ="Bolivian - Boliviano" />
+<Currency Code="BRL" Description ="Brazil - Real" />
+<Currency Code="BGN" Description ="Bulgaria - Leva" />
+<Currency Code="CAD" Description ="Canada - Dollars" />
+<Currency Code="CLP" Description ="Chilean - Peso" />
+<Currency Code="CNY" Description ="China -  Renminbi" />
+<Currency Code="COP" Description ="Colombian - Peso" />
+<Currency Code="HRK" Description ="Croatia - Kuna" />
+<Currency Code="CUC" Description ="Cuban - Peso" />
+<Currency Code="CYP" Description ="Cyprus - Pound" />
+<Currency Code="CZK" Description ="Czech - Koruna" />
+<Currency Code="DKK" Description ="Danmark - Kroner" />
+<Currency Code="DOP" Description ="Dominican - Pesos" />
+<Currency Code="EUR" Description ="ECC - Euro" />
+<Currency Code="EGP" Description ="Egyptian - Pound" />
+<Currency Code="EEK" Description ="Estonia - Kroon" />
+<Currency Code="HKD" Description ="Hong Kong - Dollars" />
+<Currency Code="HUF" Description ="Hungarian - Forint" />
+<Currency Code="ISK" Description ="Iceland - Krona" />
+<Currency Code="INR" Description ="India - Rupees" />
+<Currency Code="IDR" Description ="Indonesia - Rupiah" />
+<Currency Code="ILS" Description ="Israel-Shekel" />
+<Currency Code="JPY" Description ="Japan - Yen" />
+<Currency Code="LVL" Description ="Latvia - Lat" />
+<Currency Code="LYD" Description ="Libya - Dinars" />
+<Currency Code="LTL" Description ="Lithuania - Litas" />
+<Currency Code="MYR" Description ="Malaysia - Ringgit" />
+<Currency Code="MTL" Description ="Maltese - Lira" />
+<Currency Code="MUR" Description ="Mautitius - Rupees" />
+<Currency Code="MXN" Description ="Mexico - New Pesos" />
+<Currency Code="MAD" Description ="Morocco - Dirhams" />
+<Currency Code="NZD" Description ="New Zealand - Dollars" />
+<Currency Code="NOK" Description ="Norwegia - Kroner" />
+<Currency Code="OMR" Description ="Omani - Rial" />
+<Currency Code="PEN" Description ="Peruvian - New Sol" />
+<Currency Code="PHP" Description ="Philippines - Peso" />
+<Currency Code="PLN" Description ="Poland - Zlotych" />
+<Currency Code="RON" Description ="Romania - New Lei" />
+<Currency Code="RUB" Description ="Russian - Rouble" />
+<Currency Code="SGD" Description ="Singapore - Dollars" />
+<Currency Code="SKK" Description ="Slovakia - Koruny" />
+<Currency Code="ZAR" Description ="South African - Rand" />
+<Currency Code="KRW" Description ="South Korea - Won" />
+<Currency Code="SDG" Description ="Sudan - Pounds" />
+<Currency Code="SEK" Description ="Sweden - Krona" />
+<Currency Code="CHF" Description ="Switzerland - Francs" />
+<Currency Code="TWD" Description ="Taiwan - Dollars" />
+<Currency Code="THB" Description ="Thailand - Baht" />	
+<Currency Code="TRY" Description ="Turk - Lira" />
+<Currency Code="GBP" Description ="UK - Pounds" />
+<Currency Code="USD" Description ="United States - Dollars" />	
+<Currency Code="VEB" Description ="Venezuela - Bolivar" />	
+</CurrenciesCodes>

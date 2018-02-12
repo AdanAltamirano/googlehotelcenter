@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<TarjetasAceptadas>
+	<Tarjetas>
+		<Codigo>DC</Codigo>
+		<Nombre>Diners Club</Nombre>
+	</Tarjetas>
+	<Tarjetas>
+		<Codigo>AX</Codigo>
+		<Nombre>American Express</Nombre>
+	</Tarjetas>
+	<Tarjetas>
+		<Codigo>JC</Codigo>
+		<Nombre>JCB</Nombre>
+	</Tarjetas>
+	<Tarjetas>
+		<Codigo>CB</Codigo>
+		<Nombre>Carte Blanche</Nombre>
+	</Tarjetas>
+	<Tarjetas>
+		<Codigo>VI</Codigo>
+		<Nombre>Visa</Nombre>
+	</Tarjetas>
+	<Tarjetas>
+		<Codigo>CA</Codigo>
+		<Nombre>Master Card International</Nombre>
+	</Tarjetas>
+	<Tarjetas>
+		<Codigo>AB</Codigo>
+		<Nombre>Australian Bank Card</Nombre>
+	</Tarjetas>
+	<Tarjetas>
+		<Codigo>DS</Codigo>
+		<Nombre>Discover</Nombre>
+	</Tarjetas>
+	<Tarjetas>
+		<Codigo>IK</Codigo>
+		<Nombre>Master Card (Priceline)</Nombre>
+	</Tarjetas>	
+</TarjetasAceptadas>

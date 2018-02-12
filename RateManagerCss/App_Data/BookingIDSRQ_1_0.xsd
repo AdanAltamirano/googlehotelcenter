@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="BookingIDSRQ_1_0" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="BookingIDSRQ_1_0" msdata:IsDataSet="true" msdata:Locale="es-MX" msdata:EnforceConstraints="False" msprop:Generator_UserDSName="BookingIDSRQ_1_0" msprop:Generator_DataSetName="BookingIDSRQ_1_0">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="Reservations" msprop:Generator_UserTableName="Reservations" msprop:Generator_RowDeletedName="ReservationsRowDeleted" msprop:Generator_RowChangedName="ReservationsRowChanged" msprop:Generator_RowClassName="ReservationsRow" msprop:Generator_RowChangingName="ReservationsRowChanging" msprop:Generator_RowEvArgName="ReservationsRowChangeEvent" msprop:Generator_RowEvHandlerName="ReservationsRowChangeEventHandler" msprop:Generator_TableClassName="ReservationsDataTable" msprop:Generator_TableVarName="tableReservations" msprop:Generator_RowDeletingName="ReservationsRowDeleting" msprop:Generator_TablePropName="Reservations">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Reservation" msprop:Generator_UserTableName="Reservation" msprop:Generator_RowDeletedName="ReservationRowDeleted" msprop:Generator_RowChangedName="ReservationRowChanged" msprop:Generator_RowClassName="ReservationRow" msprop:Generator_RowChangingName="ReservationRowChanging" msprop:Generator_RowEvArgName="ReservationRowChangeEvent" msprop:Generator_RowEvHandlerName="ReservationRowChangeEventHandler" msprop:Generator_TableClassName="ReservationDataTable" msprop:Generator_TableVarName="tableReservation" msprop:Generator_RowDeletingName="ReservationRowDeleting" msprop:Generator_TablePropName="Reservation" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="IdReservacion" msprop:Generator_UserColumnName="IdReservacion" msprop:Generator_ColumnVarNameInTable="columnIdReservacion" msprop:Generator_ColumnPropNameInRow="IdReservacion" msprop:Generator_ColumnPropNameInTable="IdReservacionColumn" type="xs:string" default="" minOccurs="0" msdata:Ordinal="6" />
+                    <xs:element name="Hotel" msprop:Generator_UserTableName="Hotel" msprop:Generator_RowDeletedName="HotelRowDeleted" msprop:Generator_RowChangedName="HotelRowChanged" msprop:Generator_RowClassName="HotelRow" msprop:Generator_RowChangingName="HotelRowChanging" msprop:Generator_RowEvArgName="HotelRowChangeEvent" msprop:Generator_RowEvHandlerName="HotelRowChangeEventHandler" msprop:Generator_TableClassName="HotelDataTable" msprop:Generator_TableVarName="tableHotel" msprop:Generator_RowDeletingName="HotelRowDeleting" msprop:Generator_TablePropName="Hotel" minOccurs="0" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="username" msprop:Generator_UserColumnName="username" msprop:Generator_ColumnVarNameInTable="columnusername" msprop:Generator_ColumnPropNameInRow="username" msprop:Generator_ColumnPropNameInTable="usernameColumn" type="xs:string" minOccurs="0" msdata:Ordinal="2" />
+                          <xs:element name="password" msprop:Generator_UserColumnName="password" msprop:Generator_ColumnVarNameInTable="columnpassword" msprop:Generator_ColumnPropNameInRow="password" msprop:Generator_ColumnPropNameInTable="passwordColumn" type="xs:string" minOccurs="0" msdata:Ordinal="3" />
+                        </xs:sequence>
+                        <xs:attribute name="id" msprop:Generator_UserColumnName="id" msprop:Generator_ColumnVarNameInTable="columnid" msprop:Generator_ColumnPropNameInRow="id" msprop:Generator_ColumnPropNameInTable="idColumn" type="xs:string" use="required" />
+                        <xs:attribute name="Reservation_Id" msprop:Generator_UserColumnName="Reservation_Id" msprop:Generator_ColumnVarNameInTable="columnReservation_Id" msprop:Generator_ColumnPropNameInRow="Reservation_Id" msprop:Generator_ColumnPropNameInTable="Reservation_IdColumn" type="xs:int" use="prohibited" />
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="Total" msprop:Generator_UserTableName="Total" msprop:Generator_RowDeletedName="TotalRowDeleted" msprop:Generator_RowChangedName="TotalRowChanged" msprop:Generator_RowClassName="TotalRow" msprop:Generator_RowChangingName="TotalRowChanging" msprop:Generator_RowEvArgName="TotalRowChangeEvent" msprop:Generator_RowEvHandlerName="TotalRowChangeEventHandler" msprop:Generator_TableClassName="TotalDataTable" msprop:Generator_TableVarName="tableTotal" msprop:Generator_RowDeletingName="TotalRowDeleting" msprop:Generator_TablePropName="Total" minOccurs="0" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:attribute name="totalWithoutTaxes" msprop:Generator_UserColumnName="totalWithoutTaxes" msprop:Generator_ColumnVarNameInTable="columntotalWithoutTaxes" msprop:Generator_ColumnPropNameInRow="totalWithoutTaxes" msprop:Generator_ColumnPropNameInTable="totalWithoutTaxesColumn" type="xs:string" use="required" />
+                        <xs:attribute name="taxes" msprop:Generator_UserColumnName="taxes" msprop:Generator_ColumnVarNameInTable="columntaxes" msprop:Generator_ColumnPropNameInRow="taxes" msprop:Generator_ColumnPropNameInTable="taxesColumn" type="xs:string" use="required" />
+                        <xs:attribute name="currency" msprop:Generator_UserColumnName="currency" msprop:Generator_ColumnVarNameInTable="columncurrency" msprop:Generator_ColumnPropNameInRow="currency" msprop:Generator_ColumnPropNameInTable="currencyColumn" use="required">
+                          <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                              <xs:maxLength value="3" />
+                            </xs:restriction>
+                          </xs:simpleType>
+                        </xs:attribute>
+                        <xs:attribute name="Reservation_Id" msprop:Generator_UserColumnName="Reservation_Id" msprop:Generator_ColumnVarNameInTable="columnReservation_Id" msprop:Generator_ColumnPropNameInRow="Reservation_Id" msprop:Generator_ColumnPropNameInTable="Reservation_IdColumn" type="xs:int" use="prohibited" />
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="RoomStays" msprop:Generator_UserTableName="RoomStays" msprop:Generator_RowDeletedName="RoomStaysRowDeleted" msprop:Generator_RowChangedName="RoomStaysRowChanged" msprop:Generator_RowClassName="RoomStaysRow" msprop:Generator_RowChangingName="RoomStaysRowChanging" msprop:Generator_RowEvArgName="RoomStaysRowChangeEvent" msprop:Generator_RowEvHandlerName="RoomStaysRowChangeEventHandler" msprop:Generator_TableClassName="RoomStaysDataTable" msprop:Generator_TableVarName="tableRoomStays" msprop:Generator_RowDeletingName="RoomStaysRowDeleting" msprop:Generator_TablePropName="RoomStays" minOccurs="0" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="RoomStay" msprop:Generator_UserTableName="RoomStay" msprop:Generator_RowDeletedName="RoomStayRowDeleted" msprop:Generator_RowChangedName="RoomStayRowChanged" msprop:Generator_RowClassName="RoomStayRow" msprop:Generator_RowChangingName="RoomStayRowChanging" msprop:Generator_RowEvArgName="RoomStayRowChangeEvent" msprop:Generator_RowEvHandlerName="RoomStayRowChangeEventHandler" msprop:Generator_TableClassName="RoomStayDataTable" msprop:Generator_TableVarName="tableRoomStay" msprop:Generator_RowDeletingName="RoomStayRowDeleting" msprop:Generator_TablePropName="RoomStay" minOccurs="0" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="TravelerName" msprop:Generator_UserColumnName="TravelerName" msprop:Generator_ColumnVarNameInTable="columnTravelerName" msprop:Generator_ColumnPropNameInRow="TravelerName" msprop:Generator_ColumnPropNameInTable="TravelerNameColumn" type="xs:string" minOccurs="0" msdata:Ordinal="2" />
+                                <xs:element name="remarks" msprop:Generator_UserColumnName="remarks" msprop:Generator_ColumnVarNameInTable="columnremarks" msprop:Generator_ColumnPropNameInRow="remarks" msprop:Generator_ColumnPropNameInTable="remarksColumn" type="xs:string" minOccurs="0" msdata:Ordinal="3" />
+                                <xs:element name="StayDate" msprop:Generator_UserTableName="StayDate" msprop:Generator_RowDeletedName="StayDateRowDeleted" msprop:Generator_RowChangedName="StayDateRowChanged" msprop:Generator_RowClassName="StayDateRow" msprop:Generator_RowChangingName="StayDateRowChanging" msprop:Generator_RowEvArgName="StayDateRowChangeEvent" msprop:Generator_RowEvHandlerName="StayDateRowChangeEventHandler" msprop:Generator_TableClassName="StayDateDataTable" msprop:Generator_TableVarName="tableStayDate" msprop:Generator_RowDeletingName="StayDateRowDeleting" msprop:Generator_TablePropName="StayDate" minOccurs="0" maxOccurs="unbounded">
+                                  <xs:complexType>
+                                    <xs:attribute name="DateBegin" msprop:Generator_UserColumnName="DateBegin" msprop:Generator_ColumnVarNameInTable="columnDateBegin" msprop:Generator_ColumnPropNameInRow="DateBegin" msprop:Generator_ColumnPropNameInTable="DateBeginColumn" type="xs:string" use="required" />
+                                    <xs:attribute name="DateEnd" msprop:Generator_UserColumnName="DateEnd" msprop:Generator_ColumnVarNameInTable="columnDateEnd" msprop:Generator_ColumnPropNameInRow="DateEnd" msprop:Generator_ColumnPropNameInTable="DateEndColumn" type="xs:string" use="required" />
+                                    <xs:attribute name="RoomStay_Id" msprop:Generator_UserColumnName="RoomStay_Id" msprop:Generator_ColumnVarNameInTable="columnRoomStay_Id" msprop:Generator_ColumnPropNameInRow="RoomStay_Id" msprop:Generator_ColumnPropNameInTable="RoomStay_IdColumn" type="xs:int" use="prohibited" />
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="GuestCount" msprop:Generator_UserTableName="GuestCount" msprop:Generator_RowDeletedName="GuestCountRowDeleted" msprop:Generator_RowChangedName="GuestCountRowChanged" msprop:Generator_RowClassName="GuestCountRow" msprop:Generator_RowChangingName="GuestCountRowChanging" msprop:Generator_RowEvArgName="GuestCountRowChangeEvent" msprop:Generator_RowEvHandlerName="GuestCountRowChangeEventHandler" msprop:Generator_TableClassName="GuestCountDataTable" msprop:Generator_TableVarName="tableGuestCount" msprop:Generator_RowDeletingName="GuestCountRowDeleting" msprop:Generator_TablePropName="GuestCount" minOccurs="0" maxOccurs="unbounded">
+                                  <xs:complexType>
+                                    <xs:attribute name="adults" msprop:Generator_UserColumnName="adults" msprop:Generator_ColumnVarNameInTable="columnadults" msprop:Generator_ColumnPropNameInRow="adults" msprop:Generator_ColumnPropNameInTable="adultsColumn" type="xs:string" use="required" />
+                                    <xs:attribute name="children" msprop:Generator_UserColumnName="children" msprop:Generator_ColumnVarNameInTable="columnchildren" msprop:Generator_ColumnPropNameInRow="children" msprop:Generator_ColumnPropNameInTable="childrenColumn" type="xs:string" />
+                                    <xs:attribute name="RoomStay_Id" msprop:Generator_UserColumnName="RoomStay_Id" msprop:Generator_ColumnVarNameInTable="columnRoomStay_Id" msprop:Generator_ColumnPropNameInRow="RoomStay_Id" msprop:Generator_ColumnPropNameInTable="RoomStay_IdColumn" type="xs:int" use="prohibited" />
+                                    <xs:attribute name="ChildrenAge" msprop:Generator_UserColumnName="ChildrenAge" msprop:Generator_ColumnVarNameInTable="columnChildrenAge" msprop:Generator_ColumnPropNameInRow="ChildrenAge" msprop:Generator_ColumnPropNameInTable="ChildrenAgeColumn" type="xs:string" default="0" />
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="Rates" msprop:Generator_UserTableName="Rates" msprop:Generator_RowDeletedName="RatesRowDeleted" msprop:Generator_RowChangedName="RatesRowChanged" msprop:Generator_RowClassName="RatesRow" msprop:Generator_RowChangingName="RatesRowChanging" msprop:Generator_RowEvArgName="RatesRowChangeEvent" msprop:Generator_RowEvHandlerName="RatesRowChangeEventHandler" msprop:Generator_TableClassName="RatesDataTable" msprop:Generator_TableVarName="tableRates" msprop:Generator_RowDeletingName="RatesRowDeleting" msprop:Generator_TablePropName="Rates" minOccurs="0" maxOccurs="unbounded">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="DayRate" msprop:Generator_UserTableName="DayRate" msprop:Generator_RowDeletedName="DayRateRowDeleted" msprop:Generator_RowChangedName="DayRateRowChanged" msprop:Generator_RowClassName="DayRateRow" msprop:Generator_RowChangingName="DayRateRowChanging" msprop:Generator_RowEvArgName="DayRateRowChangeEvent" msprop:Generator_RowEvHandlerName="DayRateRowChangeEventHandler" msprop:Generator_TableClassName="DayRateDataTable" msprop:Generator_TableVarName="tableDayRate" msprop:Generator_RowDeletingName="DayRateRowDeleting" msprop:Generator_TablePropName="DayRate" minOccurs="0" maxOccurs="unbounded">
+                                        <xs:complexType>
+                                          <xs:attribute name="RateDateBegin" msprop:Generator_UserColumnName="RateDateBegin" msprop:Generator_ColumnVarNameInTable="columnRateDateBegin" msprop:Generator_ColumnPropNameInRow="RateDateBegin" msprop:Generator_ColumnPropNameInTable="RateDateBeginColumn" type="xs:string" use="required" />
+                                          <xs:attribute name="RateDateEnd" msprop:Generator_UserColumnName="RateDateEnd" msprop:Generator_ColumnVarNameInTable="columnRateDateEnd" msprop:Generator_ColumnPropNameInRow="RateDateEnd" msprop:Generator_ColumnPropNameInTable="RateDateEndColumn" type="xs:string" use="required" />
+                                          <xs:attribute name="rate" msprop:Generator_UserColumnName="rate" msprop:Generator_ColumnVarNameInTable="columnrate" msprop:Generator_ColumnPropNameInRow="rate" msprop:Generator_ColumnPropNameInTable="rateColumn" type="xs:string" use="required" />
+                                          <xs:attribute name="extraPersonRate" msprop:Generator_UserColumnName="extraPersonRate" msprop:Generator_ColumnVarNameInTable="columnextraPersonRate" msprop:Generator_ColumnPropNameInRow="extraPersonRate" msprop:Generator_ColumnPropNameInTable="extraPersonRateColumn">
+                                            <xs:simpleType>
+                                              <xs:restriction base="xs:decimal" />
+                                            </xs:simpleType>
+                                          </xs:attribute>
+                                          <xs:attribute name="Rates_Id" msprop:Generator_UserColumnName="Rates_Id" msprop:Generator_ColumnVarNameInTable="columnRates_Id" msprop:Generator_ColumnPropNameInRow="Rates_Id" msprop:Generator_ColumnPropNameInTable="Rates_IdColumn" type="xs:int" use="prohibited" />
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute name="currency" msprop:Generator_UserColumnName="currency" msprop:Generator_ColumnVarNameInTable="columncurrency" msprop:Generator_ColumnPropNameInRow="currency" msprop:Generator_ColumnPropNameInTable="currencyColumn">
+                                      <xs:simpleType>
+                                        <xs:restriction base="xs:string">
+                                          <xs:maxLength value="3" />
+                                        </xs:restriction>
+                                      </xs:simpleType>
+                                    </xs:attribute>
+                                    <xs:attribute name="Rates_Id" msdata:AutoIncrement="true" msprop:Generator_UserColumnName="Rates_Id" msprop:Generator_ColumnVarNameInTable="columnRates_Id" msprop:Generator_ColumnPropNameInRow="Rates_Id" msprop:Generator_ColumnPropNameInTable="Rates_IdColumn" type="xs:int" msdata:AllowDBNull="false" use="prohibited" />
+                                    <xs:attribute name="RoomStay_Id" msprop:Generator_UserColumnName="RoomStay_Id" msprop:Generator_ColumnVarNameInTable="columnRoomStay_Id" msprop:Generator_ColumnPropNameInRow="RoomStay_Id" msprop:Generator_ColumnPropNameInTable="RoomStay_IdColumn" type="xs:int" use="prohibited" />
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="roomCode" msprop:Generator_UserColumnName="roomCode" msprop:Generator_ColumnVarNameInTable="columnroomCode" msprop:Generator_ColumnPropNameInRow="roomCode" msprop:Generator_ColumnPropNameInTable="roomCodeColumn" type="xs:string" use="required" />
+                              <xs:attribute name="rateCode" msprop:Generator_UserColumnName="rateCode" msprop:Generator_ColumnVarNameInTable="columnrateCode" msprop:Generator_ColumnPropNameInRow="rateCode" msprop:Generator_ColumnPropNameInTable="rateCodeColumn" type="xs:string" use="required" />
+                              <xs:attribute name="RoomStay_Id" msdata:AutoIncrement="true" msprop:Generator_UserColumnName="RoomStay_Id" msprop:Generator_ColumnVarNameInTable="columnRoomStay_Id" msprop:Generator_ColumnPropNameInRow="RoomStay_Id" msprop:Generator_ColumnPropNameInTable="RoomStay_IdColumn" type="xs:int" msdata:AllowDBNull="false" use="prohibited" />
+                              <xs:attribute name="RoomStays_Id" msprop:Generator_UserColumnName="RoomStays_Id" msprop:Generator_ColumnVarNameInTable="columnRoomStays_Id" msprop:Generator_ColumnPropNameInRow="RoomStays_Id" msprop:Generator_ColumnPropNameInTable="RoomStays_IdColumn" type="xs:int" use="prohibited" />
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="RoomStays_Id" msdata:AutoIncrement="true" msprop:Generator_UserColumnName="RoomStays_Id" msprop:Generator_ColumnVarNameInTable="columnRoomStays_Id" msprop:Generator_ColumnPropNameInRow="RoomStays_Id" msprop:Generator_ColumnPropNameInTable="RoomStays_IdColumn" type="xs:int" msdata:AllowDBNull="false" use="prohibited" />
+                        <xs:attribute name="Reservation_Id" msprop:Generator_UserColumnName="Reservation_Id" msprop:Generator_ColumnVarNameInTable="columnReservation_Id" msprop:Generator_ColumnPropNameInRow="Reservation_Id" msprop:Generator_ColumnPropNameInTable="Reservation_IdColumn" type="xs:int" use="prohibited" />
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="PrimaryGuest" msprop:Generator_UserTableName="PrimaryGuest" msprop:Generator_RowDeletedName="PrimaryGuestRowDeleted" msprop:Generator_RowChangedName="PrimaryGuestRowChanged" msprop:Generator_RowClassName="PrimaryGuestRow" msprop:Generator_RowChangingName="PrimaryGuestRowChanging" msprop:Generator_RowEvArgName="PrimaryGuestRowChangeEvent" msprop:Generator_RowEvHandlerName="PrimaryGuestRowChangeEventHandler" msprop:Generator_TableClassName="PrimaryGuestDataTable" msprop:Generator_TableVarName="tablePrimaryGuest" msprop:Generator_RowDeletingName="PrimaryGuestRowDeleting" msprop:Generator_TablePropName="PrimaryGuest" minOccurs="0" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="SpecialRequest" msprop:Generator_UserColumnName="SpecialRequest" msprop:Generator_ColumnVarNameInTable="columnSpecialRequest" msprop:Generator_ColumnPropNameInRow="SpecialRequest" msprop:Generator_ColumnPropNameInTable="SpecialRequestColumn" type="xs:string" minOccurs="0" />
+                          <xs:element name="Name" msprop:Generator_UserTableName="Name" msprop:Generator_RowDeletedName="NameRowDeleted" msprop:Generator_RowChangedName="NameRowChanged" msprop:Generator_RowClassName="NameRow" msprop:Generator_RowChangingName="NameRowChanging" msprop:Generator_RowEvArgName="NameRowChangeEvent" msprop:Generator_RowEvHandlerName="NameRowChangeEventHandler" msprop:Generator_TableClassName="NameDataTable" msprop:Generator_TableVarName="tableName" msprop:Generator_RowDeletingName="NameRowDeleting" msprop:Generator_TablePropName="Name" minOccurs="0" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="email" msprop:Generator_UserColumnName="email" msprop:nullValue="_empty" msprop:Generator_ColumnVarNameInTable="columnemail" msprop:Generator_ColumnPropNameInTable="emailColumn" msprop:Generator_ColumnPropNameInRow="email" default=" " minOccurs="0" msdata:Ordinal="3">
+                                  <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                      <xs:maxLength value="150" />
+                                    </xs:restriction>
+                                  </xs:simpleType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="firstName" msprop:Generator_UserColumnName="firstName" msprop:Generator_ColumnVarNameInTable="columnfirstName" msprop:Generator_ColumnPropNameInRow="firstName" msprop:Generator_ColumnPropNameInTable="firstNameColumn" use="required">
+                                <xs:simpleType>
+                                  <xs:restriction base="xs:string">
+                                    <xs:maxLength value="60" />
+                                  </xs:restriction>
+                                </xs:simpleType>
+                              </xs:attribute>
+                              <xs:attribute name="lastName" msprop:Generator_UserColumnName="lastName" msprop:Generator_ColumnVarNameInTable="columnlastName" msprop:Generator_ColumnPropNameInRow="lastName" msprop:Generator_ColumnPropNameInTable="lastNameColumn">
+                                <xs:simpleType>
+                                  <xs:restriction base="xs:string">
+                                    <xs:maxLength value="60" />
+                                  </xs:restriction>
+                                </xs:simpleType>
+                              </xs:attribute>
+                              <xs:attribute name="PrimaryGuest_Id" msprop:Generator_UserColumnName="PrimaryGuest_Id" msprop:Generator_ColumnVarNameInTable="columnPrimaryGuest_Id" msprop:Generator_ColumnPropNameInRow="PrimaryGuest_Id" msprop:Generator_ColumnPropNameInTable="PrimaryGuest_IdColumn" type="xs:int" use="prohibited" />
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="Phone" msprop:Generator_UserTableName="Phone" msprop:Generator_RowDeletedName="PhoneRowDeleted" msprop:Generator_RowChangedName="PhoneRowChanged" msprop:Generator_RowClassName="PhoneRow" msprop:Generator_RowChangingName="PhoneRowChanging" msprop:Generator_RowEvArgName="PhoneRowChangeEvent" msprop:Generator_RowEvHandlerName="PhoneRowChangeEventHandler" msprop:Generator_TableClassName="PhoneDataTable" msprop:Generator_TableVarName="tablePhone" msprop:Generator_RowDeletingName="PhoneRowDeleting" msprop:Generator_TablePropName="Phone" minOccurs="0" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:attribute name="number" msprop:Generator_UserColumnName="number" msprop:Generator_ColumnVarNameInTable="columnnumber" msprop:Generator_ColumnPropNameInRow="number" msprop:Generator_ColumnPropNameInTable="numberColumn" use="required">
+                                <xs:simpleType>
+                                  <xs:restriction base="xs:string">
+                                    <xs:maxLength value="32" />
+                                  </xs:restriction>
+                                </xs:simpleType>
+                              </xs:attribute>
+                              <xs:attribute name="PrimaryGuest_Id" msprop:Generator_UserColumnName="PrimaryGuest_Id" msprop:Generator_ColumnVarNameInTable="columnPrimaryGuest_Id" msprop:Generator_ColumnPropNameInRow="PrimaryGuest_Id" msprop:Generator_ColumnPropNameInTable="PrimaryGuest_IdColumn" type="xs:int" use="prohibited" />
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="Country" msprop:Generator_UserTableName="Country" msprop:Generator_RowDeletedName="CountryRowDeleted" msprop:Generator_TableClassName="CountryDataTable" msprop:Generator_RowChangedName="CountryRowChanged" msprop:Generator_RowClassName="CountryRow" msprop:Generator_RowChangingName="CountryRowChanging" msprop:Generator_RowEvArgName="CountryRowChangeEvent" msprop:Generator_RowEvHandlerName="CountryRowChangeEventHandler" msprop:Generator_TablePropName="Country" msprop:Generator_TableVarName="tableCountry" msprop:Generator_RowDeletingName="CountryRowDeleting" minOccurs="0" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:attribute name="countrycode" msprop:Generator_UserColumnName="countrycode" msprop:Generator_ColumnPropNameInRow="countrycode" msprop:nullValue="_empty" msprop:Generator_ColumnVarNameInTable="columncountrycode" msprop:Generator_ColumnPropNameInTable="countrycodeColumn" type="xs:string" default="US" />
+                              <xs:attribute name="countryname" msprop:Generator_UserColumnName="countryname" msprop:Generator_ColumnPropNameInRow="countryname" msprop:nullValue="_empty" msprop:Generator_ColumnVarNameInTable="columncountryname" msprop:Generator_ColumnPropNameInTable="countrynameColumn" type="xs:string" default="" />
+                              <xs:attribute name="PrimaryGuest_Id" msprop:Generator_UserColumnName="PrimaryGuest_Id" msprop:Generator_ColumnPropNameInRow="PrimaryGuest_Id" msprop:Generator_ColumnVarNameInTable="columnPrimaryGuest_Id" msprop:Generator_ColumnPropNameInTable="PrimaryGuest_IdColumn" type="xs:int" use="prohibited" />
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="PrimaryGuest_Id" msdata:AutoIncrement="true" msprop:Generator_UserColumnName="PrimaryGuest_Id" msprop:Generator_ColumnVarNameInTable="columnPrimaryGuest_Id" msprop:Generator_ColumnPropNameInRow="PrimaryGuest_Id" msprop:Generator_ColumnPropNameInTable="PrimaryGuest_IdColumn" type="xs:int" msdata:AllowDBNull="false" use="prohibited" />
+                        <xs:attribute name="Reservation_Id" msprop:Generator_UserColumnName="Reservation_Id" msprop:Generator_ColumnVarNameInTable="columnReservation_Id" msprop:Generator_ColumnPropNameInRow="Reservation_Id" msprop:Generator_ColumnPropNameInTable="Reservation_IdColumn" type="xs:int" use="prohibited" />
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="PaymentCard" msprop:Generator_UserTableName="PaymentCard" msprop:Generator_RowDeletedName="PaymentCardRowDeleted" msprop:Generator_RowChangedName="PaymentCardRowChanged" msprop:Generator_RowClassName="PaymentCardRow" msprop:Generator_RowChangingName="PaymentCardRowChanging" msprop:Generator_RowEvArgName="PaymentCardRowChangeEvent" msprop:Generator_RowEvHandlerName="PaymentCardRowChangeEventHandler" msprop:Generator_TableClassName="PaymentCardDataTable" msprop:Generator_TableVarName="tablePaymentCard" msprop:Generator_RowDeletingName="PaymentCardRowDeleting" msprop:Generator_TablePropName="PaymentCard" minOccurs="0" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="CardHolder_x0020_" msprop:Generator_UserTableName="CardHolder " msprop:Generator_RowDeletedName="CardHolder_RowDeleted" msprop:Generator_RowChangedName="CardHolder_RowChanged" msprop:Generator_RowClassName="CardHolder_Row" msprop:Generator_RowChangingName="CardHolder_RowChanging" msprop:Generator_RowEvArgName="CardHolder_RowChangeEvent" msprop:Generator_RowEvHandlerName="CardHolder_RowChangeEventHandler" msprop:Generator_TableClassName="CardHolder_DataTable" msprop:Generator_TableVarName="tableCardHolder_" msprop:Generator_RowDeletingName="CardHolder_RowDeleting" msprop:Generator_TablePropName="CardHolder_" minOccurs="0" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:attribute name="name" msprop:Generator_UserColumnName="name" msprop:Generator_ColumnVarNameInTable="columnname" msprop:Generator_ColumnPropNameInRow="name" msprop:Generator_ColumnPropNameInTable="nameColumn" type="xs:string" />
+                              <xs:attribute name="countrypostalCode" msprop:Generator_UserColumnName="countrypostalCode" msprop:Generator_ColumnVarNameInTable="columncountrypostalCode" msprop:Generator_ColumnPropNameInRow="countrypostalCode" msprop:Generator_ColumnPropNameInTable="countrypostalCodeColumn" type="xs:string" />
+                              <xs:attribute name="stateProv" msprop:Generator_UserColumnName="stateProv" msprop:Generator_ColumnVarNameInTable="columnstateProv" msprop:Generator_ColumnPropNameInRow="stateProv" msprop:Generator_ColumnPropNameInTable="stateProvColumn" type="xs:string" />
+                              <xs:attribute name="city" msprop:Generator_UserColumnName="city" msprop:Generator_ColumnVarNameInTable="columncity" msprop:Generator_ColumnPropNameInRow="city" msprop:Generator_ColumnPropNameInTable="cityColumn" type="xs:string" />
+                              <xs:attribute name="address" msprop:Generator_UserColumnName="address" msprop:Generator_ColumnVarNameInTable="columnaddress" msprop:Generator_ColumnPropNameInRow="address" msprop:Generator_ColumnPropNameInTable="addressColumn" type="xs:string" />
+                              <xs:attribute name="PaymentCard_Id" msprop:Generator_UserColumnName="PaymentCard_Id" msprop:Generator_ColumnVarNameInTable="columnPaymentCard_Id" msprop:Generator_ColumnPropNameInRow="PaymentCard_Id" msprop:Generator_ColumnPropNameInTable="PaymentCard_IdColumn" type="xs:int" use="prohibited" />
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="cardCode" msprop:Generator_UserColumnName="cardCode" msprop:Generator_ColumnVarNameInTable="columncardCode" msprop:Generator_ColumnPropNameInRow="cardCode" msprop:Generator_ColumnPropNameInTable="cardCodeColumn" type="xs:string" />
+                        <xs:attribute name="expireDate" msprop:Generator_UserColumnName="expireDate" msprop:Generator_ColumnVarNameInTable="columnexpireDate" msprop:Generator_ColumnPropNameInRow="expireDate" msprop:Generator_ColumnPropNameInTable="expireDateColumn" type="xs:string" />
+                        <xs:attribute name="cardNumber" msprop:Generator_UserColumnName="cardNumber" msprop:Generator_ColumnVarNameInTable="columncardNumber" msprop:Generator_ColumnPropNameInRow="cardNumber" msprop:Generator_ColumnPropNameInTable="cardNumberColumn" type="xs:string" />
+                        <xs:attribute name="seriesCode" msprop:Generator_UserColumnName="seriesCode" msprop:Generator_ColumnVarNameInTable="columnseriesCode" msprop:Generator_ColumnPropNameInRow="seriesCode" msprop:Generator_ColumnPropNameInTable="seriesCodeColumn" type="xs:string" />
+                        <xs:attribute name="PaymentCard_Id" msdata:AutoIncrement="true" msprop:Generator_UserColumnName="PaymentCard_Id" msprop:Generator_ColumnVarNameInTable="columnPaymentCard_Id" msprop:Generator_ColumnPropNameInRow="PaymentCard_Id" msprop:Generator_ColumnPropNameInTable="PaymentCard_IdColumn" type="xs:int" msdata:AllowDBNull="false" use="prohibited" />
+                        <xs:attribute name="Reservation_Id" msprop:Generator_UserColumnName="Reservation_Id" msprop:Generator_ColumnVarNameInTable="columnReservation_Id" msprop:Generator_ColumnPropNameInRow="Reservation_Id" msprop:Generator_ColumnPropNameInTable="Reservation_IdColumn" type="xs:int" use="prohibited" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="ConfirmNumber" msprop:Generator_UserColumnName="ConfirmNumber" msprop:Generator_ColumnVarNameInTable="columnConfirmNumber" msprop:Generator_ColumnPropNameInRow="ConfirmNumber" msprop:Generator_ColumnPropNameInTable="ConfirmNumberColumn" type="xs:string" use="required" />
+                  <xs:attribute name="ActionCode" msprop:Generator_UserColumnName="ActionCode" msprop:Generator_ColumnVarNameInTable="columnActionCode" msprop:Generator_ColumnPropNameInRow="ActionCode" msprop:Generator_ColumnPropNameInTable="ActionCodeColumn" use="required">
+                    <xs:simpleType>
+                      <xs:restriction base="xs:string" />
+                    </xs:simpleType>
+                  </xs:attribute>
+                  <xs:attribute name="RegisterDate" msprop:Generator_UserColumnName="RegisterDate" msprop:Generator_ColumnVarNameInTable="columnRegisterDate" msprop:Generator_ColumnPropNameInRow="RegisterDate" msprop:Generator_ColumnPropNameInTable="RegisterDateColumn" type="xs:string" use="required" />
+                  <xs:attribute name="ChannelD" msprop:Generator_UserColumnName="ChannelD" msprop:Generator_ColumnVarNameInTable="columnChannelD" msprop:Generator_ColumnPropNameInRow="ChannelD" msprop:Generator_ColumnPropNameInTable="ChannelDColumn">
+                    <xs:simpleType>
+                      <xs:restriction base="xs:string" />
+                    </xs:simpleType>
+                  </xs:attribute>
+                  <xs:attribute name="sourceChannel" msprop:Generator_UserColumnName="sourceChannel" msprop:Generator_ColumnVarNameInTable="columnsourceChannel" msprop:Generator_ColumnPropNameInRow="sourceChannel" msprop:Generator_ColumnPropNameInTable="sourceChannelColumn" use="required">
+                    <xs:simpleType>
+                      <xs:restriction base="xs:string" />
+                    </xs:simpleType>
+                  </xs:attribute>
+                  <xs:attribute name="IdBoking" msprop:Generator_UserColumnName="IdBoking" msprop:Generator_ColumnVarNameInTable="columnIdBoking" msprop:Generator_ColumnPropNameInRow="IdBoking" msprop:Generator_ColumnPropNameInTable="IdBokingColumn" type="xs:string" />
+                  <xs:attribute name="Reservation_Id" msdata:AutoIncrement="true" msprop:Generator_UserColumnName="Reservation_Id" msprop:Generator_ColumnVarNameInTable="columnReservation_Id" msprop:Generator_ColumnPropNameInRow="Reservation_Id" msprop:Generator_ColumnPropNameInTable="Reservation_IdColumn" type="xs:int" msdata:AllowDBNull="false" use="prohibited" />
+                  <xs:attribute name="Reservations_Id" msprop:Generator_UserColumnName="Reservations_Id" msprop:Generator_ColumnVarNameInTable="columnReservations_Id" msprop:Generator_ColumnPropNameInRow="Reservations_Id" msprop:Generator_ColumnPropNameInTable="Reservations_IdColumn" type="xs:int" use="prohibited" />
+                  <xs:attribute name="WsActive" msprop:Generator_UserColumnName="WsActive" msprop:Generator_ColumnVarNameInTable="columnWsActive" msprop:Generator_ColumnPropNameInRow="WsActive" msprop:Generator_ColumnPropNameInTable="WsActiveColumn" type="xs:string" default="0" />
+                  <xs:attribute name="Status" msprop:Generator_UserColumnName="Status" msprop:Generator_ColumnVarNameInTable="columnStatus" msprop:Generator_ColumnPropNameInRow="Status" msprop:Generator_ColumnPropNameInTable="StatusColumn" type="xs:string" />
+                  <xs:attribute name="EmailReservation" msprop:Generator_UserColumnName="EmailReservation" msprop:Generator_ColumnVarNameInTable="columnEmailReservation" msprop:Generator_ColumnPropNameInRow="EmailReservation" msprop:Generator_ColumnPropNameInTable="EmailReservationColumn" type="xs:string" default="0" />
+                  <xs:attribute name="EmailReservationLanguage" msprop:Generator_UserColumnName="EmailReservationLanguage" msprop:Generator_ColumnVarNameInTable="columnEmailReservationLanguage" msprop:Generator_ColumnPropNameInRow="EmailReservationLanguage" msprop:Generator_ColumnPropNameInTable="EmailReservationLanguageColumn" type="xs:string" default="en-US" />
+                  <xs:attribute name="BankDeposit" msprop:Generator_UserColumnName="BankDeposit" msprop:Generator_ColumnPropNameInRow="BankDeposit" msprop:Generator_ColumnVarNameInTable="columnBankDeposit" msprop:Generator_ColumnPropNameInTable="BankDepositColumn" type="xs:string" default="0" />
+                  <xs:attribute name="ResGuaranteed" msprop:Generator_UserColumnName="ResGuaranteed" msprop:Generator_ColumnPropNameInRow="ResGuaranteed" msprop:Generator_ColumnVarNameInTable="columnResGuaranteed" msprop:Generator_ColumnPropNameInTable="ResGuaranteedColumn" type="xs:string" default="0" />
+                  <xs:attribute name="idportal" msprop:Generator_UserColumnName="idportal" msprop:nullValue="_empty" msprop:Generator_ColumnVarNameInTable="columnidportal" msprop:Generator_ColumnPropNameInTable="idportalColumn" msprop:Generator_ColumnPropNameInRow="idportal" type="xs:string" default="0" />
+                  <xs:attribute name="SourceCode" type="xs:string" default="0"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="Reservations_Id" msdata:AutoIncrement="true" msprop:Generator_UserColumnName="Reservations_Id" msprop:Generator_ColumnVarNameInTable="columnReservations_Id" msprop:Generator_ColumnPropNameInRow="Reservations_Id" msprop:Generator_ColumnPropNameInTable="Reservations_IdColumn" type="xs:int" msdata:AllowDBNull="false" use="prohibited" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Error" msprop:Generator_UserTableName="Error" msprop:Generator_RowDeletedName="ErrorRowDeleted" msprop:Generator_RowChangedName="ErrorRowChanged" msprop:Generator_RowClassName="ErrorRow" msprop:Generator_RowChangingName="ErrorRowChanging" msprop:Generator_RowEvArgName="ErrorRowChangeEvent" msprop:Generator_RowEvHandlerName="ErrorRowChangeEventHandler" msprop:Generator_TableClassName="ErrorDataTable" msprop:Generator_TableVarName="tableError" msprop:Generator_RowDeletingName="ErrorRowDeleting" msprop:Generator_TablePropName="_Error" maxOccurs="79228162514264337593543950335">
+          <xs:complexType>
+            <xs:attribute name="code" msprop:Generator_UserColumnName="code" msprop:Generator_ColumnVarNameInTable="columncode" msprop:Generator_ColumnPropNameInRow="code" msprop:Generator_ColumnPropNameInTable="codeColumn" use="required">
+              <xs:simpleType>
+                <xs:restriction base="xs:long" />
+              </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="Description" msprop:Generator_UserColumnName="Description" msprop:Generator_ColumnVarNameInTable="columnDescription" msprop:Generator_ColumnPropNameInRow="Description" msprop:Generator_ColumnPropNameInTable="DescriptionColumn" use="required">
+              <xs:simpleType>
+                <xs:restriction base="xs:string" />
+              </xs:simpleType>
+            </xs:attribute>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+    <xs:unique name="Rates_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//Rates" />
+      <xs:field xpath="@Rates_Id" />
+    </xs:unique>
+    <xs:unique name="RoomStay_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//RoomStay" />
+      <xs:field xpath="@RoomStay_Id" />
+    </xs:unique>
+    <xs:unique name="RoomStays_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//RoomStays" />
+      <xs:field xpath="@RoomStays_Id" />
+    </xs:unique>
+    <xs:unique name="PrimaryGuest_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//PrimaryGuest" />
+      <xs:field xpath="@PrimaryGuest_Id" />
+    </xs:unique>
+    <xs:unique name="PaymentCard_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//PaymentCard" />
+      <xs:field xpath="@PaymentCard_Id" />
+    </xs:unique>
+    <xs:unique name="Reservation_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//Reservation" />
+      <xs:field xpath="@Reservation_Id" />
+    </xs:unique>
+    <xs:unique name="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//Reservations" />
+      <xs:field xpath="@Reservations_Id" />
+    </xs:unique>
+    <xs:keyref name="Reservations_Reservation" refer="Constraint1" msdata:IsNested="true" msprop:rel_Generator_UserRelationName="Reservations_Reservation" msprop:rel_Generator_RelationVarName="relationReservations_Reservation" msprop:rel_Generator_UserChildTable="Reservation" msprop:rel_Generator_UserParentTable="Reservations" msprop:rel_Generator_ParentPropName="ReservationsRow" msprop:rel_Generator_ChildPropName="GetReservationRows">
+      <xs:selector xpath=".//Reservation" />
+      <xs:field xpath="@Reservations_Id" />
+    </xs:keyref>
+    <xs:keyref name="Reservation_PaymentCard" refer="Reservation_Constraint1" msdata:IsNested="true" msprop:rel_Generator_UserRelationName="Reservation_PaymentCard" msprop:rel_Generator_RelationVarName="relationReservation_PaymentCard" msprop:rel_Generator_UserChildTable="PaymentCard" msprop:rel_Generator_UserParentTable="Reservation" msprop:rel_Generator_ParentPropName="ReservationRow" msprop:rel_Generator_ChildPropName="GetPaymentCardRows">
+      <xs:selector xpath=".//PaymentCard" />
+      <xs:field xpath="@Reservation_Id" />
+    </xs:keyref>
+    <xs:keyref name="PaymentCard_CardHolder_x0020_" refer="PaymentCard_Constraint1" msdata:IsNested="true" msprop:rel_Generator_UserRelationName="PaymentCard_CardHolder " msprop:rel_Generator_RelationVarName="relationPaymentCard_CardHolder_" msprop:rel_Generator_UserChildTable="CardHolder " msprop:rel_Generator_UserParentTable="PaymentCard" msprop:rel_Generator_ParentPropName="PaymentCardRow" msprop:rel_Generator_ChildPropName="GetCardHolder_Rows">
+      <xs:selector xpath=".//CardHolder_x0020_" />
+      <xs:field xpath="@PaymentCard_Id" />
+    </xs:keyref>
+    <xs:keyref name="Reservation_PrimaryGuest" refer="Reservation_Constraint1" msdata:IsNested="true" msprop:rel_Generator_UserRelationName="Reservation_PrimaryGuest" msprop:rel_Generator_RelationVarName="relationReservation_PrimaryGuest" msprop:rel_Generator_UserChildTable="PrimaryGuest" msprop:rel_Generator_UserParentTable="Reservation" msprop:rel_Generator_ParentPropName="ReservationRow" msprop:rel_Generator_ChildPropName="GetPrimaryGuestRows">
+      <xs:selector xpath=".//PrimaryGuest" />
+      <xs:field xpath="@Reservation_Id" />
+    </xs:keyref>
+    <xs:keyref name="PrimaryGuest_Country" refer="PrimaryGuest_Constraint1" msdata:IsNested="true" msprop:rel_Generator_UserRelationName="PrimaryGuest_Country" msprop:rel_Generator_RelationVarName="relationPrimaryGuest_Country" msprop:rel_Generator_UserChildTable="Country" msprop:rel_Generator_UserParentTable="PrimaryGuest" msprop:rel_Generator_ParentPropName="PrimaryGuestRow" msprop:rel_Generator_ChildPropName="GetCountryRows">
+      <xs:selector xpath=".//Country" />
+      <xs:field xpath="@PrimaryGuest_Id" />
+    </xs:keyref>
+    <xs:keyref name="PrimaryGuest_Phone" refer="PrimaryGuest_Constraint1" msdata:IsNested="true" msprop:rel_Generator_UserRelationName="PrimaryGuest_Phone" msprop:rel_Generator_RelationVarName="relationPrimaryGuest_Phone" msprop:rel_Generator_UserChildTable="Phone" msprop:rel_Generator_UserParentTable="PrimaryGuest" msprop:rel_Generator_ParentPropName="PrimaryGuestRow" msprop:rel_Generator_ChildPropName="GetPhoneRows">
+      <xs:selector xpath=".//Phone" />
+      <xs:field xpath="@PrimaryGuest_Id" />
+    </xs:keyref>
+    <xs:keyref name="PrimaryGuest_Name" refer="PrimaryGuest_Constraint1" msdata:IsNested="true" msprop:rel_Generator_UserRelationName="PrimaryGuest_Name" msprop:rel_Generator_RelationVarName="relationPrimaryGuest_Name" msprop:rel_Generator_UserChildTable="Name" msprop:rel_Generator_UserParentTable="PrimaryGuest" msprop:rel_Generator_ParentPropName="PrimaryGuestRow" msprop:rel_Generator_ChildPropName="GetNameRows">
+      <xs:selector xpath=".//Name" />
+      <xs:field xpath="@PrimaryGuest_Id" />
+    </xs:keyref>
+    <xs:keyref name="Reservation_RoomStays" refer="Reservation_Constraint1" msdata:IsNested="true" msprop:rel_Generator_UserRelationName="Reservation_RoomStays" msprop:rel_Generator_RelationVarName="relationReservation_RoomStays" msprop:rel_Generator_UserChildTable="RoomStays" msprop:rel_Generator_UserParentTable="Reservation" msprop:rel_Generator_ParentPropName="ReservationRow" msprop:rel_Generator_ChildPropName="GetRoomStaysRows">
+      <xs:selector xpath=".//RoomStays" />
+      <xs:field xpath="@Reservation_Id" />
+    </xs:keyref>
+    <xs:keyref name="RoomStays_RoomStay" refer="RoomStays_Constraint1" msdata:IsNested="true" msprop:rel_Generator_UserRelationName="RoomStays_RoomStay" msprop:rel_Generator_RelationVarName="relationRoomStays_RoomStay" msprop:rel_Generator_UserChildTable="RoomStay" msprop:rel_Generator_UserParentTable="RoomStays" msprop:rel_Generator_ParentPropName="RoomStaysRow" msprop:rel_Generator_ChildPropName="GetRoomStayRows">
+      <xs:selector xpath=".//RoomStay" />
+      <xs:field xpath="@RoomStays_Id" />
+    </xs:keyref>
+    <xs:keyref name="RoomStay_Rates" refer="RoomStay_Constraint1" msdata:IsNested="true" msprop:rel_Generator_UserRelationName="RoomStay_Rates" msprop:rel_Generator_RelationVarName="relationRoomStay_Rates" msprop:rel_Generator_UserChildTable="Rates" msprop:rel_Generator_UserParentTable="RoomStay" msprop:rel_Generator_ParentPropName="RoomStayRow" msprop:rel_Generator_ChildPropName="GetRatesRows">
+      <xs:selector xpath=".//Rates" />
+      <xs:field xpath="@RoomStay_Id" />
+    </xs:keyref>
+    <xs:keyref name="Rates_DayRate" refer="Rates_Constraint1" msdata:IsNested="true" msprop:rel_Generator_UserRelationName="Rates_DayRate" msprop:rel_Generator_RelationVarName="relationRates_DayRate" msprop:rel_Generator_UserChildTable="DayRate" msprop:rel_Generator_UserParentTable="Rates" msprop:rel_Generator_ParentPropName="RatesRow" msprop:rel_Generator_ChildPropName="GetDayRateRows">
+      <xs:selector xpath=".//DayRate" />
+      <xs:field xpath="@Rates_Id" />
+    </xs:keyref>
+    <xs:keyref name="RoomStay_GuestCount" refer="RoomStay_Constraint1" msdata:IsNested="true" msprop:rel_Generator_UserRelationName="RoomStay_GuestCount" msprop:rel_Generator_RelationVarName="relationRoomStay_GuestCount" msprop:rel_Generator_UserChildTable="GuestCount" msprop:rel_Generator_UserParentTable="RoomStay" msprop:rel_Generator_ParentPropName="RoomStayRow" msprop:rel_Generator_ChildPropName="GetGuestCountRows">
+      <xs:selector xpath=".//GuestCount" />
+      <xs:field xpath="@RoomStay_Id" />
+    </xs:keyref>
+    <xs:keyref name="RoomStay_StayDate" refer="RoomStay_Constraint1" msdata:IsNested="true" msprop:rel_Generator_UserRelationName="RoomStay_StayDate" msprop:rel_Generator_RelationVarName="relationRoomStay_StayDate" msprop:rel_Generator_UserChildTable="StayDate" msprop:rel_Generator_UserParentTable="RoomStay" msprop:rel_Generator_ParentPropName="RoomStayRow" msprop:rel_Generator_ChildPropName="GetStayDateRows">
+      <xs:selector xpath=".//StayDate" />
+      <xs:field xpath="@RoomStay_Id" />
+    </xs:keyref>
+    <xs:keyref name="Reservation_Total" refer="Reservation_Constraint1" msdata:IsNested="true" msprop:rel_Generator_UserRelationName="Reservation_Total" msprop:rel_Generator_RelationVarName="relationReservation_Total" msprop:rel_Generator_UserChildTable="Total" msprop:rel_Generator_UserParentTable="Reservation" msprop:rel_Generator_ParentPropName="ReservationRow" msprop:rel_Generator_ChildPropName="GetTotalRows">
+      <xs:selector xpath=".//Total" />
+      <xs:field xpath="@Reservation_Id" />
+    </xs:keyref>
+    <xs:keyref name="Reservation_Hotel" refer="Reservation_Constraint1" msdata:IsNested="true" msprop:rel_Generator_UserRelationName="Reservation_Hotel" msprop:rel_Generator_RelationVarName="relationReservation_Hotel" msprop:rel_Generator_UserChildTable="Hotel" msprop:rel_Generator_UserParentTable="Reservation" msprop:rel_Generator_ParentPropName="ReservationRow" msprop:rel_Generator_ChildPropName="GetHotelRows">
+      <xs:selector xpath=".//Hotel" />
+      <xs:field xpath="@Reservation_Id" />
+    </xs:keyref>
+  </xs:element>
+</xs:schema>

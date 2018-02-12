@@ -1,0 +1,18 @@
+﻿UniVisit.com
+-----------------------------------------------------------------------------
+Registro de empresa
+-----------------------------------------------------------------------------
+
+Se ha registrado un nuevo hotel [HOTELNAME]
+
+Información del contacto
+
+Nombre: [CONTACTO]
+Teléfono: [CONTACTOTEL]
+Correo electrónico: [CONTACTOEMAIL]
+
+-----------------------------------------------------------------------------
+Este correo electrónico fue creado automáticamente por http://www.univisit.com UniVisit.com,
+no es requerida una respuesta.
+
+Si requiere soporte técnico, puede hacerlo a través de custsrvc@univisit.com.

@@ -1,0 +1,7 @@
+<RolesDataConfiguration>
+	<RolesData Data="loadAllHotels" roles="Supervisor,content"></RolesData>	
+	<RolesData Data="ShowCommisions" roles="Supervisor,content"></RolesData>	
+	<RolesData Data="RewriteOnePage" roles="Supervisor,content"></RolesData>	
+	<RolesData Data="UpdateStatus" roles="Supervisor,content"></RolesData>	
+</RolesDataConfiguration>
+	

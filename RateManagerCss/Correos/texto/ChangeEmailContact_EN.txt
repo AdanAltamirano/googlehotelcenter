@@ -1,0 +1,24 @@
+UniVisit.com
+-----------------------------------------------------------------------------
+Dear UniVisit.com  user,   
+
+We're writing to confirm that you've changed 
+the e-mail address on your Univisit account from 
+[OLDEMAILCONTAC] to [NEWEMAILCONTACT].
+
+We'll send all future correspondence to 
+[NEWEMAILCONTACT]
+
+Want to make a change? Just click the link below, sign in with your 
+User email and password, and make any necessary corrections.
+[URLPERFIL]
+
+Thank you,
+
+Staff Team Univisit
+
+-----------------------------------------------------------------------------
+This email was created automaticamente by UniVisit.com, does not 
+require answer of this email.
+
+if you need technical support, contact support@univisit.com

@@ -1,0 +1,14 @@
+11:54:58: Conversion from type 'DBNull' to type 'String' is not valid.   en Microsoft.VisualBasic.CompilerServices.Conversions.ToString(Object Value)
+   en RateManager.Promotions.GetAllRatePlans() en C:\Users\josenunez\Documents\Proyectos Univisit\RateManagerCss\RateManagerCss\RateManagerCss\HotelAdministrator\Pages\Promotions.aspx.vb:línea 267
+   en RateManager.Promotions.Page_Load(Object sender, EventArgs e) en C:\Users\josenunez\Documents\Proyectos Univisit\RateManagerCss\RateManagerCss\RateManagerCss\HotelAdministrator\Pages\Promotions.aspx.vb:línea 157
+   en System.EventHandler.Invoke(Object sender, EventArgs e)
+   en System.Web.UI.Control.OnLoad(EventArgs e)
+   en System.Web.UI.Control.LoadRecursive()
+   en System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+12:1:21: Conversion from type 'DBNull' to type 'String' is not valid.   en Microsoft.VisualBasic.CompilerServices.Conversions.ToString(Object Value)
+   en RateManager.Promotions.GetAllRatePlans() en C:\Users\josenunez\Documents\Proyectos Univisit\RateManagerCss\RateManagerCss\RateManagerCss\HotelAdministrator\Pages\Promotions.aspx.vb:línea 267
+   en RateManager.Promotions.Page_Load(Object sender, EventArgs e) en C:\Users\josenunez\Documents\Proyectos Univisit\RateManagerCss\RateManagerCss\RateManagerCss\HotelAdministrator\Pages\Promotions.aspx.vb:línea 157
+   en System.EventHandler.Invoke(Object sender, EventArgs e)
+   en System.Web.UI.Control.OnLoad(EventArgs e)
+   en System.Web.UI.Control.LoadRecursive()
+   en System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)

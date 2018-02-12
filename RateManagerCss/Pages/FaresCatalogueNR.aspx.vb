@@ -1,0 +1,788 @@
+Imports System.Runtime.Serialization
+Imports Portal.Hotel.Common.Data
+Imports Portal.Hotel.Facade
+Imports Portal.General.Common.Data
+Imports Portal.General.DataAccess
+Imports Portal.General.Facade
+Imports Portal.General.Common
+
+Partial Class FaresCatalogueNR
+    Inherits PaginaBase
+    Enum dgcolumns
+        codigohabitacion
+        idtipohabitacion_hotel
+        FechaInicia
+        FechaFinaliza
+        RatePlan
+        MinRate
+        MaxRate
+        CurrencyCode
+        chanel
+        Plan
+        Edit
+        Delete
+        idTarifa
+        rategds
+        rateportal
+        rateUnip
+        rateADS
+    End Enum
+    Const KEY_MINPRICE As String = "mintarifaAdulto"
+    Const KEY_MAXPRICE As String = "maxtarifaAdulto"
+    Private Property dsRooms() As RoomsHotelData
+        Get
+            Return Session("_dsrooms")
+        End Get
+        Set(ByVal Value As RoomsHotelData)
+            Session("_dsrooms") = Value
+        End Set
+    End Property
+    Private Property idroom() As Integer
+        Get
+            Return viewstate("_idRoom")
+        End Get
+        Set(ByVal Value As Integer)
+            viewstate("_idRoom") = Value
+        End Set
+    End Property
+    Private Property room() As String
+        Get
+            Return viewstate("_Room")
+        End Get
+        Set(ByVal Value As String)
+            viewstate("_Room") = Value
+        End Set
+    End Property
+    Public ReadOnly Property IdDg() As String
+        Get
+            Return Me.CtrlPlanFares2.iddg
+        End Get
+    End Property
+    Public ReadOnly Property IdDgAdult() As String
+        Get
+            Return Me.CtrlPlanFares2.iddgAdult
+        End Get
+    End Property
+    Public ReadOnly Property IdDgChild() As String
+        Get
+            Return Me.CtrlPlanFares2.iddgChild
+        End Get
+    End Property
+
+    Public ReadOnly Property IdDgTeen() As String
+        Get
+            Return Me.CtrlPlanFares2.iddgTeen
+        End Get
+    End Property
+
+    Public ReadOnly Property IdTextBoxPorcMax() As String
+        Get
+            Return Me.CtrRateAplication1.m_TextBoxPorcMax
+        End Get
+    End Property
+
+    Public ReadOnly Property IdTextBoxPorcMin() As String
+        Get
+            Return Me.CtrRateAplication1.m_TextBoxPorcMin
+        End Get
+    End Property
+
+    Property Editando() As Boolean
+        Get
+            Return ViewState("Editando")
+        End Get
+        Set(ByVal Value As Boolean)
+            ViewState("Editando") = Value
+        End Set
+    End Property
+
+
+    'Public Property SourceName() As String
+    '    Get
+    '        Return viewstate("_SN")
+    '    End Get
+    '    Set(ByVal Value As String)
+    '        viewstate("_SN") = Value
+    '    End Set
+    'End Property
+
+
+    'Public Property SourceRateName() As String
+    '    Get
+    '        Return viewstate("_SRN")
+
+    '    End Get
+    '    Set(ByVal Value As String)
+    '        viewstate("_SRN") = Value
+    '        Me.CtrRateAplication1.SourceRateName = Value
+    '    End Set
+    'End Property
+
+
+#Region " Código generado por el Diseñador de Web Forms "
+
+    'El Diseñador de Web Forms requiere esta llamada.
+    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+
+    End Sub
+    Protected WithEvents Label1 As System.Web.UI.WebControls.Label
+    Protected WithEvents DropDownList1 As System.Web.UI.WebControls.DropDownList
+    Protected WithEvents CtrlPlanFaresExc2 As CtrlPlanFaresExcNR
+    Protected WithEvents CtrlPlanFares2 As ctrlPlanFaresNR
+    Protected WithEvents CtrRateAplication1 As ctrRateAplicationNR
+    Protected WithEvents CtlMensajes1 As ctlMensajes
+    'NOTA: el Diseñador de Web Forms necesita la siguiente declaración del marcador de posición.
+    'No se debe eliminar o mover.
+    Private designerPlaceholderDeclaration As System.Object
+
+    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        'CODEGEN: el Diseñador de Web Forms requiere esta llamada de método
+        'No la modifique con el editor de código.
+        InitializeComponent()
+    End Sub
+
+#End Region
+
+    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        'Introducir aquí el código de usuario para inicializar la página
+        If Not MyBase.IsHotelSelected Then MyBase.redirectTo(PaginaBase.pages.Home)
+        CtrRateAplication1.m_iHotelId = Me.cInfoActual.Hotel
+        CtrRateAplication1.setPorcMinMax()
+        CtrlPlanFares2.m_TextBoxPorcMax = Me.IdTextBoxPorcMax
+        CtrlPlanFares2.m_TextBoxPorcMin = Me.IdTextBoxPorcMin
+        CtrlPlanFaresExc2.m_TextBoxPorcMax = Me.IdTextBoxPorcMax
+        CtrlPlanFaresExc2.m_TextBoxPorcMin = Me.IdTextBoxPorcMin
+
+        If Not IsPostBack Then
+            Editando = False
+            Me.CtrRateAplication1.MinPercentControlId = Me.CtrlPlanFares2.MinStorageControlId
+            Me.CtrRateAplication1.MinPercentControlId = Me.CtrlPlanFaresExc2.MinStorageControlId
+            Me.CtrRateAplication1.MaxPercentControlId = Me.CtrlPlanFares2.MaxStorageControlId
+            Me.CtrRateAplication1.MaxPercentControlId = Me.CtrlPlanFaresExc2.MaxStorageControlId
+
+            lblPriceError.Visible = False
+            lblError.Visible = False
+            hplShowRates.Style.Add("display", "none")
+            hplShowRates.Visible = False
+            hplHideRates.Style.Add("display", "none")
+            hplHideRates.Visible = False
+
+            loadDatos()
+            idroom = Request.QueryString("Room")
+            If idroom <> 0 Then
+                Me.ddlRooms.SelectedValue = idroom
+            Else
+                Try
+                    idroom = ddlRooms.SelectedValue
+                Catch ex As Exception
+                    idroom = 0
+                End Try
+            End If
+            btnLoad_Click(sender, e)
+            'Me.ddlRooms.Attributes.Add("onChange", "javascript:showRoomType('" & Me.ddlRooms.ClientID & "','" & Me.SourceName & "')")
+            'Me.ddlratesplans.Attributes.Add("onChange", "javascript:showRatePlan('" & Me.ddlratesplans.ClientID & "','" & Me.SourceRateName & "','" & lblRatePlan.ClientID & "')")
+            Me.hplHideRates.NavigateUrl = "javascript:Ocultar('0');"
+            hplShowRates.NavigateUrl = "javascript:Ocultar('1');"
+            cmdNew.Attributes.Add("onclick", String.Format("javascript:FireShow('{0}','{1}',{2});", pnlData.ClientID, cmdNew.ClientID, "true"))
+        End If
+
+        btnSave.Attributes.Add("onclick", String.Format("javascript:FireSave('{0}');", Me.CtrRateAplication1.GetClientID))
+        btnPublish.Attributes.Add("onclick", String.Format("javascript:FireSave('{0}');", Me.CtrRateAplication1.GetClientID))
+        btnNew.Attributes.Add("onclick", String.Format("javascript:FireSave('{0}');", Me.CtrRateAplication1.GetClientID))
+        Me.ResizefrmPrincipal()
+    End Sub
+
+    Private Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.PreRender
+        loadCulture()
+        CType(Me.Page, PaginaBase).Habilitaboton(permisos.Tarifas, Me.btnNew, "A")
+        'CType(Me.Page, PaginaBase).Habilitaboton(permisos.Tarifas, Me.btnDelete, "D")
+        Dim hpl As HyperLink
+        For Each i As DataGridItem In Me.dgRooms.Items
+            If i.ItemType = ListItemType.AlternatingItem Or i.ItemType = ListItemType.Item Then
+                Dim ibtnEdit As LinkButton = i.FindControl("lnkEdit")
+                CType(Me.Page, PaginaBase).Habilitaboton(permisos.Tarifas, ibtnEdit, "M")
+                hpl = i.FindControl("lnkDelete")
+                CType(Me.Page, PaginaBase).Habilitaboton(permisos.Tarifas, hpl, "D")
+            End If
+        Next
+
+
+
+    End Sub
+
+    Private Sub loadCulture()
+        lblTitle.Text = PortalCulture.GetString("01134")
+
+        If Editando Then
+            lblMsg.Text = String.Format("{0} {1}", PortalCulture.GetString("01250"), PortalCulture.GetString("01019"))
+        Else
+            lblMsg.Text = String.Format("{0} {1}", PortalCulture.GetString("00102"), PortalCulture.GetString("01134"))
+        End If
+
+        Me.lblEName.Text = PortalCulture.GetString("00170", True)
+        lblERatesPlans.Text = PortalCulture.GetString("00016", True)
+        If Me.idroom = 0 Then
+            Me.lblFaresTitle.Text = PortalCulture.GetString("00171") & PortalCulture.GetString("00423")
+        Else
+            Me.lblFaresTitle.Text = PortalCulture.GetString("00171") & " " & PortalCulture.GetString("00170") & " " & room
+        End If
+        Me.lblPreciosTarifa.Text = PortalCulture.GetString("00275")
+        Me.btnNew.Text = PortalCulture.GetString("00009")
+        Me.btnSave.Text = PortalCulture.GetString("00008")
+        Me.cmdNew.Value = PortalCulture.GetString("00102")
+        Me.dgRooms.PagerStyle.PrevPageText = "<< " & PortalCulture.GetString("00010")
+        Me.dgRooms.PagerStyle.NextPageText = PortalCulture.GetString("00011") & " >>"
+        Me.dgRooms.Columns(dgcolumns.FechaInicia).HeaderText = PortalCulture.GetString("00276")
+        Me.dgRooms.Columns(dgcolumns.FechaFinaliza).HeaderText = PortalCulture.GetString("00277")
+        Me.dgRooms.Columns(dgcolumns.RatePlan).HeaderText = PortalCulture.GetString("00016")
+        Me.dgRooms.Columns(dgcolumns.codigohabitacion).HeaderText = PortalCulture.GetString("00170")
+        Me.dgRooms.Columns(dgcolumns.MaxRate).HeaderText = PortalCulture.GetString("M000597")
+        Me.dgRooms.Columns(dgcolumns.MinRate).HeaderText = PortalCulture.GetString("M000598")
+        Me.dgRooms.Columns(dgcolumns.chanel).HeaderText = PortalCulture.GetString("00575")
+        Me.btnLoad.Text = PortalCulture.GetString("00149")
+        Me.hplShowRates.Text = PortalCulture.GetString("00280")
+        Me.hplHideRates.Text = PortalCulture.GetString("00281")
+        lblError.Text = PortalCulture.GetString("00634")
+        ddlRooms.Items(0).Text = PortalCulture.GetString("M000272")
+        Me.lblNoroomSelected.Text = PortalCulture.GetString("00436")
+        Me.lblPriceError.Text = PortalCulture.GetString("00682")
+        Me.chkOldDates.Text = PortalCulture.GetString("01050")
+        lblPricingNE.Text = PortalCulture.GetString("M000391")
+        lblPricingExc.Text = PortalCulture.GetString("M000402")
+    End Sub
+
+    Public Sub loadDatos()
+        Dim Rooms As New Portal.Hotel.Common.Data.RoomsHotelData
+        Dim RatesPlan As Portal.General.Common.Data.RatePlanData
+
+        With New Portal.Hotel.Facade.RoomFacade
+            Rooms = .getRooms(Me.cInfoActual.Hotel, PortalCulture.GetIDCulture)
+        End With
+        Rooms.Tables(Portal.Hotel.Common.Data.RoomsHotelData.TBL_ROOM_HOTEL).Columns.Add("texto", System.Type.GetType("System.String"), "substring(" & RoomsHotelData.FLD_ROOM_CODE & "+ ' ' + '--' + ' ' +" & RoomsHotelData.FLD_NOMBRE & ",1,25)")
+        RatesPlan = CtrRateAplication1.loadAllRatesplans(1)
+
+        Me.ddlratesplans.DataSource = RatesPlan
+        Me.ddlratesplans.DataValueField = Portal.General.Common.Data.RatePlanData.FIELD_IDRATEPLAN
+        Me.ddlratesplans.DataTextField = "texto" 'Portal.General.Common.Data.RatePlanData.FIELD_CODIGOTARIFA
+        Me.ddlratesplans.DataBind()
+
+
+        Me.ddlratesplans.Items.Insert(0, "Todos")
+        ddlratesplans.Items(0).Value = "0"
+        ddlratesplans.Items(0).Text = PortalCulture.GetString("00172")
+        ddlratesplans.SelectedIndex = 0
+
+        Dim links As New LinkRoomTypeData
+        With New LinkRoomsFacade
+            links = .getList(Me.cInfoActual.Hotel, PortalCulture.GetIDCulture)
+        End With
+
+        Dim dv As DataView
+        For Each r As DataRow In Rooms.Tables(Portal.Hotel.Common.Data.RoomsHotelData.TBL_ROOM_HOTEL).Rows
+            dv = links.Tables(LinkRoomTypeData.TABLE_LINKROOM).DefaultView
+            dv.RowFilter = LinkRoomTypeData.FIELD_TargetRoom & "=" & r(Portal.Hotel.Common.Data.RoomsHotelData.FLD_ID_ROOM_HOTEL)
+            If dv.Count > 0 Then
+                r.Delete()
+            End If
+        Next
+        Rooms.AcceptChanges()
+
+
+
+        ddlRooms.DataTextField = "texto" 'Rooms.FLD_ROOM_CODE
+        ddlRooms.DataValueField = Portal.Hotel.Common.Data.RoomsHotelData.FLD_ID_ROOM_HOTEL
+        ddlRooms.DataSource = Rooms
+        ddlRooms.DataBind()
+        ddlRooms.Items.Insert(0, PortalCulture.GetString("M000272"))
+        ddlRooms.Items(0).Value = 0
+
+        dsRooms = Rooms
+
+        'For i As Integer = 0 To Rooms.Tables(Rooms.TBL_ROOM_HOTEL).Rows.Count - 1
+        '    Me.SourceName &= "//" & Rooms.Tables(Rooms.TBL_ROOM_HOTEL).Rows(i).Item(Rooms.FLD_NOMBRE).ToString
+        'Next
+
+        Try
+            If ddlRooms.Items.Count > 1 Then
+                ddlRooms.SelectedIndex = 1
+            Else
+                ddlRooms.SelectedIndex = 0
+            End If
+            ' Me.lblRoomType.Text = Rooms.Tables(Rooms.TBL_ROOM_HOTEL).Rows(0).Item(Rooms.FLD_NOMBRE).ToString
+            idroom = ddlRooms.SelectedValue
+            Dim ci As System.Globalization.CultureInfo
+            ci = System.Threading.Thread.CurrentThread.CurrentCulture
+            System.Threading.Thread.CurrentThread.CurrentCulture = New System.Globalization.CultureInfo(PortalCulture.GetCulture.ToString)
+            Me.dgRooms.DataSource = GetRoomFares()
+            Me.dgRooms.DataBind()
+            System.Threading.Thread.CurrentThread.CurrentCulture = ci
+            newFare()
+        Catch ex As Exception
+            '     Me.lblRoomType.Text = "-"
+        End Try
+    End Sub
+
+    Private Sub dgRooms_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles dgRooms.ItemDataBound
+        If e.Item.ItemType = ListItemType.AlternatingItem Or e.Item.ItemType = ListItemType.Item Or e.Item.ItemType = ListItemType.SelectedItem Then
+            Dim lk As LinkButton
+            Dim lbl As Label
+            lk = e.Item.FindControl("lnkEdit")
+            lk.Text = PortalCulture.GetString("00065")
+            e.Item.Cells(dgcolumns.FechaInicia).Text = CDate(e.Item.Cells(dgcolumns.FechaInicia).Text).ToString("MMM/dd/yyyy")
+            e.Item.Cells(dgcolumns.FechaFinaliza).Text = CDate(e.Item.Cells(dgcolumns.FechaFinaliza).Text).ToString("MMM/dd/yyyy")
+            lk = e.Item.FindControl("lnkDelete2")
+            Dim hpl As HyperLink = e.Item.FindControl("lnkDelete")
+            hpl.Text = PortalCulture.GetString("00103")
+            hpl.NavigateUrl = Me.CtlMensajes1.getShow(lk.ClientID, PortalCulture.GetString("01134"), PortalCulture.GetString("00467"))
+            If e.Item.Cells(dgcolumns.MinRate).Text <> "&nbsp;" Then e.Item.Cells(dgcolumns.MinRate).Text = FCurrency(e.Item.Cells(dgcolumns.MinRate).Text, 2)
+            If e.Item.Cells(dgcolumns.MaxRate).Text <> "&nbsp;" Then e.Item.Cells(dgcolumns.MaxRate).Text = FCurrency(e.Item.Cells(dgcolumns.MaxRate).Text, 2)
+            lbl = e.Item.Cells(dgcolumns.chanel).FindControl("lblchanel")
+            If e.Item.Cells(dgcolumns.rateUnip).Text = "True" Then
+                lbl.Text = "One Page"
+            End If
+            If e.Item.Cells(dgcolumns.rateportal).Text = "True" Then
+                lbl.Text &= IIf(lbl.Text <> "", " - " & "Portal", "Portal")
+            End If
+            If e.Item.Cells(dgcolumns.rategds).Text = "True" Then
+                lbl.Text &= IIf(lbl.Text <> "", " - " & "GDS", "GDS")
+            End If
+            If e.Item.Cells(dgcolumns.rateADS).Text = "True" Then
+                lbl.Text &= IIf(lbl.Text <> "", " - " & "ADS", "ADS")
+            End If
+            lbl = e.Item.FindControl("glblRatePlanName")
+            lbl.Text = ""
+            If Not DataBinder.Eval(e.Item.DataItem, "coderateplan") Is DBNull.Value Then
+                lbl.Text = DataBinder.Eval(e.Item.DataItem, "coderateplan")
+            End If
+            If Not DataBinder.Eval(e.Item.DataItem, "NameRatePlan") Is DBNull.Value Then
+                If lbl.Text.Trim <> "" Then lbl.Text += " -- "
+                lbl.Text += DataBinder.Eval(e.Item.DataItem, "NameRatePlan")
+            End If
+        End If
+        If e.Item.ItemType = ListItemType.Header Then
+            e.Item.Cells(dgcolumns.FechaInicia).Text = PortalCulture.GetString("00276")
+            e.Item.Cells(dgcolumns.FechaFinaliza).Text = PortalCulture.GetString("00277")
+            e.Item.Cells(dgcolumns.codigohabitacion).Text = PortalCulture.GetString("00170")
+            e.Item.Cells(dgcolumns.RatePlan).Text = PortalCulture.GetString("00016")
+            e.Item.Cells(dgcolumns.MaxRate).Text = PortalCulture.GetString("M000597")
+            e.Item.Cells(dgcolumns.MinRate).Text = PortalCulture.GetString("M000598")
+            e.Item.Cells(dgcolumns.chanel).Text = PortalCulture.GetString("00575")
+
+        ElseIf e.Item.ItemType = ListItemType.Footer Then
+            e.Item.Cells(dgcolumns.Delete).Text = CType(dgRooms.DataSource, DataView).Count & " " & PortalCulture.GetString("00268")
+        End If
+    End Sub
+
+    Private Function GetRoomFares() As DataView
+
+        Dim datFares As FaresData
+        Dim idAsoc As Integer = Me.GetIdAsociation
+
+        If Me.idroom <> 0 Then
+            With New FaresSystem
+                datFares = .GetFaresByRoomTypeId(CInt(Me.idroom), PortalCulture.GetIDCulture, Me.chkOldDates.Checked, 1,idAsociacion:=idAsoc)                
+            End With
+            datFares.Tables(FaresData.FARES_TABLE).Columns.Add("MaxPrice", GetType(System.Double))
+            datFares.Tables(FaresData.FARES_TABLE).Columns.Add("MinPrice", GetType(System.Double))
+
+            Dim dvFares As DataView
+            dvFares = datFares.Tables(FaresData.FARES_TABLE).DefaultView
+
+            'dvFares.RowFilter = " tipotarifa <>'K' "
+            If Me.ddlratesplans.SelectedIndex <> 0 Then
+                dvFares.RowFilter &= FaresData.IDRATEPLAN_FIELD & "='" & ddlratesplans.SelectedItem.Value & "'"
+            Else
+                dvFares.RowFilter &= " packagetype = 0"
+            End If
+
+            Dim dv As New DataView
+            For Each dvr As DataRowView In dvFares
+                dv = datFares.Tables(1).DefaultView
+                dv.RowFilter = FaresData.PKIDFARES_FIELD & "=" & dvr(FaresData.PKIDFARES_FIELD)
+                If dv.Count > 0 Then
+                    dvr("MinPrice") = dv(0)(KEY_MINPRICE)
+                    dvr("MaxPrice") = dv(0)(KEY_MAXPRICE)
+                Else
+                    dvr("MinPrice") = dvr(FaresData.PRICE_FIELD)
+                    dvr("MaxPrice") = dvr(FaresData.PRICE_FIELD)
+                End If
+            Next
+
+            Return dvFares
+        Else
+            Return Nothing
+        End If
+
+    End Function
+
+
+    Private Sub btnLoad_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnLoad.Click
+        Try
+            idroom = ddlRooms.SelectedValue
+            room = ddlRooms.SelectedItem.Text
+        Catch ex As Exception
+            idroom = 0
+        End Try
+        dgRooms.CurrentPageIndex = 0
+        dgRooms.SelectedIndex = -1
+        Dim ci As System.Globalization.CultureInfo
+        ci = System.Threading.Thread.CurrentThread.CurrentCulture
+        System.Threading.Thread.CurrentThread.CurrentCulture = New System.Globalization.CultureInfo(PortalCulture.GetCulture.ToString)
+        Me.dgRooms.DataSource = GetRoomFares()
+        Me.dgRooms.DataBind()
+        System.Threading.Thread.CurrentThread.CurrentCulture = ci
+        newFare()
+        Me.CtrRateAplication1.Segment(ddlratesplans.SelectedValue)
+        Me.CtrRateAplication1.LoadRooms(idroom)
+        'Leemos los valores del porcentaje maximo y minimo
+
+
+    End Sub
+
+    Public Function GetFareRestrictions() As FaresRestrictionsData
+        CtrlPlanFaresExc2.FieldException = "NNNNNNN"
+        If CtrRateAplication1.m_iFareId <> 0 Then
+            CtrlPlanFaresExc2.FieldException = CtrRateAplication1.Exceptions
+        End If
+        Return Me.CtrlPlanFares2.GetFareRestrictions()
+    End Function
+
+    Protected ReadOnly Property RateModeView() As Integer
+        Get
+            Dim value As Integer = 0
+
+            If IsSupervisor Then
+
+
+                If (Not Me.CtrlPlanFares2.IsFareValuesEqualTo("Adult", Me.CtrRateAplication1.GetFareFor("Adult", False), False) _
+                    OrElse _
+                    Not Me.CtrlPlanFares2.IsFareValuesEqualTo("Children", Me.CtrRateAplication1.GetFareFor("Child", False), False) _
+                    OrElse _
+                    Not Me.CtrlPlanFares2.IsFareValuesEqualTo("Teen", Me.CtrRateAplication1.GetFareFor("Teen", False), False) _
+                     OrElse (Me.CtrlPlanFaresExc2.FieldException <> "NNNNNNN" _
+                        AndAlso (Not Me.CtrlPlanFaresExc2.IsFareValuesEqualTo("Adult", Me.CtrRateAplication1.GetFareFor("Adult", False), False) _
+                        OrElse _
+                        Not Me.CtrlPlanFaresExc2.IsFareValuesEqualTo("Children", Me.CtrRateAplication1.GetFareFor("Child", False), False) _
+                        OrElse _
+                        Not Me.CtrlPlanFaresExc2.IsFareValuesEqualTo("Teen", Me.CtrRateAplication1.GetFareFor("Teen", False), False) _
+                        ) _
+                ) _
+                ) Then
+                    value = 1
+                End If
+
+
+
+            End If
+            If (Not Me.CtrlPlanFares2.IsFareValuesEqualTo("Adult", Me.CtrRateAplication1.GetFareFor("Adult", True), True) _
+                    OrElse _
+                    Not Me.CtrlPlanFares2.IsFareValuesEqualTo("Children", Me.CtrRateAplication1.GetFareFor("Child", True), True) _
+                    OrElse _
+                    Not Me.CtrlPlanFares2.IsFareValuesEqualTo("Teen", Me.CtrRateAplication1.GetFareFor("Teen", True), True) _
+                OrElse _
+             (Me.CtrlPlanFaresExc2.FieldException <> "NNNNNNN" _
+               AndAlso (Not Me.CtrlPlanFaresExc2.IsFareValuesEqualTo("Adult", Me.CtrRateAplication1.GetFareFor("Adult", True), True) _
+               OrElse _
+               Not Me.CtrlPlanFaresExc2.IsFareValuesEqualTo("Children", Me.CtrRateAplication1.GetFareFor("Child", True), True) _
+               OrElse _
+               Not Me.CtrlPlanFaresExc2.IsFareValuesEqualTo("Teen", Me.CtrRateAplication1.GetFareFor("Teen", True), True) _
+           ))) Then
+                value = 1
+            End If
+
+
+            Return value
+        End Get
+    End Property
+
+    Private Sub dgRooms_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles dgRooms.ItemCommand
+        Dim iFareId As Integer = 0
+        If e.CommandName = "Edit" Then
+
+            Try
+                iFareId = Integer.Parse(e.Item.Cells(dgcolumns.idTarifa).Text)
+            Catch ex As Exception
+                Return
+            End Try
+
+            lblPriceError.Visible = False
+            newFare()
+            Me.idroom = Integer.Parse(e.Item.Cells(dgcolumns.idtipohabitacion_hotel).Text)
+            Me.dgRooms.SelectedIndex = e.Item.ItemIndex
+            Me.CtrRateAplication1.m_iFareId = iFareId
+            Me.CtrRateAplication1.m_iHotelId = Me.cInfoActual.Hotel
+            Me.CtrRateAplication1.LoadFare(iFareId, 0)
+            Me.CtrlPlanFares2.m_iRoomId = Integer.Parse(e.Item.Cells(dgcolumns.idtipohabitacion_hotel).Text)
+            Me.CtrlPlanFares2.m_iFareId = iFareId
+            Me.CtrlPlanFares2.ReFill()
+            Me.CtrlPlanFaresExc2.ReFill()
+            pnlData.Style.Add("display", "")
+            cmdNew.Style.Add("display", "none")
+            Editando = True
+        ElseIf e.CommandName = "Delete" Then
+
+            iFareId = Integer.Parse(dgRooms.Items(e.Item.ItemIndex).Cells(dgcolumns.idTarifa).Text)
+            With New FaresSystem
+                If .DeleteFares(iFareId) Then
+                    Me.guardalog("/Pages/FaresCatalogue.aspx", PaginaBase.acciones.Eliminar, "Se eliminó la tarifa de la habitación " & dgRooms.Items(e.Item.ItemIndex).Cells(dgcolumns.codigohabitacion).Text & " de la fecha " & dgRooms.Items(e.Item.ItemIndex).Cells(dgcolumns.FechaInicia).Text & " a la fecha " & dgRooms.Items(e.Item.ItemIndex).Cells(dgcolumns.FechaFinaliza).Text & " con el rateplan " & dgRooms.Items(e.Item.ItemIndex).Cells(dgcolumns.RatePlan).Text)
+                    If dgRooms.CurrentPageIndex > 0 And dgRooms.Items.Count = 1 Then
+                        dgRooms.CurrentPageIndex = ((dgRooms.CurrentPageIndex * dgRooms.PageSize) \ dgRooms.PageSize) - 1
+                    End If
+                    dgRooms.SelectedIndex = -1
+                    Dim ci As System.Globalization.CultureInfo
+                    ci = System.Threading.Thread.CurrentThread.CurrentCulture
+                    System.Threading.Thread.CurrentThread.CurrentCulture = New System.Globalization.CultureInfo(PortalCulture.GetCulture.ToString)
+                    Me.dgRooms.DataSource = GetRoomFares()
+                    Me.dgRooms.DataBind()
+                    System.Threading.Thread.CurrentThread.CurrentCulture = ci
+                    newFare()
+                End If
+            End With
+
+        End If
+    End Sub
+
+    Private Sub btnNew_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNew.Click
+        newFare()
+    End Sub
+    Private Sub actualizaidroom()
+        Try
+            idroom = ddlRooms.SelectedValue
+        Catch ex As Exception
+            idroom = 0
+            'Me.lblRoomType.Text = "-"
+        End Try
+        Me.CtrlPlanFares2.m_iRoomId = CInt(Me.idroom)
+    End Sub
+    Private Sub newFare()
+        actualizaidroom()
+        Me.lblNoroomSelected.Visible = False
+        Me.dgRooms.SelectedIndex = -1
+        Me.CtrRateAplication1.newFare()
+        Me.CtrlPlanFares2.m_iFareId = 0
+        Me.CtrlPlanFares2.ReFill()
+        Me.CtrlPlanFaresExc2.ReFill()
+        lblError.Visible = False
+        cmdNew.Style.Add("display", "")
+        pnlData.Style.Add("display", "none")
+        lblPriceError.Visible = False
+        Editando = False
+    End Sub
+
+
+    Public Shared Function ParseAbsolutePath(ByVal path As String, ByVal Prov As PortalPartnersCfg) As String
+        If (path.IndexOf("~") = 0) Then
+            path = path.Replace("~", "")
+            path = path.Replace("//", "/")
+        End If
+        Return Prov.UrlSite & path
+
+    End Function
+
+    Private Sub btnSave_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnSave.Click, btnPublish.Click
+        lblPriceError.Visible = False
+
+        Dim isValidFaresExc2 As Boolean = CtrlPlanFaresExc2.IsValidData
+        Dim isValidFares As Boolean = CtrlPlanFares2.IsValidData
+        Dim isValidNRpromo As Boolean = Me.CtrRateAplication1.IsValidData
+        Dim publish As Boolean = True '(CType(sender, Button).ID = Me.btnPublish.ID)
+        Dim lstFare As Queue(Of Double)
+        Dim scorreo As String
+
+        If isValidFaresExc2 AndAlso isValidFares AndAlso isValidNRpromo Then
+
+            If Me.idroom <> 0 Then
+                Me.lblNoroomSelected.Visible = False
+                If Page.IsValid Then
+                    lblError.Visible = False
+                    If CtrRateAplication1.lstDatesCount = 0 Then
+                        CtrRateAplication1.lstDatesAdd()
+                        'guardar con lo que estan en desde hasta
+
+                        If CDate(CtrRateAplication1.lstDatesItemI(1).Split("-")(1)) < CDate(CtrRateAplication1.lstDatesItemI(1).Split("-")(0)) Then
+                            lblError.Visible = True
+
+                            Exit Sub
+                        End If
+
+
+                    End If
+                    Dim _exito As Boolean = True
+                    Dim isNew As Boolean = (Me.CtrRateAplication1.m_iFareId = 0)
+                    '  actualizaidroom()
+                    Me.CtrlPlanFaresExc2.createFieldException()
+                    CtrRateAplication1.Exceptions = Me.CtrlPlanFaresExc2.FieldException()
+                    Dim chLast As String, rpLast As String = "", f1Last As String = "", f2Last As String = ""
+                    For i As Integer = 1 To CtrRateAplication1.lstDatesCount
+                        Dim f1, f2 As Date
+                        f1 = CDate(CtrRateAplication1.lstDatesItemI(i).Split("-")(0))
+                        f2 = CDate(CtrRateAplication1.lstDatesItemI(i).Split("-")(1))
+                        'cuando es modificación la primera se modifica pero las demas son add
+                        chLast = String.Empty
+                        rpLast = String.Empty
+                        f1Last = String.Empty
+                        f2Last = String.Empty
+                        If dgRooms.SelectedIndex <> -1 Then
+                            chLast = dgRooms.Items(dgRooms.SelectedIndex).Cells(dgcolumns.codigohabitacion).Text()
+                            rpLast = dgRooms.Items(dgRooms.SelectedIndex).Cells(dgcolumns.RatePlan).Text()
+                            f1Last = dgRooms.Items(dgRooms.SelectedIndex).Cells(dgcolumns.FechaInicia).Text()
+                            f2Last = dgRooms.Items(dgRooms.SelectedIndex).Cells(dgcolumns.FechaFinaliza).Text()
+                        Else
+                            chLast = ddlRooms.SelectedItem.Text
+                        End If
+
+                        Dim bPorOcupacion As Integer = RateModeView
+                        CtrlPlanFares2.TarifaMinima(lstFare)
+
+                        If CtrRateAplication1.AddFare(idroom, CtrRateAplication1.m_iFareId, f1, f2, chLast, rpLast, f1Last, f2Last, ddlRooms.SelectedItem.Text, publish, (bPorOcupacion = 1), lstFare, scorreo) = True Then
+                            CtrlPlanFares2.m_iFareId = CtrRateAplication1.m_iFareId
+                            CtrlPlanFares2.Save(rpLast, ddlRooms.SelectedItem.Text, scorreo, Me.CtrlPlanFaresExc2.getRatesExceptions())
+                            Me.dgRooms.SelectedIndex = -1
+                            '-------- Tarifas especiales -------------------------
+                            Me.CtrlPlanFares2.m_iRoomId = idroom
+                            Me.CtrlPlanFares2.m_iFareId = 0
+                            CtrRateAplication1.m_iFareId = 0
+                        Else
+                            _exito = False
+                            cmdNew.Style.Add("display", "none")
+                            pnlData.Style.Add("display", "")
+                        End If
+                    Next
+
+                    Dim ci As System.Globalization.CultureInfo
+                    ci = System.Threading.Thread.CurrentThread.CurrentCulture
+                    System.Threading.Thread.CurrentThread.CurrentCulture = New System.Globalization.CultureInfo(PortalCulture.GetCulture.ToString)
+                    Me.dgRooms.DataSource = GetRoomFares()
+                    Me.dgRooms.DataBind()
+                    System.Threading.Thread.CurrentThread.CurrentCulture = ci
+                    If _exito = True Then
+                        newFare()
+                        CtrRateAplication1.newFare()
+                        Me.CtrlPlanFares2.ReFill()
+                        Me.CtrlPlanFaresExc2.ReFill()
+
+                        If Not CType(Me.Page, PaginaBase).IsSupervisor Then
+                            Try
+                                Dim Mail As emailTemplates.Template = New emailTemplates.Template()
+
+                                Mail.Idioma = PortalCulture.GetCulture().ToString()
+                                Try
+                                    Mail.TemplateName = "TH_HotelNetRatesModified"
+                                Catch ex As Exception
+                                End Try
+                                Mail.Html = True
+
+                                If ConfigurationManager.AppSettings("RatesChangesNotificationMail") IsNot Nothing Then Mail.To = ConfigurationManager.AppSettings("RatesChangesNotificationMail")
+
+                                Dim Prov As New PortalPartnersCfg
+                                Prov.LoadPartnerById(2)
+
+                                Mail.AddParameter("HEADER") = Prov.EmailHeader
+                                Mail.AddParameter("FOOTER") = Prov.EmailFooter
+                                Mail.AddParameter("LINKCSS") = "<link href='" & ParseAbsolutePath(Prov.StyleSheets, Prov) & "correos.css' type='text/css' rel='stylesheet'>"
+
+                                Mail.AddParameter("HOTEL") = Me.cInfoActual.HotelName
+                                Mail.AddParameter("OPERATION") = If(isNew, "agregado una nueva", "cambiado una")
+                                Mail.AddParameter("ROOMCODE") = chLast
+                                Mail.AddParameter("RATECODE") = Me.CtrRateAplication1.RatePlanRow.RATECODE
+
+                                Mail.Send()
+
+                            Catch ex As Exception
+                            End Try
+                        End If
+                    End If
+                End If
+            Else
+                Me.lblNoroomSelected.Visible = True
+            End If
+        Else
+            If Not isValidFaresExc2 OrElse (Not isValidNRpromo AndAlso Me.CtrRateAplication1.SelectedddlShowRates = 1) Then
+
+                Page.ClientScript.RegisterStartupScript(Me.GetType(), "ShowPrice", "<script>optionSw('1E');</script>")
+            End If
+            If Not isValidFares OrElse (Not isValidNRpromo AndAlso CtrRateAplication1.SelectedddlShowRates = 1) Then
+
+                Page.ClientScript.RegisterStartupScript(Me.GetType(), "ShowPrice", "<script>optionSw('1P');</script>")
+            End If
+
+            lblPriceError.Visible = True
+            cmdNew.Style.Add("display", "none")
+            pnlData.Style.Add("display", "")
+        End If
+
+    End Sub
+
+    Private Sub dgRooms_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles dgRooms.PageIndexChanged
+        dgRooms.CurrentPageIndex = e.NewPageIndex
+        dgRooms.SelectedIndex = -1
+        Dim ci As System.Globalization.CultureInfo
+        ci = System.Threading.Thread.CurrentThread.CurrentCulture
+        System.Threading.Thread.CurrentThread.CurrentCulture = New System.Globalization.CultureInfo(PortalCulture.GetCulture.ToString)
+        Me.dgRooms.DataSource = GetRoomFares()
+        Me.dgRooms.DataBind()
+        System.Threading.Thread.CurrentThread.CurrentCulture = ci
+    End Sub
+
+    Private Sub btnDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Dim iFareId As Integer
+        iFareId = CtrRateAplication1.m_iFareId
+        With New FaresSystem
+            If .DeleteFares(iFareId) Then
+                Me.guardalog("/Pages/FaresCatalogue.aspx", PaginaBase.acciones.Eliminar, "Se eliminó la tarifa de la habitación " & dgRooms.Items(dgRooms.SelectedIndex).Cells(dgcolumns.codigohabitacion).Text & " de la fecha " & dgRooms.Items(dgRooms.SelectedIndex).Cells(dgcolumns.FechaInicia).Text & " a la fecha " & dgRooms.Items(dgRooms.SelectedIndex).Cells(dgcolumns.FechaFinaliza).Text & " con el rateplan " & dgRooms.Items(dgRooms.SelectedIndex).Cells(dgcolumns.RatePlan).Text)
+                If dgRooms.CurrentPageIndex > 0 And dgRooms.Items.Count = 1 Then
+                    dgRooms.CurrentPageIndex = ((dgRooms.CurrentPageIndex * dgRooms.PageSize) \ dgRooms.PageSize) - 1
+                End If
+                dgRooms.SelectedIndex = -1
+                Dim ci As System.Globalization.CultureInfo
+                ci = System.Threading.Thread.CurrentThread.CurrentCulture
+                System.Threading.Thread.CurrentThread.CurrentCulture = New System.Globalization.CultureInfo(PortalCulture.GetCulture.ToString)
+                Me.dgRooms.DataSource = GetRoomFares()
+                Me.dgRooms.DataBind()
+                System.Threading.Thread.CurrentThread.CurrentCulture = ci
+                btnNew_Click(sender, e)
+            End If
+        End With
+    End Sub
+
+    Private Sub dgRooms_ItemCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles dgRooms.ItemCreated
+        If e.Item.ItemType = ListItemType.Pager Then
+            If dgRooms.CurrentPageIndex > 0 Then
+                Dim prev As New System.Web.UI.WebControls.LinkButton
+                prev.CommandArgument = "Prev"
+                prev.CommandName = "Page"
+                prev.Text = "<&nbsp;" & PortalCulture.GetString("00010")
+                prev.CausesValidation = False
+                CType(e.Item.Controls(0), TableCell).Controls.AddAt(0, New System.Web.UI.LiteralControl("&nbsp;"))
+                CType(e.Item.Controls(0), TableCell).Controls.AddAt(0, prev)
+            End If
+            If dgRooms.CurrentPageIndex < dgRooms.PageCount - 1 Then
+                Dim _next As New System.Web.UI.WebControls.LinkButton
+                _next.CommandArgument = "Next"
+                _next.CommandName = "Page"
+                _next.Text = PortalCulture.GetString("00011") & "&nbsp;>"
+                _next.CausesValidation = False
+
+                CType(e.Item.Controls(0), TableCell).Controls.AddAt(CType(e.Item.Controls(0), TableCell).Controls.Count, New System.Web.UI.LiteralControl("&nbsp;"))
+                CType(e.Item.Controls(0), TableCell).Controls.AddAt(CType(e.Item.Controls(0), TableCell).Controls.Count, _next)
+            End If
+        End If
+    End Sub
+
+    Private Sub dgRooms_Init(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgRooms.Init
+
+    End Sub
+
+
+    Private Sub dgRooms_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgRooms.PreRender
+        If Not Me.IsSupervisor Then
+            Me.dgRooms.Columns(dgcolumns.CurrencyCode).Visible = False
+            Me.dgRooms.Columns(dgcolumns.MaxRate).Visible = False
+            Me.dgRooms.Columns(dgcolumns.MinRate).Visible = False
+            Me.dgRooms.Columns(dgcolumns.Delete).Visible = False
+        End If
+    End Sub
+
+End Class
+
+

@@ -1,0 +1,16 @@
+UniVisit.com
+-----------------------------------------------------------------------------
+Asociación de perfil 
+-----------------------------------------------------------------------------
+Se asocio la cuenta de Correo electronico: [USEREMAIL]
+A un perfil de usuario: [USERPROFILE]
+
+-----------------------------------------------------------------------------
+Para tener acceso a la pagina principal de su perfil seleccione la siguiente 
+liga [USERPROFILE]
+
+-----------------------------------------------------------------------------
+Este correo a sido generado automaticamente por UniVisit.com, no se requiere 
+contestación de ningun tipo para este correo.
+
+Si require soporte técnico, puede hacerlo a través de soporte@univisit.com

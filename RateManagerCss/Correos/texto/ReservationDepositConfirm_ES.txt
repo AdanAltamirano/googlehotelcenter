@@ -1,0 +1,14 @@
+UniVisit.com
+[UNIVISITPORTAL] 
+-----------------------------------------------------------------------------
+Reservacion de hotel confirmada.
+
+Hotel: [HOTELNAME]  
+Numero de reservación: [RESERVATIONNUMBER]  
+Fecha de inicio:  [STARTDATE] 
+Fecha Fin:  [ENDDATE]  
+Cliente:  [CUSTOMERNAME]  
+Fecha de registro:  [REGDATE]  
+ 
+Este correo electrónico fue creado automáticamente por UniVisit.com, no es requerida una respuesta.
+Si requiere soporte técnico, puede hacerlo a través de custsrvc@univisit.com 

@@ -1,0 +1,46 @@
+10:23:21: Referencia a objeto no establecida como instancia de un objeto.   en RateManager.Groups.LoadRooms(Int32 idhotel, String idRatePlan) en C:\Users\josenunez\Documents\Proyectos Univisit\RateManagerCss\RateManagerCss\RateManagerCss\Pages\Groups.aspx.vb:línea 606
+   en RateManager.Groups.dgLocksForGroup_ItemCommand(Object source, DataGridCommandEventArgs e) en C:\Users\josenunez\Documents\Proyectos Univisit\RateManagerCss\RateManagerCss\RateManagerCss\Pages\Groups.aspx.vb:línea 543
+   en System.Web.UI.WebControls.DataGrid.OnItemCommand(DataGridCommandEventArgs e)
+   en System.Web.UI.WebControls.DataGrid.OnBubbleEvent(Object source, EventArgs e)
+   en System.Web.UI.Control.RaiseBubbleEvent(Object source, EventArgs args)
+   en System.Web.UI.WebControls.DataGridItem.OnBubbleEvent(Object source, EventArgs e)
+   en System.Web.UI.Control.RaiseBubbleEvent(Object source, EventArgs args)
+   en System.Web.UI.WebControls.LinkButton.OnCommand(CommandEventArgs e)
+   en System.Web.UI.WebControls.LinkButton.RaisePostBackEvent(String eventArgument)
+   en System.Web.UI.WebControls.LinkButton.System.Web.UI.IPostBackEventHandler.RaisePostBackEvent(String eventArgument)
+   en System.Web.UI.Page.RaisePostBackEvent(IPostBackEventHandler sourceControl, String eventArgument)
+   en System.Web.UI.Page.RaisePostBackEvent(NameValueCollection postData)
+   en System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+10:40:58: Referencia a objeto no establecida como instancia de un objeto.   en RateManager.Groups.LoadRooms(Int32 idhotel, String idRatePlan) en C:\Users\josenunez\Documents\Proyectos Univisit\RateManagerCss\RateManagerCss\RateManagerCss\Pages\Groups.aspx.vb:línea 606
+   en RateManager.Groups.dgLocksForGroup_ItemCommand(Object source, DataGridCommandEventArgs e) en C:\Users\josenunez\Documents\Proyectos Univisit\RateManagerCss\RateManagerCss\RateManagerCss\Pages\Groups.aspx.vb:línea 543
+   en System.Web.UI.WebControls.DataGrid.OnItemCommand(DataGridCommandEventArgs e)
+   en System.Web.UI.WebControls.DataGrid.OnBubbleEvent(Object source, EventArgs e)
+   en System.Web.UI.Control.RaiseBubbleEvent(Object source, EventArgs args)
+   en System.Web.UI.WebControls.DataGridItem.OnBubbleEvent(Object source, EventArgs e)
+   en System.Web.UI.Control.RaiseBubbleEvent(Object source, EventArgs args)
+   en System.Web.UI.WebControls.LinkButton.OnCommand(CommandEventArgs e)
+   en System.Web.UI.WebControls.LinkButton.RaisePostBackEvent(String eventArgument)
+   en System.Web.UI.WebControls.LinkButton.System.Web.UI.IPostBackEventHandler.RaisePostBackEvent(String eventArgument)
+   en System.Web.UI.Page.RaisePostBackEvent(IPostBackEventHandler sourceControl, String eventArgument)
+   en System.Web.UI.Page.RaisePostBackEvent(NameValueCollection postData)
+   en System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+10:44:34: Referencia a objeto no establecida como instancia de un objeto.   en RateManager.Groups.LoadRooms(Int32 idhotel, String idRatePlan) en C:\Users\josenunez\Documents\Proyectos Univisit\RateManagerCss\RateManagerCss\RateManagerCss\Pages\Groups.aspx.vb:línea 606
+   en RateManager.Groups.dgLocksForGroup_ItemCommand(Object source, DataGridCommandEventArgs e) en C:\Users\josenunez\Documents\Proyectos Univisit\RateManagerCss\RateManagerCss\RateManagerCss\Pages\Groups.aspx.vb:línea 543
+   en System.Web.UI.WebControls.DataGrid.OnItemCommand(DataGridCommandEventArgs e)
+   en System.Web.UI.WebControls.DataGrid.OnBubbleEvent(Object source, EventArgs e)
+   en System.Web.UI.Control.RaiseBubbleEvent(Object source, EventArgs args)
+   en System.Web.UI.WebControls.DataGridItem.OnBubbleEvent(Object source, EventArgs e)
+   en System.Web.UI.Control.RaiseBubbleEvent(Object source, EventArgs args)
+   en System.Web.UI.WebControls.LinkButton.OnCommand(CommandEventArgs e)
+   en System.Web.UI.WebControls.LinkButton.RaisePostBackEvent(String eventArgument)
+   en System.Web.UI.WebControls.LinkButton.System.Web.UI.IPostBackEventHandler.RaisePostBackEvent(String eventArgument)
+   en System.Web.UI.Page.RaisePostBackEvent(IPostBackEventHandler sourceControl, String eventArgument)
+   en System.Web.UI.Page.RaisePostBackEvent(NameValueCollection postData)
+   en System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
+12:14:12: Estado de vista no válido. 
+	Client IP: ::1
+	Port: 
+	Referer: http://localhost:15903/Ratemanager/Pages/RatesPlans.aspx
+	Path: /Ratemanager/Pages/RatesPlans.aspx
+	User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2486.0 Safari/537.36 Edge/13.10586
+	ViewState: /wEPDwUKLTQ2MzE5NjU5Mw8WCh4IS0VZX0lORk8yhgUAAQAAAP////8BAAAAAAAAAAwCAAAASVJhdGVNYW5hZ2VyLCBWZXJzaW9uPTEuMC42MDU5LjE3NDcyLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPW51bGwFAQAAABdSYXRlTWFuYWdlci5jb21wYW55SW5mbxEAAAAJSG90ZWxOYW1lBVJ1YnJvB0VtcHJlc2EFSG90ZWwHQWRkcmVzcwVTdGF0ZQZJZFBhaXMEQ2l0eQdDb250YWN0BUVtYWlsBVBob25lCEVzTW9yb3NvBlBlcmZpbANVcmwFUm9vbXMMSWRBc29jaWF0aW9uC0lkQ29ycG9yYXRlAQAAAAEBAQEBAQEABAEAAAAICAgBIlJhdGVNYW5hZ2VyLlBhZ2luYUJhc2UrUGVyZmlsSG90ZWwCAAAACAgIAgAAAAYDAAAAIkhvdGVsIE1pc2nDs24gQWd1YXNjYWxpZW50ZXMgU3VyICAKAAAAPBsAALoHAAAGBAAAADRCbHZkLiBKb3PDqSBNYXLDrWEgQ2jDoXZleiAjIDIxMDAuIENpdWRhZCBJbmR1c3RyaWFsBgUAAAAOQWd1YXNjYWxpZW50ZXMGBgAAAAJNWAYHAAAADkFndWFzY2FsaWVudGVzBggAAAAPQmVydGhhIFZhbHZlcmRlBgkAAAAlcmV2ZW51...

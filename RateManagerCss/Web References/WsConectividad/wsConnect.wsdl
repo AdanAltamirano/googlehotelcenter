@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="GetByString">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Request" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetByStringResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetByStringResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="GetByStringSoapIn">
+    <wsdl:part name="parameters" element="tns:GetByString" />
+  </wsdl:message>
+  <wsdl:message name="GetByStringSoapOut">
+    <wsdl:part name="parameters" element="tns:GetByStringResponse" />
+  </wsdl:message>
+  <wsdl:portType name="wsConnectSoap">
+    <wsdl:operation name="SubmitXML">
+      <wsdl:input name="GetByString" message="tns:GetByStringSoapIn" />
+      <wsdl:output name="GetByString" message="tns:GetByStringSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="wsConnectSoap" type="tns:wsConnectSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="SubmitXML">
+      <soap:operation soapAction="http://tempuri.org/GetByString" style="document" />
+      <wsdl:input name="GetByString">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="GetByString">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="wsConnectSoap12" type="tns:wsConnectSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="SubmitXML">
+      <soap12:operation soapAction="http://tempuri.org/GetByString" style="document" />
+      <wsdl:input name="GetByString">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="GetByString">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="wsConnect">
+    <wsdl:port name="wsConnectSoap" binding="tns:wsConnectSoap">
+      <soap:address location="http://intranet.ozvirtual.net/WSConectividad/wsConnect.asmx" />
+    </wsdl:port>
+    <wsdl:port name="wsConnectSoap12" binding="tns:wsConnectSoap12">
+      <soap12:address location="http://intranet.ozvirtual.net/WSConectividad/wsConnect.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

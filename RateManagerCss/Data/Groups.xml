@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<Groups>
+	<Group>
+		<IDGROUP></IDGROUP>
+		<Name>Default</Name>
+		<SRCImg>/RateManager/Images/MainHeader.png</SRCImg>
+		<CustomContact></CustomContact>
+	</Group>
+	<Group>
+		<IDGROUP>ExpressTravelers</IDGROUP>
+		<Name>Express Travelers</Name>
+		<SRCImg>/RateManager/Images/Group/MainHeaderExpressTravel.jpg</SRCImg>
+		<CustomContact>
+			&lt;BR&gt;
+			&lt;strong&gt;By Email:&lt;/strong&gt;
+			&lt;A href="mailto:info@expresstravels.in"&gt;info@expresstravels.in&lt;/A&gt;
+			&lt;BR&gt;
+			&lt;strong&gt;From India:&lt;/strong&gt;+ 91 9999105555 
+		</CustomContact>
+	</Group>
+	<Group>
+		<IDGROUP>BelieveInn</IDGROUP>
+		<Name>BelieveInn</Name>
+		<SRCImg>/RateManager/Images/Group/MainHeaderBelieveInn.jpg</SRCImg>
+		<CustomContact>
+			&lt;BR&gt;
+			&lt;strong&gt;By Email:&lt;/strong&gt;
+			&lt;A href="mailto:jivishinteractive@yahoo.com"&gt;jivishinteractive@yahoo.com&lt;/A&gt;
+			&lt;BR&gt;			
+		</CustomContact>
+	</Group>	
+</Groups>

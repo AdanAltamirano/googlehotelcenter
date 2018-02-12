@@ -1,0 +1,15 @@
+﻿UniVisit.com
+[UNIVISITPORTAL] 
+-----------------------------------------------------------------------------
+Hotel Reservation Cancelled
+ 
+Hotel: [HOTELNAME]  
+Reservation Number: [RESERVATIONNUMBER]  
+Start date:  [STARTDATE]  
+End date:  [ENDDATE]  
+Customer name:  [CUSTOMERNAME]  
+Registration date:  [REGDATE]  
+[DetCuartos]
+ 
+This email was created automatically by UniVisit.com, does not require an answer to this email. 
+If you need technical support, contact custsrvc@univisit.com 

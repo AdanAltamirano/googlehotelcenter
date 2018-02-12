@@ -1,0 +1,4 @@
+<Cultures>
+	<Culture id="1" base="es" name="es-MX" />
+	<Culture id="2" base="en" name="en-US" />
+</Cultures>

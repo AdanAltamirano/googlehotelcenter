@@ -1,0 +1,532 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ozunivisitModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="ozunivisitModelStoreContainer">
+          <EntitySet Name="IPR_Configuracion" EntityType="ozunivisitModel.Store.IPR_Configuracion" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="IPR_Estadisticas" EntityType="ozunivisitModel.Store.IPR_Estadisticas" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="IPR_Mensajes" EntityType="ozunivisitModel.Store.IPR_Mensajes" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="IPR_MensajesPredefinidos" EntityType="ozunivisitModel.Store.IPR_MensajesPredefinidos" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="IPR_Retencion" EntityType="ozunivisitModel.Store.IPR_Retencion" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="IPR_Sesiones" EntityType="ozunivisitModel.Store.IPR_Sesiones" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="IPR_SesionesComportamiento" EntityType="ozunivisitModel.Store.IPR_SesionesComportamiento" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_IPR_Estadisticas_IPR_Configuracion" Association="ozunivisitModel.Store.FK_IPR_Estadisticas_IPR_Configuracion">
+            <End Role="IPR_Configuracion" EntitySet="IPR_Configuracion" />
+            <End Role="IPR_Estadisticas" EntitySet="IPR_Estadisticas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IPR_Mensajes_IPR_Configuracion" Association="ozunivisitModel.Store.FK_IPR_Mensajes_IPR_Configuracion">
+            <End Role="IPR_Configuracion" EntitySet="IPR_Configuracion" />
+            <End Role="IPR_Mensajes" EntitySet="IPR_Mensajes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IPR_Retencion_IPR_Configuracion" Association="ozunivisitModel.Store.FK_IPR_Retencion_IPR_Configuracion">
+            <End Role="IPR_Configuracion" EntitySet="IPR_Configuracion" />
+            <End Role="IPR_Retencion" EntitySet="IPR_Retencion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IPR_Sesiones_IPR_Configuracion" Association="ozunivisitModel.Store.FK_IPR_Sesiones_IPR_Configuracion">
+            <End Role="IPR_Configuracion" EntitySet="IPR_Configuracion" />
+            <End Role="IPR_Sesiones" EntitySet="IPR_Sesiones" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IPR_SesionesComportamiento_IPR_Sesiones" Association="ozunivisitModel.Store.FK_IPR_SesionesComportamiento_IPR_Sesiones">
+            <End Role="IPR_Sesiones" EntitySet="IPR_Sesiones" />
+            <End Role="IPR_SesionesComportamiento" EntitySet="IPR_SesionesComportamiento" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="IPR_Configuracion">
+          <Key>
+            <PropertyRef Name="id_configuracion" />
+          </Key>
+          <Property Name="id_configuracion" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="id_propiedad" Type="int" Nullable="false" />
+          <Property Name="url" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="habilitado" Type="bit" Nullable="false" />
+          <Property Name="comparador" Type="bit" Nullable="false" />
+          <Property Name="mensajes" Type="bit" Nullable="false" />
+          <Property Name="retencion" Type="bit" Nullable="false" />
+          <Property Name="mensajes_predefinidos" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="IPR_Estadisticas">
+          <Key>
+            <PropertyRef Name="id_estadistica" />
+          </Key>
+          <Property Name="id_estadistica" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="id_configuracion" Type="int" Nullable="false" />
+          <Property Name="usuarios_actuales" Type="int" Nullable="false" />
+          <Property Name="habitaciones_restantes" Type="int" Nullable="false" />
+          <Property Name="ultima_reserva" Type="int" Nullable="false" />
+          <Property Name="total_reservas" Type="int" Nullable="false" />
+          <Property Name="total_usuarios" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="IPR_Mensajes">
+          <Key>
+            <PropertyRef Name="id_mensaje" />
+          </Key>
+          <Property Name="id_mensaje" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="id_configuracion" Type="int" Nullable="false" />
+          <Property Name="mensaje" Type="varchar" Nullable="false" MaxLength="240" />
+          <Property Name="icono" Type="varchar" MaxLength="24" />
+          <Property Name="fecha_inicio" Type="datetime" />
+          <Property Name="fecha_fin" Type="datetime" />
+          <Property Name="orden" Type="int" Nullable="false" />
+          <Property Name="rutas" Type="varchar" MaxLength="120" />
+          <Property Name="tipo_mensaje" Type="int" Nullable="false" />
+          <Property Name="duracion" Type="int" Nullable="false" />
+          <Property Name="idioma" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="IPR_MensajesPredefinidos">
+          <Key>
+            <PropertyRef Name="id_mensaje" />
+          </Key>
+          <Property Name="id_mensaje" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="tipo" Type="int" Nullable="false" />
+          <Property Name="mensaje" Type="varchar" Nullable="false" MaxLength="240" />
+          <Property Name="idioma" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="IPR_Retencion">
+          <Key>
+            <PropertyRef Name="id_retencion" />
+          </Key>
+          <Property Name="id_retencion" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="id_configuracion" Type="int" Nullable="false" />
+          <Property Name="titulo" Type="varchar" Nullable="false" MaxLength="240" />
+          <Property Name="mensaje" Type="varchar" Nullable="false" MaxLength="240" />
+          <Property Name="texto_boton" Type="varchar" Nullable="false" MaxLength="120" />
+          <Property Name="ruta" Type="varchar" MaxLength="120" />
+          <Property Name="cuando" Type="int" />
+          <Property Name="duracion" Type="int" Nullable="false" />
+          <Property Name="plan_tarifario" Type="varchar" MaxLength="60" />
+          <Property Name="codigo_acceso" Type="varchar" MaxLength="12" />
+          <Property Name="idioma" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="IPR_Sesiones">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="id_sesion" Type="varchar" Nullable="false" MaxLength="120" />
+          <Property Name="id_configuracion" Type="int" Nullable="false" />
+          <Property Name="ultima_visita" Type="datetime" Nullable="false" />
+          <Property Name="ip" Type="varchar" Nullable="false" MaxLength="15" />
+          <Property Name="navegador" Type="varchar" Nullable="false" MaxLength="500" />
+          <Property Name="pais" Type="varchar" MaxLength="2" />
+          <Property Name="nombre_cliente" Type="varchar" MaxLength="120" />
+          <Property Name="correo_cliente" Type="varchar" MaxLength="120" />
+        </EntityType>
+        <EntityType Name="IPR_SesionesComportamiento">
+          <Key>
+            <PropertyRef Name="id_comportamiento" />
+          </Key>
+          <Property Name="id_comportamiento" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="id_sesion" Type="int" Nullable="false" />
+          <Property Name="fecha" Type="datetime" Nullable="false" />
+          <Property Name="propiedad" Type="int" Nullable="false" />
+          <Property Name="checkin" Type="varchar" Nullable="false" MaxLength="8" />
+          <Property Name="checkout" Type="varchar" Nullable="false" MaxLength="8" />
+          <Property Name="rooms" Type="int" Nullable="false" />
+          <Property Name="roomcode" Type="varchar" MaxLength="10" />
+          <Property Name="plancode" Type="varchar" MaxLength="10" />
+          <Property Name="adults" Type="varchar" Nullable="false" MaxLength="24" />
+          <Property Name="childs" Type="varchar" Nullable="false" MaxLength="24" />
+          <Property Name="ages" Type="varchar" MaxLength="120" />
+          <Property Name="completa" Type="bit" Nullable="false" />
+          <Property Name="booking_url" Type="varchar" Nullable="false" MaxLength="250" />
+        </EntityType>
+        <Association Name="FK_IPR_Estadisticas_IPR_Configuracion">
+          <End Role="IPR_Configuracion" Type="ozunivisitModel.Store.IPR_Configuracion" Multiplicity="1" />
+          <End Role="IPR_Estadisticas" Type="ozunivisitModel.Store.IPR_Estadisticas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="IPR_Configuracion">
+              <PropertyRef Name="id_configuracion" />
+            </Principal>
+            <Dependent Role="IPR_Estadisticas">
+              <PropertyRef Name="id_configuracion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IPR_Mensajes_IPR_Configuracion">
+          <End Role="IPR_Configuracion" Type="ozunivisitModel.Store.IPR_Configuracion" Multiplicity="1" />
+          <End Role="IPR_Mensajes" Type="ozunivisitModel.Store.IPR_Mensajes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="IPR_Configuracion">
+              <PropertyRef Name="id_configuracion" />
+            </Principal>
+            <Dependent Role="IPR_Mensajes">
+              <PropertyRef Name="id_configuracion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IPR_Retencion_IPR_Configuracion">
+          <End Role="IPR_Configuracion" Type="ozunivisitModel.Store.IPR_Configuracion" Multiplicity="1" />
+          <End Role="IPR_Retencion" Type="ozunivisitModel.Store.IPR_Retencion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="IPR_Configuracion">
+              <PropertyRef Name="id_configuracion" />
+            </Principal>
+            <Dependent Role="IPR_Retencion">
+              <PropertyRef Name="id_configuracion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IPR_Sesiones_IPR_Configuracion">
+          <End Role="IPR_Configuracion" Type="ozunivisitModel.Store.IPR_Configuracion" Multiplicity="1" />
+          <End Role="IPR_Sesiones" Type="ozunivisitModel.Store.IPR_Sesiones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="IPR_Configuracion">
+              <PropertyRef Name="id_configuracion" />
+            </Principal>
+            <Dependent Role="IPR_Sesiones">
+              <PropertyRef Name="id_configuracion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IPR_SesionesComportamiento_IPR_Sesiones">
+          <End Role="IPR_Sesiones" Type="ozunivisitModel.Store.IPR_Sesiones" Multiplicity="1" />
+          <End Role="IPR_SesionesComportamiento" Type="ozunivisitModel.Store.IPR_SesionesComportamiento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="IPR_Sesiones">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="IPR_SesionesComportamiento">
+              <PropertyRef Name="id_sesion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ozunivisitModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="ozunivisitEntities" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="IPR_Configuracion" EntityType="ozunivisitModel.IPR_Configuracion" />
+          <EntitySet Name="IPR_Estadisticas" EntityType="ozunivisitModel.IPR_Estadisticas" />
+          <EntitySet Name="IPR_Mensajes" EntityType="ozunivisitModel.IPR_Mensajes" />
+          <EntitySet Name="IPR_MensajesPredefinidos" EntityType="ozunivisitModel.IPR_MensajesPredefinidos" />
+          <EntitySet Name="IPR_Retencion" EntityType="ozunivisitModel.IPR_Retencion" />
+          <EntitySet Name="IPR_Sesiones" EntityType="ozunivisitModel.IPR_Sesiones" />
+          <EntitySet Name="IPR_SesionesComportamiento" EntityType="ozunivisitModel.IPR_SesionesComportamiento" />
+          <AssociationSet Name="FK_IPR_Estadisticas_IPR_Configuracion" Association="ozunivisitModel.FK_IPR_Estadisticas_IPR_Configuracion">
+            <End Role="IPR_Configuracion" EntitySet="IPR_Configuracion" />
+            <End Role="IPR_Estadisticas" EntitySet="IPR_Estadisticas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IPR_Mensajes_IPR_Configuracion" Association="ozunivisitModel.FK_IPR_Mensajes_IPR_Configuracion">
+            <End Role="IPR_Configuracion" EntitySet="IPR_Configuracion" />
+            <End Role="IPR_Mensajes" EntitySet="IPR_Mensajes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IPR_Retencion_IPR_Configuracion" Association="ozunivisitModel.FK_IPR_Retencion_IPR_Configuracion">
+            <End Role="IPR_Configuracion" EntitySet="IPR_Configuracion" />
+            <End Role="IPR_Retencion" EntitySet="IPR_Retencion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IPR_Sesiones_IPR_Configuracion" Association="ozunivisitModel.FK_IPR_Sesiones_IPR_Configuracion">
+            <End Role="IPR_Configuracion" EntitySet="IPR_Configuracion" />
+            <End Role="IPR_Sesiones" EntitySet="IPR_Sesiones" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IPR_SesionesComportamiento_IPR_Sesiones" Association="ozunivisitModel.FK_IPR_SesionesComportamiento_IPR_Sesiones">
+            <End Role="IPR_Sesiones" EntitySet="IPR_Sesiones" />
+            <End Role="IPR_SesionesComportamiento" EntitySet="IPR_SesionesComportamiento" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="IPR_Configuracion">
+          <Key>
+            <PropertyRef Name="id_configuracion" />
+          </Key>
+          <Property Name="id_configuracion" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="id_propiedad" Type="Int32" Nullable="false" />
+          <Property Name="url" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="habilitado" Type="Boolean" Nullable="false" />
+          <Property Name="comparador" Type="Boolean" Nullable="false" />
+          <Property Name="mensajes" Type="Boolean" Nullable="false" />
+          <Property Name="retencion" Type="Boolean" Nullable="false" />
+          <Property Name="mensajes_predefinidos" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="IPR_Estadisticas" Relationship="ozunivisitModel.FK_IPR_Estadisticas_IPR_Configuracion" FromRole="IPR_Configuracion" ToRole="IPR_Estadisticas" />
+          <NavigationProperty Name="IPR_Mensajes" Relationship="ozunivisitModel.FK_IPR_Mensajes_IPR_Configuracion" FromRole="IPR_Configuracion" ToRole="IPR_Mensajes" />
+          <NavigationProperty Name="IPR_Retencion" Relationship="ozunivisitModel.FK_IPR_Retencion_IPR_Configuracion" FromRole="IPR_Configuracion" ToRole="IPR_Retencion" />
+          <NavigationProperty Name="IPR_Sesiones" Relationship="ozunivisitModel.FK_IPR_Sesiones_IPR_Configuracion" FromRole="IPR_Configuracion" ToRole="IPR_Sesiones" />
+        </EntityType>
+        <EntityType Name="IPR_Estadisticas">
+          <Key>
+            <PropertyRef Name="id_estadistica" />
+          </Key>
+          <Property Name="id_estadistica" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="id_configuracion" Type="Int32" Nullable="false" />
+          <Property Name="usuarios_actuales" Type="Int32" Nullable="false" />
+          <Property Name="habitaciones_restantes" Type="Int32" Nullable="false" />
+          <Property Name="ultima_reserva" Type="Int32" Nullable="false" />
+          <Property Name="total_reservas" Type="Int32" Nullable="false" />
+          <Property Name="total_usuarios" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="IPR_Configuracion" Relationship="ozunivisitModel.FK_IPR_Estadisticas_IPR_Configuracion" FromRole="IPR_Estadisticas" ToRole="IPR_Configuracion" />
+        </EntityType>
+        <EntityType Name="IPR_Mensajes">
+          <Key>
+            <PropertyRef Name="id_mensaje" />
+          </Key>
+          <Property Name="id_mensaje" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="id_configuracion" Type="Int32" Nullable="false" />
+          <Property Name="mensaje" Type="String" Nullable="false" MaxLength="240" Unicode="false" FixedLength="false" />
+          <Property Name="icono" Type="String" MaxLength="24" Unicode="false" FixedLength="false" />
+          <Property Name="fecha_inicio" Type="DateTime" Precision="3" />
+          <Property Name="fecha_fin" Type="DateTime" Precision="3" />
+          <Property Name="orden" Type="Int32" Nullable="false" />
+          <Property Name="rutas" Type="String" MaxLength="120" Unicode="false" FixedLength="false" />
+          <Property Name="tipo_mensaje" Type="Int32" Nullable="false" />
+          <Property Name="duracion" Type="Int32" Nullable="false" />
+          <Property Name="idioma" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="IPR_Configuracion" Relationship="ozunivisitModel.FK_IPR_Mensajes_IPR_Configuracion" FromRole="IPR_Mensajes" ToRole="IPR_Configuracion" />
+        </EntityType>
+        <EntityType Name="IPR_MensajesPredefinidos">
+          <Key>
+            <PropertyRef Name="id_mensaje" />
+          </Key>
+          <Property Name="id_mensaje" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="tipo" Type="Int32" Nullable="false" />
+          <Property Name="mensaje" Type="String" Nullable="false" MaxLength="240" Unicode="false" FixedLength="false" />
+          <Property Name="idioma" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="IPR_Retencion">
+          <Key>
+            <PropertyRef Name="id_retencion" />
+          </Key>
+          <Property Name="id_retencion" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="id_configuracion" Type="Int32" Nullable="false" />
+          <Property Name="titulo" Type="String" Nullable="false" MaxLength="240" Unicode="false" FixedLength="false" />
+          <Property Name="mensaje" Type="String" Nullable="false" MaxLength="240" Unicode="false" FixedLength="false" />
+          <Property Name="texto_boton" Type="String" Nullable="false" MaxLength="120" Unicode="false" FixedLength="false" />
+          <Property Name="ruta" Type="String" MaxLength="120" Unicode="false" FixedLength="false" />
+          <Property Name="cuando" Type="Int32" />
+          <Property Name="duracion" Type="Int32" Nullable="false" />
+          <Property Name="plan_tarifario" Type="String" MaxLength="60" Unicode="false" FixedLength="false" />
+          <Property Name="codigo_acceso" Type="String" MaxLength="12" Unicode="false" FixedLength="false" />
+          <Property Name="idioma" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="IPR_Configuracion" Relationship="ozunivisitModel.FK_IPR_Retencion_IPR_Configuracion" FromRole="IPR_Retencion" ToRole="IPR_Configuracion" />
+        </EntityType>
+        <EntityType Name="IPR_Sesiones">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="id_sesion" Type="String" Nullable="false" MaxLength="120" Unicode="false" FixedLength="false" />
+          <Property Name="id_configuracion" Type="Int32" Nullable="false" />
+          <Property Name="ultima_visita" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ip" Type="String" Nullable="false" MaxLength="15" Unicode="false" FixedLength="false" />
+          <Property Name="navegador" Type="String" Nullable="false" MaxLength="500" Unicode="false" FixedLength="false" />
+          <Property Name="pais" Type="String" MaxLength="2" Unicode="false" FixedLength="false" />
+          <Property Name="nombre_cliente" Type="String" MaxLength="120" Unicode="false" FixedLength="false" />
+          <Property Name="correo_cliente" Type="String" MaxLength="120" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="IPR_Configuracion" Relationship="ozunivisitModel.FK_IPR_Sesiones_IPR_Configuracion" FromRole="IPR_Sesiones" ToRole="IPR_Configuracion" />
+          <NavigationProperty Name="IPR_SesionesComportamiento" Relationship="ozunivisitModel.FK_IPR_SesionesComportamiento_IPR_Sesiones" FromRole="IPR_Sesiones" ToRole="IPR_SesionesComportamiento" />
+        </EntityType>
+        <EntityType Name="IPR_SesionesComportamiento">
+          <Key>
+            <PropertyRef Name="id_comportamiento" />
+          </Key>
+          <Property Name="id_comportamiento" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="id_sesion" Type="Int32" Nullable="false" />
+          <Property Name="fecha" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="propiedad" Type="Int32" Nullable="false" />
+          <Property Name="checkin" Type="String" Nullable="false" MaxLength="8" Unicode="false" FixedLength="false" />
+          <Property Name="checkout" Type="String" Nullable="false" MaxLength="8" Unicode="false" FixedLength="false" />
+          <Property Name="rooms" Type="Int32" Nullable="false" />
+          <Property Name="roomcode" Type="String" MaxLength="10" Unicode="false" FixedLength="false" />
+          <Property Name="plancode" Type="String" MaxLength="10" Unicode="false" FixedLength="false" />
+          <Property Name="adults" Type="String" Nullable="false" MaxLength="24" Unicode="false" FixedLength="false" />
+          <Property Name="childs" Type="String" Nullable="false" MaxLength="24" Unicode="false" FixedLength="false" />
+          <Property Name="ages" Type="String" MaxLength="120" Unicode="false" FixedLength="false" />
+          <Property Name="completa" Type="Boolean" Nullable="false" />
+          <Property Name="booking_url" Type="String" Nullable="false" MaxLength="250" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="IPR_Sesiones" Relationship="ozunivisitModel.FK_IPR_SesionesComportamiento_IPR_Sesiones" FromRole="IPR_SesionesComportamiento" ToRole="IPR_Sesiones" />
+        </EntityType>
+        <Association Name="FK_IPR_Estadisticas_IPR_Configuracion">
+          <End Role="IPR_Configuracion" Type="ozunivisitModel.IPR_Configuracion" Multiplicity="1" />
+          <End Role="IPR_Estadisticas" Type="ozunivisitModel.IPR_Estadisticas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="IPR_Configuracion">
+              <PropertyRef Name="id_configuracion" />
+            </Principal>
+            <Dependent Role="IPR_Estadisticas">
+              <PropertyRef Name="id_configuracion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IPR_Mensajes_IPR_Configuracion">
+          <End Role="IPR_Configuracion" Type="ozunivisitModel.IPR_Configuracion" Multiplicity="1" />
+          <End Role="IPR_Mensajes" Type="ozunivisitModel.IPR_Mensajes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="IPR_Configuracion">
+              <PropertyRef Name="id_configuracion" />
+            </Principal>
+            <Dependent Role="IPR_Mensajes">
+              <PropertyRef Name="id_configuracion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IPR_Retencion_IPR_Configuracion">
+          <End Role="IPR_Configuracion" Type="ozunivisitModel.IPR_Configuracion" Multiplicity="1" />
+          <End Role="IPR_Retencion" Type="ozunivisitModel.IPR_Retencion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="IPR_Configuracion">
+              <PropertyRef Name="id_configuracion" />
+            </Principal>
+            <Dependent Role="IPR_Retencion">
+              <PropertyRef Name="id_configuracion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IPR_Sesiones_IPR_Configuracion">
+          <End Role="IPR_Configuracion" Type="ozunivisitModel.IPR_Configuracion" Multiplicity="1" />
+          <End Role="IPR_Sesiones" Type="ozunivisitModel.IPR_Sesiones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="IPR_Configuracion">
+              <PropertyRef Name="id_configuracion" />
+            </Principal>
+            <Dependent Role="IPR_Sesiones">
+              <PropertyRef Name="id_configuracion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IPR_SesionesComportamiento_IPR_Sesiones">
+          <End Role="IPR_Sesiones" Type="ozunivisitModel.IPR_Sesiones" Multiplicity="1" />
+          <End Role="IPR_SesionesComportamiento" Type="ozunivisitModel.IPR_SesionesComportamiento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="IPR_Sesiones">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="IPR_SesionesComportamiento">
+              <PropertyRef Name="id_sesion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ozunivisitModelStoreContainer" CdmEntityContainer="ozunivisitEntities">
+          <EntitySetMapping Name="IPR_Configuracion">
+            <EntityTypeMapping TypeName="ozunivisitModel.IPR_Configuracion">
+              <MappingFragment StoreEntitySet="IPR_Configuracion">
+                <ScalarProperty Name="id_configuracion" ColumnName="id_configuracion" />
+                <ScalarProperty Name="id_propiedad" ColumnName="id_propiedad" />
+                <ScalarProperty Name="url" ColumnName="url" />
+                <ScalarProperty Name="habilitado" ColumnName="habilitado" />
+                <ScalarProperty Name="comparador" ColumnName="comparador" />
+                <ScalarProperty Name="mensajes" ColumnName="mensajes" />
+                <ScalarProperty Name="retencion" ColumnName="retencion" />
+                <ScalarProperty Name="mensajes_predefinidos" ColumnName="mensajes_predefinidos" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="IPR_Estadisticas">
+            <EntityTypeMapping TypeName="ozunivisitModel.IPR_Estadisticas">
+              <MappingFragment StoreEntitySet="IPR_Estadisticas">
+                <ScalarProperty Name="id_estadistica" ColumnName="id_estadistica" />
+                <ScalarProperty Name="id_configuracion" ColumnName="id_configuracion" />
+                <ScalarProperty Name="usuarios_actuales" ColumnName="usuarios_actuales" />
+                <ScalarProperty Name="habitaciones_restantes" ColumnName="habitaciones_restantes" />
+                <ScalarProperty Name="ultima_reserva" ColumnName="ultima_reserva" />
+                <ScalarProperty Name="total_reservas" ColumnName="total_reservas" />
+                <ScalarProperty Name="total_usuarios" ColumnName="total_usuarios" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="IPR_Mensajes">
+            <EntityTypeMapping TypeName="ozunivisitModel.IPR_Mensajes">
+              <MappingFragment StoreEntitySet="IPR_Mensajes">
+                <ScalarProperty Name="id_mensaje" ColumnName="id_mensaje" />
+                <ScalarProperty Name="id_configuracion" ColumnName="id_configuracion" />
+                <ScalarProperty Name="mensaje" ColumnName="mensaje" />
+                <ScalarProperty Name="icono" ColumnName="icono" />
+                <ScalarProperty Name="fecha_inicio" ColumnName="fecha_inicio" />
+                <ScalarProperty Name="fecha_fin" ColumnName="fecha_fin" />
+                <ScalarProperty Name="orden" ColumnName="orden" />
+                <ScalarProperty Name="rutas" ColumnName="rutas" />
+                <ScalarProperty Name="tipo_mensaje" ColumnName="tipo_mensaje" />
+                <ScalarProperty Name="duracion" ColumnName="duracion" />
+                <ScalarProperty Name="idioma" ColumnName="idioma" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="IPR_MensajesPredefinidos">
+            <EntityTypeMapping TypeName="ozunivisitModel.IPR_MensajesPredefinidos">
+              <MappingFragment StoreEntitySet="IPR_MensajesPredefinidos">
+                <ScalarProperty Name="id_mensaje" ColumnName="id_mensaje" />
+                <ScalarProperty Name="tipo" ColumnName="tipo" />
+                <ScalarProperty Name="mensaje" ColumnName="mensaje" />
+                <ScalarProperty Name="idioma" ColumnName="idioma" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="IPR_Retencion">
+            <EntityTypeMapping TypeName="ozunivisitModel.IPR_Retencion">
+              <MappingFragment StoreEntitySet="IPR_Retencion">
+                <ScalarProperty Name="id_retencion" ColumnName="id_retencion" />
+                <ScalarProperty Name="id_configuracion" ColumnName="id_configuracion" />
+                <ScalarProperty Name="titulo" ColumnName="titulo" />
+                <ScalarProperty Name="mensaje" ColumnName="mensaje" />
+                <ScalarProperty Name="texto_boton" ColumnName="texto_boton" />
+                <ScalarProperty Name="ruta" ColumnName="ruta" />
+                <ScalarProperty Name="cuando" ColumnName="cuando" />
+                <ScalarProperty Name="duracion" ColumnName="duracion" />
+                <ScalarProperty Name="plan_tarifario" ColumnName="plan_tarifario" />
+                <ScalarProperty Name="codigo_acceso" ColumnName="codigo_acceso" />
+                <ScalarProperty Name="idioma" ColumnName="idioma" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="IPR_Sesiones">
+            <EntityTypeMapping TypeName="ozunivisitModel.IPR_Sesiones">
+              <MappingFragment StoreEntitySet="IPR_Sesiones">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="id_sesion" ColumnName="id_sesion" />
+                <ScalarProperty Name="id_configuracion" ColumnName="id_configuracion" />
+                <ScalarProperty Name="ultima_visita" ColumnName="ultima_visita" />
+                <ScalarProperty Name="ip" ColumnName="ip" />
+                <ScalarProperty Name="navegador" ColumnName="navegador" />
+                <ScalarProperty Name="pais" ColumnName="pais" />
+                <ScalarProperty Name="nombre_cliente" ColumnName="nombre_cliente" />
+                <ScalarProperty Name="correo_cliente" ColumnName="correo_cliente" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="IPR_SesionesComportamiento">
+            <EntityTypeMapping TypeName="ozunivisitModel.IPR_SesionesComportamiento">
+              <MappingFragment StoreEntitySet="IPR_SesionesComportamiento">
+                <ScalarProperty Name="id_comportamiento" ColumnName="id_comportamiento" />
+                <ScalarProperty Name="id_sesion" ColumnName="id_sesion" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="propiedad" ColumnName="propiedad" />
+                <ScalarProperty Name="checkin" ColumnName="checkin" />
+                <ScalarProperty Name="checkout" ColumnName="checkout" />
+                <ScalarProperty Name="rooms" ColumnName="rooms" />
+                <ScalarProperty Name="roomcode" ColumnName="roomcode" />
+                <ScalarProperty Name="plancode" ColumnName="plancode" />
+                <ScalarProperty Name="adults" ColumnName="adults" />
+                <ScalarProperty Name="childs" ColumnName="childs" />
+                <ScalarProperty Name="ages" ColumnName="ages" />
+                <ScalarProperty Name="completa" ColumnName="completa" />
+                <ScalarProperty Name="booking_url" ColumnName="booking_url" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

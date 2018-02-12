@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<TemplatesHoteles>
+	<TH_RESERVATION descripcion="Template de Reservación de hotel">
+		<subject>
+			<es-MX valor="Reservación # {0}" />
+			<en-US valor="Reservation # {0}" />
+		</subject>
+		<from valor="javier@oz.com.mx" />
+		
+		
+		<html>
+			<es-MX valor="/Hotel/emails/html/ReservationSummaryHotel_ES.htm" />
+			<en-US valor="/Hotel/emails/html/ReservationSummaryHotel_EN.htm" />
+		</html>
+		<text>
+			<es-MX valor="/Hotel/emails/texto/ReservationSummary_ES.txt" />
+			<en-US valor="/Hotel/emails/texto/ReservationSummary_EN.txt" />
+		</text>
+	</TH_RESERVATION>
+	<TH_RESERVATIONCTT_UNI descripcion="Template de Reservación de hotel DE UNI y CTT">
+		<subject>
+			<es-MX valor="Reservación # {0}" />
+			<en-US valor="Reservation # {0}" />
+		</subject>
+		<from valor="custsrvc@univisit.com" />		
+		<html>
+			<es-MX valor="/Hotel/emails/html/ReservationSummaryHotelUNI_CCT_ES.htm" />
+			<en-US valor="/Hotel/emails/html/ReservationSummaryHotelUNI_CCT_EN.htm" />
+		</html>
+		<text>
+			<es-MX valor="/Hotel/emails/texto/ReservationSummary_ES.txt" />
+			<en-US valor="/Hotel/emails/texto/ReservationSummary_EN.txt" />
+		</text>
+	</TH_RESERVATIONCTT_UNI>
+	
+	<TH_CANCELLATION descripcion="Template la cancelacion de hotel">
+		<subject>
+			<es-MX valor="Reservacion de hotel cancelada {0} [Univisit.com]" />
+			<en-US valor="Hotel reservation cancelled {0} [Univisit.com]" />
+		</subject>
+		<from valor="javier@oz.com.mx" />	
+		<html>
+			<es-MX valor="/Hotel/emails/html/HotelReservationCancellation_ES.htm" />
+			<en-US valor="/Hotel/emails/html/HotelReservationCancellation_EN.htm" />
+		</html>
+		<text>
+			<es-MX valor="/Hotel/emails/texto/HotelReservationCancellation_ES.txt" />
+			<en-US valor="/Hotel/emails/texto/HotelReservationCancellation_EN.txt" />
+		</text>
+	</TH_CANCELLATION>			
+	
+	<TH_ReservationToHotel descripcion="Template de Reservacion que se manda al hotel">		
+		<subject>
+			<es-MX valor="Reservacion # {0}" />
+			<en-US valor="Reservation # {0}" />
+		</subject>
+		<from valor="custsrvc@univisit.com" />		
+		<html>
+			<es-MX valor="/Hotel/emails/html/ReservationToHotel_ES.htm" />
+			<en-US valor="/Hotel/emails/html/ReservationToHotel_EN.htm" />
+		</html>
+		<text>
+			<es-MX valor="/Hotel/emails/texto/ReservationToHotel_ES.txt" />
+			<en-US valor="/Hotel/emails/texto/ReservationToHotel_EN.txt" />
+		</text>
+	</TH_ReservationToHotel>
+	
+	<TH_RESERVATIONINPROCESS descripcion="Template de Reservación de hotel">
+		<subject>
+			<es-MX valor="Reservación # {0}" />
+			<en-US valor="Reservation # {0}" />
+		</subject>
+		<from valor="javier@oz.com.mx" />	
+		
+		
+		<html>
+			<es-MX valor="/Hotel/emails/html/ReservationSummaryHotel_ES.htm" />
+			<en-US valor="/Hotel/emails/html/ReservationSummaryHotel_EN.htm" />
+		</html>
+		<text>
+			<es-MX valor="/Hotel/emails/texto/ReservationSummary_ES.txt" />
+			<en-US valor="/Hotel/emails/texto/ReservationSummary_EN.txt" />
+		</text>
+	</TH_RESERVATIONINPROCESS>
+
+
+    <TH_AvailabilityMail descripcion="Template de notificacion de ">
+        <subject>
+            <es-MX valor="Notificación de disponibilidad" />
+            <en-US valor="Availability Notification" />
+        </subject>
+        <from valor="javier@oz.com.mx" />
+
+
+        <html>
+            <es-MX valor="/Hotel/emails/html/AvailabilityMail_ES.htm" />
+            <en-US valor="/Hotel/emails/html/AvailabilityMail_EN.htm" />
+        </html>
+        <text>
+            <es-MX valor="/Hotel/emails/texto/AvailabilityMail_ES.txt" />
+            <en-US valor="/Hotel/emails/texto/AvailabilityMail_EN.txt" />
+        </text>
+    </TH_AvailabilityMail>
+	
+</TemplatesHoteles>
+
+
+
+			
+			
+			

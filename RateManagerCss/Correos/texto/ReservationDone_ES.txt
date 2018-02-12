@@ -1,0 +1,27 @@
+Detalles de la reservacion  
+[UNIVISITPORTAL]
+
+Actividad Reservada. Se han cargado [DEPOSITO] [MONEDA] a su tarjeta de credito como deposito. Si tiene cambio de planes, debe cancelar o cambiar su reservacion de actividades con la compañía de acuerdo con las politicas de cancelacion de UniVisit.com y [EMPRESA] para evitar cargos.
+
+ID de Reservacion: [ID_RESERVACION]  
+Contacto : [CONTACTO]  
+Correo electronico : [EMAIL_CONTACTO]  
+Telefono de casa : [TEL_CASA]  
+Telefono de oficina : [TEL_TRABAJO]  
+ 
+Detalle de la actividad
+
+[ACTIVIDAD]
+[EVENTO] 
+
+Renta valida el: [FECHA]
+
+[EMPRESA]
+[DIRECCION_EMPRESA] 
+
+[NO_VIAJEROS] Travelers : [PRECIO] [MONEDA] 
+SubTotal : [SUBTOTAL] [MONEDA] 
+Impuestos : [IMPUESTO] [MONEDA] 
+Total : [TOTAL] [MONEDA] 
+ 
+Este correo electronico fue creado automaticamente por UniVisit.com, no es requerida una respuesta.

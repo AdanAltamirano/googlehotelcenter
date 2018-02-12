@@ -1,0 +1,18 @@
+﻿.dgItem
+{
+    FONT-WEIGHT: normal;
+    COLOR: #286fc0;
+    BACKGROUND-COLOR: #ffffff;
+    TEXT-DECORATION: none;
+    font-family:Arial, Helvetica, sans-serif !important;
+	font-size:12px !important;
+}
+.dgAlternate
+{
+    FONT-WEIGHT: normal;
+    COLOR: #286fc0;
+    BACKGROUND-COLOR: #f2f5fb;
+    TEXT-DECORATION: none;
+    font-family:Arial, Helvetica, sans-serif !important;
+	font-size:12px !important;
+}

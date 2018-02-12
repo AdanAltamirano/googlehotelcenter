@@ -1,0 +1,136 @@
+﻿#frmPrincipal
+{
+    border: 0px solid;     
+    width: 100%;     
+    background-color: transparent;    
+    overflow: hidden;  
+    min-height: 800px;  
+}
+
+#Content
+{
+    overflow: hidden;
+    height: auto;
+}
+
+div
+{
+    overflow: hidden
+}
+#ContentPage
+{
+    width: 90%;
+    height: auto;
+    overflow: hidden;
+}
+
+td.skmcur
+{ 
+	cursor:hand;
+}
+
+.bgmenu { background-color: #d4d0cc; }
+.menustyle  
+{
+	background-color: #F2F5FB;
+	border: solid 1px #003399;
+	font: bold 11px Arial; 	
+	color: #003399;
+	text-align :left ; 
+	height: 18px;
+	cursor:pointer;	
+	z-index:auto;	
+	padding-left: 4px; 
+	padding-right: 4px; 
+	
+}
+
+.skmSelMenuItem
+{
+/*	background-color:#286FC0 ; 
+	font-family: Arial;
+	font-size: 11px;	
+	font-weight: bold;
+	color: White ;
+	padding-left: 4px; 
+	padding-right: 4px; 	*/
+	border: 1px dashed #ff6600; background-color: #F2F5FB; color: #003399; font-weight: normal; font-size: 11px; font-weight: bold ;font-family: Arial;cursor:pointer;height: 18px;
+	padding-left: 4px; 
+	padding-right: 4px;
+	
+}
+
+/* dibuja el submenu*/
+.skmMenuItem 
+{ 
+	background-color: #fff;	
+	font-family: Arial;
+	font-size: 11px; 	
+	font-weight: bold;
+	color: #003399;		
+	height: 18px; 
+	cursor:pointer;
+	padding-left: 4px; 
+	padding-right: 4px; 
+	border: solid 1px #003399;
+	
+	width:auto !important;
+}
+	
+.skmSubMenu
+{ 	
+	background-color: silver;
+	z-index:auto;
+	line-height:20px;
+	vertical-align:middle; 
+	cursor:pointer;
+	/*border: solid 1 #003399;*/
+}
+
+.skmMenuSpacer   
+{
+	background-color: white;
+	border: solid 1 003399;
+	font-family: Arial;
+	font-weight: normal;
+	font-size: 11px; 
+	font-weight: bold;
+	color: White;	
+	height: 18px;
+}
+/*
+.menustyle    { border: 1px solid #003399; background-color: #F2F5FB; color: #003399; font-weight: normal; font-size: 10px; font-weight :bold ;font-family: Verdana;cursor:pointer; width: 80; text-align: center; z-index: auto;}
+.mousemenu    { border: 1px solid #003399; background-color: #286FC0; color: #ffffff; font-weight: normal;font-size: 10px; font-weight :bold ;font-family: Verdana;cursor:pointer; width: 80;text-align :center ;}
+.menuitem     { border: 1px solid #003399; background-color: #F2F5FB; color: #003399; font-weight: normal; font-size: 10px; font-weight: normal ;font-family: Verdana;cursor:pointer;height: 18px;}
+.mouseitem    { border: 1px dashed #ff6600; background-color: #F2F5FB; color: #003399; font-weight: normal; font-size: 10px; font-weight: bold ;font-family: Verdana;cursor:pointer;height: 18px;}
+*/
+
+.mousemenu
+{
+	background-color:#286FC0;
+	border:1px; 
+	border-bottom-color:silver;
+	border-top-color:silver;
+	border-left-color:silver;
+	border-right-color:silver;
+	border-style: solid;
+	font-family: Arial;
+	font-size: 11px; 	
+	font-weight :bold ;
+	color: white;
+	text-align :left ;	
+	height: 18px;
+	cursor:pointer;
+	padding-left: 4px; 
+	padding-right: 4px; 		
+}
+
+iframe.skm 
+{
+	background-color:#fff;
+	position:absolute;
+	top:0px;
+	left:0px;
+	display:none;
+}
+

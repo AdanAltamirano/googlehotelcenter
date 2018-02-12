@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+<xs:schema id="PortalPartners" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata"
+    attributeFormDefault="qualified" elementFormDefault="qualified">
+    <xs:element name="PortalPartners" msdata:IsDataSet="true" msdata:Locale="es-MX" msdata:EnforceConstraints="False">
+        <xs:complexType>
+            <xs:choice maxOccurs="unbounded">
+                <xs:element name="PortalPartner">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Id" type="xs:string" minOccurs="0" />
+                            <xs:element name="Name" type="xs:string" minOccurs="0" />
+                            <xs:element name="Key" type="xs:string" minOccurs="0" />
+                            <xs:element name="SecureKey" type="xs:string" minOccurs="0" />
+                            <xs:element name="Site" type="xs:string" minOccurs="0" />
+                            <xs:element name="SecureSite" type="xs:string" minOccurs="0" />
+                            <xs:element name="StyleSheets" type="xs:string" minOccurs="0" />
+                            <xs:element name="CurrencyCode" type="xs:string" minOccurs="0" />
+                            <xs:element name="RSS" type="xs:string" minOccurs="0" />
+                            <xs:element name="SharedFiles" type="xs:string" minOccurs="0" />
+                            <xs:element name="EmailHeader" type="xs:string" minOccurs="0" />
+                            <xs:element name="EmailFooter" type="xs:string" minOccurs="0" />
+                            <xs:element name="EmailReservas" type="xs:string" minOccurs="0" />
+                            <xs:element name="ImagesSystem" type="xs:string" minOccurs="0" />
+                            <xs:element name="RedirectionFile" type="xs:string" minOccurs="0" />
+                            <xs:element name="SecureCertificationScript" type="xs:string" minOccurs="0" />
+                            <xs:element name="PortalTrackingCodeNonSecure" type="xs:string" minOccurs="0" />
+                            <xs:element name="PortalTrackingCodeSecure" type="xs:string" minOccurs="0" />
+                            <xs:element name="AllowAgency" type="xs:string" minOccurs="0" />
+                            <xs:element name="DomainName" type="xs:string" minOccurs="0" />
+                            <xs:element name="BlockActivies" type="xs:string" minOccurs="0" />
+                            <xs:element name="DefaultActivitiesCityIATA" type="xs:string" minOccurs="0" />
+                            <xs:element name="DefaultActivitiesCityName" type="xs:string" minOccurs="0" />
+                            <xs:element name="DefaultActivitiesCityRefPoint" type="xs:string" minOccurs="0" />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:choice>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

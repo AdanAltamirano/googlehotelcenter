@@ -1,0 +1,201 @@
+<html>
+	<head>
+		[LINKCSS]
+   
+	</head>
+	<BODY>
+
+		<table width="525" align="left" cellpadding="0" cellspacing="0" class="main" ID="Table1">
+			<tr>
+				<td height="52" colspan="4" class="header">[HEADER]
+					<p><b>DETALLES DE RESERVACIÓN</b></p>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4" valign="top" class="rgHeader"><br>
+					<p>Gracias por reservar con [PORTALNAME]</p>
+					<br>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4" valign="top"></td>
+			</tr>
+			<tr>
+				<td width="28%" valign="top" class="rgHeader"><p>ID de la Reservación:</p>
+				</td>
+				<td colspan="3" valign="top" class="txtData"><p>[ID_RESERVACION]</p>
+				</td>
+			</tr>
+			<tr>
+				<td class="rgHeader" vAlign="top">Estatus:</td>
+				<td class="txtData" vAlign="top" colspan=3>[STATUS]</td>
+			</tr>
+			<tr>
+				<td width="28%" valign="top" class="rgHeader"><p>
+						Reservado el:</p>
+				</td>
+				<td colspan="3" valign="top" class="txtData"><p>[REGDATE]</p>
+				</td>
+			</tr>
+			<tr>
+				<td valign="top" class="rgHeader"><p>
+						Nombre del Cliente:</p>
+				</td>
+				<td colspan="3" valign="top" class="txtData"><p>[CONTACTO]</p>
+				</td>
+			</tr>
+			<tr>
+				<td valign="top" class="rgHeader"><p>Correo electrónico:</p>
+				</td>
+				<td colspan="3" valign="top" class="txtData email"><p>[EMAIL_CONTACTO]</p>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4" valign="top">&nbsp;</td>
+			</tr>
+			<tr>
+				<td colspan="4" valign="top">
+					[AGENCYINFO]</td>
+			</tr>
+			<tr>
+				<td colspan="4" valign="top" class="footerCard">
+					[RESERVATIONINFO]
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4" valign="top"><br>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4" valign="top" class="stbSection"><p>DETALLES</p>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" rowspan="2" valign="top" class="txtData dsHotels"><p>[HOTEL_NOMBRE]<br>
+						<span>[HOTEL_DIRECCION]</span><br>
+						<span>[HOTEL_CIUDAD],[HOTEL_PAIS]</span><br/><span>[HOTEL_PHONE]</span></p>
+				</td>
+				<td width="138" valign="top" class="titleDate"><p>Fecha de Llegada:</p>
+				</td>
+				<td width="131" valign="top" class="titleDate"><p>Fecha Salida:</p>
+				</td>
+			</tr>
+			<tr>
+				<td width="138" valign="top" class="txtData date"><p>[CHECKIN]</p>
+				</td>
+				<td width="131" valign="top" class="txtData date"><p>[CHECKOUT]</p>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4" valign="top" class="subDetails"><br>
+					<p>INFORMACIÓN DE HABITACIÓN</p>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4" valign="top" class="rsDetails"><br>
+					<p><b>[NOCHES]</b> Noche(s),&nbsp;&nbsp;&nbsp;<b>[ADULTOS]</b> Adulto(s),&nbsp;&nbsp;&nbsp;<b>[NINIOS]</b>
+						Niño(s)</p>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" valign="top" class="rsDetails">
+					<p>
+						Tipo de Habitación:<br>
+						<strong>[HABITACIONES]</strong><br>
+					</p>
+				</td>
+				<td colspan="2" valign="top" class="main">
+						[ROOMDETAILS]
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4" valign="top" class="subDetails"><br>
+					<p>INFORMACIÓN DE TARIFAS</p>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" valign="top" class="sbRates subtitle"><p>
+						Tarifa Total:</p>
+				</td>
+				<td colspan="2" class="sbRates subtitle"><p>Tarjeta de Crédito</p>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" valign="top"><table class="rsTotal" width="100%" border="0" cellpadding="0" cellspacing="0" ID="Table2">
+						<tr>
+							<td width="30%" align="right" valign="top" class="txtSubTotal">
+								[TEXTOTAR]
+							</td>
+							<td width="70%" valign="top" class="numSubTotal">
+								[VALORESTAR]
+							</td>
+							<td valign="top"></td>
+						</tr>
+					</table>
+				</td>
+				<td colspan="2" valign="top" class="creditCard"><p>[TARJETACREDITO]
+						<br>
+						<span style='FONT-SIZE:7.5pt'>[DEPOSITO]</span></p>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4" valign="top" align="right" class="rsEstanciaTotal"><p>Total Estimado: <b>[ESTANCIATOTAL]</b></p>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4" valign="top" class="footerCard">[CALCULODETAIL]</td>
+			</tr>
+			
+			<tr>
+				<td colspan="4" valign="top"></td>
+			</tr>
+			<tr>
+				<td vAlign="top" colSpan="4">[LINKRESERVATION]</td>
+			</tr>
+			<tr>
+				<td colspan="4" valign="top" class="stbSection"><p>POLÍTICAS DE RESERVACIÓN</p>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4" valign="top" class="sbPoliticas">
+					[POLITICAS]<br>
+					Además de las políticas mencionadas, el hotel puede tener sus propias 
+					políticas.<br>
+					<a href="[URLPOLICIES]">De click aquí para ver las políticas del hotel</a>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4" valign="top" class="subDetails"><br>
+					<p>AGREGA UNA NUEVA RESERVACIÓN</p>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4" valign="top"><table width="525" border="0" cellpadding="0" cellspacing="0" ID="Table3">
+						<tr>
+							<td width="10%" align="center" valign="top" class="dsHotels"></td>
+							<td width="30%" align="center" valign="top"><img src="[URLIMGAIR]"></td>
+							<td width="30%" valign="top" align="center"><img src="[URLIMGCAR]"></td>
+							<td width="30%" valign="top" align="center"><img src="[URLIMGACTIVITIES]"></td>
+						</tr>
+						<tr>
+							<td width="10%" align="center" valign="top" class="dsHotels"></td>
+							<td width="30%" align="center" valign="top" class="titleDate"><p><a href="[URLAIR]">Reserva 
+										un Vuelo</a></p>
+							</td>
+							<td width="30%" valign="top" align="center" class="titleDate"><p><a href="[URLCAR]">Reserva 
+										un Auto</a></p>
+							</td>
+							<td width="30%" valign="top" align="center" class="titleDate"><p><a href="[URLACTIVITIES]">Reserva 
+										una Actividad</a></p>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+				
+			<tr>
+				<td colspan="4" valign="top" class="footerCard">[FOOTER]</td>
+			</tr>
+		</table>
+	</BODY>
+</html>

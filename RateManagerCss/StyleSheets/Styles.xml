@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<Styles>
+	<StyleItem>
+		<Name>Marron</Name>
+		<StyleSheet>/RateManager/StyleSheets/Marron/Marron.css</StyleSheet>
+		<Description>Estilo Color Marrón.</Description>
+		<Preview>/RateManager/StyleSheets/Marron/Preview.gif</Preview>
+	</StyleItem>
+	<StyleItem>
+		<Name>Steel Blue</Name>
+		<StyleSheet>/RateManager/StyleSheets/SteelBlue/SteelBlue.css</StyleSheet>
+		<Description>Estilo Color Azul Acero.</Description>
+		<Preview>/RateManager/StyleSheets/SteelBlue/Preview.gif</Preview>
+	</StyleItem>
+	<StyleItem>
+		<Name>GreenBlue</Name>
+		<StyleSheet>/RateManager/StyleSheets/Green/Green.css</StyleSheet>
+		<Description>Estilo Verde y Azul.</Description>
+		<Preview>/RateManager/StyleSheets/Green/Preview.gif</Preview>
+	</StyleItem>	
+</Styles>
