@@ -12,6 +12,8 @@ Imports WSHotelFacade
 Imports System.Data
 Imports XCrypt
 Imports PortalLibraries
+Imports Newtonsoft.Json
+Imports Newtonsoft.Json.Linq
 
 Partial Class ReservationDetails
     Inherits PaginaBase
@@ -57,6 +59,7 @@ Partial Class ReservationDetails
         tipoHabitacion
         codigotarifa
         Preferencias
+        BDPreferencias
     End Enum
 
     Enum tTarjeta
@@ -1744,6 +1747,42 @@ Partial Class ReservationDetails
         If e.Item.ItemType = ListItemType.Item Or e.Item.ItemType = ListItemType.AlternatingItem Then
             e.Item.Cells(0).Text = i
             i += 1
+
+            Dim lb As Label
+            lb = e.Item.Cells(Columns.Preferencias).FindControl("lblPreferencia")
+
+
+            If e.Item.Cells(Columns.BDPreferencias).Text <> "&nbsp;" Then
+                Dim json As JObject
+                Dim strPreferencia() As String
+                Dim data As List(Of JToken)
+
+                strPreferencia = e.Item.Cells(Columns.BDPreferencias).Text.Split(New String() {"|#UV#|"}, StringSplitOptions.None)
+                If strPreferencia.Length > 1 Then
+                    lb.Text = strPreferencia(0)
+                    json = JObject.Parse(strPreferencia(1))
+                    data = json.Children().ToList
+                    lb = e.Item.Cells(Columns.Preferencias).FindControl("Label3")
+                    lb.Text = ""
+                    For Each item As JProperty In data
+                        item.CreateReader()
+                        Select Case item.Name
+                            Case "Room"
+                                If item.Value <> String.Empty Then
+                                    lb = e.Item.Cells(Columns.tipoHabitacion).FindControl("lblTipoHab")
+                                    lb.Text = item.Value
+                                End If
+                            Case "RatePlan"
+                                If item.Value <> String.Empty Then
+                                    lb = e.Item.Cells(Columns.codigotarifa).FindControl("Label14")
+                                    lb.Text = item.Value
+                                End If
+                        End Select
+                    Next
+                Else
+                    lb.Text = e.Item.Cells(Columns.BDPreferencias).Text
+                End If
+            End If
         End If
         If e.Item.ItemType = ListItemType.Header Then
             Me.dgReservas.Columns(Columns.Cuartos).HeaderText = ColumunsName(Columns.Cuartos)

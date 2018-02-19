@@ -813,23 +813,34 @@
                                         <asp:BoundColumn DataField="Adultos" Visible="false">
                                             <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle"></ItemStyle>
                                         </asp:BoundColumn>
-                                        <asp:BoundColumn DataField="NombreHabitacion">
+                                        <asp:TemplateColumn HeaderText="Tipo Habitacion">
                                             <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle"></ItemStyle>
-                                        </asp:BoundColumn>
+                                            <ItemTemplate>
+                                                <asp:Label runat="server" ID="lblTipoHab"><%#DataBinder.Eval(Container, "DataItem.tipoHabitacion")%> </asp:Label>
+                                            </ItemTemplate>
+                                        </asp:TemplateColumn>
                                         <%--<asp:BoundColumn DataField="rateplan">
 												<ItemStyle HorizontalAlign="Center" VerticalAlign="Middle"></ItemStyle>
 											</asp:BoundColumn>--%>
                                         <asp:TemplateColumn HeaderText="rateplan">
+                                            <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle"></ItemStyle>
                                             <ItemTemplate>
-                                                <asp:Label runat="server">													
-														<%#DataBinder.Eval(Container, "DataItem.rateplan")%>   
+                                                <asp:Label ID="Label14" runat="server">													
+														<%#DataBinder.Eval(Container, "DataItem.rateplan")%> - <%#DataBinder.Eval(Container, "DataItem.rateplanName")%>
                                                 </asp:Label>&nbsp;
                                             <asp:Label ID="Label3" runat="server">													
-														<%#DataBinder.Eval(Container, "DataItem.rateplanName")%>
+														<%#If (DataBinder.Eval(Container, "DataItem.RatePlanPromotion") isnot "", " / " & DataBinder.Eval(Container,"DataItem.RatePlanPromotion"),"")%>
+                                                        <%#If (DataBinder.Eval(Container, "DataItem.PromoRatePlanDescription") isnot "", " - " & DataBinder.Eval(Container,"DataItem.PromoRatePlanDescription"),"")%>
                                             </asp:Label>
                                             </ItemTemplate>
                                         </asp:TemplateColumn>
-                                        <asp:BoundColumn DataField="Preferencia">
+                                        <asp:TemplateColumn HeaderText="Preferencia">
+                                            <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle"></ItemStyle>
+                                            <ItemTemplate>
+                                                <asp:Label runat="server" ID="lblPreferencia"></asp:Label>
+                                            </ItemTemplate>
+                                        </asp:TemplateColumn>
+                                        <asp:BoundColumn DataField="Preferencia" Visible="false">
                                             <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle"></ItemStyle>
                                         </asp:BoundColumn>
                                     </Columns>
