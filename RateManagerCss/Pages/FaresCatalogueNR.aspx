@@ -91,13 +91,13 @@
             valMin = parseFloat(document.getElementById(min).value);
             valMax = parseFloat(document.getElementById(max).value);
             valNR = parseFloat(document.getElementById(nr).value);
-            valUV = parseFloat(document.getElementById(uv).value);
 
             if (document.getElementById(uv)) {
                 //valUV = parseFloat(document.getElementById(uv).value);
                 var NR = parseFloat(valNR) * (1 + (parseFloat(valMin)/100));
-                document.getElementById(uv).value = Math.ceil(parseFloat(NR).toFixed(2) * 100) / 100;
+                document.getElementById(uv).value = (parseFloat(valNR) / ((100 - valMin) / 100)).toFixed(2); //Math.ceil(parseFloat(NR).toFixed(2) * 100) / 100;
             }
+            valUV = parseFloat(document.getElementById(uv).value);
             /*if ((isNaN(valMin) == false) && (isNaN(valMax) == false)) {
                 if ((isNaN(valMin) == false) && (isNaN(valMax) == false)) {
                     if ((valNR != 0) & (valUV != 0)) {

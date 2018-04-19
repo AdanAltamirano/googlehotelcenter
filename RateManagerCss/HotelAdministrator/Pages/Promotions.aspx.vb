@@ -890,7 +890,7 @@ Public Class Promotions
                 End If
                 If Not .IsNull(RatesPlanRulesData.FIELD_NOARRIVOS) Then
                     getNoArrrivalsField(.Item(RatesPlanRulesData.FIELD_NOARRIVOS).ToString)
-                    If Not .Item(RatesPlanRulesData.FIELD_NOARRIVOS).ToString = "YYYYYYY" Then
+                    If Not .Item(RatesPlanRulesData.FIELD_NOARRIVOS).ToString = "NNNNNNN" Then
                         open_SpecificArrivals.Checked = True
                     End If
                 End If
@@ -1188,10 +1188,10 @@ Public Class Promotions
                     .Item(RatesPlanRulesData.FIELD_MINDIAS) = CInt(Val(txtMinNights.Text))
                 End If
 
-                If open_SpecificArrivals.Checked AndAlso GetArrivosField() <> "YYYYYYY" Then
+                If open_SpecificArrivals.Checked AndAlso GetArrivosField() <> "NNNNNNN" Then
                     .Item(RatesPlanRulesData.FIELD_NOARRIVOS) = GetArrivosField()
                 Else
-                    .Item(RatesPlanRulesData.FIELD_NOARRIVOS) = "YYYYYYY"
+                    .Item(RatesPlanRulesData.FIELD_NOARRIVOS) = "NNNNNNN"
                 End If
 
                 If open_SpecificDate.Checked AndAlso GetSpecificDays() <> "YYYYYYY" Then

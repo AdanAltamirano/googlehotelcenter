@@ -1118,6 +1118,13 @@ Public Class PaginaBase
         Return sCur
     End Function
 
+
+    Public Sub OTA_PushNotif(ByVal IdHotel)
+        Dim Service As WsConnectWcf.wsConnectWCFv2 = New WsConnectWcf.wsConnectWCFv2()
+        Service.Url = AppSettings("WsConnectWcf")
+        Threading.Tasks.Task.Factory.StartNew(Sub() Service.ReservationPushNotifAsync(IdHotel))
+    End Sub
+
     Private Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
 

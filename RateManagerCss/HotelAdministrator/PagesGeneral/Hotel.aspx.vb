@@ -258,6 +258,10 @@ Partial Class Hotel
                     chkSingleImgInv.Checked = .Item(dsHotel.FIELD_isSingleImgInv)
                 End If
 
+                If Not .IsNull(dsHotel.FIELD_IsPMSPushNotifActive) Then
+                    chkPushNotif.Checked = .Item(dsHotel.FIELD_IsPMSPushNotifActive)
+                End If
+
                 Dim sFecha As String
                 sFecha = IIf(.IsNull(dsHotel.FIELD_FECHAAPERTURA), "", .Item(dsHotel.FIELD_FECHAAPERTURA))
                 If sFecha <> "" Then sFecha = CDate(sFecha).ToString("MM/dd/yyyy")
@@ -738,6 +742,8 @@ Partial Class Hotel
                 Else
                     .Item(HotelDatos.FIELD_EdadAdolescente) = System.DBNull.Value
                 End If
+
+                .Item(HotelDatos.FIELD_IsPMSPushNotifActive) = chkPushNotif.Checked
             End With
 
             LoadDsImpuesto(ds)
@@ -998,6 +1004,8 @@ Partial Class Hotel
         If IsSupervisor Then
             lblSingleImgInv.Visible = True
             chkSingleImgInv.Visible = True
+            chkPushNotif.Visible = True
+            lblPushNotif.Visible = True
         End If
     End Sub
 

@@ -1959,6 +1959,9 @@ Partial Class ReservationDetails
                     Threading.Thread.CurrentThread.CurrentUICulture = gUI
                     PortalCulture.SetCulture(gUI.ToString)
                     Me.guardalog("/HotelAdministrator/Pages/ReservationDetails.aspx", PaginaBase.acciones.Eliminar, "Cancel� la reservacion " & .Item(dsReservaciones.FIELD_NORESERVACION).ToString)
+
+                    MyBase.OTA_PushNotif(cInfoActual.Hotel)
+
                     Return True
                 Else
                     Threading.Thread.CurrentThread.CurrentUICulture = gUI
@@ -2069,6 +2072,7 @@ Partial Class ReservationDetails
                     Threading.Thread.CurrentThread.CurrentUICulture = gUI
                     PortalCulture.SetCulture(gUI.ToString)
                     Me.guardalog("/HotelAdministrator/Pages/ReservationDetails.aspx", PaginaBase.acciones.Eliminar, "Cancel� la reservacion " & .Item(dsReservaciones.FIELD_NORESERVACION).ToString)
+                    MyBase.OTA_PushNotif(cInfoActual.Hotel)
                     Return True
                 Else
                     Threading.Thread.CurrentThread.CurrentUICulture = gUI
@@ -2788,6 +2792,7 @@ Partial Class ReservationDetails
                 End With
 
                 enviarcorreo(reservaDatos, False, True)
+                MyBase.OTA_PushNotif(cInfoActual.Hotel)
             End If
         End With
     End Sub

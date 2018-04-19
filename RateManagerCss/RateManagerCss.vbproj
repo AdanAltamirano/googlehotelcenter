@@ -1235,10 +1235,30 @@
       <LastGenOutput>Reference.vb</LastGenOutput>
     </Content>
     <Content Include="Web References\RulesWebService\RulesWebService.disco" />
+    <Content Include="Web References\WsConnectWcf\MessageAcknowledgementType.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\WsConnectWcf\OTA_ResRetrieveRS.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\WsConnectWcf\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.vb</LastGenOutput>
+    </Content>
+    <Content Include="Web References\WsConnectWcf\wsConnectWCFv2.disco" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="XmlHttp.js" />
+    <None Include="Web References\WsConnectWcf\wsConnectWCFv2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\WsConnectWcf\wsConnectWCFv20.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\WsConnectWcf\wsConnectWCFv21.xsd">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Data\Agreement.Designer.vb">
@@ -3327,6 +3347,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
+    <Compile Include="Web References\WsConnectWcf\Reference.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
     <Compile Include="WebForm1.aspx.designer.vb">
       <DependentUpon>WebForm1.aspx</DependentUpon>
     </Compile>
@@ -4163,6 +4188,7 @@
       <DependentUpon>ctrlChangePassword.ascx.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <Content Include="Web References\WsConnectWcf\wsConnectWCFv2.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App_Data\Agreement.xsc">
@@ -4600,6 +4626,17 @@
       </CachedDynamicPropName>
       <CachedAppSettingsObjectName>MySettings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>RateManager_RulesWebService_RulesWebService</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://www.test.com/WsConectividad/wsConnectWCFv2.svc">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\WsConnectWcf\</RelPath>
+      <UpdateFromURL>http://www.test.com/WsConectividad/wsConnectWCFv2.svc</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>MySettings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>RateManager_WsConnectWcf_wsConnectWCFv2</CachedSettingsPropName>
     </WebReferenceUrl>
   </ItemGroup>
   <ItemGroup>

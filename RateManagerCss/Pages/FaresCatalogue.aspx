@@ -114,7 +114,7 @@
 		  
 		  }*/
         function Ocultar(v) {
-         /*   var e = document.getElementById('<%=DivRates.clientid%>');
+            var e = document.getElementById('<%=DivRates.clientid%>');
             var s = document.getElementById('<%=hplShowRates.clientid%>');
             var o = document.getElementById('<%=hplHideRates.clientid%>');
             if (v == '1') {
@@ -126,7 +126,7 @@
                 e.style.display = "none";
                 s.style.display = 'block';
                 o.style.display = "none";
-            }*/
+            }
         }
 
         function optionSw(e) {

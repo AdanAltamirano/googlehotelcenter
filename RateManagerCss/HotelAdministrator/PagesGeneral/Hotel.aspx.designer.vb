@@ -455,6 +455,24 @@ Partial Public Class Hotel
     Protected WithEvents chkSingleImgInv As Global.System.Web.UI.WebControls.CheckBox
 
     '''<summary>
+    '''Control lblPushNotif.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblPushNotif As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control chkPushNotif.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents chkPushNotif As Global.System.Web.UI.WebControls.CheckBox
+
+    '''<summary>
     '''Control lblConfirmationEmail.
     '''</summary>
     '''<remarks>
