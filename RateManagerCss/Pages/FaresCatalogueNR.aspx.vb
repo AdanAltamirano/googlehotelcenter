@@ -153,6 +153,21 @@ Partial Class FaresCatalogueNR
         CtrlPlanFaresExc2.m_TextBoxPorcMax = Me.IdTextBoxPorcMax
         CtrlPlanFaresExc2.m_TextBoxPorcMin = Me.IdTextBoxPorcMin
 
+        If (Me.IsPostBack) Then
+            Me.Validate()
+            If (Not Me.IsValid) Then
+                Dim msg As String
+                ' Loop through all validation controls to see which 
+                ' generated the error(s).
+                Dim oValidator As IValidator
+                For Each oValidator In Validators
+                    If oValidator.IsValid = False Then
+                        msg = msg & "<br />" & oValidator.ErrorMessage
+                    End If
+                Next
+            End If
+        End If
+
         If Not IsPostBack Then
             Editando = False
             Me.CtrRateAplication1.MinPercentControlId = Me.CtrlPlanFares2.MinStorageControlId
@@ -593,6 +608,7 @@ Partial Class FaresCatalogueNR
 
             If Me.idroom <> 0 Then
                 Me.lblNoroomSelected.Visible = False
+
                 If Page.IsValid Then
                     lblError.Visible = False
                     If CtrRateAplication1.lstDatesCount = 0 Then

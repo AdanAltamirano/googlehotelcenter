@@ -209,6 +209,13 @@ Public Class PaginaBase
             Return ((New AuthUser).IsUsuarioCasas)
         End Get
     End Property
+
+    Public ReadOnly Property IsUsuarioMixto() As Boolean
+        Get
+            Return ((New AuthUser).IsUsuarioMixto)
+        End Get
+    End Property
+
     Public ReadOnly Property IsUsuarioHomeAgency() As Boolean
         Get
             Return ((New AuthUser).IsUsuarioHomeAgency)
@@ -1637,6 +1644,13 @@ Public Class AuthUser
             Return GetRol(eTypRole.Casas)
         End Get
     End Property
+
+    Public ReadOnly Property IsUsuarioMixto() As Boolean
+        Get
+            Return GetRol(eTypRole.HotelNetRate) And GetRol(eTypRole.HotelAvanzado)
+        End Get
+    End Property
+
     Public ReadOnly Property IsUsuarioHomeAgency() As Boolean
         Get
             Return GetRol(eTypRole.HomeAgency)

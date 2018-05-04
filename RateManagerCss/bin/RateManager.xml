@@ -53720,6 +53720,14 @@ Control Regularexpressionvalidator2.
 Campo generado automáticamente.
 Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
+</member><member name="F:RateManager.ctrRateAplicationNR.rvAdultFareNR">
+	<summary>
+Control rvAdultFareNR.
+</summary>
+	<remarks>
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+</remarks>
 </member><member name="F:RateManager.ctrRateAplicationNR.LblChildPriceNR">
 	<summary>
 Control LblChildPriceNR.

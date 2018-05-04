@@ -123,6 +123,7 @@
                 document.getElementById(msgMin).style.display = "none";            
             }
             <% else %>
+                
             <% end if %>
         }
 

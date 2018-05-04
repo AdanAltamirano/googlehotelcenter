@@ -724,8 +724,9 @@
     </tr>
     <tr>
         <td colspan="6">
-            <div style="display: inline; width: 49%; vertical-align: top;" id="pnlTarifas">
+            <div style="display: inline; width: 49%; vertical-align: top;" id="pnlTarifas">                
                 <table width="100%" style="vertical-align: top;">
+                    <% If Not Me.isUsuarioMixto Then%>
                     <tr id="pnlNetRates">
                         <td align="left" width="33%" valign="top">
                             <asp:Label ID="lblPrecioNR" runat="server" CssClass="clsLabel label" EnableViewState="False">Adulto NR:</asp:Label><br />
@@ -738,7 +739,7 @@
                             <asp:RegularExpressionValidator ID="Regularexpressionvalidator2" runat="server" CssClass="Validators"
                                 ForeColor=" " Display="Dynamic" ErrorMessage="Precio Inválido" ControlToValidate="txtAdultFareNR"
                                 ValidationExpression="^([0-9]*|\d*\.\d{1}?\d*)$"></asp:RegularExpressionValidator>
-                            <asp:RangeValidator runat="server" ControlToValidate="txtAdultFareNR" MinimumValue="1" MaximumValue="99999"
+                            <asp:RangeValidator ID="rvAdultFareNR" runat="server" ControlToValidate="txtAdultFareNR" MinimumValue="1" MaximumValue="99999"
                                 Display="Dynamic" CssClass="Validators" Type="Double">1-99999</asp:RangeValidator>
                         </td>
                         <td align="left" width="33%" valign="top">
@@ -768,7 +769,8 @@
                             <% End If%>
                         </td>
                     </tr>
-                    <% If Me.IsSupervisor Then%>
+                    <% End If%>
+                    <% If Me.IsSupervisor Or Me.isUsuarioMixto Then%>
                     <tr>
                         <td>
                             <asp:Label ID="lblPrecio" EnableViewState="False" CssClass="clsLabel" runat="server">Adulto UV:</asp:Label>
@@ -832,6 +834,7 @@
             </div>
             <div style="display: inline; width: 49%; vertical-align: top;">
                 <table width="100%" style="vertical-align: top;">
+                    <% If Not Me.isUsuarioMixto Then %>
                     <tr>
                         <td align="left" width="33%" valign="top">
                             <asp:Label ID="lblExtraAdultNR" runat="server" CssClass="clsLabel label" EnableViewState="False">Adulto extra NR:</asp:Label><br />
@@ -872,7 +875,8 @@
                             <% End If%>
                         </td>
                     </tr>
-                    <% If Me.IsSupervisor Then%>
+                    <%End If%>
+                    <% If Me.IsSupervisor Or Me.isUsuarioMixto Then%>
                     <tr>
                         <td width="33%">
                             <asp:Label ID="lblExtraAdultUv" runat="server" CssClass="clsLabel" EnableViewState="False">Adulto extra UV:</asp:Label>
@@ -894,7 +898,7 @@
                             <asp:RegularExpressionValidator ID="valAdultExtraPrice" runat="server" CssClass="Validators"
                                 ForeColor=" " Display="Dynamic" ErrorMessage="Precio Inválido" ControlToValidate="txtExtraAdultPrice"
                                 ValidationExpression="^([0-9]*|\d*\.\d{1}?\d*)$"></asp:RegularExpressionValidator>
-                            <asp:CompareValidator ID="compExtraAdultPrice" runat="server" CssClass="Validators"
+                            <asp:CompareValidator ID="compExtraAdultPrice" runat="server" CssClass="Validators" Enabled="false"
                                 ErrorMessage="CompareValidator" ControlToValidate="txtExtraAdultPrice" ControlToCompare="txtExtraAdultPriceNR"
                                 Type="Double" Operator="GreaterThanEqual" Display="Dynamic" Style="width: 120px;"><%= RateManager.PortalCulture.GetString("01506") %></asp:CompareValidator>
                         </td>

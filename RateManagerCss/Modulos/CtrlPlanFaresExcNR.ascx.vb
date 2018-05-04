@@ -222,20 +222,25 @@ Partial Class CtrlPlanFaresExcNR
                 txtNetRate = item.Cells(2).FindControl("txtAdultFareNR")
                 txtRate = item.Cells(1).FindControl("txtAdultFare")
 
-                ' Double.TryParse(txtRate.Text, rate)
+                If Not Me.isUsuarioMixto Then
+                    Double.TryParse(CType(item.Cells(1).FindControl("varRate"), HtmlInputHidden).Value, rate)
+                Else
+                    Double.TryParse(txtRate.Text, rate)
+                End If
                 'Double.TryParse(txtNetRate.Text, netRate)
-                Double.TryParse(CType(item.Cells(1).FindControl("varRate"), HtmlInputHidden).Value, rate)
                 Double.TryParse(txtNetRate.Text, netRate)
 
                 'If netRate > 0 AndAlso (Not isSupervisor OrElse rate > 0) Then
                 If Not isSupervisor AndAlso (netRate > 0) Then
                     'If Not isSupervisor AndAlso rate = 0 Then
-                    If (rate = 0 OrElse netRate * (1 + (minPercent / 100)) > rate OrElse netRate * (1 + (maxPercent / 100)) < rate OrElse netRate = 0) Then
-                        rate = (netRate * (1 + (maxPercent / 100)))
+                    If (rate = 0 OrElse netRate / (1 - (minPercent / 100)) > rate OrElse netRate / (1 - (maxPercent / 100)) < rate OrElse netRate = 0) Then
+                        rate = (netRate / (1 - (maxPercent / 100)))
                         txtRate.Text = rate.ToString()
                     ElseIf Not isSupervisor Then
                         txtRate.Text = rate
                     End If
+                ElseIf Me.isUsuarioMixto AndAlso rate > 0 Then
+                    txtNetRate.Text = (rate * (1 - (maxPercent / 100))).ToString()
                 Else
                     IsValidData = False
                     If isSupervisor Then
@@ -260,21 +265,26 @@ Partial Class CtrlPlanFaresExcNR
                     txtRate = item.Cells(1).FindControl("txtChildrenFare")
 
                     'Double.TryParse(txtRate.Text, rate)
-                    Double.TryParse(CType(item.Cells(1).FindControl("varRate"), HtmlInputHidden).Value, rate)
+
                     Double.TryParse(txtNetRate.Text, netRate)
+                    If Not Me.isUsuarioMixto Then
+                        Double.TryParse(CType(item.Cells(1).FindControl("varRate"), HtmlInputHidden).Value, rate)
+                        'If netRate > 0 AndAlso rate = 0 Then
+                        If rate = 0 OrElse netRate / (1 - (minPercent / 100)) > rate OrElse netRate / (1 - (maxPercent / 100)) < rate OrElse netRate = 0 Then
+                            rate = (netRate / (1 - (maxPercent / 100)))
+                            txtRate.Text = rate.ToString()
+                        Else
+                            txtRate.Text = rate
+                        End If
 
-                    'If netRate > 0 AndAlso rate = 0 Then
-                    If rate = 0 OrElse netRate * (1 + (minPercent / 100)) > rate OrElse netRate * (1 + (maxPercent / 100)) < rate OrElse netRate = 0 Then
-                        rate = (netRate * (1 + (maxPercent / 100)))
-                        txtRate.Text = rate.ToString()
+                        ' IsValidData = ((netRate * (1 + (minPercent / 100))) <= rate)
+                        ' IsValidData = netRate * (1 + (minPercent / 100)) < rate OrElse netRate * (1 + (maxPercent / 100)) > rate
+
+                        'If Not IsValidData Then Exit Function
                     Else
-                        txtRate.Text = rate
+                        Double.TryParse(txtRate.Text, rate)
+                        txtNetRate.Text = (rate * (1 - (maxPercent / 100))).ToString()
                     End If
-
-                    ' IsValidData = ((netRate * (1 + (minPercent / 100))) <= rate)
-                    ' IsValidData = netRate * (1 + (minPercent / 100)) < rate OrElse netRate * (1 + (maxPercent / 100)) > rate
-
-                    'If Not IsValidData Then Exit Function
 
                 Next
 
@@ -283,21 +293,27 @@ Partial Class CtrlPlanFaresExcNR
                     txtRate = item.Cells(1).FindControl("txtTeenFare")
 
                     'Double.TryParse(txtRate.Text, rate)
-                    Double.TryParse(CType(item.Cells(1).FindControl("varRate"), HtmlInputHidden).Value, rate)
+
                     Double.TryParse(txtNetRate.Text, netRate)
+                    If Not Me.isUsuarioMixto Then
+                        Double.TryParse(CType(item.Cells(1).FindControl("varRate"), HtmlInputHidden).Value, rate)
+                        'If netRate > 0 AndAlso rate = 0 Then
+                        If rate = 0 OrElse netRate / (1 - (minPercent / 100)) > rate OrElse netRate / (1 - (maxPercent / 100)) < rate OrElse netRate = 0 Then
+                            rate = (netRate / (1 - (maxPercent / 100)))
+                            txtRate.Text = rate.ToString()
+                        Else
+                            txtRate.Text = rate
+                        End If
 
-                    'If netRate > 0 AndAlso rate = 0 Then
-                    If rate = 0 OrElse netRate * (1 + (minPercent / 100)) > rate OrElse netRate * (1 + (maxPercent / 100)) < rate OrElse netRate = 0 Then
-                        rate = (netRate * (1 + (maxPercent / 100)))
-                        txtRate.Text = rate.ToString()
+                        'IsValidData = ((netRate * (1 + (minPercent / 100))) <= rate)
+                        ' IsValidData = netRate * (1 + (minPercent / 100)) < rate OrElse netRate * (1 + (maxPercent / 100)) > rate
+
+                        ' If Not IsValidData Then Exit Function
                     Else
-                        txtRate.Text = rate
+                        Double.TryParse(txtRate.Text, rate)
+                        txtNetRate.Text = (rate * (1 - (maxPercent / 100))).ToString()
                     End If
-
-                    'IsValidData = ((netRate * (1 + (minPercent / 100))) <= rate)
-                    ' IsValidData = netRate * (1 + (minPercent / 100)) < rate OrElse netRate * (1 + (maxPercent / 100)) > rate
-
-                    ' If Not IsValidData Then Exit Function
+                    
 
                 Next
 
@@ -311,6 +327,12 @@ Partial Class CtrlPlanFaresExcNR
     Protected ReadOnly Property IsSupervisor() As Boolean
         Get
             Return CType(Me.Page, PaginaBase).IsSupervisor
+        End Get
+    End Property
+
+    Protected ReadOnly Property isUsuarioMixto() As Boolean
+        Get
+            Return CType(Me.Page, PaginaBase).IsUsuarioMixto
         End Get
     End Property
 
@@ -652,10 +674,10 @@ Partial Class CtrlPlanFaresExcNR
         End If
 
         'Validacion del porcentaje maximo y minimo de ganancia UV
-        'If Not txtChildFareNR Is Nothing AndAlso Not txtChildFare Is Nothing Then
-        '    txtChildFareNR.Attributes.Add("onChange", "javascript:CheckValContract('" & m_TextBoxPorcMin & "','" & m_TextBoxPorcMax & "','" & txtChildFareNR.ClientID & "','" & txtChildFare.ClientID & "','" & lblChildValMax.ClientID & "','" & lblChildValMin.ClientID & "')")
-        '    txtChildFare.Attributes.Add("onChange", "javascript:CheckValContract('" & m_TextBoxPorcMin & "','" & m_TextBoxPorcMax & "','" & txtChildFareNR.ClientID & "','" & txtChildFare.ClientID & "','" & lblChildValMax.ClientID & "','" & lblChildValMin.ClientID & "')")
-        'End If
+        If Not txtChildFareNR Is Nothing AndAlso Not txtChildFare Is Nothing Then
+            txtChildFareNR.Attributes.Add("onChange", "javascript:CheckValContract('" & m_TextBoxPorcMin & "','" & m_TextBoxPorcMax & "','" & txtChildFareNR.ClientID & "','" & txtChildFare.ClientID & "','" & lblChildValMax.ClientID & "','" & lblChildValMin.ClientID & "')")
+            txtChildFare.Attributes.Add("onChange", "javascript:CheckValContract('" & m_TextBoxPorcMin & "','" & m_TextBoxPorcMax & "','" & txtChildFareNR.ClientID & "','" & txtChildFare.ClientID & "','" & lblChildValMax.ClientID & "','" & lblChildValMin.ClientID & "')")
+        End If
 
         Dim chkActive As CheckBox
         chkActive = e.Item.Cells(4).FindControl("chkActive")
@@ -730,6 +752,11 @@ Partial Class CtrlPlanFaresExcNR
             End If
         End If
 
+        If Not txtChildFareNR Is Nothing AndAlso Not txtChildFare Is Nothing Then
+            txtChildFareNR.Attributes.Add("onChange", "javascript:CheckValContract('" & m_TextBoxPorcMin & "','" & m_TextBoxPorcMax & "','" & txtChildFareNR.ClientID & "','" & txtChildFare.ClientID & "','" & lblChildValMax.ClientID & "','" & lblChildValMin.ClientID & "')")
+            txtChildFare.Attributes.Add("onChange", "javascript:CheckValContract('" & m_TextBoxPorcMin & "','" & m_TextBoxPorcMax & "','" & txtChildFareNR.ClientID & "','" & txtChildFare.ClientID & "','" & lblChildValMax.ClientID & "','" & lblChildValMin.ClientID & "')")
+        End If
+
         Dim chkActive As CheckBox
         chkActive = e.Item.Cells(4).FindControl("chkActive")
         Dim dgi As DataGridItem
@@ -767,7 +794,8 @@ Partial Class CtrlPlanFaresExcNR
 
     Private Sub grid_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgAdult.PreRender, dgChild.PreRender, dgTeen.PreRender
 
-        CType(sender, DataGrid).Columns(2).Visible = Me.IsSupervisor
+        CType(sender, DataGrid).Columns(2).Visible = (Me.IsSupervisor Or Me.isUsuarioMixto)
+        CType(sender, DataGrid).Columns(1).Visible = Not Me.isUsuarioMixto
 
     End Sub
     Public Function IsFareValuesEqualTo(ByVal target As String, ByVal value As Double, ByVal isNetRate As Boolean) As Boolean

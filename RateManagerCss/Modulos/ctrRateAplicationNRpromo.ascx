@@ -936,7 +936,7 @@
                             <asp:RegularExpressionValidator ID="valAdultExtraPrice" runat="server" CssClass="Validators"
                                 ForeColor=" " Display="Dynamic" ErrorMessage="Precio Inválido" ControlToValidate="txtExtraAdultPrice"
                                 ValidationExpression="^([0-9]*|\d*\.\d{1}?\d*)$"></asp:RegularExpressionValidator>
-                            <asp:CompareValidator ID="compExtraAdultPrice" runat="server" CssClass="Validators" ErrorMessage="CompareValidator" ControlToValidate="txtExtraAdultPrice"
+                            <asp:CompareValidator ID="compExtraAdultPrice" runat="server" CssClass="Validators" ErrorMessage="CompareValidator" ControlToValidate="txtExtraAdultPrice" Enabled="false"
                                 ControlToCompare="txtExtraAdultPriceNR" Type="Double" Operator="GreaterThanEqual" Display="Dynamic" Style="width: 120px;"><%= RateManager.PortalCulture.GetString("01506") %></asp:CompareValidator>
                         </td>
                         <td align="left" valign="top">

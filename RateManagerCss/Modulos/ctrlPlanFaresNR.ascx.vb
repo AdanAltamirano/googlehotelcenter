@@ -381,6 +381,12 @@ Partial Class ctrlPlanFaresNR
         End Get
     End Property
 
+    Protected ReadOnly Property isUsuarioMixto() As Boolean
+        Get
+            Return CType(Me.Page, PaginaBase).IsUsuarioMixto
+        End Get
+    End Property
+
     Public Function IsValidData() As Boolean
 
         IsValidData = True
@@ -403,7 +409,11 @@ Partial Class ctrlPlanFaresNR
 
             ' Double.TryParse(txtRate.Text, rate)
             'Double.TryParse(txtNetRate.Text, netRate)
-            Double.TryParse(CType(item.Cells(1).FindControl("varRate"), HtmlInputHidden).Value, rate)
+            If Not Me.isUsuarioMixto Then
+                Double.TryParse(CType(item.Cells(1).FindControl("varRate"), HtmlInputHidden).Value, rate)
+            Else
+                Double.TryParse(txtRate.Text, rate)
+            End If
             Double.TryParse(txtNetRate.Text, netRate)
 
             '  If netRate > 0 AndAlso (Not isSupervisor OrElse rate > 0) Then
@@ -411,11 +421,13 @@ Partial Class ctrlPlanFaresNR
 
                 'If Not isSupervisor AndAlso rate = 0 Then
                 If Not isSupervisor AndAlso (rate = 0 OrElse netRate * (1 + (minPercent / 100)) > rate OrElse netRate * (1 + (maxPercent / 100)) < rate OrElse netRate = 0) Then
-                    rate = (netRate * (1 + (maxPercent / 100)))
+                    rate = (netRate / (1 - (maxPercent / 100)))
                     txtRate.Text = rate.ToString()
                 ElseIf Not isSupervisor Then
                     txtRate.Text = rate
                 End If
+            ElseIf Me.isUsuarioMixto AndAlso rate > 0 Then
+                txtNetRate.Text = (rate * (1 - (maxPercent / 100))).ToString()
             Else
                 IsValidData = False
                 If isSupervisor Then
@@ -441,21 +453,26 @@ Partial Class ctrlPlanFaresNR
                 txtRate = item.Cells(1).FindControl("txtChildrenFare")
 
                 'Double.TryParse(txtRate.Text, rate)
-                Double.TryParse(CType(item.Cells(1).FindControl("varRate"), HtmlInputHidden).Value, rate)
+
                 Double.TryParse(txtNetRate.Text, netRate)
+                If Not Me.isUsuarioMixto Then
+                    Double.TryParse(CType(item.Cells(1).FindControl("varRate"), HtmlInputHidden).Value, rate)
+                    'If netRate > 0 AndAlso rate = 0 Then
+                    If rate = 0 OrElse netRate / (1 - (minPercent / 100)) > rate OrElse netRate / (1 - (maxPercent / 100)) < rate OrElse netRate = 0 Then
+                        rate = (netRate / (1 - (maxPercent / 100)))
+                        txtRate.Text = rate.ToString()
+                    Else
+                        txtRate.Text = rate
+                    End If
 
-                'If netRate > 0 AndAlso rate = 0 Then
-                If rate = 0 OrElse netRate * (1 + (minPercent / 100)) > rate OrElse netRate * (1 + (maxPercent / 100)) < rate OrElse netRate = 0 Then
-                    rate = (netRate * (1 + (maxPercent / 100)))
-                    txtRate.Text = rate.ToString()
+                    ' IsValidData = ((netRate * (1 + (minPercent / 100))) <= rate)
+                    ' IsValidData = netRate * (1 + (minPercent / 100)) < rate OrElse netRate * (1 + (maxPercent / 100)) > rate
+
+                    ' If Not IsValidData Then Exit Function
                 Else
-                    txtRate.Text = rate
+                    Double.TryParse(txtRate.Text, rate)
+                    txtNetRate.Text = (rate * (1 - (maxPercent / 100))).ToString()
                 End If
-
-                ' IsValidData = ((netRate * (1 + (minPercent / 100))) <= rate)
-                ' IsValidData = netRate * (1 + (minPercent / 100)) < rate OrElse netRate * (1 + (maxPercent / 100)) > rate
-
-                ' If Not IsValidData Then Exit Function
 
             Next
 
@@ -464,21 +481,26 @@ Partial Class ctrlPlanFaresNR
                 txtRate = item.Cells(1).FindControl("txtTeenFare")
 
                 'Double.TryParse(txtRate.Text, rate)
-                Double.TryParse(CType(item.Cells(1).FindControl("varRate"), HtmlInputHidden).Value, rate)
+
                 Double.TryParse(txtNetRate.Text, netRate)
+                If Not Me.isUsuarioMixto Then
+                    Double.TryParse(CType(item.Cells(1).FindControl("varRate"), HtmlInputHidden).Value, rate)
+                    'If netRate > 0 AndAlso rate = 0 Then
+                    If rate = 0 OrElse netRate / (1 - (minPercent / 100)) > rate OrElse netRate / (1 - (maxPercent / 100)) < rate OrElse netRate = 0 Then
+                        rate = (netRate / (1 - (maxPercent / 100)))
+                        txtRate.Text = rate.ToString()
+                    Else
+                        txtRate.Text = rate
+                    End If
 
-                'If netRate > 0 AndAlso rate = 0 Then
-                If rate = 0 OrElse netRate * (1 + (minPercent / 100)) > rate OrElse netRate * (1 + (maxPercent / 100)) < rate OrElse netRate = 0 Then
-                    rate = (netRate * (1 + (maxPercent / 100)))
-                    txtRate.Text = rate.ToString()
+                    'IsValidData = ((netRate * (1 + (minPercent / 100))) <= rate)
+                    ' IsValidData = netRate * (1 + (minPercent / 100)) < rate OrElse netRate * (1 + (maxPercent / 100)) > rate
+
+                    ' If Not IsValidData Then Exit Function
                 Else
-                    txtRate.Text = rate
+                    Double.TryParse(txtRate.Text, rate)
+                    txtNetRate.Text = (rate * (1 - (maxPercent / 100))).ToString()
                 End If
-
-                'IsValidData = ((netRate * (1 + (minPercent / 100))) <= rate)
-                ' IsValidData = netRate * (1 + (minPercent / 100)) < rate OrElse netRate * (1 + (maxPercent / 100)) > rate
-
-                ' If Not IsValidData Then Exit Function
 
             Next
 
@@ -1358,7 +1380,8 @@ Partial Class ctrlPlanFaresNR
 
     Private Sub grid_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgAdult.PreRender, dgChild.PreRender, dgTeen.PreRender
 
-        CType(sender, DataGrid).Columns(2).Visible = Me.IsSupervisor
+        CType(sender, DataGrid).Columns(2).Visible = (Me.IsSupervisor Or Me.isUsuarioMixto)
+        CType(sender, DataGrid).Columns(1).Visible = (Not Me.isUsuarioMixto)
 
     End Sub
 

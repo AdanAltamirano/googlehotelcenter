@@ -139,7 +139,7 @@
 							</asp:TextBox>
 							<span class="currency"></span>
 							<% If Me.IsSupervisor Then%>
-							<asp:CompareValidator ID="cmpvAdults" runat="server" CssClass="Validators" ErrorMessage="CompareValidator" ControlToValidate="txtAdultFare"  ControlToCompare="txtAdultFareNR"  Type="Double" Operator="GreaterThanEqual" Display=Dynamic style= "width:120px;" ><%= RateManager.PortalCulture.GetString("01506") %></asp:CompareValidator>
+							<asp:CompareValidator ID="cmpvAdults" Enabled ="false" runat="server" CssClass="Validators" ErrorMessage="CompareValidator" ControlToValidate="txtAdultFare"  ControlToCompare="txtAdultFareNR"  Type="Double" Operator="GreaterThanEqual" Display=Dynamic style= "width:120px;" ><%= RateManager.PortalCulture.GetString("01506") %></asp:CompareValidator>
 							<% end if %>
 							<asp:CustomValidator id="cvErrAdults" Display="Dynamic" CssClass="Validators" runat="server" ControlToValidate="txtAdultFare">*</asp:CustomValidator>
 							<asp:RegularExpressionValidator id="valAdultExtraPrice" Display="Dynamic" CssClass="Validators" runat="server" ControlToValidate="txtAdultFare"
@@ -207,7 +207,7 @@
 							</asp:TextBox>
 							<span class="currency"></span>
 							<% If Me.IsSupervisor Then%>
-							<asp:CompareValidator ID="cmpvChilds" runat="server" CssClass="Validators" ErrorMessage="CompareValidator" ControlToValidate="txtChildrenFare"  ControlToCompare="txtChildrenFareNR"  Type="Double" Operator="GreaterThanEqual" Display=Dynamic  style= "width:120px;"><%= RateManager.PortalCulture.GetString("01506") %></asp:CompareValidator>
+							<asp:CompareValidator ID="cmpvChilds" runat="server" Enable="false" CssClass="Validators" ErrorMessage="CompareValidator" ControlToValidate="txtChildrenFare"  ControlToCompare="txtChildrenFareNR"  Type="Double" Operator="GreaterThanEqual" Display=Dynamic  style= "width:120px;"><%= RateManager.PortalCulture.GetString("01506") %></asp:CompareValidator>
 							<% end if %>
 							<asp:CustomValidator id="cvErrChilds" Display="Dynamic" runat="server" ControlToValidate="txtChildrenFare">*</asp:CustomValidator>
 							<asp:RegularExpressionValidator id="valChildrenExtraPrice" Display="Dynamic" CssClass="Validators" runat="server"
@@ -273,7 +273,7 @@
 							</asp:TextBox>
 							<span class="currency"></span>
 							<% If Me.IsSupervisor Then%>
-							<asp:CompareValidator ID="cmpvJuniors" runat="server" CssClass="Validators" ErrorMessage="CompareValidator" ControlToValidate="txtTeenFare"  ControlToCompare="txtTeenFareNR"  Type="Double" Operator="GreaterThanEqual"  Display=Dynamic style= "width:120px;" ><%= RateManager.PortalCulture.GetString("01506") %></asp:CompareValidator>
+							<asp:CompareValidator ID="cmpvJuniors" Enabled="false" runat="server" CssClass="Validators" ErrorMessage="CompareValidator" ControlToValidate="txtTeenFare"  ControlToCompare="txtTeenFareNR"  Type="Double" Operator="GreaterThanEqual"  Display=Dynamic style= "width:120px;" ><%= RateManager.PortalCulture.GetString("01506") %></asp:CompareValidator>
 							<% end if %>
 							<asp:CustomValidator id="cvErrTeen" Display="Dynamic" runat="server" ControlToValidate="txtTeenFare">*</asp:CustomValidator>
 							<asp:RegularExpressionValidator id="valTeenExtraPrice" Display="Dynamic" CssClass="Validators" runat="server"
