@@ -1461,9 +1461,16 @@ Partial Class ReservationDetails
                             lblCCNumber.Text = crypto.DecryptString128Bit(.Item(dsReservaciones.FIELD_NUMEROCC), crypto.PublicKey)
                         End If
                     End If
+
+                ElseIf pagoData IsNot Nothing AndAlso pagoData.Rows.Count > 0 Then
+                    If Not pagoData.Rows(0).IsNull("OnlineCCType") AndAlso Not pagoData.Rows(0).IsNull("OnlineCCNumber") Then
+
+                        lblCCNumber.Text = pagoData.Rows(0)("OnlineCCNumber").ToString
+                        lblCCType.Text = pagoData.Rows(0)("OnlineCCType").ToString
+                    End If
                 End If
 
-                If Not Session(AppSettings("RestTarjetas")) Is Nothing AndAlso Session(AppSettings("RestTarjetas")) = "1" Then
+                    If Not Session(AppSettings("RestTarjetas")) Is Nothing AndAlso Session(AppSettings("RestTarjetas")) = "1" Then
                     Dim ccn As String = IIf(.IsNull(dsReservaciones.FIELD_DIGITOCC), " -", .Item(dsReservaciones.FIELD_DIGITOCC))
                     If ccn.Length >= 3 Then
                         lblCCcvNumber.Text = "XXX"
