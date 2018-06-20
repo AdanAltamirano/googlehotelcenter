@@ -545,6 +545,7 @@ Partial Class ctrRateAplicationNR
         Me.reqExtraChildPriceNR.ErrorMessage = PortalCulture.GetString("M000179")
         Me.reqExtraTeenPriceNR.ErrorMessage = PortalCulture.GetString("M000179")
 
+
         Me.reqAdultFare.ErrorMessage = PortalCulture.GetString("M000179")
         Me.reqAdultFareNR.ErrorMessage = PortalCulture.GetString("M000179")
         Me.reqChildFare.ErrorMessage = PortalCulture.GetString("M000179")
@@ -1230,9 +1231,10 @@ Partial Class ctrRateAplicationNR
         Me.reqExtraAdultPrice.Enabled = (lstPeoplesExtras.Items.Count > 2)
         Me.reqExtraChildPrice.Enabled = (lstPeoplesExtras.Items.Count > 2)
         Me.reqExtraTeenPrice.Enabled = (lstPeoplesExtras.Items.Count > 2)
-        Me.reqExtraAdultPriceNR.Enabled = (lstPeoplesExtras.Items.Count > 2)
-        Me.reqExtraChildPriceNR.Enabled = (lstPeoplesExtras.Items.Count > 2)
-        Me.reqExtraTeenPriceNR.Enabled = (lstPeoplesExtras.Items.Count > 2)
+
+        Me.reqExtraAdultPriceNR.Enabled = (lstPeoplesExtras.Items.Count > 2) AndAlso Not Me.isUsuarioMixto
+        Me.reqExtraChildPriceNR.Enabled = (lstPeoplesExtras.Items.Count > 2) AndAlso Not Me.isUsuarioMixto
+        Me.reqExtraTeenPriceNR.Enabled = (lstPeoplesExtras.Items.Count > 2) AndAlso Not Me.isUsuarioMixto
 
     End Sub
 
@@ -1660,9 +1662,10 @@ Partial Class ctrRateAplicationNR
             reqExtraAdultPrice.Enabled = extrasVisibles
             reqExtraChildPrice.Enabled = extrasVisibles
             reqExtraTeenPrice.Enabled = extrasVisibles
-            reqExtraAdultPriceNR.Enabled = extrasVisibles
-            reqExtraChildPriceNR.Enabled = extrasVisibles
-            reqExtraTeenPriceNR.Enabled = extrasVisibles
+
+            reqExtraAdultPriceNR.Enabled = extrasVisibles AndAlso Not Me.isUsuarioMixto
+            reqExtraChildPriceNR.Enabled = extrasVisibles AndAlso Not Me.isUsuarioMixto
+            reqExtraTeenPriceNR.Enabled = extrasVisibles AndAlso Not Me.isUsuarioMixto
 
             txtExtraAdultPrice.Text = initialValue
             txtExtraChildPrice.Text = initialValue

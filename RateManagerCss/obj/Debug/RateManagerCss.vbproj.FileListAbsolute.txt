@@ -655,4 +655,3 @@ C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerC
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.dll
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.xml
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.pdb
-C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManagerCss.vbprojResolveAssemblyReference.cache

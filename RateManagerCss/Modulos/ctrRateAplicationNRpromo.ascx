@@ -8,6 +8,7 @@
         Me.reqExtraAdultPriceNR.Enabled = Me.txtExtraAdultPriceNR.Visible AndAlso Me.txtExtraAdultPriceNR.Enabled
         Me.reqExtraChildPriceNR.Enabled = Me.txtExtraChildPriceNR.Visible AndAlso Me.txtExtraChildPriceNR.Enabled
         Me.reqExtraTeenPriceNR.Enabled = Me.txtExtraTeenPriceNR.Visible AndAlso Me.txtExtraTeenPriceNR.Enabled
+        
         Me.reqExtraAdultPrice.Enabled = Me.IsSupervisor AndAlso Me.txtExtraAdultPrice.Enabled
         Me.reqExtraChildPrice.Enabled = Me.IsSupervisor AndAlso Me.txtExtraChildPrice.Enabled
         Me.reqExtraTeenPrice.Enabled = Me.IsSupervisor AndAlso Me.txtExtraTeenPrice.Enabled

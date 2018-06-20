@@ -5,9 +5,10 @@
 
 <script runat="server">
     Protected Sub AlCargar(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
-        Me.reqExtraAdultPriceNR.Enabled = Me.txtExtraAdultPriceNR.Visible AndAlso Me.txtExtraAdultPriceNR.Enabled
-        Me.reqExtraChildPriceNR.Enabled = Me.txtExtraChildPriceNR.Visible AndAlso Me.txtExtraChildPriceNR.Enabled
-        Me.reqExtraTeenPriceNR.Enabled = Me.txtExtraTeenPriceNR.Visible AndAlso Me.txtExtraTeenPriceNR.Enabled
+        Me.reqExtraAdultPriceNR.Enabled = Me.txtExtraAdultPriceNR.Visible AndAlso Me.txtExtraAdultPriceNR.Enabled AndAlso Not Me.isUsuarioMixto
+        Me.reqExtraChildPriceNR.Enabled = Me.txtExtraChildPriceNR.Visible AndAlso Me.txtExtraChildPriceNR.Enabled AndAlso Not Me.isUsuarioMixto
+        Me.reqExtraTeenPriceNR.Enabled = Me.txtExtraTeenPriceNR.Visible AndAlso Me.txtExtraTeenPriceNR.Enabled AndAlso Not Me.isUsuarioMixto
+        
         Me.reqExtraAdultPrice.Enabled = Me.IsSupervisor AndAlso Me.txtExtraAdultPrice.Enabled
         Me.reqExtraChildPrice.Enabled = Me.IsSupervisor AndAlso Me.txtExtraChildPrice.Enabled
         Me.reqExtraTeenPrice.Enabled = Me.IsSupervisor AndAlso Me.txtExtraTeenPrice.Enabled

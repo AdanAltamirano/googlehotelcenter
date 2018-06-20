@@ -609,6 +609,18 @@ Partial Class FaresCatalogueNR
             If Me.idroom <> 0 Then
                 Me.lblNoroomSelected.Visible = False
 
+                If (Not Me.IsValid) Then
+                    Dim msg As String
+                    ' Loop through all validation controls to see which 
+                    ' generated the error(s).
+                    Dim oValidator As IValidator
+                    For Each oValidator In Validators
+                        If oValidator.IsValid = False Then
+                            msg = msg & "<br />" & oValidator.ErrorMessage
+                        End If
+                    Next
+                End If
+
                 If Page.IsValid Then
                     lblError.Visible = False
                     If CtrRateAplication1.lstDatesCount = 0 Then
