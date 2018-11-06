@@ -447,7 +447,7 @@ C:\Users\WM\Source\RMGit\RateManagerCss\obj\Debug\es\RateManager.resources.dll
 C:\Users\WM\Source\RMGit\RateManagerCss\obj\Debug\RateManager.dll
 C:\Users\WM\Source\RMGit\RateManagerCss\obj\Debug\RateManager.xml
 C:\Users\WM\Source\RMGit\RateManagerCss\obj\Debug\RateManager.pdb
-C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.NearCities.resources
+C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.CambiarContenido.resources
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\bin\RateManager.dll
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\bin\RateManager.pdb
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\bin\RateManager.xml
@@ -494,6 +494,7 @@ C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerC
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.HotelConfPayPal.resources
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.ModifyPassiveReservation.resources
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.NearAirports.resources
+C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.NearCities.resources
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.NoConfirmReservas.resources
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.PassiveBooking.resources
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.ReservationDetails.resources
@@ -581,7 +582,6 @@ C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerC
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.Activities.resources
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.AgregarContenido.resources
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.AreaAttraction.resources
-C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.CambiarContenido.resources
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.Contenidos.resources
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.ContenidoFCk.resources
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.ctlConstructorGramatical.resources
@@ -650,4 +650,3 @@ C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerC
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.dll
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.xml
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.pdb
-C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManagerCss.vbprojResolveAssemblyReference.cache

@@ -442,6 +442,7 @@
     <Content Include="Data\RoomTypes.xml" />
     <Content Include="Data\Segmentos.xml" />
     <Content Include="Default.aspx" />
+    <Content Include="ExportExcel\Reports.aspx" />
     <Content Include="HotelAdministrator\Invoicing\Vouchers.aspx" />
     <Content Include="HotelAdministrator\Pages\MapeoPlanesF2G.aspx" />
     <Content Include="HotelAdministrator\Pages\Promotions.aspx" />
@@ -1077,6 +1078,7 @@
     <Content Include="Pages\ConventionsMeetings.aspx" />
     <Content Include="Pages\DataClientPermission.aspx" />
     <Content Include="Pages\DepositRatesPlan.aspx" />
+    <Content Include="Pages\F2goReport.html" />
     <Content Include="Pages\FaresCatalogue.aspx" />
     <Content Include="Pages\FaresCatalogueException.aspx" />
     <Content Include="Pages\FaresCatalogueNR.aspx" />
@@ -1251,6 +1253,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="XmlHttp.js" />
+    <Content Include="Pages\F2goGetReport.ashx" />
     <None Include="Web References\WsConnectWcf\wsConnectWCFv2.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -1350,6 +1353,13 @@
     </Compile>
     <Compile Include="Default.aspx.designer.vb">
       <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ExportExcel\Reports.aspx.designer.vb">
+      <DependentUpon>Reports.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ExportExcel\Reports.aspx.vb">
+      <DependentUpon>Reports.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Data\HdrRetentionsConfig.ashx.vb">
       <DependentUpon>HdrRetentionsConfig.ashx</DependentUpon>
@@ -1636,6 +1646,9 @@
     </Compile>
     <Compile Include="Pages\Data\ExecutorServer.ashx.vb">
       <DependentUpon>ExecutorServer.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\F2goGetReport.ashx.vb">
+      <DependentUpon>F2goGetReport.ashx</DependentUpon>
     </Compile>
     <Compile Include="Pages\Groups.aspx.designer.vb">
       <DependentUpon>Groups.aspx</DependentUpon>
