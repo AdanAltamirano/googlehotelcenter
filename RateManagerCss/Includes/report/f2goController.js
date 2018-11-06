@@ -52,11 +52,6 @@
                     return 'En proceso';
             }
         }
-
-        $$.PaymentMethod = function (value)
-        {
-            return value != null ? 'Pago en línea' : 'Pago en el hotel';
-        }
     }
 
     mod.controller('report', InitController);
