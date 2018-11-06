@@ -1461,6 +1461,14 @@ Partial Class ReservationDetails
                             lblCCNumber.Text = crypto.DecryptString128Bit(.Item(dsReservaciones.FIELD_NUMEROCC), crypto.PublicKey)
                         End If
                     End If
+
+                ElseIf pagoData IsNot Nothing AndAlso pagoData.Rows.Count > 0 Then
+                    If pagoData.Columns.Contains("OnlineCCType") AndAlso pagoData.Columns.Contains("OnlineCCNumber") Then
+                        If Not pagoData.Rows(0).IsNull("OnlineCCType") AndAlso Not pagoData.Rows(0).IsNull("OnlineCCNumber") Then
+                            lblCCNumber.Text = pagoData.Rows(0)("OnlineCCNumber").ToString
+                            lblCCType.Text = pagoData.Rows(0)("OnlineCCType").ToString
+                        End If
+                    End If
                 End If
 
                 If Not Session(AppSettings("RestTarjetas")) Is Nothing AndAlso Session(AppSettings("RestTarjetas")) = "1" Then
@@ -1959,6 +1967,9 @@ Partial Class ReservationDetails
                     Threading.Thread.CurrentThread.CurrentUICulture = gUI
                     PortalCulture.SetCulture(gUI.ToString)
                     Me.guardalog("/HotelAdministrator/Pages/ReservationDetails.aspx", PaginaBase.acciones.Eliminar, "Cancel� la reservacion " & .Item(dsReservaciones.FIELD_NORESERVACION).ToString)
+
+                    MyBase.OTA_PushNotif(cInfoActual.Hotel)
+
                     Return True
                 Else
                     Threading.Thread.CurrentThread.CurrentUICulture = gUI
@@ -2069,6 +2080,7 @@ Partial Class ReservationDetails
                     Threading.Thread.CurrentThread.CurrentUICulture = gUI
                     PortalCulture.SetCulture(gUI.ToString)
                     Me.guardalog("/HotelAdministrator/Pages/ReservationDetails.aspx", PaginaBase.acciones.Eliminar, "Cancel� la reservacion " & .Item(dsReservaciones.FIELD_NORESERVACION).ToString)
+                    MyBase.OTA_PushNotif(cInfoActual.Hotel)
                     Return True
                 Else
                     Threading.Thread.CurrentThread.CurrentUICulture = gUI
@@ -2397,6 +2409,7 @@ Partial Class ReservationDetails
                 Else
                     Mail.AddParameter("UVNRPOLICIES") = ""
                 End If
+                System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12
                 Mail.Send()
 
                 'Util.Utility.MailerSend(.Item(dsreservaciones.FIELD_NORESERVACION), Mail.GetBody)
@@ -2788,6 +2801,7 @@ Partial Class ReservationDetails
                 End With
 
                 enviarcorreo(reservaDatos, False, True)
+                MyBase.OTA_PushNotif(cInfoActual.Hotel)
             End If
         End With
     End Sub

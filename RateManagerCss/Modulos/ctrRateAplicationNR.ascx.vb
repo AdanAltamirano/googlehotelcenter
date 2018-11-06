@@ -216,6 +216,11 @@ Partial Class ctrRateAplicationNR
         Me.reqExtraAdultPrice.Enabled = (Me.IsSupervisor)
         Me.reqExtraChildPrice.Enabled = (Me.IsSupervisor)
         Me.reqExtraTeenPrice.Enabled = (Me.IsSupervisor)
+        Me.rvAdultFareNR.Enabled = (Me.IsSupervisor)
+
+        Me.reqAdultFareNR.Enabled = Not Me.isUsuarioMixto
+        Me.reqChildFareNR.Enabled = Not Me.isUsuarioMixto
+        Me.reqTeenFareNR.Enabled = Not Me.isUsuarioMixto
 
         Me.lblDateError.Visible = False
         If Not IsPostBack Then
@@ -231,9 +236,12 @@ Partial Class ctrRateAplicationNR
                 Me.reqTeenFare.Enabled = (Me.ddlShowRates.SelectedIndex = 0)
             End If
 
-            Me.reqAdultFareNR.Enabled = (Me.ddlShowRates.SelectedIndex = 0)
-            Me.reqChildFareNR.Enabled = (Me.ddlShowRates.SelectedIndex = 0)
-            Me.reqTeenFareNR.Enabled = (Me.ddlShowRates.SelectedIndex = 0)
+            If Not Me.isUsuarioMixto Then
+                Me.reqAdultFareNR.Enabled = (Me.ddlShowRates.SelectedIndex = 0)
+                Me.reqChildFareNR.Enabled = (Me.ddlShowRates.SelectedIndex = 0)
+                Me.reqTeenFareNR.Enabled = (Me.ddlShowRates.SelectedIndex = 0)
+            End If
+            
         End If
 
         If Not CType(Me.Page, PaginaBase).isConfigAdolescente Then
@@ -277,7 +285,7 @@ Partial Class ctrRateAplicationNR
             Me.txtTeenFare.Attributes.Add("onChange", "javascript:FillPrices('" & CType(Me.Page, FaresCatalogueNR).IdDgTeen & "','txtTeenFare'" & ",'" & Me.txtTeenFare.ClientID & "')" & ";")
 
             'Validacion del minimo y maximo porcentaje de ganancia
-            
+
 
             'Validacion de maximos y minimos porcentajes de ganacia de adultos extras y niños extras
             Me.txtExtraAdultPriceNR.Attributes.Add("onChange", "javascript:CheckValContract('" & TextBoxPorcMin.ClientID & "','" & TextBoxPorcMax.ClientID & "','" & txtExtraAdultPriceNR.ClientID & "','" & txtExtraAdultPrice.ClientID & "','" & lblAdultExtValMax.ClientID & "','" & lblAdultExtValMin.ClientID & "')")
@@ -536,6 +544,7 @@ Partial Class ctrRateAplicationNR
         Me.reqExtraAdultPriceNR.ErrorMessage = PortalCulture.GetString("M000179")
         Me.reqExtraChildPriceNR.ErrorMessage = PortalCulture.GetString("M000179")
         Me.reqExtraTeenPriceNR.ErrorMessage = PortalCulture.GetString("M000179")
+
 
         Me.reqAdultFare.ErrorMessage = PortalCulture.GetString("M000179")
         Me.reqAdultFareNR.ErrorMessage = PortalCulture.GetString("M000179")
@@ -1222,9 +1231,10 @@ Partial Class ctrRateAplicationNR
         Me.reqExtraAdultPrice.Enabled = (lstPeoplesExtras.Items.Count > 2)
         Me.reqExtraChildPrice.Enabled = (lstPeoplesExtras.Items.Count > 2)
         Me.reqExtraTeenPrice.Enabled = (lstPeoplesExtras.Items.Count > 2)
-        Me.reqExtraAdultPriceNR.Enabled = (lstPeoplesExtras.Items.Count > 2)
-        Me.reqExtraChildPriceNR.Enabled = (lstPeoplesExtras.Items.Count > 2)
-        Me.reqExtraTeenPriceNR.Enabled = (lstPeoplesExtras.Items.Count > 2)
+
+        Me.reqExtraAdultPriceNR.Enabled = (lstPeoplesExtras.Items.Count > 2) AndAlso Not Me.isUsuarioMixto
+        Me.reqExtraChildPriceNR.Enabled = (lstPeoplesExtras.Items.Count > 2) AndAlso Not Me.isUsuarioMixto
+        Me.reqExtraTeenPriceNR.Enabled = (lstPeoplesExtras.Items.Count > 2) AndAlso Not Me.isUsuarioMixto
 
     End Sub
 
@@ -1652,9 +1662,10 @@ Partial Class ctrRateAplicationNR
             reqExtraAdultPrice.Enabled = extrasVisibles
             reqExtraChildPrice.Enabled = extrasVisibles
             reqExtraTeenPrice.Enabled = extrasVisibles
-            reqExtraAdultPriceNR.Enabled = extrasVisibles
-            reqExtraChildPriceNR.Enabled = extrasVisibles
-            reqExtraTeenPriceNR.Enabled = extrasVisibles
+
+            reqExtraAdultPriceNR.Enabled = extrasVisibles AndAlso Not Me.isUsuarioMixto
+            reqExtraChildPriceNR.Enabled = extrasVisibles AndAlso Not Me.isUsuarioMixto
+            reqExtraTeenPriceNR.Enabled = extrasVisibles AndAlso Not Me.isUsuarioMixto
 
             txtExtraAdultPrice.Text = initialValue
             txtExtraChildPrice.Text = initialValue
@@ -1688,17 +1699,19 @@ Partial Class ctrRateAplicationNR
             If isFisrt AndAlso Me.ddlShowRates.SelectedIndex = 0 Then
                 'es el unico que no puede ser 0
                 isFisrt = False
-                IsValidData = (netRate > 0 AndAlso (Not isSupervisor OrElse rate > 0))
+                IsValidData = ((netRate > 0 OrElse Me.isUsuarioMixto) AndAlso (Not isSupervisor OrElse rate > 0))
             End If
 
             If IsValidData AndAlso Not isSupervisor AndAlso rate = 0 Then
                 Double.TryParse(CType(pair(2), HtmlInputHidden).Value, rate)
                 CType(pair(1), TextBox).Text = rate.ToString()
                 'If rate = 0 OrElse netRate * (1 + (minPercent / 100)) > rate OrElse netRate = 0 Then
-                If rate = 0 OrElse netRate * (1 + (minPercent / 100)) > rate OrElse netRate * (1 + (maxPercent / 100)) < rate OrElse netRate = 0 Then
-                    CType(pair(1), TextBox).Text = (netRate * (1 + (maxPercent / 100))).ToString()
+                If rate = 0 OrElse netRate / (1 - (minPercent / 100)) > rate OrElse netRate / (1 - (maxPercent / 100)) < rate OrElse netRate = 0 Then
+                    CType(pair(1), TextBox).Text = (netRate / (1 - (maxPercent / 100))).ToString()
                     Double.TryParse(CType(pair(1), TextBox).Text, rate)
                 End If
+            ElseIf IsValidData AndAlso Me.isUsuarioMixto AndAlso rate > 0 Then
+                CType(pair(0), TextBox).Text = (rate * (1 - (maxPercent / 100))).ToString()
             End If
 
             'IsValidData = (IsValidData AndAlso (isSupervisor OrElse ((netRate * (1 + (minPercent / 100))) <= rate)))
@@ -1771,6 +1784,12 @@ Partial Class ctrRateAplicationNR
     Protected ReadOnly Property IsSupervisor() As Boolean
         Get
             Return CType(Me.Page, PaginaBase).IsSupervisor
+        End Get
+    End Property
+
+    Protected ReadOnly Property isUsuarioMixto() As Boolean
+        Get
+            Return CType(Me.Page, PaginaBase).IsUsuarioMixto
         End Get
     End Property
 

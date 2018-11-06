@@ -26,7 +26,7 @@
 
         function HideOutCalendar() {
             document.getElementById('txtCheckOut').disabled = true;
-            document.getElementById('PopcalTrigger').style.visibility = 'hidden';
+            document.getElementById('PopcalTrigger').style.visibility = 'hidden';3
         }
 
         function ShowResStatus() {
@@ -816,7 +816,7 @@
                                         <asp:TemplateColumn HeaderText="Tipo Habitacion">
                                             <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle"></ItemStyle>
                                             <ItemTemplate>
-                                                <asp:Label runat="server" ID="lblTipoHab"><%#DataBinder.Eval(Container, "DataItem.tipoHabitacion")%> </asp:Label>
+                                                <asp:Label runat="server" ID="lblTipoHab"><%#DataBinder.Eval(Container, "DataItem.NombreHabitacion")%> </asp:Label>
                                             </ItemTemplate>
                                         </asp:TemplateColumn>
                                         <%--<asp:BoundColumn DataField="rateplan">

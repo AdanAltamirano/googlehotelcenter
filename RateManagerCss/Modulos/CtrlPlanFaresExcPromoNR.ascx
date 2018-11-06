@@ -138,7 +138,7 @@
 							<asp:TextBox id=txtAdultFare style="TEXT-ALIGN: right" CssClass="TextBox currency" runat="server" MaxLength="10" Columns="10" Text='<%# DataBinder.Eval(Container, "DataItem.price") %>'>
 							</asp:TextBox>
 							<span class="currency"></span>
-							<asp:CompareValidator ID="cmpvAdults" runat="server" CssClass="Validators" ErrorMessage="CompareValidator" ControlToValidate="txtAdultFare"  ControlToCompare="txtAdultFareNR"  Type="Double" Operator="GreaterThanEqual" Display=Dynamic  style= "width:120px;"><%= RateManager.PortalCulture.GetString("01506") %></asp:CompareValidator>
+							<asp:CompareValidator ID="cmpvAdults" runat="server" Enabled="false" CssClass="Validators" ErrorMessage="CompareValidator" ControlToValidate="txtAdultFare"  ControlToCompare="txtAdultFareNR"  Type="Double" Operator="GreaterThanEqual" Display=Dynamic  style= "width:120px;"><%= RateManager.PortalCulture.GetString("01506") %></asp:CompareValidator>
 							<asp:CustomValidator id="cvErrAdults" Display="Dynamic" CssClass="Validators" runat="server" ControlToValidate="txtAdultFare">*</asp:CustomValidator>
 							<asp:RegularExpressionValidator id="valAdultExtraPrice" Display="Dynamic" CssClass="Validators" runat="server" ControlToValidate="txtAdultFare"
 								ValidationExpression="^([0-9]*|\d*\.\d{1}?\d*)$" ErrorMessage="* Precio Inválido">* Tarifa Inválida</asp:RegularExpressionValidator>
@@ -204,7 +204,7 @@
 							<asp:TextBox id=txtChildrenFare style="TEXT-ALIGN: right" CssClass="TextBox currency" runat="server" MaxLength="10" Columns="10" Text='<%# DataBinder.Eval(Container, "DataItem.Price") %>'>
 							</asp:TextBox>
 							<span class="currency"></span>
-							<asp:CompareValidator ID="cmpvChilds" runat="server" CssClass="Validators" ErrorMessage="CompareValidator" ControlToValidate="txtChildrenFare"  ControlToCompare="txtChildrenFareNR"  Type="Double" Operator="GreaterThanEqual" Display=Dynamic style= "width:120px;" ><%= RateManager.PortalCulture.GetString("01506") %></asp:CompareValidator>
+							<asp:CompareValidator ID="cmpvChilds" Enable="false" runat="server" CssClass="Validators" ErrorMessage="CompareValidator" ControlToValidate="txtChildrenFare"  ControlToCompare="txtChildrenFareNR"  Type="Double" Operator="GreaterThanEqual" Display=Dynamic style= "width:120px;" ><%= RateManager.PortalCulture.GetString("01506") %></asp:CompareValidator>
 							<asp:CustomValidator id="cvErrChilds" Display="Dynamic" runat="server" ControlToValidate="txtChildrenFare">*</asp:CustomValidator>
 							<asp:RegularExpressionValidator id="valChildrenExtraPrice" Display="Dynamic" CssClass="Validators" runat="server"
 								ControlToValidate="txtChildrenFare" ValidationExpression="^([0-9]*|\d*\.\d{1}?\d*)$" ErrorMessage="* Precio Inválido">* Tarifa Inválida</asp:RegularExpressionValidator>
@@ -268,7 +268,7 @@
 							<asp:TextBox id=txtTeenFare style="TEXT-ALIGN: right" CssClass="TextBox currency" runat="server" MaxLength="10" Columns="10" Text='<%# DataBinder.Eval(Container, "DataItem.Price") %>'>
 							</asp:TextBox>
 							<span class="currency"></span>
-							<asp:CompareValidator ID="cmpvJuniors" runat="server" CssClass="Validators" ErrorMessage="CompareValidator" ControlToValidate="txtTeenFare"  ControlToCompare="txtTeenFareNR"  Type="Double" Operator="GreaterThanEqual"  Display=Dynamic style= "width:120px;" ><%= RateManager.PortalCulture.GetString("01506") %></asp:CompareValidator>
+							<asp:CompareValidator ID="cmpvJuniors" Enabled="false" runat="server" CssClass="Validators" ErrorMessage="CompareValidator" ControlToValidate="txtTeenFare"  ControlToCompare="txtTeenFareNR"  Type="Double" Operator="GreaterThanEqual"  Display=Dynamic style= "width:120px;" ><%= RateManager.PortalCulture.GetString("01506") %></asp:CompareValidator>
 							<asp:CustomValidator id="cvErrTeen" Display="Dynamic" runat="server" ControlToValidate="txtTeenFare">*</asp:CustomValidator>
 							<asp:RegularExpressionValidator id="valTeenExtraPrice" Display="Dynamic" CssClass="Validators" runat="server"
 								ControlToValidate="txtTeenFare" ValidationExpression="^([0-9]*|\d*\.\d{1}?\d*)$" ErrorMessage="* Precio Inválido">* Tarifa Inválida</asp:RegularExpressionValidator>

@@ -22,7 +22,7 @@
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
     <TargetFrameworkProfile />
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -442,7 +442,7 @@
     <Content Include="Data\RoomTypes.xml" />
     <Content Include="Data\Segmentos.xml" />
     <Content Include="Default.aspx" />
-    <Content Include="ExportExcel\Reports.aspx" />
+    <Content Include="HotelAdministrator\Invoicing\Vouchers.aspx" />
     <Content Include="HotelAdministrator\Pages\MapeoPlanesF2G.aspx" />
     <Content Include="HotelAdministrator\Pages\Promotions.aspx" />
     <Content Include="HotelAdministrator\Pages\RetentionsConfig.aspx" />
@@ -1002,7 +1002,6 @@
     <Content Include="Images\help_ico.gif" />
     <Content Include="Images\HugeRotation.gif" />
     <Content Include="Images\Information.gif" />
-    <Content Include="Images\loadingCR.gif" />
     <Content Include="Images\logoCertificado.JPG" />
     <Content Include="Images\mexico.gif" />
     <Content Include="Images\minus.gif" />
@@ -1020,16 +1019,6 @@
     <Content Include="Images\xml.gif" />
     <Content Include="Includes\bootstrap.min.css" />
     <Content Include="Includes\imagenes\logo.png" />
-    <Content Include="Includes\report\Angular1-2.js" />
-    <Content Include="Includes\report\bootstrap.min.css" />
-    <Content Include="Includes\report\f2goController.js" />
-    <Content Include="Includes\report\f2goDirective.js" />
-    <Content Include="Includes\report\f2goFactory.js" />
-    <Content Include="Includes\report\jquery.magnific-popup.js" />
-    <Content Include="Includes\report\Jquery1-11.js" />
-    <Content Include="Includes\report\magnific-popup.css" />
-    <Content Include="Includes\report\pikaday.css" />
-    <Content Include="Includes\report\pikaday.js" />
     <Content Include="Includes\Retention\bootstrap.css" />
     <Content Include="Includes\Retention\notification-styles.css" />
     <Content Include="Includes\Retention\notification-styles.min.css" />
@@ -1088,7 +1077,6 @@
     <Content Include="Pages\ConventionsMeetings.aspx" />
     <Content Include="Pages\DataClientPermission.aspx" />
     <Content Include="Pages\DepositRatesPlan.aspx" />
-    <Content Include="Pages\F2goReport.html" />
     <Content Include="Pages\FaresCatalogue.aspx" />
     <Content Include="Pages\FaresCatalogueException.aspx" />
     <Content Include="Pages\FaresCatalogueNR.aspx" />
@@ -1248,10 +1236,30 @@
       <LastGenOutput>Reference.vb</LastGenOutput>
     </Content>
     <Content Include="Web References\RulesWebService\RulesWebService.disco" />
+    <Content Include="Web References\WsConnectWcf\MessageAcknowledgementType.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\WsConnectWcf\OTA_ResRetrieveRS.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\WsConnectWcf\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.vb</LastGenOutput>
+    </Content>
+    <Content Include="Web References\WsConnectWcf\wsConnectWCFv2.disco" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="XmlHttp.js" />
+    <None Include="Web References\WsConnectWcf\wsConnectWCFv2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\WsConnectWcf\wsConnectWCFv20.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\WsConnectWcf\wsConnectWCFv21.xsd">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Data\Agreement.Designer.vb">
@@ -1343,17 +1351,17 @@
     <Compile Include="Default.aspx.designer.vb">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
-    <Compile Include="ExportExcel\Reports.aspx.designer.vb">
-      <DependentUpon>Reports.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="ExportExcel\Reports.aspx.vb">
-      <DependentUpon>Reports.aspx</DependentUpon>
-      <SubType>ASPXCodebehind</SubType>
-    </Compile>
     <Compile Include="HotelAdministrator\Data\HdrRetentionsConfig.ashx.vb">
       <DependentUpon>HdrRetentionsConfig.ashx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Data\RetentionModel.vb" />
+    <Compile Include="HotelAdministrator\Invoicing\Vouchers.aspx.designer.vb">
+      <DependentUpon>Vouchers.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="HotelAdministrator\Invoicing\Vouchers.aspx.vb">
+      <DependentUpon>Vouchers.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
     <Compile Include="HotelAdministrator\Pages\MapeoPlanesF2G.aspx.designer.vb">
       <DependentUpon>MapeoPlanesF2G.aspx</DependentUpon>
     </Compile>
@@ -1628,9 +1636,6 @@
     </Compile>
     <Compile Include="Pages\Data\ExecutorServer.ashx.vb">
       <DependentUpon>ExecutorServer.ashx</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\F2goGetReport.ashx.vb">
-      <DependentUpon>F2goGetReport.ashx</DependentUpon>
     </Compile>
     <Compile Include="Pages\Groups.aspx.designer.vb">
       <DependentUpon>Groups.aspx</DependentUpon>
@@ -3097,7 +3102,9 @@
       <DependentUpon>CtrMenu.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Portal\Opciones.vb" />
+    <Compile Include="Portal\Opciones.vb">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Portal\Pages\Home.aspx.designer.vb">
       <DependentUpon>Home.aspx</DependentUpon>
     </Compile>
@@ -3344,6 +3351,11 @@
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
     <Compile Include="Web References\WsConectividad\Reference.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\WsConnectWcf\Reference.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
@@ -4102,7 +4114,6 @@
     <Content Include="HotelAdministrator\Data\HdrRetentionsConfig.ashx" />
     <None Include="My Project\PublishProfiles\RateManager.pubxml" />
     <Content Include="packages.config" />
-    <Content Include="Pages\F2goGetReport.ashx" />
     <None Include="Reports\Agreements\1\agreement_ES.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>agreement_ES.vb</LastGenOutput>
@@ -4185,6 +4196,7 @@
       <DependentUpon>ctrlChangePassword.ascx.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <Content Include="Web References\WsConnectWcf\wsConnectWCFv2.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App_Data\Agreement.xsc">
@@ -4623,6 +4635,17 @@
       <CachedAppSettingsObjectName>MySettings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>RateManager_RulesWebService_RulesWebService</CachedSettingsPropName>
     </WebReferenceUrl>
+    <WebReferenceUrl Include="http://www.test.com/WsConectividad/wsConnectWCFv2.svc">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\WsConnectWcf\</RelPath>
+      <UpdateFromURL>http://www.test.com/WsConectividad/wsConnectWCFv2.svc</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>MySettings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>RateManager_WsConnectWcf_wsConnectWCFv2</CachedSettingsPropName>
+    </WebReferenceUrl>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="HotelAdministrator\Models\" />
@@ -4649,11 +4672,12 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>False</AutoAssignPort>
           <DevelopmentServerPort>15903</DevelopmentServerPort>
           <DevelopmentServerVPath>/Ratemanager/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:15903/Ratemanager</IISUrl>
+          <IISUrl>
+          </IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

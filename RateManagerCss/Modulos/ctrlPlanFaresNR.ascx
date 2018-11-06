@@ -206,7 +206,7 @@
 							</asp:TextBox>
 							<span class="currency"></span>
 							<input type="hidden" class="rate" id="varRate" runat="server" value='<%# DataBinder.Eval(Container, "DataItem.price") %>' />		
-							<asp:CustomValidator id="cvErrChildsNR" Display="Dynamic" runat="server" ControlToValidate="txtChildrenFareNR">*</asp:CustomValidator>
+							<asp:CustomValidator  id="cvErrChildsNR" Display="Dynamic" runat="server" ControlToValidate="txtChildrenFareNR">*</asp:CustomValidator>
 							<asp:RegularExpressionValidator id="valChildrenExtraPriceNR" Display="Dynamic" CssClass="Validators" runat="server"
 								ControlToValidate="txtChildrenFareNR" ValidationExpression="^([0-9]*|\d*\.\d{1}?\d*)$" ErrorMessage="* Precio Inválido">* Tarifa Inválida</asp:RegularExpressionValidator>
 						</ItemTemplate>

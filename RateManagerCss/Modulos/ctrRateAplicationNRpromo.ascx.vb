@@ -13,6 +13,12 @@ Imports System.Data
 Partial Public Class ctrRateAplicationNRpromo
     Inherits UserControlBase
 
+    Protected ReadOnly Property isUsuarioMixto() As Boolean
+        Get
+            Return CType(Me.Page, PaginaBase).IsUsuarioMixto
+        End Get
+    End Property
+
     Public Property m_iHotelId() As Integer
         Get
             Return ViewState("HotelID")
@@ -1188,11 +1194,13 @@ Partial Public Class ctrRateAplicationNRpromo
         txtExtraTeenPriceNR.Enabled = (lstPeoplesExtras.Items.Count > 2)
 
         reqExtraAdultPrice.Enabled = (lstPeoplesExtras.Items.Count > 2)
-        reqExtraAdultPriceNR.Enabled = (lstPeoplesExtras.Items.Count > 2)
+        reqExtraAdultPriceNR.Enabled = (lstPeoplesExtras.Items.Count > 2) AndAlso Not Me.isUsuarioMixto
+
         reqExtraChildPrice.Enabled = (lstPeoplesExtras.Items.Count > 2)
-        reqExtraChildPriceNR.Enabled = (lstPeoplesExtras.Items.Count > 2)
+        reqExtraChildPriceNR.Enabled = (lstPeoplesExtras.Items.Count > 2) AndAlso Not Me.isUsuarioMixto
+
         reqExtraTeenPrice.Enabled = (lstPeoplesExtras.Items.Count > 2)
-        reqExtraTeenPriceNR.Enabled = (lstPeoplesExtras.Items.Count > 2)
+        reqExtraTeenPriceNR.Enabled = (lstPeoplesExtras.Items.Count > 2) AndAlso Not Me.isUsuarioMixto
 
     End Sub
 
@@ -1676,9 +1684,10 @@ Partial Public Class ctrRateAplicationNRpromo
             Me.reqExtraAdultPrice.Enabled = extrasVisibles
             Me.reqExtraChildPrice.Enabled = extrasVisibles
             Me.reqExtraTeenPrice.Enabled = extrasVisibles
-            Me.reqExtraAdultPriceNR.Enabled = extrasVisibles
-            Me.reqExtraChildPriceNR.Enabled = extrasVisibles
-            Me.reqExtraTeenPriceNR.Enabled = extrasVisibles
+
+            Me.reqExtraAdultPriceNR.Enabled = extrasVisibles AndAlso Not Me.isUsuarioMixto
+            Me.reqExtraChildPriceNR.Enabled = extrasVisibles AndAlso Not Me.isUsuarioMixto
+            Me.reqExtraTeenPriceNR.Enabled = extrasVisibles AndAlso Not Me.isUsuarioMixto
 
             txtExtraAdultPrice.Text = initialValue
             txtExtraChildPrice.Text = initialValue

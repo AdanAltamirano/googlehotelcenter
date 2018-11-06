@@ -823,7 +823,7 @@
                                         <label>Noches Gratis</label>
                                     </div>
                                     <div class="tabLinks" onclick="openPromo(event, 'divPromoDiscount')">
-                                        <asp:CheckBox ID="chkPromoDiscount" Checked="false" runat="server" Text=" "/>
+                                        <asp:CheckBox ID="chkPromoDiscount" Checked="false" runat="server" Text=" " />
                                         <label>Descuento</label>
                                     </div>
                                 </div>
@@ -850,7 +850,7 @@
                                     <div class="discountOptions">
                                         <asp:RadioButtonList runat="server" ID="rblDiscountOptions" RepeatDirection="Horizontal">
                                             <asp:ListItem Selected="True" Text="% (Porcentaje)" Value="1"></asp:ListItem>
-                                            
+
                                         </asp:RadioButtonList>
                                     </div>
                                     <div class="discountDetails">
@@ -862,7 +862,7 @@
                                 <span class="sectionTitle">Restricciones</span>
                                 <div class="cancelPolicyDescription">
                                     <div class="left">
-                                        <span style="display:none;">Descripción: </span>
+                                        <span style="display: none;">Descripción: </span>
                                     </div>
                                     <div class="right">
                                         <asp:TextBox Visible="false" ID="txtCancelPolicyDescription" runat="server" CssClass="TextBox" MaxLength="100" Width="100px"></asp:TextBox>
@@ -879,7 +879,7 @@
                                     </div>
                                 </div>
                                 <div class="NoCancelable">
-                                    <asp:CheckBox runat="server" ID="chkNonCancelable" Text="No Cancelable"/>
+                                    <asp:CheckBox runat="server" ID="chkNonCancelable" Text="No Cancelable" />
                                 </div>
                                 <div class="cancelPolicy">
                                     <div>
@@ -953,14 +953,14 @@
                             <input type="button" value="Guardar" class="button" onclick="Save();" />
                             <asp:Button ID="btncancel" runat="server" EnableViewState="False" CssClass="Button" Text="Cancelar" CausesValidation="False"></asp:Button>
                         </div>
-                        <div>
-                            <asp:Label ID="lblError" runat="server" CssClass="validators" Visible="false"></asp:Label>
-                        </div>
                     </div>
                 </td>
             </tr>
             <tr>
                 <td>
+                    <div>
+                        <asp:Label ID="lblError" runat="server" CssClass="validators" Visible="false"></asp:Label>
+                    </div>
                     <uc2:ctrlAutoComplete ID="ctrlAutoComplete1" runat="server" />
                     <div style="float: left; margin-bottom: 15px;">
                         <asp:Label ID="lblFilter" runat="server" Text="Filtro:"></asp:Label>
@@ -1086,13 +1086,13 @@
     }
 	);
 
-        var hideCancelPolicies = function () {
-            if ($("#chkNonCancelable")[0].checked) {
-                $(".cancelPolicy").attr("style", "display: none");
-            } else {
-                $(".cancelPolicy").attr("style", "display: block");
-            }
+    var hideCancelPolicies = function () {
+        if ($("#chkNonCancelable")[0].checked) {
+            $(".cancelPolicy").attr("style", "display: none");
+        } else {
+            $(".cancelPolicy").attr("style", "display: block");
         }
+    }
 
     function FireShow(ID, IDcmd, show) {
         var e = document.getElementById(ID);
@@ -1433,12 +1433,12 @@
 
             if (from.length && to.length) {
                 auxDate = from.split('/');
-                auxFrom = new Date(auxDate[2], + auxDate[0]-1, auxDate[1]);
+                auxFrom = new Date(auxDate[2], +auxDate[0] - 1, auxDate[1]);
 
                 auxDate = to.split('/');
-                auxTo = new Date(auxDate[2], auxDate[0]-1,auxDate[1]);
+                auxTo = new Date(auxDate[2], auxDate[0] - 1, auxDate[1]);
 
-                if (auxFrom.valueOf() < auxTo.valueOf()) {
+                if (auxFrom.valueOf() <= auxTo.valueOf()) {
 
                     valid = true;
                 }

@@ -34,6 +34,12 @@
         </td>
     </tr>
     <tr>
+        <td>
+            <asp:CheckBox runat="server" ID="chkBaseRules" AutoPostBack="false" CausesValidation="false" Checked="false" TextAlign="Right" />
+        </td>
+        <td colspan="6"></td>
+    </tr>
+    <tr>
         <td colspan="7" height="5">
         </td>
     </tr>

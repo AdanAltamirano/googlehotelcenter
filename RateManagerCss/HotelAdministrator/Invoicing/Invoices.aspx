@@ -332,7 +332,7 @@
                                                     </asp:TemplateColumn>
                                                     <asp:TemplateColumn HeaderText="Estado&lt;br&gt;Cuenta">
                                                         <HeaderStyle></HeaderStyle>
-                                                        <ItemStyle Width="75px"></ItemStyle>
+                                                        <ItemStyle Width="55px"></ItemStyle>
                                                         <ItemTemplate>
                                                             <asp:HyperLink ID="lnkCuenta" runat="server" CssClass="DGLink"></asp:HyperLink>
                                                             <asp:Label ID="lblCuenta" runat="server"></asp:Label>
@@ -340,7 +340,7 @@
                                                     </asp:TemplateColumn>
                                                     <asp:TemplateColumn HeaderText="Fecha Cuenta">
                                                         <HeaderStyle></HeaderStyle>
-                                                        <ItemStyle Width="130px"></ItemStyle>
+                                                        <ItemStyle Width="120px"></ItemStyle>
                                                         <ItemTemplate>
                                                             <asp:Label ID="lblFechaCuenta" runat="server"></asp:Label>
                                                         </ItemTemplate>
@@ -358,14 +358,14 @@
                                                         </ItemTemplate>
                                                     </asp:TemplateColumn>
                                                     <asp:TemplateColumn HeaderText="Referencia &lt;br&gt; Bancaria">
-                                                        <ItemStyle Width="97px"></ItemStyle>
+                                                        <ItemStyle Width="87px"></ItemStyle>
                                                         <ItemTemplate>
                                                             <asp:Label ID="lblReferenciaBancaria" runat="server"></asp:Label>
                                                         </ItemTemplate>
                                                     </asp:TemplateColumn>
                                                     <asp:TemplateColumn HeaderText="Pendiente &lt;br&gt; Pago">
                                                         <HeaderStyle></HeaderStyle>
-                                                        <ItemStyle Width="75px"></ItemStyle>
+                                                        <ItemStyle Width="45px"></ItemStyle>
                                                         <ItemTemplate>
                                                             <asp:HyperLink ID="lnkVerDetalle" runat="server" CssClass="DGLink"></asp:HyperLink>
                                                         </ItemTemplate>
@@ -373,18 +373,19 @@
                                                     <asp:TemplateColumn HeaderText="Descargar">
                                                         <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                                         <ItemTemplate>
-                                                            <div style="position: relative; float: left; width: 120px; display: inline; display: none;">
-                                                                <asp:HyperLink ID="hypPdf" runat="server" ImageUrl="../../Images/pdf.gif"></asp:HyperLink>
+                                                            <div style="position: relative; float: left; width: 150px; display: inline; display: block;">
+                                                                <asp:HyperLink ID="hypPdfComp" runat="server" ImageUrl="../../Images/invoice-receipt.jpg" Target="_blank"></asp:HyperLink>
+                                                                <asp:HyperLink ID="hypPdf" runat="server" ImageUrl="../../Images/factura.png"></asp:HyperLink>
                                                                 <asp:HyperLink ID="hypXml" runat="server" ImageUrl="../../Images/xml.gif"></asp:HyperLink>
                                                                 <asp:HyperLink ID="hypExc" runat="server" ImageUrl="../../Images/excel.png"></asp:HyperLink>
                                                                 <br />
                                                                 <asp:Label ID="lblMsgSelloSat" runat="server" Text=""></asp:Label>
                                                             </div>
-                                                            <linkbutton id="lknDescarga" onclick="openModal()" class="dgLink">Descargar</linkbutton>
+                                                            <linkbutton id="lknDescarga" onclick="openModal()" class="dgLink" style="display: none;">Descargar</linkbutton>
                                                         </ItemTemplate>
                                                     </asp:TemplateColumn>
                                                     <asp:TemplateColumn HeaderText="Debe">
-                                                        <ItemStyle HorizontalAlign="Right" Width="95px"></ItemStyle>
+                                                        <ItemStyle HorizontalAlign="Right" Width="85px"></ItemStyle>
                                                         <ItemTemplate>
                                                             <asp:Label ID="lblStatus" runat="server"></asp:Label>
                                                         </ItemTemplate>
@@ -569,7 +570,7 @@
                                                     <asp:TemplateColumn HeaderText="Descargar" HeaderStyle-Width="80px">
                                                         <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                                         <ItemTemplate>
-                                                            <div style="position: relative; float: left; width: 120px; display: inline;display:none;">
+                                                            <div style="position: relative; float: left; width: 120px; display: inline; display: none;">
                                                                 <asp:HyperLink ID="hypPdfFC" runat="server" ImageUrl="../../Images/pdf.gif"></asp:HyperLink>
                                                                 <asp:HyperLink ID="hypXmlFC" runat="server" ImageUrl="../../Images/xml.gif"></asp:HyperLink>
                                                                 <asp:HyperLink ID="hypExcFC" runat="server" ImageUrl="../../Images/excel.png"></asp:HyperLink>
@@ -644,7 +645,7 @@
             }
         </script>
     </form>
-        <!-- The Modal -->
+    <!-- The Modal -->
     <div id="myModal" class="modal">
 
         <!-- Modal content -->
@@ -673,7 +674,7 @@
         // When the user clicks the button, open the modal 
         var openModal = function () {
             modal.style.display = "block";
-            
+
             $(".modal-body .msg").text("Por el momento la descarga no está disponible.\n Favor de comunicarse al área de cobranza para obtener su factura.");
             $(".modal-header h2").text("Aviso");
         }
@@ -693,6 +694,26 @@
         var deactivatePromo = function () {
             var id = document.getElementById('txtObjDelete').value;
             document.getElementById(id).click();
+        }
+
+
+        function ShowVouchers(Invoice) {
+            var currentTime = new Date();
+            var w = 415;
+            var h = 585;
+            var winl = (screen.width - w) / 2;
+            var wint = (screen.height - h) / 2;
+            winl -= 100;
+            var settings = 'height=' + h + ',';
+            settings += 'width=' + w + ',';
+            settings += 'top=' + wint + ',';
+            settings += 'left=' + winl + ',';
+            settings += 'scrollbars=1' + ',';
+            settings += 'resizable=yes' + ',';
+            settings += 'status=no';
+
+            window.open("Vouchers.aspx?Invoice=" + encodeURI(Invoice),"Comprovantes", settings)
+
         }
     </script>
 </body>

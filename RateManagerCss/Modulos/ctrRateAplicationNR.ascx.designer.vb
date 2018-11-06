@@ -770,6 +770,15 @@ Partial Public Class ctrRateAplicationNR
     Protected WithEvents Regularexpressionvalidator2 As Global.System.Web.UI.WebControls.RegularExpressionValidator
 
     '''<summary>
+    '''Control rvAdultFareNR.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents rvAdultFareNR As Global.System.Web.UI.WebControls.RangeValidator
+
+    '''<summary>
     '''Control LblChildPriceNR.
     '''</summary>
     '''<remarks>

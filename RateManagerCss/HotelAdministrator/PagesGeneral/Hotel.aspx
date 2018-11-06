@@ -251,10 +251,10 @@
                             <asp:CheckBox ID="chkSingleImgInv" runat="server" CssClass="clsLabel" Visible="false"></asp:CheckBox>
                         </td>
                         <td style="height: 16px" align="right">
-                            
+                            <asp:Label ID="lblPushNotif" runat="server" CssClass="clsLabel" Visible="false">Notificación Push PMS: </asp:Label>
                         </td>
                         <td style="height: 16px" align="left">
-                            
+                            <asp:CheckBox ID="chkPushNotif" runat="server" CssClass="clsLabel" Visible="false"></asp:CheckBox>
                         </td>
                     </tr>
                     <tr>

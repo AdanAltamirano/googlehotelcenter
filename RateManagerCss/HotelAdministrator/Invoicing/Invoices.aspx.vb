@@ -518,6 +518,15 @@ Partial Class Invoices
                     lnkDescargar.Visible = True
                 End If
 
+                lnkDescargar = e.Item.FindControl("hypPdfComp")
+                If faltaSelloSat Then
+                    lnkDescargar.Visible = False
+                Else
+                    lnkDescargar.NavigateUrl = "javascript:ShowVouchers('" & Server.UrlEncode(FileName) & "')"
+                    lnkDescargar.ToolTip = PortalCulture.GetString("01653")
+                    lnkDescargar.Visible = True
+                End If
+
                 lnkDescargar = e.Item.FindControl("hypExc")
                 lnkDescargar.NavigateUrl = String.Format("{0}BillingStatementHelper.aspx?action={1}&BillingStatement={2}", _
                                AppSettings("DIR_INVOICE_PRINTING"), _
@@ -877,5 +886,12 @@ Partial Class Invoices
         LoadDataEstadoCuenta()
         LoadDataFactura()
 
+    End Sub
+
+    Private Sub LoadPayments(ByVal folio As String)
+        Dim PaymentsDataSet As New DataSet
+
+
+        
     End Sub
 End Class

@@ -8,6 +8,7 @@
         Me.reqExtraAdultPriceNR.Enabled = Me.txtExtraAdultPriceNR.Visible AndAlso Me.txtExtraAdultPriceNR.Enabled
         Me.reqExtraChildPriceNR.Enabled = Me.txtExtraChildPriceNR.Visible AndAlso Me.txtExtraChildPriceNR.Enabled
         Me.reqExtraTeenPriceNR.Enabled = Me.txtExtraTeenPriceNR.Visible AndAlso Me.txtExtraTeenPriceNR.Enabled
+        
         Me.reqExtraAdultPrice.Enabled = Me.IsSupervisor AndAlso Me.txtExtraAdultPrice.Enabled
         Me.reqExtraChildPrice.Enabled = Me.IsSupervisor AndAlso Me.txtExtraChildPrice.Enabled
         Me.reqExtraTeenPrice.Enabled = Me.IsSupervisor AndAlso Me.txtExtraTeenPrice.Enabled
@@ -936,7 +937,7 @@
                             <asp:RegularExpressionValidator ID="valAdultExtraPrice" runat="server" CssClass="Validators"
                                 ForeColor=" " Display="Dynamic" ErrorMessage="Precio Inválido" ControlToValidate="txtExtraAdultPrice"
                                 ValidationExpression="^([0-9]*|\d*\.\d{1}?\d*)$"></asp:RegularExpressionValidator>
-                            <asp:CompareValidator ID="compExtraAdultPrice" runat="server" CssClass="Validators" ErrorMessage="CompareValidator" ControlToValidate="txtExtraAdultPrice"
+                            <asp:CompareValidator ID="compExtraAdultPrice" runat="server" CssClass="Validators" ErrorMessage="CompareValidator" ControlToValidate="txtExtraAdultPrice" Enabled="false"
                                 ControlToCompare="txtExtraAdultPriceNR" Type="Double" Operator="GreaterThanEqual" Display="Dynamic" Style="width: 120px;"><%= RateManager.PortalCulture.GetString("01506") %></asp:CompareValidator>
                         </td>
                         <td align="left" valign="top">

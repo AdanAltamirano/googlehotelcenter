@@ -209,6 +209,13 @@ Public Class PaginaBase
             Return ((New AuthUser).IsUsuarioCasas)
         End Get
     End Property
+
+    Public ReadOnly Property IsUsuarioMixto() As Boolean
+        Get
+            Return ((New AuthUser).IsUsuarioMixto)
+        End Get
+    End Property
+
     Public ReadOnly Property IsUsuarioHomeAgency() As Boolean
         Get
             Return ((New AuthUser).IsUsuarioHomeAgency)
@@ -1118,6 +1125,13 @@ Public Class PaginaBase
         Return sCur
     End Function
 
+
+    Public Sub OTA_PushNotif(ByVal IdHotel)
+        Dim Service As WsConnectWcf.wsConnectWCFv2 = New WsConnectWcf.wsConnectWCFv2()
+        Service.Url = AppSettings("WsConnectWcf")
+        Threading.Tasks.Task.Factory.StartNew(Sub() Service.ReservationPushNotifAsync(IdHotel))
+    End Sub
+
     Private Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
 
@@ -1630,6 +1644,13 @@ Public Class AuthUser
             Return GetRol(eTypRole.Casas)
         End Get
     End Property
+
+    Public ReadOnly Property IsUsuarioMixto() As Boolean
+        Get
+            Return GetRol(eTypRole.HotelNetRate) And GetRol(eTypRole.HotelAvanzado)
+        End Get
+    End Property
+
     Public ReadOnly Property IsUsuarioHomeAgency() As Boolean
         Get
             Return GetRol(eTypRole.HomeAgency)

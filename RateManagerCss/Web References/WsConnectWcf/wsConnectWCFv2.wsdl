@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="wsConnectWCFv2" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://www.test.com/WsConectividad/wsConnectWCFv2.svc?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://www.test.com/WsConectividad/wsConnectWCFv2.svc?xsd=xsd1" namespace="http://www.opentravel.org/OTA/2003/05" />
+      <xsd:import schemaLocation="http://www.test.com/WsConectividad/wsConnectWCFv2.svc?xsd=xsd2" namespace="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IwsConnectWCFv2_ReservationPushNotif_InputMessage">
+    <wsdl:part name="parameters" element="tns:ReservationPushNotif" />
+  </wsdl:message>
+  <wsdl:message name="IwsConnectWCFv2_ReservationPushNotif_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ReservationPushNotifResponse" />
+  </wsdl:message>
+  <wsdl:message name="OTA_ReadRQMessage">
+    <wsdl:part name="OTA_ReadRQ" element="tns:OTA_ReadRQ" />
+  </wsdl:message>
+  <wsdl:message name="OTA_ReadRQMessage_Headers">
+    <wsdl:part name="Security" element="tns:Security" />
+  </wsdl:message>
+  <wsdl:message name="OTA_ResRetriveRSMessage">
+    <wsdl:part name="OTA_ResRetriveRS" element="tns:OTA_ResRetriveRS" />
+  </wsdl:message>
+  <wsdl:message name="OTA_HotelAvailNotifRQMessage">
+    <wsdl:part name="OTA_HotelAvailNotifRQ" element="tns:OTA_HotelAvailNotifRQ" />
+  </wsdl:message>
+  <wsdl:message name="OTA_HotelAvailNotifRQMessage_Headers">
+    <wsdl:part name="Security" element="tns:Security" />
+  </wsdl:message>
+  <wsdl:message name="OTA_HotelAvailNotifRSMessage">
+    <wsdl:part name="OTA_HotelAvailNotifRS" element="tns:OTA_HotelAvailNotifRS" />
+  </wsdl:message>
+  <wsdl:message name="OTA_HotelRateAmountNotifRQMessage">
+    <wsdl:part name="OTA_HotelRateAmountNotifRQ" element="tns:OTA_HotelRateAmountNotifRQ" />
+  </wsdl:message>
+  <wsdl:message name="OTA_HotelRateAmountNotifRQMessage_Headers">
+    <wsdl:part name="Security" element="tns:Security" />
+  </wsdl:message>
+  <wsdl:message name="OTA_HotelRateAmountNotifRSMessage">
+    <wsdl:part name="OTA_HotelRateAmountNotifRS" element="tns:OTA_HotelRateAmountNotifRS" />
+  </wsdl:message>
+  <wsdl:message name="OTA_NotifReportRQMessage">
+    <wsdl:part name="OTA_NotifReportRQ" element="tns:OTA_NotifReportRQ" />
+  </wsdl:message>
+  <wsdl:message name="OTA_NotifReportRQMessage_Headers">
+    <wsdl:part name="Security" element="tns:Security" />
+  </wsdl:message>
+  <wsdl:message name="OTA_NotifReportRSMessage">
+    <wsdl:part name="OTA_NotifReportRS" element="tns:OTA_NotifReportRS" />
+  </wsdl:message>
+  <wsdl:portType name="IwsConnectWCFv2">
+    <wsdl:operation name="ReservationPushNotif">
+      <wsdl:input wsaw:Action="http://tempuri.org/IwsConnectWCFv2/ReservationPushNotif" message="tns:IwsConnectWCFv2_ReservationPushNotif_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IwsConnectWCFv2/ReservationPushNotifResponse" message="tns:IwsConnectWCFv2_ReservationPushNotif_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ReadRQ">
+      <wsdl:input wsaw:Action="http://tempuri.org/IwsConnectWCFv2/ReadRQ" name="OTA_ReadRQMessage" message="tns:OTA_ReadRQMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IwsConnectWCFv2/ReadRQResponse" name="OTA_ResRetriveRSMessage" message="tns:OTA_ResRetriveRSMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="HotelAvailNotifRQ">
+      <wsdl:input wsaw:Action="http://tempuri.org/IwsConnectWCFv2/HotelAvailNotifRQ" name="OTA_HotelAvailNotifRQMessage" message="tns:OTA_HotelAvailNotifRQMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IwsConnectWCFv2/HotelAvailNotifRQResponse" name="OTA_HotelAvailNotifRSMessage" message="tns:OTA_HotelAvailNotifRSMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="HotelRateAmountNotifRQ">
+      <wsdl:input wsaw:Action="http://tempuri.org/IwsConnectWCFv2/HotelRateAmountNotifRQ" name="OTA_HotelRateAmountNotifRQMessage" message="tns:OTA_HotelRateAmountNotifRQMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IwsConnectWCFv2/HotelRateAmountNotifRQResponse" name="OTA_HotelRateAmountNotifRSMessage" message="tns:OTA_HotelRateAmountNotifRSMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="NotifReportRS">
+      <wsdl:input wsaw:Action="http://tempuri.org/IwsConnectWCFv2/NotifReportRS" name="OTA_NotifReportRQMessage" message="tns:OTA_NotifReportRQMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IwsConnectWCFv2/NotifReportRSResponse" name="OTA_NotifReportRSMessage" message="tns:OTA_NotifReportRSMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IwsConnectWCFv2" type="tns:IwsConnectWCFv2">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ReservationPushNotif">
+      <soap:operation soapAction="http://tempuri.org/IwsConnectWCFv2/ReservationPushNotif" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReadRQ">
+      <soap:operation soapAction="http://tempuri.org/IwsConnectWCFv2/ReadRQ" style="document" />
+      <wsdl:input name="OTA_ReadRQMessage">
+        <soap:header message="tns:OTA_ReadRQMessage_Headers" part="Security" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="OTA_ResRetriveRSMessage">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="HotelAvailNotifRQ">
+      <soap:operation soapAction="http://tempuri.org/IwsConnectWCFv2/HotelAvailNotifRQ" style="document" />
+      <wsdl:input name="OTA_HotelAvailNotifRQMessage">
+        <soap:header message="tns:OTA_HotelAvailNotifRQMessage_Headers" part="Security" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="OTA_HotelAvailNotifRSMessage">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="HotelRateAmountNotifRQ">
+      <soap:operation soapAction="http://tempuri.org/IwsConnectWCFv2/HotelRateAmountNotifRQ" style="document" />
+      <wsdl:input name="OTA_HotelRateAmountNotifRQMessage">
+        <soap:header message="tns:OTA_HotelRateAmountNotifRQMessage_Headers" part="Security" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="OTA_HotelRateAmountNotifRSMessage">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NotifReportRS">
+      <soap:operation soapAction="http://tempuri.org/IwsConnectWCFv2/NotifReportRS" style="document" />
+      <wsdl:input name="OTA_NotifReportRQMessage">
+        <soap:header message="tns:OTA_NotifReportRQMessage_Headers" part="Security" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="OTA_NotifReportRSMessage">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="wsConnectWCFv2">
+    <wsdl:port name="BasicHttpBinding_IwsConnectWCFv2" binding="tns:BasicHttpBinding_IwsConnectWCFv2">
+      <soap:address location="http://www.test.com/WsConectividad/wsConnectWCFv2.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

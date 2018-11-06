@@ -90,7 +90,7 @@
             if (document.getElementById(uv)) {
                 //valUV = parseFloat(document.getElementById(uv).value);
                 var NR = parseFloat(valNR) * (1 + (parseFloat(valMin)/100));
-                document.getElementById(uv).value = Math.round(NR);
+                document.getElementById(uv).value = document.getElementById(uv).value = (parseFloat(valNR) / ((100 - valMin) / 100)).toFixed(2);//Math.round(NR);
             }
             /*if ((isNaN(valMin) == false) && (isNaN(valMax) == false)) {
                 if ((isNaN(valMin) == false) && (isNaN(valMax) == false)) {
