@@ -442,6 +442,7 @@
     <Content Include="Data\RoomTypes.xml" />
     <Content Include="Data\Segmentos.xml" />
     <Content Include="Default.aspx" />
+    <Content Include="HotelAdministrator\Invoicing\Vouchers.aspx" />
     <Content Include="HotelAdministrator\Pages\MapeoPlanesF2G.aspx" />
     <Content Include="HotelAdministrator\Pages\Promotions.aspx" />
     <Content Include="HotelAdministrator\Pages\RetentionsConfig.aspx" />
@@ -1354,6 +1355,13 @@
       <DependentUpon>HdrRetentionsConfig.ashx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Data\RetentionModel.vb" />
+    <Compile Include="HotelAdministrator\Invoicing\Vouchers.aspx.designer.vb">
+      <DependentUpon>Vouchers.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="HotelAdministrator\Invoicing\Vouchers.aspx.vb">
+      <DependentUpon>Vouchers.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
     <Compile Include="HotelAdministrator\Pages\MapeoPlanesF2G.aspx.designer.vb">
       <DependentUpon>MapeoPlanesF2G.aspx</DependentUpon>
     </Compile>

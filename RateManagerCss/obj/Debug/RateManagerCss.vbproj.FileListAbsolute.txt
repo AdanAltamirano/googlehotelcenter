@@ -447,16 +447,12 @@ C:\Users\WM\Source\RMGit\RateManagerCss\obj\Debug\es\RateManager.resources.dll
 C:\Users\WM\Source\RMGit\RateManagerCss\obj\Debug\RateManager.dll
 C:\Users\WM\Source\RMGit\RateManagerCss\obj\Debug\RateManager.xml
 C:\Users\WM\Source\RMGit\RateManagerCss\obj\Debug\RateManager.pdb
+C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.NearCities.resources
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\bin\RateManager.dll
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\bin\RateManager.pdb
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\bin\RateManager.xml
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\bin\en\RateManager.resources.dll
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\bin\es\RateManager.resources.dll
-C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\bin\Microsoft.Office.Interop.Excel.dll
-C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\bin\office.dll
-C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\bin\Microsoft.Vbe.Interop.dll
-C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\bin\Microsoft.Office.Interop.Excel.xml
-C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\bin\office.xml
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.Booking.resources
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.Polities.resources
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.Ayuda.resources
@@ -498,7 +494,6 @@ C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerC
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.HotelConfPayPal.resources
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.ModifyPassiveReservation.resources
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.NearAirports.resources
-C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.NearCities.resources
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.NoConfirmReservas.resources
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.PassiveBooking.resources
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.ReservationDetails.resources
@@ -655,3 +650,4 @@ C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerC
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.dll
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.xml
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.pdb
+C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManagerCss.vbprojResolveAssemblyReference.cache

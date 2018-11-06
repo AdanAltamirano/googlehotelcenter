@@ -158,6 +158,9 @@ Public Class Promotions
             LoadResources()
             MostrarCmdNew(True)
             LoadGridRatePlans(ctrlAutoComplete1.GetFilter)
+            For Each item As ListItem In chklSpecificArrivals.Items
+                item.Selected = False
+            Next
         End If
         cmdNew.Attributes.Add("onclick", String.Format("javascript:FireShow('{0}','{1}',{2});", divContenedor.ClientID, cmdNew.ClientID, "true"))
     End Sub
@@ -440,6 +443,9 @@ Public Class Promotions
                         '            clearConfDealData()
 
                         Return 0
+                    Else
+                        lblError.Visible = True
+                        lblError.Text = "Ocurrio un error al guardar la promoción. Asegurese que todos los datos seam correctos y que el código de la promoción no haya sido registrado previamente."
                     End If
                 End With
             End If
@@ -1079,7 +1085,7 @@ Public Class Promotions
         txtDiasBlackout.Value = ""
         grid.SelectedIndex = -1
         txtPromoDescription.SetEN("")
-        txtPromoDescription.SetEN("")
+        txtPromoDescription.setES("")
         txtAddValueDescription.SetEN("")
         txtAddValueDescription.setES("")
         txtCancelPoliciesFull.setES("")
@@ -1097,7 +1103,7 @@ Public Class Promotions
             item.Selected = False
         Next
         For Each item As ListItem In chklSpecificArrivals.Items
-            item.Selected = True
+            item.Selected = False
         Next
         For Each item As ListItem In ckhlSpecificDay.Items
             item.Selected = True
@@ -1131,6 +1137,9 @@ Public Class Promotions
         HoraInicio.SelectedIndex = 0
         MinutoFin.SelectedIndex = 0
         MinutoInicio.SelectedIndex = 0
+        txtPromoDiscount.Text = ""
+        edicion = False
+
     End Sub
 
     Public Function SaveRules(ByVal publish As Boolean, ByRef IdRule As Integer) As Boolean

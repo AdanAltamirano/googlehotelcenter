@@ -32186,6 +32186,38 @@ Row event argument class
 	<summary>
 Represents a strongly typed in-memory cache of data.
 </summary>
+</member><member name="F:RateManager.Vouchers.form1">
+	<summary>
+Control form1.
+</summary>
+	<remarks>
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+</remarks>
+</member><member name="F:RateManager.Vouchers.lblTitle">
+	<summary>
+Control lblTitle.
+</summary>
+	<remarks>
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+</remarks>
+</member><member name="F:RateManager.Vouchers.lblError">
+	<summary>
+Control lblError.
+</summary>
+	<remarks>
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+</remarks>
+</member><member name="F:RateManager.Vouchers.dgComprobantes">
+	<summary>
+Control dgComprobantes.
+</summary>
+	<remarks>
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+</remarks>
 </member><member name="T:RateManager.configFCK">
 	<summary>
 configFCK class.
@@ -57645,402 +57677,403 @@ Para modificarlo, mueva la declaración del campo del archivo del diseñador al 
 </remarks>
 </member><member name="F:RateManager.ctrRoomLink.txtDivVisible">
 	<summary>
-txtDivVisible control.
+Control txtDivVisible.
 </summary>
 	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
 </member><member name="F:RateManager.ctrRoomLink.lblTitle">
 	<summary>
-lblTitle control.
+Control lblTitle.
 </summary>
 	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
 </member><member name="F:RateManager.ctrRoomLink.lblERoomSource">
 	<summary>
-lblERoomSource control.
+Control lblERoomSource.
 </summary>
 	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
 </member><member name="F:RateManager.ctrRoomLink.ddlRoomSource">
 	<summary>
-ddlRoomSource control.
+Control ddlRoomSource.
 </summary>
 	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
 </member><member name="F:RateManager.ctrRoomLink.lblERoomTarget">
 	<summary>
-lblERoomTarget control.
+Control lblERoomTarget.
 </summary>
 	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
 </member><member name="F:RateManager.ctrRoomLink.ddlRoomTarget">
 	<summary>
-ddlRoomTarget control.
+Control ddlRoomTarget.
 </summary>
 	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
 </member><member name="F:RateManager.ctrRoomLink.txtTarget">
 	<summary>
-txtTarget control.
+Control txtTarget.
 </summary>
 	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+</remarks>
+</member><member name="F:RateManager.ctrRoomLink.chkBaseRules">
+	<summary>
+Control chkBaseRules.
+</summary>
+	<remarks>
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
 </member><member name="F:RateManager.ctrRoomLink.lbllinkdata">
 	<summary>
-lbllinkdata control.
+Control lbllinkdata.
 </summary>
 	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
 </member><member name="F:RateManager.ctrRoomLink.lbl_Ratio">
 	<summary>
-lbl_Ratio control.
+Control lbl_Ratio.
 </summary>
 	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
 </member><member name="F:RateManager.ctrRoomLink.divratio">
 	<summary>
-divratio control.
+Control divratio.
 </summary>
 	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
 </member><member name="F:RateManager.ctrRoomLink.txtRatio">
 	<summary>
-txtRatio control.
+Control txtRatio.
 </summary>
 	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
 </member><member name="F:RateManager.ctrRoomLink.RvRatio">
 	<summary>
-RvRatio control.
+Control RvRatio.
 </summary>
 	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
 </member><member name="F:RateManager.ctrRoomLink.lbl_Offset">
 	<summary>
-lbl_Offset control.
+Control lbl_Offset.
 </summary>
 	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
 </member><member name="F:RateManager.ctrRoomLink.divoffset">
 	<summary>
-divoffset control.
+Control divoffset.
 </summary>
 	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
 </member><member name="F:RateManager.ctrRoomLink.txtoffset">
 	<summary>
-txtoffset control.
+Control txtoffset.
 </summary>
 	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
 </member><member name="F:RateManager.ctrRoomLink.RVOffset">
 	<summary>
-RVOffset control.
+Control RVOffset.
 </summary>
 	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
 </member><member name="F:RateManager.ctrRoomLink.hplhide">
 	<summary>
-hplhide control.
+Control hplhide.
 </summary>
 	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
 </member><member name="F:RateManager.ctrRoomLink.hplShow">
 	<summary>
-hplShow control.
+Control hplShow.
 </summary>
 	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
 </member><member name="F:RateManager.ctrRoomLink.lblNoLink">
 	<summary>
-lblNoLink control.
+Control lblNoLink.
 </summary>
 	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
 </member><member name="F:RateManager.ctrRoomLink.divDatos">
 	<summary>
-divDatos control.
+Control divDatos.
 </summary>
 	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
 </member><member name="F:RateManager.ctrRoomLink.lblRatio">
 	<summary>
-lblRatio control.
+Control lblRatio.
 </summary>
 	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
 </member><member name="F:RateManager.ctrRoomLink.lblOffset">
 	<summary>
-lblOffset control.
+Control lblOffset.
 </summary>
 	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
 </member><member name="F:RateManager.ctrRoomLink.lblRatio2">
 	<summary>
-lblRatio2 control.
+Control lblRatio2.
 </summary>
 	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
 </member><member name="F:RateManager.ctrRoomLink.lblOffset2">
 	<summary>
-lblOffset2 control.
+Control lblOffset2.
 </summary>
 	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
 </member><member name="F:RateManager.ctrRoomLink.lblEOnePersonRate">
 	<summary>
-lblEOnePersonRate control.
+Control lblEOnePersonRate.
 </summary>
 	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
 </member><member name="F:RateManager.ctrRoomLink.txtOnePersonRatio">
 	<summary>
-txtOnePersonRatio control.
+Control txtOnePersonRatio.
 </summary>
 	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
 </member><member name="F:RateManager.ctrRoomLink.txtOnePersonOffset">
 	<summary>
-txtOnePersonOffset control.
+Control txtOnePersonOffset.
 </summary>
 	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
 </member><member name="F:RateManager.ctrRoomLink.lblEExtraAdultRate">
 	<summary>
-lblEExtraAdultRate control.
+Control lblEExtraAdultRate.
 </summary>
 	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
 </member><member name="F:RateManager.ctrRoomLink.txtExtraAdultRatio">
 	<summary>
-txtExtraAdultRatio control.
+Control txtExtraAdultRatio.
 </summary>
 	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
 </member><member name="F:RateManager.ctrRoomLink.txtExtraAdultOffset">
 	<summary>
-txtExtraAdultOffset control.
+Control txtExtraAdultOffset.
 </summary>
 	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
 </member><member name="F:RateManager.ctrRoomLink.RvOnePersonRatio">
 	<summary>
-RvOnePersonRatio control.
+Control RvOnePersonRatio.
 </summary>
 	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
 </member><member name="F:RateManager.ctrRoomLink.RVOnePersonOffset">
 	<summary>
-RVOnePersonOffset control.
+Control RVOnePersonOffset.
 </summary>
 	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
 </member><member name="F:RateManager.ctrRoomLink.RvExtraAdultRatio">
 	<summary>
-RvExtraAdultRatio control.
+Control RvExtraAdultRatio.
 </summary>
 	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
 </member><member name="F:RateManager.ctrRoomLink.RVExtraAdultOffset">
 	<summary>
-RVExtraAdultOffset control.
+Control RVExtraAdultOffset.
 </summary>
 	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
 </member><member name="F:RateManager.ctrRoomLink.lblETwoPersonRAte">
 	<summary>
-lblETwoPersonRAte control.
+Control lblETwoPersonRAte.
 </summary>
 	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
 </member><member name="F:RateManager.ctrRoomLink.txtTwoPersonRatio">
 	<summary>
-txtTwoPersonRatio control.
+Control txtTwoPersonRatio.
 </summary>
 	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
 </member><member name="F:RateManager.ctrRoomLink.txtTwoPersonOffset">
 	<summary>
-txtTwoPersonOffset control.
+Control txtTwoPersonOffset.
 </summary>
 	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
 </member><member name="F:RateManager.ctrRoomLink.lblEExtraChildRate">
 	<summary>
-lblEExtraChildRate control.
+Control lblEExtraChildRate.
 </summary>
 	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
 </member><member name="F:RateManager.ctrRoomLink.txtExtraChildRatio">
 	<summary>
-txtExtraChildRatio control.
+Control txtExtraChildRatio.
 </summary>
 	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
 </member><member name="F:RateManager.ctrRoomLink.txtExtraChildOffset">
 	<summary>
-txtExtraChildOffset control.
+Control txtExtraChildOffset.
 </summary>
 	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
 </member><member name="F:RateManager.ctrRoomLink.RvTwoPersonRatio">
 	<summary>
-RvTwoPersonRatio control.
+Control RvTwoPersonRatio.
 </summary>
 	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
 </member><member name="F:RateManager.ctrRoomLink.RVTwoPersonOffset">
 	<summary>
-RVTwoPersonOffset control.
+Control RVTwoPersonOffset.
 </summary>
 	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
 </member><member name="F:RateManager.ctrRoomLink.RvExtraChildRatio">
 	<summary>
-RvExtraChildRatio control.
+Control RvExtraChildRatio.
 </summary>
 	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
 </member><member name="F:RateManager.ctrRoomLink.RVExtraChildOffset">
 	<summary>
-RVExtraChildOffset control.
+Control RVExtraChildOffset.
 </summary>
 	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
 </member><member name="F:RateManager.ctrRoomLink.lblOthersOcupation">
 	<summary>
-lblOthersOcupation control.
+Control lblOthersOcupation.
 </summary>
 	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
 </member><member name="F:RateManager.ctrRoomLink.txtOthersRatio">
 	<summary>
-txtOthersRatio control.
+Control txtOthersRatio.
 </summary>
 	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
 </member><member name="F:RateManager.ctrRoomLink.txtOthersOffset">
 	<summary>
-txtOthersOffset control.
+Control txtOthersOffset.
 </summary>
 	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
 </member><member name="F:RateManager.ctrRoomLink.RvOthersRatio">
 	<summary>
-RvOthersRatio control.
+Control RvOthersRatio.
 </summary>
 	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
 </member><member name="F:RateManager.ctrRoomLink.RVOthersOffset">
 	<summary>
-RVOthersOffset control.
+Control RVOthersOffset.
 </summary>
 	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
-</remarks>
-</member><member name="T:RateManager.ctrRoomLink">
-	<summary>
-ctrRoomLink class.
-</summary>
-	<remarks>
-Auto-generated class.
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
 </member><member name="F:RateManager.SearchAgency.txtFiltro">
 	<summary>

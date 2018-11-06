@@ -8850,4 +8850,7 @@
   <data name="01652" xml:space="preserve">
     <value>Activar Promoción</value>
   </data>
+  <data name="01653" xml:space="preserve">
+    <value>Descargar Comprobante</value>
+  </data>
 </root>

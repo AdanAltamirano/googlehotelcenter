@@ -8844,4 +8844,7 @@
   <data name="01652" xml:space="preserve">
     <value>Activate Promotion</value>
   </data>
+  <data name="01653" xml:space="preserve">
+    <value>Download Voucher</value>
+  </data>
 </root>

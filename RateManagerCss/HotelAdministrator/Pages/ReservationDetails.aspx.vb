@@ -1463,14 +1463,15 @@ Partial Class ReservationDetails
                     End If
 
                 ElseIf pagoData IsNot Nothing AndAlso pagoData.Rows.Count > 0 Then
-                    If Not pagoData.Rows(0).IsNull("OnlineCCType") AndAlso Not pagoData.Rows(0).IsNull("OnlineCCNumber") Then
-
-                        lblCCNumber.Text = pagoData.Rows(0)("OnlineCCNumber").ToString
-                        lblCCType.Text = pagoData.Rows(0)("OnlineCCType").ToString
+                    If pagoData.Columns.Contains("OnlineCCType") AndAlso pagoData.Columns.Contains("OnlineCCNumber") Then
+                        If Not pagoData.Rows(0).IsNull("OnlineCCType") AndAlso Not pagoData.Rows(0).IsNull("OnlineCCNumber") Then
+                            lblCCNumber.Text = pagoData.Rows(0)("OnlineCCNumber").ToString
+                            lblCCType.Text = pagoData.Rows(0)("OnlineCCType").ToString
+                        End If
                     End If
                 End If
 
-                    If Not Session(AppSettings("RestTarjetas")) Is Nothing AndAlso Session(AppSettings("RestTarjetas")) = "1" Then
+                If Not Session(AppSettings("RestTarjetas")) Is Nothing AndAlso Session(AppSettings("RestTarjetas")) = "1" Then
                     Dim ccn As String = IIf(.IsNull(dsReservaciones.FIELD_DIGITOCC), " -", .Item(dsReservaciones.FIELD_DIGITOCC))
                     If ccn.Length >= 3 Then
                         lblCCcvNumber.Text = "XXX"
@@ -2408,6 +2409,7 @@ Partial Class ReservationDetails
                 Else
                     Mail.AddParameter("UVNRPOLICIES") = ""
                 End If
+                System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12
                 Mail.Send()
 
                 'Util.Utility.MailerSend(.Item(dsreservaciones.FIELD_NORESERVACION), Mail.GetBody)

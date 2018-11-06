@@ -26,7 +26,7 @@
 
         function HideOutCalendar() {
             document.getElementById('txtCheckOut').disabled = true;
-            document.getElementById('PopcalTrigger').style.visibility = 'hidden';
+            document.getElementById('PopcalTrigger').style.visibility = 'hidden';3
         }
 
         function ShowResStatus() {
