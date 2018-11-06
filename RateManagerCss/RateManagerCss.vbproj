@@ -442,6 +442,7 @@
     <Content Include="Data\RoomTypes.xml" />
     <Content Include="Data\Segmentos.xml" />
     <Content Include="Default.aspx" />
+    <Content Include="ExportExcel\Reports.aspx" />
     <Content Include="HotelAdministrator\Invoicing\Vouchers.aspx" />
     <Content Include="HotelAdministrator\Pages\MapeoPlanesF2G.aspx" />
     <Content Include="HotelAdministrator\Pages\Promotions.aspx" />
@@ -1019,6 +1020,16 @@
     <Content Include="Images\xml.gif" />
     <Content Include="Includes\bootstrap.min.css" />
     <Content Include="Includes\imagenes\logo.png" />
+    <Content Include="Includes\report\Angular1-2.js" />
+    <Content Include="Includes\report\bootstrap.min.css" />
+    <Content Include="Includes\report\f2goController.js" />
+    <Content Include="Includes\report\f2goDirective.js" />
+    <Content Include="Includes\report\f2goFactory.js" />
+    <Content Include="Includes\report\jquery.magnific-popup.js" />
+    <Content Include="Includes\report\Jquery1-11.js" />
+    <Content Include="Includes\report\magnific-popup.css" />
+    <Content Include="Includes\report\pikaday.css" />
+    <Content Include="Includes\report\pikaday.js" />
     <Content Include="Includes\Retention\bootstrap.css" />
     <Content Include="Includes\Retention\notification-styles.css" />
     <Content Include="Includes\Retention\notification-styles.min.css" />
@@ -1077,6 +1088,7 @@
     <Content Include="Pages\ConventionsMeetings.aspx" />
     <Content Include="Pages\DataClientPermission.aspx" />
     <Content Include="Pages\DepositRatesPlan.aspx" />
+    <Content Include="Pages\F2goReport.html" />
     <Content Include="Pages\FaresCatalogue.aspx" />
     <Content Include="Pages\FaresCatalogueException.aspx" />
     <Content Include="Pages\FaresCatalogueNR.aspx" />
@@ -1251,6 +1263,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="XmlHttp.js" />
+    <Content Include="Pages\F2goGetReport.ashx" />
     <None Include="Web References\WsConnectWcf\wsConnectWCFv2.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -1350,6 +1363,13 @@
     </Compile>
     <Compile Include="Default.aspx.designer.vb">
       <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ExportExcel\Reports.aspx.designer.vb">
+      <DependentUpon>Reports.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ExportExcel\Reports.aspx.vb">
+      <DependentUpon>Reports.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Data\HdrRetentionsConfig.ashx.vb">
       <DependentUpon>HdrRetentionsConfig.ashx</DependentUpon>
@@ -1636,6 +1656,9 @@
     </Compile>
     <Compile Include="Pages\Data\ExecutorServer.ashx.vb">
       <DependentUpon>ExecutorServer.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\F2goGetReport.ashx.vb">
+      <DependentUpon>F2goGetReport.ashx</DependentUpon>
     </Compile>
     <Compile Include="Pages\Groups.aspx.designer.vb">
       <DependentUpon>Groups.aspx</DependentUpon>
@@ -3102,9 +3125,7 @@
       <DependentUpon>CtrMenu.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Portal\Opciones.vb">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
+    <Compile Include="Portal\Opciones.vb" />
     <Compile Include="Portal\Pages\Home.aspx.designer.vb">
       <DependentUpon>Home.aspx</DependentUpon>
     </Compile>

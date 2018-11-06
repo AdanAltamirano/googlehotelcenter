@@ -3,6 +3,7 @@
   <PropertyGroup>
     <ProjectView>ShowAllFiles</ProjectView>
     <LastActiveSolutionConfig>Debug|Any CPU</LastActiveSolutionConfig>
+    <UseIISExpress>false</UseIISExpress>
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>

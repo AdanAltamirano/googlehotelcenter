@@ -23,6 +23,7 @@
             <asp:BoundColumn HeaderText="Adultos" DataField="adultos" />
             <asp:BoundColumn HeaderText="Menores" DataField="ninios" />
             <asp:BoundColumn HeaderText="Código de promoción" DataField="AccessCode" />
+            <asp:BoundColumn HeaderText="Forma de pago" DataField="paymentmethod" />
             <asp:BoundColumn HeaderText="Total" DataField="Total" />
             <asp:BoundColumn HeaderText="Moneda" DataField="TotalProviderCurrencyCode" />
         </Columns>
