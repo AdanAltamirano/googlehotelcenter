@@ -14,6 +14,15 @@ Option Explicit On
 Partial Public Class AvailabilityRestrictions
 
     '''<summary>
+    '''Control txtObjDelete.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents txtObjDelete As Global.System.Web.UI.HtmlControls.HtmlInputHidden
+
+    '''<summary>
     '''Control imonth.
     '''</summary>
     '''<remarks>
@@ -795,6 +804,15 @@ Partial Public Class AvailabilityRestrictions
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
     Protected WithEvents btnSave As Global.System.Web.UI.WebControls.Button
+
+    '''<summary>
+    '''Control btnModalSave.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents btnModalSave As Global.System.Web.UI.HtmlControls.HtmlInputButton
 
     '''<summary>
     '''Control spanMSG.
