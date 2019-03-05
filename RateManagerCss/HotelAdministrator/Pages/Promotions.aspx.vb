@@ -361,6 +361,7 @@ Public Class Promotions
             If (Me.txtPromoDiscount.Text <> "") AndAlso chkPromoDiscount.Checked Then '(chkPortal.Checked Or Me.chkUnipantalla.Checked Or Me.chkGDS.Checked)) Then
                 .Item(dsRate.FIELD_DESCPROMOTION) = CDbl(txtPromoDiscount.Text)
                 .Item(dsRate.FIELD_TIPODESCUENTO) = rblDiscountOptions.SelectedValue
+                .Item(dsRate.FIELD_DISCAPPLICATIONMODE) = ddlApplicationMode.SelectedValue
             End If
 
             .Item(dsRate.FIELD_IDRULE) = System.DBNull.Value
@@ -684,6 +685,10 @@ Public Class Promotions
                 End If
                 If Not .IsNull(dsRatePlan.FIELD_TIPODESCUENTO) Then
                     rblDiscountOptions.SelectedIndex = .Item(dsRatePlan.FIELD_TIPODESCUENTO) - 1
+                End If
+
+                If Not .IsNull(dsRatePlan.FIELD_DISCAPPLICATIONMODE) Then
+                    ddlApplicationMode.SelectedValue = .Item(dsRatePlan.FIELD_DISCAPPLICATIONMODE)
                 End If
 
                 If Not .IsNull(dsRatePlan.FIELD_IDDICCPROMODESC) Then
@@ -1132,6 +1137,7 @@ Public Class Promotions
         chkPromoNights.Checked = False
         txtCancellationPolicy.Text = ""
         ddlCancelationPolicy.SelectedIndex = 0
+        ddlApplicationMode.SelectedIndex = 0
         chkNonCancelable.Checked = False
         HoraFin.SelectedIndex = 0
         HoraInicio.SelectedIndex = 0

@@ -383,6 +383,33 @@ Partial Public Class Promotions
     Protected WithEvents txtPromoDiscount As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
+    '''Control lblApplicationMode.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblApplicationMode As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control ddlApplicationMode.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents ddlApplicationMode As Global.System.Web.UI.WebControls.DropDownList
+
+    '''<summary>
+    '''Control lknDiscountTooltip.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lknDiscountTooltip As Global.System.Web.UI.WebControls.LinkButton
+
+    '''<summary>
     '''Control txtCancelPolicyDescription.
     '''</summary>
     '''<remarks>

@@ -8045,6 +8045,30 @@ Control txtPromoDiscount.
 Campo generado automáticamente.
 Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
+</member><member name="F:RateManager.Promotions.lblApplicationMode">
+	<summary>
+Control lblApplicationMode.
+</summary>
+	<remarks>
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+</remarks>
+</member><member name="F:RateManager.Promotions.ddlApplicationMode">
+	<summary>
+Control ddlApplicationMode.
+</summary>
+	<remarks>
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+</remarks>
+</member><member name="F:RateManager.Promotions.lknDiscountTooltip">
+	<summary>
+Control lknDiscountTooltip.
+</summary>
+	<remarks>
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+</remarks>
 </member><member name="F:RateManager.Promotions.txtCancelPolicyDescription">
 	<summary>
 Control txtCancelPolicyDescription.
