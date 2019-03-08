@@ -928,7 +928,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <span class="close" onclick="closeModal()">&times;</span>
-                <h2>Confirmar cambios de disponibilidad</h2>
+                <h2>Confirmar cambios</h2>
             </div>
             <div class="modal-body">
                 <h4 class="msg">¿Está seguro que desea aplicar los cambios?</h4>

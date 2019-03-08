@@ -86,13 +86,13 @@ Public Class Vouchers
             Else
                 lnkDescargar = e.Item.FindControl("hypPdfComp")
 
-                lnkDescargar.NavigateUrl = String.Concat(AppSettings("DIR_INVOICE_PRINTING"), "DigitalInvoiceHelper.aspx") & "?action=Download&Invoice=" & Server.UrlEncode(Request.QueryString("Invoice")) & "&format=" & Oz.UniBilling.Common.DigitalInvoiceFormat.Pdf.ToString & "&PaymentID=" & AppliedPaymentID
+                lnkDescargar.NavigateUrl = String.Concat(AppSettings("DIR_INVOICE_PRINTING"), "DigitalInvoiceHelper.aspx") & "?action=Download&Invoice=" & Server.UrlEncode(Request.QueryString("Invoice").Replace(" ", "+")) & "&format=" & Oz.UniBilling.Common.DigitalInvoiceFormat.Pdf.ToString & "&PaymentID=" & AppliedPaymentID
                 lnkDescargar.ToolTip = PortalCulture.GetString("00906")
                 lnkDescargar.Visible = True
 
                 lnkDescargar = e.Item.FindControl("hypXmlFC")
 
-                lnkDescargar.NavigateUrl = String.Concat(AppSettings("DIR_INVOICE_PRINTING"), "DigitalInvoiceHelper.aspx") & "?action=Download&Invoice=" & Server.UrlEncode(Request.QueryString("Invoice")) & "&format=" & Oz.UniBilling.Common.DigitalInvoiceFormat.Xml.ToString & "&PaymentID=" & AppliedPaymentID
+                lnkDescargar.NavigateUrl = String.Concat(AppSettings("DIR_INVOICE_PRINTING"), "DigitalInvoiceHelper.aspx") & "?action=Download&Invoice=" & Server.UrlEncode(Request.QueryString("Invoice").Replace(" ", "+")) & "&format=" & Oz.UniBilling.Common.DigitalInvoiceFormat.Xml.ToString & "&PaymentID=" & AppliedPaymentID
                 lnkDescargar.ToolTip = PortalCulture.GetString("00907")
                 lnkDescargar.Visible = True
 

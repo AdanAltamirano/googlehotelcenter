@@ -336,6 +336,7 @@
                 }
 
         /* Style the tab content */
+
         .tabcontent {
             display: none;
             padding: 6px 12px;
@@ -343,9 +344,65 @@
             border-top: none;
         }
 
+        .tabDiscount div {
+            display: inline-block;
+        }
+
+        .tabDiscount span {
+            margin-top: 10px;
+            margin-left: 20px;
+        }
+
         .tabcontent {
             -webkit-animation: fadeEffect 1s;
             animation: fadeEffect 1s; /* Fading effect takes 1 second */
+        }
+
+        .tooltip-header {
+            padding: 2px 16px;
+            background-color: #3E7BAC;
+            color: white;
+            height: 10%;
+        }
+
+        .tooltip-body {
+            padding: 2px 16px;
+            height: 80%;
+        }
+
+        .tooltip-footer {
+            padding: 2px 16px;
+            background-color: #3E7BAC;
+            color: white;
+            height: 10%;
+        }
+
+        .tooltip-content {
+            position: relative;
+            background-color: #fefefe;
+            margin: auto;
+            padding: 0;
+            border: 1px solid #888;
+            height: 100%;
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+            -webkit-animation-name: animatetop;
+            -webkit-animation-duration: 0.4s;
+            animation-name: animatetop;
+            animation-duration: 0.4s;
+        }
+
+        
+        .toolTip-Discount {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            padding: 30px; /* Location of the box */
+            left: 50%;
+            right: 40%;
+            width: 400px; /* Full width */
+            height: 400px; /* Full height */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
         }
 
         @-webkit-keyframes fadeEffect {
@@ -846,15 +903,70 @@
                                         <span>Noche será gratis</span>
                                     </div>
                                 </div>
-                                <div id="divPromoDiscount" class="tabContent">
+                                <div id="divPromoDiscount" class="tabContent tabDiscount">
                                     <div class="discountOptions">
                                         <asp:RadioButtonList runat="server" ID="rblDiscountOptions" RepeatDirection="Horizontal">
                                             <asp:ListItem Selected="True" Text="% (Porcentaje)" Value="1"></asp:ListItem>
-
                                         </asp:RadioButtonList>
                                     </div>
                                     <div class="discountDetails">
                                         <asp:TextBox runat="server" ID="txtPromoDiscount" Width="50px" MaxLength="6"></asp:TextBox>
+                                    </div>
+                                    <div>
+                                        <asp:Label runat="server" ID="lblApplicationMode">Modo de aplicación :</asp:Label>
+                                    </div>
+                                    <div>
+                                        <asp:DropDownList runat="server" ID="ddlApplicationMode">
+                                            <asp:ListItem Selected="True" Text="Prioridad a descunto en Tarifa" Value="0"></asp:ListItem>
+                                            <asp:ListItem Text="Suma porcentajes de descuento" Value="1"></asp:ListItem>
+                                            <asp:ListItem Text="Descuento adicional" Value="2"></asp:ListItem>
+                                        </asp:DropDownList>
+                                    </div>
+                                    <div>
+                                        <!--<asp:LinkButton runat="server" ID="lknDiscountTooltip" Text="Ayuda" CssClass="dglink" href="#" OnClientClick="showToolTip(); return false;"></asp:LinkButton>-->
+                                        <span class="dglink" onclick="showToolTip();">Ayuda</span>
+                                    </div>
+                                </div>
+                                <div id="Div1" class="modal">
+                                    <!-- Modal content -->
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <span class="close" onclick="closeModal()">&times;</span>
+                                            <h2>Desactivar Promoción</h2>
+                                        </div>
+                                        <div class="modal-body">
+                                            <h4 class="msg">¿Está seguro que desea desactivar esta promoción?</h4>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <input type="button" value="Sí" onclick="deactivatePromo();" />
+                                            <input type="button" value="No" onclick="closeModal();" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="toolTip-Discount" id="TooltipDiscount">
+                                    <div class="tooltip-content">
+                                        <div class="tooltip-header">
+                                            <h2>Modo de aplicacón del descuento</h2>
+                                        </div>
+                                        <div class="tooltip-body">
+                                            <p>El <b>Modo de Aplicación</b> solo afectará cuando haya un descuento a nivel de tarifa. En caso contrario se aplicará el porcetaje de descuento que aquí se configure.</p>
+                                            <p>Suponiendo que en la promoción se configuré con un 40% de descuento y en la tarifa se configure con un 20% de descuento, quedaría de la siguiente forma: </p>
+                                            <h3>Prioridad a descuento en Tarifa</h3>
+                                            <!--<p>Si la tarifa creada tiene un descuento, el descuento de esta promoción será reemplazado.</p>-->
+                                            <p>Solo se aplicará el 20% de descuento.</p>
+                                            
+                                            <h3>Suma porcentajes de descuento</h3>
+                                            <!--<p>Si la tarifa creada tiene un descuento, el descuento de esta promoción será reemplazado.</p>-->
+                                            <p>Se aplicará un 60% de descuento.</p>
+                                            
+                                            <h3>Descuento adicional</h3>
+                                            <!--<p>Si la tarifa creada tiene un descuento, el descuento de esta promoción será reemplazado.</p>-->
+                                            <p>Primero se aplicará el 40% de descuento y al resultado de eso se le aplicará el 20% de descuento.</p>
+                                        </div>
+                                        <div class="tooltip-footer">
+                                            <input type="button" value="OK" onclick="closeTooltip();" />
+                                        </div>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -1092,6 +1204,17 @@
         } else {
             $(".cancelPolicy").attr("style", "display: block");
         }
+    }
+
+    var discountTooltip = document.getElementById('TooltipDiscount');
+
+    function showToolTip() {
+        var t = document.getElementById('TooltipDiscount');
+        t.style.display = 'block';
+    }
+
+    function closeTooltip() {
+        discountTooltip.style.display = 'none';
     }
 
     function FireShow(ID, IDcmd, show) {

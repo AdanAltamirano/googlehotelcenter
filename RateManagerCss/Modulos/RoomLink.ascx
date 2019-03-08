@@ -74,7 +74,7 @@
             <div id="divoffset" runat="server">
                 <asp:TextBox ID="txtoffset" Width="64px" runat="server" CssClass="textbox" MaxLength="7"></asp:TextBox><asp:RangeValidator
                     ID="RVOffset" runat="server" CssClass="validators" Display="Dynamic" ErrorMessage="-999 to 999"
-                    Type="Double" MinimumValue="-999" MaximumValue="999" ControlToValidate="txtoffset"></asp:RangeValidator></div>
+                    Type="Double" MinimumValue="-999" MaximumValue="9999" ControlToValidate="txtoffset"></asp:RangeValidator></div>
         </td>
         <td>
         </td>
@@ -158,7 +158,7 @@
                         </td>
                         <td>
                             <asp:RangeValidator ID="RVOnePersonOffset" runat="server" CssClass="validators" Display="Dynamic"
-                                ErrorMessage="-999 a 999" Type="Double" MinimumValue="-999" MaximumValue="999"
+                                ErrorMessage="-999 a 999" Type="Double" MinimumValue="-999" MaximumValue="9999"
                                 ControlToValidate="txtOnePersonOffset"></asp:RangeValidator>
                         </td>
                         <td align="right">
@@ -169,7 +169,7 @@
                         </td>
                         <td>
                             <asp:RangeValidator ID="RVExtraAdultOffset" runat="server" CssClass="validators"
-                                ControlToValidate="txtExtraAdultOffset" MaximumValue="999" MinimumValue="-999"
+                                ControlToValidate="txtExtraAdultOffset" MaximumValue="9999" MinimumValue="-999"
                                 Type="Double" ErrorMessage="-999 a 999" Display="Dynamic"></asp:RangeValidator>
                         </td>
                     </tr>
@@ -206,7 +206,7 @@
                         </td>
                         <td>
                             <asp:RangeValidator ID="RVTwoPersonOffset" runat="server" CssClass="validators" Display="Dynamic"
-                                ErrorMessage="-999 a 999" Type="Double" MinimumValue="-999" MaximumValue="999"
+                                ErrorMessage="-999 a 999" Type="Double" MinimumValue="-999" MaximumValue="9999"
                                 ControlToValidate="txtTwoPersonOffset"></asp:RangeValidator>
                         </td>
                         <td align="right">
@@ -218,7 +218,7 @@
                         <td>
                             <asp:RangeValidator ID="RVExtraChildOffset" runat="server" CssClass="validators"
                                 Display="Dynamic" ErrorMessage="-999 a 999" Type="Double" MinimumValue="-999"
-                                MaximumValue="999" ControlToValidate="txtExtraChildOffset"></asp:RangeValidator>
+                                MaximumValue="9999" ControlToValidate="txtExtraChildOffset"></asp:RangeValidator>
                         </td>
                     </tr>
                     <tr>
@@ -248,7 +248,7 @@
                         </td>
                         <td>
                             <asp:RangeValidator ID="RVOthersOffset" runat="server" CssClass="validators" ControlToValidate="txtOthersOffset"
-                                MaximumValue="999" MinimumValue="-999" Type="Double" ErrorMessage="-999 a 999"
+                                MaximumValue="9999" MinimumValue="-999" Type="Double" ErrorMessage="-999 a 999"
                                 Display="Dynamic"></asp:RangeValidator>
                         </td>
                         <td align="center">
@@ -295,7 +295,7 @@ else
 						var txtDiv = document.getElementById(txtDivV);							
 						if (v == '1')
 							{
-							if ((t1.value=="" || isnumber(t1.value,0)) && (t2.value=="" || isnumber(t2.value,1)) && t1.value<=10 && t2.value<=999 && t2.value>=-999)
+							if ((t1.value=="" || isnumber(t1.value,0)) && (t2.value=="" || isnumber(t2.value,1)) && t1.value<=10 && t2.value<=9999 && t2.value>=-999)
 							 {
 								e.style.display = '';     
 								o.style.display = '';     
@@ -349,7 +349,7 @@ else
 					         {
 					          return false;
 					         }
-					        else if (e[i].value>999 || e[i].value<-999)
+					        else if (e[i].value>9999 || e[i].value<-999)
 							 {
 							  return false;
 							 }
