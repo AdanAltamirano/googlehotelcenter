@@ -1948,7 +1948,9 @@ Partial Class ReservationDetails
                     End If
 
                 End If
-                If LocalCancel(.Item(dsReservaciones.FIELD_IDRESERVACION), GalileoConfCancelNumber, CInt(Val(.Item("idUsuario").ToString)), NoCancelacion, .Item(dsReservaciones.FIELD_NORESERVACION)) Then
+                Dim idReservacion As String = .Item(dsReservaciones.FIELD_NORESERVACION)
+
+                If LocalCancel(idReservacion, GalileoConfCancelNumber, CInt(Val(.Item("idUsuario").ToString)), NoCancelacion, idReservacion.ToString) Then
 
                     'Luis Cota 02/05/2017
                     'No enviar correo de cancelación si la reservación está en proceso
@@ -1957,18 +1959,27 @@ Partial Class ReservationDetails
                             enviarcorreo(dsReservaciones)
                             'Correo NetRate
                             Dim NR As New WSHotelDataAccess.clsDANetRates
-                            NR.InsertNetRateMail(.Item(dsReservaciones.FIELD_NORESERVACION), WSHotelRules.clsRUCommon.eEmailTypeNetRate.Cancel, False, DateTime.Now)
+                            NR.InsertNetRateMail(idReservacion, WSHotelRules.clsRUCommon.eEmailTypeNetRate.Cancel, False, DateTime.Now)
                         End If
                     End If
                     'PMS
                     Dim PMS As New WSHotelRules.clsRUPMS
-                    PMS.ExecuteOperation(.Item(dsReservaciones.FIELD_NORESERVACION), eOperationPMS.Delete)
+                    PMS.ExecuteOperation(idReservacion, eOperationPMS.Delete)
 
                     Threading.Thread.CurrentThread.CurrentUICulture = gUI
                     PortalCulture.SetCulture(gUI.ToString)
-                    Me.guardalog("/HotelAdministrator/Pages/ReservationDetails.aspx", PaginaBase.acciones.Eliminar, "Cancel� la reservacion " & .Item(dsReservaciones.FIELD_NORESERVACION).ToString)
+                    Me.guardalog("/HotelAdministrator/Pages/ReservationDetails.aspx", PaginaBase.acciones.Eliminar, "Cancel� la reservacion " & idReservacion)
 
                     MyBase.OTA_PushNotif(cInfoActual.Hotel)
+
+                    If Not String.IsNullOrEmpty(AppSettings("ZunUrl")) Then
+                        If dsReservaciones.Tables(0).Rows(0).Item("CubanTypesPms") = "ZUN" Then
+                            With New WSHotelRules.clsRUZun
+                                .clsRUZun(idReservacion, CurrencyConfirm, dsReservaciones.Tables(0).Rows(0).Item(dsReservaciones.FIELD_SOURCE).ToString)
+                                .sendReservation(WSHotelRules.ZunPSMws.Estados.eliminar)
+                            End With
+                        End If
+                    End If
 
                     Return True
                 Else
