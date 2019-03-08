@@ -447,7 +447,7 @@ C:\Users\WM\Source\RMGit\RateManagerCss\obj\Debug\es\RateManager.resources.dll
 C:\Users\WM\Source\RMGit\RateManagerCss\obj\Debug\RateManager.dll
 C:\Users\WM\Source\RMGit\RateManagerCss\obj\Debug\RateManager.xml
 C:\Users\WM\Source\RMGit\RateManagerCss\obj\Debug\RateManager.pdb
-C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.CambiarContenido.resources
+C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.NearCities.resources
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\bin\RateManager.dll
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\bin\RateManager.pdb
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\bin\RateManager.xml
@@ -494,7 +494,6 @@ C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerC
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.HotelConfPayPal.resources
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.ModifyPassiveReservation.resources
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.NearAirports.resources
-C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.NearCities.resources
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.NoConfirmReservas.resources
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.PassiveBooking.resources
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.ReservationDetails.resources
@@ -582,6 +581,7 @@ C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerC
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.Activities.resources
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.AgregarContenido.resources
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.AreaAttraction.resources
+C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.CambiarContenido.resources
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.Contenidos.resources
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.ContenidoFCk.resources
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.ctlConstructorGramatical.resources
@@ -650,3 +650,241 @@ C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerC
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.dll
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.xml
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.pdb
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\bin\RateManager.dll.config
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\bin\RateManager.dll
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\bin\RateManager.pdb
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\bin\RateManager.xml
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\bin\en\RateManager.resources.dll
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\bin\es\RateManager.resources.dll
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\bin\CrystalDecisions.CrystalReports.Engine.dll
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\bin\CrystalDecisions.ReportSource.dll
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\bin\CrystalDecisions.Shared.dll
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\bin\CrystalDecisions.VSDesigner.dll
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\bin\CrystalDecisions.Web.dll
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\bin\CrystalDecisions.Windows.Forms.dll
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\bin\stdole.dll
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\bin\Microsoft.VisualStudio.TemplateWizardInterface.dll
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\bin\EnvDTE.dll
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\bin\VSLangProj.dll
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\bin\VsWebSite.Interop.dll
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\bin\EnvDTE80.dll
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\bin\Microsoft.VisualStudio.VSHelp.dll
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\bin\VSLangProj80.dll
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\bin\Microsoft.MSXML.dll
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\bin\Microsoft.Build.Utilities.v3.5.dll
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\bin\Microsoft.VisualStudio.XmlEditor.dll
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\bin\VSLangProj2.dll
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\bin\CrystalDecisions.CrystalReports.Engine.xml
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\bin\CrystalDecisions.ReportSource.xml
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\bin\CrystalDecisions.Shared.xml
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\bin\CrystalDecisions.Web.xml
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\bin\CrystalDecisions.Windows.Forms.xml
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\bin\Microsoft.VisualStudio.TemplateWizardInterface.xml
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\bin\Microsoft.Build.Utilities.v3.5.xml
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\bin\es\CrystalDecisions.CrystalReports.Engine.resources.dll
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\bin\es\CrystalDecisions.ReportSource.resources.dll
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\bin\es\CrystalDecisions.Shared.resources.dll
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\bin\es\CrystalDecisions.VSDesigner.resources.dll
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\bin\es\CrystalDecisions.Web.resources.dll
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\bin\es\CrystalDecisions.Windows.Forms.resources.dll
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\bin\es\Microsoft.Build.Utilities.v3.5.resources.dll
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManagerCss.vbprojResolveAssemblyReference.cache
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.Booking.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.Polities.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.Ayuda.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.Noticias.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.configFCK.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.connector.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.upload.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.Global.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ConciliationSummary.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.InvoiceByPeriod.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.Invoices.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.InvoicesToConciliate.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.InvoiceToConciliateDetails.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.PrintInvoice.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.MainInvoicing.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.HotelBalanceViewer.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.HotelInvoiceDetailViewer.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.HotelInvoiceViewer.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.HotelInvoiceDetails.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.PaymentInvoicesSummary.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.PaymentRegistered.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.PaymentRegistration.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.PaymentsRegisteredByHotel.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ReservationsNetRate.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ctrlDeposits.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ctrlReservationQueryDeposits.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ctrlReservationsNetRate.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ctrlReservations.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ctrlRoomType.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.Hotel.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.HotelAsosiationActivitys.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.HotelAsosiationCars.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.RoomType.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ConfirmReservas.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.Deposits.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.DisplayCarReservation.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ExportExcel.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.GeneratorScriptSeason.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.HotelConfPayPal.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ModifyPassiveReservation.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.NearAirports.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.NearCities.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.NoConfirmReservas.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.PassiveBooking.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ReservationDetails.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.Reservations.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ReservationsReport.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.TarjetasHotel.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.TravelAgentCommision.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.Reports.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.exportSubscribers.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.SubscribersEmailList.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.UniFlatConfiguration.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager._Date.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.exporter.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.rsReport.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.seamless.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ctlMensajeRuleConf.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ctlMensajes.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.CtlReservaMsj.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ctrHotelsUserChain.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ctrlAgencyRates.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ctrlFaresExc.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ctrlHotelPlans.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ctrlHP.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.CtrlIdioma.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.CtrlIdiomaRFCk.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ctrLinckPackage.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ctrlLanguageButton.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ctrlLanguageDictionary.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ctrlMensajesControl.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ctrlPackage.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.CtrlPackageRubros.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ctrlPlanFares.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.CtrlPlanFaresExc.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.CtrlPlanFaresExcNR.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.CtrlPlanFaresExcPackage.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ctrlPlanFaresNR.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ctrlRooms.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ctrPortal.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ctrRateAplication.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ctrRateAplicationNR.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ctrRateAplicationPackage.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ctrRatePlan.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ctrRatePlanLink.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ctrRatePlanRules.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ctrRoomLink.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ctrRoomRatePlan.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.SearchAgency.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.Resources.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.AgencyRates.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.AvailabilityRestrictions.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.Canales.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.Certificate.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ConfigReportAvail.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ContractNR.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ConventionsMeetings.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.DepositRatesPlan.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.FaresCatalogue.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.FaresCatalogueException.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.FaresCatalogueNR.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.FaresCopy.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.FaresRoom.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.HomePage.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.HotelPlans.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.LoadAvailabilityRestrictions.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.LogHotelNoAvailable.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.NoRatesReport.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.NoticiasRSS.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.Package.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.PmsCoincidences.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.PresentaAdeudo.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.RateChart.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.RatePlanInventory.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.RatePlansLinks.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.RatePlansRules.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.RatesPlans.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.RedirectToRates.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ReportAvailXLS.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.Rooms.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.RoomsAddImages.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.RoomsLinks.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.RSS.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.SegmentRoomsAvailability.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.SummaryCarReservation.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.Users.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.Activities.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.AgregarContenido.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.AreaAttraction.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.CambiarContenido.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.Contenidos.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ContenidoFCk.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ctlConstructorGramatical.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.CtlIdioma.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ctlServices.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ctrlActividades.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.CtrlAmenidades.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ctrlAmenidadesCuarto.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ctrlAmenidadesCuartos.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ctrlAmenities.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ctrlEvents.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.CtrlIdiomaFCk.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ctrlImages1.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.CtrlPoliticas.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.CtrlRoom.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ctrlTravelGuides.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.EliminarContenido.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.EmpresaModulo.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.Imagenes.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.InfoAmenidades.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.InfoComidas.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.InfoPropiedad.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.MapLocation.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.Photo.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.PhotoRooms.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.Policies.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.RoomAmenities.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ctrlFooter.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ctrlHeader.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.CtrlPreserveScrolls.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ctrlSearchCompany.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.CtrMenu.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.Home.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.LogReport.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.Search.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.Welcome1.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ActivitiesInformation.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.AmenitiesInformation.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.AttractionInformation.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ChangeLogo.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.CompanyRegister.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.EventsInformation.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.FoodInformation.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.Imagenes1.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.InformacionPropiedad.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.MapLocationInformation.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.PhotoInformation.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.PoliciesInformation.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.RoomAmenitiesInformation.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.RoomsInformation.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.SearchCompany.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.TravelsInformation.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.UserAsociate.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ctrlLogon.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ctrlPasswordReminder.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.logon.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.passwordReminder.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.unauthorized.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ChangePassword.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.ctrlChangePassword.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.strings.en.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.strings.es.resources
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManagerCss.vbproj.GenerateResource.Cache
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\en\RateManager.resources.dll
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\es\RateManager.resources.dll
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.dll
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.xml
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.pdb
+C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManagerCss.vbprojResolveAssemblyReference.cache

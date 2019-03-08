@@ -1020,6 +1020,16 @@
     <Content Include="Images\xml.gif" />
     <Content Include="Includes\bootstrap.min.css" />
     <Content Include="Includes\imagenes\logo.png" />
+    <Content Include="Includes\report\Angular1-2.js" />
+    <Content Include="Includes\report\bootstrap.min.css" />
+    <Content Include="Includes\report\f2goController.js" />
+    <Content Include="Includes\report\f2goDirective.js" />
+    <Content Include="Includes\report\f2goFactory.js" />
+    <Content Include="Includes\report\jquery.magnific-popup.js" />
+    <Content Include="Includes\report\Jquery1-11.js" />
+    <Content Include="Includes\report\magnific-popup.css" />
+    <Content Include="Includes\report\pikaday.css" />
+    <Content Include="Includes\report\pikaday.js" />
     <Content Include="Includes\Retention\bootstrap.css" />
     <Content Include="Includes\Retention\notification-styles.css" />
     <Content Include="Includes\Retention\notification-styles.min.css" />

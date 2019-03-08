@@ -212,6 +212,8 @@ Partial Class AvailabilityRestrictions
         CtlMensajeRuleConf1.loadRatePlans(MyBase.cInfoActual.Hotel)
         btnSave.OnClientClick = String.Format("return valCheckbox() && FireUpdateStatus('{0}');", PortalCulture.GetString("00608"))
         btnLoad.OnClientClick = String.Format("return FireUpdateStatus('{0}');", PortalCulture.GetString("00608"))
+        btnModalSave.Attributes.Add("onClick", "javascript:openModal('" & btnSave.ClientID & "', '¿Está seguro que desea aplicar los cambios?','Confirmar cambios de disponibilidad'); return false;")
+        btnModalSave.Value = RateManager.PortalCulture.GetString("A00153")
         ' Page.ClientScript.ValidateEvent(Me.btnLoad.UniqueID, Me.ToString())
     End Sub
 

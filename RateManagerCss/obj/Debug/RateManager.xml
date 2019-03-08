@@ -6,15 +6,7 @@ RateManager
 </name>
 </assembly>
 <members>
-<member name="F:RateManager.Reports1.dgReport">
-	<summary>
-dgReport control.
-</summary>
-	<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
-</remarks>
-</member><member name="F:RateManager.HotelBeds.Head1">
+<member name="F:RateManager.HotelBeds.Head1">
 	<summary>
 Control Head1.
 </summary>
@@ -9248,6 +9240,14 @@ Control CtrlPreserveScrolls1.
 	<remarks>
 Campo generado automáticamente.
 Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+</remarks>
+</member><member name="F:RateManager.Reports1.dgReport">
+	<summary>
+dgReport control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
 </remarks>
 </member><member name="F:RateManager.Noticias.Form1">
 	<summary>
@@ -18657,6 +18657,14 @@ Control TextBox1.
 Campo generado automáticamente.
 Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
+</member><member name="F:RateManager.AvailabilityRestrictions.txtObjDelete">
+	<summary>
+Control txtObjDelete.
+</summary>
+	<remarks>
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+</remarks>
 </member><member name="F:RateManager.AvailabilityRestrictions.imonth">
 	<summary>
 Control imonth.
@@ -19348,6 +19356,14 @@ Para modificarlo, mueva la declaración del campo del archivo del diseñador al 
 </member><member name="F:RateManager.AvailabilityRestrictions.btnSave">
 	<summary>
 Control btnSave.
+</summary>
+	<remarks>
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+</remarks>
+</member><member name="F:RateManager.AvailabilityRestrictions.btnModalSave">
+	<summary>
+Control btnModalSave.
 </summary>
 	<remarks>
 Campo generado automáticamente.
