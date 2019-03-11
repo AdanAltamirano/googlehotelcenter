@@ -1057,3 +1057,4 @@ C:\Users\Programacion\Documents\Chepe\Repos\RateManagerUV\RateManagerCss\obj\Deb
 C:\Users\Programacion\Documents\Chepe\Repos\RateManagerUV\RateManagerCss\obj\Debug\RateManager.xml
 C:\Users\Programacion\Documents\Chepe\Repos\RateManagerUV\RateManagerCss\obj\Debug\RateManager.pdb
 C:\Users\Programacion\Documents\Chepe\Repos\RateManagerUV\RateManagerCss\obj\Debug\RateManagerCss.vbprojResolveAssemblyReference.cache
+C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManagerCss.vbprojResolveAssemblyReference.cache
