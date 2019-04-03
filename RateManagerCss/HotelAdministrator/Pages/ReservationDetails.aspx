@@ -26,7 +26,7 @@
 
         function HideOutCalendar() {
             document.getElementById('txtCheckOut').disabled = true;
-            document.getElementById('PopcalTrigger').style.visibility = 'hidden';3
+            document.getElementById('PopcalTrigger').style.visibility = 'hidden';
         }
 
         function ShowResStatus() {
@@ -482,6 +482,14 @@
                                         </td>
                                         <td>
                                             <asp:Label ID="lblID" runat="server" EnableViewState="False" Font-Bold="True" CssClass="bookingNormalLabel">1520124585</asp:Label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">
+                                            <asp:Label ID="Label4" runat="server" EnableViewState="False" CssClass="clsLabel">ID Reservación Hotel :</asp:Label>
+                                        </td>
+                                        <td>
+                                            <asp:Label ID="lblPMSConfirm" runat="server" EnableViewState="False" Font-Bold="True" CssClass="bookingNormalLabel" Visible="false">1520124585</asp:Label>
                                         </td>
                                     </tr>
                                     <tr>

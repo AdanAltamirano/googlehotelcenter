@@ -1427,6 +1427,10 @@ Partial Class ReservationDetails
                 Me.lblNNoches.Text = ((DateDiff(DateInterval.Day, Cin, Cout)).ToString) & "  "
 
                 Me.lblID.Text = .Item(dsReservaciones.FIELD_NORESERVACION)
+                If .Table.Columns.Contains("NoConfirmPMS") AndAlso .Item("NoConfirmPMS").ToString <> "0" Then
+                    Me.lblPMSConfirm.Text = .Item("NoConfirmPMS")
+                    'Me.lblPMSConfirm.Visible = True
+                End If
                 NoReserv = .Item(dsReservaciones.FIELD_NORESERVACION)
                 'Dim nom, ap As String
                 'Me.lblAddress.Text = .Item(dsReservaciones.FIELD_Direccion_cl).ToString
@@ -1768,25 +1772,30 @@ Partial Class ReservationDetails
                 strPreferencia = e.Item.Cells(Columns.BDPreferencias).Text.Split(New String() {"|#UV#|"}, StringSplitOptions.None)
                 If strPreferencia.Length > 1 Then
                     lb.Text = strPreferencia(0)
-                    json = JObject.Parse(strPreferencia(1))
-                    data = json.Children().ToList
-                    lb = e.Item.Cells(Columns.Preferencias).FindControl("Label3")
-                    lb.Text = ""
-                    For Each item As JProperty In data
-                        item.CreateReader()
-                        Select Case item.Name
-                            Case "Room"
-                                If item.Value <> String.Empty Then
-                                    lb = e.Item.Cells(Columns.tipoHabitacion).FindControl("lblTipoHab")
-                                    lb.Text = item.Value
-                                End If
-                            Case "RatePlan"
-                                If item.Value <> String.Empty Then
-                                    lb = e.Item.Cells(Columns.codigotarifa).FindControl("Label14")
-                                    lb.Text = item.Value
-                                End If
-                        End Select
-                    Next
+                    Try
+                        json = JObject.Parse(strPreferencia(1))
+                        data = json.Children().ToList
+                        lb = e.Item.Cells(Columns.Preferencias).FindControl("Label3")
+                        lb.Text = ""
+                        For Each item As JProperty In data
+                            item.CreateReader()
+                            Select Case item.Name
+                                Case "Room"
+                                    If item.Value <> String.Empty Then
+                                        lb = e.Item.Cells(Columns.tipoHabitacion).FindControl("lblTipoHab")
+                                        lb.Text = item.Value
+                                    End If
+                                Case "RatePlan"
+                                    If item.Value <> String.Empty Then
+                                        lb = e.Item.Cells(Columns.codigotarifa).FindControl("Label14")
+                                        lb.Text = item.Value
+                                    End If
+                            End Select
+                        Next
+                    Catch ex As Exception
+
+                    End Try
+                    
                 Else
                     lb.Text = e.Item.Cells(Columns.BDPreferencias).Text
                 End If
@@ -1948,7 +1957,7 @@ Partial Class ReservationDetails
                     End If
 
                 End If
-                Dim idReservacion As String = .Item(dsReservaciones.FIELD_NORESERVACION)
+                Dim idReservacion As String = .Item(dsReservaciones.FIELD_IDRESERVACION)
 
                 If LocalCancel(idReservacion, GalileoConfCancelNumber, CInt(Val(.Item("idUsuario").ToString)), NoCancelacion, idReservacion.ToString) Then
 

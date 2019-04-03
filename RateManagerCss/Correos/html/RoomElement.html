@@ -1,0 +1,76 @@
+<table width="768" style="border-collapse: collapse; background-color: #0068bf; color: #fff">
+	<tr>
+		<td width="66.66%" style="padding-top: 0.5rem; padding-left: 0.5rem;">
+			<span><b>N&uacute;mero De Confirmaci&oacute;n: [CONFIRMNUMBER]</b></span>
+			<span><b>Habitaci&oacute;n: [ROOMNAME] - [SOURCESTAYID]</b></span>
+			<span><b>[CHECKIN]-[CHECKOUT]</b></span>
+		</td>
+		<td width="33.33%" style="padding-top: 0.5rem; padding-right: 0.5rem; text-align: right; vertical-align: middle;">
+			<span></span>
+		</td>
+	</tr>
+</table>
+<table width="768" style="border-collapse: collapse; margin-bottom:1rem">
+	<tbody style="border:1px solid #dee2e6!important">
+	<tr>
+		<td width="40%" style="padding: 1rem 1rem 0;">
+			<table style="border-collapse: collapse;">
+				<tr>
+					<td colspan="2">
+						<span>Nombre de huesped:</span>
+						<span>[GUESTNAME]</span>
+					</td>
+				</tr>
+			   <tr>
+					<td>
+						<span>C&oacute;digo de habitaci&oacute;n:</span>
+						<span>[ROOMCODE]</span>
+					</td>
+					<td>
+						<span>C&oacute;digo de habitaci&oacute;n (OTA):</span>
+						<span>[ROOMCODEOTA]</span>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<span>Adultos:</span>
+						<span>[ADULTS]</span>
+					</td>
+					<td>
+						<span>Ni&ntilde;os:</span>
+						<span>[CHILDREN]</span>
+						<span>[CHILDRENAGE]</span>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<span>Noches:</span>
+						<span>[ROOMNIGHTS]</span>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<span>Preferencias:</span>
+						<span>[REQUEST]</span>
+					</td>
+				</tr>
+			</table>
+		</td>
+		<td width="60%" style="padding: 0 1rem; vertical-align: top;">
+			<table width="100%" style="border-collapse: collapse; height: 240px;">
+				<tr style="border-bottom: 2px solid #dee2e6; padding: 1rem 0; text-align: left;">
+					<th width="25%">Fecha</th>
+					<th width="25%">Tarifa</th>
+					<th width="25%"></th>
+					<th width="25%">Extra Info</th>
+				</tr>
+				[RATE_ELEMENTS]
+				<tr style="padding: 1rem 0;">
+					<td colspan="3" style="font-weight:bold;text-align: right;padding-right: 10px;font-size: 0.875em;">Total Estimado(Con Impuestos):</td>
+					<td colspan="1" style="font-size: 0.875em;">$[SUMMARYTOTAL]</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	</tbody>
+</table>

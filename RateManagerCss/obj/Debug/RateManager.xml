@@ -10758,6 +10758,30 @@ CtrlPreserveScrolls class.
 	<remarks>
 Auto-generated class.
 </remarks>
+</member><member name="F:RateManager.IDSMapping.gvRatesPlan">
+	<summary>
+Control gvRatesPlan.
+</summary>
+	<remarks>
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+</remarks>
+</member><member name="F:RateManager.IDSMapping.gvRooms">
+	<summary>
+Control gvRooms.
+</summary>
+	<remarks>
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+</remarks>
+</member><member name="F:RateManager.IDSMapping.lblError">
+	<summary>
+Control lblError.
+</summary>
+	<remarks>
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+</remarks>
 </member><member name="F:RateManager.DestinationFix.Head1">
 	<summary>
 Control Head1.
@@ -12144,6 +12168,22 @@ Para modificarlo, mueva la declaración del campo del archivo del diseñador al 
 </member><member name="F:RateManager.ReservationDetails.lblID">
 	<summary>
 Control lblID.
+</summary>
+	<remarks>
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+</remarks>
+</member><member name="F:RateManager.ReservationDetails.Label4">
+	<summary>
+Control Label4.
+</summary>
+	<remarks>
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+</remarks>
+</member><member name="F:RateManager.ReservationDetails.lblPMSConfirm">
+	<summary>
+Control lblPMSConfirm.
 </summary>
 	<remarks>
 Campo generado automáticamente.
