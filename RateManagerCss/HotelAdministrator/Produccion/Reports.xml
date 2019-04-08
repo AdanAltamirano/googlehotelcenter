@@ -1767,39 +1767,7 @@ mes,
   </Report>
 
 
-  <Report>
-    <QueryID>27</QueryID>
-    <Description>27 Facturas Canceladas</Description>
-    <DescriptionExt></DescriptionExt>
-    <Query>
-      <![CDATA[
-						Declare @Ini char(10)
-						Declare @Fin char(10)
 
-						Set @Ini = '@@@param1'
-						Set @Fin = '@@@param2'
-
-
-						Select	E.IdEmpresa
-								,E.Nombre Empresa
-								,R.Nombre Rubro
-								,ISNULL(Bill_RazonSocial,'S/R') RazonSocial	
-								,Serie + '-' + Folio Factura
-								,'Cancelada' Estado
-								,FechaCancelacion
-								
-						from	UniFacturaDigital..Comprobante C
-								inner join OzUnivisit..Empresas E on E.idEmpresa = C.idEmpresa
-								inner join OzUnivisit..Rubros R on R.idRubro = E.idRubro
-						Where	Activo = 0 AND fechaCancelacion is not  null
-								AND Convert(char(10),fechaCancelacion,111) >= @Ini  AND Convert(char(10),fechaCancelacion,111) <= @Fin
-						ORder by FechaCancelacion
-						]]>
-    </Query>
-    <NoParameters>2</NoParameters>
-    <Parameter1>Fecha Inicio (yyyy/mm/dd)</Parameter1>
-    <Parameter2>Fecha Fin (yyyy/mm/dd)</Parameter2>
-  </Report>
 
   <Report>
     <QueryID>28</QueryID>
@@ -4371,4 +4339,167 @@ mes,
 					]]>
     </Query>
   </Report>
+  <Report>
+    <QueryID>78</QueryID>
+    <Description>78 Listado de correos de contacto del modelo de cobro de Unibilling </Description>
+    <DescriptionExt>Listado de correos de contacto del modelo de cobro de Unibilling por Corporativo y Hotel</DescriptionExt>
+    <Query>
+      <![CDATA[
+
+			SELECT C.NombreCorp Corporativo, H.idCorporativo,E.Nombre Hotel, h.idHotel, PM.commissionContactEmail Email
+			FROM HotelBillingSystem..PaymentModel PM
+				LEFT JOIN OzUnivisit..Empresas E ON E.IdEmpresa=PM.CompanyID
+				LEFT JOIN OzHoteles..Hoteles H ON H.IDEMPRESA=E.IDEMPRESA
+				LEFT JOIN OzHoteles..Corporativos C ON C.idCorporativo=H.idCorporativo
+			WHERE PM.commissionContactEmail IS NOT NULL
+
+			ORDER BY H.idCorporativo,E.IdEmpresa desc
+
+		]]>
+    </Query>
+  </Report>
+  <Report>
+    <QueryID>79</QueryID>
+    <Description>79 Facturas Canceladas Univisit </Description>
+    <DescriptionExt></DescriptionExt>
+    <Query>
+      <![CDATA[
+						Declare @Ini char(10)
+						Declare @Fin char(10)
+
+						Set @Ini = '@@@param1'
+						Set @Fin = '@@@param2'
+
+
+						Select	E.IdEmpresa
+								,E.Nombre Empresa
+								,R.Nombre Rubro
+								,ISNULL(Bill_RazonSocial,'S/R') RazonSocial	
+								,Serie + '-' + Folio Factura
+								,'Cancelada' Estado
+								,FechaCancelacion
+								
+						from	UniFacturaDigitalUv..Comprobante C
+								inner join OzUnivisit..Empresas E on E.idEmpresa = C.idEmpresa
+								inner join OzUnivisit..Rubros R on R.idRubro = E.idRubro
+						Where	Activo = 0 AND fechaCancelacion is not  null
+								AND Convert(char(10),fechaCancelacion,111) >= @Ini  AND Convert(char(10),fechaCancelacion,111) <= @Fin
+						ORder by FechaCancelacion
+						]]>
+    </Query>
+    <NoParameters>2</NoParameters>
+    <Parameter1>Fecha Inicio (yyyy/mm/dd)</Parameter1>
+    <Parameter2>Fecha Fin (yyyy/mm/dd)</Parameter2>
+  </Report>
+
+  <Report>
+    <QueryID>80</QueryID>
+    <Description>80 Reporte de Facturas Incobrables Univisit</Description>
+    <DescriptionExt>Reporte de Facturas Incobrables, El filtro esta basado en fechas de la factura.</DescriptionExt>
+    <Query>
+      <![CDATA[
+				
+						Declare @Ini char(10)
+						Declare @Fin char(10)
+
+						Set @Ini = '@@@param1'
+						Set @Fin = '@@@param2'
+				
+
+						Select	E.IdEmpresa
+								,E.Nombre Empresa
+								,R.Nombre Rubro
+								,ISNULL(Bill_RazonSocial,'S/R') RazonSocial	
+								,Serie + '-' + Folio Factura
+								,'Incobrable' Estado
+								,c.fecha [Fecha la Factura]
+								,fechaIncobrable [Fecha en que se mando a Incobrable]
+								
+						from	UniFacturaDigitalUv..Comprobante C
+								inner join OzUnivisit..Empresas E on E.idEmpresa = C.idEmpresa
+								inner join OzUnivisit..Rubros R on R.idRubro = E.idRubro
+						Where	Incobrable = 1 	AND Convert(char(10),c.fecha,111) >= @Ini  AND Convert(char(10),c.fecha,111) <= @Fin
+						ORder by c.fecha
+	
+				]]>
+    </Query>
+    <NoParameters>2</NoParameters>
+    <Parameter1>Fecha Inicio (yyyy/mm/dd)</Parameter1>
+    <Parameter2>Fecha Fin (yyyy/mm/dd)</Parameter2>
+  </Report>
+
+
+  <Report>
+    <QueryID>81</QueryID>
+    <Description>81 Reporte de Call Center</Description>
+    <DescriptionExt>Reporte Call center.</DescriptionExt>
+    <Query>
+      <![CDATA[
+				
+				Declare	@FilterDate tinyInt = @@@param2 --0 por fecha reg, 1 por checkin, 2 por checkout
+	,@D1 dateTime = '@@@param1' -- poner la fecha del mes esta en formato YYYYMMDD
+	
+declare @tipocambioMXN money
+
+select @tipocambioMXN = tipocambio from OzUnivisit..Monedas where Codigo = 'MXN'
+
+select 
+r.NoReservacion,
+r.Nombre_cl + ' ' + r.Apellido_cl cliente, 
+e.Nombre hotel, 
+r.FechaReservacion,
+r.CheckIn,
+r.CheckOut,
+datediff(day,r.CheckIn,r.CheckOut) * (select count(*) from ozhoteles..DetalleReservaciones where idReservacion = r.idReservacion) noches,
+case when dbo.fn_GetCurrencyCode(r.idreservacion) ='MXN' then
+    Total/(1+ r.impuesto/100)
+else Total/(1+ r.impuesto/100) / dbo.fn_tipoDeCambio(r.idreservacion) * @tipocambioMXN
+end Total,
+(select TOP 1 Nombre + ' ' + Apellido from 
+	OzUnivisit..Usuario_Clientes uc
+	left join OzUnivisit..Clientes c on c.idCliente = uc.idCliente
+	where idUsuario = r.idUsuario and nombre is not null
+) as agente,	--c.Nombre + ' ' + c.Apellido agente, 
+(select TOP 1 email from OzUnivisit..usuarios u where IdUsuario = r.idUsuario) as email,
+--u.email,
+r.Status
+from ozhoteles..Reservaciones r
+left join OzUnivisit..Administradores a on a.IdUsuario = r.idUsuario
+--inner join ozhoteles..DetalleReservaciones dr on dr.idReservacion = r.idReservacion
+inner join ozhoteles..Hoteles h on h.idHotel = r.idHotel
+inner join OzUnivisit..empresas e on e.IdEmpresa = h.idEmpresa
+--left join OzUnivisit..Usuario_Clientes uc on uc.idUsuario = r.idUsuario
+--left join OzUnivisit..Clientes c on c.idCliente = uc.idCliente
+--left join OzUnivisit..usuarios u on u.IdUsuario = r.idUsuario
+where source='CCT' and isnull(a.idcorporativo,0) <=0  and r.Status in (1,3,4)
+   AND
+            (
+                (@FilterDate != 0 OR (@FilterDate = 0 AND year(r.FechaReservacion) = year(@D1) and month(r.FechaReservacion) = month(@D1))) AND
+                (@FilterDate != 1 OR (@FilterDate = 1 AND year(r.CheckIn) = year(@D1) and month(r.CheckIn) = month(@D1))) AND
+                (@FilterDate != 2 OR (@FilterDate = 2 AND year(r.CheckOut) = year(@D1) and month(r.CheckOut) = month(@D1))) 
+            )
+group by 
+r.NoReservacion,
+r.Nombre_cl + ' ' + r.Apellido_cl, 
+e.Nombre, 
+r.FechaReservacion,
+r.CheckIn,
+r.CheckOut,
+r.Total,
+--c.Nombre + ' ' + c.Apellido ,
+r.Status,
+--u.email,
+r.idReservacion,
+r.Impuesto,
+r.idUsuario
+order by r.Noreservacion	
+	
+				]]>
+    </Query>
+    <NoParameters>2</NoParameters>
+    <Parameter1>Fecha Mes (yyyymmdd)</Parameter1>
+    <Parameter2>Filtro 0 - Fecha, 1 - checkin, 2 - checkout </Parameter2>
+  </Report>
+
+
 </Reports>

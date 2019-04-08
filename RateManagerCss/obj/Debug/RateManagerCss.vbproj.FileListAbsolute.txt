@@ -859,6 +859,7 @@ C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerC
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\bin\RateManager.xml
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\bin\en\RateManager.resources.dll
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\bin\es\RateManager.resources.dll
+C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManagerCss.vbprojResolveAssemblyReference.cache
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.Booking.resources
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.Polities.resources
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.Ayuda.resources
@@ -1057,4 +1058,3 @@ C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerC
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.dll
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.xml
 C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManager.pdb
-C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManagerCss.vbprojResolveAssemblyReference.cache
