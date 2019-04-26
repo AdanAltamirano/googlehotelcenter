@@ -509,6 +509,24 @@ Partial Public Class ReservationDetails
     Protected WithEvents lblID As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
+    '''Control Label4.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents Label4 As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control lblPMSConfirm.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblPMSConfirm As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
     '''Control lblNoConf.
     '''</summary>
     '''<remarks>

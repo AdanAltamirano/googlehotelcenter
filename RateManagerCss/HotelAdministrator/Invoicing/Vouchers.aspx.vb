@@ -65,7 +65,7 @@ Public Class Vouchers
     End Sub
 
     Private Sub dgComprobantes_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles dgComprobantes.ItemDataBound
-        If e.Item.ItemType = ListItemType.Item AndAlso ListItemType.AlternatingItem Then
+        If e.Item.ItemType = ListItemType.Item Or e.Item.ItemType = ListItemType.AlternatingItem Then
 
             Dim lnkDescargar As HyperLink
             Dim lbl As Label
@@ -86,13 +86,13 @@ Public Class Vouchers
             Else
                 lnkDescargar = e.Item.FindControl("hypPdfComp")
 
-                lnkDescargar.NavigateUrl = String.Concat(AppSettings("DIR_INVOICE_PRINTING"), "DigitalInvoiceHelper.aspx") & "?action=Download&Invoice=" & Server.UrlEncode(Request.QueryString("Invoice")) & "&format=" & Oz.UniBilling.Common.DigitalInvoiceFormat.Pdf.ToString & "&PaymentID=" & AppliedPaymentID
+                lnkDescargar.NavigateUrl = String.Concat(AppSettings("DIR_INVOICE_PRINTING"), "DigitalInvoiceHelper.aspx") & "?action=Download&Invoice=" & Server.UrlEncode(Request.QueryString("Invoice").Replace(" ", "+")) & "&format=" & Oz.UniBilling.Common.DigitalInvoiceFormat.Pdf.ToString & "&PaymentID=" & AppliedPaymentID
                 lnkDescargar.ToolTip = PortalCulture.GetString("00906")
                 lnkDescargar.Visible = True
 
                 lnkDescargar = e.Item.FindControl("hypXmlFC")
 
-                lnkDescargar.NavigateUrl = String.Concat(AppSettings("DIR_INVOICE_PRINTING"), "DigitalInvoiceHelper.aspx") & "?action=Download&Invoice=" & Server.UrlEncode(Request.QueryString("Invoice")) & "&format=" & Oz.UniBilling.Common.DigitalInvoiceFormat.Xml.ToString & "&PaymentID=" & AppliedPaymentID
+                lnkDescargar.NavigateUrl = String.Concat(AppSettings("DIR_INVOICE_PRINTING"), "DigitalInvoiceHelper.aspx") & "?action=Download&Invoice=" & Server.UrlEncode(Request.QueryString("Invoice").Replace(" ", "+")) & "&format=" & Oz.UniBilling.Common.DigitalInvoiceFormat.Xml.ToString & "&PaymentID=" & AppliedPaymentID
                 lnkDescargar.ToolTip = PortalCulture.GetString("00907")
                 lnkDescargar.Visible = True
 

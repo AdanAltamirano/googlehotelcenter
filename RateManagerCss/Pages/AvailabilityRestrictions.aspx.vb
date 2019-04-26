@@ -211,7 +211,10 @@ Partial Class AvailabilityRestrictions
         CtlMensajeRuleConf1.loadRooms(MyBase.cInfoActual.Hotel)
         CtlMensajeRuleConf1.loadRatePlans(MyBase.cInfoActual.Hotel)
         btnSave.OnClientClick = String.Format("return valCheckbox() && FireUpdateStatus('{0}');", PortalCulture.GetString("00608"))
+        btnModalSave.Attributes.Add("onclick", "javascript:openModal('" & btnSave.ClientID & "','¿Está seguro que desea aplicar los cambios?','Confirmar cambios de disponibilidad')")
         btnLoad.OnClientClick = String.Format("return FireUpdateStatus('{0}');", PortalCulture.GetString("00608"))
+        btnModalSave.Attributes.Add("onClick", "javascript:openModal('" & btnSave.ClientID & "', '¿Está seguro que desea aplicar los cambios?','Confirmar cambios de disponibilidad'); return false;")
+        btnModalSave.Value = RateManager.PortalCulture.GetString("A00153")
         ' Page.ClientScript.ValidateEvent(Me.btnLoad.UniqueID, Me.ToString())
     End Sub
 
@@ -829,6 +832,7 @@ Partial Class AvailabilityRestrictions
         hplShow.Text = PortalCulture.GetString("00453")
         Me.lblShowAvail.Text = PortalCulture.GetString("00455", True)
         btnSave.Text = PortalCulture.GetString("A00153")
+        btnModalSave.Value = PortalCulture.GetString("A00153")
         chkOnRequest.Text = PortalCulture.GetString("00314")
         RdRatePlan.Text = PortalCulture.GetString("00016")
         'lblRatePlan.Text = PortalCulture.GetString("00016")

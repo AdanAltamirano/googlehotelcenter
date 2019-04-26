@@ -107,13 +107,16 @@ Partial Class RatesPlans
             If MyBase.IsUsuarioHomeAgency Then
                 ds = .GetRatePlanByConvenio(MyBase.cInfoActual.Hotel, PortalCulture.GetIDCulture, 1, 1, MyBase.Usuario, idAsociacion:=idAsoc, DeleteFilter:=Integer.Parse(ddlDeletedFilter.SelectedValue))
             Else
-                If MyBase.IsSupervisor Or MyBase.IsUsuarioHotelAssociation Then
-                    'Mostramos todos los rateplans incluidos los de tarifas netas.
-                    ds = .GetRatePlanByIdHotel(MyBase.cInfoActual.Hotel, PortalCulture.GetIDCulture, 1, 1, idAsociacion:=idAsoc, DeleteFilter:=Integer.Parse(ddlDeletedFilter.SelectedValue))
-                Else
-                    'Mostramos solamente los ratesplans que no sean de tarifas netas.
-                    ds = .GetRatePlanByIdHotel(MyBase.cInfoActual.Hotel, PortalCulture.GetIDCulture, 1, 0, idAsociacion:=idAsoc, DeleteFilter:=Integer.Parse(ddlDeletedFilter.SelectedValue))
-                End If
+                ds = .GetRatePlanByIdHotel(MyBase.cInfoActual.Hotel, PortalCulture.GetIDCulture, 1, 1, idAsociacion:=idAsoc, DeleteFilter:=Integer.Parse(ddlDeletedFilter.SelectedValue))
+
+                'Se comentó para que se muestren todos los rates plan, ya que los hoteles requieren manipular información aunque sean netrate. Solo se les restringe la parte de los contratos
+                'If MyBase.IsSupervisor Or MyBase.IsUsuarioHotelAssociation Then
+                '    'Mostramos todos los rateplans incluidos los de tarifas netas.
+                '    ds = .GetRatePlanByIdHotel(MyBase.cInfoActual.Hotel, PortalCulture.GetIDCulture, 1, 1, idAsociacion:=idAsoc, DeleteFilter:=Integer.Parse(ddlDeletedFilter.SelectedValue))
+                'Else
+                '    'Mostramos solamente los ratesplans que no sean de tarifas netas.
+                '    ds = .GetRatePlanByIdHotel(MyBase.cInfoActual.Hotel, PortalCulture.GetIDCulture, 1, 0, idAsociacion:=idAsoc, DeleteFilter:=Integer.Parse(ddlDeletedFilter.SelectedValue))
+                'End If
             End If
 
         End With

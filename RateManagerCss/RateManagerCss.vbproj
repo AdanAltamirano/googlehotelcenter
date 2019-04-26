@@ -394,8 +394,11 @@
     <Content Include="Correos\html\HotelReservationCancellation_ES.htm" />
     <Content Include="Correos\html\NewAcountUser_EN.htm" />
     <Content Include="Correos\html\NewAcountUser_ES.htm" />
+    <Content Include="Correos\html\NewReservationMail.html" />
+    <Content Include="Correos\html\RateElement.html" />
     <Content Include="Correos\html\ReservationDepositConfirm_EN.htm" />
     <Content Include="Correos\html\ReservationDepositConfirm_ES.htm" />
+    <Content Include="Correos\html\ReservationModifyHotel_ES.htm" />
     <Content Include="Correos\html\ReservationSummaryDefaulterHotel_EN.htm" />
     <Content Include="Correos\html\ReservationSummaryDefaulterHotel_ES.htm" />
     <Content Include="Correos\html\ReservationSummaryHotel_EN.htm" />
@@ -404,6 +407,7 @@
     <Content Include="Correos\html\ReservationSummary_ES.htm" />
     <Content Include="Correos\html\ReservationToHotel_EN.htm" />
     <Content Include="Correos\html\ReservationToHotel_Es.htm" />
+    <Content Include="Correos\html\RoomElement.html" />
     <Content Include="Correos\html\UserUpdate_EN.htm" />
     <Content Include="Correos\html\UserUpdate_ES.htm" />
     <Content Include="Correos\texto\AsociateProfileAgent_EN.txt" />
@@ -444,6 +448,7 @@
     <Content Include="Default.aspx" />
     <Content Include="ExportExcel\Reports.aspx" />
     <Content Include="HotelAdministrator\Invoicing\Vouchers.aspx" />
+    <Content Include="HotelAdministrator\Pages\IDSMapping.aspx" />
     <Content Include="HotelAdministrator\Pages\MapeoPlanesF2G.aspx" />
     <Content Include="HotelAdministrator\Pages\Promotions.aspx" />
     <Content Include="HotelAdministrator\Pages\RetentionsConfig.aspx" />
@@ -1264,6 +1269,7 @@
     </Content>
     <Content Include="XmlHttp.js" />
     <Content Include="Pages\F2goGetReport.ashx" />
+    <Content Include="Correos\html\Notificaciones Email Pago No Completado Call Center.rar" />
     <None Include="Web References\WsConnectWcf\wsConnectWCFv2.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -1371,6 +1377,7 @@
       <DependentUpon>Reports.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="HotelAdministrator\Data\ConfluxMapping.vb" />
     <Compile Include="HotelAdministrator\Data\HdrRetentionsConfig.ashx.vb">
       <DependentUpon>HdrRetentionsConfig.ashx</DependentUpon>
     </Compile>
@@ -1380,6 +1387,13 @@
     </Compile>
     <Compile Include="HotelAdministrator\Invoicing\Vouchers.aspx.vb">
       <DependentUpon>Vouchers.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="HotelAdministrator\Pages\IDSMapping.aspx.designer.vb">
+      <DependentUpon>IDSMapping.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="HotelAdministrator\Pages\IDSMapping.aspx.vb">
+      <DependentUpon>IDSMapping.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\MapeoPlanesF2G.aspx.designer.vb">
@@ -3125,7 +3139,9 @@
       <DependentUpon>CtrMenu.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Portal\Opciones.vb" />
+    <Compile Include="Portal\Opciones.vb">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Portal\Pages\Home.aspx.designer.vb">
       <DependentUpon>Home.aspx</DependentUpon>
     </Compile>

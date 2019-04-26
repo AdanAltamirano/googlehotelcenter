@@ -96,7 +96,7 @@ Partial Class Search
                     'Me.lblInfo.Text = msgInfo
                 End With
             End If
-            context.Response.Write(msgInfo)
+            Context.Response.Write(msgInfo)
             Response.End()
         End If
     End Sub
