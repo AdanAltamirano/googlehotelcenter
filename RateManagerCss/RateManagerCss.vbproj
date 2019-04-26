@@ -1116,6 +1116,7 @@
     <Content Include="Pages\Images\palomita.gif" />
     <Content Include="Pages\Images\semanaadelante.JPG" />
     <Content Include="Pages\Images\semanaatras.bmp" />
+    <Content Include="Pages\IPReport.html" />
     <Content Include="Pages\LoadAvailabilityRestrictions.aspx" />
     <Content Include="Pages\LogHotelNoAvailable.aspx" />
     <Content Include="Pages\NoRatesReport.aspx" />
@@ -3139,9 +3140,7 @@
       <DependentUpon>CtrMenu.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Portal\Opciones.vb">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
+    <Compile Include="Portal\Opciones.vb" />
     <Compile Include="Portal\Pages\Home.aspx.designer.vb">
       <DependentUpon>Home.aspx</DependentUpon>
     </Compile>

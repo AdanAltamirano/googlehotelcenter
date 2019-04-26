@@ -21,4 +21,13 @@ Partial Public Class Reports1
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents dgReport As Global.System.Web.UI.WebControls.DataGrid
+    
+    '''<summary>
+    '''dgReportIP control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents dgReportIP As Global.System.Web.UI.WebControls.DataGrid
 End Class
