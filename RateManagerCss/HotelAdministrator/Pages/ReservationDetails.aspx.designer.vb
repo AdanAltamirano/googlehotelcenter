@@ -1643,6 +1643,15 @@ Partial Public Class ReservationDetails
     Protected WithEvents btnResConfirm As Global.System.Web.UI.HtmlControls.HtmlInputButton
 
     '''<summary>
+    '''Control btnSendZun.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents btnSendZun As Global.System.Web.UI.WebControls.Button
+
+    '''<summary>
     '''Control txtMultiCancel.
     '''</summary>
     '''<remarks>

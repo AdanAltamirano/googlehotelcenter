@@ -1179,6 +1179,8 @@
                                 <input class="button" id="btnResConfirm" style="" onclick="javascript: ShowResConfirm();"
                                     type="button" value="Confirm" name="btnResConfirm" runat="server" visible="false">
                                 <%End If%>
+                                <asp:Button ID="btnSendZun" CssClass="button" runat="server" Text="Enviar a ZunPMS"
+                                    Visible="true" />
                             </td>
                         </tr>
                         <tr>

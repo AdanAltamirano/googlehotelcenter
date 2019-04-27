@@ -13181,6 +13181,14 @@ Control btnResConfirm.
 Campo generado automáticamente.
 Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
 </remarks>
+</member><member name="F:RateManager.ReservationDetails.btnSendZun">
+	<summary>
+Control btnSendZun.
+</summary>
+	<remarks>
+Campo generado automáticamente.
+Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+</remarks>
 </member><member name="F:RateManager.ReservationDetails.txtMultiCancel">
 	<summary>
 Control txtMultiCancel.
