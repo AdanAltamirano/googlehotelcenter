@@ -3140,7 +3140,9 @@
       <DependentUpon>CtrMenu.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Portal\Opciones.vb" />
+    <Compile Include="Portal\Opciones.vb">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Portal\Pages\Home.aspx.designer.vb">
       <DependentUpon>Home.aspx</DependentUpon>
     </Compile>
