@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="uvReport.aspx.vb" Inherits="RateManager.uvReport" %>
+
+<!DOCTYPE html>
 <html>
 <head>
     <title>Reporte</title>
@@ -46,12 +48,12 @@
             <div class="col-sm-3 col-lg-2">
                 <small>Fecha de inicio</small>
                 <br />
-                <input type="text" readonly class="form-control" ng-model="checkin" calendar placeholder="dd / mm / yyyy" />
+                <input type="text" readonly style="cursor:pointer" class="form-control" ng-model="checkin" calendar placeholder="dd / mm / yyyy" />
             </div>
             <div class="col-sm-3 col-lg-2">
                 <small>Fecha de llegada</small>
                 <br />
-                <input type="text" readonly class="form-control" ng-model="checkout" calendar placeholder="dd / mm / yyyy" />
+                <input type="text" readonly style="cursor:pointer" class="form-control" ng-model="checkout" calendar placeholder="dd / mm / yyyy" />
             </div>
             <div class="col-sm-5 col-lg-6">
                 <br />
@@ -111,7 +113,7 @@
                     <td class="hoteldata">C&oacute;digo de promoci&oacute;n</td>
                     <td>Canal</td>
                     <td>Forma de pago</td>
-                    <td>Tipo de pago</td>
+                    <td>Pasarela</td>
                     <td>No. Autorizaci&oacute;n</td>
                     <td>Total</td>
                     <td>Moneda</td>
@@ -129,7 +131,7 @@
                     <td>{{a.Habitaciones}}</td>
                     <td>{{a.CheckIn}}</td>
                     <td>{{a.CheckOut}}</td>
-                    <td>{{}}</td>
+                    <td>{{a.NochesCuarto}}</td>
                     <td>{{a.adultos}}</td>
                     <td>{{a.ninios}}</td>
                     <td>{{a.AccessCode}}</td>
@@ -138,7 +140,7 @@
                     <td>{{a.Pasarela}}</td>
                     <td>{{a.Autorizacion}}</td>
                     <td>{{a.Total}}</td>
-                    <td>{{a.TotalProviderCurrencyCode}}</td>
+                    <td>{{a.currency}}</td>
                 </tr>
             </tbody>
         </table>
@@ -150,3 +152,5 @@
     </div>
 </body>
 </html>
+
+

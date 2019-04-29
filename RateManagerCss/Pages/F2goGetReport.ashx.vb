@@ -13,7 +13,7 @@ Public Class F2goGetReport
         Dim q As NameValueCollection = context.Request.Form
         Dim isUv As Boolean = q("isUv") <> Nothing
 
-        Dim idHotel As Integer = 1978
+        Dim idHotel As Integer = 0
         If isUv Then
             If HttpContext.Current.Session("InfoCompany") IsNot Nothing Then
                 Dim info As companyInfo = CType(HttpContext.Current.Session("InfoCompany"), companyInfo)
@@ -21,9 +21,7 @@ Public Class F2goGetReport
                     idHotel = info.Hotel
                 End If
             End If
-            If idHotel = 0 Then
-                'redirect
-            End If
+
         End If
 
         Dim response As String = "{ ""result"": [] }"
@@ -70,12 +68,13 @@ Public Class F2goGetReport
             connection.Open()
             Using da As New SqlDataAdapter(sp, connection)
                 da.SelectCommand.CommandType = CommandType.StoredProcedure
-                da.SelectCommand.Parameters.AddWithValue("@checkin", checkin)
-                da.SelectCommand.Parameters.AddWithValue("@checkout", checkout)
-                da.SelectCommand.Parameters.AddWithValue("@dateType", [Enum].GetName(GetType(TypeSearch), dateType))
                 If isUv Then
                     da.SelectCommand.Parameters.AddWithValue("@idHotel", idHotel)
                 End If
+                da.SelectCommand.Parameters.AddWithValue("@checkin", checkin)
+                da.SelectCommand.Parameters.AddWithValue("@checkout", checkout)
+                da.SelectCommand.Parameters.AddWithValue("@dateType", [Enum].GetName(GetType(TypeSearch), dateType))
+
                 da.Fill(response)
                 da.Dispose()
             End Using
