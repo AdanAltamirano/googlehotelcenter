@@ -1096,7 +1096,6 @@ C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\bin\es\CrystalDecisions.VSD
 C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\bin\es\CrystalDecisions.Web.resources.dll
 C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\bin\es\CrystalDecisions.Windows.Forms.resources.dll
 C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\bin\es\Microsoft.Build.Utilities.v3.5.resources.dll
-C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManagerCss.vbprojResolveAssemblyReference.cache
 C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.Booking.resources
 C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.Polities.resources
 C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.Ayuda.resources
