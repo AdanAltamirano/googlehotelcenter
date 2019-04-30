@@ -1705,6 +1705,7 @@
     </Compile>
     <Compile Include="Pages\uvReport.aspx.vb">
       <DependentUpon>uvReport.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\AgenciasModulo.ascx.designer.vb">
       <DependentUpon>AgenciasModulo.ascx</DependentUpon>

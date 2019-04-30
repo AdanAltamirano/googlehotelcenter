@@ -9249,6 +9249,14 @@ dgReport control.
 Auto-generated field.
 To modify move field declaration from designer file to code-behind file.
 </remarks>
+</member><member name="F:RateManager.Reports1.dgReportIP">
+	<summary>
+dgReportIP control.
+</summary>
+	<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
 </member><member name="F:RateManager.Noticias.Form1">
 	<summary>
 Control Form1.

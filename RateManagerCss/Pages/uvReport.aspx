@@ -1,8 +1,10 @@
-﻿<!DOCTYPE html>
+﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="uvReport.aspx.vb" Inherits="RateManager.uvReport" %>
+
+<!DOCTYPE html>
 <html>
 <head>
     <title>Reporte</title>
-	<meta charset="utf-8" />
+    <meta charset="utf-8" />
     <link href="../Includes/report/bootstrap.min.css" rel="stylesheet" />
     <link href="../Includes/report/pikaday.css" rel="stylesheet" />
     <link href="../Includes/report/magnific-popup.css" rel="stylesheet" />
@@ -17,6 +19,7 @@
         footer table td { padding: 7px !important; text-align:center;}
         .hoteldata { background:cadetblue; color:#fff; }
     </style>
+    <!--se usaran los mismos scripts de f2go-->
     <script src="../Includes/report/Jquery1-11.js"></script>
     <script src="../Includes/report/pikaday.js"></script>
     <script src="../Includes/report/jquery.magnific-popup.js"></script>
@@ -27,7 +30,9 @@
     <script>
         $(function () {
             $('#popup').magnificPopup({ type: 'inline', preloader: true });
-            parent.remove_leftMenu();
+            //parent.remove_leftMenu();
+            
+            window.isUv = 1;
         })
     </script>
 </head>
@@ -43,12 +48,12 @@
             <div class="col-sm-3 col-lg-2">
                 <small>Fecha de inicio</small>
                 <br />
-                <input type="text" readonly class="form-control" ng-model="checkin" calendar placeholder="dd / mm / yyyy" />
+                <input type="text" readonly style="cursor:pointer" class="form-control" ng-model="checkin" calendar placeholder="dd / mm / yyyy" />
             </div>
             <div class="col-sm-3 col-lg-2">
                 <small>Fecha de llegada</small>
                 <br />
-                <input type="text" readonly class="form-control" ng-model="checkout" calendar placeholder="dd / mm / yyyy" />
+                <input type="text" readonly style="cursor:pointer" class="form-control" ng-model="checkout" calendar placeholder="dd / mm / yyyy" />
             </div>
             <div class="col-sm-5 col-lg-6">
                 <br />
@@ -87,24 +92,29 @@
         </div>
     </section>
     <br />
-    
+
     <footer>
         <table id="report" class="table table-condensed">
             <thead>
                 <tr class="theadTable">
-                    <td>No. reservaci&oacute;n IP</td>
-                    <td>No. reservaci&oacute;n F2GO</td>
+                    <td>No. reservaci&oacute;n</td>
+                    <!--<td>No. reservaci&oacute;n F2GO</td>-->
                     <td>Status</td>
                     <td>Fecha reservaci&oacute;n</td>
                     <td>Nombre del huesped</td>
                     <td>Correo del huesped</td>
-                    <td class="hoteldata">Hotel</td>
+                    <!--<td class="hoteldata">Hotel</td>-->
+                    <td class="hoteldata"># de habitacions</td>
                     <td class="hoteldata">Fecha de llegada</td>
                     <td class="hoteldata">Fecha de salida</td>
+                    <td class="hoteldata">Noches</td>
                     <td class="hoteldata">Adultos</td>
                     <td class="hoteldata">Menores</td>
                     <td class="hoteldata">C&oacute;digo de promoci&oacute;n</td>
+                    <td>Canal</td>
                     <td>Forma de pago</td>
+                    <td>Pasarela</td>
+                    <td>No. Autorizaci&oacute;n</td>
                     <td>Total</td>
                     <td>Moneda</td>
                 </tr>
@@ -112,20 +122,25 @@
             <tbody>
                 <tr ng-repeat="a in jsonResponse">
                     <td>{{a.NoReservacion}}</td>
-                    <td>{{a.NoReservacionGalileo}}</td>
+                    <!--<td>{{a.NoReservacionGalileo}}</td>-->
                     <td>{{StatusValue(a.Status)}}</td>
                     <td>{{a.FechaReservacion}}</td>
                     <td>{{a.Nombre_cl}} {{a.Apellido_cl}}</td>
                     <td>{{a.Email_cl}}</td>
-                    <td>{{a.HotelGNombre}}</td>
+                    <!--<td>{{a.HotelGNombre}}</td>-->
+                    <td>{{a.Habitaciones}}</td>
                     <td>{{a.CheckIn}}</td>
                     <td>{{a.CheckOut}}</td>
+                    <td>{{a.NochesCuarto}}</td>
                     <td>{{a.adultos}}</td>
                     <td>{{a.ninios}}</td>
                     <td>{{a.AccessCode}}</td>
+                    <td>{{a.Source}}</td>
                     <td>{{a.paymentmethod}}</td>
+                    <td>{{a.Pasarela}}</td>
+                    <td>{{a.Autorizacion}}</td>
                     <td>{{a.Total}}</td>
-                    <td>{{a.TotalProviderCurrencyCode}}</td>
+                    <td>{{a.currency}}</td>
                 </tr>
             </tbody>
         </table>
@@ -137,3 +152,5 @@
     </div>
 </body>
 </html>
+
+

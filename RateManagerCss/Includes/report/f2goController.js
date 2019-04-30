@@ -31,6 +31,9 @@
             })
 
             parameters.typesearch = $$.typeSearch.value;
+            if (window.isUv != null)
+                parameters.isUv = window.isUv;
+
             Tool.Search(parameters).success(function (response) {
                 $$.jsonResponse = response.result;
                 $$.showExcel = $$.jsonResponse.length > 0;

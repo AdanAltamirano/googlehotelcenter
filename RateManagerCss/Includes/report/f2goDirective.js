@@ -36,7 +36,12 @@
             restrict: 'A',
             link: function ($$, $tag) {
                 $tag.bind('click', function () {
-                    window.open('../ExportExcel/Reports.aspx?_blank');
+                    var url = '../ExportExcel/Reports.aspx?_blank';
+                    if (window.isUv != null)
+                        url += '&source=ip';
+                    else url += '&source=f2go';
+
+                    window.open(url);
                 })
             }
         }

@@ -39,9 +39,17 @@ Public Class Reports1
             End Try
 
             If dt IsNot Nothing Then
-                dgReport.DataSource = dt
-                dgReport.DataBind()
-                dgReport.RenderControl(htmlWrite)
+                If Request.QueryString("source") IsNot Nothing Then
+                    If Request.QueryString("source") = "ip" Then
+                        dgReportIP.DataSource = dt
+                        dgReportIP.DataBind()
+                        dgReportIP.RenderControl(htmlWrite)
+                    Else
+                        dgReport.DataSource = dt
+                        dgReport.DataBind()
+                        dgReport.RenderControl(htmlWrite)
+                    End If
+                End If
             End If
             Response.Write(stringWrite.ToString())
         End If
