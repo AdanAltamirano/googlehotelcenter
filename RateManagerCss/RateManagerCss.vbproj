@@ -1116,6 +1116,7 @@
     <Content Include="Pages\Images\palomita.gif" />
     <Content Include="Pages\Images\semanaadelante.JPG" />
     <Content Include="Pages\Images\semanaatras.bmp" />
+    <Content Include="Pages\IPReport.html" />
     <Content Include="Pages\LoadAvailabilityRestrictions.aspx" />
     <Content Include="Pages\LogHotelNoAvailable.aspx" />
     <Content Include="Pages\NoRatesReport.aspx" />
@@ -1144,6 +1145,7 @@
     <Content Include="Pages\SegmentRoomsAvailability.aspx" />
     <Content Include="Pages\SummaryCarReservation.aspx" />
     <Content Include="Pages\Users.aspx" />
+    <Content Include="Pages\uvReport.aspx" />
     <Content Include="Politicas\en\HotelPolicies.txt" />
     <Content Include="Politicas\en\UvNetRatesPolicies.txt" />
     <Content Include="Politicas\es\HotelPolicies.txt" />
@@ -1697,6 +1699,12 @@
     <Compile Include="Pages\RoomClosure.aspx.vb">
       <DependentUpon>RoomClosure.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Pages\uvReport.aspx.designer.vb">
+      <DependentUpon>uvReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\uvReport.aspx.vb">
+      <DependentUpon>uvReport.aspx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\AgenciasModulo.ascx.designer.vb">
       <DependentUpon>AgenciasModulo.ascx</DependentUpon>
