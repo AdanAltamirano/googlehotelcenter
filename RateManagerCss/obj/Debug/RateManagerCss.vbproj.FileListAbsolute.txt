@@ -1293,3 +1293,8 @@ C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\es\RateManager.re
 C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.dll
 C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.xml
 C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.pdb
+C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\obj\Debug\RateManagerCss.vbprojResolveAssemblyReference.cache
+C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\bin\EntityFramework.dll
+C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\bin\EntityFramework.xml
+C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\bin\RatesAndAvailability.dll
+C:\Users\josenunez\Documents\Proyectos Univisit\REPO\RateManagerCss\RateManagerCss\bin\RatesAndAvailability.pdb

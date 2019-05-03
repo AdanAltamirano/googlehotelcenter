@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="OzHotelesModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="OzHotelesModelStoreContainer">
+          <EntitySet Name="DayRates" EntityType="OzHotelesModel.Store.DayRates" store:Type="Views" store:Schema="dbo" store:Name="DayRates">
+            <DefiningQuery>SELECT 
+      [DayRates].[RateId] AS [RateId], 
+      [DayRates].[HotelId] AS [HotelId], 
+      [DayRates].[HotelRoomTypeId] AS [HotelRoomTypeId], 
+      [DayRates].[RatePlanId] AS [RatePlanId], 
+      [DayRates].[RatePlanName] AS [RatePlanName], 
+      [DayRates].[StartDate] AS [StartDate], 
+      [DayRates].[EndDate] AS [EndDate], 
+      [DayRates].[ExceptionMap] AS [ExceptionMap], 
+      [DayRates].[Occupancy] AS [Occupancy], 
+      [DayRates].[Price] AS [Price], 
+      [DayRates].[ExceptionPrice] AS [ExceptionPrice], 
+      [DayRates].[Discount] AS [Discount], 
+      [DayRates].[Currency] AS [Currency], 
+      [DayRates].[Language] AS [Language]
+      FROM [dbo].[DayRates] AS [DayRates]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+        <!--Se encontraron errores durante la generación:
+      advertencia 6002: La tabla o vista 'OzHoteles.dbo.DayRates' no tiene ninguna clave principal definida. Se ha inferido la clave y la definición se creó como vista o tabla de solo lectura.
+      -->
+        <EntityType Name="DayRates">
+          <Key>
+            <PropertyRef Name="RateId" />
+            <PropertyRef Name="HotelId" />
+            <PropertyRef Name="HotelRoomTypeId" />
+            <PropertyRef Name="StartDate" />
+            <PropertyRef Name="EndDate" />
+            <PropertyRef Name="Occupancy" />
+            <PropertyRef Name="Price" />
+            <PropertyRef Name="ExceptionPrice" />
+            <PropertyRef Name="Discount" />
+            <PropertyRef Name="Currency" />
+          </Key>
+          <Property Name="RateId" Type="int" Nullable="false" />
+          <Property Name="HotelId" Type="int" Nullable="false" />
+          <Property Name="HotelRoomTypeId" Type="int" Nullable="false" />
+          <Property Name="RatePlanId" Type="nvarchar" MaxLength="4" />
+          <Property Name="RatePlanName" Type="nvarchar" MaxLength="80" />
+          <Property Name="StartDate" Type="smalldatetime" Nullable="false" />
+          <Property Name="EndDate" Type="smalldatetime" Nullable="false" />
+          <Property Name="ExceptionMap" Type="nvarchar" MaxLength="7" />
+          <Property Name="Occupancy" Type="tinyint" Nullable="false" />
+          <Property Name="Price" Type="money" Nullable="false" />
+          <Property Name="ExceptionPrice" Type="money" Nullable="false" />
+          <Property Name="Discount" Type="smallmoney" Nullable="false" />
+          <Property Name="Currency" Type="nvarchar" Nullable="false" MaxLength="3" />
+          <Property Name="Language" Type="int" />
+        </EntityType>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="OzHotelesModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="OzHotelesEntities" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="DayRates" EntityType="OzHotelesModel.DayRates" />
+        </EntityContainer>
+        <EntityType Name="DayRates">
+          <Key>
+            <PropertyRef Name="RateId" />
+            <PropertyRef Name="HotelId" />
+            <PropertyRef Name="HotelRoomTypeId" />
+            <PropertyRef Name="StartDate" />
+            <PropertyRef Name="EndDate" />
+            <PropertyRef Name="Occupancy" />
+            <PropertyRef Name="Price" />
+            <PropertyRef Name="ExceptionPrice" />
+            <PropertyRef Name="Discount" />
+            <PropertyRef Name="Currency" />
+          </Key>
+          <Property Name="RateId" Type="Int32" Nullable="false" />
+          <Property Name="HotelId" Type="Int32" Nullable="false" />
+          <Property Name="HotelRoomTypeId" Type="Int32" Nullable="false" />
+          <Property Name="RatePlanId" Type="String" MaxLength="4" Unicode="true" FixedLength="false" />
+          <Property Name="RatePlanName" Type="String" MaxLength="80" Unicode="true" FixedLength="false" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ExceptionMap" Type="String" MaxLength="7" Unicode="true" FixedLength="false" />
+          <Property Name="Occupancy" Type="Byte" Nullable="false" />
+          <Property Name="Price" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="ExceptionPrice" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="Discount" Type="Decimal" Nullable="false" Precision="10" Scale="4" />
+          <Property Name="Currency" Type="String" Nullable="false" MaxLength="3" Unicode="true" FixedLength="false" />
+          <Property Name="Language" Type="Int32" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="OzHotelesModelStoreContainer" CdmEntityContainer="OzHotelesEntities">
+          <EntitySetMapping Name="DayRates">
+            <EntityTypeMapping TypeName="OzHotelesModel.DayRates">
+              <MappingFragment StoreEntitySet="DayRates">
+                <ScalarProperty Name="RateId" ColumnName="RateId" />
+                <ScalarProperty Name="HotelId" ColumnName="HotelId" />
+                <ScalarProperty Name="HotelRoomTypeId" ColumnName="HotelRoomTypeId" />
+                <ScalarProperty Name="RatePlanId" ColumnName="RatePlanId" />
+                <ScalarProperty Name="RatePlanName" ColumnName="RatePlanName" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="ExceptionMap" ColumnName="ExceptionMap" />
+                <ScalarProperty Name="Occupancy" ColumnName="Occupancy" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="ExceptionPrice" ColumnName="ExceptionPrice" />
+                <ScalarProperty Name="Discount" ColumnName="Discount" />
+                <ScalarProperty Name="Currency" ColumnName="Currency" />
+                <ScalarProperty Name="Language" ColumnName="Language" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

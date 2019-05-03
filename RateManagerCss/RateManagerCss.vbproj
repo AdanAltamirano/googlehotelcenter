@@ -1272,6 +1272,7 @@
     <Content Include="XmlHttp.js" />
     <Content Include="Pages\F2goGetReport.ashx" />
     <Content Include="Correos\html\Notificaciones Email Pago No Completado Call Center.rar" />
+    <Content Include="API\Rates.ashx" />
     <None Include="Web References\WsConnectWcf\wsConnectWCFv2.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -1380,6 +1381,9 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Data\ConfluxMapping.vb" />
+    <Compile Include="API\Rates.ashx.vb">
+      <DependentUpon>Rates.ashx</DependentUpon>
+    </Compile>
     <Compile Include="HotelAdministrator\Data\HdrRetentionsConfig.ashx.vb">
       <DependentUpon>HdrRetentionsConfig.ashx</DependentUpon>
     </Compile>
@@ -1705,7 +1709,7 @@
     </Compile>
     <Compile Include="Pages\uvReport.aspx.vb">
       <DependentUpon>uvReport.aspx</DependentUpon>
-      <SubType>ASPXCodebehind</SubType>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\AgenciasModulo.ascx.designer.vb">
       <DependentUpon>AgenciasModulo.ascx</DependentUpon>
@@ -4699,6 +4703,12 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FaresAndInventory\RatesAndAvailability.csproj">
+      <Project>{8d4c57b7-1af8-4488-947a-d0f9cf615c26}</Project>
+      <Name>RatesAndAvailability</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
