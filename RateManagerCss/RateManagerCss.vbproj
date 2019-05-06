@@ -22,7 +22,7 @@
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
     <TargetFrameworkProfile />
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -102,8 +102,10 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="Miscelaneos, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="Newtonsoft.Json, Version=3.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <Private>False</Private>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Oz.BillingSystem.Banking, Version=1.0.3770.15554, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -1273,6 +1275,8 @@
     <Content Include="Pages\F2goGetReport.ashx" />
     <Content Include="Correos\html\Notificaciones Email Pago No Completado Call Center.rar" />
     <Content Include="API\Rates.ashx" />
+    <Content Include="packages.config" />
+    <Content Include="API\Rooms.ashx" />
     <None Include="Web References\WsConnectWcf\wsConnectWCFv2.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -1284,6 +1288,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API\APIHandler.vb" />
+    <Compile Include="API\Rates.ashx.vb">
+      <DependentUpon>Rates.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="API\Rooms.ashx.vb">
+      <DependentUpon>Rooms.ashx</DependentUpon>
+    </Compile>
     <Compile Include="App_Data\Agreement.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1381,9 +1392,6 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Data\ConfluxMapping.vb" />
-    <Compile Include="API\Rates.ashx.vb">
-      <DependentUpon>Rates.ashx</DependentUpon>
-    </Compile>
     <Compile Include="HotelAdministrator\Data\HdrRetentionsConfig.ashx.vb">
       <DependentUpon>HdrRetentionsConfig.ashx</DependentUpon>
     </Compile>
@@ -3152,9 +3160,7 @@
       <DependentUpon>CtrMenu.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Portal\Opciones.vb">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
+    <Compile Include="Portal\Opciones.vb" />
     <Compile Include="Portal\Pages\Home.aspx.designer.vb">
       <DependentUpon>Home.aspx</DependentUpon>
     </Compile>
@@ -4163,7 +4169,6 @@
     </Content>
     <Content Include="HotelAdministrator\Data\HdrRetentionsConfig.ashx" />
     <None Include="My Project\PublishProfiles\RateManager.pubxml" />
-    <Content Include="packages.config" />
     <None Include="Reports\Agreements\1\agreement_ES.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>agreement_ES.vb</LastGenOutput>
@@ -4700,14 +4705,15 @@
   <ItemGroup>
     <Folder Include="HotelAdministrator\Models\" />
     <Folder Include="obj\" />
+    <Folder Include="RatesAdmin\" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FaresAndInventory\RatesAndAvailability.csproj">
-      <Project>{8d4c57b7-1af8-4488-947a-d0f9cf615c26}</Project>
-      <Name>RatesAndAvailability</Name>
+    <ProjectReference Include="..\APIServices\APIServices.csproj">
+      <Project>{66017370-9f20-4fc4-97ef-e00fd5fe80ce}</Project>
+      <Name>APIServices</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
@@ -4728,12 +4734,13 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>False</AutoAssignPort>
           <DevelopmentServerPort>15903</DevelopmentServerPort>
           <DevelopmentServerVPath>/Ratemanager/</DevelopmentServerVPath>
-          <IISUrl>
-          </IISUrl>
+          <IISUrl>http://localhost:15903/Ratemanager</IISUrl>
+          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
+          <IISAppRootUrl>http://localhost:15903/Ratemanager</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

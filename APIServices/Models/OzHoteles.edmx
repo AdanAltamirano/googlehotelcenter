@@ -1,0 +1,237 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Models.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'OzHoteles.dbo.DayRates' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="DayRates">
+          <Key>
+            <PropertyRef Name="RateId" />
+            <PropertyRef Name="HotelId" />
+            <PropertyRef Name="HotelRoomTypeId" />
+            <PropertyRef Name="RatePlanId" />
+            <PropertyRef Name="Occupancy" />
+            <PropertyRef Name="Price" />
+            <PropertyRef Name="ExceptionPrice" />
+            <PropertyRef Name="Discount" />
+            <PropertyRef Name="Currency" />
+          </Key>
+          <Property Name="RateId" Type="int" Nullable="false" />
+          <Property Name="HotelId" Type="int" Nullable="false" />
+          <Property Name="HotelRoomTypeId" Type="int" Nullable="false" />
+          <Property Name="RatePlanId" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="RatePlanName" Type="nvarchar" MaxLength="80" />
+          <Property Name="StartDate" Type="smalldatetime" />
+          <Property Name="EndDate" Type="smalldatetime" />
+          <Property Name="ExceptionMap" Type="nvarchar" MaxLength="7" />
+          <Property Name="Occupancy" Type="tinyint" Nullable="false" />
+          <Property Name="Price" Type="money" Nullable="false" />
+          <Property Name="ExceptionPrice" Type="money" Nullable="false" />
+          <Property Name="Discount" Type="smallmoney" Nullable="false" />
+          <Property Name="Currency" Type="nvarchar" MaxLength="3" Nullable="false" />
+          <Property Name="ParentRatePlanId" Type="nvarchar" MaxLength="4" />
+          <Property Name="Language" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'OzHoteles.dbo.HotelRoom' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="HotelRoom">
+          <Key>
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="Type" />
+            <PropertyRef Name="HotelId" />
+            <PropertyRef Name="TotalRooms" />
+            <PropertyRef Name="MaxOccupancy" />
+            <PropertyRef Name="ExtraOccupancyAllowed" />
+            <PropertyRef Name="MaxAdultsOccupancy" />
+            <PropertyRef Name="MinAdultsOccupancy" />
+            <PropertyRef Name="MaxChildrenOccupancy" />
+            <PropertyRef Name="Order" />
+          </Key>
+          <Property Name="Code" Type="nvarchar" MaxLength="4" />
+          <Property Name="Name" Type="nvarchar" MaxLength="80" Nullable="false" />
+          <Property Name="Type" Type="int" Nullable="false" />
+          <Property Name="HotelId" Type="int" Nullable="false" />
+          <Property Name="TotalRooms" Type="int" Nullable="false" />
+          <Property Name="MaxOccupancy" Type="tinyint" Nullable="false" />
+          <Property Name="ExtraOccupancyAllowed" Type="tinyint" Nullable="false" />
+          <Property Name="MaxAdultsOccupancy" Type="tinyint" Nullable="false" />
+          <Property Name="MinAdultsOccupancy" Type="tinyint" Nullable="false" />
+          <Property Name="MaxChildrenOccupancy" Type="tinyint" Nullable="false" />
+          <Property Name="Order" Type="smallint" Nullable="false" />
+          <Property Name="Active" Type="bit" />
+          <Property Name="Language" Type="int" />
+        </EntityType>
+        <EntityContainer Name="ModelsStoreContainer">
+          <EntitySet Name="DayRates" EntityType="Self.DayRates" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [DayRates].[RateId] AS [RateId], 
+    [DayRates].[HotelId] AS [HotelId], 
+    [DayRates].[HotelRoomTypeId] AS [HotelRoomTypeId], 
+    [DayRates].[RatePlanId] AS [RatePlanId], 
+    [DayRates].[RatePlanName] AS [RatePlanName], 
+    [DayRates].[StartDate] AS [StartDate], 
+    [DayRates].[EndDate] AS [EndDate], 
+    [DayRates].[ExceptionMap] AS [ExceptionMap], 
+    [DayRates].[Occupancy] AS [Occupancy], 
+    [DayRates].[Price] AS [Price], 
+    [DayRates].[ExceptionPrice] AS [ExceptionPrice], 
+    [DayRates].[Discount] AS [Discount], 
+    [DayRates].[Currency] AS [Currency], 
+    [DayRates].[ParentRatePlanId] AS [ParentRatePlanId], 
+    [DayRates].[Language] AS [Language]
+    FROM [dbo].[DayRates] AS [DayRates]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="HotelRoom" EntityType="Self.HotelRoom" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [HotelRoom].[Code] AS [Code], 
+    [HotelRoom].[Name] AS [Name], 
+    [HotelRoom].[Type] AS [Type], 
+    [HotelRoom].[HotelId] AS [HotelId], 
+    [HotelRoom].[TotalRooms] AS [TotalRooms], 
+    [HotelRoom].[MaxOccupancy] AS [MaxOccupancy], 
+    [HotelRoom].[ExtraOccupancyAllowed] AS [ExtraOccupancyAllowed], 
+    [HotelRoom].[MaxAdultsOccupancy] AS [MaxAdultsOccupancy], 
+    [HotelRoom].[MinAdultsOccupancy] AS [MinAdultsOccupancy], 
+    [HotelRoom].[MaxChildrenOccupancy] AS [MaxChildrenOccupancy], 
+    [HotelRoom].[Order] AS [Order], 
+    [HotelRoom].[Active] AS [Active], 
+    [HotelRoom].[Language] AS [Language]
+    FROM [dbo].[HotelRoom] AS [HotelRoom]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Models" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="DayRates">
+          <Key>
+            <PropertyRef Name="RateId" />
+            <PropertyRef Name="HotelId" />
+            <PropertyRef Name="HotelRoomTypeId" />
+            <PropertyRef Name="RatePlanId" />
+            <PropertyRef Name="Occupancy" />
+            <PropertyRef Name="Price" />
+            <PropertyRef Name="ExceptionPrice" />
+            <PropertyRef Name="Discount" />
+            <PropertyRef Name="Currency" />
+          </Key>
+          <Property Name="RateId" Type="Int32" Nullable="false" />
+          <Property Name="HotelId" Type="Int32" Nullable="false" />
+          <Property Name="HotelRoomTypeId" Type="Int32" Nullable="false" />
+          <Property Name="RatePlanId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RatePlanName" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="StartDate" Type="DateTime" Precision="0" />
+          <Property Name="EndDate" Type="DateTime" Precision="0" />
+          <Property Name="ExceptionMap" Type="String" MaxLength="7" FixedLength="false" Unicode="true" />
+          <Property Name="Occupancy" Type="Byte" Nullable="false" />
+          <Property Name="Price" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="ExceptionPrice" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="Discount" Type="Decimal" Precision="10" Scale="4" Nullable="false" />
+          <Property Name="Currency" Type="String" MaxLength="3" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ParentRatePlanId" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="Language" Type="Int32" />
+        </EntityType>
+        <EntityContainer Name="OzHotelesEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="DayRates" EntityType="Self.DayRates" />
+          <EntitySet Name="HotelRoom" EntityType="Models.HotelRoom" />
+        </EntityContainer>
+        <EntityType Name="HotelRoom">
+          <Key>
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="Type" />
+            <PropertyRef Name="HotelId" />
+            <PropertyRef Name="TotalRooms" />
+            <PropertyRef Name="MaxOccupancy" />
+            <PropertyRef Name="ExtraOccupancyAllowed" />
+            <PropertyRef Name="MaxAdultsOccupancy" />
+            <PropertyRef Name="MinAdultsOccupancy" />
+            <PropertyRef Name="MaxChildrenOccupancy" />
+            <PropertyRef Name="Order" />
+          </Key>
+          <Property Name="Code" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="Int32" Nullable="false" />
+          <Property Name="HotelId" Type="Int32" Nullable="false" />
+          <Property Name="TotalRooms" Type="Int32" Nullable="false" />
+          <Property Name="MaxOccupancy" Type="Byte" Nullable="false" />
+          <Property Name="ExtraOccupancyAllowed" Type="Byte" Nullable="false" />
+          <Property Name="MaxAdultsOccupancy" Type="Byte" Nullable="false" />
+          <Property Name="MinAdultsOccupancy" Type="Byte" Nullable="false" />
+          <Property Name="MaxChildrenOccupancy" Type="Byte" Nullable="false" />
+          <Property Name="Order" Type="Int16" Nullable="false" />
+          <Property Name="Active" Type="Boolean" />
+          <Property Name="Language" Type="Int32" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ModelsStoreContainer" CdmEntityContainer="OzHotelesEntities">
+          <EntitySetMapping Name="DayRates">
+            <EntityTypeMapping TypeName="Models.DayRates">
+              <MappingFragment StoreEntitySet="DayRates">
+                <ScalarProperty Name="RateId" ColumnName="RateId" />
+                <ScalarProperty Name="HotelId" ColumnName="HotelId" />
+                <ScalarProperty Name="HotelRoomTypeId" ColumnName="HotelRoomTypeId" />
+                <ScalarProperty Name="RatePlanId" ColumnName="RatePlanId" />
+                <ScalarProperty Name="RatePlanName" ColumnName="RatePlanName" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="ExceptionMap" ColumnName="ExceptionMap" />
+                <ScalarProperty Name="Occupancy" ColumnName="Occupancy" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="ExceptionPrice" ColumnName="ExceptionPrice" />
+                <ScalarProperty Name="Discount" ColumnName="Discount" />
+                <ScalarProperty Name="Currency" ColumnName="Currency" />
+                <ScalarProperty Name="ParentRatePlanId" ColumnName="ParentRatePlanId" />
+                <ScalarProperty Name="Language" ColumnName="Language" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HotelRoom">
+            <EntityTypeMapping TypeName="Models.HotelRoom">
+              <MappingFragment StoreEntitySet="HotelRoom">
+                <ScalarProperty Name="Language" ColumnName="Language" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Order" ColumnName="Order" />
+                <ScalarProperty Name="MaxChildrenOccupancy" ColumnName="MaxChildrenOccupancy" />
+                <ScalarProperty Name="MinAdultsOccupancy" ColumnName="MinAdultsOccupancy" />
+                <ScalarProperty Name="MaxAdultsOccupancy" ColumnName="MaxAdultsOccupancy" />
+                <ScalarProperty Name="ExtraOccupancyAllowed" ColumnName="ExtraOccupancyAllowed" />
+                <ScalarProperty Name="MaxOccupancy" ColumnName="MaxOccupancy" />
+                <ScalarProperty Name="TotalRooms" ColumnName="TotalRooms" />
+                <ScalarProperty Name="HotelId" ColumnName="HotelId" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
