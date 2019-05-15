@@ -27,9 +27,9 @@ Public Class Rates
             Return False
         End If
 
-        Dim hotelRoomId As Integer? = Nothing
-        If Not String.IsNullOrWhiteSpace(context.Request.QueryString("hotelRoomId")) AndAlso
-                Not Integer.TryParse(context.Request.QueryString("hotelRoomId"), hotelRoomId) Then
+        Dim roomId As Integer? = Nothing
+        If Not String.IsNullOrWhiteSpace(context.Request.QueryString("roomId")) AndAlso
+                Not Integer.TryParse(context.Request.QueryString("roomId"), roomId) Then
             req.Error = "invalid hotelRoomId"
             Return False
         End If
@@ -39,7 +39,7 @@ Public Class Rates
         req.HotelId = hotelId
         req.StartDate = start
         req.EndDate = [end]
-        req.HotelRoomId = hotelRoomId
+        req.roomId = roomId
         req.Language = lang
 
         Return True
@@ -52,7 +52,7 @@ Public Class Rates
         If ValidadGetRequest(context, req) Then
             OK(
                     context:=context,
-                    result:=RatesService.FindGroupedByRatePlan(req.HotelId, req.StartDate, req.EndDate, req.Language, req.HotelRoomId)
+                    result:=RatesService.FindGroupedByRatePlan(req.HotelId, req.StartDate, req.EndDate, req.Language, req.roomId)
                   )
         Else
             BadRequest(context, req.Error)
@@ -70,6 +70,6 @@ Friend Class GetRatesRequest
     Public StartDate As Date
     Public EndDate As Date
     Public Language As Integer
-    Public HotelRoomId As Integer?
+    Public roomId As Integer?
     Public [Error] As String
 End Class

@@ -11,7 +11,7 @@ warning 6002: The table/view 'OzHoteles.dbo.DayRates' does not have a primary ke
           <Key>
             <PropertyRef Name="RateId" />
             <PropertyRef Name="HotelId" />
-            <PropertyRef Name="HotelRoomTypeId" />
+            <PropertyRef Name="RoomId" />
             <PropertyRef Name="RatePlanId" />
             <PropertyRef Name="Occupancy" />
             <PropertyRef Name="Price" />
@@ -21,7 +21,7 @@ warning 6002: The table/view 'OzHoteles.dbo.DayRates' does not have a primary ke
           </Key>
           <Property Name="RateId" Type="int" Nullable="false" />
           <Property Name="HotelId" Type="int" Nullable="false" />
-          <Property Name="HotelRoomTypeId" Type="int" Nullable="false" />
+          <Property Name="RoomId" Type="int" Nullable="false" />
           <Property Name="RatePlanId" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="RatePlanName" Type="nvarchar" MaxLength="80" />
           <Property Name="StartDate" Type="smalldatetime" />
@@ -39,6 +39,7 @@ warning 6002: The table/view 'OzHoteles.dbo.DayRates' does not have a primary ke
 warning 6002: The table/view 'OzHoteles.dbo.HotelRoom' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HotelRoom">
           <Key>
+            <PropertyRef Name="Id" />
             <PropertyRef Name="Name" />
             <PropertyRef Name="Type" />
             <PropertyRef Name="HotelId" />
@@ -50,6 +51,7 @@ warning 6002: The table/view 'OzHoteles.dbo.HotelRoom' does not have a primary k
             <PropertyRef Name="MaxChildrenOccupancy" />
             <PropertyRef Name="Order" />
           </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="Code" Type="nvarchar" MaxLength="4" />
           <Property Name="Name" Type="nvarchar" MaxLength="80" Nullable="false" />
           <Property Name="Type" Type="int" Nullable="false" />
@@ -69,7 +71,7 @@ warning 6002: The table/view 'OzHoteles.dbo.HotelRoom' does not have a primary k
             <DefiningQuery>SELECT 
     [DayRates].[RateId] AS [RateId], 
     [DayRates].[HotelId] AS [HotelId], 
-    [DayRates].[HotelRoomTypeId] AS [HotelRoomTypeId], 
+    [DayRates].[RoomId] AS [RoomId], 
     [DayRates].[RatePlanId] AS [RatePlanId], 
     [DayRates].[RatePlanName] AS [RatePlanName], 
     [DayRates].[StartDate] AS [StartDate], 
@@ -86,6 +88,7 @@ warning 6002: The table/view 'OzHoteles.dbo.HotelRoom' does not have a primary k
           </EntitySet>
           <EntitySet Name="HotelRoom" EntityType="Self.HotelRoom" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
+    [HotelRoom].[Id] AS [Id], 
     [HotelRoom].[Code] AS [Code], 
     [HotelRoom].[Name] AS [Name], 
     [HotelRoom].[Type] AS [Type], 
@@ -106,11 +109,15 @@ warning 6002: The table/view 'OzHoteles.dbo.HotelRoom' does not have a primary k
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Models" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="OzHotelesEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="DayRates" EntityType="Models.DayRates" />
+          <EntitySet Name="HotelRoom" EntityType="Models.HotelRoom" />
+        </EntityContainer>
         <EntityType Name="DayRates">
           <Key>
             <PropertyRef Name="RateId" />
             <PropertyRef Name="HotelId" />
-            <PropertyRef Name="HotelRoomTypeId" />
+            <PropertyRef Name="RoomId" />
             <PropertyRef Name="RatePlanId" />
             <PropertyRef Name="Occupancy" />
             <PropertyRef Name="Price" />
@@ -120,26 +127,23 @@ warning 6002: The table/view 'OzHoteles.dbo.HotelRoom' does not have a primary k
           </Key>
           <Property Name="RateId" Type="Int32" Nullable="false" />
           <Property Name="HotelId" Type="Int32" Nullable="false" />
-          <Property Name="HotelRoomTypeId" Type="Int32" Nullable="false" />
-          <Property Name="RatePlanId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RoomId" Type="Int32" Nullable="false" />
+          <Property Name="RatePlanId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="RatePlanName" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
           <Property Name="StartDate" Type="DateTime" Precision="0" />
           <Property Name="EndDate" Type="DateTime" Precision="0" />
           <Property Name="ExceptionMap" Type="String" MaxLength="7" FixedLength="false" Unicode="true" />
           <Property Name="Occupancy" Type="Byte" Nullable="false" />
-          <Property Name="Price" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
-          <Property Name="ExceptionPrice" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
-          <Property Name="Discount" Type="Decimal" Precision="10" Scale="4" Nullable="false" />
-          <Property Name="Currency" Type="String" MaxLength="3" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Price" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="ExceptionPrice" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="Discount" Type="Decimal" Nullable="false" Precision="10" Scale="4" />
+          <Property Name="Currency" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="true" />
           <Property Name="ParentRatePlanId" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
           <Property Name="Language" Type="Int32" />
         </EntityType>
-        <EntityContainer Name="OzHotelesEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="DayRates" EntityType="Self.DayRates" />
-          <EntitySet Name="HotelRoom" EntityType="Models.HotelRoom" />
-        </EntityContainer>
         <EntityType Name="HotelRoom">
           <Key>
+            <PropertyRef Name="Id" />
             <PropertyRef Name="Name" />
             <PropertyRef Name="Type" />
             <PropertyRef Name="HotelId" />
@@ -151,6 +155,7 @@ warning 6002: The table/view 'OzHoteles.dbo.HotelRoom' does not have a primary k
             <PropertyRef Name="MaxChildrenOccupancy" />
             <PropertyRef Name="Order" />
           </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
           <Property Name="Code" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="true" />
           <Property Name="Type" Type="Int32" Nullable="false" />
@@ -174,21 +179,21 @@ warning 6002: The table/view 'OzHoteles.dbo.HotelRoom' does not have a primary k
           <EntitySetMapping Name="DayRates">
             <EntityTypeMapping TypeName="Models.DayRates">
               <MappingFragment StoreEntitySet="DayRates">
-                <ScalarProperty Name="RateId" ColumnName="RateId" />
-                <ScalarProperty Name="HotelId" ColumnName="HotelId" />
-                <ScalarProperty Name="HotelRoomTypeId" ColumnName="HotelRoomTypeId" />
-                <ScalarProperty Name="RatePlanId" ColumnName="RatePlanId" />
-                <ScalarProperty Name="RatePlanName" ColumnName="RatePlanName" />
-                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
-                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
-                <ScalarProperty Name="ExceptionMap" ColumnName="ExceptionMap" />
-                <ScalarProperty Name="Occupancy" ColumnName="Occupancy" />
-                <ScalarProperty Name="Price" ColumnName="Price" />
-                <ScalarProperty Name="ExceptionPrice" ColumnName="ExceptionPrice" />
-                <ScalarProperty Name="Discount" ColumnName="Discount" />
-                <ScalarProperty Name="Currency" ColumnName="Currency" />
-                <ScalarProperty Name="ParentRatePlanId" ColumnName="ParentRatePlanId" />
                 <ScalarProperty Name="Language" ColumnName="Language" />
+                <ScalarProperty Name="ParentRatePlanId" ColumnName="ParentRatePlanId" />
+                <ScalarProperty Name="Currency" ColumnName="Currency" />
+                <ScalarProperty Name="Discount" ColumnName="Discount" />
+                <ScalarProperty Name="ExceptionPrice" ColumnName="ExceptionPrice" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Occupancy" ColumnName="Occupancy" />
+                <ScalarProperty Name="ExceptionMap" ColumnName="ExceptionMap" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="RatePlanName" ColumnName="RatePlanName" />
+                <ScalarProperty Name="RatePlanId" ColumnName="RatePlanId" />
+                <ScalarProperty Name="RoomId" ColumnName="RoomId" />
+                <ScalarProperty Name="HotelId" ColumnName="HotelId" />
+                <ScalarProperty Name="RateId" ColumnName="RateId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -208,6 +213,7 @@ warning 6002: The table/view 'OzHoteles.dbo.HotelRoom' does not have a primary k
                 <ScalarProperty Name="Type" ColumnName="Type" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

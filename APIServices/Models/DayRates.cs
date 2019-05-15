@@ -16,7 +16,7 @@ namespace APIServices.Models
     {
         public int RateId { get; set; }
         public int HotelId { get; set; }
-        public int HotelRoomTypeId { get; set; }
+        public int RoomId { get; set; }
         public string RatePlanId { get; set; }
         public string RatePlanName { get; set; }
         public Nullable<System.DateTime> StartDate { get; set; }

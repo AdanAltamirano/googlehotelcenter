@@ -19,9 +19,9 @@ namespace APIServices
         /// <param name="startDate"></param>
         /// <param name="endDate"></param>
         /// <param name="language"></param>
-        /// <param name="hotelRoomId"></param>
+        /// <param name="roomId"></param>
         /// <returns>Conjunto de tarifas</returns>
-        private IEnumerable<DayRates> FindDayRates(int hotelId, DateTime startDate, DateTime endDate, int language = 1, int? hotelRoomId = null)
+        private IEnumerable<DayRates> FindDayRates(int hotelId, DateTime startDate, DateTime endDate, int language = 1, int? roomId = null)
         {
             IEnumerable<DayRates> result = null;
             using(OzHotelesEntities db = new OzHotelesEntities())
@@ -32,8 +32,8 @@ namespace APIServices
                    && r.EndDate >= startDate
                    && r.Language == language);
 
-                if (hotelRoomId != null)
-                    query = query.Where(r => r.HotelRoomTypeId == hotelRoomId);
+                if (roomId != null)
+                    query = query.Where(r => r.RoomId == roomId);
 
                 result = query.OrderBy(r => r.StartDate).ToArray();
             }
@@ -60,7 +60,7 @@ namespace APIServices
                    {
                        r.RatePlanId,
                        r.RatePlanName,
-                       r.HotelRoomTypeId,
+                       r.RoomId,
                        r.ParentRatePlanId
                    })
                 .Select(r =>
@@ -69,7 +69,7 @@ namespace APIServices
                     {
                         RatePlanId = r.Key.RatePlanId,
                         RatePlan = r.Key.RatePlanName,
-                        HotelRoomId = r.Key.HotelRoomTypeId,
+                        RoomId = r.Key.RoomId,
                         ParentRatePlanId = r.Key.ParentRatePlanId
                     };
 

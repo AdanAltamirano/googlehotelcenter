@@ -1,6 +1,7 @@
 ﻿Imports System.Web
 Imports System.Web.Services
 Imports Newtonsoft.Json
+Imports Newtonsoft.Json.Serialization
 
 Public MustInherit Class APIHandler
     Implements System.Web.IHttpHandler
@@ -53,11 +54,13 @@ Public MustInherit Class APIHandler
     Protected MustOverride Sub PostHandler(ByRef context As HttpContext)
 
     Private JSONsettings As JsonSerializerSettings = New JsonSerializerSettings With {
-        .DateFormatHandling = DateFormatHandling.IsoDateFormat
+        .DateFormatHandling = DateFormatHandling.IsoDateFormat,
+        .ContractResolver = New CamelCasePropertyNamesContractResolver(),
+        .NullValueHandling = NullValueHandling.Ignore
     }
 
     Private Function SerializeResponse(ByVal response As Object) As String
-        Return JsonConvert.SerializeObject(response)
+        Return JsonConvert.SerializeObject(response, JSONsettings)
     End Function
 
     ReadOnly Property IsReusable() As Boolean Implements IHttpHandler.IsReusable
