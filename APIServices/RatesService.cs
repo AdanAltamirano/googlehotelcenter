@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Data.SqlClient;
+using System.Data;
 
 namespace APIServices
 {
@@ -104,5 +106,54 @@ namespace APIServices
 
             return result;
         }
+
+        private void SpliRate(ref int err, DateTime startDate, DateTime endDate, int IdTipoHabitacion, string idRatePlan)
+        {
+            try
+            {
+                
+                SqlDataAdapter dsCommand = new SqlDataAdapter();
+                string ConnectionString = System.Configuration.ConfigurationSettings.AppSettings["HotelConnectionString"];
+                SqlConnection Connection = new SqlConnection(ConnectionString); 
+                dsCommand = new SqlDataAdapter("spSplitRate", Connection);
+                {
+                    try
+                    {
+                        {
+                            dsCommand.SelectCommand.CommandType = CommandType.StoredProcedure;
+                            dsCommand.SelectCommand.CommandText = "spSplitRate";
+                            dsCommand.SelectCommand.Parameters.Add("@fechaInicia", SqlDbType.SmallDateTime).Value = startDate;
+                            dsCommand.SelectCommand.Parameters.Add("@fechaFinaliza", SqlDbType.SmallDateTime).Value = endDate;
+                            dsCommand.SelectCommand.Parameters.Add("@idTipoHabitacion", SqlDbType.Int).Value = IdTipoHabitacion;
+                            dsCommand.SelectCommand.Parameters.Add("@idRatePlan", SqlDbType.VarChar, 8).Value = idRatePlan;
+                            dsCommand.SelectCommand.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
+                            dsCommand.SelectCommand.Connection.Open();
+                        }
+                        dsCommand.SelectCommand.ExecuteNonQuery();
+                        err = (int)dsCommand.SelectCommand.Parameters["@error"].Value;
+                    }
+                    catch (Exception ex)
+                    {
+                    }
+                    finally
+                    {
+                        dsCommand.SelectCommand.Connection.Close();
+                        if (dsCommand.SelectCommand != null)
+                        {
+                            if (dsCommand.SelectCommand.Connection != null)
+                                dsCommand.SelectCommand.Connection.Dispose();
+                            dsCommand.SelectCommand.Dispose();
+                        }
+                        dsCommand.Dispose();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                var a = ex.ToString();
+            }
+        }
+
+
     }
 }
