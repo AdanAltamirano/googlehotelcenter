@@ -63,7 +63,8 @@ namespace APIServices
                        r.RatePlanId,
                        r.RatePlanName,
                        r.RoomId,
-                       r.ParentRatePlanId
+                       r.ParentRatePlanId,
+                       r.Currency
                    })
                 .Select(r =>
                 {
@@ -72,7 +73,8 @@ namespace APIServices
                         RatePlanId = r.Key.RatePlanId,
                         RatePlan = r.Key.RatePlanName,
                         RoomId = r.Key.RoomId,
-                        ParentRatePlanId = r.Key.ParentRatePlanId
+                        ParentRatePlanId = r.Key.ParentRatePlanId,
+                        Currency = r.Key.Currency
                     };
 
                     groupedRates.DailyRates = r.SelectMany(rate =>
@@ -94,8 +96,7 @@ namespace APIServices
                             RateId = rate.RateId,
                             Occupancy = rate.Occupancy,
                             Price = Utilities.IsInExceptionPrice(rate.ExceptionMap, d) ? rate.ExceptionPrice : rate.Price,
-                            Discount = rate.Discount,
-                            Currency = rate.Currency
+                            Discount = rate.Discount
                         });
 
                     }).ToArray();
