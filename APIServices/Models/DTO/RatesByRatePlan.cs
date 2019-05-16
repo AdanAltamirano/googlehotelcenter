@@ -10,6 +10,7 @@ namespace APIServices.Models.DTO
     {
         public string RatePlanId { get; set; }
         public string RatePlan { get; set; }
+        public string Currency { get; set; }
         public int RoomId { get; set; }
         public string ParentRatePlanId { get; set; }
         public DailyRate[] DailyRates { get; set; }

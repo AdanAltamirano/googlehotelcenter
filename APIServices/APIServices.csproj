@@ -75,6 +75,12 @@
       <DependentUpon>OzHoteles.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\DTO\RatesByRatePlan.cs" />
+    <Compile Include="Models\RatesPlan.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\RoomInventory.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
     <Compile Include="RatesService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoomsService.cs" />

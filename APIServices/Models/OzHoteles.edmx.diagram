@@ -7,6 +7,8 @@
       <Diagram DiagramId="fa57533aba3a4716a6b5cc2f30621586" Name="Diagram1">
         <EntityTypeShape EntityType="Models.DayRates" Width="1.5" PointX="0.75" PointY="0.75" />
         <EntityTypeShape EntityType="Models.HotelRoom" Width="1.5" PointX="2.75" PointY="0.75" />
+        <EntityTypeShape EntityType="Models.RoomInventory" Width="1.5" PointX="5.375" PointY="0.75" />
+        <EntityTypeShape EntityType="Models.RatesPlan" Width="1.5" PointX="0.75" PointY="5.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

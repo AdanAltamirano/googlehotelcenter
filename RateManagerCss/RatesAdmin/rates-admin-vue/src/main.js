@@ -1,21 +1,16 @@
 import Vue from 'vue';
 import App from './App.vue';
 import 'bootstrap';
-import Settings from './core/app.settings'
-import { localeMoment } from './core/localization/locale'
-import VueMoment from 'vue-moment' 
-import VueCurrencyFilter from 'vue-currency-filter'
+import './core/app.settings';
+import { localeMoment } from './core/localization/locale';
+import VueMoment from 'vue-moment';
+import VueCurrencyFilter from 'vue-currency-filter';
 import Loading from 'vue-loading-overlay';
-
-
-// Import stylesheet
-
-// Init plugin
-Vue.use(Loading);
 
 //styles
 import './assets/app.scss';
 
+// Init plugins
 Vue.use(VueMoment, {
   moment: localeMoment,
 });
@@ -28,6 +23,8 @@ Vue.use(VueCurrencyFilter, {
   symbolPosition: 'front',
   symbolSpacing: true
 });
+
+Vue.use(Loading);
 
 Vue.config.productionTip = false;
 
