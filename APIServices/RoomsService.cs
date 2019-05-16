@@ -24,12 +24,13 @@ namespace APIServices
                    && r.Language == language);
 
                 if (!showInactive)
-                    query.Where(r => r.Active == true);                    
+                    query = query.Where(r => r.Active == true);                    
 
                 result = query.OrderBy(r=>r.Order).Select(r=> new Room {
+                    Id = r.Id,
                     Name = r.Name,
                     Code = r.Code,
-                    Active = r.Active ?? false,
+                    Active = r.Active.Value,
                     ExtraOccupancyAllowed = r.ExtraOccupancyAllowed,
                     MinAdultsOccupancy = r.MinAdultsOccupancy,
                     MaxAdultsOccupancy = r.MaxAdultsOccupancy,
