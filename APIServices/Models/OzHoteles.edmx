@@ -5,8 +5,8 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="Models.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'OzHoteles.dbo.DayRates' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'OzHoteles.dbo.DayRates' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="DayRates">
           <Key>
             <PropertyRef Name="RateId" />
@@ -35,8 +35,8 @@ warning 6002: The table/view 'OzHoteles.dbo.DayRates' does not have a primary ke
           <Property Name="ParentRatePlanId" Type="nvarchar" MaxLength="4" />
           <Property Name="Language" Type="int" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'OzHoteles.dbo.HotelRoom' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'OzHoteles.dbo.HotelRoom' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="HotelRoom">
           <Key>
             <PropertyRef Name="Id" />

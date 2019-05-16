@@ -154,6 +154,26 @@ namespace APIServices
             }
         }
 
+        private Boolean AddRate(int roomId, int fareId, DateTime rateDay)
+        {
+            using (OzHotelesEntities db = new OzHotelesEntities())
+            {
+               
+            }
+                //using (OzHotelesEntities db = new OzHotelesEntities())
+                //{
+                //    var query = db.rate DayRates.Where(r =>
+                //       r.HotelId == hotelId
+                //       && r.StartDate <= endDate
+                //       && r.EndDate >= startDate
+                //       && r.Language == language);
 
+                //    if (roomId != null)
+                //        query = query.Where(r => r.RoomId == roomId);
+
+                //    result = query.OrderBy(r => r.StartDate).ToArray();
+                //}
+                return true;
+        }
     }
 }
