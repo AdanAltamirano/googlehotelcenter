@@ -44,6 +44,25 @@ namespace APIServices
         }
 
         /// <summary>
+        /// Búsqueda de un RatePlan por hotel
+        /// </summary>
+        /// <param name="hotelId"></param>
+        /// <param name="ratePlanId"></param>
+        /// <returns>Conjunto de RatesPlan</returns>
+        private IEnumerable<RatesPlan> FindHotelRatePlan(int hotelId, string ratePlanId)
+        {
+            IEnumerable<RatesPlan> result = null;
+            using (OzHotelesEntities db = new OzHotelesEntities())
+            {
+                result = db.RatesPlan.Where(r =>
+                   r.IdHotel == hotelId
+                   && r.idRatePlan == ratePlanId).ToArray();
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Búsqueda de tarifas agrupadas por rate plan
         /// </summary>
         /// <param name="hotelId"></param>
@@ -108,7 +127,7 @@ namespace APIServices
             return result;
         }
 
-        private void SpliRate(ref int err, DateTime startDate, DateTime endDate, int IdTipoHabitacion, string idRatePlan)
+        private void SplitRate(ref int err, DateTime startDate, DateTime endDate, int IdTipoHabitacion, string idRatePlan)
         {
             try
             {
@@ -155,26 +174,19 @@ namespace APIServices
             }
         }
 
-        private Boolean AddRate(int roomId, int fareId, DateTime rateDay)
+        private Boolean AddRate(int roomId, int fareId, DateTime rateDay, int hotelId, string ratePlanId)
         {
-            using (OzHotelesEntities db = new OzHotelesEntities())
-            {
-               
-            }
-                //using (OzHotelesEntities db = new OzHotelesEntities())
-                //{
-                //    var query = db.rate DayRates.Where(r =>
-                //       r.HotelId == hotelId
-                //       && r.StartDate <= endDate
-                //       && r.EndDate >= startDate
-                //       && r.Language == language);
+            IEnumerable<RatesPlan> ratePlan = FindHotelRatePlan(hotelId, ratePlanId);
+            if (ratePlan.Count() <= 0)
+                return false;
+            
 
-                //    if (roomId != null)
-                //        query = query.Where(r => r.RoomId == roomId);
-
-                //    result = query.OrderBy(r => r.StartDate).ToArray();
-                //}
                 return true;
+        }
+
+        private Boolean IsOverlappedRate()
+        {
+            return false;
         }
     }
 }
