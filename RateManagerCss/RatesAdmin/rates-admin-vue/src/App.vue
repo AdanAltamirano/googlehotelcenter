@@ -46,8 +46,8 @@ export default {
       } 
   },
   computed:{
-      roomsCatalog: () => $store.getters.rooms,
-      roomRates: () => $store.getters.roomsWithRatesAndInventory
+      roomsCatalog: () => this.$store.getters.rooms,
+      roomRates: () => this.$store.getters.roomsWithRatesAndInventory
   },
   methods:{
       showLoader(){
