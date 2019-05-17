@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IPSolutions.cs" />
     <Compile Include="Models\DTO\DailyRate.cs" />
     <Compile Include="Models\DayRates.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
