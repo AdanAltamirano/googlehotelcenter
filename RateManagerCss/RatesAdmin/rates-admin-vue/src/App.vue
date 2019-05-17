@@ -31,36 +31,23 @@ export default {
       RoomTable
   },
   created(){
-      //check for last work day
-      this.dateRange.start = Utilities.getLastWorkDay();
-      this.dateRange.end = this.dateRange.start.clone().add(13, 'days');
-
       EventBus.$on('api.call.begin', this.showLoader);
       EventBus.$on('api.call.end', this.hideLoader);
   },
   beforeMount(){
-      let self = this;
-      EventBus.$emit('loading');
-      ApiService.roomsWithRates(
-          this.$appConfig.session.hotelId,
-          this.dateRange.start.format('YYYY-MM-DD'),
-          this.dateRange.end.format('YYYY-MM-DD'),
-          this.$appConfig.language)
-        .then((response) => {
-            self.roomsCatalog = response.rooms;
-            self.roomRates = response.mixin;
-        });
+      //check for last work day
+      let start = Utilities.getLastWorkDay();
+      let end = start.clone().add(13, 'days');
+      this.$store.commit('update', {start: start.format('YYYY-MM-DD'), end: end.format('YYYY-MM-DD')});
   },
   data(){
       return {
           loader: null,
-          dateRange: {
-              start: '',
-              end: ''
-          },
-          roomsCatalog:[],
-          roomRates:[]
       } 
+  },
+  computed:{
+      roomsCatalog: () => $store.getters.rooms,
+      roomRates: () => $store.getters.roomsWithRatesAndInventory
   },
   methods:{
       showLoader(){

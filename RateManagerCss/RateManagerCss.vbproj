@@ -22,15 +22,12 @@
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
     <TargetFrameworkProfile />
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
-    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -1280,6 +1277,7 @@
     <Content Include="API\Rates.ashx" />
     <Content Include="packages.config" />
     <Content Include="API\Rooms.ashx" />
+    <Content Include="API\Rooms\Inventory.ashx" />
     <None Include="Web References\WsConnectWcf\wsConnectWCFv2.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -1297,6 +1295,9 @@
     </Compile>
     <Compile Include="API\Rooms.ashx.vb">
       <DependentUpon>Rooms.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="API\Rooms\Inventory.ashx.vb">
+      <DependentUpon>Inventory.ashx</DependentUpon>
     </Compile>
     <Compile Include="App_Data\Agreement.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -4741,7 +4742,9 @@
           <AutoAssignPort>False</AutoAssignPort>
           <DevelopmentServerPort>15903</DevelopmentServerPort>
           <DevelopmentServerVPath>/Ratemanager/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/RateManagerCss</IISUrl>
+          <IISUrl>http://localhost:15903/Ratemanager</IISUrl>
+          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
+          <IISAppRootUrl>http://localhost:15903/Ratemanager</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
@@ -4751,11 +4754,4 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
-  </Target>
 </Project>

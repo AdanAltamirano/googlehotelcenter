@@ -19,6 +19,7 @@ Vue.http.interceptors.push(() => {
 
 let rates = Vue.resource(process.env.VUE_APP_API_URL + '/rates.ashx{?hotelid,startdate,enddate,language}');
 let rooms = Vue.resource(process.env.VUE_APP_API_URL + '/rooms.ashx{?hotelid,language,showinactive}');
+let inventory = Vue.resource(process.env.VUE_APP_API_URL + '/rooms/inventory.ashx{?roomid,startdate,enddate}');
 
 
 export default {
@@ -34,6 +35,21 @@ export default {
             'hotelid': hotelId, 
             'language': language || 'en', 
             'showinactive': (showInactive||'false').toLowerCase() == 'true'
+        })
+    },
+
+     /**
+     * 
+     * @param {Number} roomId 
+     * @param {String} startDate fecha en formato ISO
+     * @param {String} endDate fecha en formato ISO
+     * @returns {Promise<[Any]>} 
+     */
+    inventory(roomId, startDate, endDate,){
+        return inventory.get({
+            'roomid': roomId, 
+            'startdate': startDate,
+            'enddate': endDate
         })
     },
 
@@ -61,14 +77,32 @@ export default {
      * @param {String} endDate fecha en formato ISO
      * @param {String} language idioma de descripciones (en|es)
      */
-    roomsWithRates(hotelId, startDate, endDate, language){
+    roomsWithRatesAndInventory(hotelId, startDate, endDate, language){
         let rooms_req = this.rooms(hotelId, language);
         let rates_req = this.rates(hotelId, startDate, endDate, language);
-
+        let self = this;
         return new Promise((resolve, reject) => {
             Promise.all([rooms_req, rates_req])
             .then(([rooms_res, rates_res]) => {
-                resolve({rooms: rooms_res.body, rates: rates_res.body, mixin: Utilities.mixRoomsAndRates(rooms_res.body, rates_res.body)});
+                var roomsAndRates = Utilities.mixRoomsAndRates(rooms_res.body, rates_res.body);
+
+                // ir por el inventario de las habitaciones que tienen tarifas
+                var invetoryPromises = rates_res.body.map(rate => {
+                    return self.inventory(rate.roomId, startDate, endDate);
+                });
+
+                Promise.all(invetoryPromises)
+                .then(responses => {
+
+                    let inventory = responses.map(r => r.body);
+
+                    let fullMix = roomsAndRates.map(room => {
+                        room.inventory = inventory.filter(r => (r[0] || {}).roomId == room.id);
+                        return room; 
+                    });
+
+                    resolve({rooms: rooms_res.body, rates: rates_res.body, inventory: inventory, mixin: fullMix});
+                });           
             })
             .catch((reason)=> {
                 reject(reason);

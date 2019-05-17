@@ -27,7 +27,9 @@ namespace APIServices.Models
     
         public virtual DbSet<DayRates> DayRates { get; set; }
         public virtual DbSet<HotelRoom> HotelRoom { get; set; }
-        public virtual DbSet<RoomInventory> RoomInventory { get; set; }
         public virtual DbSet<RatesPlan> RatesPlan { get; set; }
+        public virtual DbSet<RoomInventory> RoomInventory { get; set; }
+        public virtual DbSet<Tarifas> Tarifas { get; set; }
+        public virtual DbSet<TarifasExcepciones> TarifasExcepciones { get; set; }
     }
 }

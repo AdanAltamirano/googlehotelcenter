@@ -99,6 +99,13 @@ namespace APIServices
 
                     }).ToArray();
 
+                    // agregar fechas en las que no se cargo tarifa y estarán vacias
+                    var fixedDays = Enumerable.Range(0, 1 + endDate.Subtract(startDate).Days)
+                    .Select(offset => startDate.AddDays(offset))
+                    .Where(d => !groupedRates.DailyRates.Any(x => x.Date == d)).Select(d => new DailyRate { Date = d });
+
+                    groupedRates.DailyRates = groupedRates.DailyRates.Concat(fixedDays).ToArray();
+
                     return groupedRates;
                 }
                );

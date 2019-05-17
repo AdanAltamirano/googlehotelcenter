@@ -16,7 +16,7 @@ namespace APIServices.Models
     {
         public System.DateTime Date { get; set; }
         public int RoomId { get; set; }
-        public byte Status { get; set; }
+        public int HotelId { get; set; }
         public short FullInventory { get; set; }
         public Nullable<int> Reserved { get; set; }
         public Nullable<int> Available { get; set; }

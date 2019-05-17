@@ -6,6 +6,8 @@ import { localeMoment } from './core/localization/locale';
 import VueMoment from 'vue-moment';
 import VueCurrencyFilter from 'vue-currency-filter';
 import Loading from 'vue-loading-overlay';
+// cargar el store al final para que los settings ya hayan sido cargados
+import store from './core/store'; 
 
 //styles
 import './assets/app.scss';
@@ -29,5 +31,6 @@ Vue.use(Loading);
 Vue.config.productionTip = false;
 
 new Vue({
+  store,
   render: h => h(App),
 }).$mount('#app');
