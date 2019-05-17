@@ -51,7 +51,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IPSolutions.cs" />
     <Compile Include="Models\DTO\DailyRate.cs" />
     <Compile Include="Models\DayRates.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
@@ -81,6 +80,12 @@
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\RoomInventory.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Tarifas.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TarifasExcepciones.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
     <Compile Include="RatesService.cs" />
