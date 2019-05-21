@@ -26,8 +26,11 @@ namespace APIServices.Models
         public decimal Price { get; set; }
         public decimal ExceptionPrice { get; set; }
         public decimal Discount { get; set; }
+        public Nullable<decimal> Factor { get; set; }
+        public Nullable<decimal> Offset { get; set; }
         public string Currency { get; set; }
         public string ParentRatePlanId { get; set; }
+        public Nullable<bool> IsPromotion { get; set; }
         public Nullable<int> Language { get; set; }
     }
 }

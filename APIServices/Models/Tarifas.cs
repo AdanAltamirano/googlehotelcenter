@@ -14,6 +14,12 @@ namespace APIServices.Models
     
     public partial class Tarifas
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Tarifas()
+        {
+            this.TarifasRestricciones = new HashSet<TarifasRestricciones>();
+        }
+    
         public int idTarifa { get; set; }
         public int idTipoHabitacion_Hotel { get; set; }
         public System.DateTime FechaInicia { get; set; }
@@ -56,5 +62,8 @@ namespace APIServices.Models
         public Nullable<bool> waitListAvailable { get; set; }
         public Nullable<bool> IsRateExtension { get; set; }
         public Nullable<int> MaxAdvBooking { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TarifasRestricciones> TarifasRestricciones { get; set; }
     }
 }

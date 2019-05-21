@@ -1,85 +1,27 @@
 <template>
     <div class="bg-white border-top border-bottom border-5 pl-0 pr-0">
-        <div class="room-description ml-5 mr-5">
+        <div class="ml-5 mr-5">
             <div class="d-flex">
                 <div class="d-flex justify-content-end align-items-center border-right w-30 pr-5">
-                    <a href="#" class="mr-4"><span class="text-primary"><i class="fa fa-undo"></i></span></a>
-                    <a href="#" class="mr-3"><i class="fa fa-angle-double-left"></i></a>
-                    <a href="#" class="mr-3"><i class="fa fa-angle-left"></i></a>
-                    <h3 class="text-primary">Apr 3, 2018</h3>
-                    <a href="#" class="ml-3"><i class="fa fa-angle-right"></i></a>
-                    <a href="#" class="ml-3"><i class="fa fa-angle-double-right"></i></a>
+                    <button @click="addMonths(-1)" class="btn btn-link btn-sm"><i class="fa fa-angle-double-left"></i></button>
+                    <button @click="addDays(-1)" class="btn btn-link btn-sm"><i class="fa fa-angle-left"></i></button>
+                    <v-date-picker
+                    v-model="currentDay"
+                    :popover="{ placement: 'bottom', visibility: 'click' }"
+                    :min-date="new Date()"
+                    :is-required="true"
+                    title-position="left"
+                    :locale="$appConfig.language">
+                        <a href="#" class="text-decoration-none h3">{{ currentDay | moment('MMM D, YYYY')}}</a>
+                    </v-date-picker>
+                    <button @click="addDays(1)" class="btn btn-link btn-sm"><i class="fa fa-angle-right"></i></button>
+                    <button @click="addMonths(1)" class="btn btn-link btn-sm"><i class="fa fa-angle-double-right"></i></button>
                 </div>
                 <div class="d-flex w-70 two-weeks">
-                    <div class="border p-1 flex-fill text-center">
-                        <span>Tue</span>                        
-                        <h3 class="font-weight-bold mt-0 mb-0">03</h3>
-                        <span>APR</span>
-                    </div>
-                    <div class="border p-1 flex-fill text-center">
-                        <span>Wed</span>                        
-                        <h3 class="font-weight-bold mt-0 mb-0">04</h3>
-                        <span>APR</span>
-                    </div>
-                    <div class="border p-1 flex-fill text-center">
-                        <span>Thu</span>                        
-                        <h3 class="font-weight-bold mt-0 mb-0">05</h3>
-                        <span>APR</span>
-                    </div>
-                    <div class="border p-1 flex-fill text-center">
-                        <span>Fri</span>                        
-                        <h3 class="font-weight-bold mt-0 mb-0">06</h3>
-                        <span>APR</span>
-                    </div>
-                    <div class="border p-1 flex-fill text-center marked-background">
-                        <span>Sat</span>                        
-                        <h3 class="font-weight-bold mt-0 mb-0">07</h3>
-                        <span>APR</span>
-                    </div>
-                    <div class="border p-1 flex-fill text-center marked-background">
-                        <span>Sun</span>                        
-                        <h3 class="font-weight-bold mt-0 mb-0">08</h3>
-                        <span>APR</span>
-                    </div>
-                    <div class="border p-1 flex-fill text-center">
-                        <span>Mon</span>                        
-                        <h3 class="font-weight-bold mt-0 mb-0">09</h3>
-                        <span>APR</span>
-                    </div>
-                    <div class="border p-1 flex-fill text-center">
-                        <span>Tue</span>                        
-                        <h3 class="font-weight-bold mt-0 mb-0">10</h3>
-                        <span>APR</span>
-                    </div>
-                    <div class="border p-1 flex-fill text-center">
-                        <span>Wed</span>                        
-                        <h3 class="font-weight-bold mt-0 mb-0">11</h3>
-                        <span>APR</span>
-                    </div>
-                    <div class="border p-1 flex-fill text-center">
-                        <span>Thu</span>                        
-                        <h3 class="font-weight-bold mt-0 mb-0">12</h3>
-                        <span>APR</span>
-                    </div>
-                    <div class="border p-1 flex-fill text-center">
-                        <span>Fri</span>                        
-                        <h3 class="font-weight-bold mt-0 mb-0">13</h3>
-                        <span>APR</span>
-                    </div>
-                    <div class="border p-1 flex-fill text-center marked-background">
-                        <span>Sat</span>                        
-                        <h3 class="font-weight-bold mt-0 mb-0">14</h3>
-                        <span>APR</span>
-                    </div>
-                    <div class="border p-1 flex-fill text-center marked-background">
-                        <span>Sun</span>                        
-                        <h3 class="font-weight-bold mt-0 mb-0">15</h3>
-                        <span>APR</span>
-                    </div>
-                    <div class="border p-1 flex-fill text-center">
-                        <span>Mon</span>                        
-                        <h3 class="font-weight-bold mt-0 mb-0">16</h3>
-                        <span>APR</span>
+                    <div v-for="(day, idx) in dates" :key="idx" class="border p-1 flex-fill text-center">
+                        <span>{{day.format('ddd')}}</span>
+                        <h3 class="font-weight-bold mt-0 mb-0">{{day.format('DD')}}</h3>
+                        <span class="text-uppercase">{{day.format('MMM')}}</span>
                     </div>
                 </div>
             </div>
@@ -88,7 +30,52 @@
 </template>
 
 <script>
+import Utilities from '../core/utilities';
+
 export default {
-    
-}
+    name: 'calendar-ribbon',
+    props: {
+        dateRange: {
+            type: Object,
+            required: true,
+        },
+    },
+    data(){
+        return {
+            currentDay: Utilities.getLastWorkDay().toDate(),
+            today: this.$moment(),
+        }
+    },
+    computed:{
+        dates(){
+            if(!this.dateRange.start || !this.dateRange.end) return [];
+            return Array( 1 + this.dateRange.end.diff(this.dateRange.start, 'days')).fill(0)
+                .map((v,i) => { return this.dateRange.start.clone().add(i, 'days') });
+        },
+    },
+    methods:{
+        addDays(days){
+            const newVal = this.$moment(this.currentDay).add(days, 'days');
+            if(!this.today.isAfter(newVal,'day')){
+                this.currentDay = newVal;
+            }
+        },
+        addMonths(months){
+            const newVal = this.$moment(this.currentDay).add(months, 'months');
+            if(!this.today.isAfter(newVal,'day')){
+                this.currentDay = newVal;
+            }
+        },
+    },
+    watch:{
+        currentDay(newDay, oldDay){
+            if(!this.$moment(newDay).isSame(this.dateRange.start, 'day')){
+                const start = this.$moment(newDay);
+                const end = start.clone().add(13, 'days');
+                Utilities.setLastWorkDay(start);
+                this.$store.commit('update', { start, end});
+            }
+        }
+    }
+};
 </script>

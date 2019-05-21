@@ -1,20 +1,20 @@
-import Vue from 'vue'
+import Vue from 'vue';
 
 const AppConfig = {
-    //APP configurations
-    languaje: window.Language|| 'en',
+    // APP configurations
+    language: window.Language || 'en',
     domain: window.Domain,
     user: window.User,
-    session:{
-        hotelId: 1978 // cambiar para obtener de la sesion
-    }    
-}
+    session: {
+        hotelId: 3167, //1978//// cambiar para obtener de la sesion
+    },
+};
 
 
 const ConfigsPlugIn = {
-    install(Vue) {
-        Vue.prototype.$appConfig = AppConfig;
-        Vue.appConfig = AppConfig;
-    }
-}
+    install($Vue) {
+        $Vue.prototype.$appConfig = AppConfig;
+        $Vue.appConfig = AppConfig;
+    },
+};
 Vue.use(ConfigsPlugIn);

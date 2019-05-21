@@ -14,5 +14,8 @@ namespace APIServices.Models.DTO
         public int RoomId { get; set; }
         public string ParentRatePlanId { get; set; }
         public DailyRate[] DailyRates { get; set; }
+        public decimal? Factor { get; set; }
+        public decimal? Offset { get; set; }
+        public bool? IsPromotion { get; set; }
     }
 }

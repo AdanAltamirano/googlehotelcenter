@@ -8,7 +8,7 @@
         <!--rates form-->
         <div class="pb-5">
             <div class="bg-light">
-                <calendar-ribbon></calendar-ribbon>
+                <calendar-ribbon :date-range="dateRange"></calendar-ribbon>
                 <div class="bg-light pr-0 pl-0">
                     <room-table v-for="room in roomRates" :key="room.id" :room="room"></room-table>
                 </div>
@@ -18,45 +18,51 @@
 </template>
 
 <script>
-import { EventBus } from './core/event-bus'
-import ApiService from './api/api-service'
-import CalendarRibbon from './components/CalendarRibbon' 
-import RoomTable from './components/RoomTable' 
-import Utilities from './core/utilities'
+import EventBus from './core/event-bus';
+import CalendarRibbon from './components/CalendarRibbon.vue';
+import RoomTable from './components/RoomTable.vue';
+import Utilities from './core/utilities';
 
 export default {
-  name: 'app',
-  components: {
-      CalendarRibbon,
-      RoomTable
-  },
-  created(){
-      EventBus.$on('api.call.begin', this.showLoader);
-      EventBus.$on('api.call.end', this.hideLoader);
-  },
-  beforeMount(){
-      //check for last work day
-      let start = Utilities.getLastWorkDay();
-      let end = start.clone().add(13, 'days');
-      this.$store.commit('update', {start: start.format('YYYY-MM-DD'), end: end.format('YYYY-MM-DD')});
-  },
-  data(){
-      return {
-          loader: null,
-      } 
-  },
-  computed:{
-      roomsCatalog: () => this.$store.getters.rooms,
-      roomRates: () => this.$store.getters.roomsWithRatesAndInventory
-  },
-  methods:{
-      showLoader(){
-          this.loader = this.$loading.show({color: '#007bff', height: 128, width: 128});
-      },
-      hideLoader(){
-          this.loader.hide();
-      },
-      
-  }
+    name: 'app',
+    components: {
+        CalendarRibbon,
+        RoomTable,
+    },
+    created() {
+        EventBus.$on('api.call.begin', this.showLoader);
+        EventBus.$on('api.call.end', this.hideLoader);
+    },
+    beforeMount() {
+    // check for last work day
+        const start = Utilities.getLastWorkDay();
+        const end = start.clone().add(13, 'days');
+        this.$store.commit('update', { start, end});
+    },
+    data() {
+        return {
+            loader: null,
+        };
+    },
+    computed: {
+        roomsCatalog() {
+            return this.$store.getters.rooms;
+        },
+        roomRates() {
+            return this.$store.getters.roomsWithRatesAndInventory;
+        },
+        dateRange() {
+            return this.$store.getters.dateRange;
+        },
+    },
+    methods: {
+        showLoader() {
+            this.loader = this.$loading.show({ color: '#007bff', height: 128, width: 128 });
+        },
+        hideLoader() {
+            this.loader.hide();
+        },
+
+    },
 };
 </script>

@@ -1,11 +1,11 @@
-h3 {
+h3, .h3 {
     font-size: 20px;
     margin-bottom: 0;
 }
-h4 {
+h4, .h4 {
     font-size: 15px;
 }
-a, h5, .btn, span, .form-control {
+a, h5, .h5, .btn, span, .form-control {
     font-size: 12px;
 }
 .w-15 {
@@ -152,4 +152,7 @@ body {
 }
 .gds-container div:nth-child(2) > div:first-child > div:first-child label  {
     display: inline !important;
+}
+.vc-popover-content{
+    border-style: solid;
 }
