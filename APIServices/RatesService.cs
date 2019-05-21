@@ -198,6 +198,7 @@ namespace APIServices
             {
                 var newRate = new Tarifas
                 {
+                    idTarifa = rate.rateId,
                     idTipoHabitacion_Hotel = rate.roomId,
                     FechaFinaliza = rate.endDate,
                     FechaInicia = rate.startDate,
@@ -211,24 +212,31 @@ namespace APIServices
                     RateRulesDefault = rate.useDefaultRules,
                     idrateplan = rate.ratePlanId,
                     NoArrivos = rate.noArrival,
-
                 };
                 using (OzHotelesEntities db = new OzHotelesEntities())
                 {
-                    db.Tarifas.Add(newRate);
-                    db.SaveChanges();
+                    if (newRate.idTarifa != 0)
+                    {
+                        db.Tarifas.Add(newRate);
+                        db.SaveChanges();
+                    }
+                    else
+                    {
+                        
+                    }
+                    
                 }
             }
                 return true;
         }
 
-        private Boolean IsOverlappedRate(int rateExceptionId, int roomId, string ratePlanId, DateTime startDate, DateTime endDate)
+        private Boolean IsOverlappedRate(int rateId, int roomId, string ratePlanId, DateTime startDate, DateTime endDate)
         {
-            IEnumerable<TarifasExcepciones> overlappedFares = null;
+            IEnumerable<Tarifas> overlappedFares = null;
             using (OzHotelesEntities db = new OzHotelesEntities())
             {
-                overlappedFares = db.TarifasExcepciones.Where(o =>
-                    o.idTarifaExcepcion != rateExceptionId
+                overlappedFares = db.Tarifas.Where(o =>
+                    o.idTarifa != rateId
                     && o.idTipoHabitacion_Hotel == roomId
                     && o.idrateplan  == ratePlanId
                     && (((startDate >= o.FechaInicia && startDate <= o.FechaFinaliza) || (endDate >= o.FechaInicia && endDate <= o.FechaFinaliza))
