@@ -13,7 +13,76 @@ namespace APIServices
     /// Métodos para consulta y manejo de tarifas
     /// </summary>
     public class RatesService
-    {      
+    {
+        /// <summary>
+        /// Búsqueda de tarifas diarias
+        /// </summary>
+        /// <param name="hotelId"></param>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
+        /// <param name="language"></param>
+        /// <param name="roomId"></param>
+        /// <returns>Conjunto de tarifas</returns>
+        public DailyRateDetail FindDayRateDetail(int rateId, DateTime day)
+        {
+            DailyRateDetail result = null;
+            using (OzHotelesEntities db = new OzHotelesEntities())
+            {
+                DayRates dayRate = db.DayRates.FirstOrDefault(x => x.RateId == rateId && x.ParentRatePlanId == null);
+
+                result = new DailyRateDetail
+                {
+                    Currency = dayRate.Currency,
+                    Date = day,
+                    Discount = dayRate.Discount,
+                    RateId = dayRate.RateId,
+                };
+
+                var dayRateDetails = db.DayRateDetail.Where(r => r.RateId == rateId).ToArray();
+
+                //adultos
+                var adultRates = dayRateDetails.Where(x => x.Children == 0)
+                    .Select(x=> new DailyRateDetailPrice {
+                        Id = x.Id,
+                        RateId = x.RateId,
+                        Occupation = x.Adults,
+                        Type = PaxType.Adult,
+                        Price = Utilities.IsInExceptionPrice(dayRate.ExceptionMap, day) ? (x.AdultExceptionPrice??0) : x.AdultPrice,
+                    });
+
+                result.Prices.AddRange(adultRates);
+                // niños
+                var children =  dayRateDetails.Where(x => x.Children > 0)
+                    .Select(x => new DailyRateDetailPrice
+                    {
+                        Id = x.Id,
+                        RateId = x.RateId,
+                        Occupation = x.Children,
+                        Type = PaxType.Child,
+                        Price = Utilities.IsInExceptionPrice(dayRate.ExceptionMap, day) ? (x.ChildExceptionPrice ?? 0) : x.ChildPrice,
+                    }).GroupBy(x => x.Occupation).Select(x=> x.FirstOrDefault());
+                result.Prices.AddRange(children);
+                //juniors
+                var juniors = dayRateDetails
+                    .Where(x => x.Children > 0 && (
+                        (x.JuniorPrice != null && x.JuniorPrice > 0) || 
+                        (x.JuniorExceptionPrice != null && x.JuniorExceptionPrice > 0)
+                        ))
+                    .Select(x => new DailyRateDetailPrice
+                    {
+                        Id = x.Id,
+                        RateId = x.RateId,
+                        Occupation = x.Children,
+                        Type = PaxType.Junior,
+                        Price = Utilities.IsInExceptionPrice(dayRate.ExceptionMap, day) ? (x.JuniorExceptionPrice ?? 0) : x.JuniorPrice ?? 0,
+                    }).GroupBy(x => x.Occupation).Select(x => x.FirstOrDefault());
+                result.Prices.AddRange(juniors);
+
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// Búsqueda de tarifas diarias
         /// </summary>
@@ -83,7 +152,10 @@ namespace APIServices
                        r.RatePlanName,
                        r.RoomId,
                        r.ParentRatePlanId,
-                       r.Currency
+                       r.Currency,
+                       r.IsPromotion,
+                       r.Factor,
+                       r.Offset
                    })
                 .Select(r =>
                 {
@@ -93,7 +165,10 @@ namespace APIServices
                         RatePlan = r.Key.RatePlanName,
                         RoomId = r.Key.RoomId,
                         ParentRatePlanId = r.Key.ParentRatePlanId,
-                        Currency = r.Key.Currency
+                        Currency = r.Key.Currency,
+                        Factor = r.Key.Factor,
+                        Offset = r.Key.Offset,
+                        IsPromotion = r.Key.IsPromotion
                     };
 
                     groupedRates.DailyRates = r.SelectMany(rate =>

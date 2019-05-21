@@ -1,6 +1,12 @@
+$theme-colors: (
+    "primary": #10467a,
+    "info": #007bff
+);
 $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
 @import '@fortawesome/fontawesome-free/scss/fontawesome.scss';
 @import "@fortawesome/fontawesome-free/scss/solid.scss";
-@import '~bootstrap/scss/bootstrap.scss';
+//@import '~bootstrap/scss/bootstrap.scss';
+@import './custom.bootstrap.scss';
 @import '~vue-loading-overlay/dist/vue-loading.css';
+@import './tooltip.scss';
 @import './custom.scss';

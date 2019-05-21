@@ -1278,6 +1278,7 @@
     <Content Include="packages.config" />
     <Content Include="API\Rooms.ashx" />
     <Content Include="API\Rooms\Inventory.ashx" />
+    <Content Include="API\Rates\Daily.ashx" />
     <None Include="Web References\WsConnectWcf\wsConnectWCFv2.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -1292,6 +1293,9 @@
     <Compile Include="API\APIHandler.vb" />
     <Compile Include="API\Rates.ashx.vb">
       <DependentUpon>Rates.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="API\Rates\Daily.ashx.vb">
+      <DependentUpon>Daily.ashx</DependentUpon>
     </Compile>
     <Compile Include="API\Rooms.ashx.vb">
       <DependentUpon>Rooms.ashx</DependentUpon>

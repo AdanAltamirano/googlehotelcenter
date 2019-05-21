@@ -1,5 +1,5 @@
 export default {
-    'rates': 'tarifas',
-    'avail': 'disp',
-    'links': 'vínculos'
-}
+    rates: 'tarifas',
+    avail: 'disp',
+    "{discount}% Off": '{discount}% de descuento'
+};
