@@ -119,21 +119,21 @@ Partial Class ctrRatePlanLink
     Private Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.PreRender
         loadculture()
         If Me.txtDivVisible.Text = "1" Then
-            hplShow.Style.Add("display", "block")
+            'hplShow.Style.Add("display", "block")
             divratio.Style.Add("display", "block")
             divoffset.Style.Add("display", "block")
             lbl_Offset.Style.Add("display", "block")
             lbl_Ratio.Style.Add("display", "block")
-            hplhide.Style.Add("display", "none")
+            'hplhide.Style.Add("display", "none")
             divDatos.Style.Add("display", "none")
         Else
 
-            hplShow.Style.Add("display", "none")
+            'hplShow.Style.Add("display", "none")
             divratio.Style.Add("display", "none")
             divoffset.Style.Add("display", "none")
             lbl_Offset.Style.Add("display", "none")
             lbl_Ratio.Style.Add("display", "none")
-            hplhide.Style.Add("display", "block")
+            'hplhide.Style.Add("display", "block")
             divDatos.Style.Add("display", "block")
         End If
         'Me.ddlRatePlanSource.Attributes.Add("onChange", "javascript:showRatePlan2('" & Me.ddlRatePlanSource.ClientID & "','" & Me.SourceRateName & "','" & lblSRatePlan.ClientID & "')")

@@ -19,4 +19,24 @@ namespace APIServices
             return exceptionMap[(int)day.DayOfWeek] == 'Y';
         }
     }
+
+    public class Rate
+    {
+        public int rateId;
+        public int roomId;
+        public string ratePlanId;
+        public decimal adultPrice;
+        public decimal childPrice;
+        public decimal teenPrice;
+        public decimal extreAdultPrice;
+        public decimal extraChildPrice;
+        public decimal extraTeenPrice;
+        public DateTime startDate;
+        public DateTime endDate;
+        public string exceptionDays;
+        public string noArrival;
+        public bool useDefaultRules;
+        public string segment;
+        public string rateCode;
+    }
 }

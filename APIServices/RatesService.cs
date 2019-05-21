@@ -134,7 +134,7 @@ namespace APIServices
             return result;
         }
 
-        private void SplitRate(ref int err, DateTime startDate, DateTime endDate, int IdTipoHabitacion, string idRatePlan)
+        private Boolean SplitRate(ref int err, DateTime startDate, DateTime endDate, int roomId, string ratePlanId)
         {
             try
             {
@@ -151,8 +151,8 @@ namespace APIServices
                             dsCommand.SelectCommand.CommandText = "spSplitRate";
                             dsCommand.SelectCommand.Parameters.Add("@fechaInicia", SqlDbType.SmallDateTime).Value = startDate;
                             dsCommand.SelectCommand.Parameters.Add("@fechaFinaliza", SqlDbType.SmallDateTime).Value = endDate;
-                            dsCommand.SelectCommand.Parameters.Add("@idTipoHabitacion", SqlDbType.Int).Value = IdTipoHabitacion;
-                            dsCommand.SelectCommand.Parameters.Add("@idRatePlan", SqlDbType.VarChar, 8).Value = idRatePlan;
+                            dsCommand.SelectCommand.Parameters.Add("@idTipoHabitacion", SqlDbType.Int).Value = roomId;
+                            dsCommand.SelectCommand.Parameters.Add("@idRatePlan", SqlDbType.VarChar, 8).Value = ratePlanId;
                             dsCommand.SelectCommand.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
                             dsCommand.SelectCommand.Connection.Open();
                         }
@@ -174,26 +174,70 @@ namespace APIServices
                         dsCommand.Dispose();
                     }
                 }
+                return true;
             }
             catch (Exception ex)
             {
+                return false;
                 var a = ex.ToString();
             }
         }
 
-        private Boolean AddRate(int roomId, int fareId, DateTime rateDay, int hotelId, string ratePlanId)
+        //private Boolean AddRate(int roomId, int rateId, DateTime rateDay, int hotelId, string ratePlanId, DateTime startDate, DateTime endDate)
+        private Boolean AddRate(int hotelId, Rate rate)
         {
-            IEnumerable<RatesPlan> ratePlan = FindHotelRatePlan(hotelId, ratePlanId);
+            int err = 0;
+            if (!SplitRate(ref err, rate.startDate, rate.endDate, rate.roomId, rate.ratePlanId))
+                return false;
+
+            IEnumerable<RatesPlan> ratePlan = FindHotelRatePlan(hotelId, rate.ratePlanId);
             if (ratePlan.Count() <= 0)
                 return false;
-            
 
+            if (!IsOverlappedRate(rate.rateId, rate.roomId, rate.ratePlanId, rate.startDate, rate.endDate))
+            {
+                var newRate = new Tarifas
+                {
+                    idTipoHabitacion_Hotel = rate.roomId,
+                    FechaFinaliza = rate.endDate,
+                    FechaInicia = rate.startDate,
+                    Precio = rate.adultPrice,
+                    PrecioExtraAdulto = rate.extreAdultPrice,
+                    NiniosRate = rate.childPrice,
+                    PrecioExtraNinio = rate.extraChildPrice,
+                    PrecioAdolescente = rate.teenPrice,
+                    PrecioAdolescenteExtra = rate.extraTeenPrice,
+                    Excepciones = rate.exceptionDays,
+                    RateRulesDefault = rate.useDefaultRules,
+                    idrateplan = rate.ratePlanId,
+                    NoArrivos = rate.noArrival,
+
+                };
+                using (OzHotelesEntities db = new OzHotelesEntities())
+                {
+                    db.Tarifas.Add(newRate);
+                    db.SaveChanges();
+                }
+            }
                 return true;
         }
 
-        private Boolean IsOverlappedRate()
+        private Boolean IsOverlappedRate(int rateExceptionId, int roomId, string ratePlanId, DateTime startDate, DateTime endDate)
         {
-            return false;
+            IEnumerable<TarifasExcepciones> overlappedFares = null;
+            using (OzHotelesEntities db = new OzHotelesEntities())
+            {
+                overlappedFares = db.TarifasExcepciones.Where(o =>
+                    o.idTarifaExcepcion != rateExceptionId
+                    && o.idTipoHabitacion_Hotel == roomId
+                    && o.idrateplan  == ratePlanId
+                    && (((startDate >= o.FechaInicia && startDate <= o.FechaFinaliza) || (endDate >= o.FechaInicia && endDate <= o.FechaFinaliza))
+                          || ((o.FechaInicia >= startDate && o.FechaInicia <= endDate) || (o.FechaFinaliza >= startDate && o.FechaFinaliza <= endDate)))).ToArray();
+
+                if (overlappedFares.Count() > 0)
+                    return true;
+            }
+                return false;
         }
     }
 }
