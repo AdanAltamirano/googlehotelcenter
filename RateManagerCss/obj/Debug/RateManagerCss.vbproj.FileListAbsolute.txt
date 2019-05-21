@@ -1294,3 +1294,4 @@ C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\es\RateManager.re
 C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.dll
 C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.xml
 C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManager.pdb
+C:\DAVID\Repositorios\CRS_Ratemanager\RateManagerCss\obj\Debug\RateManagerCss.vbprojResolveAssemblyReference.cache

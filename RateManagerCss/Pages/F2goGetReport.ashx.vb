@@ -13,7 +13,7 @@ Public Class F2goGetReport
         Dim q As NameValueCollection = context.Request.Form
         Dim isUv As Boolean = q("isUv") <> Nothing
 
-        Dim idHotel As Integer = 0
+        Dim idHotel As Integer = 1978
         If isUv Then
             If HttpContext.Current.Session("InfoCompany") IsNot Nothing Then
                 Dim info As companyInfo = CType(HttpContext.Current.Session("InfoCompany"), companyInfo)
