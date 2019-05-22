@@ -61,6 +61,7 @@
     <Compile Include="Models\DTO\DailyRateDetail.cs" />
     <Compile Include="Models\DTO\Room.cs" />
     <Compile Include="Models\DTO\RoomInventoryInfo.cs" />
+    <Compile Include="Models\DTO\UpdateRateRequest.cs" />
     <Compile Include="Models\HotelRoom.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
