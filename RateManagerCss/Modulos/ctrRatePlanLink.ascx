@@ -48,8 +48,8 @@
 					Type="Double" MinimumValue="-999" MaximumValue="999" ControlToValidate="txtoffset"></asp:rangevalidator></div>
 		</TD>
 		<TD colspan="2">
-			<asp:hyperlink id="hplhide" runat="server" CssClass="hideOptions">Hide Ratio/offset by occupancy</asp:hyperlink>
-			<asp:hyperlink id="hplShow" runat="server" CssClass="showOptions">Show Ratio/offset by occupancy</asp:hyperlink></TD>
+			<asp:hyperlink Visible="false" id="hplhide" runat="server" CssClass="hideOptions">Hide Ratio/offset by occupancy</asp:hyperlink>
+			<asp:hyperlink Visible="false" id="hplShow" runat="server" CssClass="showOptions">Show Ratio/offset by occupancy</asp:hyperlink></TD>
 	</TR>
 	<TR>
 		<TD align="center" colSpan="6">

@@ -42,17 +42,18 @@ namespace APIServices
 
                 //adultos
                 var adultRates = dayRateDetails.Where(x => x.Children == 0)
-                    .Select(x=> new DailyRateDetailPrice {
+                    .Select(x => new DailyRateDetailPrice
+                    {
                         Id = x.Id,
                         RateId = x.RateId,
                         Occupation = x.Adults,
                         Type = PaxType.Adult,
-                        Price = Utilities.IsInExceptionPrice(dayRate.ExceptionMap, day) ? (x.AdultExceptionPrice??0) : x.AdultPrice,
+                        Price = Utilities.IsInExceptionPrice(dayRate.ExceptionMap, day) ? (x.AdultExceptionPrice ?? 0) : x.AdultPrice,
                     });
 
                 result.Prices.AddRange(adultRates);
                 // niños
-                var children =  dayRateDetails.Where(x => x.Children > 0)
+                var children = dayRateDetails.Where(x => x.Children > 0)
                     .Select(x => new DailyRateDetailPrice
                     {
                         Id = x.Id,
@@ -60,12 +61,12 @@ namespace APIServices
                         Occupation = x.Children,
                         Type = PaxType.Child,
                         Price = Utilities.IsInExceptionPrice(dayRate.ExceptionMap, day) ? (x.ChildExceptionPrice ?? 0) : x.ChildPrice,
-                    }).GroupBy(x => x.Occupation).Select(x=> x.FirstOrDefault());
+                    }).GroupBy(x => x.Occupation).Select(x => x.FirstOrDefault());
                 result.Prices.AddRange(children);
                 //juniors
                 var juniors = dayRateDetails
                     .Where(x => x.Children > 0 && (
-                        (x.JuniorPrice != null && x.JuniorPrice > 0) || 
+                        (x.JuniorPrice != null && x.JuniorPrice > 0) ||
                         (x.JuniorExceptionPrice != null && x.JuniorExceptionPrice > 0)
                         ))
                     .Select(x => new DailyRateDetailPrice
@@ -95,7 +96,7 @@ namespace APIServices
         private IEnumerable<DayRates> FindDayRates(int hotelId, DateTime startDate, DateTime endDate, int language = 1, int? roomId = null)
         {
             IEnumerable<DayRates> result = null;
-            using(OzHotelesEntities db = new OzHotelesEntities())
+            using (OzHotelesEntities db = new OzHotelesEntities())
             {
                 var query = db.DayRates.Where(r =>
                    r.HotelId == hotelId
@@ -107,6 +108,25 @@ namespace APIServices
                     query = query.Where(r => r.RoomId == roomId);
 
                 result = query.OrderBy(r => r.StartDate).ToArray();
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Búsqueda de un RatePlan por hotel
+        /// </summary>
+        /// <param name="hotelId"></param>
+        /// <param name="ratePlanId"></param>
+        /// <returns>Conjunto de RatesPlan</returns>
+        private IEnumerable<RatesPlan> FindHotelRatePlan(int hotelId, string ratePlanId)
+        {
+            IEnumerable<RatesPlan> result = null;
+            using (OzHotelesEntities db = new OzHotelesEntities())
+            {
+                result = db.RatesPlan.Where(r =>
+                   r.IdHotel == hotelId
+                   && r.idRatePlan == ratePlanId).ToArray();
             }
 
             return result;
@@ -190,14 +210,76 @@ namespace APIServices
             return result;
         }
 
-        private void SpliRate(ref int err, DateTime startDate, DateTime endDate, int IdTipoHabitacion, string idRatePlan)
+        public Boolean AddRate(int hotelId, UpdateRateRequest rate)
+        {
+            int err = 0;
+            bool success = true;
+            OzHotelesEntities db = new OzHotelesEntities();
+
+            using (System.Data.Entity.DbContextTransaction transaction = db.Database.BeginTransaction())
+            {
+                try
+                {
+                    success = RemoveOverlappedRates(rate.RateId, rate.RoomId, rate.RatePlanId, rate.StartDate, rate.EndDate, ref db)                              
+                              || InsertRate(hotelId, rate, ref db);
+
+                    if (!success)
+                    {
+                        db.SaveChanges();
+                        transaction.Commit();
+                        success = SplitRate(ref err, rate.StartDate, rate.EndDate, rate.RoomId, rate.RatePlanId, ref db);
+                    }
+                    else
+                    {
+                        transaction.Rollback();
+                    }
+                }
+                catch
+                {
+                    transaction.Rollback();
+                    return false;
+                }
+            }
+
+            return success;
+        }
+
+        private bool RemoveOverlappedRates(int rateId, int roomId, string ratePlanId, DateTime startDate, DateTime endDate, ref OzHotelesEntities contextDb)
+        {
+            IEnumerable<Tarifas> overlappedFares = null;
+            IEnumerable<TarifasRestricciones> overlappedFaresRestrictions = null;
+
+            overlappedFares = contextDb.Tarifas.Where(o =>
+                o.idTarifa != rateId
+                && o.idTipoHabitacion_Hotel == roomId
+                && o.idrateplan == ratePlanId
+                && (((startDate >= o.FechaInicia && startDate <= o.FechaFinaliza) || (endDate >= o.FechaInicia && endDate <= o.FechaFinaliza))
+                      || ((o.FechaInicia >= startDate && o.FechaInicia <= endDate) || (o.FechaFinaliza >= startDate && o.FechaFinaliza <= endDate)))).ToArray();
+
+            if (overlappedFares.Count() > 0)
+            {
+                foreach (var of in overlappedFares)
+                {
+                    overlappedFaresRestrictions = contextDb.TarifasRestricciones.Where(tr => tr.idTarifa == of.idTarifa);
+                    foreach (var tr in overlappedFaresRestrictions)
+                    {
+                        contextDb.TarifasRestricciones.Remove(tr);
+                    }
+                    contextDb.Tarifas.Remove(of);
+                }
+                return true;
+            }
+            return false;
+        }
+
+        private bool SplitRate(ref int err, DateTime startDate, DateTime endDate, int roomId, string ratePlanId, ref OzHotelesEntities contextDb)
         {
             try
             {
-                
+
                 SqlDataAdapter dsCommand = new SqlDataAdapter();
                 string ConnectionString = System.Configuration.ConfigurationSettings.AppSettings["HotelConnectionString"];
-                SqlConnection Connection = new SqlConnection(ConnectionString); 
+                SqlConnection Connection = new SqlConnection(ConnectionString);
                 dsCommand = new SqlDataAdapter("spSplitRate", Connection);
                 {
                     try
@@ -207,8 +289,8 @@ namespace APIServices
                             dsCommand.SelectCommand.CommandText = "spSplitRate";
                             dsCommand.SelectCommand.Parameters.Add("@fechaInicia", SqlDbType.SmallDateTime).Value = startDate;
                             dsCommand.SelectCommand.Parameters.Add("@fechaFinaliza", SqlDbType.SmallDateTime).Value = endDate;
-                            dsCommand.SelectCommand.Parameters.Add("@idTipoHabitacion", SqlDbType.Int).Value = IdTipoHabitacion;
-                            dsCommand.SelectCommand.Parameters.Add("@idRatePlan", SqlDbType.VarChar, 8).Value = idRatePlan;
+                            dsCommand.SelectCommand.Parameters.Add("@idTipoHabitacion", SqlDbType.Int).Value = roomId;
+                            dsCommand.SelectCommand.Parameters.Add("@idRatePlan", SqlDbType.VarChar, 8).Value = ratePlanId;
                             dsCommand.SelectCommand.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
                             dsCommand.SelectCommand.Connection.Open();
                         }
@@ -230,33 +312,64 @@ namespace APIServices
                         dsCommand.Dispose();
                     }
                 }
+                return true;
             }
             catch (Exception ex)
             {
+                return false;
                 var a = ex.ToString();
             }
         }
 
-        private Boolean AddRate(int roomId, int fareId, DateTime rateDay)
+        private bool InsertRate(int hotelId, UpdateRateRequest rate, ref OzHotelesEntities contextDb)
         {
-            using (OzHotelesEntities db = new OzHotelesEntities())
+            IEnumerable<RatesPlan> ratePlan = FindHotelRatePlan(hotelId, rate.RatePlanId);
+
+            if (ratePlan.Count() <= 0)
+                return false;
+
+            decimal adultRatePerRoom = 0;
+            decimal childRatePerRoom = 0;
+            decimal juniorRatePerRoom = 0;
+
+            foreach (var price in rate.Prices)
             {
-               
+                if (price.Type == PaxType.Adult && price.Occupation == 1)
+                {
+                    adultRatePerRoom = price.Price;
+                }
+
+                if (price.Type == PaxType.Child && price.Occupation == 1)
+                {
+                    childRatePerRoom = price.Price;
+                }
+
+                if (price.Type == PaxType.Junior && price.Occupation == 1)
+                {
+                    juniorRatePerRoom = price.Price;
+                }
             }
-                //using (OzHotelesEntities db = new OzHotelesEntities())
-                //{
-                //    var query = db.rate DayRates.Where(r =>
-                //       r.HotelId == hotelId
-                //       && r.StartDate <= endDate
-                //       && r.EndDate >= startDate
-                //       && r.Language == language);
 
-                //    if (roomId != null)
-                //        query = query.Where(r => r.RoomId == roomId);
+            var newRate = new Tarifas
+            {
+                idTarifa = rate.RateId,
+                idTipoHabitacion_Hotel = rate.RoomId,
+                FechaFinaliza = rate.EndDate,
+                FechaInicia = rate.StartDate,
+                PrecioExtraAdulto = rate.ExtraAdultPrice,
+                PrecioExtraNinio = rate.ExtraChildPrice,
+                PrecioAdolescenteExtra = rate.ExtraJuniorPrice,
+                idrateplan = rate.RatePlanId,
+                NoArrivos = rate.Rules.NoArrival ?? "YYYYYYY",
+                Excepciones = rate.Rules.ExceptionDays ?? "NNNNNNN",
+                RateRulesDefault = rate.Rules.UseDefaultRules ?? false,
+                PrecioAdolescente = juniorRatePerRoom,
+                NiniosRate = childRatePerRoom,
+                Precio = adultRatePerRoom
+            };
 
-                //    result = query.OrderBy(r => r.StartDate).ToArray();
-                //}
-                return true;
+            contextDb.Tarifas.Add(newRate);
+            return true;
         }
     }
 }

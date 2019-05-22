@@ -272,7 +272,7 @@ Public Class Promotions
                 End If
             Next
             dvRp = ds.Tables(RatePlanData.RATEPLAN_TABLE).DefaultView
-            dvRp.RowFilter = "isPromo  is null or isPromo = 0"
+            dvRp.RowFilter = "(isPromo  is null or isPromo = 0) AND (idLinkRatePlan = 0)"
 
             chlListContract.DataValueField = RatePlanData.FIELD_IDRATEPLAN
             chlListContract.DataTextField = "texto"
