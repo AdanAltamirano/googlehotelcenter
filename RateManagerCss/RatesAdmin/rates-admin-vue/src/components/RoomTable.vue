@@ -71,7 +71,7 @@
                     <div class="d-flex w-70">
                         <div class="border p-1 flex-fill text-center bg-blue-created" v-for="day in child.dailyRates" :key="day.date">
                             <span v-if="day.price > 0">{{ getPrice(day, child) | currency}}</span>
-                            <span v-else class="text-danger"> - </span>
+                            <span v-else class="text-danger"> N/A </span>
                         </div>
                     </div>
                 </div>

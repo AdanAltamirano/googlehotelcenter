@@ -13,6 +13,8 @@
         <EntityTypeShape EntityType="Models.DayRates" Width="1.5" PointX="9.375" PointY="4.75" />
         <EntityTypeShape EntityType="Models.TarifasRestricciones" Width="1.5" PointX="7.625" PointY="10.125" />
         <AssociationConnector Association="Models.Tarifas_Tarifas_Planes_FK1" />
+        <EntityTypeShape EntityType="Models.HotelBasicInfo" Width="1.5" PointX="10.375" PointY="10.75" />
+        <EntityTypeShape EntityType="Models.HotelPlan" Width="1.5" PointX="11.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
