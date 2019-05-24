@@ -64,13 +64,16 @@
     <Compile Include="Models\DTO\RatePlan.cs" />
     <Compile Include="Models\DTO\Room.cs" />
     <Compile Include="Models\DTO\RoomInventoryInfo.cs" />
-    <Compile Include="Models\DTO\UpdateRateRequest.cs" />
+<<<<<<< HEAD
     <Compile Include="Models\HotelBasicInfo.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\HotelPlan.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
+=======
+    <Compile Include="Models\DTO\UpdateRateRequest.cs" />
+>>>>>>> d2795cba183b2ce67959d5a35f6c236472a22f8c
     <Compile Include="Models\HotelRoom.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>

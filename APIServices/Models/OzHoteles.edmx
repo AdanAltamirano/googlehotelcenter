@@ -178,6 +178,35 @@ warning 6002: The table/view 'OzHoteles.dbo.DayRates' does not have a primary ke
           <Property Name="Language" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
+warning 6002: The table/view 'OzHoteles.dbo.HotelBasicInfo' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="HotelBasicInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="CompanyId" />
+            <PropertyRef Name="Status" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="CompanyId" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="180" />
+          <Property Name="Currency" Type="nvarchar" MaxLength="3" />
+          <Property Name="CorpId" Type="int" />
+          <Property Name="Corp" Type="nvarchar" MaxLength="20" />
+          <Property Name="Status" Type="tinyint" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'OzHoteles.dbo.HotelPlan' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="HotelPlan">
+          <Key>
+            <PropertyRef Name="Code" />
+            <PropertyRef Name="HotelId" />
+          </Key>
+          <Property Name="Code" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="80" />
+          <Property Name="HotelId" Type="int" Nullable="false" />
+          <Property Name="Currency" Type="nvarchar" MaxLength="3" />
+          <Property Name="Language" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'OzHoteles.dbo.HotelRoom' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="HotelRoom">
           <Key>
@@ -278,6 +307,26 @@ warning 6002: The table/view 'OzHoteles.dbo.RoomInventory' does not have a prima
     [DayRates].[Language] AS [Language]
     FROM [dbo].[DayRates] AS [DayRates]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="HotelBasicInfo" EntityType="Self.HotelBasicInfo" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [HotelBasicInfo].[Id] AS [Id], 
+    [HotelBasicInfo].[CompanyId] AS [CompanyId], 
+    [HotelBasicInfo].[Name] AS [Name], 
+    [HotelBasicInfo].[Currency] AS [Currency], 
+    [HotelBasicInfo].[CorpId] AS [CorpId], 
+    [HotelBasicInfo].[Corp] AS [Corp], 
+    [HotelBasicInfo].[Status] AS [Status]
+    FROM [dbo].[HotelBasicInfo] AS [HotelBasicInfo]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="HotelPlan" EntityType="Self.HotelPlan" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [HotelPlan].[Code] AS [Code], 
+    [HotelPlan].[Name] AS [Name], 
+    [HotelPlan].[HotelId] AS [HotelId], 
+    [HotelPlan].[Currency] AS [Currency], 
+    [HotelPlan].[Language] AS [Language]
+    FROM [dbo].[HotelPlan] AS [HotelPlan]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="HotelRoom" EntityType="Self.HotelRoom" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [HotelRoom].[Id] AS [Id], 
@@ -327,6 +376,8 @@ warning 6002: The table/view 'OzHoteles.dbo.RoomInventory' does not have a prima
             <End Role="Tarifas" EntitySet="Tarifas" />
             <End Role="TarifasRestricciones" EntitySet="TarifasRestricciones" />
           </AssociationSet>
+          <EntitySet Name="HotelBasicInfo" EntityType="Models.HotelBasicInfo" />
+          <EntitySet Name="HotelPlan" EntityType="Models.HotelPlan" />
         </EntityContainer>
         <EntityType Name="HotelRoom">
           <Key>
@@ -555,6 +606,31 @@ warning 6002: The table/view 'OzHoteles.dbo.RoomInventory' does not have a prima
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="HotelBasicInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="CompanyId" />
+            <PropertyRef Name="Status" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="CompanyId" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="180" FixedLength="false" Unicode="true" />
+          <Property Name="Currency" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="CorpId" Type="Int32" />
+          <Property Name="Corp" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="Byte" Nullable="false" />
+        </EntityType>
+        <EntityType Name="HotelPlan">
+          <Key>
+            <PropertyRef Name="Code" />
+            <PropertyRef Name="HotelId" />
+          </Key>
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="HotelId" Type="Int32" Nullable="false" />
+          <Property Name="Currency" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="Language" Type="Int32" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -749,6 +825,30 @@ warning 6002: The table/view 'OzHoteles.dbo.RoomInventory' does not have a prima
                 <ScalarProperty Name="TarifaAdulto" ColumnName="TarifaAdulto" />
                 <ScalarProperty Name="idTarifa" ColumnName="idTarifa" />
                 <ScalarProperty Name="idRestriccion" ColumnName="idRestriccion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HotelBasicInfo">
+            <EntityTypeMapping TypeName="Models.HotelBasicInfo">
+              <MappingFragment StoreEntitySet="HotelBasicInfo">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Corp" ColumnName="Corp" />
+                <ScalarProperty Name="CorpId" ColumnName="CorpId" />
+                <ScalarProperty Name="Currency" ColumnName="Currency" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HotelPlan">
+            <EntityTypeMapping TypeName="Models.HotelPlan">
+              <MappingFragment StoreEntitySet="HotelPlan">
+                <ScalarProperty Name="Language" ColumnName="Language" />
+                <ScalarProperty Name="Currency" ColumnName="Currency" />
+                <ScalarProperty Name="HotelId" ColumnName="HotelId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

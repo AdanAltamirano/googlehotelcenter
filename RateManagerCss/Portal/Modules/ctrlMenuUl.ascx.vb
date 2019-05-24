@@ -70,7 +70,7 @@ Partial Public Class ctrlMenuUl
                 Select Case CurrentMenuType
                     Case MenuType.SoloPrimerNivel
 
-                        result = String.Format("<ul>{0}</ul>", result)
+                        result = String.Format("<ul class=""navbar-nav bd-navbar-nav flex-row"">{0}</ul>", result)
                     Case MenuType.SoloSegundoNivel
                         result = result
                 End Select
@@ -104,12 +104,20 @@ Partial Public Class ctrlMenuUl
                         Select Case CurrentMenuType
                             Case MenuType.SoloPrimerNivel
                                 If nextIdPadre <> -2 Then
-                                    result += String.Format("{0}<li id = '{1}_{2}_li'><a {3}>{4}</a><ul class='submenuprin'>", GetTabs(nivel), nivel, menuItem_Id, GetHrefLeve1(url, nivel, menuItem_Id), GetString(text).ToUpper)
+
+                                    Dim html As String = String.Empty
+                                    html &= "{0}<li class=""nav-item"" id=""{1}_{2}_li"">"
+                                    html &= "<a class=""nav-link"" data-toggle=""dropdown"" aria-expanded=""false"" aria-haspopup=""true"" id=""x_" & nivel & "_" & menuItem_Id & """ {3}>{4}</a>"
+                                    html &= "<div aria-labelledby=""x_" & nivel & "_" & menuItem_Id & """ class=""dropdown-menu"">"
+
+
+                                    'result += String.Format("{0}<li class=""nav-item"" id = '{1}_{2}_li'><a class=""nav-link dropdown-toggle"" data-toggle=""dropdown"" aria-expanded=""false"" aria-haspopup=""true"" id=""x_" & nivel & "_" & menuItem_Id & """ {3}>{4}</a><ul aria-labelledby=""x_" & nivel & "_" & menuItem_Id & """ class='dropdown-menu dropdown-menu-right'>", GetTabs(nivel), nivel, menuItem_Id, GetHrefLeve1(url, nivel, menuItem_Id), GetString(text).ToUpper)
+                                    result += String.Format(html, GetTabs(nivel), nivel, menuItem_Id, GetHrefLeve1(url, nivel, menuItem_Id), GetString(text).ToUpper)
                                     BuilMenu(nextIdPadre, nivel + 1, ds, userRoles, itemNumber, result)
-                                    result += String.Format("</ul></li>{0}", vbCrLf)
+                                    result += String.Format("</div></li>{0}", vbCrLf)
                                     itemNumber += 1
                                 Else
-                                    result += String.Format("{0}<li id = '{1}_{2}_li'><a {3}>{4}</a></li>", GetTabs(nivel), nivel, menuItem_Id, GetHrefLeve1(url, nivel, menuItem_Id), GetString(text).ToUpper)
+                                    result += String.Format("{0}<li class=""nav-item"" id = '{1}_{2}_li'><a class=""nav-link"" {3}>{4}</a></li>", GetTabs(nivel), nivel, menuItem_Id, GetHrefLeve1(url, nivel, menuItem_Id), GetString(text).ToUpper)
                                 End If
 
                             Case MenuType.SoloSegundoNivel
@@ -127,7 +135,7 @@ Partial Public Class ctrlMenuUl
                         Select Case CurrentMenuType
                             Case MenuType.SoloPrimerNivel
                                 If nivel = 2 Then
-                                    result += String.Format("{0}<li><a href='{1}' {2}>{3}</a></li>{4}", GetTabs(nivel), GetUrl(url), GetTarget(url), GetString(text), vbCrLf)
+                                    result += String.Format("{0}<a class=""dropdown-item"" href='{1}' {2}>{3}</a>{4}", GetTabs(nivel), GetUrl(url), GetTarget(url), GetString(text), vbCrLf)
 
                                 End If
 
