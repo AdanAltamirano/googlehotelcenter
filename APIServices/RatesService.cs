@@ -210,29 +210,27 @@ namespace APIServices
             return result;
         }
 
-        public Boolean AddRate(int hotelId, UpdateRateRequest rate)
+        public bool AddRate(int hotelId, UpdateRateRequest rate)
         {
             int err = 0;
-            bool success = true;
             OzHotelesEntities db = new OzHotelesEntities();
 
             using (System.Data.Entity.DbContextTransaction transaction = db.Database.BeginTransaction())
             {
                 try
                 {
-                    success = RemoveOverlappedRates(rate.RateId, rate.RoomId, rate.RatePlanId, rate.StartDate, rate.EndDate, ref db)                              
-                              || InsertRate(hotelId, rate, ref db);
-
-                    if (!success)
+                    if (RemoveOverlappedRates(rate.RateId, rate.RoomId, rate.RatePlanId, rate.StartDate, rate.EndDate, ref db)
+                        || InsertRate(hotelId, rate, ref db))
                     {
                         db.SaveChanges();
                         transaction.Commit();
-                        success = SplitRate(ref err, rate.StartDate, rate.EndDate, rate.RoomId, rate.RatePlanId, ref db);
+                        if (!SplitRate(ref err, rate.StartDate, rate.EndDate, rate.RoomId, rate.RatePlanId, ref db))
+                        {
+                            transaction.Rollback();
+                            return false;
+                        }
                     }
-                    else
-                    {
-                        transaction.Rollback();
-                    }
+                    return true;
                 }
                 catch
                 {
@@ -240,8 +238,6 @@ namespace APIServices
                     return false;
                 }
             }
-
-            return success;
         }
 
         private bool RemoveOverlappedRates(int rateId, int roomId, string ratePlanId, DateTime startDate, DateTime endDate, ref OzHotelesEntities contextDb)
@@ -261,10 +257,8 @@ namespace APIServices
                 foreach (var of in overlappedFares)
                 {
                     overlappedFaresRestrictions = contextDb.TarifasRestricciones.Where(tr => tr.idTarifa == of.idTarifa);
-                    foreach (var tr in overlappedFaresRestrictions)
-                    {
-                        contextDb.TarifasRestricciones.Remove(tr);
-                    }
+                    contextDb.TarifasRestricciones.RemoveRange(overlappedFaresRestrictions);
+
                     contextDb.Tarifas.Remove(of);
                 }
                 return true;

@@ -28,6 +28,7 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -1279,6 +1280,7 @@
     <Content Include="API\Rooms.ashx" />
     <Content Include="API\Rooms\Inventory.ashx" />
     <Content Include="API\Rates\Daily.ashx" />
+    <Content Include="API\RateUpdate.ashx" />
     <None Include="Web References\WsConnectWcf\wsConnectWCFv2.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -1296,6 +1298,9 @@
     </Compile>
     <Compile Include="API\Rates\Daily.ashx.vb">
       <DependentUpon>Daily.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="API\RateUpdate.ashx.vb">
+      <DependentUpon>RateUpdate.ashx</DependentUpon>
     </Compile>
     <Compile Include="API\Rooms.ashx.vb">
       <DependentUpon>Rooms.ashx</DependentUpon>
