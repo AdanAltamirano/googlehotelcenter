@@ -57,13 +57,13 @@ export default {
         addDays(days){
             const newVal = this.$moment(this.currentDay).add(days, 'days');
             if(!this.today.isAfter(newVal,'day')){
-                this.currentDay = newVal;
+                this.currentDay = newVal.toDate();
             }
         },
         addMonths(months){
             const newVal = this.$moment(this.currentDay).add(months, 'months');
             if(!this.today.isAfter(newVal,'day')){
-                this.currentDay = newVal;
+                this.currentDay = newVal.toDate();
             }
         },
     },
