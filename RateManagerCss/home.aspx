@@ -98,7 +98,7 @@
                         var home = jQuery("#menuPrincipal a[href*='Portal/Pages/Home.aspx']");
                         if (home.length != 0) {
                             HideMenu();
-                            home.parent("li").attr("class", "activo-main-menu");
+                            home.parent("li").addClass("active");
                             find = true;
                             return;
                         }
@@ -123,7 +123,8 @@
                                     if (li_sub_option.attr("class") != "activo-subSubmenu" || li_option.attr("class") != "activo-main-menu") {
                                         HideMenu();
                                         div_sub_option.show();                                       
-                                        li_option.attr("class", "activo-main-menu");
+                                        //li_option.attr("class", "activo-main-menu");
+                                        li_option.addClass("active");
                                         li_sub_option.attr("class", "activo-subSubmenu");
                                     }
                                 }

@@ -28,7 +28,6 @@
             document.getElementById('submenuDiv').style.width = '0px';
             document.getElementById('contenido').style.width = '99%';
         }
-
         jQuery.noConflict();
         
         jQuery(document).ready(function() {
@@ -56,7 +55,7 @@
                 //jQuery("#menuPrincipal ul > li").attr("class", "");
                 jQuery("#submenuDiv a").parent("li").attr("class", "");
                 var id_div = jQuery(this).attr("href") + "_div";
-                //jQuery(this).parent("li").attr("class", "activo-main-menu");
+                //jQuery(this).parent("li").addClass("class", "activo-main-menu");
                 jQuery("#submenuDiv .dvhide").hide();
                 jQuery(id_div).show(300);
                 jQuery(id_div + " a:first").trigger("click");
@@ -107,7 +106,7 @@
             try {
                 jQuery("#submenuDiv .dvhide").hide();
                 jQuery("#submenuDiv a").parent().parent().parent().attr("class", "");
-                //jQuery("#menuPrincipal li").attr("class", "");
+                jQuery("#menuPrincipal li").removeClass("active");
             } catch (Error) { }
 
         }
@@ -139,7 +138,7 @@
     
     <header class="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar">
         <a class="navbar-brand mr-0 mr-md-2" aria-label="Bootstrap">
-	        <img src="http://secure.internetpower.com.mx/istotipo.png" style="width: 25px;">
+	        <img src="Includes/imagenes/istotipo-internetpowerhotel-blanco.png" style="width: 25px;">
         </a>
         <div id="menuPrincipal" class="navbar-nav-scroll">
             <uc2:ctrlMenuTap ID="ctrlMenuTap1" runat="server" />
@@ -156,10 +155,10 @@
 					<!-- la condicion debe ser igual a "es-MX" -->
 					<%If RateManager.PortalCulture.GetCulture().ToString = "xxx" Then%>
 						<a runat="server" id="lnkTicket" class="dropdown-item" target="frmPrincipal">
-							<i class="fas fa-user-tie"></i> <%=me.getlabel("01314") %>
+							<i class="fas fa-user-tie"></i> <%=Me.getlabel("01314") %>
 						</a>
 						<a runat="server" id="lnkTicketList" class="dropdown-item" target="frmPrincipal">
-							<i class="fas fa-file-alt"></i> <%=me.getlabel("01315") %>
+							<i class="fas fa-file-alt"></i> <%=Me.getlabel("01315") %>
 						</a>
 					<%End If%>
 					<a runat="server" id="lnkhelp" class="dropdown-item" target="frmPrincipal">
@@ -194,11 +193,11 @@
 			</li>
 		</ul>
     </header>
-
+	
     <div id="loading">
         <img src="Includes/imagenes/loader.gif" alt="Espere por favor..." />
     </div>
-    <div id="header" style="display:none">
+    <div style="display:none" id="header">
         <asp:Label ID="lblTitle" runat="server" Text="Label" CssClass="clsHeaderTitle">Sistema de Administración de Hotel</asp:Label>
     </div>
     <div id="nombreHotelDiv">
@@ -240,18 +239,18 @@
         <%--<tr>
             <td colspan="2" style="width: 100%; clear: both;" valign="top">
                 <%  
-                    Dim tr As System.IO.TextReader
-                    Dim str As String
-
-                    Dim filename As String = Request.PhysicalApplicationPath & "/Portal/Modules/footer_" & RateManager.PortalCulture.GetCulture.ToString.Substring(0, 2) & ".htm"
-                    If System.IO.File.Exists(filename) Then
-
-                        tr = New System.IO.StreamReader(filename, System.Text.Encoding.Default)
-                        Str = tr.ReadToEnd
-                        tr.Close()
-                        Response.Write(str)
-                    End If
-
+                Dim tr As System.IO.TextReader
+                Dim str As String
+                
+                Dim filename As String = Request.PhysicalApplicationPath & "/Portal/Modules/footer_" & RateManager.PortalCulture.GetCulture.ToString.Substring(0, 2) & ".htm"
+                If System.IO.File.Exists(filename) Then
+                    
+                    tr = New System.IO.StreamReader(filename, System.Text.Encoding.Default)
+                    Str = tr.ReadToEnd
+                    tr.Close()
+                    Response.Write(str)
+                End If
+                
                 %>
             </td>
         </tr>--%>
@@ -259,18 +258,18 @@
 
     <!--footer-->
     <%
-                                                                  Dim reader As System.IO.TextReader
+                                                                   Dim reader As System.IO.TextReader
 
-                                                                  Dim fileName As String = Request.PhysicalApplicationPath & "/Portal/Modules/footer_" & RateManager.PortalCulture.GetCulture.ToString.Substring(0, 2) & ".htm"
-                                                                  If System.IO.File.Exists(filename) Then
+                                                                   Dim fileName As String = Request.PhysicalApplicationPath & "/Portal/Modules/footer_" & RateManager.PortalCulture.GetCulture.ToString.Substring(0, 2) & ".htm"
+                                                                   If System.IO.File.Exists(filename) Then
 
-                                                                      reader = New System.IO.StreamReader(fileName, System.Text.Encoding.Default)
-                                                                      Dim footer As String = reader.ReadToEnd()
-                                                                      reader.Close()
-                                                                      Response.Write(footer)
-                                                                  End If
+                                                                       reader = New System.IO.StreamReader(fileName, System.Text.Encoding.Default)
+                                                                       Dim footer As String = reader.ReadToEnd()
+                                                                       reader.Close()
+                                                                       Response.Write(footer)
+                                                                   End If
     %>
-
+    
     <div class="subir">
         <a href="#top" boder="0"></a>
     </div>

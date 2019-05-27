@@ -26,7 +26,7 @@
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
-    <IISExpressUseClassicPipelineMode />
+    <IISExpressUseClassicPipelineMode>true</IISExpressUseClassicPipelineMode>
     <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -1026,6 +1026,8 @@
     <Content Include="Images\usa.gif" />
     <Content Include="Images\xml.gif" />
     <Content Include="Includes\bootstrap.min.css" />
+    <Content Include="Includes\imagenes\istotipo-internetpowerhotel-blanco.png" />
+    <Content Include="Includes\imagenes\istotipo-internetpowerhotel-normal.png" />
     <Content Include="Includes\imagenes\logo.png" />
     <Content Include="Includes\report\Angular1-2.js" />
     <Content Include="Includes\report\bootstrap.min.css" />
