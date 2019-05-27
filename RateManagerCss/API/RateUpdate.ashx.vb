@@ -58,6 +58,7 @@ Public Class RateUpdate
         'Else
         '    BadRequest(context, req.Error)
         'End If
+
     End Sub
 
     Protected Overrides Sub PostHandler(ByRef context As HttpContext)
