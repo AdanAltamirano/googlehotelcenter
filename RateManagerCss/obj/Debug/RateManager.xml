@@ -27047,128 +27047,128 @@ Para modificarlo, mueva la declaración del campo del archivo del diseñador al 
 </member>
 <member name="F:RateManager.PrincipalMaster._head">
 <summary>
-Control head.
+head control.
 </summary>
 <remarks>
-Campo generado automáticamente.
-Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
 </remarks>
 </member>
 <member name="F:RateManager.PrincipalMaster._form1">
 <summary>
-Control form1.
+form1 control.
 </summary>
 <remarks>
-Campo generado automáticamente.
-Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
 </remarks>
 </member>
 <member name="F:RateManager.PrincipalMaster._ScriptManager1">
 <summary>
-Control ScriptManager1.
+ScriptManager1 control.
 </summary>
 <remarks>
-Campo generado automáticamente.
-Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-</remarks>
-</member>
-<member name="F:RateManager.PrincipalMaster._lblTitle">
-<summary>
-Control lblTitle.
-</summary>
-<remarks>
-Campo generado automáticamente.
-Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-</remarks>
-</member>
-<member name="F:RateManager.PrincipalMaster._lnkTicket">
-<summary>
-Control lnkTicket.
-</summary>
-<remarks>
-Campo generado automáticamente.
-Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-</remarks>
-</member>
-<member name="F:RateManager.PrincipalMaster._lnkTicketList">
-<summary>
-Control lnkTicketList.
-</summary>
-<remarks>
-Campo generado automáticamente.
-Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-</remarks>
-</member>
-<member name="F:RateManager.PrincipalMaster._lnkhelp">
-<summary>
-Control lnkhelp.
-</summary>
-<remarks>
-Campo generado automáticamente.
-Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-</remarks>
-</member>
-<member name="F:RateManager.PrincipalMaster._lblUser">
-<summary>
-Control lblUser.
-</summary>
-<remarks>
-Campo generado automáticamente.
-Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-</remarks>
-</member>
-<member name="F:RateManager.PrincipalMaster._linkLogOut">
-<summary>
-Control linkLogOut.
-</summary>
-<remarks>
-Campo generado automáticamente.
-Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
 </remarks>
 </member>
 <member name="F:RateManager.PrincipalMaster._ctrlMenuTap1">
 <summary>
-Control ctrlMenuTap1.
+ctrlMenuTap1 control.
 </summary>
 <remarks>
-Campo generado automáticamente.
-Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:RateManager.PrincipalMaster._lblUser">
+<summary>
+lblUser control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:RateManager.PrincipalMaster._lnkTicket">
+<summary>
+lnkTicket control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:RateManager.PrincipalMaster._lnkTicketList">
+<summary>
+lnkTicketList control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:RateManager.PrincipalMaster._lnkhelp">
+<summary>
+lnkhelp control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:RateManager.PrincipalMaster._linkLogOut">
+<summary>
+linkLogOut control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:RateManager.PrincipalMaster._lblTitle">
+<summary>
+lblTitle control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
 </remarks>
 </member>
 <member name="F:RateManager.PrincipalMaster._lnkNameCompany">
 <summary>
-Control lnkNameCompany.
+lnkNameCompany control.
 </summary>
 <remarks>
-Campo generado automáticamente.
-Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
 </remarks>
 </member>
 <member name="F:RateManager.PrincipalMaster._lblInfoHotel">
 <summary>
-Control lblInfoHotel.
+lblInfoHotel control.
 </summary>
 <remarks>
-Campo generado automáticamente.
-Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
 </remarks>
 </member>
 <member name="F:RateManager.PrincipalMaster._ctrlMenuLeft1">
 <summary>
-Control ctrlMenuLeft1.
+ctrlMenuLeft1 control.
 </summary>
 <remarks>
-Campo generado automáticamente.
-Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
 </remarks>
 </member>
 <member name="F:RateManager.PrincipalMaster._ContainerPage">
 <summary>
-Control ContainerPage.
+ContainerPage control.
 </summary>
 <remarks>
-Campo generado automáticamente.
-Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
 </remarks>
 </member>
 <member name="F:RateManager.AgencyAsociate._lblTitleForm">
