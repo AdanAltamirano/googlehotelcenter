@@ -15,8 +15,8 @@ body
 {
     margin: 0px;
     padding: 0px;
-    background-image: url(imagenes/header-bg.png);
-    background-repeat: repeat-x;
+    /*background-image: url(imagenes/header-bg.png);
+    background-repeat: repeat-x;*/
 }
 
 /*Estilos para loading*/
@@ -156,17 +156,36 @@ body
 
 /*** ESTILOS MENU PRINCIPAL ***/
 
-
+header
+{
+    background-color: #10467a; 
+    margin-bottom:10px;
+    border-bottom: solid 1px #e9e9e9
+}
+header li { list-style-type: none !important; }
+.dropdownLng
+{
+    margin: -1.30rem 0 0 !important;
+}
+.dropdown-item i { color: #10467a !important; }
+.header-menu
+{
+	padding:5px;
+    text-align: center;
+    color: #007bff;
+}
+header .nav-link{ color: white !important; }
+#menuPrincipal li:hover > div.dropdown-menu { display: block; }
 #menuPrincipal
 {
-    width: 100%;
+    /*width: 100%;
     background-color: #3e7bac;
     border-bottom: 10px solid #7EAECB;
-    margin-bottom: 15px;
+    margin-bottom: 15px;*/
 }
 #menuPrincipal ul
 {
-    background-color: #3e7bac;
+    /*background-color: #3e7bac;
     list-style: none;
     margin: 0;
     padding: 0;
@@ -175,44 +194,44 @@ body
     margin-right: 0px;
     padding-left: 0px;     
     white-space: nowrap;
-    z-index: 1002;
-    
+    z-index: 1002;*/
+    /*display:inline;*/
 }
 #menuPrincipal li
 {
-    list-style: none;
+    /*list-style: none;
     text-align: center;
     padding: 0;
     white-space: nowrap;
     vertical-align: bottom;
-    float: left;
+    float: left;*/
 }
 #menuPrincipal li a
 {
-    color: #fff;
-    display: block;
+    color: #007bff;
+    /*display: block;
     font-weight: normal;
     line-height: 35px;
     margin: 0px;
     padding: 0px 10px;
     text-align: center;
-    text-decoration: none;
+    text-decoration: none;*/
 }
 #menuPrincipal li a:hover, #menuPrincipal ul li:hover a
 {
-    background: #fff;
+    /*background: #fff;
     color: #3e7aac;
     text-decoration: none;
     -moz-border-radius: 7px 7px 0px 0px;
     -moz-border-radius: 7px 7px 0px 0px;
     -webkit-border-radius: 7px 7px 0px 0px;
     -khtml-border-radius: 7px 7px 0px 0px;
-    border-radius: 7px 7px 0px 0px;
+    border-radius: 7px 7px 0px 0px;*/
 }
 
 #menuPrincipal li ul
 {
-    background: #fff;
+    /*background: #fff;
     display: none;
     height: auto;
     padding: 0px;
@@ -222,48 +241,49 @@ body
     border-right: 1px solid #83adc6 !important;
     position: absolute;
     width: 225px;
-    z-index: 200;
+    z-index: 200;*/
 }
 #menuPrincipal li:hover ul
 {
-    display: block;
+    /*david*/
+    /*display: block;*/
 }
 #menuPrincipal li li
 {
-    display: block;
+    /*display: block;
     float: none;
     margin: 0px;
     padding: 0px;
     width: 225px;
     background-image: url(imagenes/submenu-division.png) !important;
     background-position: bottom;
-    background-repeat: repeat-x;
+    background-repeat: repeat-x;*/
 }
 #menuPrincipal li:hover li a
 {
-    background: none;
+    /*background: none;*/
 }
 #menuPrincipal li ul a
 {
-    display: block;
+    /*display: block;
     height: 35px;
     font-size: 12px;
     font-style: normal;
     margin: 0px;
     padding: 0px 10px 0px 15px;
-    text-align: left;
+    text-align: left;*/
 }
 #menuPrincipal li ul a:hover, #menuPrincipal li ul li:hover a
 {
-    background-color: #83ADC6 !important;
+    /*background-color: #007bff !important;
     border: 0px;
     font-weight: bold;
     color: #fff;
     text-decoration: none;
     background-image: url(imagenes/arrow.png);
-    background-position: center left;
+    /*background-position: center left;
     background-repeat: no-repeat;
-    border-radius: 0px;
+    border-radius: 0px;*/
 }
 #menuPrincipal p
 {
@@ -353,7 +373,7 @@ body
 {
     width: 98.5%;
     height: auto;
-    border-bottom: solid 1px #e9e9e9;
+    /*border-bottom: solid 1px #e9e9e9;*/
     margin-left: 14px;
     margin-right: 14px;
     text-align: right;
@@ -655,6 +675,32 @@ select
 /*** FINALIZA ESTILOS GRID***/
 
 /*** ESTIOS FOOTER***/
+
+.bd-footer
+{
+    font-size: .875rem;
+    background-color: #f7f7f7;
+    text-align: center;
+}
+
+@media (min-width: 576px)
+{
+    .bd-footer { text-align: left; }
+}
+
+.bd-footer-links
+{
+    padding-left: 0;
+    margin-bottom: 1rem;
+}
+.bd-footer-links li {display: inline-block;}
+.bd-footer-links li a 
+{
+    font-weight: 600;
+    color: #495957;
+    text-decoration: none;
+}
+.bd-footer p{ margin-bottom: 0; }
 
 #footer
 {
