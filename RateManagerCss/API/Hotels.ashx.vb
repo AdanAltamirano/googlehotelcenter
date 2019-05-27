@@ -2,7 +2,7 @@
 Imports System.Web.Services
 Imports APIServices
 
-Public Class Hotels
+Public Class HotelsAPI
     Inherits APIHandler
 
     Private HotelsService As New HotelService

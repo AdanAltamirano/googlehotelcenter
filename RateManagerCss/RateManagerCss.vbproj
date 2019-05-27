@@ -133,6 +133,10 @@
     <Reference Include="Oz.UniBilling.DigitalInvoicing.DataAccess, Version=1.0.0.0, Culture=neutral, PublicKeyToken=38b5c620e4c4648d, processorArchitecture=MSIL" />
     <Reference Include="Oz.UniBilling.Hotels.Business, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="Oz.UniBilling.Hotels.DataAccess, Version=1.0.0.0, Culture=neutral, PublicKeyToken=38b5c620e4c4648d, processorArchitecture=MSIL" />
+    <Reference Include="Oz.UniBilling.Web.UI, Version=3.2.5.3, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Oz.UniBilling.Web.UI.dll</HintPath>
+    </Reference>
     <Reference Include="PaymentLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <Private>False</Private>
     </Reference>
@@ -321,6 +325,7 @@
     <Content Include="bin\Oz.UniBilling.DigitalInvoicing.DataAccess.dll" />
     <Content Include="bin\Oz.UniBilling.Hotels.Business.dll" />
     <Content Include="bin\Oz.UniBilling.Hotels.DataAccess.dll" />
+    <Content Include="bin\Oz.UniBilling.Web.UI.dll" />
     <Content Include="bin\Portal.Catalogos.Common.dll" />
     <Content Include="bin\Portal.Catalogos.DataAccess.dll" />
     <Content Include="bin\Portal.Catalogos.Facade.dll" />
