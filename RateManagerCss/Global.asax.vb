@@ -1,18 +1,10 @@
 Option Strict On
-Option Explicit On 
-
-Imports System.Web.SessionState
-Imports System.Globalization
-Imports System.Threading
-Imports System.Resources
-
-Imports System.Web
-Imports System.Web.Security
-
-Imports System.Configuration.ConfigurationManager
+Option Explicit On
 Imports System.Xml
-Imports System.Security.Principal
 Imports System.IO
+Imports System.Web.Http
+Imports NinjAPI
+
 Public Class [Global]
     Inherits System.Web.HttpApplication
 
@@ -42,34 +34,12 @@ Public Class [Global]
 
     Sub Application_Start(ByVal sender As Object, ByVal e As EventArgs)
         ' Se desencadena cuando se inicia la aplicación
+        GlobalConfiguration.Configuration.NinjAPIConfig()
     End Sub
 
     Sub Session_Start(ByVal sender As Object, ByVal e As EventArgs)
         ' Se desencadena cuando se inicia la sesión
     End Sub
-
-    'Private Function Contains(ByRef url As String) As Boolean
-    '    Dim ds As New DataSet
-    '    Dim dr As DataRow
-    '    Try
-    '        Dim txtRead As XmlTextReader = New XmlTextReader(Server.MapPath("/RateManager/Data/Groups.xml"))
-    '        ds.ReadXml(txtRead)
-    '        txtRead.Close()
-    '        url = url.ToUpper
-    '        For Each dr In ds.Tables(0).Rows
-    '            If url.IndexOf(dr("IDGROUP").ToString.ToUpper) > 0 Then
-    '                GroupId = dr("IDGROUP").ToString
-
-    '                url = url.Replace("/" & dr("IDGROUP").ToString.ToUpper, "").ToLower
-    '                Return True
-    '            End If
-    '        Next
-    '    Catch ex As Exception
-    '        Return False
-    '    End Try
-    '    Return False
-    'End Function
-
 
     Private Function Contains(ByRef url As String) As Boolean
         Dim ds As New DataSet
@@ -88,79 +58,12 @@ Public Class [Global]
             Next
 
         Catch exception1 As Exception
-
-            '            Dim exception As Exception = exception1
-
             Return False
-
         End Try
         Return False
     End Function
 
-
-
-
     Dim GroupId As String = ""
-
-    Sub Application_BeginRequest(ByVal sender As Object, ByVal e As EventArgs)
-
-
-       
-
-        'Dim currentExecutionFilePath As String = Me.Request.CurrentExecutionFilePath
-        'Me.GroupId = ""
-
-        'If Me.Contains(currentExecutionFilePath) Then
-        '    Me.Context.RewritePath(currentExecutionFilePath)
-        'End If
-        'If (currentExecutionFilePath.ToLower.IndexOf("default.aspx") >= 0) Then
-        '    If (Not Me.Request.Cookies.Item("GroupId") Is Nothing) Then
-        '        Me.Response.Cookies.Item("GroupId").Value = Me.GroupId
-        '    Else
-        '        Dim cookie As New HttpCookie("GroupId")
-        '        cookie.Value = Me.GroupId
-        '        Me.Response.Cookies.Add(cookie)
-        '    End If
-        'End If
-    End Sub
-
-    'Public Sub Application_BeginRequest(ByVal sender As Object, ByVal e As EventArgs)
-    '    Dim currentExecutionFilePath As String = Me.Request.CurrentExecutionFilePath
-    '    Me.GroupId = ""
-    '    If Me.Contains((currentExecutionFilePath)) Then
-    '        Me.Context.RewritePath(currentExecutionFilePath)
-    '    End If
-    '    If (currentExecutionFilePath.ToLower.IndexOf("default.aspx") >= 0) Then
-    '        If (Not Me.Request.Cookies.Item("GroupId") Is Nothing) Then
-    '            Me.Response.Cookies.Item("GroupId").Value = Me.GroupId
-    '        Else
-    '            Dim cookie As New HttpCookie("GroupId")
-    '            cookie.Value = Me.GroupId
-    '            Me.Response.Cookies.Add(cookie)
-    '        End If
-    '    End If
-    'End Sub
-
-
-
-
-
-
-
-    Sub Application_AuthenticateRequest(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.AuthenticateRequest
-        ' Se desencadena al intentar autenticar el uso
-        'If Request.IsAuthenticated Then
-        '    ' Obtenemos los roles desde la cookie
-        '    Dim ticket As FormsAuthenticationTicket = FormsAuthentication.Decrypt(Context.Request.Cookies(FormsAuthentication.FormsCookieName()).Value)
-
-        '    'convertimos a arreglo de elementos la lista de cookies                
-        '    Dim roleListArray As String()
-        '    roleListArray = ticket.UserData.Split(CType(",", Char))
-
-        '    'Añadimos los roles al usuario
-        '    HttpContext.Current.User = New GenericPrincipal(User.Identity, roleListArray)
-        'End If
-    End Sub
 
     Sub Application_Error(ByVal sender As Object, ByVal e As EventArgs)
         ' Se desencadena cuando ocurre un error
@@ -192,7 +95,7 @@ Public Class [Global]
                 FileClose(1)
             End If
         End If
-        
+
     End Sub
 
     Sub Session_End(ByVal sender As Object, ByVal e As EventArgs)
@@ -210,18 +113,6 @@ Public Class [Global]
     End Sub
 
 
-    'Private Sub Global_AcquireRequestState(ByVal sender As Object, ByVal e As EventArgs)
-    '    'If (Me.Request.CurrentExecutionFilePath.ToLower.IndexOf("default.aspx") >= 0) Then
-    '    '    HttpContext.Current.Session.Item("GroupId") = Me.GroupId
-    '    'End If
-
-    '    If (Me.Request.CurrentExecutionFilePath.ToLower.IndexOf("default.aspx") >= 0) Then
-    '        HttpContext.Current.Session.Item("GroupId") = Me.GroupId
-    '    End If
-
-
-    'End Sub
-
     Private Sub Global_AcquireRequestState(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.AcquireRequestState
         'Dim fullOrigionalpath As String = Request.CurrentExecutionFilePath
         'If Contains(fullOrigionalpath) Then
@@ -233,10 +124,4 @@ Public Class [Global]
         End If
 
     End Sub
-
-
-
-
-
-
 End Class

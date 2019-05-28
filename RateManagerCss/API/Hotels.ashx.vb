@@ -29,7 +29,7 @@ Public Class HotelsAPI
         If ValidadGetRequest(context, req) Then
             OK(
                     context:=context,
-                    result:=HotelsService.FindById(req.HotelId, req.Language)
+                    result:=HotelsService.Get(req.HotelId, req.Language)
                   )
         Else
             BadRequest(context, req.Error)

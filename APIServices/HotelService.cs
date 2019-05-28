@@ -6,6 +6,9 @@ namespace APIServices
 {
     public class HotelService
     {
+
+        public OzHotelesEntities DbContext = new OzHotelesEntities();
+
         /// <summary>
         /// Búsqueda de tarifas diarias
         /// </summary>
@@ -15,63 +18,64 @@ namespace APIServices
         /// <param name="language"></param>
         /// <param name="roomId"></param>
         /// <returns>Conjunto de tarifas</returns>
-        public HotelInfo FindById(int hotelId, int language = 1)
+        public HotelInfo Get(int hotelId, int language = 1)
         {
             HotelInfo result = null;
-            using (OzHotelesEntities db = new OzHotelesEntities())
+
+            HotelBasicInfo hotel = DbContext.HotelBasicInfo.FirstOrDefault(x => x.Id == hotelId);
+
+            result = new HotelInfo
             {
-                HotelBasicInfo hotel = db.HotelBasicInfo.FirstOrDefault(x => x.Id == hotelId);
+                Id = hotel.Id,
+                Name = hotel.Name,
+                CompanyId = hotel.CompanyId,
+                CorpId = hotel.CorpId,
+                Corp = hotel.Corp,
+                Currency = hotel.Currency,
+                Status = hotel.Status
+            };
 
-                result = new HotelInfo
+            //rooms 
+            var rooms = DbContext.HotelRoom.Where(r =>
+                r.HotelId == hotelId
+                && r.Language == language 
+                && r.Active == true)
+                .OrderBy(r => r.Order)
+                .Select(r => new Room
                 {
-                    Id = hotel.Id,
-                    Name = hotel.Name,
-                    CompanyId = hotel.CompanyId,
-                    CorpId = hotel.CorpId,
-                    Corp = hotel.Corp,
-                    Currency = hotel.Currency,
-                    Status = hotel.Status
-                };
+                    Id = r.Id,
+                    Name = r.Name,
+                    Code = r.Code,
+                    Active = r.Active.Value,
+                    ExtraOccupancyAllowed = r.ExtraOccupancyAllowed,
+                    MinAdultsOccupancy = r.MinAdultsOccupancy,
+                    MaxAdultsOccupancy = r.MaxAdultsOccupancy,
+                    MaxChildrenOccupancy = r.MaxChildrenOccupancy,
+                    MaxOccupancy = r.MaxOccupancy,
+                    Order = r.Order,
+                    TotalRooms = r.TotalRooms,
+                    Type = r.Type
+                }).ToArray();
 
-                //rooms 
-                var rooms = db.HotelRoom.Where(r =>
-                   r.HotelId == hotelId
-                   && r.Language == language 
-                   && r.Active == true)
-                   .OrderBy(r => r.Order)
-                   .Select(r => new Room
-                   {
-                       Id = r.Id,
-                       Name = r.Name,
-                       Code = r.Code,
-                       Active = r.Active.Value,
-                       ExtraOccupancyAllowed = r.ExtraOccupancyAllowed,
-                       MinAdultsOccupancy = r.MinAdultsOccupancy,
-                       MaxAdultsOccupancy = r.MaxAdultsOccupancy,
-                       MaxChildrenOccupancy = r.MaxChildrenOccupancy,
-                       MaxOccupancy = r.MaxOccupancy,
-                       Order = r.Order,
-                       TotalRooms = r.TotalRooms,
-                       Type = r.Type
-                   }).ToArray();
+            result.Rooms = rooms;
 
-                result.Rooms = rooms;
+            //rateplans
+            var plans = DbContext.HotelPlan.Where(x => x.HotelId == hotelId && x.Language == language)
+                .Select(r => new RatePlan
+                {
+                    Code = r.Code,
+                    Name = r.Name,
+                    Currency = r.Currency
+                }).ToArray();
 
-                //rateplans
-                var plans = db.HotelPlan.Where(x => x.HotelId == hotelId && x.Language == language)
-                    .Select(r => new RatePlan
-                    {
-                        Code = r.Code,
-                        Name = r.Name,
-                        Currency = r.Currency
-                    }).ToArray();
-
-                result.RatePlans = plans;
-
-
-            }
-
+            result.RatePlans = plans;
+             
             return result;
+        }
+
+        public IQueryable<HotelBasicInfo> GetAll()
+        {
+            return DbContext.HotelBasicInfo.AsQueryable();
         }
     }
 }

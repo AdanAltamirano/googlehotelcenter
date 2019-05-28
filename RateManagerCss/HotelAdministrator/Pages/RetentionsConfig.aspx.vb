@@ -1,9 +1,4 @@
-﻿Imports System
-Imports System.Collections.Generic
-Imports System.Data.Objects
-Imports System.Linq
-Imports System.Web.UI
-Imports System.Web.UI.WebControls
+﻿Imports System.Data.Entity.Core.Objects
 
 Public Class RetentionsConfig
     Inherits PaginaBase
@@ -47,9 +42,9 @@ Public Class RetentionsConfig
 
                 If config Is Nothing Then
                     'Crea la configuración
-                    config = New IPR_Configuracion() With { _
-                        .id_propiedad = PropertyNumber, _
-                        .url = String.Empty _
+                    config = New IPR_Configuracion() With {
+                        .id_propiedad = PropertyNumber,
+                        .url = String.Empty
                     }
 
                     db.AddToIPR_Configuracion(config)
@@ -401,13 +396,13 @@ Public Class RetentionsConfig
                 Using db As New ozunivisitEntities
                     Dim config As IPR_Configuracion = db.IPR_Configuracion.FirstOrDefault(Function(x) x.id_propiedad = PropertyNumber)
 
-                    Dim newMessage As IPR_Mensajes = New IPR_Mensajes() With { _
-                         .IPR_Configuracion = config, _
-                         .duracion = Convert.ToInt32(txtDuracion.Text), _
-                         .orden = Convert.ToInt32(txtOrden.Text), _
-                         .mensaje = txtMessage.Text, _
-                         .rutas = txtRutas.Text, _
-                         .icono = txtIcon.Text _
+                    Dim newMessage As IPR_Mensajes = New IPR_Mensajes() With {
+                         .IPR_Configuracion = config,
+                         .duracion = Convert.ToInt32(txtDuracion.Text),
+                         .orden = Convert.ToInt32(txtOrden.Text),
+                         .mensaje = txtMessage.Text,
+                         .rutas = txtRutas.Text,
+                         .icono = txtIcon.Text
                     }
 
                     If txtDateMsgStart.Text <> "" Then
@@ -477,16 +472,16 @@ Public Class RetentionsConfig
                 Using db As New ozunivisitEntities
                     Dim config As IPR_Configuracion = db.IPR_Configuracion.FirstOrDefault(Function(x) x.id_propiedad = PropertyNumber)
 
-                    Dim newRetentionMessage As IPR_Retencion = New IPR_Retencion() With { _
-                        .IPR_Configuracion = config, _
-                        .titulo = txtRetTitle.Text, _
-                        .mensaje = txtRetMessage.Text, _
-                        .plan_tarifario = txtRetApp.Text, _
-                        .ruta = txtRetRutes.Text, _
-                        .texto_boton = txtRetAction.Text, _
-                        .cuando = txtRetTimes.Text, _
-                        .codigo_acceso = txtRetAccessCode.Text, _
-                        .duracion = txtRetDuration.Text _
+                    Dim newRetentionMessage As IPR_Retencion = New IPR_Retencion() With {
+                        .IPR_Configuracion = config,
+                        .titulo = txtRetTitle.Text,
+                        .mensaje = txtRetMessage.Text,
+                        .plan_tarifario = txtRetApp.Text,
+                        .ruta = txtRetRutes.Text,
+                        .texto_boton = txtRetAction.Text,
+                        .cuando = txtRetTimes.Text,
+                        .codigo_acceso = txtRetAccessCode.Text,
+                        .duracion = txtRetDuration.Text
                         }
 
                     db.AddToIPR_Retencion(newRetentionMessage)
