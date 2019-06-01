@@ -210,7 +210,7 @@ namespace APIServices
             return result;
         }
 
-        public bool AddRate(int hotelId, UpdateRateRequest rate)
+        public bool AddRate(UpdateRateRequest rate)
         {
             int err = 0;
             OzHotelesEntities db = new OzHotelesEntities();
@@ -220,104 +220,137 @@ namespace APIServices
                 try
                 {
                     if (RemoveOverlappedRates(rate.RateId, rate.RoomId, rate.RatePlanId, rate.StartDate, rate.EndDate, ref db)
-                        || InsertRate(hotelId, rate, ref db))
+                        && InsertRate(rate, ref db))
                     {
                         db.SaveChanges();
                         transaction.Commit();
-                        if (!SplitRate(ref err, rate.StartDate, rate.EndDate, rate.RoomId, rate.RatePlanId, ref db))
-                        {
-                            transaction.Rollback();
-                            return false;
-                        }
                     }
-                    return true;
+                    else
+                    {
+                        transaction.Rollback();
+                        return false;
+                    }
                 }
                 catch
                 {
                     transaction.Rollback();
                     return false;
                 }
-            }
-        }
-
-        private bool RemoveOverlappedRates(int rateId, int roomId, string ratePlanId, DateTime startDate, DateTime endDate, ref OzHotelesEntities contextDb)
-        {
-            IEnumerable<Tarifas> overlappedFares = null;
-            IEnumerable<TarifasRestricciones> overlappedFaresRestrictions = null;
-
-            overlappedFares = contextDb.Tarifas.Where(o =>
-                o.idTarifa != rateId
-                && o.idTipoHabitacion_Hotel == roomId
-                && o.idrateplan == ratePlanId
-                && (((startDate >= o.FechaInicia && startDate <= o.FechaFinaliza) || (endDate >= o.FechaInicia && endDate <= o.FechaFinaliza))
-                      || ((o.FechaInicia >= startDate && o.FechaInicia <= endDate) || (o.FechaFinaliza >= startDate && o.FechaFinaliza <= endDate)))).ToArray();
-
-            if (overlappedFares.Count() > 0)
-            {
-                foreach (var of in overlappedFares)
-                {
-                    overlappedFaresRestrictions = contextDb.TarifasRestricciones.Where(tr => tr.idTarifa == of.idTarifa);
-                    contextDb.TarifasRestricciones.RemoveRange(overlappedFaresRestrictions);
-
-                    contextDb.Tarifas.Remove(of);
-                }
                 return true;
             }
-            return false;
         }
 
-        private bool SplitRate(ref int err, DateTime startDate, DateTime endDate, int roomId, string ratePlanId, ref OzHotelesEntities contextDb)
+        /// <summary>
+        /// Ordena las tarifas que estén completa o parcialmente dentro del rango de la nueva tarifa.
+        /// </summary>
+        /// <param name="contextDb"></param>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
+        /// <param name="rateId"></param>
+        /// <param name="roomId"></param>
+        /// <returns></returns>
+        private bool RemoveOverlappedRates(int rateId, int roomId, string ratePlanId, DateTime startDate, DateTime endDate, ref OzHotelesEntities contextDb)
         {
             try
             {
+                IEnumerable<Tarifas> overlappedFares = null;
+                IEnumerable<TarifasRestricciones> overlappedFaresRestrictions = null;
 
-                SqlDataAdapter dsCommand = new SqlDataAdapter();
-                string ConnectionString = System.Configuration.ConfigurationSettings.AppSettings["HotelConnectionString"];
-                SqlConnection Connection = new SqlConnection(ConnectionString);
-                dsCommand = new SqlDataAdapter("spSplitRate", Connection);
+                //Obtengo las tarifas que estén completa o parcialmente dentro del rango de la nueva tarifa
+                overlappedFares = contextDb.Tarifas.Where(o =>
+                    o.idTarifa != rateId
+                    && o.idTipoHabitacion_Hotel == roomId
+                    && o.idrateplan == ratePlanId
+                    && (((startDate >= o.FechaInicia && startDate <= o.FechaFinaliza) || (endDate >= o.FechaInicia && endDate <= o.FechaFinaliza))
+                          || ((o.FechaInicia >= startDate && o.FechaInicia <= endDate) || (o.FechaFinaliza >= startDate && o.FechaFinaliza <= endDate)))).ToArray();
+
+                if (overlappedFares.Count() > 0)
                 {
-                    try
-                    {
+                    //Se recorren las tarifas en conflicto
+                    foreach (var of in overlappedFares)
+                    { 
+                        if (startDate != of.FechaInicia && endDate >= of.FechaFinaliza)
                         {
-                            dsCommand.SelectCommand.CommandType = CommandType.StoredProcedure;
-                            dsCommand.SelectCommand.CommandText = "spSplitRate";
-                            dsCommand.SelectCommand.Parameters.Add("@fechaInicia", SqlDbType.SmallDateTime).Value = startDate;
-                            dsCommand.SelectCommand.Parameters.Add("@fechaFinaliza", SqlDbType.SmallDateTime).Value = endDate;
-                            dsCommand.SelectCommand.Parameters.Add("@idTipoHabitacion", SqlDbType.Int).Value = roomId;
-                            dsCommand.SelectCommand.Parameters.Add("@idRatePlan", SqlDbType.VarChar, 8).Value = ratePlanId;
-                            dsCommand.SelectCommand.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
-                            dsCommand.SelectCommand.Connection.Open();
+                            //Actualiza la fecha final de la tarifa en conflicto a un día antes de la ficha inicial de la nueva tarifa
+                            of.FechaFinaliza = startDate.AddDays(-1);
                         }
-                        dsCommand.SelectCommand.ExecuteNonQuery();
-                        err = (int)dsCommand.SelectCommand.Parameters["@error"].Value;
-                    }
-                    catch (Exception ex)
-                    {
-                    }
-                    finally
-                    {
-                        dsCommand.SelectCommand.Connection.Close();
-                        if (dsCommand.SelectCommand != null)
+                        else if (startDate <= of.FechaInicia && endDate != of.FechaFinaliza)
                         {
-                            if (dsCommand.SelectCommand.Connection != null)
-                                dsCommand.SelectCommand.Connection.Dispose();
-                            dsCommand.SelectCommand.Dispose();
+                            //Actualiza la fecha inicial de la tarifa en conflicto a un día después de la fecha final de la nueva tarifa
+                            of.FechaInicia = endDate.AddDays(1);
                         }
-                        dsCommand.Dispose();
+                        else if (startDate > of.FechaInicia && endDate < of.FechaFinaliza)
+                        {
+                            //Actualiza la fecha final de la tarifa en conflicto a un día antes de la ficha inicial de la nueva tarifa
+                            of.FechaFinaliza = startDate.AddDays(-1);
+
+                            //Copia la tarifa en conflicto con fecha inicial a un día después de la fecha final de la nueva tarifa
+                            var newRate = new Tarifas
+                            {
+                                idTipoHabitacion_Hotel = of.idTipoHabitacion_Hotel,
+                                FechaInicia = endDate.AddDays(1),
+                                FechaFinaliza = of.FechaFinaliza,
+                                Precio = of.Precio,
+                                PrecioExtraAdulto = of.PrecioExtraAdulto,
+                                PrecioExtraNinio = of.PrecioExtraNinio,
+                                idHotelPlan = of.idHotelPlan,
+                                TipoTarifa = of.TipoTarifa,
+                                CodigoTarifa = of.CodigoTarifa,
+                                CorporateDiscount = of.CorporateDiscount,
+                                AccessCode = of.AccessCode,
+                                Excepciones = of.Excepciones,
+                                AdvBooking = of.AdvBooking,
+                                MaxDias = of.MaxDias,
+                                MinDias = of.MinDias,
+                                NoArrivos = of.NoArrivos,
+                                GuarDep = of.GuarDep,
+                                idrateplan = of.idrateplan,
+                                NiniosRate = of.NiniosRate
+                            };
+                            contextDb.Tarifas.Add(newRate);
+
+                            //Copia las restricciones (precios por ocupación) para la copia de la tarifa en conflicto 
+                            List<TarifasRestricciones> tarifasRestricciones = new List<TarifasRestricciones>();
+                            overlappedFaresRestrictions = contextDb.TarifasRestricciones.Where(tr => tr.idTarifa == of.idTarifa);
+                            foreach (var ofRes in overlappedFaresRestrictions)
+                            {
+                                tarifasRestricciones.Add(
+                                    new TarifasRestricciones
+                                    {
+                                        idTarifa = newRate.idTarifa,
+                                        TarifaAdulto = ofRes.TarifaAdulto,
+                                        TarifaNinio = ofRes.TarifaNinio,
+                                        Adultos = ofRes.Adultos,
+                                        Ninios = ofRes.Ninios,
+                                        TarifaAdultoExc = ofRes.TarifaAdultoExc,
+                                        TarifaNinioExc = ofRes.TarifaNinioExc
+                                    }
+                                    );
+                            }
+                            contextDb.TarifasRestricciones.AddRange(tarifasRestricciones);
+
+                        }
+                        else
+                        {
+
+                            //contextDb.TarifasRestricciones.RemoveRange(overlappedFaresRestrictions);
+                            //contextDb.Tarifas.Remove(of);
+                        }
+
                     }
                 }
                 return true;
             }
-            catch (Exception ex)
+            catch
             {
                 return false;
-                var a = ex.ToString();
-            }
+            }           
         }
 
-        private bool InsertRate(int hotelId, UpdateRateRequest rate, ref OzHotelesEntities contextDb)
+        private bool InsertRate(UpdateRateRequest rate, ref OzHotelesEntities contextDb)
         {
-            IEnumerable<RatesPlan> ratePlan = FindHotelRatePlan(hotelId, rate.RatePlanId);
+            IEnumerable<RatesPlan> ratePlan = FindHotelRatePlan(rate.HotelId, rate.RatePlanId);
+            
 
             if (ratePlan.Count() <= 0)
                 return false;
@@ -364,6 +397,11 @@ namespace APIServices
 
             contextDb.Tarifas.Add(newRate);
             return true;
+        }
+
+        private bool InsertGuestsRates(int rateId, bool isNetRate, ref OzHotelesEntities contextDb){
+
+            return false;
         }
     }
 }
