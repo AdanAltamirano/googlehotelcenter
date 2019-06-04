@@ -231,7 +231,7 @@ namespace APIServices
                         return false;
                     }
                 }
-                catch
+                catch (Exception e)
                 {
                     transaction.Rollback();
                     return false;
@@ -268,7 +268,7 @@ namespace APIServices
                 {
                     //Se recorren las tarifas en conflicto
                     foreach (var of in overlappedFares)
-                    { 
+                    {
                         if (startDate != of.FechaInicia && endDate >= of.FechaFinaliza)
                         {
                             //Actualiza la fecha final de la tarifa en conflicto a un día antes de la ficha inicial de la nueva tarifa
@@ -282,6 +282,7 @@ namespace APIServices
                         else if (startDate > of.FechaInicia && endDate < of.FechaFinaliza)
                         {
                             //Actualiza la fecha final de la tarifa en conflicto a un día antes de la ficha inicial de la nueva tarifa
+                            DateTime newRateEndDate = of.FechaFinaliza;
                             of.FechaFinaliza = startDate.AddDays(-1);
 
                             //Copia la tarifa en conflicto con fecha inicial a un día después de la fecha final de la nueva tarifa
@@ -289,7 +290,7 @@ namespace APIServices
                             {
                                 idTipoHabitacion_Hotel = of.idTipoHabitacion_Hotel,
                                 FechaInicia = endDate.AddDays(1),
-                                FechaFinaliza = of.FechaFinaliza,
+                                FechaFinaliza = newRateEndDate,
                                 Precio = of.Precio,
                                 PrecioExtraAdulto = of.PrecioExtraAdulto,
                                 PrecioExtraNinio = of.PrecioExtraNinio,
@@ -338,48 +339,30 @@ namespace APIServices
                         }
 
                     }
+                    contextDb.SaveChanges();
                 }
                 return true;
             }
-            catch
+            catch (Exception e)
             {
                 return false;
-            }           
+            }
         }
 
         private bool InsertRate(UpdateRateRequest rate, ref OzHotelesEntities contextDb)
         {
-            IEnumerable<RatesPlan> ratePlan = FindHotelRatePlan(rate.HotelId, rate.RatePlanId);
-            
+            bool isNetRate = false;
+            bool isBulk = true;
 
-            if (ratePlan.Count() <= 0)
+            RatesPlan ratePlan = contextDb.RatesPlan.FirstOrDefault(rp => rp.idRatePlan == rate.RatePlanId && rp.IdHotel == rate.HotelId);
+
+            if (ratePlan == null)
                 return false;
 
-            decimal adultRatePerRoom = 0;
-            decimal childRatePerRoom = 0;
-            decimal juniorRatePerRoom = 0;
-
-            foreach (var price in rate.Prices)
-            {
-                if (price.Type == PaxType.Adult && price.Occupation == 1)
-                {
-                    adultRatePerRoom = price.Price;
-                }
-
-                if (price.Type == PaxType.Child && price.Occupation == 1)
-                {
-                    childRatePerRoom = price.Price;
-                }
-
-                if (price.Type == PaxType.Junior && price.Occupation == 1)
-                {
-                    juniorRatePerRoom = price.Price;
-                }
-            }
+            isNetRate = (ratePlan.idContrato != null && ratePlan.idContrato != 0);
 
             var newRate = new Tarifas
             {
-                idTarifa = rate.RateId,
                 idTipoHabitacion_Hotel = rate.RoomId,
                 FechaFinaliza = rate.EndDate,
                 FechaInicia = rate.StartDate,
@@ -390,18 +373,100 @@ namespace APIServices
                 NoArrivos = rate.Rules.NoArrival ?? "YYYYYYY",
                 Excepciones = rate.Rules.ExceptionDays ?? "NNNNNNN",
                 RateRulesDefault = rate.Rules.UseDefaultRules ?? false,
-                PrecioAdolescente = juniorRatePerRoom,
-                NiniosRate = childRatePerRoom,
-                Precio = adultRatePerRoom
+                TipoTarifa = "R",
+                CodigoTarifa = rate.RateCode,
+                PrecioAdolescente = rate.Prices.SingleOrDefault(p => p.Occupation == 1 && p.Type == PaxType.Junior)?.Price ?? 0,
+                NiniosRate = rate.Prices.SingleOrDefault(p => p.Occupation == 1 && p.Type == PaxType.Child)?.Price ?? 0,
+                Precio = rate.Prices.SingleOrDefault(p => p.Occupation == 1 && p.Type == PaxType.Adult)?.Price ?? 0
             };
 
             contextDb.Tarifas.Add(newRate);
+            contextDb.SaveChanges();
+
+            if (!InsertGuestsRates(newRate, false, rate.Prices, isBulk, ref contextDb))
+            {
+                return false;
+            }
+
             return true;
         }
 
-        private bool InsertGuestsRates(int rateId, bool isNetRate, ref OzHotelesEntities contextDb){
+        private bool InsertGuestsRates(Tarifas newRate, bool isNetRate, List<DailyRateDetailPrice> prices, bool isBulk, ref OzHotelesEntities contextDb)
+        {
+            HotelRoom hotelRoom = contextDb.HotelRoom.FirstOrDefault(r => r.Id == newRate.idTipoHabitacion_Hotel);
+            if (hotelRoom == null)
+                return false;
 
-            return false;
+            int adults, childs = 0;
+            List<TarifasRestricciones> guestRates = new List<TarifasRestricciones>();
+
+            try
+            {
+                if (isBulk)
+                {
+                    for (adults = hotelRoom.MaxAdultsOccupancy; adults > 0; adults--)
+                    {
+                        for (childs = hotelRoom.MaxChildrenOccupancy; childs >= 0; childs--)
+                        {
+                            guestRates.Add(new TarifasRestricciones
+                            {
+                                idTarifa = newRate.idTarifa,
+                                Adultos = adults,
+                                Ninios = childs,
+                                TarifaAdulto = prices.SingleOrDefault(p => p.Type == PaxType.Adult)?.Price ?? 0,
+                                TarifaNinio = prices.SingleOrDefault(p => p.Type == PaxType.Child)?.Price ?? 0,
+                                TarifaAdolescente = prices.SingleOrDefault(p => p.Type == PaxType.Junior)?.Price ?? 0,
+                                TarifaAdultoExc = prices.SingleOrDefault(p => p.Type == PaxType.Junior)?.Price ?? 0,
+                                TarifaNinioExc = prices.SingleOrDefault(p => p.Type == PaxType.Junior)?.Price ?? 0,
+                                TarifaAdolescenteExc = prices.SingleOrDefault(p => p.Type == PaxType.Junior)?.Price ?? 0,
+                                TarifaAdultoNR = prices.SingleOrDefault(p => p.Type == PaxType.Junior)?.Price ?? 0,
+                                TarifaNinioNR = prices.SingleOrDefault(p => p.Type == PaxType.Junior)?.Price ?? 0,
+                                TarifaAdolescenteNR = prices.SingleOrDefault(p => p.Type == PaxType.Junior)?.Price ?? 0,
+                                TarifaAdultoExcNR = prices.SingleOrDefault(p => p.Type == PaxType.Junior)?.Price ?? 0,
+                                TarifaNinioExcNR = prices.SingleOrDefault(p => p.Type == PaxType.Junior)?.Price ?? 0,
+                                TarifaAdolescenteExcNR = prices.SingleOrDefault(p => p.Type == PaxType.Junior)?.Price ?? 0,
+                                Applyday = ""
+                            });
+                        }
+                    }
+                }
+                else
+                {
+                    for (adults = hotelRoom.MaxAdultsOccupancy; adults > 0; adults--)
+                    {
+                        for (childs = hotelRoom.MaxChildrenOccupancy; childs > 0; childs--)
+                        {
+                            guestRates.Add(new TarifasRestricciones
+                            {
+                                idTarifa = newRate.idTarifa,
+                                Adultos = adults,
+                                Ninios = childs,
+                                TarifaAdulto = prices.SingleOrDefault(p => p.Occupation == adults && p.Type == PaxType.Adult)?.Price ?? 0,
+                                TarifaNinio = prices.SingleOrDefault(p => p.Occupation == childs && p.Type == PaxType.Child)?.Price ?? 0,
+                                TarifaAdolescente = prices.SingleOrDefault(p => p.Occupation == childs && p.Type == PaxType.Junior)?.Price ?? 0,
+                                TarifaAdultoExc = prices.SingleOrDefault(p => p.Occupation == adults && p.Type == PaxType.Junior)?.Price ?? 0,
+                                TarifaNinioExc = prices.SingleOrDefault(p => p.Occupation == adults && p.Type == PaxType.Junior)?.Price ?? 0,
+                                TarifaAdolescenteExc = prices.SingleOrDefault(p => p.Occupation == adults && p.Type == PaxType.Junior)?.Price ?? 0,
+                                TarifaAdultoNR = prices.SingleOrDefault(p => p.Occupation == adults && p.Type == PaxType.Junior)?.Price ?? 0,
+                                TarifaNinioNR = prices.SingleOrDefault(p => p.Occupation == adults && p.Type == PaxType.Junior)?.Price ?? 0,
+                                TarifaAdolescenteNR = prices.SingleOrDefault(p => p.Occupation == adults && p.Type == PaxType.Junior)?.Price ?? 0,
+                                TarifaAdultoExcNR = prices.SingleOrDefault(p => p.Occupation == adults && p.Type == PaxType.Junior)?.Price ?? 0,
+                                TarifaNinioExcNR = prices.SingleOrDefault(p => p.Occupation == adults && p.Type == PaxType.Junior)?.Price ?? 0,
+                                TarifaAdolescenteExcNR = prices.SingleOrDefault(p => p.Occupation == adults && p.Type == PaxType.Junior)?.Price ?? 0,
+                                Applyday = ""
+                            });
+                        }
+                    }
+                }
+
+                contextDb.TarifasRestricciones.AddRange(guestRates);
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }
