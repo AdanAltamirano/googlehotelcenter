@@ -8,6 +8,7 @@ namespace APIServices.Models.DTO
 {
     public class UpdateRateRequest
     {
+        public int HotelId { get; set; }
         public int RateId { get; set; }
         public int RoomId { get; set; }
         public DateTime StartDate { get; set; }
@@ -17,9 +18,12 @@ namespace APIServices.Models.DTO
         public decimal ExtraChildPrice { get; set; }
         public decimal ExtraJuniorPrice { get; set; }
         public string RateCode { get; set; }
-        public UpdateRateRequestDiscount Promotion { get; set; }
+        public UpdateRateRequestPromotion Promotion { get; set; }
         public List<DailyRateDetailPrice> Prices { get; set; } = new List<DailyRateDetailPrice>();
         public UpdateRateRequestRules Rules { get; set; }
+        public string Error { get; set; }
+        public UpdateRequestGuestsRestriction GuestsRestrictions { get; set; }
+        public UpdateRateRequestBookingWindow BookingWindow { get; set; }
     }
 
     public class UpdateRateRequestRules
@@ -32,14 +36,27 @@ namespace APIServices.Models.DTO
         public byte MaxLOS { get; set; } //Minimum lenght of stay
         public byte MaxAdvanceBooking { get; set; }
         public byte MinAdvanceBooking { get; set; }
-        public DateTime BookingWindowStartDate { get; set; }
-        public DateTime BookingWindowEndDate { get; set; }
     }
 
-    public class UpdateRateRequestDiscount
+    public class UpdateRateRequestPromotion
     {
         public byte Discount { get; set; }
         public string EnglishDescription { get; set; }
         public string SpanishDescription { get; set; }
+    }
+
+    public class UpdateRateRequestBookingWindow
+    {
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+    }
+
+    public class UpdateRequestGuestsRestriction
+    {
+        public byte MaxGuests { get; set; }
+        public byte MaxAdults { get; set; }
+        public byte MinAdults { get; set; }
+        public byte Childs { get; set; }
+        public byte ExtraGuests { get; set; }
     }
 }
