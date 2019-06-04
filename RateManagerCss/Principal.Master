@@ -16,7 +16,9 @@
     <link href="Includes/estilos.css" rel="stylesheet" type="text/css" />
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 	<link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
 
@@ -25,23 +27,12 @@
             //David Bustamante
             //Se quita el menu izquierdo para mostrar completo el iframe
 
-            document.getElementById('submenuDiv').style.width = '0px';
-            document.getElementById('contenido').style.width = '99%';
+            //document.getElementById('submenuDiv').style.width = '0px';
+            //document.getElementById('contenido').style.width = '99%';
         }
         jQuery.noConflict();
         
         jQuery(document).ready(function() {
-
-            jQuery("#idioma").click(function() {
-                var e = jQuery("#idiomas");
-                e.fadeIn();
-                e.queue(function() {
-                    setTimeout(function() {
-                        e.dequeue();
-                    }, 5000);
-                });
-                e.fadeOut('slow');
-            });
 
             //opcionesIcono y preguntas frecuentes
             jQuery("#opcionesIcono, #linkPreguntasFrecuentes").click(function() {
@@ -51,24 +42,37 @@
 
             jQuery("#submenuDiv .dvhide").hide();
 
-            jQuery("#menuPrincipal ul > li  a").click(function() {
-                //jQuery("#menuPrincipal ul > li").attr("class", "");
-                jQuery("#submenuDiv a").parent("li").attr("class", "");
-                var id_div = jQuery(this).attr("href") + "_div";
-                //jQuery(this).parent("li").addClass("class", "activo-main-menu");
-                jQuery("#submenuDiv .dvhide").hide();
-                jQuery(id_div).show(300);
-                jQuery(id_div + " a:first").trigger("click");
-                var iframe = document.getElementById("frmPrincipal");
-                if (jQuery(id_div + " a:first").attr("href") != undefined) {
-                if (jQuery(id_div + " a:first").attr("href") != "#") {
 
-                    window.open(jQuery(id_div + " a:first").attr("href"), "frmPrincipal");
+            //click menu header
+            jQuery('#menuPrincipal ul > li a').click(function(){
+
+                var content_submenu = jQuery(this).attr('href') + '_div';
+                HideMenu();
+                jQuery(content_submenu).show(300);
+
+                var firstHref = jQuery(content_submenu + ' a:first');
+                firstHref.trigger('click');
+                
+                jQuery('#sidebarContent').show();
+                jQuery(this).parent('li').addClass('active');
+                    
+                setTimeout(function() {
+                    jQuery('.dropdown-menu*').removeClass('show');
+                }, 100)
+
+                if (firstHref.attr('href') != undefined && firstHref.attr('href') != '#')
+                {
+                    try
+                    {
+                        window.open(firstHref.attr('href'), 'frmPrincipal');
+                        /**/
+                    } catch (error){ }
                 }
-                }
-            });
+            })
+
             jQuery('iframe').load(function() {
                 jQuery('#loading').hide();
+                this.contentWindow.document.body.offsetHeight + 'px';
             });
             jQuery(".submenuprin li").click(function() {
                 jQuery(this).parent("ul").toggleClass("hovered");
@@ -78,14 +82,12 @@
             });
             //SubMenu
             jQuery("#submenuDiv .submenu li div p a").parent("li").attr("class", "");
-            jQuery("#submenuDiv .submenu li div p a").click(function() {
-                jQuery('#loading').show();
-                jQuery("#submenuDiv .submenu li div p a").parent("li").attr("class", "");
-                jQuery("#submenuDiv .submenu li").attr("class", "");
-                if (jQuery(this).attr("href") != '#') {
-                    jQuery(this).parent("p").parent("div").parent("li").addClass("activo-subSubmenu");
-                }
-            });
+            
+
+            jQuery('#submenuDiv a').click(function(){
+                jQuery('#submenuDiv li').removeClass('activo-subSubmenu');
+                jQuery(this).parent('li').addClass('activo-subSubmenu');
+            })
 
             jQuery("#<%=lnkNameCompany.ClientID %>").click(function() {
                 jQuery(".infoHotel").toggle("slow");
@@ -102,13 +104,11 @@
 
 
 
-        function HideMenu() {
-            try {
-                jQuery("#submenuDiv .dvhide").hide();
-                jQuery("#submenuDiv a").parent().parent().parent().attr("class", "");
-                jQuery("#menuPrincipal li").removeClass("active");
-            } catch (Error) { }
-
+        function HideMenu()
+        {
+            jQuery('#sidebarContent').hide();
+            jQuery('#menuPrincipal li').removeClass('active');
+            jQuery('#submenuDiv .dvhide').hide();
         }
 
         //Script para el link de "Subir"
@@ -126,6 +126,24 @@
                 }, 500);
                 return false;
             });
+
+
+            /*jQuery('#sidebar').mCustomScrollbar({
+            	theme: 'minimal'
+            })*/
+
+            jQuery('#sidebarCollapse').click(function(){
+            	jQuery('#sidebar').addClass('active');
+            	jQuery('.overlay').addClass('active');
+            	jQuery('.collapse.in').toggleClass('in');
+            	jQuery('a[aria-expanded=true]').attr('aria-expanded', 'false');
+
+            })
+
+            jQuery('.dismiss, .overlay').click(function(){
+            	jQuery('#sidebar').removeClass('active');
+            	jQuery('.overlay').removeClass('active');
+            })
         });
 
     </script>
@@ -155,10 +173,10 @@
 					<!-- la condicion debe ser igual a "es-MX" -->
 					<%If RateManager.PortalCulture.GetCulture().ToString = "xxx" Then%>
 						<a runat="server" id="lnkTicket" class="dropdown-item" target="frmPrincipal">
-							<i class="fas fa-user-tie"></i> <%=Me.getlabel("01314") %>
+							<i class="fas fa-user-tie"></i> <%=me.getlabel("01314") %>
 						</a>
 						<a runat="server" id="lnkTicketList" class="dropdown-item" target="frmPrincipal">
-							<i class="fas fa-file-alt"></i> <%=Me.getlabel("01315") %>
+							<i class="fas fa-file-alt"></i> <%=me.getlabel("01315") %>
 						</a>
 					<%End If%>
 					<a runat="server" id="lnkhelp" class="dropdown-item" target="frmPrincipal">
@@ -181,11 +199,11 @@
 				<%End If%>
 				<div class="dropdown-menu dropdown-menu-right dropdownLng" aria-labelledby="menuLanguage">
 					<%If RateManager.PortalCulture.GetCulture().ToString = "es-MX" Then%>
-						<a href='<%= GeRequestApplicationPath(String.Concat("/", Response.Cookies("groupid").Value, "home.aspx?ididioma=2"))%>' class="dropdown-item">
+						<a href='<%= GeRequestApplicationPath(string.concat("/" , Response.Cookies("groupid").value, "home.aspx?ididioma=2"))%>' class="dropdown-item">
 							<img src='<%=GeRequestApplicationPath("/Images/usa.gif") %>' style="margin-right: 4px" /><%=Me.GetLabel("01457")%></a>
 						</a>
 					<%Else%>
-						<a href='<%= GeRequestApplicationPath(String.Concat("/", Response.Cookies("groupid").Value, "home.aspx?ididioma=1"))%>' class="dropdown-item">
+						<a href='<%= GeRequestApplicationPath(string.concat("/" , Response.Cookies("groupid").value,  "home.aspx?ididioma=1" ))%>' class="dropdown-item">
 							<img src='<%=GeRequestApplicationPath("/Images/mexico.gif") %>' style="margin-right: 4px" /><%=Me.GetLabel("01456")%></a>
 						</a>
 					<%End If%>
@@ -200,78 +218,98 @@
     <div style="display:none" id="header">
         <asp:Label ID="lblTitle" runat="server" Text="Label" CssClass="clsHeaderTitle">Sistema de Administración de Hotel</asp:Label>
     </div>
-    <div id="nombreHotelDiv">
-        <asp:HyperLink ID="lnkNameCompany" runat="server" CssClass="nombreHotel showOptionsLf">Hotel</asp:HyperLink>
-        <div class="infoHotel">
-            <div id="contentInfo">
-            </div>
-        </div>
+    <div style="display: block;">
+        
+        
         <div id="inforHotel" style="display: none">
             <asp:Label runat="server" ID="lblInfoHotel"></asp:Label>
         </div>
         <a href="#url" class="sombraBlanca botonOpciones">Ayuda ▼</a> <a href="#url" class="sombraBlanca botonOpciones">
             Opciones ▼</a>
     </div>
-    <table border="0" cellpadding="0" cellspacing="0">
-        <tr>
-            <td valign="top">
-                <div id="submenuDiv">
+    <div class="wrapper">
+    	<nav id="sidebar" class="mCustomScrollbar _mCS_1 mCS-autoHide" style="overflow:visible;">
+	        <div class="mCustomScrollBox mCS-minimal mCSB_vertical mCSB_outside" style="max-height:none;" tabindex="0">
+	            <div id="submenuDiv" class="mCSB_container" style="position:relative; top:0; left:0;" dir="ltr">
+	            	<div class="dismiss">
+	            		<i class="fa fa-arrow-left"></i>
+	            	</div>
+	            	<div class="sidebar-header"></div>
                     <uc3:ctrlMenuLeft ID="ctrlMenuLeft1" runat="server" />
-                    <div class="clear">
-                        <iframe id="frmChat" src="Chat.aspx" frameborder="0" height="75px" style="margin: 0;
-                            padding: 0;" width="100%" scrolling="no"></iframe>
-                    </div>
-                    <div class="clear" style='text-align: center; display: <%=iif(RateManager.PortalCulture.GetIDCulture =1,"block","none")%>'>
-                        <a id="linkPreguntasFrecuentes" target="frmPrincipal" href="<%response.Write(GeRequestApplicationPath("/Documentacion/Preguntasfrecuentes.htm"))%>">
-                            Preguntas frecuentes</a>
+	            </div>
+	        </div>
+    	</nav>
+    	<div class="content">
+            <div class="overlay"></div>
+            <div id="sidebarContent" class="row">
+                <div class="col-md-12">
+                    <button type="button" id="sidebarCollapse" class="btn btn-info">
+                        <i class="fa fa-align-left"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <% If lnkNameCompany.Text <> RateManager.PortalCulture.GetString("00158") Then %>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div id="nombreHotelDiv" class="col-md-12">
+                                    <asp:HyperLink ID="lnkNameCompany" runat="server" CssClass="nombreHotel showOptionsLf"></asp:HyperLink>
+                                    <div class="infoHotel">
+                                        <div id="contentInfo"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <% End If %>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <asp:ContentPlaceHolder ID="ContainerPage" runat="server"></asp:ContentPlaceHolder>
+                        </div>
                     </div>
                 </div>
-            </td>
-            <td style="width: 100%" valign="top">
-                <div id="contenido">
-                    <div id="Contentpage">
-                        <asp:ContentPlaceHolder ID="ContainerPage" runat="server">
-                        </asp:ContentPlaceHolder>
-                    </div>
-                </div>
-            </td>
-        </tr>
-        <%--<tr>
-            <td colspan="2" style="width: 100%; clear: both;" valign="top">
-                <%  
-                Dim tr As System.IO.TextReader
-                Dim str As String
-                
-                Dim filename As String = Request.PhysicalApplicationPath & "/Portal/Modules/footer_" & RateManager.PortalCulture.GetCulture.ToString.Substring(0, 2) & ".htm"
-                If System.IO.File.Exists(filename) Then
-                    
-                    tr = New System.IO.StreamReader(filename, System.Text.Encoding.Default)
-                    Str = tr.ReadToEnd
-                    tr.Close()
-                    Response.Write(str)
-                End If
-                
-                %>
-            </td>
-        </tr>--%>
-    </table>
+            </div>
+    		<table style="width:100%; display: none" border="0" cellpadding="0" cellspacing="0">
+		        <tr>
+		            <%--<td valign="top">
+		                <div>
+		                    
+		                    <div class="clear">
+		                        <iframe id="frmChat" src="Chat.aspx" frameborder="0" height="75px" style="margin: 0;
+		                            padding: 0;" width="100%" scrolling="no"></iframe>
+		                    </div>
+		                    <div class="clear" style='text-align: center; display: <%=iif(RateManager.PortalCulture.GetIDCulture =1,"block","none")%>'>
+		                        <a id="linkPreguntasFrecuentes" target="frmPrincipal" href="<%response.write(GeRequestApplicationPath( "/Documentacion/Preguntasfrecuentes.htm"))%>">
+		                            Preguntas frecuentes</a>
+		                    </div>
+		                </div>
+		            </td>--%>
+		        </tr>
+    		</table>
+    	</div>
+    </div>
+    
+    
+    
 
     <!--footer-->
     <%
-                                                                   Dim reader As System.IO.TextReader
+        Dim reader As System.IO.TextReader
 
-                                                                   Dim fileName As String = Request.PhysicalApplicationPath & "/Portal/Modules/footer_" & RateManager.PortalCulture.GetCulture.ToString.Substring(0, 2) & ".htm"
-                                                                   If System.IO.File.Exists(filename) Then
+        Dim fileName As String = Request.PhysicalApplicationPath & "/Portal/Modules/footer_" & RateManager.PortalCulture.GetCulture.ToString.Substring(0, 2) & ".htm"
+        If System.IO.File.Exists(filename) Then
 
-                                                                       reader = New System.IO.StreamReader(fileName, System.Text.Encoding.Default)
-                                                                       Dim footer As String = reader.ReadToEnd()
-                                                                       reader.Close()
-                                                                       Response.Write(footer)
-                                                                   End If
+            reader = New System.IO.StreamReader(fileName, System.Text.Encoding.Default)
+            Dim footer As String = reader.ReadToEnd()
+            reader.Close()
+            Response.Write(footer)
+        End If
     %>
     
     <div class="subir">
-        <a href="#top" boder="0"></a>
+        <a href="#top" boder="0">
+            <i class="fa fa-arrow-circle-up"></i>
+        </a>
     </div>
     
     

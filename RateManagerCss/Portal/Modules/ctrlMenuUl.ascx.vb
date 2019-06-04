@@ -80,6 +80,8 @@ Partial Public Class ctrlMenuUl
     End Sub
 
     Private Sub BuilMenu(ByVal idPadre As Integer, ByVal nivel As Integer, ByVal ds As DataSet, ByVal userRoles As String, ByRef itemNumber As Integer, ByRef result As String)
+
+        Dim countItems As Integer = 0
         For Each dr As DataRow In ds.Tables("menuItem").Rows
             Dim text As String = Nothing
             Dim roles As String = Nothing
@@ -121,12 +123,12 @@ Partial Public Class ctrlMenuUl
                                 End If
 
                             Case MenuType.SoloSegundoNivel
-                                result += String.Format("<div class='dvhide' id={0}_{1}_div>{2}", nivel, menuItem_Id, vbCrLf)
-                                result += "<ul class='submenu'>"
+                                result += String.Format("<ul class='dvhide list-unstyled components' id={0}_{1}_div>{2}", nivel, menuItem_Id, vbCrLf)
+                                'result += "<ul class='submenu'>"
                                 nextIdPadre = GetPadre(menuItem_Id, ds)
                                 BuilMenu(nextIdPadre, nivel + 1, ds, userRoles, itemNumber, result)
-                                result += "<ul/>"
-                                result += String.Format("</div>{0} <p/><p/>", vbCrLf)
+                                'result += "<ul/>"
+                                result += String.Format("</ul>{0}", vbCrLf)
 
                         End Select
                     Else
@@ -135,15 +137,20 @@ Partial Public Class ctrlMenuUl
                         Select Case CurrentMenuType
                             Case MenuType.SoloPrimerNivel
                                 If nivel = 2 Then
-                                    result += String.Format("{0}<a class=""dropdown-item"" href='{1}' {2}>{3}</a>{4}", GetTabs(nivel), GetUrl(url), GetTarget(url), GetString(text), vbCrLf)
+                                    If countItems = (ds.Tables("menuItem").Rows.Count - 1) Then
+                                        result += String.Format("{0}<a class=""dropdown-item"" href='{1}' {2}>{3}</a>{4}", GetTabs(nivel), GetUrl(url), GetTarget(url), GetString(text), vbCrLf)
+                                    Else
+                                        result += String.Format("{0}<a class=""dropdown-item"" href='{1}' {2}>{3}</a><div class=""dropdown-divider""></div>{4}", GetTabs(nivel), GetUrl(url), GetTarget(url), GetString(text), vbCrLf)
+                                    End If
+
 
                                 End If
 
                             Case MenuType.SoloSegundoNivel
                                 If nivel = 2 Then
-                                    result += String.Format("{0}<li><div><p><a href='{1}' {2}>{3}</a></p></div></li>{4}", GetTabs(nivel), GetUrl(url), GetTarget(url), GetString(text), vbCrLf)
+                                    result += String.Format("{0}<li><a href='{1}' {2}>{3}</a></li><div class=""dropdown-divider""></div>{4}", GetTabs(nivel), GetUrl(url), GetTarget(url), GetString(text), vbCrLf)
                                 Else
-                                    result += String.Format("{0}<li><div><p><a href='{1}' {2}><span class='SubMenuLevel3'>{3}</span></a></p></div></li>{4}", GetTabs(nivel), GetUrl(url), GetTarget(url), GetString(text), vbCrLf)
+                                    result += String.Format("{0}<li><a href='{1}' {2}><span class='SubMenuLevel3'>{3}</span></a></li><div class=""dropdown-divider""></div>{4}", GetTabs(nivel), GetUrl(url), GetTarget(url), GetString(text), vbCrLf)
                                 End If
                         End Select
                         If nextIdPadre <> -2 Then
@@ -152,6 +159,7 @@ Partial Public Class ctrlMenuUl
                     End If
                 End If
             End If
+            countItems += 1
         Next
     End Sub
     Private Function GetUrl(ByVal url As String) As String

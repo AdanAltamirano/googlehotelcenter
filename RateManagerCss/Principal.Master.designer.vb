@@ -12,7 +12,7 @@ Option Explicit On
 
 
 Partial Public Class PrincipalMaster
-
+    
     '''<summary>
     '''head control.
     '''</summary>
@@ -21,7 +21,7 @@ Partial Public Class PrincipalMaster
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents head As Global.System.Web.UI.WebControls.ContentPlaceHolder
-
+    
     '''<summary>
     '''form1 control.
     '''</summary>
@@ -30,7 +30,7 @@ Partial Public Class PrincipalMaster
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents form1 As Global.System.Web.UI.HtmlControls.HtmlForm
-
+    
     '''<summary>
     '''ScriptManager1 control.
     '''</summary>
@@ -39,7 +39,7 @@ Partial Public Class PrincipalMaster
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents ScriptManager1 As Global.System.Web.UI.ScriptManager
-
+    
     '''<summary>
     '''ctrlMenuTap1 control.
     '''</summary>
@@ -48,7 +48,7 @@ Partial Public Class PrincipalMaster
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents ctrlMenuTap1 As Global.RateManager.ctrlMenuTap
-
+    
     '''<summary>
     '''lblUser control.
     '''</summary>
@@ -57,7 +57,7 @@ Partial Public Class PrincipalMaster
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblUser As Global.System.Web.UI.WebControls.Label
-
+    
     '''<summary>
     '''lnkTicket control.
     '''</summary>
@@ -66,7 +66,7 @@ Partial Public Class PrincipalMaster
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lnkTicket As Global.System.Web.UI.HtmlControls.HtmlAnchor
-
+    
     '''<summary>
     '''lnkTicketList control.
     '''</summary>
@@ -75,7 +75,7 @@ Partial Public Class PrincipalMaster
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lnkTicketList As Global.System.Web.UI.HtmlControls.HtmlAnchor
-
+    
     '''<summary>
     '''lnkhelp control.
     '''</summary>
@@ -84,7 +84,7 @@ Partial Public Class PrincipalMaster
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lnkhelp As Global.System.Web.UI.HtmlControls.HtmlAnchor
-
+    
     '''<summary>
     '''linkLogOut control.
     '''</summary>
@@ -93,7 +93,7 @@ Partial Public Class PrincipalMaster
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents linkLogOut As Global.System.Web.UI.WebControls.LinkButton
-
+    
     '''<summary>
     '''lblTitle control.
     '''</summary>
@@ -102,16 +102,7 @@ Partial Public Class PrincipalMaster
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblTitle As Global.System.Web.UI.WebControls.Label
-
-    '''<summary>
-    '''lnkNameCompany control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lnkNameCompany As Global.System.Web.UI.WebControls.HyperLink
-
+    
     '''<summary>
     '''lblInfoHotel control.
     '''</summary>
@@ -120,7 +111,7 @@ Partial Public Class PrincipalMaster
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblInfoHotel As Global.System.Web.UI.WebControls.Label
-
+    
     '''<summary>
     '''ctrlMenuLeft1 control.
     '''</summary>
@@ -129,7 +120,16 @@ Partial Public Class PrincipalMaster
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents ctrlMenuLeft1 As Global.RateManager.ctrlMenuLeft
-
+    
+    '''<summary>
+    '''lnkNameCompany control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lnkNameCompany As Global.System.Web.UI.WebControls.HyperLink
+    
     '''<summary>
     '''ContainerPage control.
     '''</summary>
