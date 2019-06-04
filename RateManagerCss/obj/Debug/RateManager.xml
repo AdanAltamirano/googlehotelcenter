@@ -27135,15 +27135,6 @@ Auto-generated field.
 To modify move field declaration from designer file to code-behind file.
 </remarks>
 </member>
-<member name="F:RateManager.PrincipalMaster._lnkNameCompany">
-<summary>
-lnkNameCompany control.
-</summary>
-<remarks>
-Auto-generated field.
-To modify move field declaration from designer file to code-behind file.
-</remarks>
-</member>
 <member name="F:RateManager.PrincipalMaster._lblInfoHotel">
 <summary>
 lblInfoHotel control.
@@ -27156,6 +27147,15 @@ To modify move field declaration from designer file to code-behind file.
 <member name="F:RateManager.PrincipalMaster._ctrlMenuLeft1">
 <summary>
 ctrlMenuLeft1 control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:RateManager.PrincipalMaster._lnkNameCompany">
+<summary>
+lnkNameCompany control.
 </summary>
 <remarks>
 Auto-generated field.
