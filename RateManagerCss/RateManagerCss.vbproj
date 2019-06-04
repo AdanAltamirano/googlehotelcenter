@@ -24,11 +24,10 @@
     <TargetFrameworkProfile />
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
-    <IISExpressAnonymousAuthentication />
-    <IISExpressWindowsAuthentication />
-    <IISExpressUseClassicPipelineMode>true</IISExpressUseClassicPipelineMode>
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
     <UseGlobalApplicationHostFile />
-    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -1312,7 +1311,6 @@
     <Content Include="API\Rooms.ashx" />
     <Content Include="API\Rooms\Inventory.ashx" />
     <Content Include="API\Rates\Daily.ashx" />
-    <Content Include="API\Hotels.ashx" />
     <Content Include="API\RateUpdate.ashx" />
     <None Include="Web References\WsConnectWcf\wsConnectWCFv2.xsd">
       <SubType>Designer</SubType>
@@ -1327,9 +1325,6 @@
   <ItemGroup>
     <Compile Include="API\APIHandler.vb" />
     <Compile Include="API\Controllers\HotelController.vb" />
-    <Compile Include="API\Hotels.ashx.vb">
-      <DependentUpon>Hotels.ashx</DependentUpon>
-    </Compile>
     <Compile Include="API\Rates.ashx.vb">
       <DependentUpon>Rates.ashx</DependentUpon>
     </Compile>
@@ -4755,7 +4750,6 @@
   <ItemGroup>
     <Folder Include="HotelAdministrator\Models\" />
     <Folder Include="obj\" />
-    <Folder Include="RatesAdmin\" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
@@ -4784,7 +4778,18 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <SaveServerSettingsInUserFile>True</SaveServerSettingsInUserFile>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>False</AutoAssignPort>
+          <DevelopmentServerPort>15903</DevelopmentServerPort>
+          <DevelopmentServerVPath>/Ratemanager/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:15903/Ratemanager</IISUrl>
+          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
+          <IISAppRootUrl>http://localhost:15903/Ratemanager</IISAppRootUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>

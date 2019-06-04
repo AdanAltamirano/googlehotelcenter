@@ -18,10 +18,10 @@
 </template>
 
 <script>
-import EventBus from './core/event-bus';
-import CalendarRibbon from './components/CalendarRibbon.vue';
-import RoomTable from './components/RoomTable.vue';
-import Utilities from './core/utilities';
+import EventBus from '../core/event-bus';
+import CalendarRibbon from '../components/CalendarRibbon.vue';
+import RoomTable from '../components/RoomTable.vue';
+import Utilities from '../core/utilities';
 
 export default {
     name: 'app',

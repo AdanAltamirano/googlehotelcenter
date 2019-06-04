@@ -2,7 +2,7 @@ import Vue from 'vue';
 
 const AppConfig = {
     // APP configurations
-    language: window.Language || 'en',
+    language: window.Language || 'es',
     domain: window.Domain,
     user: window.User,
     session: {

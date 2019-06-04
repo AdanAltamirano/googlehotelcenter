@@ -5,16 +5,22 @@ Imports APIServices.Models
 Imports NinjAPI
 Imports NinjAPI.Query
 
-<RoutePrefix("api/hotelstest")>
+<RoutePrefix("api/hotels")>
 Public Class HotelController
     Inherits ShurikenController
 
     Public HotelService As New HotelService
 
-    ' GET api/<controller>
+    ' GET api/hotels
     <Route(""), HttpGet, Queryable>
     Public Function GetAll() As IQueryable(Of HotelBasicInfo)
         Return HotelService.GetAll()
+    End Function
+
+    ' GET api/hotels/1
+    <Route("{Id:int}"), HttpGet>
+    Public Function GetById(Id As Integer) As DTO.HotelInfo
+        Return HotelService.Get(Id)
     End Function
 
     Protected Overrides Sub Dispose(disposing As Boolean)

@@ -9,7 +9,7 @@ import VueCurrencyFilter from 'vue-currency-filter';
 import VTooltip from 'v-tooltip';
 import { localeMoment } from './core/localization/locale';
 import store from './core/store';
-import App from './App.vue';
+import App from './views/rates-admin.vue';
 
 // styles
 import './assets/app.scss';

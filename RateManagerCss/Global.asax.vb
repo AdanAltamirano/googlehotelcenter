@@ -35,6 +35,7 @@ Public Class [Global]
     Sub Application_Start(ByVal sender As Object, ByVal e As EventArgs)
         ' Se desencadena cuando se inicia la aplicación
         GlobalConfiguration.Configuration.NinjAPIConfig()
+        GlobalConfiguration.Configuration.EnsureInitialized()
     End Sub
 
     Sub Session_Start(ByVal sender As Object, ByVal e As EventArgs)
