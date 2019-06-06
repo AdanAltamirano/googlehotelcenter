@@ -49,6 +49,16 @@ Public MustInherit Class APIHandler
         context.Response.Status = "method not allowed"
     End Sub
 
+    Protected Sub OkWithError(ByRef context As HttpContext, ByVal [error] As String)
+        context.Response.StatusCode = 200
+        context.Response.ContentType = "application/json"
+        Dim result = New With {
+            .Message = IIf(String.IsNullOrWhiteSpace([error]), "bad request", [error]),
+            .Status = 200
+        }
+        context.Response.Write(SerializeResponse(result))
+    End Sub
+
     Protected MustOverride Sub GetHandler(ByRef context As HttpContext)
 
     Protected MustOverride Sub PostHandler(ByRef context As HttpContext)
