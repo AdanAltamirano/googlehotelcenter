@@ -5,6 +5,22 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="Models.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Diccionario">
+          <Key>
+            <PropertyRef Name="idRepl1" />
+          </Key>
+          <Property Name="IdDiccionario" Type="int" Nullable="false" />
+          <Property Name="IdIdioma" Type="int" Nullable="false" />
+          <Property Name="Texto" Type="nvarchar" MaxLength="4000" Nullable="false" />
+          <Property Name="idRepl1" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Indice">
+          <Key>
+            <PropertyRef Name="idDiccionario" />
+          </Key>
+          <Property Name="idDiccionario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Eliminado" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="RatesPlan">
           <Key>
             <PropertyRef Name="idRatePlan" />
@@ -253,6 +269,20 @@ warning 6002: The table/view 'OzHoteles.dbo.RoomInventory' does not have a prima
           <Property Name="Reserved" Type="int" />
           <Property Name="Available" Type="int" />
         </EntityType>
+        <Association Name="FK_Diccionario_Indice1">
+          <End Role="Indice" Type="Self.Indice" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Diccionario" Type="Self.Diccionario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Indice">
+              <PropertyRef Name="idDiccionario" />
+            </Principal>
+            <Dependent Role="Diccionario">
+              <PropertyRef Name="IdDiccionario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="Tarifas_Tarifas_Planes_FK1">
           <End Role="Tarifas" Type="Self.Tarifas" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -268,6 +298,8 @@ warning 6002: The table/view 'OzHoteles.dbo.RoomInventory' does not have a prima
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="ModelsStoreContainer">
+          <EntitySet Name="Diccionario" EntityType="Self.Diccionario" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Indice" EntityType="Self.Indice" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RatesPlan" EntityType="Self.RatesPlan" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tarifas" EntityType="Self.Tarifas" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TarifasRestricciones" EntityType="Self.TarifasRestricciones" Schema="dbo" store:Type="Tables" />
@@ -355,6 +387,10 @@ warning 6002: The table/view 'OzHoteles.dbo.RoomInventory' does not have a prima
     [RoomInventory].[Available] AS [Available]
     FROM [dbo].[RoomInventory] AS [RoomInventory]</DefiningQuery>
           </EntitySet>
+          <AssociationSet Name="FK_Diccionario_Indice1" Association="Self.FK_Diccionario_Indice1">
+            <End Role="Indice" EntitySet="Indice" />
+            <End Role="Diccionario" EntitySet="Diccionario" />
+          </AssociationSet>
           <AssociationSet Name="Tarifas_Tarifas_Planes_FK1" Association="Self.Tarifas_Tarifas_Planes_FK1">
             <End Role="Tarifas" EntitySet="Tarifas" />
             <End Role="TarifasRestricciones" EntitySet="TarifasRestricciones" />
@@ -378,6 +414,12 @@ warning 6002: The table/view 'OzHoteles.dbo.RoomInventory' does not have a prima
           </AssociationSet>
           <EntitySet Name="HotelBasicInfo" EntityType="Models.HotelBasicInfo" />
           <EntitySet Name="HotelPlan" EntityType="Models.HotelPlan" />
+          <EntitySet Name="Diccionario" EntityType="Models.Diccionario" />
+          <EntitySet Name="Indice" EntityType="Models.Indice" />
+          <AssociationSet Name="FK_Diccionario_Indice1" Association="Models.FK_Diccionario_Indice1">
+            <End Role="Indice" EntitySet="Indice" />
+            <End Role="Diccionario" EntitySet="Diccionario" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="HotelRoom">
           <Key>
@@ -631,6 +673,38 @@ warning 6002: The table/view 'OzHoteles.dbo.RoomInventory' does not have a prima
           <Property Name="Currency" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
           <Property Name="Language" Type="Int32" />
         </EntityType>
+        <EntityType Name="Diccionario">
+          <Key>
+            <PropertyRef Name="idRepl1" />
+          </Key>
+          <Property Name="IdDiccionario" Type="Int32" Nullable="false" />
+          <Property Name="IdIdioma" Type="Int32" Nullable="false" />
+          <Property Name="Texto" Type="String" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="idRepl1" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Indice" Relationship="Models.FK_Diccionario_Indice1" FromRole="Diccionario" ToRole="Indice" />
+        </EntityType>
+        <EntityType Name="Indice">
+          <Key>
+            <PropertyRef Name="idDiccionario" />
+          </Key>
+          <Property Name="idDiccionario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Eliminado" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Diccionario" Relationship="Models.FK_Diccionario_Indice1" FromRole="Indice" ToRole="Diccionario" />
+        </EntityType>
+        <Association Name="FK_Diccionario_Indice1">
+          <End Type="Models.Indice" Role="Indice" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Models.Diccionario" Role="Diccionario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Indice">
+              <PropertyRef Name="idDiccionario" />
+            </Principal>
+            <Dependent Role="Diccionario">
+              <PropertyRef Name="IdDiccionario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -849,6 +923,24 @@ warning 6002: The table/view 'OzHoteles.dbo.RoomInventory' does not have a prima
                 <ScalarProperty Name="HotelId" ColumnName="HotelId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Diccionario">
+            <EntityTypeMapping TypeName="Models.Diccionario">
+              <MappingFragment StoreEntitySet="Diccionario">
+                <ScalarProperty Name="idRepl1" ColumnName="idRepl1" />
+                <ScalarProperty Name="Texto" ColumnName="Texto" />
+                <ScalarProperty Name="IdIdioma" ColumnName="IdIdioma" />
+                <ScalarProperty Name="IdDiccionario" ColumnName="IdDiccionario" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Indice">
+            <EntityTypeMapping TypeName="Models.Indice">
+              <MappingFragment StoreEntitySet="Indice">
+                <ScalarProperty Name="Eliminado" ColumnName="Eliminado" />
+                <ScalarProperty Name="idDiccionario" ColumnName="idDiccionario" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -56,6 +56,9 @@
     <Compile Include="Models\DayRateDetail.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Diccionario.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\DTO\DailyRate.cs" />
     <Compile Include="Models\DayRates.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
@@ -73,6 +76,9 @@
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\HotelRoom.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Indice.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\OzHoteles.Context.cs">

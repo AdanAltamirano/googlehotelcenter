@@ -15,6 +15,9 @@
         <AssociationConnector Association="Models.Tarifas_Tarifas_Planes_FK1" />
         <EntityTypeShape EntityType="Models.HotelBasicInfo" Width="1.5" PointX="10.375" PointY="10.75" />
         <EntityTypeShape EntityType="Models.HotelPlan" Width="1.5" PointX="11.375" PointY="0.75" />
+        <EntityTypeShape EntityType="Models.Diccionario" Width="1.5" PointX="13.625" PointY="3.875" />
+        <EntityTypeShape EntityType="Models.Indice" Width="1.5" PointX="11.375" PointY="4.125" />
+        <AssociationConnector Association="Models.FK_Diccionario_Indice1" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
