@@ -27135,18 +27135,18 @@ Auto-generated field.
 To modify move field declaration from designer file to code-behind file.
 </remarks>
 </member>
-<member name="F:RateManager.PrincipalMaster._lnkNameCompany">
+<member name="F:RateManager.PrincipalMaster._lblInfoHotel">
 <summary>
-lnkNameCompany control.
+lblInfoHotel control.
 </summary>
 <remarks>
 Auto-generated field.
 To modify move field declaration from designer file to code-behind file.
 </remarks>
 </member>
-<member name="F:RateManager.PrincipalMaster._lblInfoHotel">
+<member name="F:RateManager.PrincipalMaster._lnkNameCompany">
 <summary>
-lblInfoHotel control.
+lnkNameCompany control.
 </summary>
 <remarks>
 Auto-generated field.
