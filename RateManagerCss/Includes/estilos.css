@@ -168,6 +168,7 @@ header li { list-style-type: none !important; }
     margin: -1.30rem 0 0 !important;
 }
 .dropdown-item i { color: #10467a !important; }
+.dropdown-item:active { background-color:#fff !important}
 .header-menu
 {
 	padding:5px;
@@ -177,7 +178,7 @@ header li { list-style-type: none !important; }
 header .nav-link{ color: #99bbcc !important; }
 #menuPrincipal li:hover > div.dropdown-menu { display: block; }
 #menuPrincipal .dropdown-menu { left: initial !important; top: 70% !important; padding: .2rem 0; z-index: 1500; }
-#menuPrincipal .dropdown-menu a { background-color: transparent !important; }
+/*#menuPrincipal .dropdown-menu a { background-color: transparent !important; }*/
 .navbar-nav li.active { font-weight: bold; }
 .navbar-nav li.active a.nav-link {color: white !important;}
 .dropdown-divider { margin: .2rem 0 !important; }
@@ -306,7 +307,7 @@ header .nav-link{ color: #99bbcc !important; }
 { 
     width: 250px;
     background: white;
-    color: #fff;
+    color: #2875a0;
     z-index: 1010;
     height: 100vh;
     top:0;
@@ -314,12 +315,12 @@ header .nav-link{ color: #99bbcc !important; }
     position: relative;
     transition: all 0.3s;
     overflow-y: scroll;
-    box-shadow: 3px 0px 0px rgba(0, 0, 0, 0.2)
+    /*box-shadow: 3px 0px 0px rgba(0, 0, 0, 0.2)*/
 }
 #sidebar.active{ left: 0 }
 #sidebar ul.components
 {
-    padding: 20px 0;
+    /*padding: 20px 0;*/
     /*border-bottom: 1px solid #47748b;*/
 }
 #sidebar ul li a
@@ -471,6 +472,12 @@ header .nav-link{ color: #99bbcc !important; }
 }
 
 
+.contentHotelName
+{
+    padding:6px 6px 6px 15px !important;
+    background-color:#F4F5F7;
+}
+.contentHotelName li { list-style-type: none !important;}
 .subSubmenu
 {
     margin-left: 0px;
@@ -480,20 +487,26 @@ header .nav-link{ color: #99bbcc !important; }
 .nombreHotel
 {
     font-family: "Trebuchet MS" , Arial, Helvetica, sans-serif;
-    font-size: 20px;
+    font-size: 18px;
     color: #3e7bac;
     float: left;
+    display:none;
 }
-#nombreHotelDiv
+.followMenu
+{
+    margin-left: auto;
+    margin-right:10px;
+}
+/*#nombreHotelDiv
 {
     width: 98.5%;
     height: auto;
-    /*border-bottom: solid 1px #e9e9e9;*/
+    border-bottom: solid 1px #e9e9e9;
     margin-left: 8px;
     margin-right: 14px;
     text-align: right;
     padding-bottom: 45px;
-}
+}*/
 .botonOpciones
 {
     text-decoration: none;
@@ -803,7 +816,12 @@ select
     text-align: center;
     color:#99bbcc !important;
 }
-
+.justifyfooter
+{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
 @media (min-width: 576px)
 {
     .bd-footer { text-align: left; }
@@ -812,13 +830,13 @@ select
 .bd-footer-links
 {
     padding-left: 0;
-    margin-bottom: 1rem;
+    margin-bottom: initial !important;
 }
 .bd-footer-links li {display: inline-block;}
 .bd-footer-links li a 
 {
-    font-weight: 600;
-    color: #99bbcc;
+    font-weight: normal;
+    color: #10467a;
     text-decoration: none;
 }
 /*.bd-footer p{ margin-bottom: 0; }*/

@@ -82,6 +82,7 @@ Partial Public Class ctrlMenuUl
     Private Sub BuilMenu(ByVal idPadre As Integer, ByVal nivel As Integer, ByVal ds As DataSet, ByVal userRoles As String, ByRef itemNumber As Integer, ByRef result As String)
 
         Dim countItems As Integer = 0
+        Dim firstsubmenu = True
         For Each dr As DataRow In ds.Tables("menuItem").Rows
             Dim text As String = Nothing
             Dim roles As String = Nothing
@@ -133,11 +134,15 @@ Partial Public Class ctrlMenuUl
                         End Select
                     Else
                         itemNumber += 1
+                        If firstsubmenu Then
+                            firstsubmenu = False
+                            countItems = 1
+                        End If
 
                         Select Case CurrentMenuType
                             Case MenuType.SoloPrimerNivel
                                 If nivel = 2 Then
-                                    If countItems = (ds.Tables("menuItem").Rows.Count - 1) Then
+                                    If countItems = (ds.Tables("menuItem").Select("subMenu_Id = " & subMenu_Id).Count) Then
                                         result += String.Format("{0}<a class=""dropdown-item"" href='{1}' {2}>{3}</a>{4}", GetTabs(nivel), GetUrl(url), GetTarget(url), GetString(text), vbCrLf)
                                     Else
                                         result += String.Format("{0}<a class=""dropdown-item"" href='{1}' {2}>{3}</a><div class=""dropdown-divider""></div>{4}", GetTabs(nivel), GetUrl(url), GetTarget(url), GetString(text), vbCrLf)

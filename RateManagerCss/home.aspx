@@ -12,16 +12,23 @@
             var iframe = document.getElementById('frmPrincipal');
             if (iframe)
             {
+                iframe.visibility = 'hidden';
+                iframe.height = '10px';
+
                 var iframeWin = iframe.contentWindow || iframe.contentDocument.parentWindow;
                 if (iframeWin.document.body)
-                    iframe.height = iframeWin.document.documentElement.scrollHeight || iframeWin.document.body.scrollHeight;
+                    iframe.height = (iframeWin.document.documentElement.scrollHeight || iframeWin.document.body.scrollHeight) + 10;
 
                 var height = (parseInt(iframe.height) + $(iframe).offset().top);
-                if ($('#sidebar').height() > height)
-                    height = $('#sidebar').height();
+                if ($('#mCSB_1_container').height() > height)
+                    height = $('#mCSB_1_container').height();
                 else if (height < 300)
                     height += 350;
+                else if (height < 500) height = 500;
+
                 $('.wrapper, .overlay, #sidebar').css('height', height);
+
+                iframe.visibility = 'visible';
             }
         }
 
@@ -119,6 +126,7 @@
                     {
                         HideMenu();
                         isHome.parent().addClass('active');
+                        jQuery('.followMenu').html(capitalize(isHome.html()));
                     }
                 } else
                 {
@@ -134,13 +142,18 @@
                             var ul_menu = li_option_focus.parent();
                             var li_option_menu = jQuery('#menuPrincipal li[id=' + ul_menu.attr('id').replace('_div', '_li') + ']');
 
-                            if (li_option_focus.attr('class') != 'activo-subSubmenu')
+                            if (li_option_focus.attr('class') != 'activo-subSubmenu' || li_option_menu.attr('class') != 'active')
                             {
                                 HideMenu();
                                 jQuery('#sidebarContent').show();
                                 ul_menu.show();
                                 li_option_focus.addClass('activo-subSubmenu');
                                 li_option_menu.addClass('active');
+
+                                var menuName = capitalize(li_option_menu.children().eq(0).text());
+                                var subMenuName = capitalize(li_option_focus.children().html());
+                                jQuery('#titleSideBar').html(menuName);
+                                jQuery('.followMenu').html('/ ' + menuName + ' / ' + subMenuName)
                             }
                         }
                     })
@@ -148,6 +161,12 @@
 
                 calcHeight();
             }
+        }
+
+        function capitalize(s)
+        {
+            s = s.toLowerCase();
+            return s.charAt(0).toUpperCase() + s.slice(1);
         }
 
         /*function _functionSetOptionMenu(url) {
@@ -225,6 +244,6 @@
 <asp:Content ID="ctntPrincipal" ContentPlaceHolderID="ContainerPage" runat="server">
     <asp:Button ID="btnreload" Style="display: none" runat="server"></asp:Button>    
     <iframe  id="frmPrincipal" name="frmPrincipal" src='Portal/Pages/Welcome.aspx' class="frmPrincipal"
-        scrolling="auto" width="90%" frameborder="0px" height="1" style="border: 0; margin-left: 10px;">
+        scrolling="auto" width="90%" frameborder="0px" height="1" style="border: 0;">
     </iframe>
 </asp:Content>

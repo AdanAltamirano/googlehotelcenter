@@ -113,15 +113,6 @@ Partial Public Class PrincipalMaster
     Protected WithEvents lblInfoHotel As Global.System.Web.UI.WebControls.Label
     
     '''<summary>
-    '''ctrlMenuLeft1 control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents ctrlMenuLeft1 As Global.RateManager.ctrlMenuLeft
-    
-    '''<summary>
     '''lnkNameCompany control.
     '''</summary>
     '''<remarks>
@@ -129,6 +120,15 @@ Partial Public Class PrincipalMaster
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lnkNameCompany As Global.System.Web.UI.WebControls.HyperLink
+    
+    '''<summary>
+    '''ctrlMenuLeft1 control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents ctrlMenuLeft1 As Global.RateManager.ctrlMenuLeft
     
     '''<summary>
     '''ContainerPage control.
