@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dictionary.cs" />
     <Compile Include="HotelService.cs" />
     <Compile Include="Models\DayRateDetail.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>

@@ -3,9 +3,6 @@ using APIServices.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Data.SqlClient;
-using System.Data;
 
 namespace APIServices
 {
@@ -269,12 +266,12 @@ namespace APIServices
                     //Se recorren las tarifas en conflicto
                     foreach (var of in overlappedFares)
                     {
-                        if (startDate != of.FechaInicia && endDate >= of.FechaFinaliza)
+                        if (startDate > of.FechaInicia && endDate > of.FechaFinaliza)
                         {
                             //Actualiza la fecha final de la tarifa en conflicto a un día antes de la ficha inicial de la nueva tarifa
                             of.FechaFinaliza = startDate.AddDays(-1);
                         }
-                        else if (startDate <= of.FechaInicia && endDate != of.FechaFinaliza)
+                        else if (startDate < of.FechaInicia && endDate < of.FechaFinaliza)
                         {
                             //Actualiza la fecha inicial de la tarifa en conflicto a un día después de la fecha final de la nueva tarifa
                             of.FechaInicia = endDate.AddDays(1);
@@ -333,9 +330,9 @@ namespace APIServices
                         }
                         else
                         {
-
-                            //contextDb.TarifasRestricciones.RemoveRange(overlappedFaresRestrictions);
-                            //contextDb.Tarifas.Remove(of);
+                            overlappedFaresRestrictions = contextDb.TarifasRestricciones.Where(tr => tr.idTarifa == of.idTarifa);
+                            contextDb.TarifasRestricciones.RemoveRange(overlappedFaresRestrictions);
+                            contextDb.Tarifas.Remove(of);
                         }
 
                     }
@@ -373,7 +370,7 @@ namespace APIServices
                 NoArrivos = rate.Rules.NoArrival ?? "YYYYYYY",
                 Excepciones = rate.Rules.ExceptionDays ?? "NNNNNNN",
                 RateRulesDefault = rate.Rules.UseDefaultRules ?? false,
-                TipoTarifa = "R",
+                TipoTarifa = rate.Rules.Segment ?? "R",
                 CodigoTarifa = rate.RateCode,
                 PrecioAdolescente = rate.Prices.SingleOrDefault(p => p.Occupation == 1 && p.Type == PaxType.Junior)?.Price ?? 0,
                 NiniosRate = rate.Prices.SingleOrDefault(p => p.Occupation == 1 && p.Type == PaxType.Child)?.Price ?? 0,

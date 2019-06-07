@@ -27144,18 +27144,18 @@ Auto-generated field.
 To modify move field declaration from designer file to code-behind file.
 </remarks>
 </member>
-<member name="F:RateManager.PrincipalMaster._lnkNameCompany">
+<member name="F:RateManager.PrincipalMaster._ctrlMenuLeft1">
 <summary>
-lnkNameCompany control.
+ctrlMenuLeft1 control.
 </summary>
 <remarks>
 Auto-generated field.
 To modify move field declaration from designer file to code-behind file.
 </remarks>
 </member>
-<member name="F:RateManager.PrincipalMaster._ctrlMenuLeft1">
+<member name="F:RateManager.PrincipalMaster._lnkNameCompany">
 <summary>
-ctrlMenuLeft1 control.
+lnkNameCompany control.
 </summary>
 <remarks>
 Auto-generated field.
