@@ -350,6 +350,17 @@ namespace APIServices
         {
             bool isNetRate = false;
             bool isBulk = true;
+            int? newDictionaryId = 0;
+            int? promotionDiscount = 0;
+
+            if (rate.Promotion != null)
+            {
+                Dictionary dictionary = new Dictionary();
+                newDictionaryId = dictionary.Insert(rate.Promotion.SpanishDescription, rate.Promotion.EnglishDescription);
+                promotionDiscount = rate.Promotion.Discount;
+                if (newDictionaryId == 0)
+                    return false;
+            }
 
             RatesPlan ratePlan = contextDb.RatesPlan.FirstOrDefault(rp => rp.idRatePlan == rate.RatePlanId && rp.IdHotel == rate.HotelId);
 
@@ -366,6 +377,12 @@ namespace APIServices
                 PrecioExtraAdulto = rate.ExtraAdultPrice,
                 PrecioExtraNinio = rate.ExtraChildPrice,
                 PrecioAdolescenteExtra = rate.ExtraJuniorPrice,
+                PrecioNR = 0,
+                NiniosRateNR = 0,
+                PrecioAdolescenteNR = 0,
+                PrecioExtraAdultoNR = 0,
+                PrecioExtraNinioNR = 0,
+                PrecioAdolescenteExtraNR = 0,
                 idrateplan = rate.RatePlanId,
                 NoArrivos = rate.Rules.NoArrival ?? "YYYYYYY",
                 Excepciones = rate.Rules.ExceptionDays ?? "NNNNNNN",
@@ -374,7 +391,20 @@ namespace APIServices
                 CodigoTarifa = rate.RateCode,
                 PrecioAdolescente = rate.Prices.SingleOrDefault(p => p.Occupation == 1 && p.Type == PaxType.Junior)?.Price ?? 0,
                 NiniosRate = rate.Prices.SingleOrDefault(p => p.Occupation == 1 && p.Type == PaxType.Child)?.Price ?? 0,
-                Precio = rate.Prices.SingleOrDefault(p => p.Occupation == 1 && p.Type == PaxType.Adult)?.Price ?? 0
+                Precio = rate.Prices.SingleOrDefault(p => p.Occupation == 1 && p.Type == PaxType.Adult)?.Price ?? 0,
+                idDiccPromoDesc = newDictionaryId == 0 ? null : newDictionaryId,
+                DescPromotion = promotionDiscount == 0 ? null : promotionDiscount,
+                AdvBooking = rate.Rules.MinAdvanceBooking,
+                MaxAdvBooking = rate.Rules.MaxAdvanceBooking,
+                MinDias = rate.Rules.MinLOS,
+                MaxDias = rate.Rules.MaxLOS,
+                BookingWindowStart = rate.BookingWindow.StartDate,
+                BookingWindowEnd = rate.BookingWindow.EndDate,
+                Personas = rate.GuestsRestrictions.MaxGuests,
+                PersonasExtras = rate.GuestsRestrictions.ExtraGuests,
+                MaxAdultos = rate.GuestsRestrictions.MaxAdults,
+                MinAdultos = rate.GuestsRestrictions.MinAdults,
+                MaxNinios = rate.GuestsRestrictions.Childs
             };
 
             contextDb.Tarifas.Add(newRate);
