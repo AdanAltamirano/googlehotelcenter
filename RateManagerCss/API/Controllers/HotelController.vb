@@ -13,7 +13,7 @@ Public Class HotelController
 
     ' GET api/hotels
     <Route(""), HttpGet, Queryable>
-    Public Function GetAll() As IQueryable(Of HotelBasicInfo)
+    Public Function GetAll() As IQueryable(Of vHotelBasicInfo)
         Return HotelService.GetAll()
     End Function
 

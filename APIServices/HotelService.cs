@@ -22,7 +22,7 @@ namespace APIServices
         {
             HotelInfo result = null;
 
-            HotelBasicInfo hotel = DbContext.HotelBasicInfo.FirstOrDefault(x => x.Id == hotelId);
+            vHotelBasicInfo hotel = DbContext.vHotelBasicInfo.FirstOrDefault(x => x.Id == hotelId);
 
             result = new HotelInfo
             {
@@ -36,7 +36,7 @@ namespace APIServices
             };
 
             //rooms 
-            var rooms = DbContext.HotelRoom.Where(r =>
+            var rooms = DbContext.vHotelRoom.Where(r =>
                 r.HotelId == hotelId
                 && r.Language == language 
                 && r.Active == true)
@@ -60,7 +60,7 @@ namespace APIServices
             result.Rooms = rooms;
 
             //rateplans
-            var plans = DbContext.HotelPlan.Where(x => x.HotelId == hotelId && x.Language == language)
+            var plans = DbContext.vHotelPlan.Where(x => x.HotelId == hotelId && x.Language == language)
                 .Select(r => new RatePlan
                 {
                     Code = r.Code,
@@ -73,9 +73,9 @@ namespace APIServices
             return result;
         }
 
-        public IQueryable<HotelBasicInfo> GetAll()
+        public IQueryable<vHotelBasicInfo> GetAll()
         {
-            return DbContext.HotelBasicInfo.AsQueryable();
+            return DbContext.vHotelBasicInfo.AsQueryable();
         }
     }
 }

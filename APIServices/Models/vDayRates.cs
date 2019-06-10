@@ -12,7 +12,7 @@ namespace APIServices.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class DayRates
+    public partial class vDayRates
     {
         public int RateId { get; set; }
         public int HotelId { get; set; }

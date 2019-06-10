@@ -12,12 +12,14 @@ namespace APIServices.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class HotelPlan
+    public partial class vHotelBasicInfo
     {
-        public string Code { get; set; }
+        public int Id { get; set; }
+        public int CompanyId { get; set; }
         public string Name { get; set; }
-        public int HotelId { get; set; }
         public string Currency { get; set; }
-        public Nullable<int> Language { get; set; }
+        public Nullable<int> CorpId { get; set; }
+        public string Corp { get; set; }
+        public byte Status { get; set; }
     }
 }

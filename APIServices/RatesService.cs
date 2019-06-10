@@ -25,7 +25,7 @@ namespace APIServices
             DailyRateDetail result = null;
             using (OzHotelesEntities db = new OzHotelesEntities())
             {
-                DayRates dayRate = db.DayRates.FirstOrDefault(x => x.RateId == rateId && x.ParentRatePlanId == null);
+                vDayRates dayRate = db.vDayRates.FirstOrDefault(x => x.RateId == rateId && x.ParentRatePlanId == null);
 
                 result = new DailyRateDetail
                 {
@@ -35,7 +35,7 @@ namespace APIServices
                     RateId = dayRate.RateId,
                 };
 
-                var dayRateDetails = db.DayRateDetail.Where(r => r.RateId == rateId).ToArray();
+                var dayRateDetails = db.vDayRateDetail.Where(r => r.RateId == rateId).ToArray();
 
                 //adultos
                 var adultRates = dayRateDetails.Where(x => x.Children == 0)
@@ -90,12 +90,12 @@ namespace APIServices
         /// <param name="language"></param>
         /// <param name="roomId"></param>
         /// <returns>Conjunto de tarifas</returns>
-        private IEnumerable<DayRates> FindDayRates(int hotelId, DateTime startDate, DateTime endDate, int language = 1, int? roomId = null)
+        private IEnumerable<vDayRates> FindDayRates(int hotelId, DateTime startDate, DateTime endDate, int language = 1, int? roomId = null)
         {
-            IEnumerable<DayRates> result = null;
+            IEnumerable<vDayRates> result = null;
             using (OzHotelesEntities db = new OzHotelesEntities())
             {
-                var query = db.DayRates.Where(r =>
+                var query = db.vDayRates.Where(r =>
                    r.HotelId == hotelId
                    && r.StartDate <= endDate
                    && r.EndDate >= startDate
@@ -140,7 +140,7 @@ namespace APIServices
         /// <returns></returns>
         public IEnumerable<RatesByRatePlan> FindGroupedByRatePlan(int hotelId, DateTime startDate, DateTime endDate, int language = 1, int? hotelRoomId = null)
         {
-            IEnumerable<DayRates> dayRates = FindDayRates(hotelId, startDate, endDate, language, hotelRoomId);
+            IEnumerable<vDayRates> dayRates = FindDayRates(hotelId, startDate, endDate, language, hotelRoomId);
 
             var result = dayRates
                 .GroupBy(r =>
@@ -420,7 +420,7 @@ namespace APIServices
 
         private bool InsertGuestsRates(Tarifas newRate, bool isNetRate, List<DailyRateDetailPrice> prices, bool isBulk, ref OzHotelesEntities contextDb)
         {
-            HotelRoom hotelRoom = contextDb.HotelRoom.FirstOrDefault(r => r.Id == newRate.idTipoHabitacion_Hotel);
+            vHotelRoom hotelRoom = contextDb.vHotelRoom.FirstOrDefault(r => r.Id == newRate.idTipoHabitacion_Hotel);
             if (hotelRoom == null)
                 return false;
 

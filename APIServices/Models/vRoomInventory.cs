@@ -12,7 +12,7 @@ namespace APIServices.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class RoomInventory
+    public partial class vRoomInventory
     {
         public System.DateTime Date { get; set; }
         public int RoomId { get; set; }

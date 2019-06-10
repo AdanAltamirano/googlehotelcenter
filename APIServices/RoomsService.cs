@@ -19,7 +19,7 @@ namespace APIServices
 
             using (OzHotelesEntities db = new OzHotelesEntities())
             {
-                var query = db.HotelRoom.Where(r =>
+                var query = db.vHotelRoom.Where(r =>
                    r.HotelId == hotelId
                    && r.Language == language);
 
@@ -51,7 +51,7 @@ namespace APIServices
 
             using (OzHotelesEntities db = new OzHotelesEntities())
             {
-                var query = db.RoomInventory
+                var query = db.vRoomInventory
                     .Where(r => r.RoomId == roomId && r.Date >= startDate && r.Date <= endDate)
                     .OrderBy(r => r.Date).ToArray();
 
