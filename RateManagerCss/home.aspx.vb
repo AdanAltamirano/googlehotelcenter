@@ -21,16 +21,16 @@ Partial Public Class Default_Home
             If Request.QueryString("SRV") = "S" Then
                 Dim msginfo As String
                 With Me.cInfoActual
-                    msginfo = .HotelName & "<br>"
-                    msginfo &= "id" & PortalCulture.GetString("M000614", True) & .Empresa & "<br>"
-                    msginfo &= "idHotel: " & .Hotel & "<br>"
-                    msginfo &= .Address & "<br>"
-                    msginfo &= .City & "," & .State & "<br>"
-                    msginfo &= PortalCulture.GetString("00162", True) & "&nbsp;" & .Contact & "<br>"
-                    msginfo &= PortalCulture.GetString("00163", True) & "&nbsp;" & .Email & "<br>"
-                    msginfo &= PortalCulture.GetString("00164", True) & "&nbsp;" & .Phone & "<br>"
-                    msginfo &= PortalCulture.GetString("00522", True) & "&nbsp;" & IIf(String.IsNullOrEmpty(.Url), "-", .Url) & "<br>"
-                    msginfo &= PortalCulture.GetString("00074", True) & "&nbsp;" & .Rooms.ToString & "<br>"
+                    msginfo = "<a class=""dropdown-item"">" & .HotelName & "</a>"
+                    msginfo &= "<a class=""dropdown-item"">id" & PortalCulture.GetString("M000614", True) & "<b>" & .Empresa & "</b></a>"
+                    msginfo &= "<a class=""dropdown-item"">idHotel: <b>" & .Hotel & "</b></a>"
+                    msginfo &= "<a class=""dropdown-item""><b>" & .Address & "</b></a>"
+                    msginfo &= "<a class=""dropdown-item""><b>" & .City & "," & .State & "</b></a>"
+                    msginfo &= "<a class=""dropdown-item"">" & PortalCulture.GetString("00162", True) & "&nbsp;" & "<b>" & .Contact & "</b></a>"
+                    msginfo &= "<a class=""dropdown-item"">" & PortalCulture.GetString("00163", True) & "&nbsp;" & "<b>" & .Email & "</b></a>"
+                    msginfo &= "<a class=""dropdown-item"">" & PortalCulture.GetString("00164", True) & "&nbsp;" & "<b>" & .Phone & "</b></a>"
+                    msginfo &= "<a class=""dropdown-item"">" & PortalCulture.GetString("00522", True) & "&nbsp;" & "<b>" & IIf(String.IsNullOrEmpty(.Url), "-", .Url) & "</b></a>"
+                    msginfo &= "<a class=""dropdown-item"">" & PortalCulture.GetString("00074", True) & "&nbsp;" & "<b>" & .Rooms.ToString & "</b></a>"
                 End With
                 Context.Response.Write(msginfo)
                 Context.Response.End()

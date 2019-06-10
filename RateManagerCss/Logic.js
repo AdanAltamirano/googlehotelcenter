@@ -48,7 +48,9 @@ function DoSearch(url,obj) {
 						if(i){i.style.display='';}
 						
 						if (Container)
-						{Container.innerHTML=texto.substring(0,texto.indexOf('<br>'));													 
+						{
+						    Container.innerHTML = texto.substring(25, texto.indexOf('</a>'));
+						    Container.style.display = 'block';
 						}		
 																		
 					}
