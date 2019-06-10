@@ -334,7 +334,8 @@ header .nav-link{ color: #99bbcc !important; }
 {
     color: #17a2b8 !important;
     background-color: transparent !important;
-    border-color: transparent !important; 
+    border-color: transparent !important;
+    padding: 0px 15px 0px 0px !important;
 }
 .overlay
 {

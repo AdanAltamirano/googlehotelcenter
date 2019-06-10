@@ -152,8 +152,9 @@
 
                                 var menuName = capitalize(li_option_menu.children().eq(0).text());
                                 var subMenuName = capitalize(li_option_focus.children().html());
+                                var home = capitalize(jQuery('#menuPrincipal li a').eq(0).text());
                                 jQuery('#titleSideBar').html(menuName);
-                                jQuery('.followMenu').html('/ ' + menuName + ' / ' + subMenuName)
+                                jQuery('.followMenu').html(home + ' / ' + menuName + ' / ' + subMenuName)
                             }
                         }
                     })

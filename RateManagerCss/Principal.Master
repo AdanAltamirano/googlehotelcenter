@@ -155,7 +155,7 @@
     </asp:ScriptManager>
     
     <header class="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar">
-        <a class="navbar-brand mr-0 mr-md-2" aria-label="Bootstrap">
+        <a href="http://test.com/Ratemanager/Home.aspx" class="navbar-brand mr-0 mr-md-2" aria-label="Bootstrap">
 	        <img src="Includes/imagenes/istotipo-internetpowerhotel-blanco.png" style="width: 25px;">
         </a>
         <div id="menuPrincipal" class="navbar-nav-scroll">
@@ -233,6 +233,11 @@
         
     <!--Content nombre del hotel-->
     <div class="container-fluid contentHotelName navbar navbar-expand">
+        <div id="sidebarContent">
+            <button type="button" id="sidebarCollapse" class="btn btn-info">
+                <i class="fa fa-align-left"></i>
+            </button>
+         </div>
          <ul class="navbar-nav flex-row d-none d-md-flex">
             <li class="nav-item dropdown">
                 <asp:HyperLink ID="lnkNameCompany" runat="server" CssClass="nombreHotel showOptionsLf" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></asp:HyperLink>
@@ -263,13 +268,7 @@
         
     	<div class="content"> 
             <div class="overlay"></div>
-            <div id="sidebarContent" class="row">
-                <div class="col-md-12">
-                    <button type="button" id="sidebarCollapse" class="btn btn-info">
-                        <i class="fa fa-align-left"></i>
-                    </button>
-                </div>
-            </div>
+            
             <div class="row">
                 <div class="col-md-12">
                     <asp:ContentPlaceHolder ID="ContainerPage" runat="server"></asp:ContentPlaceHolder>
