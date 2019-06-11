@@ -6,13 +6,13 @@ Imports NinjAPI.Query
 Imports RateManager.API.Helpers
 Imports RateManager.API.Models
 
-<RoutePrefix("api/hotels/{HotelId:Int}/rooms")>
+<RoutePrefix("api/hotels/{HotelId:int}/rooms")>
 Public Class RoomsController
     Inherits ShurikenController
 
     Public Service As New RoomsService
 
-    ' GET api/hotels
+    ' GET api/hotels/3164/rooms
     <Route(""), HttpGet, Queryable(MappingDelegate:="MapRooms")>
     Public Function GetAll(HotelId As Integer) As IQueryable(Of vHotelRoom)
         Dim language As Integer = Request.GetLanguageUV()
@@ -20,8 +20,8 @@ Public Class RoomsController
     End Function
 
 
-
-    <Route("{RoomId:Int}/inventory"), HttpGet>
+    ' GET api/hotels/3164/rooms/2347/inventory
+    <Route("{RoomId:int}/inventory"), HttpGet>
     Public Function GetInventory(HotelId As Integer, RoomId As Integer, <FromUri> Req As DateRangeRQ) As IEnumerable(Of DTO.RoomInventoryInfo)
         Dim language As Integer = Request.GetLanguageUV()
         Return Service.FindInventoryByRoomId(HotelId, RoomId, Req.StartDate, Req.EndDate)
