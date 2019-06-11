@@ -2,7 +2,7 @@ module.exports = {
     pages: {
       rates_admin: {
         // entry for the page
-        entry: 'src/rates-admin.js',
+        entry: 'src/views/rates-admin/main.js',
         // the source template
         template: 'public/index.html',
         // output as dist/index.html

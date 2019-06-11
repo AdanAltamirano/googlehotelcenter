@@ -4,6 +4,7 @@ Imports System.Xml
 Imports System.IO
 Imports System.Web.Http
 Imports NinjAPI
+Imports FluentValidation.WebApi
 
 Public Class [Global]
     Inherits System.Web.HttpApplication
@@ -35,6 +36,7 @@ Public Class [Global]
     Sub Application_Start(ByVal sender As Object, ByVal e As EventArgs)
         ' Se desencadena cuando se inicia la aplicación
         GlobalConfiguration.Configuration.NinjAPIConfig()
+        FluentValidationModelValidatorProvider.Configure(GlobalConfiguration.Configuration)
         GlobalConfiguration.Configuration.EnsureInitialized()
     End Sub
 
