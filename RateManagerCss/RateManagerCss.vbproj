@@ -1471,8 +1471,10 @@
     <Compile Include="API\APIHandler.vb" />
     <Compile Include="API\Controllers\HotelsController.vb" />
     <Compile Include="API\Controllers\RatesController.vb" />
+    <Compile Include="API\Controllers\RoomsController.vb" />
     <Compile Include="API\Helpers\Date+Extensions.vb" />
     <Compile Include="API\Helpers\HttpRequestMessage+Extensions.vb" />
+    <Compile Include="API\Models\DateRangeRQ.vb" />
     <Compile Include="API\Models\RatesByPlanRQ.vb" />
     <Compile Include="API\Rates.ashx.vb">
       <DependentUpon>Rates.ashx</DependentUpon>
