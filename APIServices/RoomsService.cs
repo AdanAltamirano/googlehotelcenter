@@ -13,6 +13,13 @@ namespace APIServices
     /// </summary>
     public class RoomsService
     {
+        public OzHotelesEntities DbContext = new OzHotelesEntities();
+
+        public IQueryable<vHotelRoom> GetAll()
+        {
+            return DbContext.vHotelRoom.AsQueryable();
+        }
+
         public IEnumerable<Room> FindByHotel(int hotelId, int language = 1, bool showInactive = false)
         {
             IEnumerable<Room> result = new List<Room>();
@@ -45,14 +52,14 @@ namespace APIServices
             return result;
         }
 
-        public IEnumerable<RoomInventoryInfo> FindInventoryByRoomId(int roomId, DateTime startDate, DateTime endDate)
+        public IEnumerable<RoomInventoryInfo> FindInventoryByRoomId(int hotelid, int roomId, DateTime startDate, DateTime endDate)
         {
             IEnumerable<RoomInventoryInfo> result = new List<RoomInventoryInfo>();
 
             using (OzHotelesEntities db = new OzHotelesEntities())
             {
                 var query = db.vRoomInventory
-                    .Where(r => r.RoomId == roomId && r.Date >= startDate && r.Date <= endDate)
+                    .Where(r => r.HotelId == hotelid && r.RoomId == roomId && r.Date >= startDate && r.Date <= endDate)
                     .OrderBy(r => r.Date).ToArray();
 
                 // arreglo de días que se usara para dividir el rango de las tarifas por día

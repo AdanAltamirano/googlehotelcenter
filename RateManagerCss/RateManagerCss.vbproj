@@ -139,6 +139,18 @@
       <HintPath>..\packages\RateManager.IvSolution.1.0.0\lib\net45\Facade.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="FluentValidation, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentValidation.8.4.0\lib\net45\FluentValidation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FluentValidation.ValidatorAttribute, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentValidation.ValidatorAttribute.8.4.0\lib\net45\FluentValidation.ValidatorAttribute.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FluentValidation.WebApi, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentValidation.WebApi.8.4.0\lib\net45\FluentValidation.WebApi.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="FredCK.FCKeditorV2">
       <HintPath>..\packages\RateManager.AnotherDependencies.1.0.0\lib\net45\FredCK.FCKeditorV2.dll</HintPath>
       <Private>True</Private>
@@ -169,7 +181,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NinjAPI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NinjAPI.0.1.2-alpha\lib\net45\NinjAPI.dll</HintPath>
+      <HintPath>..\packages\NinjAPI.0.1.3-alpha\lib\net45\NinjAPI.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Oz.BillingSystem.Banking">
@@ -1457,7 +1469,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API\APIHandler.vb" />
-    <Compile Include="API\Controllers\HotelController.vb" />
+    <Compile Include="API\Controllers\HotelsController.vb" />
+    <Compile Include="API\Controllers\RatesController.vb" />
+    <Compile Include="API\Controllers\RoomsController.vb" />
+    <Compile Include="API\Helpers\Date+Extensions.vb" />
+    <Compile Include="API\Helpers\HttpRequestMessage+Extensions.vb" />
+    <Compile Include="API\Models\DateRangeRQ.vb" />
+    <Compile Include="API\Models\RatesByPlanRQ.vb" />
     <Compile Include="API\Rates.ashx.vb">
       <DependentUpon>Rates.ashx</DependentUpon>
     </Compile>

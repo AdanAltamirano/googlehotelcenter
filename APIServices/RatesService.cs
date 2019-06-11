@@ -138,7 +138,7 @@ namespace APIServices
         /// <param name="language"></param>
         /// <param name="hotelRoomId"></param>
         /// <returns></returns>
-        public IEnumerable<RatesByRatePlan> FindGroupedByRatePlan(int hotelId, DateTime startDate, DateTime endDate, int language = 1, int? hotelRoomId = null)
+        public IEnumerable<RatesByRatePlan> FindGroupedByRatePlan(int hotelId, DateTime startDate, DateTime endDate, int? hotelRoomId = null, int language = 1)
         {
             IEnumerable<vDayRates> dayRates = FindDayRates(hotelId, startDate, endDate, language, hotelRoomId);
 
