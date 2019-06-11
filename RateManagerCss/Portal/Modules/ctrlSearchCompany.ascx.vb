@@ -200,11 +200,6 @@ Partial Class ctrlSearchCompany
         Dim command As New SqlCommand(spname, conection)
         Dim idUsuario = CType(Me.Page, PaginaBase).Usuario
         Dim idAsociacionHotel As Integer = CType(Me.Page, PaginaBase).GetIdAsociation
-        Dim UsersCubanacan As String = String.Empty
-
-        If Not String.IsNullOrEmpty(AppSettings("UsersCubanaCan")) Then
-            UsersCubanacan = AppSettings("UsersCubanaCan")
-        End If
 
         With command
             .CommandType = CommandType.StoredProcedure
@@ -215,7 +210,7 @@ Partial Class ctrlSearchCompany
             .Parameters.Add(New SqlParameter("@idCiudad", Me.cmbCiudad.SelectedValue))
             .Parameters.Add(New SqlParameter("@status", status))
             'If CType(Me.Page, PaginaBase).isUserChain Or CType(Me.Page, PaginaBase).IsUsuarioHotelAssociation Then
-            If Not CType(Me.Page, PaginaBase).IsSupervisor And Not CType(Me.Page, PaginaBase).IsUsuarioCallCenter Or Not UsersCubanacan.IndexOf(idUsuario.ToString()) = -1 Then
+            If Not CType(Me.Page, PaginaBase).IsSupervisor And Not CType(Me.Page, PaginaBase).IsUsuarioCallCenter Then
                 .Parameters.Add(New SqlParameter("@idUsuario", idUsuario))
             End If
             If idAsociacionHotel <> -1 Then

@@ -330,6 +330,11 @@ namespace APIServices
                         }
                         else
                         {
+                            if (of.idDiccPromoDesc != null && of.idDiccPromoDesc != 0)
+                            {
+                                contextDb.Indice.Remove(contextDb.Indice.Where(i => i.idDiccionario == of.idDiccPromoDesc).ToArray()[0]);
+                                contextDb.Diccionario.RemoveRange(contextDb.Diccionario.Where(d => d.IdDiccionario == of.idDiccPromoDesc).ToArray());
+                            }
                             overlappedFaresRestrictions = contextDb.TarifasRestricciones.Where(tr => tr.idTarifa == of.idTarifa);
                             contextDb.TarifasRestricciones.RemoveRange(overlappedFaresRestrictions);
                             contextDb.Tarifas.Remove(of);
