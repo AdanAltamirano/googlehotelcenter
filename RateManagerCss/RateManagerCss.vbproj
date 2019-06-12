@@ -628,6 +628,7 @@
     <Content Include="HotelAdministrator\Pages\IDSMapping.aspx" />
     <Content Include="HotelAdministrator\Pages\MapeoPlanesF2G.aspx" />
     <Content Include="HotelAdministrator\Pages\Promotions.aspx" />
+    <Content Include="HotelAdministrator\Pages\ReservationList.aspx" />
     <Content Include="HotelAdministrator\Pages\RetentionsConfig.aspx" />
     <Content Include="Hotel\Documentacion\Ayuda.aspx" />
     <Content Include="Hotel\Documentacion\Noticias.aspx" />
@@ -1454,8 +1455,6 @@
     <Content Include="API\Rates.ashx" />
     <Content Include="packages.config" />
     <Content Include="API\Rooms.ashx" />
-    <Content Include="API\Rooms\Inventory.ashx" />
-    <Content Include="API\Rates\Daily.ashx" />
     <Content Include="API\RateUpdate.ashx" />
     <None Include="Web References\WsConnectWcf\wsConnectWCFv2.xsd">
       <SubType>Designer</SubType>
@@ -1471,6 +1470,7 @@
     <Compile Include="API\APIHandler.vb" />
     <Compile Include="API\Controllers\HotelsController.vb" />
     <Compile Include="API\Controllers\RatesController.vb" />
+    <Compile Include="API\Controllers\ReservationController.vb" />
     <Compile Include="API\Controllers\RoomsController.vb" />
     <Compile Include="API\Helpers\Date+Extensions.vb" />
     <Compile Include="API\Helpers\HttpRequestMessage+Extensions.vb" />
@@ -1479,17 +1479,11 @@
     <Compile Include="API\Rates.ashx.vb">
       <DependentUpon>Rates.ashx</DependentUpon>
     </Compile>
-    <Compile Include="API\Rates\Daily.ashx.vb">
-      <DependentUpon>Daily.ashx</DependentUpon>
-    </Compile>
     <Compile Include="API\RateUpdate.ashx.vb">
       <DependentUpon>RateUpdate.ashx</DependentUpon>
     </Compile>
     <Compile Include="API\Rooms.ashx.vb">
       <DependentUpon>Rooms.ashx</DependentUpon>
-    </Compile>
-    <Compile Include="API\Rooms\Inventory.ashx.vb">
-      <DependentUpon>Inventory.ashx</DependentUpon>
     </Compile>
     <Compile Include="App_Data\Agreement.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -1619,6 +1613,13 @@
     <Compile Include="HotelAdministrator\Pages\Promotions.aspx.vb">
       <DependentUpon>Promotions.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="HotelAdministrator\Pages\ReservationList.aspx.designer.vb">
+      <DependentUpon>ReservationList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="HotelAdministrator\Pages\ReservationList.aspx.vb">
+      <DependentUpon>ReservationList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\RetentionsConfig.aspx.designer.vb">
       <DependentUpon>RetentionsConfig.aspx</DependentUpon>
@@ -3629,6 +3630,10 @@
       <DependentUpon>Polities.aspx.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="HotelAdministrator\Pages\ReservationList.aspx.resx">
+      <DependentUpon>ReservationList.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Hotel\Documentacion\Ayuda.aspx.resx">
       <DependentUpon>Ayuda.aspx.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -4899,6 +4904,8 @@
     </WebReferenceUrl>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="API\Rates\" />
+    <Folder Include="API\Rooms\" />
     <Folder Include="HotelAdministrator\Models\" />
     <Folder Include="obj\" />
   </ItemGroup>

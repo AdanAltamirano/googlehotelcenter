@@ -114,6 +114,7 @@
     </Compile>
     <Compile Include="RatesService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReservationService.cs" />
     <Compile Include="RoomsService.cs" />
     <Compile Include="Utilities.cs" />
   </ItemGroup>
