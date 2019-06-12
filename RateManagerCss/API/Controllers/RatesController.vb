@@ -1,9 +1,7 @@
-﻿Imports System.Net
-Imports System.Web.Http
+﻿Imports System.Web.Http
 Imports APIServices
 Imports APIServices.Models
 Imports NinjAPI
-Imports NinjAPI.Validation
 Imports RateManager.API.Helpers
 Imports RateManager.API.Models
 

@@ -33,6 +33,8 @@ Public Class [Global]
 
 #End Region
 
+    Public Const ApiUrlPrefixRelative As String = "~/api"
+
     Sub Application_Start(ByVal sender As Object, ByVal e As EventArgs)
         ' Se desencadena cuando se inicia la aplicación
         GlobalConfiguration.Configuration.NinjAPIConfig()
@@ -127,4 +129,23 @@ Public Class [Global]
         End If
 
     End Sub
+
+
+
+
+#Region "API"
+    'para tener los datos del usuario en la api
+    Protected Sub Application_PostAuthorizeRequest()
+        If IsWebApiRequest() Then
+            HttpContext.Current.SetSessionStateBehavior(SessionStateBehavior.Required)
+        End If
+    End Sub
+
+    Private Function IsWebApiRequest() As Boolean
+        Return HttpContext.Current.Request.AppRelativeCurrentExecutionFilePath.StartsWith(ApiUrlPrefixRelative)
+    End Function
+#End Region
+
+
+
 End Class

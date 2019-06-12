@@ -53,6 +53,9 @@
   <ItemGroup>
     <Compile Include="Dictionary.cs" />
     <Compile Include="HotelService.cs" />
+    <Compile Include="Models\ContratosNR.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Diccionario.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
@@ -98,6 +101,9 @@
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\vHotelBasicInfo.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\vHotelByUser.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\vHotelPlan.cs">

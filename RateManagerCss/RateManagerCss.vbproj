@@ -1454,8 +1454,6 @@
     <Content Include="API\Rates.ashx" />
     <Content Include="packages.config" />
     <Content Include="API\Rooms.ashx" />
-    <Content Include="API\Rooms\Inventory.ashx" />
-    <Content Include="API\Rates\Daily.ashx" />
     <Content Include="API\RateUpdate.ashx" />
     <None Include="Web References\WsConnectWcf\wsConnectWCFv2.xsd">
       <SubType>Designer</SubType>
@@ -1474,22 +1472,17 @@
     <Compile Include="API\Controllers\RoomsController.vb" />
     <Compile Include="API\Helpers\Date+Extensions.vb" />
     <Compile Include="API\Helpers\HttpRequestMessage+Extensions.vb" />
+    <Compile Include="API\Helpers\ValidateUserAccessAttribute.vb" />
     <Compile Include="API\Models\DateRangeRQ.vb" />
     <Compile Include="API\Models\RatesByPlanRQ.vb" />
     <Compile Include="API\Rates.ashx.vb">
       <DependentUpon>Rates.ashx</DependentUpon>
-    </Compile>
-    <Compile Include="API\Rates\Daily.ashx.vb">
-      <DependentUpon>Daily.ashx</DependentUpon>
     </Compile>
     <Compile Include="API\RateUpdate.ashx.vb">
       <DependentUpon>RateUpdate.ashx</DependentUpon>
     </Compile>
     <Compile Include="API\Rooms.ashx.vb">
       <DependentUpon>Rooms.ashx</DependentUpon>
-    </Compile>
-    <Compile Include="API\Rooms\Inventory.ashx.vb">
-      <DependentUpon>Inventory.ashx</DependentUpon>
     </Compile>
     <Compile Include="App_Data\Agreement.Designer.vb">
       <AutoGen>True</AutoGen>
