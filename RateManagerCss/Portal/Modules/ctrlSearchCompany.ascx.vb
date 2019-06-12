@@ -216,11 +216,6 @@ Partial Class ctrlSearchCompany
             If idAsociacionHotel <> -1 Then
                 .Parameters.Add(New SqlParameter("@idAsociacionHotel", idAsociacionHotel))
             End If
-            If CType(Me.Page, PaginaBase).IsUsuarioCasas OrElse CType(Me.Page, PaginaBase).IsUsuarioHomeAgency Then
-                'Es casa o agencia de casa
-                .Parameters.Add(New SqlParameter("@IdConvenio", idUsuario))
-            End If
-
 
         End With
         Dim adapter As New SqlDataAdapter(command)
