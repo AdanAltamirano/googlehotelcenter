@@ -3,7 +3,7 @@ Imports FluentValidation.Attributes
 Imports RateManager.API.Helpers
 
 Namespace API.Models
-    <Validator(GetType(RatesByPlanRQValidator))>
+    <Validator(GetType(DateRangeRQValidator))>
     Public Class DateRangeRQ
         Public Property StartDate As Date
         Public Property EndDate As Date

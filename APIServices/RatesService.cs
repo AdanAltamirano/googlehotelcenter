@@ -357,6 +357,9 @@ namespace APIServices
             bool isBulk = true;
             int? newDictionaryId = 0;
             int? promotionDiscount = 0;
+            decimal adultNetRate = 0;
+            decimal childNetRate = 0;
+            decimal juniorNetRate = 0;
 
             if (rate.Promotion != null)
             {
@@ -368,11 +371,15 @@ namespace APIServices
             }
 
             RatesPlan ratePlan = contextDb.RatesPlan.FirstOrDefault(rp => rp.idRatePlan == rate.RatePlanId && rp.IdHotel == rate.HotelId);
+            vHotelPlan hotelPlan = contextDb.vHotelPlan.FirstOrDefault(hp => hp.Code == rate.RatePlanId && hp.HotelId == rate.HotelId);
 
-            if (ratePlan == null)
+            if (hotelPlan == null)
                 return false;
 
-            isNetRate = (ratePlan.idContrato != null && ratePlan.idContrato != 0);
+            if (hotelPlan.CommissionPercentage != null && hotelPlan.CommissionPercentage > 0)
+            {
+
+            }
 
             var newRate = new Tarifas
             {

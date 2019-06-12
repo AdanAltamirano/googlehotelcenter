@@ -5,6 +5,16 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="Models.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ContratosNR">
+          <Key>
+            <PropertyRef Name="idContrato" />
+          </Key>
+          <Property Name="idContrato" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="500" />
+          <Property Name="PorcentajeMax" Type="int" />
+          <Property Name="PorcentajeMin" Type="int" />
+          <Property Name="idHotel" Type="int" />
+        </EntityType>
         <EntityType Name="Diccionario">
           <Key>
             <PropertyRef Name="idRepl1" />
@@ -139,6 +149,19 @@
           <Property Name="Applyday" Type="nvarchar" MaxLength="7" />
         </EntityType>
         <!--Errors Found During Generation:
+warning 6002: The table/view 'OzHoteles.dbo.vAdministrator' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vAdministrator">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="Type" />
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="Type" Type="tinyint" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="80" Nullable="false" />
+          <Property Name="CorpId" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'OzHoteles.dbo.vDayRateDetail' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vDayRateDetail">
           <Key>
@@ -205,9 +228,23 @@ warning 6002: The table/view 'OzHoteles.dbo.vHotelBasicInfo' does not have a pri
           <Property Name="CompanyId" Type="int" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="180" />
           <Property Name="Currency" Type="nvarchar" MaxLength="3" />
+          <Property Name="Tax" Type="smallmoney" />
           <Property Name="CorpId" Type="int" />
           <Property Name="Corp" Type="nvarchar" MaxLength="20" />
           <Property Name="Status" Type="tinyint" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'OzHoteles.dbo.vHotelByUser' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vHotelByUser">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="CompanyId" />
+            <PropertyRef Name="HotelId" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="CompanyId" Type="int" Nullable="false" />
+          <Property Name="HotelId" Type="int" Nullable="false" />
+          <Property Name="HotelName" Type="nvarchar" MaxLength="180" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'OzHoteles.dbo.vHotelPlan' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -221,6 +258,7 @@ warning 6002: The table/view 'OzHoteles.dbo.vHotelPlan' does not have a primary 
           <Property Name="HotelId" Type="int" Nullable="false" />
           <Property Name="Currency" Type="nvarchar" MaxLength="3" />
           <Property Name="Language" Type="int" />
+          <Property Name="CommissionPercentage" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'OzHoteles.dbo.vHotelRoom' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -321,11 +359,20 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="ModelsStoreContainer">
+          <EntitySet Name="ContratosNR" EntityType="Self.ContratosNR" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Diccionario" EntityType="Self.Diccionario" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Indice" EntityType="Self.Indice" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RatesPlan" EntityType="Self.RatesPlan" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tarifas" EntityType="Self.Tarifas" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TarifasRestricciones" EntityType="Self.TarifasRestricciones" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="vAdministrator" EntityType="Self.vAdministrator" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vAdministrator].[UserId] AS [UserId], 
+    [vAdministrator].[Type] AS [Type], 
+    [vAdministrator].[Name] AS [Name], 
+    [vAdministrator].[CorpId] AS [CorpId]
+    FROM [dbo].[vAdministrator] AS [vAdministrator]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="vDayRateDetail" EntityType="Self.vDayRateDetail" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [vDayRateDetail].[Id] AS [Id], 
@@ -368,10 +415,19 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
     [vHotelBasicInfo].[CompanyId] AS [CompanyId], 
     [vHotelBasicInfo].[Name] AS [Name], 
     [vHotelBasicInfo].[Currency] AS [Currency], 
+    [vHotelBasicInfo].[Tax] AS [Tax], 
     [vHotelBasicInfo].[CorpId] AS [CorpId], 
     [vHotelBasicInfo].[Corp] AS [Corp], 
     [vHotelBasicInfo].[Status] AS [Status]
     FROM [dbo].[vHotelBasicInfo] AS [vHotelBasicInfo]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vHotelByUser" EntityType="Self.vHotelByUser" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vHotelByUser].[UserId] AS [UserId], 
+    [vHotelByUser].[CompanyId] AS [CompanyId], 
+    [vHotelByUser].[HotelId] AS [HotelId], 
+    [vHotelByUser].[HotelName] AS [HotelName]
+    FROM [dbo].[vHotelByUser] AS [vHotelByUser]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vHotelPlan" EntityType="Self.vHotelPlan" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -379,7 +435,8 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
     [vHotelPlan].[Name] AS [Name], 
     [vHotelPlan].[HotelId] AS [HotelId], 
     [vHotelPlan].[Currency] AS [Currency], 
-    [vHotelPlan].[Language] AS [Language]
+    [vHotelPlan].[Language] AS [Language], 
+    [vHotelPlan].[CommissionPercentage] AS [CommissionPercentage]
     FROM [dbo].[vHotelPlan] AS [vHotelPlan]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vHotelRoom" EntityType="Self.vHotelRoom" store:Type="Views" store:Schema="dbo">
@@ -453,11 +510,14 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           </AssociationSet>
           <EntitySet Name="vDayRateDetail" EntityType="Models.vDayRateDetail" />
           <EntitySet Name="vDayRates" EntityType="Models.vDayRates" />
-          <EntitySet Name="vHotelBasicInfo" EntityType="Models.vHotelBasicInfo" />
-          <EntitySet Name="vHotelPlan" EntityType="Models.vHotelPlan" />
           <EntitySet Name="vHotelRoom" EntityType="Models.vHotelRoom" />
           <EntitySet Name="vReservation" EntityType="Models.vReservation" />
           <EntitySet Name="vRoomInventory" EntityType="Models.vRoomInventory" />
+          <EntitySet Name="ContratosNR" EntityType="Models.ContratosNR" />
+          <EntitySet Name="vHotelByUser" EntityType="Models.vHotelByUser" />
+          <EntitySet Name="vHotelPlan" EntityType="Models.vHotelPlan" />
+          <EntitySet Name="vHotelBasicInfo" EntityType="Models.vHotelBasicInfo" />
+          <EntitySet Name="vAdministrator" EntityType="Models.vAdministrator" />
         </EntityContainer>
         <EntityType Name="RatesPlan">
           <Key>
@@ -675,31 +735,6 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           <Property Name="IsPromotion" Type="Boolean" />
           <Property Name="Language" Type="Int32" />
         </EntityType>
-        <EntityType Name="vHotelBasicInfo">
-          <Key>
-            <PropertyRef Name="Id" />
-            <PropertyRef Name="CompanyId" />
-            <PropertyRef Name="Status" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="CompanyId" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="180" FixedLength="false" Unicode="true" />
-          <Property Name="Currency" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
-          <Property Name="CorpId" Type="Int32" />
-          <Property Name="Corp" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="Status" Type="Byte" Nullable="false" />
-        </EntityType>
-        <EntityType Name="vHotelPlan">
-          <Key>
-            <PropertyRef Name="Code" />
-            <PropertyRef Name="HotelId" />
-          </Key>
-          <Property Name="Code" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Name" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
-          <Property Name="HotelId" Type="Int32" Nullable="false" />
-          <Property Name="Currency" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
-          <Property Name="Language" Type="Int32" />
-        </EntityType>
         <EntityType Name="vHotelRoom">
           <Key>
             <PropertyRef Name="Id" />
@@ -763,6 +798,65 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           <Property Name="FullInventory" Type="Int16" Nullable="false" />
           <Property Name="Reserved" Type="Int32" />
           <Property Name="Available" Type="Int32" />
+        </EntityType>
+        <EntityType Name="ContratosNR">
+          <Key>
+            <PropertyRef Name="idContrato" />
+          </Key>
+          <Property Name="idContrato" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="PorcentajeMax" Type="Int32" />
+          <Property Name="PorcentajeMin" Type="Int32" />
+          <Property Name="idHotel" Type="Int32" />
+        </EntityType>
+        <EntityType Name="vHotelByUser">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="CompanyId" />
+            <PropertyRef Name="HotelId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="CompanyId" Type="Int32" Nullable="false" />
+          <Property Name="HotelId" Type="Int32" Nullable="false" />
+          <Property Name="HotelName" Type="String" MaxLength="180" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="vHotelPlan">
+          <Key>
+            <PropertyRef Name="Code" />
+            <PropertyRef Name="HotelId" />
+          </Key>
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="HotelId" Type="Int32" Nullable="false" />
+          <Property Name="Currency" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="Language" Type="Int32" />
+          <Property Name="CommissionPercentage" Type="Int32" />
+        </EntityType>
+        <EntityType Name="vHotelBasicInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="CompanyId" />
+            <PropertyRef Name="Status" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="CompanyId" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="180" FixedLength="false" Unicode="true" />
+          <Property Name="Currency" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="Tax" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="CorpId" Type="Int32" />
+          <Property Name="Corp" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="Byte" Nullable="false" />
+        </EntityType>
+        <EntityType Name="vAdministrator">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="Type" />
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="Type" Type="Byte" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="CorpId" Type="Int32" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -947,30 +1041,6 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="vHotelBasicInfo">
-            <EntityTypeMapping TypeName="Models.vHotelBasicInfo">
-              <MappingFragment StoreEntitySet="vHotelBasicInfo">
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="Corp" ColumnName="Corp" />
-                <ScalarProperty Name="CorpId" ColumnName="CorpId" />
-                <ScalarProperty Name="Currency" ColumnName="Currency" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="vHotelPlan">
-            <EntityTypeMapping TypeName="Models.vHotelPlan">
-              <MappingFragment StoreEntitySet="vHotelPlan">
-                <ScalarProperty Name="Language" ColumnName="Language" />
-                <ScalarProperty Name="Currency" ColumnName="Currency" />
-                <ScalarProperty Name="HotelId" ColumnName="HotelId" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Code" ColumnName="Code" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="vHotelRoom">
             <EntityTypeMapping TypeName="Models.vHotelRoom">
               <MappingFragment StoreEntitySet="vHotelRoom">
@@ -1016,6 +1086,63 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
                 <ScalarProperty Name="HotelId" ColumnName="HotelId" />
                 <ScalarProperty Name="RoomId" ColumnName="RoomId" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ContratosNR">
+            <EntityTypeMapping TypeName="Models.ContratosNR">
+              <MappingFragment StoreEntitySet="ContratosNR">
+                <ScalarProperty Name="idHotel" ColumnName="idHotel" />
+                <ScalarProperty Name="PorcentajeMin" ColumnName="PorcentajeMin" />
+                <ScalarProperty Name="PorcentajeMax" ColumnName="PorcentajeMax" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="idContrato" ColumnName="idContrato" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vHotelByUser">
+            <EntityTypeMapping TypeName="Models.vHotelByUser">
+              <MappingFragment StoreEntitySet="vHotelByUser">
+                <ScalarProperty Name="HotelName" ColumnName="HotelName" />
+                <ScalarProperty Name="HotelId" ColumnName="HotelId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vHotelPlan">
+            <EntityTypeMapping TypeName="Models.vHotelPlan">
+              <MappingFragment StoreEntitySet="vHotelPlan">
+                <ScalarProperty Name="CommissionPercentage" ColumnName="CommissionPercentage" />
+                <ScalarProperty Name="Language" ColumnName="Language" />
+                <ScalarProperty Name="Currency" ColumnName="Currency" />
+                <ScalarProperty Name="HotelId" ColumnName="HotelId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vHotelBasicInfo">
+            <EntityTypeMapping TypeName="Models.vHotelBasicInfo">
+              <MappingFragment StoreEntitySet="vHotelBasicInfo">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Corp" ColumnName="Corp" />
+                <ScalarProperty Name="CorpId" ColumnName="CorpId" />
+                <ScalarProperty Name="Tax" ColumnName="Tax" />
+                <ScalarProperty Name="Currency" ColumnName="Currency" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vAdministrator">
+            <EntityTypeMapping TypeName="Models.vAdministrator">
+              <MappingFragment StoreEntitySet="vAdministrator">
+                <ScalarProperty Name="CorpId" ColumnName="CorpId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

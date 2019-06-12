@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import Utilities from '../core/utilities';
+import Utilities from '../../../core/utilities';
 
 export default {
     name: 'calendar-ribbon',

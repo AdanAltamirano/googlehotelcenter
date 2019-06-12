@@ -704,8 +704,6 @@ Public Class PaginaBase
                     roles = "HotelNetRate"
                 Case CInt(PerfilHotel.Mixto)
                     roles = "HotelAvanzado,HotelNetRate"
-                Case Else
-                    roles = "Casas"
             End Select
 
             Session.Item("RolesUsuario") = String.Concat(roles)

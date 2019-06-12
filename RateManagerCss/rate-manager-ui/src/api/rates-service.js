@@ -1,0 +1,40 @@
+import Vue from 'vue';
+import VueResource from 'vue-resource';
+import Interceptor from './interceptor';
+
+Vue.use(VueResource);
+Vue.http.interceptors.push(Interceptor);
+
+const rates = Vue.resource(`${process.env.VUE_APP_API_URL}/hotels/{hotelid}/rates{?hotelid,startdate,enddate,language}`);
+const ratesByDay = Vue.resource(`${process.env.VUE_APP_API_URL}/hotels/{hotelid}/rates/{rateid}/daily/{day}`);
+
+export default {
+    /**
+     * @param {String} startDate fecha en formato ISO
+     * @param {String} endDate fecha en formato ISO
+     * @returns {Promise<[Any]>}
+     */
+    getByRatePlan(hotelId, startDate, endDate) {
+        return rates.get({
+            hotelid: hotelId,
+            startdate: startDate,
+            enddate: endDate,
+        });
+    },
+
+    /**
+     * @param {*} hotelId
+     * @param {Number} rateId
+     * @param {String} day fecha en formato ISO
+     * @returns {Promise<[Any]>}
+     */
+    getByDay(hotelId, rateId, day){
+        return ratesByDay.get({
+            'hotelid': hotelId,
+            rateid: rateId,
+            day: day,
+            ignoreTrack: true
+        });
+    }
+
+};
