@@ -37,7 +37,7 @@ Public Class [Global]
 
     Sub Application_Start(ByVal sender As Object, ByVal e As EventArgs)
         ' Se desencadena cuando se inicia la aplicación
-        GlobalConfiguration.Configuration.NinjAPIConfig()
+        GlobalConfiguration.Configuration.NinjAPIConfig(SetCamelCase:=True)
         FluentValidationModelValidatorProvider.Configure(GlobalConfiguration.Configuration)
         GlobalConfiguration.Configuration.EnsureInitialized()
     End Sub
