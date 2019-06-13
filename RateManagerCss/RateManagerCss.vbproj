@@ -28,6 +28,7 @@
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
     <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
     <UseGlobalApplicationHostFile />
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -1475,6 +1476,7 @@
     <Compile Include="API\Helpers\ValidateUserAccessAttribute.vb" />
     <Compile Include="API\Models\DateRangeRQ.vb" />
     <Compile Include="API\Models\RatesByPlanRQ.vb" />
+    <Compile Include="API\Models\RateUpdateRQ.vb" />
     <Compile Include="API\Rates.ashx.vb">
       <DependentUpon>Rates.ashx</DependentUpon>
     </Compile>

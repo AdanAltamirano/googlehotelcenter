@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace APIServices.Models.DTO
 {
-    public class UpdateRateRequest
+    public class RateUpdateRQ
     {
         public int HotelId { get; set; }
         public int RateId { get; set; }
@@ -18,15 +18,15 @@ namespace APIServices.Models.DTO
         public decimal ExtraChildPrice { get; set; }
         public decimal ExtraJuniorPrice { get; set; }
         public string RateCode { get; set; }
-        public UpdateRateRequestPromotion Promotion { get; set; }
+        public bool IsOccupancyRate { get; set; }
+        public RateUpdateRQPromotion Promotion { get; set; }
         public List<DailyRateDetailPrice> Prices { get; set; } = new List<DailyRateDetailPrice>();
-        public UpdateRateRequestRules Rules { get; set; }
-        public string Error { get; set; }
-        public UpdateRequestGuestsRestriction GuestsRestrictions { get; set; }
-        public UpdateRateRequestBookingWindow BookingWindow { get; set; }
+        public RateUpdateRQRules Rules { get; set; }
+        public RateUpdateRQGuestsRestriction GuestsRestrictions { get; set; }
+        public RateUpdateRQBookingWindow BookingWindow { get; set; }
     }
 
-    public class UpdateRateRequestRules
+    public class RateUpdateRQRules
     {
         public string ExceptionDays { get; set; }
         public string NoArrival { get; set; }
@@ -38,20 +38,20 @@ namespace APIServices.Models.DTO
         public byte MinAdvanceBooking { get; set; }
     }
 
-    public class UpdateRateRequestPromotion
+    public class RateUpdateRQPromotion
     {
         public byte Discount { get; set; }
         public string EnglishDescription { get; set; }
         public string SpanishDescription { get; set; }
     }
 
-    public class UpdateRateRequestBookingWindow
+    public class RateUpdateRQBookingWindow
     {
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
     }
 
-    public class UpdateRequestGuestsRestriction
+    public class RateUpdateRQGuestsRestriction
     {
         public byte MaxGuests { get; set; }
         public byte MaxAdults { get; set; }
