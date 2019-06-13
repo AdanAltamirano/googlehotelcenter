@@ -12,13 +12,11 @@ Public Class RateUpdate
         Try
             Dim hotelId As Integer
             If Not Integer.TryParse(context.Request.Form("hotelid"), hotelId) Then
-                req.Error = "invalid hotelId"
                 Return False
             End If
 
             Dim roomId As Integer
             If Not Integer.TryParse(context.Request.Form("roomId"), roomId) Then
-                req.Error = "invalid roomId"
                 Return False
             End If
 
@@ -27,13 +25,11 @@ Public Class RateUpdate
 
             Dim startDate As Date
             If Not Date.TryParse(context.Request.Form("startDate"), startDate) Then
-                req.Error = "invalid startDate"
                 Return False
             End If
 
             Dim endDate As Date
             If Not Date.TryParse(context.Request.Form("endDate"), endDate) Then
-                req.Error = "invalid startDate"
                 Return False
             End If
 
@@ -162,7 +158,7 @@ Public Class RateUpdate
                 context:=context,
                 result:=RatesServices.AddRate(req))
         Else
-            OkWithError(context, req.Error)
+            OkWithError(context, "ERROR")
         End If
     End Sub
 
