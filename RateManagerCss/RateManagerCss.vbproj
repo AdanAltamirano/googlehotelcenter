@@ -26,7 +26,7 @@
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
-    <IISExpressUseClassicPipelineMode>true</IISExpressUseClassicPipelineMode>
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
     <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -628,7 +628,6 @@
     <Content Include="HotelAdministrator\Pages\IDSMapping.aspx" />
     <Content Include="HotelAdministrator\Pages\MapeoPlanesF2G.aspx" />
     <Content Include="HotelAdministrator\Pages\Promotions.aspx" />
-    <Content Include="HotelAdministrator\Pages\ReservationList.aspx" />
     <Content Include="HotelAdministrator\Pages\RetentionsConfig.aspx" />
     <Content Include="Hotel\Documentacion\Ayuda.aspx" />
     <Content Include="Hotel\Documentacion\Noticias.aspx" />
@@ -1615,13 +1614,6 @@
     <Compile Include="HotelAdministrator\Pages\Promotions.aspx.vb">
       <DependentUpon>Promotions.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
-    </Compile>
-    <Compile Include="HotelAdministrator\Pages\ReservationList.aspx.designer.vb">
-      <DependentUpon>ReservationList.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="HotelAdministrator\Pages\ReservationList.aspx.vb">
-      <DependentUpon>ReservationList.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\RetentionsConfig.aspx.designer.vb">
       <DependentUpon>RetentionsConfig.aspx</DependentUpon>
@@ -3630,10 +3622,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CallCenter\Polities.aspx.resx">
       <DependentUpon>Polities.aspx.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="HotelAdministrator\Pages\ReservationList.aspx.resx">
-      <DependentUpon>ReservationList.aspx.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Hotel\Documentacion\Ayuda.aspx.resx">
