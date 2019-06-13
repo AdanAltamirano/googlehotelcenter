@@ -28,13 +28,13 @@ export default {
      * @param {String} day fecha en formato ISO
      * @returns {Promise<[Any]>}
      */
-    getByDay(hotelId, rateId, day){
+    getByDay(hotelId, rateId, day) {
         return ratesByDay.get({
-            'hotelid': hotelId,
+            hotelid: hotelId,
             rateid: rateId,
-            day: day,
-            ignoreTrack: true
+            day,
+            ignoreTrack: true,
         });
-    }
+    },
 
 };

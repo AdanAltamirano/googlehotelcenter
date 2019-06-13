@@ -16,8 +16,8 @@
                 </div>
             </div>
         </div>
-        <template v-for="rate in room.rates">
-            <div class="d-flex bg-white border-top border-primary border-5" :key="rate.ratePlanId">
+        <template v-for="(rate, idx) in room.rates">
+            <div :key="rate.ratePlanId" class="d-flex bg-white border-5" :class="{'border-top': !idx, 'border-primary':!idx}">
                 <div class="d-flex w-30">
                     <div class="border flex-fill d-flex w-80 align-items-center p-1 pl-4">
                         <h5 class="m-0 pl-2">{{rate.ratePlan}}</h5>
@@ -39,8 +39,8 @@
                 <div class="d-flex w-70">
                     <div class="border p-1 flex-fill text-center" v-for="day in rate.dailyRates" :key="day.date">
                         <v-popover placement="right">
-                            <a href="#" class="tooltip-target text-decoration-none" v-if="day.price> 0">{{ getPrice(day, rate) | currency}}</a>
-                            <a href="#" v-else class="text-danger tooltip-target text-decoration-none"> N/A </a>
+                            <a href="javascript:;" class="tooltip-target text-decoration-none" v-if="day.price> 0">{{ getPrice(day, rate) | currency}}</a>
+                            <a href="javascript:;" v-else class="text-danger tooltip-target text-decoration-none"> N/A </a>
                             <template slot="popover">
                                 <day-rate-detail :day-rate="day"/>
                             </template>
@@ -82,10 +82,11 @@
 
 <script>
 import DayRateDetail from './DayRateDetail';
+
 export default {
     name: 'room-table',
-    components:{
-        DayRateDetail
+    components: {
+        DayRateDetail,
     },
     props: {
         room: {
@@ -93,22 +94,20 @@ export default {
             required: true,
         },
     },
-    methods:{
-        inventoryStyles(day){
+    methods: {
+        inventoryStyles(day) {
             return {
                 'text-danger': day.available === 0,
                 'text-warning': day.available > 0 && day.available < 3,
-                'text-success': day.available > 2
-            }
+                'text-success': day.available > 2,
+            };
         },
-        getPrice(dayRate, rate){
+        getPrice(dayRate, rate) {
             let price = dayRate.price * (1 - (dayRate.discount / 100));
-            if(rate.factor !== undefined)
-                price *= rate.factor;
-            else if(rate.offset !== undefined)
-                price += offset;
+            if (rate.factor !== undefined) price *= rate.factor;
+            else if (rate.offset !== undefined) price += offset;
             return price;
-        }
-    }
+        },
+    },
 };
 </script>

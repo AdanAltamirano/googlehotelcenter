@@ -4,13 +4,11 @@
 <script>
 export default {
     name: 'day-rate-detail',
-    props:{
+    props: {
         dayRate: {
             type: Object,
-            required: false
-        }
-    }
-}
+            required: false,
+        },
+    },
+};
 </script>
-
-

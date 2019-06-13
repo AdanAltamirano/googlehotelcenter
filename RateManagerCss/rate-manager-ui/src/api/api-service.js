@@ -18,7 +18,6 @@ Vue.http.interceptors.push((request) => {
 });
 
 
-
 const rates = Vue.resource(`${process.env.VUE_APP_API_URL}/rates.ashx{?hotelid,startdate,enddate,language}`);
 const ratedatails = Vue.resource(`${process.env.VUE_APP_API_URL}/rates/daily.ashx{?rateid,day}`);
 const rooms = Vue.resource(`${process.env.VUE_APP_API_URL}/rooms.ashx{?hotelid,language,showinactive}`);
@@ -79,11 +78,11 @@ export default {
        * @param {String} day fecha en formato ISO
        * @returns {Promise<[Any]>}
        */
-      rateDetails(rateId, day) {
+    rateDetails(rateId, day) {
         return ratedatails.get({
             rateid: rateId,
-            day: day,
-            ignoreTrack: true
+            day,
+            ignoreTrack: true,
         });
     },
 

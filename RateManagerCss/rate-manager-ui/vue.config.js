@@ -1,20 +1,30 @@
+const webpack = require('webpack')
+
 module.exports = {
+    configureWebpack: {
+        plugins: [
+          new webpack.IgnorePlugin({
+            resourceRegExp: /^\.\/locale$/,
+            contextRegExp: /moment$/
+          })
+        ]
+    },
+    chainWebpack: config => {
+        // raw-loader
+        config.module
+          .rule('aspx')
+          .test(/\.aspx$/)
+          .use('raw-loader')
+            .loader('raw-loader')
+            .end()
+    },
     publicPath: './',
     pages: {
-      rates_admin: {
-        // entry for the page
-        entry: 'src/views/rates-admin/main.js',
-        // the source template
-        template: 'public/rates-admin.aspx',
-        // output as dist/index.html
-        filename: 'rates-admin.aspx',
-        // when using title option,
-        // template title tag needs to be <title><%= htmlWebpackPlugin.options.title %></title>
-        //title: 'Index Page',
-        // chunks to include on this page, by default includes
-        // extracted common chunks and vendor chunks.
-        //chunks: ['chunk-vendors', 'chunk-common', 'index']
-      },
-      //subpage: 'src/subpage/main.js'
-    }
-  }
+        rates_admin: {
+            entry: 'src/views/rates-admin/main.js',
+            template: 'public/rates-admin.aspx',
+            filename: 'rates-admin.aspx',
+        },
+        // subpage: 'src/subpage/main.js'
+    },
+};

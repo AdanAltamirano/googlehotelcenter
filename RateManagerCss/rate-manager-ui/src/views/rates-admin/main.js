@@ -9,7 +9,7 @@ import VueCurrencyFilter from 'vue-currency-filter';
 import VTooltip from 'v-tooltip';
 import { localeMoment } from '../../core/localization/locale';
 import store from './store';
-import App from './view.vue';
+import View from './view.vue';
 
 // styles
 import '../../assets/app.scss';
@@ -36,5 +36,5 @@ Vue.config.productionTip = false;
 
 new Vue({
     store,
-    render: h => h(App),
+    render: h => h(View),
 }).$mount('#app');

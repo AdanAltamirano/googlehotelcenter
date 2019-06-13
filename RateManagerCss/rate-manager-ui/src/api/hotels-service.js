@@ -17,10 +17,10 @@ export default {
      */
     getList(filter, orderBy, pageSize, page) {
         return resource.get({
-            filter: filter,
-            orderBy: orderBy,
-            page: page,
-            pageSize: pageSize
+            filter,
+            orderBy,
+            page,
+            pageSize,
         });
     },
 
@@ -28,10 +28,10 @@ export default {
      *
      * @param {Number} hotelId
      */
-    get(hotelId){
+    get(hotelId) {
         return resource.get({
-            hotelid: hotelId
+            hotelid: hotelId,
         });
-    }
+    },
 
 };
