@@ -18,6 +18,7 @@ Vue.http.interceptors.push((request) => {
 });
 
 
+
 const rates = Vue.resource(`${process.env.VUE_APP_API_URL}/rates.ashx{?hotelid,startdate,enddate,language}`);
 const ratedatails = Vue.resource(`${process.env.VUE_APP_API_URL}/rates/daily.ashx{?rateid,day}`);
 const rooms = Vue.resource(`${process.env.VUE_APP_API_URL}/rooms.ashx{?hotelid,language,showinactive}`);

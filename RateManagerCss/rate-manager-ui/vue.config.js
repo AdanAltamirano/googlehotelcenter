@@ -1,12 +1,13 @@
 module.exports = {
+    publicPath: './',
     pages: {
       rates_admin: {
         // entry for the page
         entry: 'src/views/rates-admin/main.js',
         // the source template
-        template: 'public/index.html',
+        template: 'public/rates-admin.aspx',
         // output as dist/index.html
-        //filename: 'index.html',
+        filename: 'rates-admin.aspx',
         // when using title option,
         // template title tag needs to be <title><%= htmlWebpackPlugin.options.title %></title>
         //title: 'Index Page',

@@ -94,6 +94,9 @@
     <Compile Include="Models\TarifasRestricciones.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\vAdministrator.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\vDayRateDetail.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
@@ -120,6 +123,7 @@
     </Compile>
     <Compile Include="RatesService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReservationService.cs" />
     <Compile Include="RoomsService.cs" />
     <Compile Include="Utilities.cs" />
   </ItemGroup>

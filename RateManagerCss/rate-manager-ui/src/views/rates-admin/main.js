@@ -8,7 +8,7 @@ import VCalendar from 'v-calendar';
 import VueCurrencyFilter from 'vue-currency-filter';
 import VTooltip from 'v-tooltip';
 import { localeMoment } from '../../core/localization/locale';
-import store from '../../core/store';
+import store from './store';
 import App from './view.vue';
 
 // styles

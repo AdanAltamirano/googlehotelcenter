@@ -26,7 +26,7 @@
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
-    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
+    <IISExpressUseClassicPipelineMode>true</IISExpressUseClassicPipelineMode>
     <UseGlobalApplicationHostFile />
     <Use64BitIISExpress />
   </PropertyGroup>
@@ -629,6 +629,7 @@
     <Content Include="HotelAdministrator\Pages\IDSMapping.aspx" />
     <Content Include="HotelAdministrator\Pages\MapeoPlanesF2G.aspx" />
     <Content Include="HotelAdministrator\Pages\Promotions.aspx" />
+    <Content Include="HotelAdministrator\Pages\ReservationList.aspx" />
     <Content Include="HotelAdministrator\Pages\RetentionsConfig.aspx" />
     <Content Include="Hotel\Documentacion\Ayuda.aspx" />
     <Content Include="Hotel\Documentacion\Noticias.aspx" />
@@ -1470,10 +1471,12 @@
     <Compile Include="API\APIHandler.vb" />
     <Compile Include="API\Controllers\HotelsController.vb" />
     <Compile Include="API\Controllers\RatesController.vb" />
+    <Compile Include="API\Controllers\ReservationController.vb" />
     <Compile Include="API\Controllers\RoomsController.vb" />
     <Compile Include="API\Helpers\Date+Extensions.vb" />
     <Compile Include="API\Helpers\HttpRequestMessage+Extensions.vb" />
-    <Compile Include="API\Helpers\ValidateUserAccessAttribute.vb" />
+    <Compile Include="API\Helpers\AuthorizeUserAttribute.vb" />
+    <Compile Include="API\Helpers\UserDataHelper.vb" />
     <Compile Include="API\Models\DateRangeRQ.vb" />
     <Compile Include="API\Models\RatesByPlanRQ.vb" />
     <Compile Include="API\Models\RateUpdateRQ.vb" />
@@ -1614,6 +1617,13 @@
     <Compile Include="HotelAdministrator\Pages\Promotions.aspx.vb">
       <DependentUpon>Promotions.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="HotelAdministrator\Pages\ReservationList.aspx.designer.vb">
+      <DependentUpon>ReservationList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="HotelAdministrator\Pages\ReservationList.aspx.vb">
+      <DependentUpon>ReservationList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\RetentionsConfig.aspx.designer.vb">
       <DependentUpon>RetentionsConfig.aspx</DependentUpon>
@@ -3624,6 +3634,10 @@
       <DependentUpon>Polities.aspx.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="HotelAdministrator\Pages\ReservationList.aspx.resx">
+      <DependentUpon>ReservationList.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Hotel\Documentacion\Ayuda.aspx.resx">
       <DependentUpon>Ayuda.aspx.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -4894,6 +4908,8 @@
     </WebReferenceUrl>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="API\Rates\" />
+    <Folder Include="API\Rooms\" />
     <Folder Include="HotelAdministrator\Models\" />
     <Folder Include="obj\" />
   </ItemGroup>

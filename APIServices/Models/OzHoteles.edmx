@@ -149,6 +149,19 @@
           <Property Name="Applyday" Type="nvarchar" MaxLength="7" />
         </EntityType>
         <!--Errors Found During Generation:
+warning 6002: The table/view 'OzHoteles.dbo.vAdministrator' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vAdministrator">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="Type" />
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="Type" Type="tinyint" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="80" Nullable="false" />
+          <Property Name="CorpId" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'OzHoteles.dbo.vDayRateDetail' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vDayRateDetail">
           <Key>
@@ -352,6 +365,14 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           <EntitySet Name="RatesPlan" EntityType="Self.RatesPlan" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tarifas" EntityType="Self.Tarifas" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TarifasRestricciones" EntityType="Self.TarifasRestricciones" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="vAdministrator" EntityType="Self.vAdministrator" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vAdministrator].[UserId] AS [UserId], 
+    [vAdministrator].[Type] AS [Type], 
+    [vAdministrator].[Name] AS [Name], 
+    [vAdministrator].[CorpId] AS [CorpId]
+    FROM [dbo].[vAdministrator] AS [vAdministrator]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="vDayRateDetail" EntityType="Self.vDayRateDetail" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [vDayRateDetail].[Id] AS [Id], 
@@ -496,6 +517,7 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           <EntitySet Name="vHotelByUser" EntityType="Models.vHotelByUser" />
           <EntitySet Name="vHotelPlan" EntityType="Models.vHotelPlan" />
           <EntitySet Name="vHotelBasicInfo" EntityType="Models.vHotelBasicInfo" />
+          <EntitySet Name="vAdministrator" EntityType="Models.vAdministrator" />
         </EntityContainer>
         <EntityType Name="RatesPlan">
           <Key>
@@ -825,6 +847,17 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           <Property Name="Corp" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="Status" Type="Byte" Nullable="false" />
         </EntityType>
+        <EntityType Name="vAdministrator">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="Type" />
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="Type" Type="Byte" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="CorpId" Type="Int32" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1100,6 +1133,16 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vAdministrator">
+            <EntityTypeMapping TypeName="Models.vAdministrator">
+              <MappingFragment StoreEntitySet="vAdministrator">
+                <ScalarProperty Name="CorpId" ColumnName="CorpId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
