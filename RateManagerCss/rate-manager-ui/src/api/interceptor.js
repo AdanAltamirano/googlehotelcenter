@@ -12,4 +12,4 @@ export default (request) => {
         proccessing.count -= 1;
         if (proccessing.count === 0) EventBus.$emit('api.call.end');
     };
-}
+};

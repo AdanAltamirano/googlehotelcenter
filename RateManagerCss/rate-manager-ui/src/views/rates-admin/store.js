@@ -6,9 +6,9 @@ import RoomsService from '../../api/rooms-service';
 import RatesService from '../../api/rates-service';
 
 
-let roomsWithRatesAndInventory = function(hotelId, startDate, endDate) {
-    let roomsReq = RoomsService.getList(hotelId, 'Active eq True');
-    let ratesReq = RatesService.getByRatePlan(hotelId, startDate, endDate);
+const roomsWithRatesAndInventory = function (hotelId, startDate, endDate) {
+    const roomsReq = RoomsService.getList(hotelId, 'Active eq True');
+    const ratesReq = RatesService.getByRatePlan(hotelId, startDate, endDate);
 
     return new Promise((resolve, reject) => {
         Promise.all([roomsReq, ratesReq])
@@ -16,12 +16,12 @@ let roomsWithRatesAndInventory = function(hotelId, startDate, endDate) {
                 const roomsAndRates = Utilities.mixRoomsAndRates(roomsRes.body, ratesRes.body);
 
                 // ir por el inventario de las habitaciones que tienen tarifas
-                let invetoryPromises = roomsAndRates.map(room => RoomsService.getInventory(hotelId, room.id, startDate, endDate));
+                const invetoryPromises = roomsAndRates.map(room => RoomsService.getInventory(hotelId, room.id, startDate, endDate));
 
                 Promise.all(invetoryPromises)
                     .then((responses) => {
-                        let inventory = responses.map(r => r.body);
-                        let fullMix = roomsAndRates.map((room) => {
+                        const inventory = responses.map(r => r.body);
+                        const fullMix = roomsAndRates.map((room) => {
                             [room.inventory] = (inventory.filter(r => (r[0] || {}).roomId === room.id));
                             return room;
                         });
@@ -34,7 +34,7 @@ let roomsWithRatesAndInventory = function(hotelId, startDate, endDate) {
                 reject(reason);
             });
     });
-}
+};
 
 export default new Vuex.Store({
     state: {
@@ -53,13 +53,13 @@ export default new Vuex.Store({
         /**
          * Obtiene la información básica de un hotel por id
          */
-        getHotel(state){
-            HotelService.get(state.hotelId).then((response => {
+        getHotel(state) {
+            HotelService.get(state.hotelId).then(((response) => {
                 state.hotel = response.body;
             }))
-            .catch((reason) => {
+                .catch((reason) => {
 
-            });
+                });
         },
 
         update(state, { start, end }) {

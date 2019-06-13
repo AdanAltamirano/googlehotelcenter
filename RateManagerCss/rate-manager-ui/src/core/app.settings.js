@@ -2,11 +2,9 @@ import Vue from 'vue';
 
 const AppConfig = {
     // APP configurations
-    language: window.Language || 'es',
-    domain: window.Domain,
-    user: window.User,
+    language: window.app.language || 'es',
     session: {
-        hotelId: 3167, //1978//// cambiar para obtener de la sesion
+        hotelId: window.app.hotelId,
     },
 };
 

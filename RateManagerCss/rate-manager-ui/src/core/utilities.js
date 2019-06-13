@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import moment from 'moment';
 
 export default {
@@ -7,7 +8,7 @@ export default {
     getLastWorkDay() {
         const today = moment();
         if (localStorage) {
-            const lastWorkDay = localStorage.getItem('admin.rates.workingDate');
+            const lastWorkDay = localStorage.getItem('admin.' + Vue.appConfig.session.hotelId + '.rates.workingDate');
             if (lastWorkDay) {
                 const start = moment(lastWorkDay);
                 if (start.isValid() && start.isAfter(today)) {
@@ -22,9 +23,9 @@ export default {
      * @param {moment} day
      * Save last selected day to localstorage
      */
-    setLastWorkDay(day){
+    setLastWorkDay(day) {
         if (localStorage) {
-            localStorage.setItem('admin.rates.workingDate', day.format('YYYY-MM-DD'));
+            localStorage.setItem('admin.' +  Vue.appConfig.session.hotelId + '.rates.workingDate', day.format('YYYY-MM-DD'));
         }
     },
     /**

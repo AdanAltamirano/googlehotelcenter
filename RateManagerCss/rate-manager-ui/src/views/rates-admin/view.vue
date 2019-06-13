@@ -1,17 +1,15 @@
 <template>
     <div class="p-0" id="app">
-        <div class="bg-light d-flex justify-content-between pl-5 pr-5">
-        <button data-toggle="collapse" class="btn btn-primary m-2" data-target="#rates">
-            <span>Bulk Update</span>
+        <div class="d-flex flex-row-reverse justify-content-between pl-5 pr-5">
+        <button data-toggle="collapse" class="btn btn-link mb-2 pr-0" data-target="#rates">
+            <span>Bulk Update <i class="fa fa-archive"></i></span>
         </button>
         </div>
         <!--rates form-->
         <div class="pb-5">
-            <div class="bg-light">
-                <calendar-ribbon :date-range="dateRange"></calendar-ribbon>
-                <div class="bg-light pr-0 pl-0">
-                    <room-table v-for="room in roomRates" :key="room.id" :room="room"></room-table>
-                </div>
+            <calendar-ribbon :date-range="dateRange"></calendar-ribbon>
+            <div class="pr-0 pl-0">
+                <room-table v-for="room in roomRates" :key="room.id" :room="room"></room-table>
             </div>
         </div>
     </div>
@@ -37,7 +35,7 @@ export default {
     // check for last work day
         const start = Utilities.getLastWorkDay();
         const end = start.clone().add(13, 'days');
-        this.$store.commit('update', { start, end});
+        this.$store.commit('update', { start, end });
     },
     data() {
         return {

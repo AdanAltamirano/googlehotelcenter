@@ -12,7 +12,7 @@
                     :is-required="true"
                     title-position="left"
                     :locale="$appConfig.language">
-                        <a href="#" class="text-decoration-none h3">{{ currentDay | moment('MMM D, YYYY')}}</a>
+                        <a href="javascript:;" class="text-decoration-none h3">{{ currentDay | moment('MMM D, YYYY')}}</a>
                     </v-date-picker>
                     <button @click="addDays(1)" class="btn btn-link btn-sm"><i class="fa fa-angle-right"></i></button>
                     <button @click="addMonths(1)" class="btn btn-link btn-sm"><i class="fa fa-angle-double-right"></i></button>
@@ -40,42 +40,42 @@ export default {
             required: true,
         },
     },
-    data(){
+    data() {
         return {
             currentDay: Utilities.getLastWorkDay().toDate(),
             today: this.$moment(),
-        }
+        };
     },
-    computed:{
-        dates(){
-            if(!this.dateRange.start || !this.dateRange.end) return [];
-            return Array( 1 + this.dateRange.end.diff(this.dateRange.start, 'days')).fill(0)
-                .map((v,i) => { return this.dateRange.start.clone().add(i, 'days') });
+    computed: {
+        dates() {
+            if (!this.dateRange.start || !this.dateRange.end) return [];
+            return Array(1 + this.dateRange.end.diff(this.dateRange.start, 'days')).fill(0)
+                .map((v, i) => this.dateRange.start.clone().add(i, 'days'));
         },
     },
-    methods:{
-        addDays(days){
+    methods: {
+        addDays(days) {
             const newVal = this.$moment(this.currentDay).add(days, 'days');
-            if(!this.today.isAfter(newVal,'day')){
+            if (!this.today.isAfter(newVal, 'day')) {
                 this.currentDay = newVal.toDate();
             }
         },
-        addMonths(months){
+        addMonths(months) {
             const newVal = this.$moment(this.currentDay).add(months, 'months');
-            if(!this.today.isAfter(newVal,'day')){
+            if (!this.today.isAfter(newVal, 'day')) {
                 this.currentDay = newVal.toDate();
             }
         },
     },
-    watch:{
-        currentDay(newDay, oldDay){
-            if(!this.$moment(newDay).isSame(this.dateRange.start, 'day')){
+    watch: {
+        currentDay(newDay, oldDay) {
+            if (!this.$moment(newDay).isSame(this.dateRange.start, 'day')) {
                 const start = this.$moment(newDay);
                 const end = start.clone().add(13, 'days');
                 Utilities.setLastWorkDay(start);
-                this.$store.commit('update', { start, end});
+                this.$store.commit('update', { start, end });
             }
-        }
-    }
+        },
+    },
 };
 </script>

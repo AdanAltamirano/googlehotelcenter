@@ -17,13 +17,13 @@ export default {
      * @param {Number} page
      * @returns {Promise<[Any]>}
      */
-    getList(hotelId, filter, orderBy, pageSize, page ) {
+    getList(hotelId, filter, orderBy, pageSize, page) {
         return rooms.get({
             hotelid: hotelId,
-            filter: filter,
-            orderBy: orderBy,
-            page: page,
-            pageSize: pageSize
+            filter,
+            orderBy,
+            page,
+            pageSize,
         });
     },
 
@@ -34,13 +34,13 @@ export default {
      * @param {String} endDate fecha en formato ISO
      * @returns {Promise<[Any]>}
      */
-    getInventory(hotelId, roomId, startDate, endDate){
+    getInventory(hotelId, roomId, startDate, endDate) {
         return inventory.get({
             hotelid: hotelId,
             roomid: roomId,
             startdate: startDate,
-            enddate: endDate
+            enddate: endDate,
         });
-    }
+    },
 
 };
