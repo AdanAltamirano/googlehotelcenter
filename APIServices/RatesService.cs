@@ -207,17 +207,22 @@ namespace APIServices
             return result;
         }
 
-        public bool AddRate(RateUpdateRQ rate)
+        public bool AddRate(RateUpdateRQ updateRQ)
         {
             int err = 0;
             OzHotelesEntities db = new OzHotelesEntities();
+
+            if (updateRQ.RateId > 0)
+            {
+                CompleteRateUpdateRQ(ref updateRQ);
+            }
 
             using (System.Data.Entity.DbContextTransaction transaction = db.Database.BeginTransaction())
             {
                 try
                 {
-                    if (RemoveOverlappedRates(rate.RateId, rate.RoomId, rate.RatePlanId, rate.StartDate, rate.EndDate, ref db)
-                        && InsertRate(rate, ref db))
+                    if (RemoveOverlappedRates(updateRQ.RateId, updateRQ.RoomId, updateRQ.RatePlanId, updateRQ.StartDate, updateRQ.EndDate, ref db)
+                        && InsertRate(updateRQ, ref db))
                     {
                         db.SaveChanges();
                         transaction.Commit();
@@ -234,6 +239,45 @@ namespace APIServices
                     return false;
                 }
                 return true;
+            }
+        }
+
+        private void CompleteRateUpdateRQ(ref RateUpdateRQ updateRQ)
+        {
+            using (OzHotelesEntities db = new OzHotelesEntities())
+            {
+                int rateId = updateRQ.RateId;
+                var rate = db.Tarifas.Single(t => t.idTarifa == rateId);
+
+                RateUpdateRQBookingWindow bookingWindow = new RateUpdateRQBookingWindow
+                {
+                    StartDate = rate.BookingWindowStart,
+                    EndDate = rate.BookingWindowEnd
+                };
+                updateRQ.BookingWindow = bookingWindow;
+
+                RateUpdateRQRules rules = new RateUpdateRQRules
+                {
+                    ExceptionDays = rate.Excepciones,
+                    NoArrival = rate.NoArrivos,
+                    UseDefaultRules = rate.RateRulesDefault,
+                    Segment = rate.TipoTarifa,
+                    MinLOS = rate.MinDias,
+                    MaxLOS = rate.MaxDias,
+                    MaxAdvanceBooking = rate.MaxAdvBooking,
+                    MinAdvanceBooking = rate.AdvBooking
+                };
+                updateRQ.Rules = rules;
+
+                RateUpdateRQGuestsRestriction guestsRestriction = new RateUpdateRQGuestsRestriction
+                {
+                    MaxAdults = rate.MaxAdultos,
+                    MinAdults = rate.MinAdultos,
+                    ExtraGuests = rate.PersonasExtras,
+                    Childs = rate.MaxNinios,
+                    MaxGuests = rate.Personas
+                };
+                updateRQ.GuestsRestrictions = guestsRestriction;
             }
         }
 
@@ -255,8 +299,7 @@ namespace APIServices
 
                 //Obtengo las tarifas que estén completa o parcialmente dentro del rango de la nueva tarifa
                 overlappedFares = contextDb.Tarifas.Where(o =>
-                    o.idTarifa != rateId
-                    && o.idTipoHabitacion_Hotel == roomId
+                    o.idTipoHabitacion_Hotel == roomId
                     && o.idrateplan == ratePlanId
                     && (((startDate >= o.FechaInicia && startDate <= o.FechaFinaliza) || (endDate >= o.FechaInicia && endDate <= o.FechaFinaliza))
                           || ((o.FechaInicia >= startDate && o.FechaInicia <= endDate) || (o.FechaFinaliza >= startDate && o.FechaFinaliza <= endDate)))).ToArray();
@@ -500,7 +543,7 @@ namespace APIServices
                                 TarifaAdolescente = prices.SingleOrDefault(p => p.Occupation == childs && p.Type == PaxType.Junior)?.Price ?? 0,
                                 TarifaAdultoExc = 0,
                                 TarifaNinioExc = 0,
-                                TarifaAdolescenteExc =  0,
+                                TarifaAdolescenteExc = 0,
                                 TarifaAdultoNR = prices.SingleOrDefault(p => p.Occupation == adults && p.Type == PaxType.Junior)?.Price ?? 0,
                                 TarifaNinioNR = prices.SingleOrDefault(p => p.Occupation == adults && p.Type == PaxType.Junior)?.Price ?? 0,
                                 TarifaAdolescenteNR = prices.SingleOrDefault(p => p.Occupation == adults && p.Type == PaxType.Junior)?.Price ?? 0,
@@ -536,9 +579,10 @@ namespace APIServices
 
                 return price;
             }
-            catch {
+            catch
+            {
                 return 0;
-            }            
+            }
         }
     }
 }
