@@ -2,6 +2,7 @@
 Imports APIServices
 Imports APIServices.Models
 Imports NinjAPI
+Imports NinjAPI.Common
 Imports RateManager.API.Helpers
 Imports RateManager.API.Models
 
@@ -28,11 +29,11 @@ Namespace API.Controllers
         <Route(""), HttpPost>
         Public Function RateUpdate(<FromBody> RQ As RateUpdateRQ, HotelId As Integer) As Net.Http.HttpResponseMessage
             Dim serviceRQ As DTO.RateUpdateRQ = MappingRateUpdateRQ(RQ)
-            Dim response As Net.Http.HttpResponseMessage
 
             If Service.AddRate(serviceRQ) Then
                 NoContent()
             End If
+            BadRequest(KeyValuePair.Create("Error", "Error"))
         End Function
 
         Private Function MappingRateUpdateRQ(RQ As RateUpdateRQ) As DTO.RateUpdateRQ
