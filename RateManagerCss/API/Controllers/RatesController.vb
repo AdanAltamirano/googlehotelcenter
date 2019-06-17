@@ -24,5 +24,21 @@ Namespace API.Controllers
             Return Service.FindDayRateDetail(RateId, day)
         End Function
 
+        'POST api/hotels/1/rates
+        <Route("update/bulk"), HttpPost>
+        Public Function BulkRateUpdate(RQ As RateUpdateRQ) As Boolean
+            Dim serviceRQ As DTO.RateUpdateRQ
+
+            Return Service.AddRate(serviceRQ)
+        End Function
+
+        'POST api/hotels/1/rates
+        <Route("update/{RateId:int}/day/{day:datetime}"), HttpGet>
+        Public Function DayRateUpdate(RateId As Integer, HotelId As Integer, Day As Date) As Boolean
+            Dim serviceRQ As DTO.RateUpdateRQ
+
+            Return Service.AddRate(serviceRQ)
+        End Function
+
     End Class
 End Namespace

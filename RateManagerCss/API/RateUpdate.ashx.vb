@@ -12,13 +12,16 @@ Public Class RateUpdate
         Try
             Dim hotelId As Integer
             If Not Integer.TryParse(context.Request.Form("hotelid"), hotelId) Then
-                req.Error = "invalid hotelId"
                 Return False
             End If
 
             Dim roomId As Integer
             If Not Integer.TryParse(context.Request.Form("roomId"), roomId) Then
-                req.Error = "invalid roomId"
+                Return False
+            End If
+
+            Dim rateId As Integer
+            If Not Integer.TryParse(context.Request.Form("rateId"), rateId) Then
                 Return False
             End If
 
@@ -27,32 +30,38 @@ Public Class RateUpdate
 
             Dim startDate As Date
             If Not Date.TryParse(context.Request.Form("startDate"), startDate) Then
-                req.Error = "invalid startDate"
                 Return False
             End If
 
             Dim endDate As Date
             If Not Date.TryParse(context.Request.Form("endDate"), endDate) Then
-                req.Error = "invalid startDate"
                 Return False
             End If
 
+            req.RateId = rateId
             req.HotelId = hotelId
             req.RoomId = roomId
             req.RatePlanId = ratePlanId
             req.StartDate = startDate
             req.EndDate = endDate
-            req.ExtraAdultPrice = CType(context.Request.Form("extraAdultPrice"), Decimal)
-            req.ExtraChildPrice = CType(context.Request.Form("extraChildPrice"), Decimal)
-            req.ExtraJuniorPrice = CType(context.Request.Form("extraJuniorPrice"), Decimal)
             req.RateCode = context.Request.Form("rateCode")
             req.IsOccupancyRate = CType(context.Request.Form("isOccupancyRate"), Boolean)
 
-            Dim promotion As New RateUpdateRQPromotion With {
+            If Not CType(context.Request.Form("extraAdultPrice"), Decimal) = 0 Then
+                req.ExtraAdultPrice = CType(context.Request.Form("extraAdultPrice"), Decimal)
+                req.ExtraChildPrice = CType(context.Request.Form("extraChildPrice"), Decimal)
+                req.ExtraJuniorPrice = CType(context.Request.Form("extraJuniorPrice"), Decimal)
+            End If
+
+            If Not CType(context.Request.Form("promotion[discount]"), Integer) = 0 Then
+                Dim promotion As New RateUpdateRQPromotion With {
                 .Discount = CType(context.Request.Form("promotion[discount]"), Decimal),
                 .EnglishDescription = context.Request.Form("promotion[englishDescription]"),
                 .SpanishDescription = context.Request.Form("promotion[spanishDescription]")
                 }
+                req.Promotion = promotion
+            End If
+
 
             Dim rules As New RateUpdateRQRules With {
                 .ExceptionDays = context.Request.Form("rules[exceptionDays]"),
@@ -73,15 +82,16 @@ Public Class RateUpdate
             .ExtraGuests = CType(context.Request.Form("guestsRestrictions[extraGuests]"), Integer)
                 }
 
-            Dim bookingWindow As New RateUpdateRQBookingWindow With {
+            If Not context.Request.Form("bookingWindow[startDate]") = "" Then
+                Dim bookingWindow As New RateUpdateRQBookingWindow With {
             .StartDate = CType(context.Request.Form("bookingWindow[startDate]"), Date),
             .EndDate = CType(context.Request.Form("bookingWindow[endDate]"), Date)
                 }
+                req.BookingWindow = bookingWindow
+            End If
 
-            req.Promotion = promotion
             req.Rules = rules
             req.GuestsRestrictions = guestsRestrictions
-            req.BookingWindow = bookingWindow
 
             Dim price As New DailyRateDetailPrice
             price.Id = 0
@@ -162,7 +172,7 @@ Public Class RateUpdate
                 context:=context,
                 result:=RatesServices.AddRate(req))
         Else
-            OkWithError(context, req.Error)
+            OkWithError(context, "ERROR")
         End If
     End Sub
 
