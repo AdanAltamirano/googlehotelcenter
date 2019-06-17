@@ -35,6 +35,9 @@ a, h5, .h5, .btn, span, .form-control {
 .w-80 {
     width: 80% !important;
 }
+.fs-12{
+    font-size: 12px
+}
 body {
     height: 100vh;
     overflow-x: hidden;
@@ -79,10 +82,25 @@ body {
 .bg-blue-created {
     background-color: #dff3fa;
 }
-.promotion-container .active {
-    background-color: #dff3fa !important;
-    border-color: #dee2e6 !important;
-    color: #000 !important;
+.btn-group-primary .active {
+    background-color: theme-color("primary") !important;
+    border-color: theme-color("primary") !important;
+}
+.btn-group-warning .active {
+    background-color: theme-color("warning") !important;
+    border-color: theme-color("warning") !important;
+}
+.btn-group-danger .active {
+    background-color: theme-color("danger") !important;
+    border-color: theme-color("danger") !important;
+}
+.form-control > .form-control-deep {
+    margin: 0;
+    border: 0;
+    width: 100%;
+    height: 100%;
+    padding: .375rem .75rem;
+    color: #495057;
 }
 .dark-gray-created {
     background-color: #e9ecef;
@@ -144,7 +162,7 @@ body {
 .collapse-containers button div label:hover {
     cursor: pointer;
 }
-.gds-container > #headingOne > p {
+.heading-divider > p {
     font-size: 12px !important;
 }
 .tab-container ul li .active {
@@ -155,4 +173,8 @@ body {
 }
 .vc-popover-content{
     border-style: solid;
+}
+
+.form-control:disabled, .form-control[readonly]{
+    background-color: white;
 }

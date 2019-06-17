@@ -26,6 +26,7 @@ namespace APIServices.Models
         public byte MinAdultsOccupancy { get; set; }
         public byte MaxChildrenOccupancy { get; set; }
         public short Order { get; set; }
+        public Nullable<bool> IsLinked { get; set; }
         public Nullable<bool> Active { get; set; }
         public Nullable<int> Language { get; set; }
     }

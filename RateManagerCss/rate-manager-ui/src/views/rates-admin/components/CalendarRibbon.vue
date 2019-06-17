@@ -1,6 +1,6 @@
 <template>
     <div class="bg-white border-top border-bottom border-5 pl-0 pr-0">
-        <div class="ml-5 mr-5">
+        <div class="ml-3 mr-3">
             <div class="d-flex">
                 <div class="d-flex justify-content-end align-items-center border-right w-30 pr-5">
                     <button @click="addMonths(-1)" class="btn btn-link btn-sm"><i class="fa fa-angle-double-left"></i></button>

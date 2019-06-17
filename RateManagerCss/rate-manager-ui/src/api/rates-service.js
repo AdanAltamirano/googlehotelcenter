@@ -3,9 +3,11 @@ import VueResource from 'vue-resource';
 import Interceptor from './interceptor';
 
 Vue.use(VueResource);
-Vue.http.interceptors.push(Interceptor);
+if(Vue.http.interceptors.indexOf(Interceptor) == -1){
+    Vue.http.interceptors.push(Interceptor);
+}
 
-const rates = Vue.resource(`${process.env.VUE_APP_API_URL}/hotels/{hotelid}/rates{?hotelid,startdate,enddate,language}`);
+const rates = Vue.resource(`${process.env.VUE_APP_API_URL}/hotels/{hotelid}/rates{?startdate,enddate}`);
 const ratesByDay = Vue.resource(`${process.env.VUE_APP_API_URL}/hotels/{hotelid}/rates/{rateid}/daily/{day}`);
 
 export default {
@@ -33,7 +35,7 @@ export default {
             hotelid: hotelId,
             rateid: rateId,
             day,
-            ignoreTrack: true,
+            customTracker: 'rates.getByDay',
         });
     },
 

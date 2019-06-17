@@ -2,10 +2,11 @@
     <div class="p-0" id="app">
         <div class="d-flex flex-row-reverse justify-content-between pl-5 pr-5">
         <button data-toggle="collapse" class="btn btn-link mb-2 pr-0" data-target="#rates">
-            <span>Bulk Update <i class="fa fa-archive"></i></span>
+            <span>{{'bulk update' | translate}} <i class="fa fa-archive"></i></span>
         </button>
         </div>
         <!--rates form-->
+        <bulk-update v-if="hotel" :hotel="hotel"></bulk-update>
         <div class="pb-5">
             <calendar-ribbon :date-range="dateRange"></calendar-ribbon>
             <div class="pr-0 pl-0">
@@ -19,6 +20,7 @@
 import EventBus from '../../core/event-bus';
 import CalendarRibbon from './components/CalendarRibbon.vue';
 import RoomTable from './components/RoomTable.vue';
+import BulkUpdate from './components/BulkUpdate.vue';
 import Utilities from '../../core/utilities';
 
 export default {
@@ -26,6 +28,7 @@ export default {
     components: {
         CalendarRibbon,
         RoomTable,
+        BulkUpdate,
     },
     created() {
         EventBus.$on('api.call.begin', this.showLoader);
@@ -35,6 +38,7 @@ export default {
     // check for last work day
         const start = Utilities.getLastWorkDay();
         const end = start.clone().add(13, 'days');
+        this.$store.commit('getHotel');
         this.$store.commit('update', { start, end });
     },
     data() {
@@ -43,6 +47,9 @@ export default {
         };
     },
     computed: {
+        hotel() {
+            return this.$store.getters.hotel;
+        },
         roomsCatalog() {
             return this.$store.getters.rooms;
         },

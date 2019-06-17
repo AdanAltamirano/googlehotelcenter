@@ -57,9 +57,9 @@ export default new Vuex.Store({
             HotelService.get(state.hotelId).then(((response) => {
                 state.hotel = response.body;
             }))
-                .catch((reason) => {
+            .catch((reason) => {
 
-                });
+            });
         },
 
         update(state, { start, end }) {
