@@ -1,5 +1,5 @@
 <template>
-     <div class="room-description ml-5 mr-5 mt-3">
+     <div class="room-description ml-3 mr-3 mt-3">
         <div class="d-flex border dark-gray-created">
             <div class="d-flex w-30 align-items-center">
                 <div class="border-right p-1 flex-fill d-flex w-80 justify-content-between">
@@ -38,14 +38,7 @@
                 </div>
                 <div class="d-flex w-70">
                     <div class="border p-1 flex-fill text-center" v-for="day in rate.dailyRates" :key="day.date">
-                        <v-popover placement="right">
-                            <a href="javascript:;" class="tooltip-target text-decoration-none" v-if="day.price> 0">{{ getPrice(day, rate) | currency}}</a>
-                            <a href="javascript:;" v-else class="text-danger tooltip-target text-decoration-none"> N/A </a>
-                            <template slot="popover">
-                                <day-rate-detail :day-rate="day"/>
-                            </template>
-                        </v-popover>
-
+                        <day-rate-detail :day-rate="day" :rate="rate"/>
                     </div>
                 </div>
             </div>
@@ -107,7 +100,7 @@ export default {
             if (rate.factor !== undefined) price *= rate.factor;
             else if (rate.offset !== undefined) price += offset;
             return price;
-        },
+        }
     },
 };
 </script>
