@@ -31,7 +31,7 @@ Namespace API.Controllers
             Dim response As Net.Http.HttpResponseMessage
 
             If Service.AddRate(serviceRQ) Then
-
+                NoContent()
             End If
         End Function
 
