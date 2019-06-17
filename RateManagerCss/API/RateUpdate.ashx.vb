@@ -78,7 +78,7 @@ Public Class RateUpdate
             .MaxGuests = CType(context.Request.Form("guestsRestrictions[maxGuests]"), Integer),
             .MaxAdults = CType(context.Request.Form("guestsRestrictions[maxAdults]"), Integer),
             .MinAdults = CType(context.Request.Form("guestsRestrictions[minAdults]"), Integer),
-            .Childs = CType(context.Request.Form("guestsRestrictions[childs]"), Integer),
+            .Children = CType(context.Request.Form("guestsRestrictions[childs]"), Integer),
             .ExtraGuests = CType(context.Request.Form("guestsRestrictions[extraGuests]"), Integer)
                 }
 

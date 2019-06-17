@@ -24,21 +24,123 @@ Namespace API.Controllers
             Return Service.FindDayRateDetail(RateId, day)
         End Function
 
-        'POST api/hotels/1/rates
-        <Route("update/bulk"), HttpPost>
-        Public Function BulkRateUpdate(RQ As RateUpdateRQ) As Boolean
-            Dim serviceRQ As DTO.RateUpdateRQ
+        'POST api/hotels/1/rates/
+        <Route(""), HttpPost>
+        Public Function RateUpdate(<FromBody> RQ As RateUpdateRQ, HotelId As Integer) As Net.Http.HttpResponseMessage
+            Dim serviceRQ As DTO.RateUpdateRQ = MappingRateUpdateRQ(RQ)
+            Dim response As Net.Http.HttpResponseMessage
 
-            Return Service.AddRate(serviceRQ)
+            If Service.AddRate(serviceRQ) Then
+
+            End If
         End Function
 
-        'POST api/hotels/1/rates
-        <Route("update/{RateId:int}/day/{day:datetime}"), HttpGet>
-        Public Function DayRateUpdate(RateId As Integer, HotelId As Integer, Day As Date) As Boolean
-            Dim serviceRQ As DTO.RateUpdateRQ
+        Private Function MappingRateUpdateRQ(RQ As RateUpdateRQ) As DTO.RateUpdateRQ
+            Dim ServiceRQ As New DTO.RateUpdateRQ With {
+                .HotelId = RQ.HotelId,
+                .RoomId = RQ.RoomId,
+                .RateId = RQ.RateId,
+                .RatePlanId = RQ.RatePlanId,
+                .RateCode = RQ.RateCode,
+                .StartDate = RQ.StartDate,
+                .EndDate = RQ.EndDate,
+                .IsOccupancyRate = RQ.IsOccupancyRate
+                }
 
-            Return Service.AddRate(serviceRQ)
+            Dim ServiceRQPrices As New List(Of DTO.DailyRateDetailPrice)
+            For Each Price As DailyRateDetailPrice In RQ.Prices
+                Dim ServiceRQPrice As New DTO.DailyRateDetailPrice With {
+                    .Type = Price.Type,
+                    .Price = Price.Price,
+                    .Occupation = Price.Occupation,
+                    .RateId = Price.RateId
+                    }
+                ServiceRQPrices.Add(ServiceRQPrice)
+            Next
+            ServiceRQ.Prices = ServiceRQPrices
+
+            Dim ServiceRQRules As New DTO.RateUpdateRQRules With {
+                .UseDefaultRules = RQ.Rules.UseDefaultRules,
+                .MinLOS = RQ.Rules.MinLOS,
+                .MaxLOS = RQ.Rules.MaxLOS,
+                .MaxAdvanceBooking = RQ.Rules.MaxAdvnaceBooking,
+                .MinAdvanceBooking = RQ.Rules.MinAdvnaceBooking,
+                .ExceptionDays = GetDaysOfWeekString(RQ.Rules.ExceptionDays),
+                .NoArrival = GetDaysOfWeekString(RQ.Rules.NoArrival)
+                }
+            ServiceRQ.Rules = ServiceRQRules
+
+            If Not RQ.Promotion Is Nothing Then
+                Dim serviceRQPromotion As New DTO.RateUpdateRQPromotion With {
+                    .Discount = RQ.Promotion.Discount,
+                    .EnglishDescription = RQ.Promotion.EnglishDescription,
+                    .SpanishDescription = RQ.Promotion.SpanishDescription
+                    }
+                ServiceRQ.Promotion = serviceRQPromotion
+            End If
+
+            If Not RQ.GuestsRestrictions Is Nothing Then
+                Dim ServiceRQGuestsRestrictions As New DTO.RateUpdateRQGuestsRestriction With {
+                    .Children = RQ.GuestsRestrictions.Children,
+                    .MaxAdults = RQ.GuestsRestrictions.MaxAdults,
+                    .MinAdults = RQ.GuestsRestrictions.MinAdults,
+                    .ExtraGuests = RQ.GuestsRestrictions.ExtraGuests,
+                    .MaxGuests = RQ.GuestsRestrictions.ExtraGuests
+                    }
+                ServiceRQ.GuestsRestrictions = ServiceRQGuestsRestrictions
+            End If
+
+            If Not RQ.BookingWindow Is Nothing Then
+                Dim ServiceRQBookingWindow As New DTO.RateUpdateRQBookingWindow With {
+                    .EndDate = RQ.BookingWindow.EndDate,
+                    .StartDate = RQ.BookingWindow.StartDate
+                    }
+                ServiceRQ.BookingWindow = ServiceRQBookingWindow
+            End If
+
+            Return ServiceRQ
         End Function
 
+        Private Function GetDaysOfWeekString(Days As DaysOfWeek) As String
+            Dim Week As String = ""
+
+            If Days.Sun Then
+                Week = "Y"
+            Else
+                Week = "N"
+            End If
+            If Days.Mon Then
+                Week += "Y"
+            Else
+                Week += "N"
+            End If
+            If Days.Tue Then
+                Week += "Y"
+            Else
+                Week += "N"
+            End If
+            If Days.Wed Then
+                Week += "Y"
+            Else
+                Week += "N"
+            End If
+            If Days.Thu Then
+                Week += "Y"
+            Else
+                Week += "N"
+            End If
+            If Days.Fri Then
+                Week += "Y"
+            Else
+                Week += "N"
+            End If
+            If Days.Sat Then
+                Week += "Y"
+            Else
+                Week += "N"
+            End If
+
+            Return Week
+        End Function
     End Class
 End Namespace

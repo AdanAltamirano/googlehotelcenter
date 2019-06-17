@@ -21,6 +21,7 @@ namespace APIServices.Models.DTO
         public bool IsOccupancyRate { get; set; }
         public RateUpdateRQPromotion Promotion { get; set; }
         public List<DailyRateDetailPrice> Prices { get; set; } = new List<DailyRateDetailPrice>();
+        public List<DailyRateDetailPrice> ExceptionPrices { get; set; } = new List<DailyRateDetailPrice>();
         public RateUpdateRQRules Rules { get; set; }
         public RateUpdateRQGuestsRestriction GuestsRestrictions { get; set; }
         public RateUpdateRQBookingWindow BookingWindow { get; set; }
@@ -56,7 +57,7 @@ namespace APIServices.Models.DTO
         public byte? MaxGuests { get; set; }
         public byte? MaxAdults { get; set; }
         public byte? MinAdults { get; set; }
-        public byte? Childs { get; set; }
+        public byte? Children { get; set; }
         public byte? ExtraGuests { get; set; }
     }
 }
