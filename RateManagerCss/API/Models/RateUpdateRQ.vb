@@ -11,11 +11,10 @@ Namespace API.Models
         Public Property RoomId As Integer?
         Public Property RateId As Integer
         Public Property HotelId As Integer?
-        Public Property RatePlanId As String
+        Public Property RatePlanCode As String
         Public Property ExtraAdultPrice As Decimal?
         Public Property ExtraChildPrice As Decimal?
         Public Property ExtraJuniorPrice As Decimal?
-        Public Property RateCode As String
         Public Property IsOccupancyRate As Boolean?
         Public Property Rules As RateUpdateRQRules
         Public Property Promotion As RateUpdateRQPromotion
@@ -102,13 +101,9 @@ Namespace API.Models
             .Must(Function(Root, RoomId, Context) Not RoomId Is Nothing AndAlso RoomId > 0) _
             .WithMessage("RoomId must be greater than 0")
 
-            RuleFor(Function(x) x.RatePlanId) _
+            RuleFor(Function(x) x.RatePlanCode) _
             .Must(Function(Root, RatePlanId, Context) Not String.IsNullOrEmpty(RatePlanId)) _
-            .WithMessage("RoomId must not be empty")
-
-            RuleFor(Function(x) x.RateCode) _
-            .Must(Function(Root, RateCode, Context) Not String.IsNullOrEmpty(RateCode)) _
-            .WithMessage("RateCode must not be empty")
+            .WithMessage("RatePlanCode must not be empty")
 
             RuleFor(Function(x) x.HotelId) _
             .Must(Function(Root, HotelId, Context) Not HotelId Is Nothing AndAlso HotelId > 0) _

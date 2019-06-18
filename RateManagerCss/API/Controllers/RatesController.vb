@@ -29,11 +29,11 @@ Namespace API.Controllers
         <Route(""), HttpPost>
         Public Function RateUpdate(<FromBody> RQ As RateUpdateRQ, HotelId As Integer) As Net.Http.HttpResponseMessage
             Dim serviceRQ As DTO.RateUpdateRQ = MappingRateUpdateRQ(RQ)
-
+            RQ.HotelId = HotelId
             If Service.AddRate(serviceRQ) Then
-                NoContent()
+                Return NoContent()
             End If
-            BadRequest(KeyValuePair.Create("Error", "Error"))
+            Return BadRequest(KeyValuePair.Create("Error", "Error"))
         End Function
 
         Private Function MappingRateUpdateRQ(RQ As RateUpdateRQ) As DTO.RateUpdateRQ
@@ -41,8 +41,6 @@ Namespace API.Controllers
                 .HotelId = RQ.HotelId,
                 .RoomId = RQ.RoomId,
                 .RateId = RQ.RateId,
-                .RatePlanId = RQ.RatePlanId,
-                .RateCode = RQ.RateCode,
                 .StartDate = RQ.StartDate,
                 .EndDate = RQ.EndDate,
                 .IsOccupancyRate = RQ.IsOccupancyRate
@@ -60,7 +58,8 @@ Namespace API.Controllers
             Next
             ServiceRQ.Prices = ServiceRQPrices
 
-            Dim ServiceRQRules As New DTO.RateUpdateRQRules With {
+            If Not RQ.Rules Is Nothing Then
+                Dim ServiceRQRules As New DTO.RateUpdateRQRules With {
                 .UseDefaultRules = RQ.Rules.UseDefaultRules,
                 .MinLOS = RQ.Rules.MinLOS,
                 .MaxLOS = RQ.Rules.MaxLOS,
@@ -69,7 +68,8 @@ Namespace API.Controllers
                 .ExceptionDays = GetDaysOfWeekString(RQ.Rules.ExceptionDays),
                 .NoArrival = GetDaysOfWeekString(RQ.Rules.NoArrival)
                 }
-            ServiceRQ.Rules = ServiceRQRules
+                ServiceRQ.Rules = ServiceRQRules
+            End If
 
             If Not RQ.Promotion Is Nothing Then
                 Dim serviceRQPromotion As New DTO.RateUpdateRQPromotion With {

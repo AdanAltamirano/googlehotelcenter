@@ -221,7 +221,7 @@ namespace APIServices
             {
                 try
                 {
-                    if (RemoveOverlappedRates(updateRQ.RateId, updateRQ.RoomId, updateRQ.RatePlanId, updateRQ.StartDate, updateRQ.EndDate, ref db)
+                    if (RemoveOverlappedRates(updateRQ.RateId, updateRQ.RoomId, updateRQ.RatePlanCode, updateRQ.StartDate, updateRQ.EndDate, ref db)
                         && InsertRate(updateRQ, ref db))
                     {
                         db.SaveChanges();
@@ -414,7 +414,7 @@ namespace APIServices
                     return false;
             }
 
-            vHotelPlan hotelPlan = contextDb.vHotelPlan.FirstOrDefault(hp => hp.Code == rate.RatePlanId && hp.HotelId == rate.HotelId);
+            vHotelPlan hotelPlan = contextDb.vHotelPlan.FirstOrDefault(hp => hp.Code == rate.RatePlanCode && hp.HotelId == rate.HotelId);
             vHotelBasicInfo hotelInfo = contextDb.vHotelBasicInfo.FirstOrDefault(h => h.Id == rate.HotelId);
             hotelTaxes = hotelInfo.Tax;
 
@@ -441,21 +441,21 @@ namespace APIServices
                 PrecioExtraAdultoNR = isNetRate ? rate.ExtraAdultPrice : 0,
                 PrecioExtraNinioNR = isNetRate ? rate.ExtraChildPrice : 0,
                 PrecioAdolescenteExtraNR = isNetRate ? rate.ExtraJuniorPrice : 0,
-                idrateplan = rate.RatePlanId,
-                NoArrivos = rate.Rules.NoArrival ?? "YYYYYYY",
-                Excepciones = rate.Rules.ExceptionDays ?? "NNNNNNN",
-                RateRulesDefault = rate.Rules.UseDefaultRules ?? false,
-                TipoTarifa = rate.Rules.Segment ?? "R",
+                idrateplan = rate.RatePlanCode,
+                NoArrivos = rate?.Rules?.NoArrival ?? "YYYYYYY",
+                Excepciones = rate?.Rules?.ExceptionDays ?? "NNNNNNN",
+                RateRulesDefault = rate?.Rules?.UseDefaultRules ?? false,
+                TipoTarifa = rate?.Rules?.Segment ?? "R",
                 CodigoTarifa = rate.RateCode,
                 PrecioAdolescente = setPrice(isNetRate, juniorRate, (decimal)hotelPlan.CommissionPercentage),
                 NiniosRate = setPrice(isNetRate, childRate, (decimal)hotelPlan.CommissionPercentage),
                 Precio = (decimal)setPrice(isNetRate, adultRate, (decimal)hotelPlan.CommissionPercentage),
                 idDiccPromoDesc = newDictionaryId == 0 ? null : newDictionaryId,
                 DescPromotion = promotionDiscount == 0 ? null : promotionDiscount,
-                AdvBooking = rate.Rules.MinAdvanceBooking,
-                MaxAdvBooking = rate.Rules.MaxAdvanceBooking,
-                MinDias = rate.Rules.MinLOS,
-                MaxDias = rate.Rules.MaxLOS,
+                AdvBooking = rate?.Rules?.MinAdvanceBooking,
+                MaxAdvBooking = rate?.Rules?.MaxAdvanceBooking,
+                MinDias = rate?.Rules?.MinLOS,
+                MaxDias = rate?.Rules?.MaxLOS,
                 BookingWindowStart = rate.BookingWindow.StartDate,
                 BookingWindowEnd = rate.BookingWindow.EndDate,
                 Personas = rate.GuestsRestrictions.MaxGuests,

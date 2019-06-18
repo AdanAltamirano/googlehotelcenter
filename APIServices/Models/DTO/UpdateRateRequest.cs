@@ -13,7 +13,7 @@ namespace APIServices.Models.DTO
         public int RoomId { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public string RatePlanId { get; set; }
+        public string RatePlanCode { get; set; }
         public decimal? ExtraAdultPrice { get; set; }
         public decimal? ExtraChildPrice { get; set; }
         public decimal? ExtraJuniorPrice { get; set; }

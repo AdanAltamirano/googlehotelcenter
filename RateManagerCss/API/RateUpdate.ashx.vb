@@ -41,7 +41,7 @@ Public Class RateUpdate
             req.RateId = rateId
             req.HotelId = hotelId
             req.RoomId = roomId
-            req.RatePlanId = ratePlanId
+            req.RatePlanCode = ratePlanId
             req.StartDate = startDate
             req.EndDate = endDate
             req.RateCode = context.Request.Form("rateCode")
