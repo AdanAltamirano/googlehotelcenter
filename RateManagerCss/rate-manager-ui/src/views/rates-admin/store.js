@@ -6,7 +6,7 @@ import RoomsService from '../../api/rooms-service';
 import RatesService from '../../api/rates-service';
 
 
-const roomsWithRatesAndInventory = function (hotelId, startDate, endDate) {
+const roomsWithRatesAndInventory = (hotelId, startDate, endDate) => {
     const roomsReq = RoomsService.getList(hotelId, 'Active eq True');
     const ratesReq = RatesService.getByRatePlan(hotelId, startDate, endDate);
 
@@ -16,7 +16,9 @@ const roomsWithRatesAndInventory = function (hotelId, startDate, endDate) {
                 const roomsAndRates = Utilities.mixRoomsAndRates(roomsRes.body, ratesRes.body);
 
                 // ir por el inventario de las habitaciones que tienen tarifas
-                const invetoryPromises = roomsAndRates.map(room => RoomsService.getInventory(hotelId, room.id, startDate, endDate));
+                const invetoryPromises = roomsAndRates.map(
+                    room => RoomsService.getInventory(hotelId, room.id, startDate, endDate),
+                );
 
                 Promise.all(invetoryPromises)
                     .then((responses) => {
@@ -35,6 +37,8 @@ const roomsWithRatesAndInventory = function (hotelId, startDate, endDate) {
             });
     });
 };
+
+Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
@@ -57,9 +61,9 @@ export default new Vuex.Store({
             HotelService.get(state.hotelId).then(((response) => {
                 state.hotel = response.body;
             }))
-            .catch((reason) => {
-
-            });
+                .catch((reason) => {
+                    console.log(reason);
+                });
         },
 
         update(state, { start, end }) {
@@ -73,6 +77,7 @@ export default new Vuex.Store({
                     state.roomsWithRatesAndInventory = response.mixin;
                 })
                 .catch((reason) => {
+                    console.log(reason);
                 });
         },
     },

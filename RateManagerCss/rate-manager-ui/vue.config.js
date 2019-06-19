@@ -1,28 +1,28 @@
-const webpack = require('webpack')
+const webpack = require('webpack'); // eslint-disable-line import/no-extraneous-dependencies
 
 module.exports = {
     configureWebpack: {
         plugins: [
-          new webpack.IgnorePlugin({
-            resourceRegExp: /^\.\/locale$/,
-            contextRegExp: /moment$/
-          }),
-          new webpack.ProvidePlugin({
-            $: 'jquery',
-            jQuery: 'jquery',
-            'window.jQuery': 'jquery',
-            Popper: ['popper.js', 'default']
-          })
-        ]
+            new webpack.IgnorePlugin({
+                resourceRegExp: /^\.\/locale$/,
+                contextRegExp: /moment$/,
+            }),
+            new webpack.ProvidePlugin({
+                $: 'jquery',
+                jQuery: 'jquery',
+                'window.jQuery': 'jquery',
+                Popper: ['popper.js', 'default'],
+            }),
+        ],
     },
-    chainWebpack: config => {
+    chainWebpack: (config) => {
         // raw-loader
         config.module
-          .rule('aspx')
-          .test(/\.aspx$/)
-          .use('raw-loader')
+            .rule('aspx')
+            .test(/\.aspx$/)
+            .use('raw-loader')
             .loader('raw-loader')
-            .end()
+            .end();
     },
     publicPath: './',
     pages: {

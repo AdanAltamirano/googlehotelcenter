@@ -1,4 +1,5 @@
 <template>
+<!-- eslint-disable -->
     <div class="p-0" id="app">
         <div class="d-flex flex-row-reverse justify-content-between pl-5 pr-5">
         <button data-toggle="collapse" class="btn btn-link mb-2 pr-0" data-target="#rates">
@@ -14,6 +15,7 @@
             </div>
         </div>
     </div>
+<!-- eslint-enable -->
 </template>
 
 <script>

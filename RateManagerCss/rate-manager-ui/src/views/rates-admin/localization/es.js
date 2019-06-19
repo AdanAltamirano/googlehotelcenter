@@ -1,3 +1,4 @@
+/* eslint-disable */
 export default {
     'rates': 'tarifas',
     'avail': 'disp',
@@ -45,3 +46,4 @@ export default {
     'S': 'S',
     'U': 'D',
 };
+/* eslint-enable */

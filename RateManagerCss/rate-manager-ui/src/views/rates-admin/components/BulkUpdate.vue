@@ -1,4 +1,5 @@
 <template>
+<!-- eslint-disable -->
     <div id="rates" class="collapse pl-3 pr-3 pt-3">
         <div class="formulario-page overflow-auto pb-5">
             <div class="bg-light">
@@ -25,7 +26,7 @@
                         mode="range"
                         class="w-100"
                         title-position="left"
-                        v-model="daterange"
+                        v-model="dateRange"
                         :popover="{ placement: 'bottom', visibility: 'click' }"
                         :min-date="new Date()"
                         :is-required="true"
@@ -42,7 +43,7 @@
                         <label>{{'show rates by' | translate}}:</label>
                         <div class="custom-control custom-switch">
                             <label class="mr-5"> {{'room' | translate}}</label>
-                            <input type="checkbox" v-model="occupancyRates" class="custom-control-input" id="showOccupancy" name="showOccupancy">
+                            <input type="checkbox" v-model="occupancyPrices" class="custom-control-input" id="showOccupancy" name="showOccupancy">
                             <label class="custom-control-label label-style" for="showOccupancy">{{'occupancy' | translate}}</label>
                         </div>
                     </div>
@@ -59,11 +60,11 @@
                                         <a class="nav-link active border text-dark" data-toggle="tab"
                                             href="#priceRates" id="priceRatesTab">{{'prices' | translate}}</a>
                                     </li>
-                                    <li class="nav-item" v-show="occupancyRates">
+                                    <li class="nav-item" v-show="occupancyPrices">
                                         <a class="nav-link border text-dark" data-toggle="tab"
                                             href="#priceExceptions">{{'price exceptions' | translate}}</a>
                                     </li>
-                                    <li class="nav-item" v-show="!occupancyRates">
+                                    <li class="nav-item" v-show="!occupancyPrices">
                                         <a class="nav-link text-dark invisible" data-toggle="tab" href="#menu2"></a>
                                     </li>
                                     <li class="nav-item">
@@ -72,19 +73,19 @@
                                 </ul>
                                 <div class="tab-content">
                                     <div id="priceRates" class="tab-pane active">
-                                        <div class="form-check d-flex justify-content-between  pl-0">
+                                        <div class="form-check d-flex pl-0">
                                             <div class="price-rates">
                                                 <div class="p-2 text-center text-primary">
                                                     <label class="m-0">{{'adults' | translate}}</label>
                                                 </div>
-                                                <div v-show="!occupancyRates">
+                                                <div v-show="!occupancyPrices">
                                                     <div class="d-flex justify-content-between bg-blue-created border p-1">
                                                         <label class="w-15">{{'base' | translate}}</label>
-                                                        <input v-model.number="prices.byRoom.adult.base" type="number" step="any" class="form-control text-right w-60 ml-2 mr-2" value="1">
+                                                        <input v-model.number="prices.byRoom.adult" type="number" step="any" class="form-control text-right w-60 ml-2 mr-2" value="1">
                                                         <label class="font-weight-bold text-primary w-15"><span>{{ratePlan.currency}}</span></label>
                                                     </div>
                                                 </div>
-                                                <div v-show="occupancyRates">
+                                                <div v-show="occupancyPrices">
                                                      <div v-for="(p, idx) in prices.byOccupancy.adult" :key="'ra' + idx" class="d-flex justify-content-between bg-blue-created border p-1">
                                                         <label class="w-15 text-center">{{p.occupation}}</label>
                                                         <input v-model.number="p.price" type="number"  step="any" class="form-control text-right w-60 ml-2 mr-2" value="1">
@@ -103,14 +104,14 @@
                                                 <div class="p-2 text-center text-primary">
                                                     <label class="m-0">{{'children' | translate}}</label>
                                                 </div>
-                                                <div v-show="!occupancyRates">
+                                                <div v-show="!occupancyPrices">
                                                     <div class="d-flex justify-content-between bg-blue-created border p-1">
                                                         <label class="w-15">{{'base' | translate}}</label>
-                                                        <input v-model.number="prices.byRoom.child.base" type="number" step="any" class="form-control text-right w-60 ml-2 mr-2" value="1">
+                                                        <input v-model.number="prices.byRoom.child" type="number" step="any" class="form-control text-right w-60 ml-2 mr-2" value="1">
                                                         <label class="font-weight-bold text-primary w-15"><span>{{ratePlan.currency}}</span></label>
                                                     </div>
                                                 </div>
-                                                <div v-show="occupancyRates">
+                                                <div v-show="occupancyPrices">
                                                     <div v-for="(p, idx) in prices.byOccupancy.child" :key="'rc' + idx" class="d-flex justify-content-between bg-blue-created border p-1">
                                                         <label class="w-15 text-center">{{p.occupation}}</label>
                                                         <input v-model.number="p.price" type="number" step="any" class="form-control text-right w-60 ml-2 mr-2" value="1">
@@ -125,18 +126,18 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="junior-rates" v-if="room.maxChildrenOccupancy > 0">
+                                            <div class="junior-rates" v-if="room.maxChildrenOccupancy > 0 && room.juniorsAllowed">
                                                 <div class="p-2 text-center text-primary">
                                                     <label class="m-0">{{'juniors' | translate}}</label>
                                                 </div>
-                                                <div v-show="!occupancyRates">
+                                                <div v-show="!occupancyPrices">
                                                     <div class="d-flex justify-content-between bg-blue-created border p-1">
                                                         <label class="w-15">{{'base' | translate}}</label>
-                                                        <input v-model.number="prices.byRoom.junior.base" type="number" step="any" class="form-control text-right w-60 ml-2 mr-2" value="1">
+                                                        <input v-model.number="prices.byRoom.junior" type="number" step="any" class="form-control text-right w-60 ml-2 mr-2" value="1">
                                                         <label class="font-weight-bold text-primary w-15"><span>{{ratePlan.currency}}</span></label>
                                                     </div>
                                                 </div>
-                                                <div v-show="occupancyRates">
+                                                <div v-show="occupancyPrices">
                                                     <div v-for="(p, idx) in prices.byOccupancy.junior" :key="'rj' + idx"  class="d-flex justify-content-between bg-blue-created border p-1">
                                                         <label class="w-15">{{p.occupation}}</label>
                                                         <input v-model.number="p.price" type="number" step="any" class="form-control text-right w-60 ml-2 mr-2" value="1">
@@ -189,7 +190,7 @@
                                                 <div class="p-2 text-center text-primary">
                                                     <label class="m-0">{{'adults' | translate}}</label>
                                                 </div>
-                                                <div v-show="occupancyRates">
+                                                <div v-show="occupancyPrices">
                                                      <div v-for="(p, idx) in prices.exceptions.adult" :key="'rax' + idx" class="d-flex justify-content-between bg-blue-created border p-1">
                                                         <label class="w-15 text-center">{{ p.occupation }}</label>
                                                         <input v-model.number="p.price" type="number" step="any" class="form-control text-right w-60 ml-2 mr-2" >
@@ -208,7 +209,7 @@
                                                 <div class="p-2 text-center text-primary">
                                                     <label class="m-0">{{'children' | translate}}</label>
                                                 </div>
-                                                <div v-show="occupancyRates">
+                                                <div v-show="occupancyPrices">
                                                     <div v-for="(p, idx) in prices.exceptions.child" :key="'rcx' + idx" class="d-flex justify-content-between bg-blue-created border p-1">
                                                         <label class="w-15 text-center">{{ p.occupation }}</label>
                                                         <input v-model.number="p.price" type="number" step="any" class="form-control text-right w-60 ml-2 mr-2">
@@ -223,11 +224,11 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="junior-rates" v-if="room.maxChildrenOccupancy > 0">
+                                            <div class="junior-rates" v-if="room.maxChildrenOccupancy > 0 && room.juniorsAllowed">
                                                 <div class="p-2 text-center text-primary">
                                                     <label class="m-0">{{'juniors' | translate}}</label>
                                                 </div>
-                                                <div v-show="occupancyRates">
+                                                <div v-show="occupancyPrices">
                                                     <div v-for="(p, idx) in prices.exceptions.junior" :key="'rjx' + idx"  class="d-flex justify-content-between bg-blue-created border p-1">
                                                         <label class="w-15 text-center">{{ p.occupation }}</label>
                                                         <input v-model.number="p.price" type="number" step="any" class="form-control text-right w-60 ml-2 mr-2" value="1">
@@ -294,7 +295,7 @@
                                     class="form-control p-0"
                                     mode="range"
                                     title-position="left"
-                                    v-model="bookingWindow"
+                                    v-model="rules.bookingWindow"
                                     :popover="{ placement: 'bottom', visibility: 'click' }"
                                     :min-date="new Date()"
                                     :locale="$appConfig.language"
@@ -306,7 +307,7 @@
                                     }'>
                                     </v-date-picker>
                                     <div class="input-group-append">
-                                        <button @click="bookingWindow = null" class="btn btn-danger" type="button"><i class="fa fa-times"></i></button>
+                                        <button @click="rules.bookingWindow = null" class="btn btn-danger" type="button"><i class="fa fa-times"></i></button>
                                     </div>
                                 </div>
                             </div>
@@ -443,15 +444,19 @@
                 <div class="gds-container border-top">
                     <div class="p-3">
                         <button type="button" class="btn text-primary m-2"><i class="fa fa-undo mr-3"></i>{{'reset' | translate}}</button>
-                        <button type="button" class="btn btn-success m-2">{{'save' | translate}}</button>
+                        <button type="button" @click="sendRequest" class="btn btn-success m-2">{{'save' | translate}}</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+<!-- eslint-enable -->
 </template>
 
 <script>
+
+import RQHelper from '../helpers/rateUpdateHelper';
+
 export default {
     name: 'bulk-update',
     props: {
@@ -460,14 +465,14 @@ export default {
             required: true,
         },
     },
-    mounted(){
+    mounted() {
         this.updateOccupancyPrices();
     },
     data() {
         return {
             room: this.hotel.rooms[0],
             ratePlan: this.hotel.ratePlans[0],
-            daterange: {
+            dateRange: {
                 start: new Date(),
                 end: new Date(),
             },
@@ -475,29 +480,20 @@ export default {
                 selectionLanguage: 'es',
                 discount: null,
                 englishDescription: null,
-                spanishDescription:null,
+                spanishDescription: null,
             },
-            prices:{
-                byRoom:{
-                    adult:{
-                        base: 0,
-                        extra: 0
-                    },
-                    child: {
-                        base: 0,
-                        extra: 0
-                    },
-                    junior:{
-                        base: 0,
-                        extra: 0
-                    },
+            prices: {
+                byRoom: {
+                    adult: 0,
+                    child: 0,
+                    junior: 0,
                 },
-                byOccupancy:{
-                    adult:[],
-                    child:[],
-                    junior:[],
+                byOccupancy: {
+                    adult: [],
+                    child: [],
+                    junior: [],
                 },
-                exceptions:{
+                exceptions: {
                     apply: {
                         mon: false,
                         tue: false,
@@ -505,23 +501,22 @@ export default {
                         thu: false,
                         fri: false,
                         sat: false,
-                        sun: false
+                        sun: false,
                     },
-                    adult:[],
-                    child:[],
-                    junior:[],
+                    adult: [],
+                    child: [],
+                    junior: [],
                 },
-                extra:{
+                extra: {
                     adult: 0,
                     child: 0,
-                    junior:0,
-
-                }
+                    junior: 0,
+                },
             },
-            occupancyRates: false,
-            bookingWindow: null,
+            occupancyPrices: false,
             overrideRules: false,
             rules: {
+                bookingWindow: null,
                 noArrival: {
                     mon: false,
                     tue: false,
@@ -529,7 +524,7 @@ export default {
                     thu: false,
                     fri: false,
                     sat: false,
-                    sun: false
+                    sun: false,
                 },
                 maxGuests: null,
                 maxAdults: null,
@@ -539,44 +534,81 @@ export default {
                 maxAdvBooking: null,
                 minAdvBooking: null,
                 minLOS: null,
-                maxLOS: null
+                maxLOS: null,
 
-            }
+            },
         };
     },
-    methods:{
-        updateOccupancyPrices(){
+    methods: {
+        updateOccupancyPrices() {
             this.prices.byOccupancy.adult = [];
             this.prices.exceptions.adult = [];
-            for(let i = 0; i< this.room.maxAdultsOccupancy; i++){
-                this.prices.byOccupancy.adult.push({occupation: i+1, price: 0, type: 1});
-                this.prices.exceptions.adult.push({occupation: i+1, price: 0, type: 1});
+            for (let i = 0; i < this.room.maxAdultsOccupancy; i += 1) {
+                this.prices.byOccupancy.adult.push({ occupation: i + 1, price: 0, type: 1 });
+                this.prices.exceptions.adult.push({ occupation: i + 1, price: 0, type: 1 });
             }
 
             this.prices.byOccupancy.child = [];
             this.prices.exceptions.child = [];
-            for(let i = 0; i< this.room.maxChildrenOccupancy; i++){
-                this.prices.byOccupancy.child.push({occupation: i+1, price: 0, type: 2});
-                this.prices.exceptions.child.push({occupation: i+1, price: 0, type: 2});
+            for (let i = 0; i < this.room.maxChildrenOccupancy; i += 1) {
+                this.prices.byOccupancy.child.push({ occupation: i + 1, price: 0, type: 2 });
+                this.prices.exceptions.child.push({ occupation: i + 1, price: 0, type: 2 });
             }
 
             this.prices.byOccupancy.junior = [];
             this.prices.exceptions.junior = [];
-            for(let i = 0; i< this.room.maxChildrenOccupancy; i++){
-                this.prices.byOccupancy.junior.push({occupation: i+1, price: 0, type: 3});
-                this.prices.exceptions.junior.push({occupation: i+1, price: 0, type: 3});
+            for (let i = 0; i < this.room.maxChildrenOccupancy; i += 1) {
+                this.prices.byOccupancy.junior.push({ occupation: i + 1, price: 0, type: 3 });
+                this.prices.exceptions.junior.push({ occupation: i + 1, price: 0, type: 3 });
             }
-        }
+        },
+        sendRequest() {
+            const rqHelper = new RQHelper(
+                this.room,
+                this.ratePlan,
+                this.dateRange,
+                this.promotion,
+                this.occupancyPrices,
+                this.prices,
+                this.overrideRules,
+                this.rules,
+            );
+
+            rqHelper.validate();
+            let html = '';
+            if (rqHelper.errors.length > 0) {
+                for (let i = 0; i < rqHelper.errors.length; i += 1) {
+                    html += `<div class="alert alert-warning mt-1 mb-1" role="alert">
+                                <i class="fa fa-times-circle"></i> ${rqHelper.errors[i]}
+                            </div>`;
+                }
+
+                this.$swal({
+                    type: 'warning',
+                    html,
+                });
+
+                return;
+            }
+
+            if (rqHelper.warnings.length > 0) {
+                for (let i = 0; i < rqHelper.warnings.length; i += 1) {
+                    html += `<div class="alert alert-warning mt-1 mb-1" role="alert">
+                                <i class="fa fa-exclamation-triangle"></i> ${rqHelper.warnings[i]}
+                            </div>`;
+                }
+            }
+        },
     },
-    watch:{
-        occupancyRates(newVal, oldVal){
-            if(!newVal){
+    watch: {
+        occupancyPrices(newVal) {
+            if (!newVal) {
                 $('#priceRatesTab').tab('show');
             }
         },
-        room(){
+        room() {
             this.updateOccupancyPrices();
-        }
-    }
-}
+        },
+    },
+};
 </script>
