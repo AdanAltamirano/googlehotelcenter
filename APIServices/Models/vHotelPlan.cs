@@ -19,6 +19,9 @@ namespace APIServices.Models
         public int HotelId { get; set; }
         public string Currency { get; set; }
         public Nullable<int> Language { get; set; }
-        public Nullable<int> CommissionPercentage { get; set; }
+        public int CommissionPercentage { get; set; }
+        public string Segment { get; set; }
+        public Nullable<bool> IsLinked { get; set; }
+        public Nullable<bool> Active { get; set; }
     }
 }

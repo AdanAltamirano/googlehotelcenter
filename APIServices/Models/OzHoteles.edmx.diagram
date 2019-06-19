@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="fa57533aba3a4716a6b5cc2f30621586" Name="Diagram1">
+      <Diagram DiagramId="fa57533aba3a4716a6b5cc2f30621586" Name="Diagram1" ZoomLevel="74">
         <EntityTypeShape EntityType="Models.RatesPlan" Width="1.5" PointX="0.75" PointY="5.75" />
         <EntityTypeShape EntityType="Models.Tarifas" Width="1.5" PointX="5.375" PointY="3.75" />
         <EntityTypeShape EntityType="Models.TarifasRestricciones" Width="1.5" PointX="7.625" PointY="10.125" />
@@ -14,14 +14,14 @@
         <AssociationConnector Association="Models.FK_Diccionario_Indice1" />
         <EntityTypeShape EntityType="Models.vDayRateDetail" Width="1.5" PointX="0.75" PointY="0.75" />
         <EntityTypeShape EntityType="Models.vDayRates" Width="1.5" PointX="7.75" PointY="0.75" />
-        <EntityTypeShape EntityType="Models.vHotelRoom" Width="1.5" PointX="10.75" PointY="6.75" />
         <EntityTypeShape EntityType="Models.vReservation" Width="1.5" PointX="10.75" PointY="11.75" />
         <EntityTypeShape EntityType="Models.vRoomInventory" Width="1.5" PointX="7.75" PointY="6.75" />
         <EntityTypeShape EntityType="Models.ContratosNR" Width="1.5" PointX="10.375" PointY="0.75" />
         <EntityTypeShape EntityType="Models.vHotelByUser" Width="1.5" PointX="12.375" PointY="0.75" />
-        <EntityTypeShape EntityType="Models.vHotelPlan" Width="1.5" PointX="13.375" PointY="6.75" />
         <EntityTypeShape EntityType="Models.vHotelBasicInfo" Width="1.5" PointX="13.375" PointY="9.75" />
         <EntityTypeShape EntityType="Models.vAdministrator" Width="1.5" PointX="3.375" PointY="0.75" />
+        <EntityTypeShape EntityType="Models.vHotelPlan" Width="1.5" PointX="10.375" PointY="6.75" />
+        <EntityTypeShape EntityType="Models.vHotelRoom" Width="1.5" PointX="13.375" PointY="13.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -60,7 +60,7 @@ namespace APIServices
             result.Rooms = rooms;
 
             //rateplans
-            var plans = DbContext.vHotelPlan.Where(x => x.HotelId == hotelId && x.Language == language)
+            var plans = DbContext.vHotelPlan.Where(x => x.HotelId == hotelId && x.Language == language && x.Active.Value && !x.IsLinked.Value)
                 .Select(r => new RatePlan
                 {
                     Code = r.Code,
