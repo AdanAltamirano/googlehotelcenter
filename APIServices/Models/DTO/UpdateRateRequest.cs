@@ -19,17 +19,20 @@ namespace APIServices.Models.DTO
         public decimal? ExtraJuniorPrice { get; set; }
         public string RateCode { get; set; }
         public bool IsOccupancyRate { get; set; }
+        public RateUpdatePrices Prices { get; set; }
+        public RateUpdateRQRules Rules { get; set; }        
+    }
+
+    public class RateUpdatePrices
+    {
+        public List<DailyRateDetailPrice> Base { get; set; } = new List<DailyRateDetailPrice>();
+        public List<DailyRateDetailPrice> Exceptions { get; set; } = new List<DailyRateDetailPrice>();
+        public string ExceptionDays { get; set; }
         public RateUpdateRQPromotion Promotion { get; set; }
-        public List<DailyRateDetailPrice> Prices { get; set; } = new List<DailyRateDetailPrice>();
-        public List<DailyRateDetailPrice> ExceptionPrices { get; set; } = new List<DailyRateDetailPrice>();
-        public RateUpdateRQRules Rules { get; set; }
-        public RateUpdateRQGuestsRestriction GuestsRestrictions { get; set; }
-        public RateUpdateRQBookingWindow BookingWindow { get; set; }
     }
 
     public class RateUpdateRQRules
     {
-        public string ExceptionDays { get; set; }
         public string NoArrival { get; set; }
         public bool? UseDefaultRules { get; set; }
         public string Segment { get; set; }
@@ -37,6 +40,8 @@ namespace APIServices.Models.DTO
         public byte? MaxLOS { get; set; } //Minimum lenght of stay
         public int? MaxAdvanceBooking { get; set; }
         public byte? MinAdvanceBooking { get; set; }
+        public RateUpdateRQBookingWindow BookingWindow { get; set; }
+        public RateUpdateRQGuestsRestriction GuestsRestrictions { get; set; }
     }
 
     public class RateUpdateRQPromotion

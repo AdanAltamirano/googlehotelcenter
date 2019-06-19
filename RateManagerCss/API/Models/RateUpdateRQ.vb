@@ -17,11 +17,14 @@ Namespace API.Models
         Public Property ExtraJuniorPrice As Decimal?
         Public Property IsOccupancyRate As Boolean?
         Public Property Rules As RateUpdateRQRules
+        Public Property Prices As RateUpdateRQPrices
+    End Class
+
+    Public Class RateUpdateRQPrices
+        Public Property Base As List(Of DailyRateDetailPrice)
+        Public Property Exceptions As List(Of DailyRateDetailPrice)
+        Public Property ExceptionDays As DaysOfWeek
         Public Property Promotion As RateUpdateRQPromotion
-        Public Property BookingWindow As RateUpdateRQBookingWindow
-        Public Property Prices As List(Of DailyRateDetailPrice)
-        Public Property ExceptionPrices As List(Of DailyRateDetailPrice)
-        Public Property GuestsRestrictions As RateUpdateRQGuestsRestriction
     End Class
 
     Public Class DailyRateDetailPrice
@@ -34,13 +37,14 @@ Namespace API.Models
 
     <Validator(GetType(RateUpdateRQRulesValidator))>
     Public Class RateUpdateRQRules
-        Public Property ExceptionDays As DaysOfWeek
         Public Property NoArrival As DaysOfWeek
         Public Property UseDefaultRules As Boolean
         Public Property MinLOS As Integer?
         Public Property MaxLOS As Integer?
         Public Property MaxAdvnaceBooking As Integer?
         Public Property MinAdvnaceBooking As Integer?
+        Public Property BookingWindow As RateUpdateRQBookingWindow
+        Public Property GuestsRestrictions As RateUpdateRQGuestsRestriction
     End Class
 
     Public Class DaysOfWeek
@@ -106,7 +110,7 @@ Namespace API.Models
             .WithMessage("RatePlanCode must not be empty")
 
             RuleFor(Function(x) x.HotelId) _
-            .Must(Function(Root, HotelId, Context) Not HotelId Is Nothing AndAlso HotelId > 0) _
+            .Must(Function(Root, HotelId, Context) HotelId Is Nothing OrElse HotelId > 0) _
             .WithMessage("HotelId must be greater than 0")
 
             RuleFor(Function(x) x.ExtraAdultPrice) _
