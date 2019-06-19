@@ -1133,8 +1133,6 @@ Public Class PaginaBase
     End Sub
 
     Private Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Load
-
-
         Dim log As String = Request.QueryString("lgid")
         Dim id As String = String.Empty
 
@@ -1169,8 +1167,8 @@ Public Class PaginaBase
 
         Response.Expires = 0
         If Me.IsAuthenticated Then
-            If IsHotel Or IsSupervisor Or IsUsuarioHotel Or Me.cInfoActual.UserPerfil = PerfilHotel.Avanzado Or _
-            Me.cInfoActual.UserPerfil = PerfilHotel.Basico Or Me.cInfoActual.UserPerfil = PerfilHotel.Medio Or _
+            If IsHotel Or IsSupervisor Or IsUsuarioHotel Or Me.cInfoActual.UserPerfil = PerfilHotel.Avanzado Or
+            Me.cInfoActual.UserPerfil = PerfilHotel.Basico Or Me.cInfoActual.UserPerfil = PerfilHotel.Medio Or
             Me.IsUnibilling Or Me.IsContent Or Me.cInfoActual.UserPerfil = PerfilHotel.NetRate Or IsUsuarioCallCenter Then
                 Usuario = ((New AuthUser).Usuario)
             End If
@@ -1207,6 +1205,15 @@ Public Class PaginaBase
 
         ElseIf IsUsuarioHotel Then
             PermissionSeePage()
+        End If
+
+        If Context.Session("once_script") Is Nothing Then
+            Dim script_iframeHeight As String = ""
+            script_iframeHeight &= "<script>"
+            script_iframeHeight &= "sendHeight = function(){ var height = $('div').offsetHeight; window.parent.postMessage({'height': height}, '*');}"
+            script_iframeHeight &= "</script>"
+            ClientScript.RegisterStartupScript(Me.GetType(), "clientScript", script_iframeHeight)
+            Context.Session("once_script") = True
         End If
     End Sub
 
