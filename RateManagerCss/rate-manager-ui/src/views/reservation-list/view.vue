@@ -26,7 +26,7 @@ export default {
         this.$store.commit('GetAllReservations');
     },
     mounted() {
-        this.isBusy = true;
+        //this.isBusy = true;
     },
     data() {
         return {
@@ -44,7 +44,7 @@ export default {
     },
     computed: {
         listReservation() {
-            this.isBusy = false;
+            //this.isBusy = false;
             return this.$store.getters.reservations;
         },
         rows() {
