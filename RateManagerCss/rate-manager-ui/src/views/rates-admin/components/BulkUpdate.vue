@@ -185,7 +185,7 @@
                                                 id="ex-sat" autocomplete="off"> {{'S' | translate}}
                                             </label>
                                         </div>
-                                        <div class="form-check d-flex justify-content-between  pl-0">
+                                        <div class="form-check d-flex pl-0">
                                             <div class="price-rates">
                                                 <div class="p-2 text-center text-primary">
                                                     <label class="m-0">{{'adults' | translate}}</label>
