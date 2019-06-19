@@ -80,8 +80,31 @@ class RateUpdatHelper {
             if (this.__$.room.juniorAllowed
                 && toNumber(this.__$.room.maxChildrenOccupancy) > 0
                 && prices.junior.some(rate => toNumber(rate.price) <= 0)) {
-                this.warnings.push('some children rates are 0');
+                this.warnings.push('some junior rates are 0');
             }
+
+
+            // si hay dia de excepcion seleccionado
+            if (Object.keys(this.__$.prices.exceptions.apply).some(k => this.__$.prices.exceptions.apply[k])) {
+                let exceptions = this.__$.prices.exceptions;
+                if (exceptions.adult.some(rate => toNumber(rate.price) <= 0)) {
+                    this.errors.push('exception adult rates must be greater than 0');
+                }
+
+                if (
+                    toNumber(this.__$.room?.maxChildrenOccupancy) > 0
+                    && exceptions.child.some(rate => toNumber(rate.price) <= 0)
+                ) {
+                    this.warnings.push('some exception children rates are 0');
+                }
+
+                if (this.__$.room.juniorAllowed
+                    && toNumber(this.__$.room.maxChildrenOccupancy) > 0
+                    && exceptions.some(rate => toNumber(rate.price) <= 0)) {
+                    this.warnings.push('some exception junior rates are 0');
+                }
+            }
+
         }
 
         // precios de personas extra
