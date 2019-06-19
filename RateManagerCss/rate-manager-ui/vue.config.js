@@ -31,6 +31,12 @@ module.exports = {
             template: 'public/rates-admin.aspx',
             filename: 'rates-admin.aspx',
         },
+        reservation_list:
+        {
+          entry: 'src/views/reservation-list/main.js',
+          template: 'public/reservation-list.aspx',
+          filename: 'reservation-list.aspx'
+        }
         // subpage: 'src/subpage/main.js'
     },
 };

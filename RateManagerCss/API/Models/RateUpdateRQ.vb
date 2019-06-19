@@ -9,27 +9,42 @@ Namespace API.Models
         Public Property StartDate As Date
         Public Property EndDate As Date
         Public Property RoomId As Integer?
+        Public Property RateId As Integer
         Public Property HotelId As Integer?
-        Public Property RatePlanId As String
+        Public Property RatePlanCode As String
         Public Property ExtraAdultPrice As Decimal?
         Public Property ExtraChildPrice As Decimal?
         Public Property ExtraJuniorPrice As Decimal?
-        Public Property RateCode As String
         Public Property IsOccupancyRate As Boolean?
         Public Property Rules As RateUpdateRQRules
+        Public Property Prices As RateUpdateRQPrices
+    End Class
+
+    Public Class RateUpdateRQPrices
+        Public Property Base As List(Of DailyRateDetailPrice)
+        Public Property Exceptions As List(Of DailyRateDetailPrice)
+        Public Property ExceptionDays As DaysOfWeek
         Public Property Promotion As RateUpdateRQPromotion
-        Public Property BookingWindow As RateUpdateRQBookingWindow
+    End Class
+
+    Public Class DailyRateDetailPrice
+        Public Property Id As Integer?
+        Public Property RateId As Integer
+        Public Property Occupation As Integer
+        Public Property Type As PaxType
+        Public Property Price As Decimal
     End Class
 
     <Validator(GetType(RateUpdateRQRulesValidator))>
     Public Class RateUpdateRQRules
-        Public Property ExceptionDays As DaysOfWeek
         Public Property NoArrival As DaysOfWeek
         Public Property UseDefaultRules As Boolean
         Public Property MinLOS As Integer?
         Public Property MaxLOS As Integer?
         Public Property MaxAdvnaceBooking As Integer?
         Public Property MinAdvnaceBooking As Integer?
+        Public Property BookingWindow As RateUpdateRQBookingWindow
+        Public Property GuestsRestrictions As RateUpdateRQGuestsRestriction
     End Class
 
     Public Class DaysOfWeek
@@ -41,6 +56,12 @@ Namespace API.Models
         Public Property Fri As Boolean
         Public Property Sat As Boolean
     End Class
+
+    Public Enum PaxType
+        Adult = 1
+        Child
+        Junior
+    End Enum
 
     <Validator(GetType(RateUpdateRQPromotionValidator))>
     Public Class RateUpdateRQPromotion
@@ -60,7 +81,7 @@ Namespace API.Models
         Public Property MaxGuest As Byte?
         Public Property MaxAdults As Byte?
         Public Property MinAdults As Byte?
-        Public Property Childs As Byte?
+        Public Property Children As Byte?
         Public Property ExtraGuests As Byte?
     End Class
 
@@ -68,6 +89,10 @@ Namespace API.Models
         Inherits AbstractValidator(Of RateUpdateRQ)
 
         Public Sub New()
+            RuleFor(Function(x) x.RateId) _
+            .Must(Function(Root, RateId, Context) RateId >= 0) _
+            .WithMessage("StartDate must be a valid Date")
+
             RuleFor(Function(x) x.StartDate) _
             .Must(Function(Root, StartDate, Context) StartDate.IsValidDate()) _
             .WithMessage("StartDate must be a valid Date")
@@ -80,16 +105,12 @@ Namespace API.Models
             .Must(Function(Root, RoomId, Context) Not RoomId Is Nothing AndAlso RoomId > 0) _
             .WithMessage("RoomId must be greater than 0")
 
-            RuleFor(Function(x) x.RatePlanId) _
+            RuleFor(Function(x) x.RatePlanCode) _
             .Must(Function(Root, RatePlanId, Context) Not String.IsNullOrEmpty(RatePlanId)) _
-            .WithMessage("RoomId must not be empty")
-
-            RuleFor(Function(x) x.RateCode) _
-            .Must(Function(Root, RateCode, Context) Not String.IsNullOrEmpty(RateCode)) _
-            .WithMessage("RateCode must not be empty")
+            .WithMessage("RatePlanCode must not be empty")
 
             RuleFor(Function(x) x.HotelId) _
-            .Must(Function(Root, HotelId, Context) Not HotelId Is Nothing AndAlso HotelId > 0) _
+            .Must(Function(Root, HotelId, Context) HotelId Is Nothing OrElse HotelId > 0) _
             .WithMessage("HotelId must be greater than 0")
 
             RuleFor(Function(x) x.ExtraAdultPrice) _
@@ -179,8 +200,8 @@ Namespace API.Models
             .Must(Function(Root, MinAdults, Context) MinAdults Is Nothing OrElse MinAdults > 0) _
             .WithMessage("MinAdults must be greater than 0")
 
-            RuleFor(Function(x) x.Childs) _
-            .Must(Function(Root, Childs, Context) Childs Is Nothing OrElse Childs > 0) _
+            RuleFor(Function(x) x.Children) _
+            .Must(Function(Root, Children, Context) Children Is Nothing OrElse Children > 0) _
             .WithMessage("Childs must be greater than 0")
 
             RuleFor(Function(x) x.ExtraGuests) _
