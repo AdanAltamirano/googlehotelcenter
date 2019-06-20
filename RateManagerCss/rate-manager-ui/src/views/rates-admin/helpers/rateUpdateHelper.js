@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 const toNumber = (source) => {
     const val = Number(source);
     return !Number.isNaN(val) ? val : 0;
@@ -36,7 +38,16 @@ class RateUpdatHelper {
         // las dos primeras validaciones son obligatorias
         if (this.errors.length > 0) return;
 
-        if (toNumber(this.__$.promotion?.discount) > 0) {
+        if (
+            this.__$.promotion?.discount !== null
+            && this.__$.promotion?.discount !== ""
+        ) {
+            if(
+                !(toNumber(this.__$.promotion?.discount) > 0) ||
+                !(toNumber(this.__$.promotion?.discount) < 100)
+            ){
+                this.errors.push('promo discount must greater than 0 and less than 100');
+            }
             if (!this.__$.promotion.englishDescription) this.errors.push('english promo description not defined');
             if (!this.__$.promotion.spanishDescription) this.errors.push('spanish promo description not defined');
         } else {
@@ -117,7 +128,7 @@ class RateUpdatHelper {
                 toNumber(this.__$.room?.maxChildrenOccupancy) > 0
                 && toNumber(this.__$.prices?.extra?.child) <= 0
             ) {
-                this.warnings.push('extra children rate is 0');
+                this.warnings.push('extra child rate is 0');
             }
 
             if (this.__$.room.juniorAllowed
@@ -132,24 +143,24 @@ class RateUpdatHelper {
                 const { rules } = this.__$;
                 // sea a especificado ventana de reserva
                 if (rules?.bookingWindow) {
-                    if (rules?.bookingWindow?.end?.isSameOrAfter(rules?.bookingWindow?.start)) {
+                    if (moment(rules?.bookingWindow?.end).isSameOrAfter(rules?.bookingWindow?.start)) {
                         this.errors.push('booking window end date must be after start date');
                     }
                 }
 
                 if (rules?.maxGuests !== null && rules?.maxGuests !== '') {
                     if (toNumber(rules?.maxGuests) <= 0) {
-                        this.errors.push('max guests must be greater than 0');
+                        this.errors.push('max peole must be greater than 0');
                     }
 
                     const maxGuests = toNumber(rules?.maxGuests);
 
                     if (toNumber(rules?.children) > maxGuests) {
-                        this.errors.push('children number cannot be greater than max guests');
+                        this.errors.push('children number cannot be greater than max peole');
                     }
 
                     if (toNumber(rules?.maxAdults) > maxGuests) {
-                        this.errors.push('max adults cannot be greater than max guests');
+                        this.errors.push('max adults cannot be greater than max peole');
                     }
                 }
 
@@ -167,11 +178,11 @@ class RateUpdatHelper {
                 }
 
                 if (
-                    rules?.maxAdvBooking !== null
-                    && rules?.maxAdvBooking !== ''
-                    && toNumber(rules?.maxAdvBooking) > 0
+                    rules?.maxAdvanceBooking !== null
+                    && rules?.maxAdvanceBooking !== ''
+                    && toNumber(rules?.maxAdvanceBooking) > 0
                 ) {
-                    if (toNumber(rules?.minAdvBooking) > toNumber(rules?.maxAdvBooking)) {
+                    if (toNumber(rules?.minAdvanceBooking) > toNumber(rules?.maxAdvanceBooking)) {
                         this.errors.push('min advance booking cannot be greater than max advance booking');
                     }
                 }
@@ -248,14 +259,38 @@ class RateUpdatHelper {
             }
         }
 
-        const RQ = {
+        let RQ = {
             roomId: this.__$.room?.id,
             ratePlanCode: this.__$.ratePlan?.code,
-            startDate: this.__$.dateRange?.start.format('YYYY-MM-DD'),
-            endDate: this.__$.dateRange?.end.format('YYYY-MM-DD'),
+            startDate: moment(this.__$.dateRange?.start).format('YYYY-MM-DD'),
+            endDate: moment(this.__$.dateRange?.end).format('YYYY-MM-DD'),
             isOccupancyRate: this.__$.areOccupancyPrices,
-            prices,
+            prices
         };
+
+        if (this.__$.overrideRules) {
+            const { rules } = this.__$;
+
+            let rulesRQ = {
+                noArrival: rules.noArrival
+            }
+
+            if (toNumber(rules.minLOS) > 0) rulesRQ.minLOS = toNumber(rules.minLOS);
+            if (toNumber(rules.maxLOS) > 0) rulesRQ.maxLOS = toNumber(rules.maxLOS);
+            if (toNumber(rules.minAdvanceBooking) > 0) rulesRQ.minAdvanceBooking = toNumber(rules.minAdvanceBooking);
+            if (toNumber(rules.maxAdvanceBooking) > 0) rulesRQ.maxAdvanceBooking = toNumber(rules.maxAdvanceBooking);
+
+            if(rules?.bookingWindow){
+                rulesRQ.bookingWindow = {
+                    startDate: rules.bookingWindow.start.format('YYYY-MM-DD'),
+                    endDate: rules.bookingWindow.end.format('YYYY-MM-DD'),
+                }
+            }
+
+            RQ.rules = rulesRQ;
+        }
+
+        return RQ;
     }
 }
 

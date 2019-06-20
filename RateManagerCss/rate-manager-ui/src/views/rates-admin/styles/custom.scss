@@ -174,7 +174,9 @@ body {
 .vc-popover-content{
     border-style: solid;
 }
-
 .form-control:disabled, .form-control[readonly]{
     background-color: white;
+}
+.swal2-modal{
+    box-shadow:  0 0 10px rgba(0,0,0, .5);;
 }

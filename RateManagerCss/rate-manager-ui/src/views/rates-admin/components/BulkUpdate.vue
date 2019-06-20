@@ -81,21 +81,21 @@
                                                 <div v-show="!occupancyPrices">
                                                     <div class="d-flex justify-content-between bg-blue-created border p-1">
                                                         <label class="w-15">{{'base' | translate}}</label>
-                                                        <input v-model.number="prices.byRoom.adult" type="number" step="any" class="form-control text-right w-60 ml-2 mr-2" value="1">
+                                                        <input v-model.number="prices.byRoom.adult" type="number" min="0" step="any" class="form-control text-right w-60 ml-2 mr-2" value="1">
                                                         <label class="font-weight-bold text-primary w-15"><span>{{ratePlan.currency}}</span></label>
                                                     </div>
                                                 </div>
                                                 <div v-show="occupancyPrices">
                                                      <div v-for="(p, idx) in prices.byOccupancy.adult" :key="'ra' + idx" class="d-flex justify-content-between bg-blue-created border p-1">
                                                         <label class="w-15 text-center">{{p.occupation}}</label>
-                                                        <input v-model.number="p.price" type="number"  step="any" class="form-control text-right w-60 ml-2 mr-2" value="1">
+                                                        <input v-model.number="p.price" type="number" min="0" step="any" class="form-control text-right w-60 ml-2 mr-2" value="1">
                                                         <label class="font-weight-bold text-primary w-15"><span>{{ratePlan.currency}}</span></label>
                                                     </div>
                                                 </div>
                                                 <div v-show="room.extraOccupancyAllowed > 0">
                                                     <div class="d-flex justify-content-between dark-gray-created border p-1">
                                                             <label class="w-15">{{'extra' | translate}}</label>
-                                                            <input v-model.number="prices.extra.adult" type="number" step="any" class="form-control text-right w-60 ml-2 mr-2" value="1">
+                                                            <input v-model.number="prices.extra.adult" type="number" min="0" step="any" class="form-control text-right w-60 ml-2 mr-2" value="1">
                                                             <label class="font-weight-bold text-primary w-15"><span>{{ratePlan.currency}}</span></label>
                                                         </div>
                                                 </div>
@@ -107,21 +107,21 @@
                                                 <div v-show="!occupancyPrices">
                                                     <div class="d-flex justify-content-between bg-blue-created border p-1">
                                                         <label class="w-15">{{'base' | translate}}</label>
-                                                        <input v-model.number="prices.byRoom.child" type="number" step="any" class="form-control text-right w-60 ml-2 mr-2" value="1">
+                                                        <input v-model.number="prices.byRoom.child" type="number" min="0" step="any" class="form-control text-right w-60 ml-2 mr-2" value="1">
                                                         <label class="font-weight-bold text-primary w-15"><span>{{ratePlan.currency}}</span></label>
                                                     </div>
                                                 </div>
                                                 <div v-show="occupancyPrices">
                                                     <div v-for="(p, idx) in prices.byOccupancy.child" :key="'rc' + idx" class="d-flex justify-content-between bg-blue-created border p-1">
                                                         <label class="w-15 text-center">{{p.occupation}}</label>
-                                                        <input v-model.number="p.price" type="number" step="any" class="form-control text-right w-60 ml-2 mr-2" value="1">
+                                                        <input v-model.number="p.price" type="number" min="0" step="any" class="form-control text-right w-60 ml-2 mr-2" value="1">
                                                         <label class="font-weight-bold text-primary w-15"><span>{{ratePlan.currency}}</span></label>
                                                     </div>
                                                 </div>
                                                 <div v-show="room.extraOccupancyAllowed > 0">
                                                     <div class="d-flex justify-content-between dark-gray-created border p-1">
                                                         <label class="w-15">{{'extra' | translate}}</label>
-                                                        <input v-model.number="prices.extra.child" type="number" step="any" class="form-control text-right w-60 ml-2 mr-2" value="1">
+                                                        <input v-model.number="prices.extra.child" type="number" min="0" step="any" class="form-control text-right w-60 ml-2 mr-2" value="1">
                                                         <label class="font-weight-bold text-primary w-15"><span>{{ratePlan.currency}}</span></label>
                                                     </div>
                                                 </div>
@@ -133,21 +133,21 @@
                                                 <div v-show="!occupancyPrices">
                                                     <div class="d-flex justify-content-between bg-blue-created border p-1">
                                                         <label class="w-15">{{'base' | translate}}</label>
-                                                        <input v-model.number="prices.byRoom.junior" type="number" step="any" class="form-control text-right w-60 ml-2 mr-2" value="1">
+                                                        <input v-model.number="prices.byRoom.junior" type="number" min="0" step="any" class="form-control text-right w-60 ml-2 mr-2" value="1">
                                                         <label class="font-weight-bold text-primary w-15"><span>{{ratePlan.currency}}</span></label>
                                                     </div>
                                                 </div>
                                                 <div v-show="occupancyPrices">
                                                     <div v-for="(p, idx) in prices.byOccupancy.junior" :key="'rj' + idx"  class="d-flex justify-content-between bg-blue-created border p-1">
                                                         <label class="w-15">{{p.occupation}}</label>
-                                                        <input v-model.number="p.price" type="number" step="any" class="form-control text-right w-60 ml-2 mr-2" value="1">
+                                                        <input v-model.number="p.price" type="number" min="0" step="any" class="form-control text-right w-60 ml-2 mr-2" value="1">
                                                         <label class="font-weight-bold text-primary w-15"><span>{{ratePlan.currency}}</span></label>
                                                     </div>
                                                 </div>
                                                 <div v-show="room.extraOccupancyAllowed > 0">
                                                     <div class="d-flex justify-content-between dark-gray-created border p-1">
                                                         <label class="w-15">{{'extra' | translate}}</label>
-                                                        <input v-model.number="prices.extra.junior" type="number" step="any" class="form-control text-right w-60 ml-2 mr-2" value="1">
+                                                        <input v-model.number="prices.extra.junior" type="number" min="0" step="any" class="form-control text-right w-60 ml-2 mr-2" value="1">
                                                         <label class="font-weight-bold text-primary w-15"><span>{{ratePlan.currency}}</span></label>
                                                     </div>
                                                 </div>
@@ -193,14 +193,14 @@
                                                 <div v-show="occupancyPrices">
                                                      <div v-for="(p, idx) in prices.exceptions.adult" :key="'rax' + idx" class="d-flex justify-content-between bg-blue-created border p-1">
                                                         <label class="w-15 text-center">{{ p.occupation }}</label>
-                                                        <input v-model.number="p.price" type="number" step="any" class="form-control text-right w-60 ml-2 mr-2" >
+                                                        <input v-model.number="p.price" type="number" min="0" step="any" class="form-control text-right w-60 ml-2 mr-2" >
                                                         <label class="font-weight-bold text-primary w-15"><span>{{ratePlan.currency}}</span></label>
                                                     </div>
                                                 </div>
                                                 <div v-show="room.extraOccupancyAllowed > 0">
                                                     <div class="d-flex justify-content-between dark-gray-created border p-1">
                                                             <label class="w-15">{{'extra' | translate}}</label>
-                                                            <input v-model.number="prices.extra.adult" type="number" step="any" class="form-control text-right w-60 ml-2 mr-2">
+                                                            <input v-model.number="prices.extra.adult" type="number" min="0" step="any" class="form-control text-right w-60 ml-2 mr-2">
                                                             <label class="font-weight-bold text-primary w-15"><span>{{ratePlan.currency}}</span></label>
                                                         </div>
                                                 </div>
@@ -212,14 +212,14 @@
                                                 <div v-show="occupancyPrices">
                                                     <div v-for="(p, idx) in prices.exceptions.child" :key="'rcx' + idx" class="d-flex justify-content-between bg-blue-created border p-1">
                                                         <label class="w-15 text-center">{{ p.occupation }}</label>
-                                                        <input v-model.number="p.price" type="number" step="any" class="form-control text-right w-60 ml-2 mr-2">
+                                                        <input v-model.number="p.price" type="number" min="0" step="any" class="form-control text-right w-60 ml-2 mr-2">
                                                         <label class="font-weight-bold text-primary w-15"><span>{{ratePlan.currency}}</span></label>
                                                     </div>
                                                 </div>
                                                 <div v-show="room.extraOccupancyAllowed > 0">
                                                     <div class="d-flex justify-content-between dark-gray-created border p-1">
                                                         <label class="w-15">{{'extra' | translate}}</label>
-                                                        <input v-model.number="prices.extra.child" type="number" step="any" class="form-control text-right w-60 ml-2 mr-2">
+                                                        <input v-model.number="prices.extra.child" type="number" min="0" step="any" class="form-control text-right w-60 ml-2 mr-2">
                                                         <label class="font-weight-bold text-primary w-15"><span>{{ratePlan.currency}}</span></label>
                                                     </div>
                                                 </div>
@@ -231,14 +231,14 @@
                                                 <div v-show="occupancyPrices">
                                                     <div v-for="(p, idx) in prices.exceptions.junior" :key="'rjx' + idx"  class="d-flex justify-content-between bg-blue-created border p-1">
                                                         <label class="w-15 text-center">{{ p.occupation }}</label>
-                                                        <input v-model.number="p.price" type="number" step="any" class="form-control text-right w-60 ml-2 mr-2" value="1">
+                                                        <input v-model.number="p.price" type="number" min="0" step="any" class="form-control text-right w-60 ml-2 mr-2" value="1">
                                                         <label class="font-weight-bold text-primary w-15"><span>{{ratePlan.currency}}</span></label>
                                                     </div>
                                                 </div>
                                                 <div v-show="room.extraOccupancyAllowed > 0">
                                                     <div class="d-flex justify-content-between dark-gray-created border p-1">
                                                         <label class="w-15">{{'extra' | translate}}</label>
-                                                        <input v-model.number="prices.extra.junior" type="number" step="any" class="form-control text-right w-60 ml-2 mr-2" value="1">
+                                                        <input v-model.number="prices.extra.junior" type="number" min="0" step="any" class="form-control text-right w-60 ml-2 mr-2" value="1">
                                                         <label class="font-weight-bold text-primary w-15"><span>{{ratePlan.currency}}</span></label>
                                                     </div>
                                                 </div>
@@ -251,7 +251,7 @@
                             <div class="col-sm">
                                 <div class="d-flex justify-content-start">
                                     <p>{{'promotion' | translate}}:</p>
-                                    <input v-model.number="promotion.discount" type="number" step="any" class="form-control w-25 ml-3 mr-3">
+                                    <input v-model.number="promotion.discount" type="number" min="0" max="100" step="any" class="form-control w-25 ml-3 mr-3">
                                     <p>{{'% off' | translate}}</p>
                                 </div>
                                 <div class="mt-1">
@@ -356,11 +356,11 @@
                                 <div class="d-flex justify-content-between">
                                     <div class="d-flex justify-content-start">
                                         <p class="fs-12">{{'min' | translate}}:</p>
-                                        <input v-model.number="rules.minAdvBooking" type="number" class="form-control w-50 ml-3 mr-3">
+                                        <input v-model.number="rules.minAdvanceBooking" type="number" min="0" class="form-control w-50 ml-3 mr-3">
                                     </div>
                                     <div class="d-flex justify-content-start">
                                         <p class="fs-12">{{'max' | translate}}:</p>
-                                        <input v-model.number="rules.maxAdvBooking" type="number" class="form-control w-50 ml-3 mr-3">
+                                        <input v-model.number="rules.maxAdvanceBooking" type="number" min="0" class="form-control w-50 ml-3 mr-3">
                                     </div>
                                 </div>
                             </div>
@@ -376,11 +376,11 @@
                                 <div class="d-flex justify-content-between">
                                     <div class="d-flex justify-content-start">
                                         <p class="fs-12">{{'min' | translate}}:</p>
-                                        <input v-model.number="rules.minLOS" type="number" class="form-control w-50 ml-3 mr-3">
+                                        <input v-model.number="rules.minLOS" type="number" min="0" class="form-control w-50 ml-3 mr-3">
                                     </div>
                                     <div class="d-flex justify-content-start">
                                         <p class="fs-12">{{'max' | translate}}:</p>
-                                        <input v-model.number="rules.maxLOS" type="number" class="form-control w-50 ml-3 mr-3">
+                                        <input v-model.number="rules.maxLOS" type="number" min="0" class="form-control w-50 ml-3 mr-3">
                                     </div>
                                 </div>
                             </div>
@@ -444,7 +444,7 @@
                 <div class="gds-container border-top">
                     <div class="p-3">
                         <button type="button" class="btn text-primary m-2"><i class="fa fa-undo mr-3"></i>{{'reset' | translate}}</button>
-                        <button type="button" @click="sendRequest" class="btn btn-success m-2">{{'save' | translate}}</button>
+                        <button type="button" @click="verifyRequest" class="btn btn-success m-2">{{'save' | translate}}</button>
                     </div>
                 </div>
             </div>
@@ -531,8 +531,8 @@ export default {
                 minAdults: null,
                 children: null,
                 extraGuests: null,
-                maxAdvBooking: null,
-                minAdvBooking: null,
+                maxAdvanceBooking: null,
+                minAdvanceBooking: null,
                 minLOS: null,
                 maxLOS: null,
 
@@ -562,7 +562,7 @@ export default {
                 this.prices.exceptions.junior.push({ occupation: i + 1, price: 0, type: 3 });
             }
         },
-        sendRequest() {
+        verifyRequest() {
             const rqHelper = new RQHelper(
                 this.room,
                 this.ratePlan,
@@ -573,19 +573,23 @@ export default {
                 this.overrideRules,
                 this.rules,
             );
-
+            // validación;
             rqHelper.validate();
+
             let html = '';
             if (rqHelper.errors.length > 0) {
                 for (let i = 0; i < rqHelper.errors.length; i += 1) {
-                    html += `<div class="alert alert-warning mt-1 mb-1" role="alert">
-                                <i class="fa fa-times-circle"></i> ${rqHelper.errors[i]}
+                    html += `<div class="alert alert-danger mt-1 mb-1" role="alert">
+                                <i class="fa fa-times-circle"></i> <small>${this.$t(rqHelper.errors[i])}</small>
                             </div>`;
                 }
 
+                //mostrar alerta con errores
                 this.$swal({
                     type: 'warning',
                     html,
+                    position: 'top',
+                    backdrop: 'vld-background'
                 });
 
                 return;
@@ -593,11 +597,28 @@ export default {
 
             if (rqHelper.warnings.length > 0) {
                 for (let i = 0; i < rqHelper.warnings.length; i += 1) {
-                    html += `<div class="alert alert-warning mt-1 mb-1" role="alert">
-                                <i class="fa fa-exclamation-triangle"></i> ${rqHelper.warnings[i]}
+                    html += `<div class="alert alert-info mt-1 mb-1" role="alert">
+                                <i class="fa fa-exclamation-triangle"></i> <small>${this.$t(rqHelper.warnings[i])}</small>
                             </div>`;
                 }
             }
+
+
+            //mostrar alerca con advertencias y si lo quiere continuar
+            this.$swal({
+                type: 'info',
+                title: this.$t('are you sure?'),
+                html,
+                showCancelButton: true,
+                confirmButtonText: this.$t('yes, save it!'),
+                cancelButtonText: this.$t('cancel'),
+            }).then((result) => {
+                //si acepa enviar request
+                if(result.value) this.sendRequest(rqHelper.createRQ());
+            });
+        },
+        sendRequest(RQ){
+            console.log(RQ);
         },
     },
     watch: {

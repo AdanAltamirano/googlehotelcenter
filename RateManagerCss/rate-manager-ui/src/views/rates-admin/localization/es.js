@@ -45,5 +45,8 @@ export default {
     'F': 'V',
     'S': 'S',
     'U': 'D',
+    'are you sure?': '¿estás seguro?',
+    'yes, save it!': '¡sí, guardar tarifas!',
+    'cancel': 'cancelar',
 };
 /* eslint-enable */
