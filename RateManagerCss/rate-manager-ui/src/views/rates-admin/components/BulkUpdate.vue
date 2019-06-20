@@ -1,6 +1,6 @@
 <template>
 <!-- eslint-disable -->
-    <div id="rates" class="collapse pl-3 pr-3 pt-3">
+    <div id="bulk-update-form" class="collapse pl-3 pr-3 pt-3">
         <div class="formulario-page overflow-auto pb-5">
             <div class="bg-light">
                 <div class="rate-plan d-flex justify-content-between border-top mt-2 pl-3 pt-3 pr-3">
@@ -443,7 +443,7 @@
                 </div>
                 <div class="gds-container border-top">
                     <div class="p-3">
-                        <button type="button" class="btn text-primary m-2"><i class="fa fa-undo mr-3"></i>{{'reset' | translate}}</button>
+                        <button type="button" @click="reset" class="btn text-primary m-2"><i class="fa fa-undo mr-3"></i>{{'reset' | translate}}</button>
                         <button type="button" @click="verifyRequest" class="btn btn-success m-2">{{'save' | translate}}</button>
                     </div>
                 </div>
@@ -456,6 +456,77 @@
 <script>
 
 import RQHelper from '../helpers/rateUpdateHelper';
+import ratesService from '../../../api/rates-service';
+
+const initalState = (room, ratePlan, start, end) => ({
+    room,
+    ratePlan,
+    dateRange: {
+        start,
+        end,
+    },
+    promotion: {
+        selectionLanguage: 'es',
+        discount: null,
+        englishDescription: null,
+        spanishDescription: null,
+    },
+    prices: {
+        byRoom: {
+            adult: 0,
+            child: 0,
+            junior: 0,
+        },
+        byOccupancy: {
+            adult: [],
+            child: [],
+            junior: [],
+        },
+        exceptions: {
+            apply: {
+                mon: false,
+                tue: false,
+                wed: false,
+                thu: false,
+                fri: false,
+                sat: false,
+                sun: false,
+            },
+            adult: [],
+            child: [],
+            junior: [],
+        },
+        extra: {
+            adult: 0,
+            child: 0,
+            junior: 0,
+        },
+    },
+    occupancyPrices: false,
+    overrideRules: false,
+    rules: {
+        bookingWindow: null,
+        noArrival: {
+            mon: false,
+            tue: false,
+            wed: false,
+            thu: false,
+            fri: false,
+            sat: false,
+            sun: false,
+        },
+        maxGuests: null,
+        maxAdults: null,
+        minAdults: null,
+        children: null,
+        extraGuests: null,
+        maxAdvanceBooking: null,
+        minAdvanceBooking: null,
+        minLOS: null,
+        maxLOS: null,
+    },
+});
+
 
 export default {
     name: 'bulk-update',
@@ -464,80 +535,26 @@ export default {
             type: Object,
             required: true,
         },
+        initialDateRange: {
+            type: Object,
+            required: true,
+        },
     },
     mounted() {
         this.updateOccupancyPrices();
     },
     data() {
-        return {
-            room: this.hotel.rooms[0],
-            ratePlan: this.hotel.ratePlans[0],
-            dateRange: {
-                start: new Date(),
-                end: new Date(),
-            },
-            promotion: {
-                selectionLanguage: 'es',
-                discount: null,
-                englishDescription: null,
-                spanishDescription: null,
-            },
-            prices: {
-                byRoom: {
-                    adult: 0,
-                    child: 0,
-                    junior: 0,
-                },
-                byOccupancy: {
-                    adult: [],
-                    child: [],
-                    junior: [],
-                },
-                exceptions: {
-                    apply: {
-                        mon: false,
-                        tue: false,
-                        wed: false,
-                        thu: false,
-                        fri: false,
-                        sat: false,
-                        sun: false,
-                    },
-                    adult: [],
-                    child: [],
-                    junior: [],
-                },
-                extra: {
-                    adult: 0,
-                    child: 0,
-                    junior: 0,
-                },
-            },
-            occupancyPrices: false,
-            overrideRules: false,
-            rules: {
-                bookingWindow: null,
-                noArrival: {
-                    mon: false,
-                    tue: false,
-                    wed: false,
-                    thu: false,
-                    fri: false,
-                    sat: false,
-                    sun: false,
-                },
-                maxGuests: null,
-                maxAdults: null,
-                minAdults: null,
-                children: null,
-                extraGuests: null,
-                maxAdvanceBooking: null,
-                minAdvanceBooking: null,
-                minLOS: null,
-                maxLOS: null,
-
-            },
-        };
+        return initalState(
+            this.hotel.rooms[0],
+            this.hotel.ratePlans[0],
+            this.initialDateRange.start.toDate(),
+            this.initialDateRange.end.toDate(),
+        );
+    },
+    computed: {
+        stateDateRangeStart() {
+            return this.$store.getters.dateRange.start;
+        },
     },
     methods: {
         updateOccupancyPrices() {
@@ -584,12 +601,11 @@ export default {
                             </div>`;
                 }
 
-                //mostrar alerta con errores
+                // mostrar alerta con errores
                 this.$swal({
-                    type: 'warning',
+                    type: 'error',
                     html,
                     position: 'top',
-                    backdrop: 'vld-background'
                 });
 
                 return;
@@ -604,21 +620,66 @@ export default {
             }
 
 
-            //mostrar alerca con advertencias y si lo quiere continuar
+            // mostrar alerca con advertencias y si lo quiere continuar
             this.$swal({
                 type: 'info',
                 title: this.$t('are you sure?'),
+                position: 'top',
                 html,
                 showCancelButton: true,
                 confirmButtonText: this.$t('yes, save it!'),
                 cancelButtonText: this.$t('cancel'),
             }).then((result) => {
-                //si acepa enviar request
-                if(result.value) this.sendRequest(rqHelper.createRQ());
+                // si acepa enviar request
+                if (result.value) this.sendRequest(rqHelper.createRQ());
             });
         },
-        sendRequest(RQ){
-            console.log(RQ);
+        sendRequest(RQ) {
+            ratesService.bulkUpdate(this.$appConfig.session.hotelId, RQ)
+                .then(() => {
+                    this.$swal({
+                        type: 'success',
+                        position: 'top',
+                        title: this.$t('successful update'),
+                    }).then(() => {
+                        $('#bulk-update-form').collapse('hide');
+                        const start = this.$moment(this.$data.dateRange.start);
+                        const end = start.clone().add(13, 'days');
+                        this.$store.commit('update', { start, end });
+                        this.resetData();
+                    });
+                }).catch(() => {
+                    this.$swal({
+                        type: 'error',
+                        position: 'top',
+                        title: this.$t('invalid request, please contact support'),
+                    });
+                });
+        },
+        reset() {
+            this.$swal({
+                type: 'question',
+                title: this.$t('are you sure?'),
+                text: this.$t('the form will be set to its initial state'),
+                showCancelButton: true,
+                cancelButtonText: this.$t('cancel'),
+                confirmButtonText: this.$t('yes'),
+            }).then((result) => {
+                // si acepa enviar request
+                if (result.value) {
+                    this.resetData();
+                }
+            });
+        },
+        resetData() {
+            const initialData = initalState(
+                this.hotel.rooms[0],
+                this.hotel.ratePlans[0],
+                this.$store.getters.dateRange.start.toDate(),
+                this.$store.getters.dateRange.end.toDate(),
+            );
+            Object.assign(this.$data, initialData);
+            this.updateOccupancyPrices();
         },
     },
     watch: {
@@ -629,6 +690,14 @@ export default {
         },
         room() {
             this.updateOccupancyPrices();
+        },
+        stateDateRangeStart(newStart) {
+            if (!newStart.isSame(this.dateRange.start)) {
+                this.dateRange = {
+                    start: newStart.toDate(),
+                    end: newStart.clone().add(13, 'days').toDate(),
+                };
+            }
         },
     },
 };

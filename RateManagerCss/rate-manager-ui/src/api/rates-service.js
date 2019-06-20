@@ -39,8 +39,8 @@ export default {
         });
     },
 
-    bulkUpdate(hotelId, request){
-        return rates.save({hotelid: hotelId}, request);
-    }
+    bulkUpdate(hotelId, request) {
+        return rates.save({ hotelid: hotelId }, request);
+    },
 
 };

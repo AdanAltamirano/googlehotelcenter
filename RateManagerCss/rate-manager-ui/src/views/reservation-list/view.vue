@@ -1,4 +1,5 @@
 <template>
+<!-- eslint-disable -->
     <div id="app">
         <b-container fluid>
             <advanced-filter></advanced-filter>
@@ -12,6 +13,7 @@
             <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage" aria-controls="my-table"></b-pagination>
         </b-container>
     </div>
+<!-- eslint-enable -->
 </template>
 
 <script>
@@ -26,7 +28,7 @@ export default {
         this.$store.commit('GetAllReservations');
     },
     mounted() {
-        //this.isBusy = true;
+        // this.isBusy = true;
     },
     data() {
         return {
@@ -40,11 +42,11 @@ export default {
                 },
             ],
             filter: null,
-        }
+        };
     },
     computed: {
         listReservation() {
-            //this.isBusy = false;
+            // this.isBusy = false;
             return this.$store.getters.reservations;
         },
         rows() {

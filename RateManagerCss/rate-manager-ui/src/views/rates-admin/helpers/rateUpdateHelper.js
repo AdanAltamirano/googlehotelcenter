@@ -40,12 +40,12 @@ class RateUpdatHelper {
 
         if (
             this.__$.promotion?.discount !== null
-            && this.__$.promotion?.discount !== ""
+            && this.__$.promotion?.discount !== ''
         ) {
-            if(
-                !(toNumber(this.__$.promotion?.discount) > 0) ||
-                !(toNumber(this.__$.promotion?.discount) < 100)
-            ){
+            if (
+                !(toNumber(this.__$.promotion?.discount) > 0)
+                || !(toNumber(this.__$.promotion?.discount) < 100)
+            ) {
                 this.errors.push('promo discount must greater than 0 and less than 100');
             }
             if (!this.__$.promotion.englishDescription) this.errors.push('english promo description not defined');
@@ -97,7 +97,7 @@ class RateUpdatHelper {
 
             // si hay dia de excepcion seleccionado
             if (Object.keys(this.__$.prices.exceptions.apply).some(k => this.__$.prices.exceptions.apply[k])) {
-                let exceptions = this.__$.prices.exceptions;
+                const { exceptions } = this.__$.prices;
                 if (exceptions.adult.some(rate => toNumber(rate.price) <= 0)) {
                     this.errors.push('exception adult rates must be greater than 0');
                 }
@@ -115,7 +115,6 @@ class RateUpdatHelper {
                     this.warnings.push('some exception junior rates are 0');
                 }
             }
-
         }
 
         // precios de personas extra
@@ -143,7 +142,7 @@ class RateUpdatHelper {
                 const { rules } = this.__$;
                 // sea a especificado ventana de reserva
                 if (rules?.bookingWindow) {
-                    if (moment(rules?.bookingWindow?.end).isSameOrAfter(rules?.bookingWindow?.start)) {
+                    if (!moment(rules?.bookingWindow?.end).isSameOrAfter(rules?.bookingWindow?.start)) {
                         this.errors.push('booking window end date must be after start date');
                     }
                 }
@@ -202,7 +201,7 @@ class RateUpdatHelper {
     }
 
     createRQ() {
-        if (this.errors?.length > 0) return;
+        if (this.errors?.length > 0) return null;
 
         let prices = null;
 
@@ -259,32 +258,34 @@ class RateUpdatHelper {
             }
         }
 
-        let RQ = {
+        if (this.__$.promotion) prices.promotion = this.__$.promotion;
+
+        const RQ = {
             roomId: this.__$.room?.id,
             ratePlanCode: this.__$.ratePlan?.code,
             startDate: moment(this.__$.dateRange?.start).format('YYYY-MM-DD'),
             endDate: moment(this.__$.dateRange?.end).format('YYYY-MM-DD'),
             isOccupancyRate: this.__$.areOccupancyPrices,
-            prices
+            prices,
         };
 
         if (this.__$.overrideRules) {
             const { rules } = this.__$;
 
-            let rulesRQ = {
-                noArrival: rules.noArrival
-            }
+            const rulesRQ = {
+                noArrival: rules.noArrival,
+            };
 
             if (toNumber(rules.minLOS) > 0) rulesRQ.minLOS = toNumber(rules.minLOS);
             if (toNumber(rules.maxLOS) > 0) rulesRQ.maxLOS = toNumber(rules.maxLOS);
             if (toNumber(rules.minAdvanceBooking) > 0) rulesRQ.minAdvanceBooking = toNumber(rules.minAdvanceBooking);
             if (toNumber(rules.maxAdvanceBooking) > 0) rulesRQ.maxAdvanceBooking = toNumber(rules.maxAdvanceBooking);
 
-            if(rules?.bookingWindow){
+            if (rules?.bookingWindow) {
                 rulesRQ.bookingWindow = {
-                    startDate: rules.bookingWindow.start.format('YYYY-MM-DD'),
-                    endDate: rules.bookingWindow.end.format('YYYY-MM-DD'),
-                }
+                    startDate: moment(rules.bookingWindow.start).format('YYYY-MM-DD'),
+                    endDate: moment(rules.bookingWindow.end).format('YYYY-MM-DD'),
+                };
             }
 
             RQ.rules = rulesRQ;

@@ -198,7 +198,7 @@ namespace APIServices
                     .Select(offset => startDate.AddDays(offset))
                     .Where(d => !groupedRates.DailyRates.Any(x => x.Date == d)).Select(d => new DailyRate { Date = d });
 
-                    groupedRates.DailyRates = groupedRates.DailyRates.Concat(fixedDays).ToArray();
+                    groupedRates.DailyRates = groupedRates.DailyRates.Concat(fixedDays).OrderBy(d => d.Date).ToArray();
 
                     return groupedRates;
                 }

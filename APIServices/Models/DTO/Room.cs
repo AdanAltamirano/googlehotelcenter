@@ -18,6 +18,7 @@ namespace APIServices.Models.DTO
         public byte MaxAdultsOccupancy { get; set; }
         public byte MinAdultsOccupancy { get; set; }
         public byte MaxChildrenOccupancy { get; set; }
+        public bool JuniorsAllowed { get; set; }
         public short Order { get; set; }
         public bool Active { get; set; }
     }
