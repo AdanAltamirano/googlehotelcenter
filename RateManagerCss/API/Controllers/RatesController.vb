@@ -38,7 +38,7 @@ Namespace API.Controllers
         End Function
 
         'POST api/hotels/1/rates/
-        <Route("{RateId:int}"), HttpGet>
+        <Route("{RateId:int}"), HttpPost>
         Public Function RateUpdate(<FromBody> RQ As RateUpdateRQ, HotelId As Integer, RateId As Integer) As Net.Http.HttpResponseMessage
 
             RQ.HotelId = HotelId
@@ -123,8 +123,8 @@ Namespace API.Controllers
                 .UseDefaultRules = RQ.Rules.UseDefaultRules,
                 .MinLOS = RQ.Rules.MinLOS,
                 .MaxLOS = RQ.Rules.MaxLOS,
-                .MaxAdvanceBooking = RQ.Rules.MaxAdvnaceBooking,
-                .MinAdvanceBooking = RQ.Rules.MinAdvnaceBooking,
+                .MaxAdvanceBooking = RQ.Rules.MaxAdvanceBooking,
+                .MinAdvanceBooking = RQ.Rules.MinAdvanceBooking,
                 .NoArrival = If(RQ.Rules?.NoArrival Is Nothing, "NNNNNNN", GetDaysOfWeekString(RQ.Rules.NoArrival)),
                 .GuestsRestrictions = ServiceRQGuestsRestrictions,
                 .BookingWindow = ServiceRQBookingWindow
