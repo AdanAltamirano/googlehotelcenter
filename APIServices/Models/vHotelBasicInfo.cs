@@ -19,6 +19,7 @@ namespace APIServices.Models
         public string Name { get; set; }
         public string Currency { get; set; }
         public Nullable<decimal> Tax { get; set; }
+        public bool TaxIncluded { get; set; }
         public Nullable<int> CorpId { get; set; }
         public string Corp { get; set; }
         public byte Status { get; set; }

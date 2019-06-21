@@ -21,6 +21,7 @@ namespace APIServices.Models
         public string RatePlanName { get; set; }
         public Nullable<System.DateTime> StartDate { get; set; }
         public Nullable<System.DateTime> EndDate { get; set; }
+        public string NoArrivalsMap { get; set; }
         public string ExceptionMap { get; set; }
         public byte Occupancy { get; set; }
         public decimal Price { get; set; }

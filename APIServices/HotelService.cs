@@ -32,6 +32,8 @@ namespace APIServices
                 CorpId = hotel.CorpId,
                 Corp = hotel.Corp,
                 Currency = hotel.Currency,
+                Tax = hotel.Tax ?? 0,
+                TaxIncluded = hotel.TaxIncluded,
                 Status = hotel.Status
             };
 

@@ -45,7 +45,7 @@ namespace APIServices
                         RateId = x.RateId,
                         Occupation = x.Adults,
                         Type = PaxType.Adult,
-                        Price = Utilities.IsInExceptionPrice(dayRate.ExceptionMap, day) ? (x.AdultExceptionPrice ?? 0) : x.AdultPrice,
+                        Price = Utilities.IsInUVMap(dayRate.ExceptionMap, day) ? (x.AdultExceptionPrice ?? 0) : x.AdultPrice,
                     });
 
                 result.Prices.AddRange(adultRates);
@@ -57,7 +57,7 @@ namespace APIServices
                         RateId = x.RateId,
                         Occupation = x.Children,
                         Type = PaxType.Child,
-                        Price = Utilities.IsInExceptionPrice(dayRate.ExceptionMap, day) ? (x.ChildExceptionPrice ?? 0) : x.ChildPrice,
+                        Price = Utilities.IsInUVMap(dayRate.ExceptionMap, day) ? (x.ChildExceptionPrice ?? 0) : x.ChildPrice,
                     }).GroupBy(x => x.Occupation).Select(x => x.FirstOrDefault());
                 result.Prices.AddRange(children);
                 //juniors
@@ -72,7 +72,7 @@ namespace APIServices
                         RateId = x.RateId,
                         Occupation = x.Children,
                         Type = PaxType.Junior,
-                        Price = Utilities.IsInExceptionPrice(dayRate.ExceptionMap, day) ? (x.JuniorExceptionPrice ?? 0) : x.JuniorPrice ?? 0,
+                        Price = Utilities.IsInUVMap(dayRate.ExceptionMap, day) ? (x.JuniorExceptionPrice ?? 0) : x.JuniorPrice ?? 0,
                     }).GroupBy(x => x.Occupation).Select(x => x.FirstOrDefault());
                 result.Prices.AddRange(juniors);
 
@@ -187,7 +187,8 @@ namespace APIServices
                             Date = d,
                             RateId = rate.RateId,
                             Occupancy = rate.Occupancy,
-                            Price = Utilities.IsInExceptionPrice(rate.ExceptionMap, d) ? rate.ExceptionPrice : rate.Price,
+                            Price = Utilities.IsInUVMap(rate.ExceptionMap, d) ? rate.ExceptionPrice : rate.Price,
+                            NoArrival = (bool?)Utilities.IsInUVMap(rate.NoArrivalsMap, d) ?? null,
                             Discount = rate.Discount
                         });
 

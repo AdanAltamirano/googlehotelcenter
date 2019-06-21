@@ -14,5 +14,6 @@ namespace APIServices.Models.DTO
         public decimal? Price { get; set; }
         public decimal? Discount { get; set; }
         public string Currency { get; set; }
+        public bool? NoArrival { get; set; }
     }
 }
