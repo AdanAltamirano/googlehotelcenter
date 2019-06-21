@@ -207,32 +207,32 @@ class RateUpdatHelper {
 
         if (this.__$.areOccupancyPrices) {
             prices = {
-                exceptionDays: this.__$.exceptions.apply,
-                base: [this.__$.prices.byOccupancy.adult],
-                exceptions: [],
+                exceptionDays: this.__$.prices.exceptions.apply,
+                base: this.__$.prices.byOccupancy.adult,
             };
 
             if (this.__$.room.maxChildrenOccupancy > 0) {
-                prices.base.concat(this.__$.prices.byOccupancy.child);
+                prices.base = prices.base.concat(this.__$.prices.byOccupancy.child);
             }
 
             if (this.__$.room.maxChildrenOccupancy > 0 && this.__$.room.juniorsAllowed) {
-                prices.base.concat(this.__$.prices.byOccupancy.junior);
+                prices.base = prices.base.concat(this.__$.prices.byOccupancy.junior);
             }
 
             // si hay dia de excepcion seleccionado
             if (Object.keys(prices.exceptionDays).some(k => prices.exceptionDays[k])) {
-                prices.exceptions.concat(this.__$.prices.exceptions.adult);
+                prices.exceptions = this.__$.prices.exceptions.adult;
 
                 if (this.__$.room.maxChildrenOccupancy > 0) {
-                    prices.exceptions.concat(this.__$.prices.exceptions.child);
+                    prices.exceptions = prices.exceptions.concat(this.__$.prices.exceptions.child);
                 }
 
                 if (this.__$.room.maxChildrenOccupancy > 0 && this.__$.room.juniorsAllowed) {
-                    prices.exceptions.concat(this.__$.prices.exceptions.junior);
+                    prices.exceptions = prices.exceptions.concat(this.__$.prices.exceptions.junior);
                 }
             }
         } else {
+
             prices = {
                 base: [
                     { occupation: 1, type: 1, price: this.__$.prices.byRoom.adult },
