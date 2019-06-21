@@ -1,4 +1,4 @@
-import Vue from 'vue'
+import Vue from 'vue';
 import moment from 'moment';
 
 export default {
@@ -8,7 +8,7 @@ export default {
     getLastWorkDay() {
         const today = moment();
         if (localStorage) {
-            const lastWorkDay = localStorage.getItem('admin.' + Vue.appConfig.session.hotelId + '.rates.workingDate');
+            const lastWorkDay = localStorage.getItem(`admin.${Vue.appConfig.session.hotelId}.rates.workingDate`);
             if (lastWorkDay) {
                 const start = moment(lastWorkDay);
                 if (start.isValid() && start.isAfter(today)) {
@@ -25,7 +25,7 @@ export default {
      */
     setLastWorkDay(day) {
         if (localStorage) {
-            localStorage.setItem('admin.' +  Vue.appConfig.session.hotelId + '.rates.workingDate', day.format('YYYY-MM-DD'));
+            localStorage.setItem(`admin.${Vue.appConfig.session.hotelId}.rates.workingDate`, day.format('YYYY-MM-DD'));
         }
     },
     /**
@@ -37,8 +37,9 @@ export default {
             i;
 
         for (i = 0; i < array.length; i += 1) {
-            map[array[i].ratePlanId + array[i].roomId] = i;
-            array[i].children = [];
+            const item = array[i];
+            map[item.ratePlanId + item.roomId] = i;
+            item.children = [];
         }
 
         for (i = 0; i < array.length; i += 1) {

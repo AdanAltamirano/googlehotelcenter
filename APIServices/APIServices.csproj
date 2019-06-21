@@ -62,7 +62,7 @@
     <Compile Include="Models\DTO\DailyRate.cs" />
     <Compile Include="Models\DTO\DailyRateDetail.cs" />
     <Compile Include="Models\DTO\HotelInfo.cs" />
-    <Compile Include="Models\DTO\RatePlan.cs" />
+    <Compile Include="Models\DTO\RatePlanHeader.cs" />
     <Compile Include="Models\DTO\Room.cs" />
     <Compile Include="Models\DTO\RoomInventoryInfo.cs" />
     <Compile Include="Models\DTO\UpdateRateRequest.cs" />

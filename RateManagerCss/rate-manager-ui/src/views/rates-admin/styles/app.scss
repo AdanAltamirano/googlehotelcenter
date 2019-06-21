@@ -1,0 +1,7 @@
+@import '../../../styles/base.scss';
+@import '../../../styles/v-tooltip.scss';
+
+@import '~sweetalert2/src/variables';
+$swal2-backdrop: rgba(255,255,255, .5);
+@import '~sweetalert2/src/sweetalert2';
+@import './custom.scss';

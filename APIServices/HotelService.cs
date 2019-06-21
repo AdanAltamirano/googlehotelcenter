@@ -52,6 +52,7 @@ namespace APIServices
                     MaxAdultsOccupancy = r.MaxAdultsOccupancy,
                     MaxChildrenOccupancy = r.MaxChildrenOccupancy,
                     MaxOccupancy = r.MaxOccupancy,
+                    JuniorsAllowed = r.JuniorsAllowed ?? false,
                     Order = r.Order,
                     TotalRooms = r.TotalRooms,
                     Type = r.Type
@@ -61,7 +62,7 @@ namespace APIServices
 
             //rateplans
             var plans = DbContext.vHotelPlan.Where(x => x.HotelId == hotelId && x.Language == language && x.Active.Value && !x.IsLinked.Value)
-                .Select(r => new RatePlan
+                .Select(r => new RatePlanHeader
                 {
                     Code = r.Code,
                     Name = r.Name,

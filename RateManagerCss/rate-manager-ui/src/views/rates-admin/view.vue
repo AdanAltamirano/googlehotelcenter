@@ -1,12 +1,14 @@
 <template>
+<!-- eslint-disable -->
     <div class="p-0" id="app">
         <div class="d-flex flex-row-reverse justify-content-between pl-5 pr-5">
-        <button data-toggle="collapse" class="btn btn-link mb-2 pr-0" data-target="#rates">
-            <span>{{'bulk update' | translate}} <i class="fa fa-archive"></i></span>
-        </button>
+            <button data-toggle="collapse" class="btn btn-link mb-2 pr-0" data-target="#bulk-update-form">
+                <span>{{'bulk update' | translate}} <i class="fa fa-archive"></i></span>
+            </button>
+            <h2 class="text-primary mb-2">{{'Daily rates' | translate}}</h2>
         </div>
         <!--rates form-->
-        <bulk-update v-if="hotel" :hotel="hotel"></bulk-update>
+        <bulk-update v-if="hotel && dateRange.start != null" :hotel="hotel" :initial-date-range="dateRange"></bulk-update>
         <div class="pb-5">
             <calendar-ribbon :date-range="dateRange"></calendar-ribbon>
             <div class="pr-0 pl-0">
@@ -14,6 +16,7 @@
             </div>
         </div>
     </div>
+<!-- eslint-enable -->
 </template>
 
 <script>

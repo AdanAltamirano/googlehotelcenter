@@ -7,6 +7,10 @@
     <script language="JavaScript">
         jQuery.noConflict();   
 
+        setInterval(function () {
+            calcHeight();
+        }, 200);
+
         function calcHeight()
         {
             var iframe = document.getElementById('frmPrincipal');

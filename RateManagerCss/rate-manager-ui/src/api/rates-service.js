@@ -3,7 +3,7 @@ import VueResource from 'vue-resource';
 import Interceptor from './interceptor';
 
 Vue.use(VueResource);
-if(Vue.http.interceptors.indexOf(Interceptor) == -1){
+if (Vue.http.interceptors.indexOf(Interceptor) === -1) {
     Vue.http.interceptors.push(Interceptor);
 }
 
@@ -37,6 +37,10 @@ export default {
             day,
             customTracker: 'rates.getByDay',
         });
+    },
+
+    bulkUpdate(hotelId, request) {
+        return rates.save({ hotelid: hotelId }, request);
     },
 
 };

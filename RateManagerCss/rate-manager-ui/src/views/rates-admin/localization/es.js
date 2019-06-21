@@ -1,4 +1,6 @@
+/* eslint-disable */
 export default {
+    'Daily rates': 'Tarifas por día',
     'rates': 'tarifas',
     'avail': 'disp',
     '{discount}% Off': '{discount}% de descuento',
@@ -44,4 +46,12 @@ export default {
     'F': 'V',
     'S': 'S',
     'U': 'D',
+    'are you sure?': '¿estás seguro?',
+    'yes, save it!': '¡sí, guardar tarifas!',
+    'cancel': 'cancelar',
+    'successful update': 'actualización exitosa',
+    'the form will be set to its initial state': 'el formulario se establecerá en su estado inicial',
+    'yes': 'sí',
+
 };
+/* eslint-enable */

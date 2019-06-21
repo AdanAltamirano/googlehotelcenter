@@ -1,5 +1,6 @@
 <template>
-     <div class="room-description ml-3 mr-3 mt-3">
+<!-- eslint-disable -->
+    <div class="room-description ml-3 mr-3 mt-3">
         <div class="d-flex border dark-gray-created">
             <div class="d-flex w-30 align-items-center">
                 <div class="border-right p-1 flex-fill d-flex w-80 justify-content-between">
@@ -71,10 +72,11 @@
             </div>
         </template>
     </div>
+<!-- eslint-enable -->
 </template>
 
 <script>
-import DayRateDetail from './DayRateDetail';
+import DayRateDetail from './DayRateDetail.vue';
 
 export default {
     name: 'room-table',
@@ -98,9 +100,9 @@ export default {
         getPrice(dayRate, rate) {
             let price = dayRate.price * (1 - (dayRate.discount / 100));
             if (rate.factor !== undefined) price *= rate.factor;
-            else if (rate.offset !== undefined) price += offset;
+            else if (rate.offset !== undefined) price += rate.offset;
             return price;
-        }
+        },
     },
 };
 </script>

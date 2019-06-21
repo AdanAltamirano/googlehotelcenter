@@ -1,4 +1,5 @@
 <template>
+<!-- eslint-disable -->
     <div class="bg-white border-top border-bottom border-5 pl-0 pr-0">
         <div class="ml-3 mr-3">
             <div class="d-flex">
@@ -27,6 +28,7 @@
             </div>
         </div>
     </div>
+<!-- eslint-enable -->
 </template>
 
 <script>
@@ -68,7 +70,7 @@ export default {
         },
     },
     watch: {
-        currentDay(newDay, oldDay) {
+        currentDay(newDay) {
             if (!this.$moment(newDay).isSame(this.dateRange.start, 'day')) {
                 const start = this.$moment(newDay);
                 const end = start.clone().add(13, 'days');

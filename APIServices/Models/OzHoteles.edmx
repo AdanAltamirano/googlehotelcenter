@@ -292,6 +292,7 @@ warning 6002: The table/view 'OzHoteles.dbo.vHotelRoom' does not have a primary 
           <Property Name="MaxAdultsOccupancy" Type="tinyint" Nullable="false" />
           <Property Name="MinAdultsOccupancy" Type="tinyint" Nullable="false" />
           <Property Name="MaxChildrenOccupancy" Type="tinyint" Nullable="false" />
+          <Property Name="JuniorsAllowed" Type="bit" />
           <Property Name="Order" Type="smallint" Nullable="false" />
           <Property Name="IsLinked" Type="bit" />
           <Property Name="Active" Type="bit" />
@@ -461,6 +462,7 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
     [vHotelRoom].[MaxAdultsOccupancy] AS [MaxAdultsOccupancy], 
     [vHotelRoom].[MinAdultsOccupancy] AS [MinAdultsOccupancy], 
     [vHotelRoom].[MaxChildrenOccupancy] AS [MaxChildrenOccupancy], 
+    [vHotelRoom].[JuniorsAllowed] AS [JuniorsAllowed], 
     [vHotelRoom].[Order] AS [Order], 
     [vHotelRoom].[IsLinked] AS [IsLinked], 
     [vHotelRoom].[Active] AS [Active], 
@@ -869,6 +871,7 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           <Property Name="MaxAdultsOccupancy" Type="Byte" Nullable="false" />
           <Property Name="MinAdultsOccupancy" Type="Byte" Nullable="false" />
           <Property Name="MaxChildrenOccupancy" Type="Byte" Nullable="false" />
+          <Property Name="JuniorsAllowed" Type="Boolean" />
           <Property Name="Order" Type="Int16" Nullable="false" />
           <Property Name="IsLinked" Type="Boolean" />
           <Property Name="Active" Type="Boolean" />
@@ -1152,6 +1155,7 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
                 <ScalarProperty Name="Active" ColumnName="Active" />
                 <ScalarProperty Name="IsLinked" ColumnName="IsLinked" />
                 <ScalarProperty Name="Order" ColumnName="Order" />
+                <ScalarProperty Name="JuniorsAllowed" ColumnName="JuniorsAllowed" />
                 <ScalarProperty Name="MaxChildrenOccupancy" ColumnName="MaxChildrenOccupancy" />
                 <ScalarProperty Name="MinAdultsOccupancy" ColumnName="MinAdultsOccupancy" />
                 <ScalarProperty Name="MaxAdultsOccupancy" ColumnName="MaxAdultsOccupancy" />

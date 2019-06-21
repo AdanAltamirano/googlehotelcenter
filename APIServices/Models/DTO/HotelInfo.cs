@@ -16,6 +16,6 @@ namespace APIServices.Models.DTO
         public string Corp { get; set; }
         public byte Status { get; set; }
         public Room[] Rooms { get; set; }
-        public RatePlan[] RatePlans { get; set; }
+        public RatePlanHeader[] RatePlans { get; set; }
     }
 }
