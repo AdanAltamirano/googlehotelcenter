@@ -226,6 +226,8 @@ namespace APIServices
                     {
                         //Busca la tarifa para crear una copia de las reglas
                         CompleteRateUpdateRQ(ref updateRQ, ref strError);
+                        if(strError != "")
+                            return new KeyValuePair<string, string>("0", strError);
                     }
 
                     if (RemoveOverlappedRates(updateRQ.RoomId, updateRQ.RatePlanCode, updateRQ.StartDate, updateRQ.EndDate, ref db)
@@ -237,13 +239,13 @@ namespace APIServices
                     else
                     {
                         transaction.Rollback();
-                        return new KeyValuePair<string, string>("0", "error en el infraestroktchor");
+                        return new KeyValuePair<string, string>("0", "AddRate: An error ocurred. Could not save rate");
                     }
                 }
                 catch (Exception e)
                 {
                     transaction.Rollback();
-                    return new KeyValuePair<string, string>("0", "error en el infraestroktchor");
+                    return new KeyValuePair<string, string>("0", "AddRate: " + e.Message);
                 }
                 return new KeyValuePair<string, string>("1","success");
             }
@@ -261,12 +263,8 @@ namespace APIServices
                 using (OzHotelesEntities db = new OzHotelesEntities())
                 {
                     int rateId = updateRQ.RateId;
-                    var rate = db.Tarifas.Single(t => t.idTarifa == rateId);
-                    if (rate == null)
-                    {
-                        strError = "Con not find rate with id " + rateId;
-                        return false;
-                    }
+                    var rate = db.Tarifas?.Single(t => t.idTarifa == rateId);
+
                     updateRQ.Prices.ExceptionDays = rate.Excepciones;
 
                     RateUpdateRQBookingWindow bookingWindow = new RateUpdateRQBookingWindow
@@ -301,7 +299,7 @@ namespace APIServices
             }
             catch(Exception e)
             {
-                strError = e.Message;
+                strError = "CompleteRateUpdateRQ: " + e.Message;
                 return false;
             }
             return true;
