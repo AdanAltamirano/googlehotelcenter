@@ -30,11 +30,12 @@ Namespace API.Controllers
         Public Function RateAdd(<FromBody> RQ As RateUpdateRQ, HotelId As Integer) As Net.Http.HttpResponseMessage
             RQ.HotelId = HotelId
             Dim serviceRQ As DTO.RateUpdateRQ = MappingRateUpdateRQ(RQ)
+            Dim result As KeyValuePair(Of String, String) = Service.AddRate(serviceRQ)
 
-            If Service.AddRate(serviceRQ) Then
+            If result.Key = 1 Then
                 Return NoContent()
             End If
-            Return BadRequest(KeyValuePair.Create("Error", "Error"))
+            Return BadRequest(result)
         End Function
 
         'POST api/hotels/1/rates/
@@ -44,10 +45,12 @@ Namespace API.Controllers
             RQ.HotelId = HotelId
             RQ.RateId = RateId
             Dim serviceRQ As DTO.RateUpdateRQ = MappingRateUpdateRQ(RQ)
-            If Service.AddRate(serviceRQ) Then
+            Dim result As KeyValuePair(Of String, String) = Service.AddRate(serviceRQ)
+
+            If result.Key = 1 Then
                 Return NoContent()
             End If
-            Return BadRequest(KeyValuePair.Create("Error", "Error"))
+            Return BadRequest(result)
         End Function
 
         Private Function MappingRateUpdateRQ(RQ As RateUpdateRQ) As DTO.RateUpdateRQ
