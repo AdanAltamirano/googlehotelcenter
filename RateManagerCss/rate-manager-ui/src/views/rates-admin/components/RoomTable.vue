@@ -38,13 +38,17 @@
                     </div>
                 </div>
                 <div class="d-flex w-70">
-                    <div class="border p-1 flex-fill text-center" v-for="day in rate.dailyRates" :key="day.date">
-                        <day-rate-detail :day-rate="day" :rate="rate"/>
+                    <div v-for="day in rate.dailyRates"
+                        class="border p-1 flex-fill text-center"
+                        :class="{ 'bg-unavail': day.noArrival }"
+                        :key="day.date"
+                        v-tooltip="day.noArrival ? $t('no arrivals') : ''">
+                        <day-rate-detail :room="room" :day-rate="day" :rate="rate"/>
                     </div>
                 </div>
             </div>
             <div :id="rate.ratePlanId + '-'+  rate.roomId + '-lk'" class="collapse show" v-if="rate.children.length > 0" :key="'c' + rate.ratePlanId">
-                <div class="d-flex bg-white" v-for="child in rate.children" :key="child.ratePlanId">
+                <div class="d-flex" v-for="child in rate.children" :key="child.ratePlanId">
                     <div class="d-flex w-30">
                         <div class="border flex-fill d-flex w-80 justify-content-between align-items-center bg-blue-created p-1 pl-4">
                             <h5 class="m-0 pl-3 text-primary">{{child.ratePlan}}</h5>
@@ -63,7 +67,11 @@
                         </div>
                     </div>
                     <div class="d-flex w-70">
-                        <div class="border p-1 flex-fill text-center bg-blue-created" v-for="day in child.dailyRates" :key="day.date">
+                        <div v-for="day in child.dailyRates"
+                            class="border p-1 flex-fill text-center"
+                            :class="{'bg-blue-created': !day.noArrival, 'bg-unavail': day.noArrival }"
+                            :key="day.date"
+                            v-tooltip="day.noArrival ? $t('no arrivals')  : ''">
                             <span v-if="day.price > 0">{{ getPrice(day, child) | currency}}</span>
                             <span v-else class="text-danger"> N/A </span>
                         </div>

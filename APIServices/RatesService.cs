@@ -188,7 +188,7 @@ namespace APIServices
                             RateId = rate.RateId,
                             Occupancy = rate.Occupancy,
                             Price = Utilities.IsInUVMap(rate.ExceptionMap, d) ? rate.ExceptionPrice : rate.Price,
-                            NoArrival = (bool?)Utilities.IsInUVMap(rate.NoArrivalsMap, d) ?? null,
+                            NoArrival = Utilities.IsInUVMap(rate.NoArrivalsMap, d) ? (bool?)true : null,
                             Discount = rate.Discount
                         });
 

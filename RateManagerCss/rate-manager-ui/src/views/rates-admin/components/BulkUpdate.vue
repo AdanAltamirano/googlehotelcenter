@@ -49,7 +49,7 @@
                     </div>
                 </div>
                 <div class="border heading-divider dark-gray-created pl-3 pr-3 pt-2 pb-2">
-                    <p class="font-weight-bold mb-0">{{'room prices - tax not included' | translate}}</p>
+                    <p class="font-weight-bold mb-0">{{'room prices' | translate}} - <b>{{ hotel.taxIncluded ? 'tax included': 'tax not included' | translate}}</b></p>
                 </div>
                 <div class="d-flex pt-3 pb-3">
                     <div class="container-fluid">
@@ -457,6 +457,7 @@
 
 import RQHelper from '../helpers/rateUpdateHelper';
 import ratesService from '../../../api/rates-service';
+import utilities from '../../../core/utilities';
 
 const initalState = (room, ratePlan, start, end) => ({
     room,
@@ -645,6 +646,7 @@ export default {
                         $('#bulk-update-form').collapse('hide');
                         const start = this.$moment(this.$data.dateRange.start);
                         const end = start.clone().add(13, 'days');
+                        utilities.setLastWorkDay(start);
                         this.$store.commit('update', { start, end });
                         this.resetData();
                     });
