@@ -54,6 +54,9 @@ export default {
             return Array(1 + this.dateRange.end.diff(this.dateRange.start, 'days')).fill(0)
                 .map((v, i) => this.dateRange.start.clone().add(i, 'days'));
         },
+        stateDateRangeStart() {
+            return this.$store.getters.dateRange.start;
+        },
     },
     methods: {
         addDays(days) {
@@ -76,6 +79,11 @@ export default {
                 const end = start.clone().add(13, 'days');
                 Utilities.setLastWorkDay(start);
                 this.$store.commit('update', { start, end });
+            }
+        },
+        stateDateRangeStart(newStart) {
+            if (!newStart.isSame(this.currentDay, 'day')) {
+                this.currentDay = newStart.toDate();
             }
         },
     },

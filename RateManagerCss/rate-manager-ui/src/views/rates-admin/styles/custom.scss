@@ -5,7 +5,7 @@ h3, .h3 {
 h4, .h4 {
     font-size: 15px;
 }
-a, h5, .h5, .btn, span, .form-control {
+a, h5, .h5, .btn, span:not(.swal2-x-mark, .swal2-x-mark-line-left, .swal2-x-mark-line-right, .swal2-success-line-tip, .swal2-success-line-long), .form-control {
     font-size: 12px;
 }
 .w-15 {
@@ -174,7 +174,12 @@ body {
 .vc-popover-content{
     border-style: solid;
 }
-
 .form-control:disabled, .form-control[readonly]{
     background-color: white;
+}
+.swal2-modal{
+    box-shadow:  0 0 10px rgba(0,0,0, .5);;
+}
+.bg-unavail{
+    background-color:  theme-color-level(danger, -10);
 }

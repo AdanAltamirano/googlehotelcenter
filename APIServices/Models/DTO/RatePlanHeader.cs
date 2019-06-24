@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace APIServices.Models.DTO
 {
-    public class RatePlan
+    public class RatePlanHeader
     {
         public string Code { get; set; }
         public string Name { get; set; }

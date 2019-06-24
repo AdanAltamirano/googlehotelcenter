@@ -1,5 +1,6 @@
 /* eslint-disable */
 export default {
+    'Daily rates': 'Tarifas por día',
     'rates': 'tarifas',
     'avail': 'disp',
     '{discount}% Off': '{discount}% de descuento',
@@ -34,7 +35,9 @@ export default {
     'extra people': 'personas extra',
     'max adults': 'max de adultos',
     'min adults': 'min de adultos',
-    'room prices - tax not included': 'precios de habitación - impuestos no incluidos',
+    'room prices': 'precios de habitación',
+    'tax not included': 'impuestos no incluidos',
+    'tax included': 'impuestos incluidos',
     'save': 'guardar',
     'reset': 'reiniciar',
     'bulk update': 'actualización masiva',
@@ -45,5 +48,13 @@ export default {
     'F': 'V',
     'S': 'S',
     'U': 'D',
+    'are you sure?': '¿estás seguro?',
+    'yes, save it!': '¡sí, guardar tarifas!',
+    'cancel': 'cancelar',
+    'successful update': 'actualización exitosa',
+    'the form will be set to its initial state': 'el formulario se establecerá en su estado inicial',
+    'yes': 'sí',
+    'close': 'cerrar',
+
 };
 /* eslint-enable */

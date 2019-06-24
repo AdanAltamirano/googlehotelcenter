@@ -43,6 +43,7 @@ namespace APIServices
                     MaxAdultsOccupancy = r.MaxAdultsOccupancy,
                     MaxChildrenOccupancy = r.MaxChildrenOccupancy,
                     MaxOccupancy = r.MaxOccupancy,
+                    JuniorsAllowed = r.JuniorsAllowed ?? false,
                     Order = r.Order,
                     TotalRooms = r.TotalRooms,
                     Type = r.Type

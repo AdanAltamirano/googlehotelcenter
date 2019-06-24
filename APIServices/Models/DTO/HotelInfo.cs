@@ -14,8 +14,10 @@ namespace APIServices.Models.DTO
         public string Currency { get; set; }
         public int? CorpId { get; set; }
         public string Corp { get; set; }
+        public decimal Tax { get; set; }
+        public bool TaxIncluded { get; set; }
         public byte Status { get; set; }
         public Room[] Rooms { get; set; }
-        public RatePlan[] RatePlans { get; set; }
+        public RatePlanHeader[] RatePlans { get; set; }
     }
 }

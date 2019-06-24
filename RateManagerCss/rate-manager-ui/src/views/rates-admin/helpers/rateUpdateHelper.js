@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 const toNumber = (source) => {
     const val = Number(source);
     return !Number.isNaN(val) ? val : 0;
@@ -36,7 +38,17 @@ class RateUpdatHelper {
         // las dos primeras validaciones son obligatorias
         if (this.errors.length > 0) return;
 
-        if (toNumber(this.__$.promotion?.discount) > 0) {
+        if (
+            this.__$.promotion?.discount !== null
+            && this.__$.promotion?.discount !== ''
+            && this.__$.promotion?.discount !== undefined
+        ) {
+            if (
+                !(toNumber(this.__$.promotion?.discount) > 0)
+                || !(toNumber(this.__$.promotion?.discount) < 100)
+            ) {
+                this.errors.push('promo discount must greater than 0 and less than 100');
+            }
             if (!this.__$.promotion.englishDescription) this.errors.push('english promo description not defined');
             if (!this.__$.promotion.spanishDescription) this.errors.push('spanish promo description not defined');
         } else {
@@ -85,8 +97,8 @@ class RateUpdatHelper {
 
 
             // si hay dia de excepcion seleccionado
-            if (Object.keys(this.__$.prices.exceptions.apply).some(k => this.__$.prices.exceptions.apply[k])) {
-                let exceptions = this.__$.prices.exceptions;
+            if (this.__$.prices.exceptions && Object.keys(this.__$.prices.exceptions.apply).some(k => this.__$.prices.exceptions.apply[k])) {
+                const { exceptions } = this.__$.prices;
                 if (exceptions.adult.some(rate => toNumber(rate.price) <= 0)) {
                     this.errors.push('exception adult rates must be greater than 0');
                 }
@@ -104,7 +116,6 @@ class RateUpdatHelper {
                     this.warnings.push('some exception junior rates are 0');
                 }
             }
-
         }
 
         // precios de personas extra
@@ -117,7 +128,7 @@ class RateUpdatHelper {
                 toNumber(this.__$.room?.maxChildrenOccupancy) > 0
                 && toNumber(this.__$.prices?.extra?.child) <= 0
             ) {
-                this.warnings.push('extra children rate is 0');
+                this.warnings.push('extra child rate is 0');
             }
 
             if (this.__$.room.juniorAllowed
@@ -132,24 +143,24 @@ class RateUpdatHelper {
                 const { rules } = this.__$;
                 // sea a especificado ventana de reserva
                 if (rules?.bookingWindow) {
-                    if (rules?.bookingWindow?.end?.isSameOrAfter(rules?.bookingWindow?.start)) {
+                    if (!moment(rules?.bookingWindow?.end).isSameOrAfter(rules?.bookingWindow?.start)) {
                         this.errors.push('booking window end date must be after start date');
                     }
                 }
 
                 if (rules?.maxGuests !== null && rules?.maxGuests !== '') {
                     if (toNumber(rules?.maxGuests) <= 0) {
-                        this.errors.push('max guests must be greater than 0');
+                        this.errors.push('max peole must be greater than 0');
                     }
 
                     const maxGuests = toNumber(rules?.maxGuests);
 
                     if (toNumber(rules?.children) > maxGuests) {
-                        this.errors.push('children number cannot be greater than max guests');
+                        this.errors.push('children number cannot be greater than max peole');
                     }
 
                     if (toNumber(rules?.maxAdults) > maxGuests) {
-                        this.errors.push('max adults cannot be greater than max guests');
+                        this.errors.push('max adults cannot be greater than max peole');
                     }
                 }
 
@@ -167,11 +178,11 @@ class RateUpdatHelper {
                 }
 
                 if (
-                    rules?.maxAdvBooking !== null
-                    && rules?.maxAdvBooking !== ''
-                    && toNumber(rules?.maxAdvBooking) > 0
+                    rules?.maxAdvanceBooking !== null
+                    && rules?.maxAdvanceBooking !== ''
+                    && toNumber(rules?.maxAdvanceBooking) > 0
                 ) {
-                    if (toNumber(rules?.minAdvBooking) > toNumber(rules?.maxAdvBooking)) {
+                    if (toNumber(rules?.minAdvanceBooking) > toNumber(rules?.maxAdvanceBooking)) {
                         this.errors.push('min advance booking cannot be greater than max advance booking');
                     }
                 }
@@ -191,35 +202,34 @@ class RateUpdatHelper {
     }
 
     createRQ() {
-        if (this.errors?.length > 0) return;
+        if (this.errors?.length > 0) return null;
 
         let prices = null;
 
         if (this.__$.areOccupancyPrices) {
             prices = {
-                exceptionDays: this.__$.exceptions.apply,
-                base: [this.__$.prices.byOccupancy.adult],
-                exceptions: [],
+                exceptionDays: this.__$.prices.exceptions?.apply,
+                base: this.__$.prices.byOccupancy.adult,
             };
 
             if (this.__$.room.maxChildrenOccupancy > 0) {
-                prices.base.concat(this.__$.prices.byOccupancy.child);
+                prices.base = prices.base.concat(this.__$.prices.byOccupancy.child);
             }
 
             if (this.__$.room.maxChildrenOccupancy > 0 && this.__$.room.juniorsAllowed) {
-                prices.base.concat(this.__$.prices.byOccupancy.junior);
+                prices.base = prices.base.concat(this.__$.prices.byOccupancy.junior);
             }
 
             // si hay dia de excepcion seleccionado
-            if (Object.keys(prices.exceptionDays).some(k => prices.exceptionDays[k])) {
-                prices.exceptions.concat(this.__$.prices.exceptions.adult);
+            if (prices.exceptionDays && Object.keys(prices.exceptionDays).some(k => prices.exceptionDays[k])) {
+                prices.exceptions = this.__$.prices.exceptions.adult;
 
                 if (this.__$.room.maxChildrenOccupancy > 0) {
-                    prices.exceptions.concat(this.__$.prices.exceptions.child);
+                    prices.exceptions = prices.exceptions.concat(this.__$.prices.exceptions.child);
                 }
 
                 if (this.__$.room.maxChildrenOccupancy > 0 && this.__$.room.juniorsAllowed) {
-                    prices.exceptions.concat(this.__$.prices.exceptions.junior);
+                    prices.exceptions = prices.exceptions.concat(this.__$.prices.exceptions.junior);
                 }
             }
         } else {
@@ -248,14 +258,40 @@ class RateUpdatHelper {
             }
         }
 
+        if (this.__$.promotion) prices.promotion = this.__$.promotion;
+
         const RQ = {
             roomId: this.__$.room?.id,
             ratePlanCode: this.__$.ratePlan?.code,
-            startDate: this.__$.dateRange?.start.format('YYYY-MM-DD'),
-            endDate: this.__$.dateRange?.end.format('YYYY-MM-DD'),
+            startDate: moment(this.__$.dateRange?.start).format('YYYY-MM-DD'),
+            endDate: moment(this.__$.dateRange?.end).format('YYYY-MM-DD'),
             isOccupancyRate: this.__$.areOccupancyPrices,
             prices,
         };
+
+        if (this.__$.overrideRules) {
+            const { rules } = this.__$;
+
+            const rulesRQ = {
+                noArrival: rules.noArrival,
+            };
+
+            if (toNumber(rules.minLOS) > 0) rulesRQ.minLOS = toNumber(rules.minLOS);
+            if (toNumber(rules.maxLOS) > 0) rulesRQ.maxLOS = toNumber(rules.maxLOS);
+            if (toNumber(rules.minAdvanceBooking) > 0) rulesRQ.minAdvanceBooking = toNumber(rules.minAdvanceBooking);
+            if (toNumber(rules.maxAdvanceBooking) > 0) rulesRQ.maxAdvanceBooking = toNumber(rules.maxAdvanceBooking);
+
+            if (rules?.bookingWindow) {
+                rulesRQ.bookingWindow = {
+                    startDate: moment(rules.bookingWindow.start).format('YYYY-MM-DD'),
+                    endDate: moment(rules.bookingWindow.end).format('YYYY-MM-DD'),
+                };
+            }
+
+            RQ.rules = rulesRQ;
+        }
+
+        return RQ;
     }
 }
 

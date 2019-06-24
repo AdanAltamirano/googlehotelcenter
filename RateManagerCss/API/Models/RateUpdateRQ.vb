@@ -12,9 +12,6 @@ Namespace API.Models
         Public Property RateId As Integer
         Public Property HotelId As Integer?
         Public Property RatePlanCode As String
-        Public Property ExtraAdultPrice As Decimal?
-        Public Property ExtraChildPrice As Decimal?
-        Public Property ExtraJuniorPrice As Decimal?
         Public Property IsOccupancyRate As Boolean?
         Public Property Rules As RateUpdateRQRules
         Public Property Prices As RateUpdateRQPrices
@@ -23,6 +20,7 @@ Namespace API.Models
     Public Class RateUpdateRQPrices
         Public Property Base As List(Of DailyRateDetailPrice)
         Public Property Exceptions As List(Of DailyRateDetailPrice)
+        Public Property Extra As List(Of DailyRateDetailPrice)
         Public Property ExceptionDays As DaysOfWeek
         Public Property Promotion As RateUpdateRQPromotion
     End Class
@@ -41,12 +39,11 @@ Namespace API.Models
         Public Property UseDefaultRules As Boolean
         Public Property MinLOS As Integer?
         Public Property MaxLOS As Integer?
-        Public Property MaxAdvnaceBooking As Integer?
-        Public Property MinAdvnaceBooking As Integer?
+        Public Property MaxAdvanceBooking As Integer?
+        Public Property MinAdvanceBooking As Integer?
         Public Property BookingWindow As RateUpdateRQBookingWindow
         Public Property GuestsRestrictions As RateUpdateRQGuestsRestriction
     End Class
-
     Public Class DaysOfWeek
         Public Property Sun As Boolean
         Public Property Mon As Boolean
@@ -113,18 +110,6 @@ Namespace API.Models
             .Must(Function(Root, HotelId, Context) HotelId Is Nothing OrElse HotelId > 0) _
             .WithMessage("HotelId must be greater than 0")
 
-            RuleFor(Function(x) x.ExtraAdultPrice) _
-            .Must(Function(Root, ExtraAdultPrice, Context) ExtraAdultPrice Is Nothing OrElse ExtraAdultPrice >= 0) _
-            .WithMessage("ExtraAdultPrice must be greater than 0")
-
-            RuleFor(Function(x) x.ExtraChildPrice) _
-            .Must(Function(Root, ExtraChildPrice, Context) ExtraChildPrice Is Nothing OrElse ExtraChildPrice >= 0) _
-            .WithMessage("ExtraChildPrice must be greater than 0")
-
-            RuleFor(Function(x) x.ExtraJuniorPrice) _
-            .Must(Function(Root, ExtraJuniorPrice, Context) ExtraJuniorPrice Is Nothing OrElse ExtraJuniorPrice >= 0) _
-            .WithMessage("ExtraJuniorPrice must be greater than 0")
-
             RuleFor(Function(x) x.IsOccupancyRate) _
             .Must(Function(Root, IsOccupancyRate, Context) Not IsOccupancyRate Is Nothing) _
             .WithMessage("IsOccupancyRate must not be empty")
@@ -136,11 +121,11 @@ Namespace API.Models
         Inherits AbstractValidator(Of RateUpdateRQRules)
 
         Public Sub New()
-            RuleFor(Function(x) x.MaxAdvnaceBooking) _
+            RuleFor(Function(x) x.MaxAdvanceBooking) _
             .Must(Function(Root, MaxAdvnaceBooking, Context) MaxAdvnaceBooking Is Nothing OrElse MaxAdvnaceBooking > 0) _
             .WithMessage("AdvnaceBooking must be greater than 0")
 
-            RuleFor(Function(x) x.MinAdvnaceBooking) _
+            RuleFor(Function(x) x.MinAdvanceBooking) _
             .Must(Function(Root, MinAdvnaceBooking, Context) MinAdvnaceBooking Is Nothing OrElse MinAdvnaceBooking > 0) _
             .WithMessage("MinAdvnaceBooking must be greater than 0")
 

@@ -30,24 +30,29 @@ Namespace API.Controllers
         Public Function RateAdd(<FromBody> RQ As RateUpdateRQ, HotelId As Integer) As Net.Http.HttpResponseMessage
             RQ.HotelId = HotelId
             Dim serviceRQ As DTO.RateUpdateRQ = MappingRateUpdateRQ(RQ)
+            Dim result As KeyValuePair(Of String, String) = Service.AddRate(serviceRQ)
 
-            If Service.AddRate(serviceRQ) Then
+            If result.Key = 1 Then
                 Return NoContent()
             End If
-            Return BadRequest(KeyValuePair.Create("Error", "Error"))
+            Return BadRequest(result)
         End Function
 
         'POST api/hotels/1/rates/
-        <Route("{RateId:int}"), HttpGet>
-        Public Function RateUpdate(<FromBody> RQ As RateUpdateRQ, HotelId As Integer, RateId As Integer) As Net.Http.HttpResponseMessage
+        <Route("{RateId:int}/daily/{day:datetime}"), HttpPost>
+        Public Function RateUpdate(<FromBody> RQ As RateUpdateRQ, HotelId As Integer, RateId As Integer, day As Date) As Net.Http.HttpResponseMessage
 
             RQ.HotelId = HotelId
             RQ.RateId = RateId
+            RQ.StartDate = day
+            RQ.EndDate = day
             Dim serviceRQ As DTO.RateUpdateRQ = MappingRateUpdateRQ(RQ)
-            If Service.AddRate(serviceRQ) Then
+            Dim result As KeyValuePair(Of String, String) = Service.AddRate(serviceRQ)
+
+            If result.Key = 1 Then
                 Return NoContent()
             End If
-            Return BadRequest(KeyValuePair.Create("Error", "Error"))
+            Return BadRequest(result)
         End Function
 
         Private Function MappingRateUpdateRQ(RQ As RateUpdateRQ) As DTO.RateUpdateRQ
@@ -83,10 +88,23 @@ Namespace API.Controllers
                 Next
             End If
 
+            Dim ServiceRQPricesExtra As New List(Of DTO.DailyRateDetailPrice)
+            If Not RQ.Prices.Extra Is Nothing Then
+                For Each PriceExtra As DailyRateDetailPrice In RQ.Prices.Extra
+                    Dim ServiceRQPriceExtra As New DTO.DailyRateDetailPrice With {
+                        .Type = PriceExtra.Type,
+                        .Price = PriceExtra.Price,
+                        .Occupation = PriceExtra.Occupation
+                        }
+                    ServiceRQPricesExtra.Add(ServiceRQPriceExtra)
+                Next
+            End If
+
             Dim ServiceRQPrices As New DTO.RateUpdatePrices With {
                 .Base = ServiceRQPricesBase,
                 .Exceptions = ServiceRQPricesException,
-                .ExceptionDays = If(RQ.Prices?.ExceptionDays Is Nothing, "NNNNNNN", GetDaysOfWeekString(RQ.Prices.ExceptionDays))
+                .ExceptionDays = If(RQ.Prices?.ExceptionDays Is Nothing, "NNNNNNN", GetDaysOfWeekString(RQ.Prices.ExceptionDays)),
+                .Extra = ServiceRQPricesExtra
                 }
             ServiceRQ.Prices = ServiceRQPrices
 
@@ -123,8 +141,8 @@ Namespace API.Controllers
                 .UseDefaultRules = RQ.Rules.UseDefaultRules,
                 .MinLOS = RQ.Rules.MinLOS,
                 .MaxLOS = RQ.Rules.MaxLOS,
-                .MaxAdvanceBooking = RQ.Rules.MaxAdvnaceBooking,
-                .MinAdvanceBooking = RQ.Rules.MinAdvnaceBooking,
+                .MaxAdvanceBooking = RQ.Rules.MaxAdvanceBooking,
+                .MinAdvanceBooking = RQ.Rules.MinAdvanceBooking,
                 .NoArrival = If(RQ.Rules?.NoArrival Is Nothing, "NNNNNNN", GetDaysOfWeekString(RQ.Rules.NoArrival)),
                 .GuestsRestrictions = ServiceRQGuestsRestrictions,
                 .BookingWindow = ServiceRQBookingWindow

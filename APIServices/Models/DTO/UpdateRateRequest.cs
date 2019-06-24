@@ -14,9 +14,6 @@ namespace APIServices.Models.DTO
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string RatePlanCode { get; set; }
-        public decimal? ExtraAdultPrice { get; set; }
-        public decimal? ExtraChildPrice { get; set; }
-        public decimal? ExtraJuniorPrice { get; set; }
         public string RateCode { get; set; }
         public bool IsOccupancyRate { get; set; }
         public RateUpdatePrices Prices { get; set; }
@@ -27,6 +24,7 @@ namespace APIServices.Models.DTO
     {
         public List<DailyRateDetailPrice> Base { get; set; } = new List<DailyRateDetailPrice>();
         public List<DailyRateDetailPrice> Exceptions { get; set; } = new List<DailyRateDetailPrice>();
+        public List<DailyRateDetailPrice> Extra { get; set; } = new List<DailyRateDetailPrice>();
         public string ExceptionDays { get; set; }
         public RateUpdateRQPromotion Promotion { get; set; }
     }

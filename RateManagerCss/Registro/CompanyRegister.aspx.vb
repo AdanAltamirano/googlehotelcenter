@@ -104,7 +104,10 @@ Partial Class CompanyRegister
                 End If
             End If
         End If
-        
+        If status = 2 Then
+            Me.cmbPublish.Visible = False
+            Me.cmbDesactivar.Visible = True
+        End If
     End Sub
 
     Private Sub cmdAceptar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdAceptar.Click
@@ -175,6 +178,7 @@ Partial Class CompanyRegister
         If status = 2 Then
             Me.cmbPublish.Visible = False
         End If
+        Me.cmbDesactivar.Text = PortalCulture.GetString("01521")
     End Sub
 
     Private Sub BtnNuevo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnNuevo.Click
@@ -231,6 +235,11 @@ Partial Class CompanyRegister
                 End If
 
             End If
+        End If
+    End Sub
+    Private Sub cmbDesactivar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmbDesactivar.Click
+        If EmpresaModulo1.Desactiva_Empresa(idempresa) Then
+            BtnNuevo_Click(Nothing, Nothing)
         End If
     End Sub
 End Class
