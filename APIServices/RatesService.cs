@@ -42,7 +42,6 @@ namespace APIServices
                     .Select(x => new DailyRateDetailPrice
                     {
                         Id = x.Id,
-                        RateId = x.RateId,
                         Occupation = x.Adults,
                         Type = PaxType.Adult,
                         Price = Utilities.IsInUVMap(dayRate.ExceptionMap, day) ? (x.AdultExceptionPrice ?? 0) : x.AdultPrice,
@@ -54,7 +53,6 @@ namespace APIServices
                     .Select(x => new DailyRateDetailPrice
                     {
                         Id = x.Id,
-                        RateId = x.RateId,
                         Occupation = x.Children,
                         Type = PaxType.Child,
                         Price = Utilities.IsInUVMap(dayRate.ExceptionMap, day) ? (x.ChildExceptionPrice ?? 0) : x.ChildPrice,
@@ -69,12 +67,35 @@ namespace APIServices
                     .Select(x => new DailyRateDetailPrice
                     {
                         Id = x.Id,
-                        RateId = x.RateId,
                         Occupation = x.Children,
                         Type = PaxType.Junior,
                         Price = Utilities.IsInUVMap(dayRate.ExceptionMap, day) ? (x.JuniorExceptionPrice ?? 0) : x.JuniorPrice ?? 0,
                     }).GroupBy(x => x.Occupation).Select(x => x.FirstOrDefault());
+
                 result.Prices.AddRange(juniors);
+
+
+                // extras
+                result.Extras.Add(new DailyRateDetailPrice
+                {
+                    Occupation = 1,
+                    Type = PaxType.Adult,
+                    Price = dayRateDetails.FirstOrDefault()?.ExtraAdultPrice ?? 0
+                });
+
+                result.Extras.Add(new DailyRateDetailPrice
+                {
+                    Occupation = 1,
+                    Type = PaxType.Child,
+                    Price = dayRateDetails.FirstOrDefault()?.ChildExceptionPrice ?? 0
+                });
+
+                result.Extras.Add(new DailyRateDetailPrice
+                {
+                    Occupation = 1,
+                    Type = PaxType.Junior,
+                    Price = dayRateDetails.FirstOrDefault()?.JuniorExceptionPrice ?? 0
+                });
 
             }
 

@@ -232,7 +232,6 @@ class RateUpdatHelper {
                 }
             }
         } else {
-
             prices = {
                 base: [
                     { occupation: 1, type: 1, price: this.__$.prices.byRoom.adult },

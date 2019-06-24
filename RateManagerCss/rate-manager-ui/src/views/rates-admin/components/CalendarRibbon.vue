@@ -81,7 +81,7 @@ export default {
                 this.$store.commit('update', { start, end });
             }
         },
-         stateDateRangeStart(newStart) {
+        stateDateRangeStart(newStart) {
             if (!newStart.isSame(this.currentDay, 'day')) {
                 this.currentDay = newStart.toDate();
             }

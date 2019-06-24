@@ -39,11 +39,13 @@ Namespace API.Controllers
         End Function
 
         'POST api/hotels/1/rates/
-        <Route("{RateId:int}"), HttpPost>
-        Public Function RateUpdate(<FromBody> RQ As RateUpdateRQ, HotelId As Integer, RateId As Integer) As Net.Http.HttpResponseMessage
+        <Route("{RateId:int}/daily/{day:datetime}"), HttpPost>
+        Public Function RateUpdate(<FromBody> RQ As RateUpdateRQ, HotelId As Integer, RateId As Integer, day As Date) As Net.Http.HttpResponseMessage
 
             RQ.HotelId = HotelId
             RQ.RateId = RateId
+            RQ.StartDate = day
+            RQ.EndDate = day
             Dim serviceRQ As DTO.RateUpdateRQ = MappingRateUpdateRQ(RQ)
             Dim result As KeyValuePair(Of String, String) = Service.AddRate(serviceRQ)
 
