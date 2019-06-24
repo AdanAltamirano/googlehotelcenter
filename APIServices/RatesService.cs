@@ -286,8 +286,6 @@ namespace APIServices
                     int rateId = updateRQ.RateId;
                     var rate = db.Tarifas?.Single(t => t.idTarifa == rateId);
 
-                    updateRQ.Prices.ExceptionDays = rate.Excepciones;
-
                     RateUpdateRQBookingWindow bookingWindow = new RateUpdateRQBookingWindow
                     {
                         StartDate = rate.BookingWindowStart,

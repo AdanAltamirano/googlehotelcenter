@@ -88,10 +88,23 @@ Namespace API.Controllers
                 Next
             End If
 
+            Dim ServiceRQPricesExtra As New List(Of DTO.DailyRateDetailPrice)
+            If Not RQ.Prices.Extra Is Nothing Then
+                For Each PriceExtra As DailyRateDetailPrice In RQ.Prices.Extra
+                    Dim ServiceRQPriceExtra As New DTO.DailyRateDetailPrice With {
+                        .Type = PriceExtra.Type,
+                        .Price = PriceExtra.Price,
+                        .Occupation = PriceExtra.Occupation
+                        }
+                    ServiceRQPricesExtra.Add(ServiceRQPriceExtra)
+                Next
+            End If
+
             Dim ServiceRQPrices As New DTO.RateUpdatePrices With {
                 .Base = ServiceRQPricesBase,
                 .Exceptions = ServiceRQPricesException,
-                .ExceptionDays = If(RQ.Prices?.ExceptionDays Is Nothing, "NNNNNNN", GetDaysOfWeekString(RQ.Prices.ExceptionDays))
+                .ExceptionDays = If(RQ.Prices?.ExceptionDays Is Nothing, "NNNNNNN", GetDaysOfWeekString(RQ.Prices.ExceptionDays)),
+                .Extra = ServiceRQPricesExtra
                 }
             ServiceRQ.Prices = ServiceRQPrices
 
