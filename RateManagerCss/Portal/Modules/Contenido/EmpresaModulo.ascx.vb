@@ -1102,4 +1102,23 @@ Partial Class EmpresaModulo
     Private Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.PreRender
         Carga_Idioma()
     End Sub
+
+    Public Function Desactiva_Empresa(ByVal idEmpresa As Integer) As Boolean
+        Dim companyData As EmpresaDatos = New EmpresaDatos
+
+        With New Empresas
+            companyData = .LoadCompanyByID(idEmpresa)
+
+            With companyData.Tables(EmpresaDatos.COMPANY_TABLE)
+
+                If Not .Rows Is Nothing AndAlso .Rows.Count = 1 Then
+                    .Rows(0).Item(EmpresaDatos.FIELD_Status) = 1
+                End If
+
+            End With
+
+            Return .UpdateStatusCompany(companyData)
+        End With
+
+    End Function
 End Class
