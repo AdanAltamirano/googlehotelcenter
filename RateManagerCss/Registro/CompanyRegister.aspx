@@ -14,7 +14,6 @@
 	<body>
 		<form id="Form1" method="post" runat="server">
 		 <div class="mDiv">
-            </div>
             <div class="title">
                 <asp:Label ID="lblTitulo" runat="server" EnableViewState="False" Text="Registro de Empresa" CssClass="tituloSeccion"></asp:Label>
             </div>
@@ -32,6 +31,7 @@
 							Width="64px"></asp:Button>
 						<asp:Button id="cmdAceptar" runat="server" Text="Guardar" CssClass="Button"></asp:Button>
 						<asp:Button id="cmbPublish" runat="server" Text="Guardar y Publicar" CssClass="Button"></asp:Button>
+                        <asp:Button id="cmbDesactivar" runat="server" Text="Desactivar" CausesValidation="false" CssClass="Button" Visible="false"></asp:Button>
                         <asp:Button id="cmdSaveHouse" ValidationGroup="Houses" runat="server" Text="Guardar" CssClass="Button" Visible="false"></asp:Button>
 					</td>
 				</tr>

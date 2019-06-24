@@ -12,7 +12,7 @@ Option Explicit On
 
 
 Partial Public Class CompanyRegister
-
+    
     '''<summary>
     '''Control lblTitulo.
     '''</summary>
@@ -21,7 +21,7 @@ Partial Public Class CompanyRegister
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
     Protected WithEvents lblTitulo As Global.System.Web.UI.WebControls.Label
-
+    
     '''<summary>
     '''Control cmdCancelar.
     '''</summary>
@@ -30,7 +30,7 @@ Partial Public Class CompanyRegister
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
     Protected WithEvents cmdCancelar As Global.System.Web.UI.WebControls.Button
-
+    
     '''<summary>
     '''Control BtnNuevo.
     '''</summary>
@@ -39,7 +39,7 @@ Partial Public Class CompanyRegister
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
     Protected WithEvents BtnNuevo As Global.System.Web.UI.WebControls.Button
-
+    
     '''<summary>
     '''Control cmdAceptar.
     '''</summary>
@@ -48,7 +48,7 @@ Partial Public Class CompanyRegister
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
     Protected WithEvents cmdAceptar As Global.System.Web.UI.WebControls.Button
-
+    
     '''<summary>
     '''Control cmbPublish.
     '''</summary>
@@ -57,7 +57,16 @@ Partial Public Class CompanyRegister
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
     Protected WithEvents cmbPublish As Global.System.Web.UI.WebControls.Button
-
+    
+    '''<summary>
+    '''Control cmbDesactivar.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents cmbDesactivar As Global.System.Web.UI.WebControls.Button
+    
     '''<summary>
     '''Control cmdSaveHouse.
     '''</summary>
