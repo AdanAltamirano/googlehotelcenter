@@ -351,12 +351,12 @@ namespace APIServices
                     //Se recorren las tarifas en conflicto
                     foreach (var of in overlappedFares)
                     {
-                        if (startDate > of.FechaInicia && endDate > of.FechaFinaliza)
+                        if(startDate > of.FechaInicia && endDate >= of.FechaFinaliza)
                         {
                             //Actualiza la fecha final de la tarifa en conflicto a un día antes de la ficha inicial de la nueva tarifa
                             of.FechaFinaliza = startDate.AddDays(-1);
                         }
-                        else if (startDate < of.FechaInicia && endDate < of.FechaFinaliza)
+                        else if (startDate <= of.FechaInicia && endDate < of.FechaFinaliza)
                         {
                             //Actualiza la fecha inicial de la tarifa en conflicto a un día después de la fecha final de la nueva tarifa
                             of.FechaInicia = endDate.AddDays(1);
