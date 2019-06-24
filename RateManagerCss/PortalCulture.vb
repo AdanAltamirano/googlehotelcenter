@@ -66,10 +66,11 @@ Public Class PortalCulture
 		Dim resource As String = "-"
 		Try
 			Dim ci As CultureInfo = GetCulture()
-			If Not ci Is Nothing Then
-				Thread.CurrentThread.CurrentUICulture = ci
-			End If
-			Dim rm As ResourceManager = New ResourceManager(BaseName, System.Reflection.Assembly.GetExecutingAssembly())
+            If Not ci Is Nothing Then
+                Thread.CurrentThread.CurrentUICulture = ci
+            End If
+
+            Dim rm As ResourceManager = New ResourceManager(BaseName, System.Reflection.Assembly.GetExecutingAssembly())
             resource = rm.GetString(idString) & IIf(w2p, ":", "")
 		Catch e As Exception
 			resource = "*"

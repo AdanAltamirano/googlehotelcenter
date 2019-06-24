@@ -1,5 +1,5 @@
 <template>
-    <b-card title="busqueda">
+    <!--<b-card title="busqueda">
         <b-row>
             <b-col md="6" class="my-1">
                 <b-input-group>
@@ -22,7 +22,10 @@
                 </b-collapse>
             </b-col>
         </b-row>
-    </b-card>
+    </b-card>-->
+    <div>
+        hola
+    </div>
 </template>
 
 <script>

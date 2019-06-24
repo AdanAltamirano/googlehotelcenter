@@ -12,11 +12,11 @@ export default new Vuex.Store({
     },
     mutations:
     {
-        GetAllReservations()
+        GetAllReservationsById(state, filter)
         {
-            reservationService.GetAll(this.state.hotelId).then((response) =>
+            reservationService.GetById(state.hotelId, filter).then((response) =>
             {
-                this.state.reservations = response.body;
+                state.reservations = response.body;
             })
         }
     },

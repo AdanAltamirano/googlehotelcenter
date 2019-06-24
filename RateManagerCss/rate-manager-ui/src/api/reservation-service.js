@@ -5,7 +5,7 @@ import Interceptor from './interceptor';
 Vue.use(VueResource);
 Vue.http.interceptors.push(Interceptor);
 
-const resource = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations/{hotelId}`);
+const resource = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations/{hotelId}{?filter}`);
 
 export default
 {
@@ -14,10 +14,11 @@ export default
      * @param {*} hotelId
      * @return {Promise<[Any]>}
      */
-    GetAll(hotelId)
+    GetById(hotelId, filter)
     {
         return resource.get({
-            hotelId: hotelId
+            hotelId,
+            filter
         });
     }
 }
