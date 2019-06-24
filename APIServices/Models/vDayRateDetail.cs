@@ -24,5 +24,8 @@ namespace APIServices.Models
         public Nullable<decimal> ChildExceptionPrice { get; set; }
         public Nullable<decimal> JuniorPrice { get; set; }
         public Nullable<decimal> JuniorExceptionPrice { get; set; }
+        public decimal ExtraAdultPrice { get; set; }
+        public decimal ExtraChildPrice { get; set; }
+        public Nullable<decimal> ExtraJuniorPrice { get; set; }
     }
 }

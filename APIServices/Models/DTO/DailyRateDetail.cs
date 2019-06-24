@@ -13,12 +13,13 @@ namespace APIServices.Models.DTO
         public decimal? Discount { get; set; }
         public string Currency { get; set; }
         public List<DailyRateDetailPrice> Prices { get; set; } = new List<DailyRateDetailPrice>();
+        public List<DailyRateDetailPrice> Extras { get; set; } = new List<DailyRateDetailPrice>();
     }
 
     public class DailyRateDetailPrice
     {
-        public int Id { get; set; }
-        public int RateId { get; set; }
+        public int? Id { get; set; }
+        public int? RateId { get; set; }
         public int Occupation { get; set; }
         public PaxType Type { get; set; }
         public decimal Price { get; set; }
