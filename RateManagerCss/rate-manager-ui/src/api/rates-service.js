@@ -43,4 +43,12 @@ export default {
         return rates.save({ hotelid: hotelId }, request);
     },
 
+    dayUpdate(hotelId, rateId, day, request) {
+        return ratesByDay.save({
+            hotelid: hotelId,
+            rateid: rateId,
+            day,
+        }, request);
+    },
+
 };

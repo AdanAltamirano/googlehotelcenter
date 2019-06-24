@@ -36,9 +36,10 @@ export default {
     created() {
         EventBus.$on('api.call.begin', this.showLoader);
         EventBus.$on('api.call.end', this.hideLoader);
+        EventBus.$on('dayUpdate', this.reload);
     },
     beforeMount() {
-    // check for last work day
+        // check for last work day
         const start = Utilities.getLastWorkDay();
         const end = start.clone().add(13, 'days');
         this.$store.commit('getHotel');
@@ -70,6 +71,9 @@ export default {
         hideLoader() {
             this.loader.hide();
         },
+        reload(){
+            this.$store.commit('update', this.dateRange);
+        }
 
     },
 };

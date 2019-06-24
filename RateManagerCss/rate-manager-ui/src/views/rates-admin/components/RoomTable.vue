@@ -43,7 +43,7 @@
                         :class="{ 'bg-unavail': day.noArrival }"
                         :key="day.date"
                         v-tooltip="day.noArrival ? $t('no arrivals') : ''">
-                        <day-rate-detail :room="room" :day-rate="day" :rate="rate"/>
+                        <day-rate-detail :room="room" :day-rate="day" :rate="rate" @update=""/>
                     </div>
                 </div>
             </div>
