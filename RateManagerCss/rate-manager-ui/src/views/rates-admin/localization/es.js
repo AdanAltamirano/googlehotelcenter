@@ -54,6 +54,7 @@ export default {
     'successful update': 'actualización exitosa',
     'the form will be set to its initial state': 'el formulario se establecerá en su estado inicial',
     'yes': 'sí',
+    'close': 'cerrar',
 
 };
 /* eslint-enable */

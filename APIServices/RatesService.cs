@@ -87,14 +87,14 @@ namespace APIServices
                 {
                     Occupation = 1,
                     Type = PaxType.Child,
-                    Price = dayRateDetails.FirstOrDefault()?.ChildExceptionPrice ?? 0
+                    Price = dayRateDetails.FirstOrDefault()?.ExtraChildPrice ?? 0
                 });
 
                 result.Extras.Add(new DailyRateDetailPrice
                 {
                     Occupation = 1,
                     Type = PaxType.Junior,
-                    Price = dayRateDetails.FirstOrDefault()?.JuniorExceptionPrice ?? 0
+                    Price = dayRateDetails.FirstOrDefault()?.ExtraJuniorPrice ?? 0
                 });
 
             }

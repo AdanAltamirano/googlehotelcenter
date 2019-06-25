@@ -5,7 +5,6 @@ const proccessing = { count: 0 };
 
 export default (request) => {
     request.headers.set('Accept-Language', Vue.appConfig.language);
-    console.log(request);
     let evt = '';
     if (request.params.customTracker) {
         evt = request.params.customTracker ? `[${request.params.customTracker}]` : '';

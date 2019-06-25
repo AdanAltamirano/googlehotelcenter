@@ -39,6 +39,7 @@ Public Class RoomsController
             .MinAdultsOccupancy = r.MinAdultsOccupancy,
             .MaxAdultsOccupancy = r.MaxAdultsOccupancy,
             .MaxChildrenOccupancy = r.MaxChildrenOccupancy,
+            .JuniorsAllowed = r.JuniorsAllowed,
             .MaxOccupancy = r.MaxOccupancy,
             .Order = r.Order,
             .TotalRooms = r.TotalRooms,

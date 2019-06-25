@@ -43,6 +43,9 @@
             jQuery("#submenuDiv .dvhide").hide();
 
 
+            jQuery('*.dropdown-item[href*="rate-manager-ui"]').click(function () {
+                functionSetOptionMenu(jQuery(this)[0].href);
+            });
             //click menu header
             jQuery('#menuPrincipal ul > li a').click(function(){
 

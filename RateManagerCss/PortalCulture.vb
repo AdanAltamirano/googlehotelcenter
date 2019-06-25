@@ -61,15 +61,17 @@ Public Class PortalCulture
     End Function
 
 	Public Shared Function GetString(ByVal idString As String, Optional ByVal w2p As Boolean = False) As String
-		' "-" Indica que no se encontro la cadena
-		' "*" Indica que sucedio un error al leer el recurso
-		Dim resource As String = "-"
+        HttpContext.Current.Trace.Write("getstring--")
+        ' "-" Indica que no se encontro la cadena
+        ' "*" Indica que sucedio un error al leer el recurso
+        Dim resource As String = "-"
 		Try
 			Dim ci As CultureInfo = GetCulture()
-			If Not ci Is Nothing Then
-				Thread.CurrentThread.CurrentUICulture = ci
-			End If
-			Dim rm As ResourceManager = New ResourceManager(BaseName, System.Reflection.Assembly.GetExecutingAssembly())
+            If Not ci Is Nothing Then
+                Thread.CurrentThread.CurrentUICulture = ci
+            End If
+
+            Dim rm As ResourceManager = New ResourceManager(BaseName, System.Reflection.Assembly.GetExecutingAssembly())
             resource = rm.GetString(idString) & IIf(w2p, ":", "")
 		Catch e As Exception
 			resource = "*"

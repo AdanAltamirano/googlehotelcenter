@@ -41,6 +41,7 @@ class RateUpdatHelper {
         if (
             this.__$.promotion?.discount !== null
             && this.__$.promotion?.discount !== ''
+            && this.__$.promotion?.discount !== undefined
         ) {
             if (
                 !(toNumber(this.__$.promotion?.discount) > 0)
@@ -96,7 +97,7 @@ class RateUpdatHelper {
 
 
             // si hay dia de excepcion seleccionado
-            if (Object.keys(this.__$.prices.exceptions.apply).some(k => this.__$.prices.exceptions.apply[k])) {
+            if (this.__$.prices.exceptions && Object.keys(this.__$.prices.exceptions.apply).some(k => this.__$.prices.exceptions.apply[k])) {
                 const { exceptions } = this.__$.prices;
                 if (exceptions.adult.some(rate => toNumber(rate.price) <= 0)) {
                     this.errors.push('exception adult rates must be greater than 0');
@@ -207,7 +208,7 @@ class RateUpdatHelper {
 
         if (this.__$.areOccupancyPrices) {
             prices = {
-                exceptionDays: this.__$.prices.exceptions.apply,
+                exceptionDays: this.__$.prices.exceptions?.apply,
                 base: this.__$.prices.byOccupancy.adult,
             };
 
@@ -220,7 +221,7 @@ class RateUpdatHelper {
             }
 
             // si hay dia de excepcion seleccionado
-            if (Object.keys(prices.exceptionDays).some(k => prices.exceptionDays[k])) {
+            if (prices.exceptionDays && Object.keys(prices.exceptionDays).some(k => prices.exceptionDays[k])) {
                 prices.exceptions = this.__$.prices.exceptions.adult;
 
                 if (this.__$.room.maxChildrenOccupancy > 0) {
