@@ -445,9 +445,9 @@ namespace APIServices
             decimal childRate = 0;
             decimal juniorRate = 0;
             decimal? hotelTaxes = 0;
-            decimal? extraAdultRate = 0;
-            decimal? extraChildRate = 0;
-            decimal? extraJuniorRate = 0;
+            decimal extraAdultRate = 0;
+            decimal extraChildRate = 0;
+            decimal extraJuniorRate = 0;
 
             if (rate.Prices?.Promotion != null)
             {
@@ -484,14 +484,14 @@ namespace APIServices
                 idTipoHabitacion_Hotel = rate.RoomId,
                 FechaFinaliza = rate.EndDate,
                 FechaInicia = rate.StartDate,
-                PrecioExtraAdulto = (decimal)SetPrice(isNetRate, extraAdultRate, (decimal)hotelPlan.CommissionPercentage),
-                PrecioExtraNinio = (decimal)SetPrice(isNetRate, extraChildRate, (decimal)hotelPlan.CommissionPercentage),
-                PrecioAdolescenteExtra = (decimal)SetPrice(isNetRate, extraJuniorRate, (decimal)hotelPlan.CommissionPercentage),
+                PrecioExtraAdulto = extraAdultRate, //(decimal)SetPrice(isNetRate, extraAdultRate, (decimal)hotelPlan.CommissionPercentage),
+                PrecioExtraNinio = extraChildRate, //(decimal)SetPrice(isNetRate, extraChildRate, (decimal)hotelPlan.CommissionPercentage),
+                PrecioAdolescenteExtra = extraJuniorRate, //(decimal)SetPrice(isNetRate, extraJuniorRate, (decimal)hotelPlan.CommissionPercentage),
                 PrecioNR = isNetRate ? SetPrice(isNetRate, adultRate, (decimal)hotelPlan.CommissionPercentage) : 0,
                 NiniosRateNR = isNetRate ? childRate : 0,
-                PrecioAdolescenteNR = isNetRate ? juniorRate : 0,
-                PrecioExtraAdultoNR = isNetRate ? extraAdultRate : 0,
-                PrecioExtraNinioNR = isNetRate ? extraChildRate : 0,
+                PrecioAdolescenteNR = isNetRate ? SetPrice(isNetRate, extraJuniorRate, (decimal)hotelPlan.CommissionPercentage) : 0,
+                PrecioExtraAdultoNR = isNetRate ? SetPrice(isNetRate, extraAdultRate, (decimal)hotelPlan.CommissionPercentage) : 0,
+                PrecioExtraNinioNR = isNetRate ? SetPrice(isNetRate, extraChildRate, (decimal)hotelPlan.CommissionPercentage) : 0,
                 PrecioAdolescenteExtraNR = isNetRate ? extraJuniorRate : 0,
                 idrateplan = rate.RatePlanCode,
                 NoArrivos = rate.Rules?.NoArrival ?? "NNNNNNN",
