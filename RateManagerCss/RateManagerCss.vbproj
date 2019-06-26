@@ -26,7 +26,7 @@
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
-    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
+    <IISExpressUseClassicPipelineMode>true</IISExpressUseClassicPipelineMode>
     <UseGlobalApplicationHostFile />
     <Use64BitIISExpress />
   </PropertyGroup>
@@ -182,7 +182,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NinjAPI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NinjAPI.0.1.3-alpha\lib\net45\NinjAPI.dll</HintPath>
+      <HintPath>..\packages\NinjAPI.0.1.5-alpha\lib\net45\NinjAPI.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Oz.BillingSystem.Banking">
