@@ -1,0 +1,16 @@
+export default {
+    'Reservation number':'No. de reservación',
+    'Date':'Fecha',
+    'Client':'Cliente',
+    'Rooms':'Habitaciones',
+    'Checkin':'Salida',
+    'Checkout':'Llegada',
+    'Status':'Estatus',
+    'Reserved':'Reservado',
+    'Cancelled':'Cancelado',
+    'In process':'En proceso',
+    'All':'Todos',
+    'Reservation date':'Fecha de reservación',
+    'Arrival date':'Fecha llegada',
+    'Departure date':'Fecha salida',
+};
