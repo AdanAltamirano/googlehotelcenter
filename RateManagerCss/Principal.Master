@@ -43,11 +43,19 @@
             jQuery("#submenuDiv .dvhide").hide();
 
 
-            jQuery('*.dropdown-item[href*="rate-manager-ui"]').click(function () {
+            /*jQuery('*.dropdown-item[href*="rate-manager-ui"]').click(function () {
                 functionSetOptionMenu(jQuery(this)[0].href);
-            });
+            });*/
             //click menu header
+            window.ratemanager_ui = {
+                    isUi: false,
+                    url: null
+                };
             jQuery('#menuPrincipal ul > li a').click(function(){
+
+                var ui = jQuery(this).attr('href').indexOf('rate-manager-ui') > 0;
+                window.ratemanager_ui.isUi = ui;
+                window.ratemanager_ui.url = (ui ? jQuery(this).attr('href') : null);
 
                 var content_submenu = jQuery(this).attr('href') + '_div';
                 HideMenu();
@@ -68,6 +76,7 @@
                     try
                     {
                         window.open(firstHref.attr('href'), 'frmPrincipal');
+
                         /**/
                     } catch (error){ }
                 }
@@ -76,6 +85,8 @@
             jQuery('iframe').load(function() {
                 jQuery('#loading').hide();
                 this.contentWindow.document.body.offsetHeight + 'px';
+                if (window.ratemanager_ui.isUi)
+                    functionSetOptionMenu(window.ratemanager_ui.url);
             });
             jQuery(".submenuprin li").click(function() {
                 jQuery(this).parent("ul").toggleClass("hovered");
@@ -158,7 +169,7 @@
     </asp:ScriptManager>
     
     <header class="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar">
-        <a href="http://test.com/Ratemanager/Home.aspx" class="navbar-brand mr-0 mr-md-2" aria-label="Bootstrap">
+        <a href="<%=Request.Url.AbsolutePath%>" class="navbar-brand mr-0 mr-md-2" aria-label="Bootstrap">
 	        <img src="Includes/imagenes/istotipo-internetpowerhotel-blanco.png" style="width: 25px;">
         </a>
         <div id="menuPrincipal" class="navbar-nav-scroll">
@@ -238,7 +249,7 @@
     <div class="container-fluid contentHotelName navbar navbar-expand">
         <div id="sidebarContent">
             <button type="button" id="sidebarCollapse" class="btn btn-info">
-                <i class="fa fa-align-left"></i>
+                <i class="fas fa-bars"></i>
             </button>
          </div>
          <ul class="navbar-nav flex-row d-none d-md-flex">
@@ -296,9 +307,23 @@
     		</table>
     	</div>
     </div>
-    
-    
-    
+
+    <div class="float-chat">
+        <div id="ci6Bxl" style="z-index:100;position:absolute"></div>
+        <div id="sc6Bxl" style="display:inline"></div>
+        <div id="sd6Bxl" style="display:none"></div>
+        <script type="text/javascript">
+            var se6Bxl=document.createElement("script");
+            se6Bxl.type="text/javascript";
+            var se6Bxls=(location.protocol.indexOf("https")==0?"https":"http")+"://image.providesupport.com/js/1tirui939hq2a0wfjsj1998o4s/safe-standard.js?ps_h=6Bxl&ps_t="+new Date().getTime();
+            setTimeout("se6Bxl.src=se6Bxls;document.getElementById('sd6Bxl').appendChild(se6Bxl)",1)
+        </script>
+        <noscript>
+            <div style="display:inline">
+                <a href="http://www.providesupport.com?messenger=1tirui939hq2a0wfjsj1998o4s">Live Help Chat</a>
+            </div>
+        </noscript>
+    </div>
 
     <!--footer-->
     <%

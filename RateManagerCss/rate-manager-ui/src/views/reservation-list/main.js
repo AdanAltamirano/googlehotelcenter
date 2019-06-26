@@ -10,6 +10,8 @@ import es from './localization/es';
 import store from './store';
 import View from './view.vue';
 
+import '../../styles/base.scss';
+import 'bootstrap-vue/dist/bootstrap-vue.css';
 
 Vue.use(BootstrapVue);
 
@@ -21,8 +23,7 @@ Vue.use(VueMoment, {
 
 Vue.use(VCalendar);
 
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap-vue/dist/bootstrap-vue.css';
+
 
 new Vue({
     store,
