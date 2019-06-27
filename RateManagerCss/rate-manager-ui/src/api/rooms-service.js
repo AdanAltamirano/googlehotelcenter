@@ -19,7 +19,7 @@ export default {
      * @param {String} orderBy
      * @param {Number} pageSize
      * @param {Number} page
-     * @returns {Promise<[Any]>}
+     * @returns { Promise<[Any]> }
      */
     getList(hotelId, filter, orderBy, pageSize, page) {
         return rooms.get({

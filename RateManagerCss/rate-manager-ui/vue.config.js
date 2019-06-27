@@ -31,11 +31,15 @@ module.exports = {
             template: 'public/rates-admin.aspx',
             filename: 'rates-admin.aspx',
         },
-        reservation_list:
-        {
+        reservation_list: {
             entry: 'src/views/reservation-list/main.js',
             template: 'public/reservation-list.aspx',
             filename: 'reservation-list.aspx',
+        },
+        hotel_list: {
+            entry: 'src/views/hotel-list/main.js',
+            template: 'public/hotel-list.aspx',
+            filename: 'hotel-list.aspx',
         },
         // subpage: 'src/subpage/main.js'
     },

@@ -28,9 +28,23 @@
                                         :popover="{ placement: 'bottom', visibility: 'click' }"
                                         :columns="2"></v-date-picker>
                                     </b-form-group>
+                                    <b-form-group class="ml-5 mr-3 mb-3" label="Estado">
+                                        <b-form-select v-model="form.status" :options="status"></b-form-select>
+                                    </b-form-group>
+                                    <b-form-group class="mr-3 mb-3" label="Tipo de habitacion">
+                                        <b-form-select></b-form-select>
+                                    </b-form-group>
                                 </b-form>
                                 <b-form inline>
-                                    <b-button @click="search" variant="primary">Buscar</b-button>
+                                    <b-form-group class="mr-3 mb-3" label="Nombre del cliente">
+                                        <b-form-input v-model="form.clientName"></b-form-input>
+                                    </b-form-group>
+                                    <b-form-group class="mr-5 mb-3" label="Origen">
+                                        <b-form-select></b-form-select>
+                                    </b-form-group>
+                                    <b-form-group class="mb-3" label="">
+                                        <b-button @click="search" variant="primary">Buscar</b-button>
+                                    </b-form-group>
                                 </b-form>
                             </b-card>
                         </b-collapse>
@@ -42,45 +56,51 @@
             :fields="fields" 
             :busy="isBusy" 
             :filter="filter" 
-            :per-page="perPage" 
+            :per-page="0" 
             :current-page="currentPage" 
-            :items="listReservation">
+            :items="fill">
                 <div slot="table-busy" class="text-center text-danger my-2">
                     <b-spinner class="align-middle"></b-spinner>
                     <strong>&nbsp;Cargando...</strong>
                 </div>
             </b-table>
-
-            <b-pagination align="right" v-model="currentPage" :total-rows="rows" :per-page="perPage" aria-controls="my-table"></b-pagination>
+            <filter></filter>
+            <b-pagination aria-controls="my-table" align="right"
+            v-model="currentPage" 
+            @change="pageChange"
+            :total-rows="1000"
+            :per-page="perPage"
+           ></b-pagination>
         </b-container>
     </div>
 </template>
 
 <script>
-import FilterAdv from './components/Filter.vue';
-
+import Filter from './components/Filter.vue';
+import reservationService from '../../api/reservation-service';
 export default {
     name: 'app',
     components: {
-        FilterAdv
+        Filter
     },
     beforeMount() {
-        this.$store.commit('GetAllReservationsById');
-    },
-    mounted() {
-        this.isBusy = true;
+        this.get();
     },
     data() {
         return {
+            items: [],
+            filter_url: null,
             isBusy: false,
             currentPage: 1,
-            perPage: 5,
+            perPage: 8,
+            totalRows: null,
             fields: {
                 confirmNumber: {
                     label: this.$t('Reservation Number')
                 },
                 client: {
-                    label: this.$t('Client')
+                    label: this.$t('Client'),
+                    sortable: true
                 },
                 reservationDate: {
                     label: this.$t('Date'),
@@ -104,44 +124,53 @@ export default {
             },
             filter: null,
             byTypeDates: [
-                {text:'Fecha de Reservacion', value: 'ReservationDate'},
-                {text:'Fecha llegada', value: 'CheckOut'},
-                {text:'Fecha salida', value: 'CheckIn'}
+                {text: this.$t('Reservation date'), value: 'ReservationDate'},
+                {text: this.$t('Arrival date'), value: 'CheckOut'},
+                {text: this.$t('Departure date'), value: 'CheckIn'}
+            ],
+            status:[
+                {text: '-- ' + this.$t('All') + ' --', value: 0},
+                {text: this.$t('Reserved'), value: 1},
+                {text: this.$t('Cancelled'), value: 3},
+                {text: this.$t('In process'), value: 4}
             ],
             form: {
                 byDateType: 'ReservationDate',
                 dateRange: null,
+                status: 0,
+                clientName: null
             }
         }
     },
     computed: {
-        listReservation() {
-            this.isBusy = false;
-            console.log('all-reservation', this.$store.getters.reservations);
-            return this.$store.getters.reservations;
+        fill() {
+            return this.items;
         },
         rows() {
-            return this.$store.getters.reservations.length;
+            return this.totalRows;
         },
     },
     methods: {
+        get() {
+            this.filter_url === '' ? null : this.filter_url;
+            this.isBusy = true;
+
+            reservationService.GetAll(this.filter_url, this.currentPage, this.perPage).then((response) => {
+                console.log(response);
+                this.totalRows = response.headers.map.x-total-count[0];
+                this.items = response.body;
+                this.isBusy = false;
+            })
+        },
+        pageChange(page) {
+            this.currentPage = page;
+            this.get();
+        },
         dateFormat(value) {
             return this.$moment(value).format('D MMM YYYY');
         },
         statusFormat(value) {
-            let status = '';
-            switch(value) {
-                case 1: 
-                    status = this.$t('Reserved');
-                    break;
-                case 3:
-                    status = this.$t('Cancelled');
-                    break;
-                case 4:
-                    status = this.$t('In process');
-                    break;
-            }
-            return status;
+            return this.status.filter((s) => s.value === value)[0].text;
         },
         rowClass(item, type) {
             if (!item) return;
@@ -149,10 +178,21 @@ export default {
         },
         search()
         {
-            let filter = '';
-            filter += this.form.byDateType + ' gt ' + this.$moment(this.form.dateRange.start).format('YYYY-MM-DD') +
-            ' and ' + this.form.byDateType + ' lt ' + this.$moment(this.form.dateRange.end).format('YYYY-MM-DD');
-            this.$store.commit('GetAllReservationsById', filter);
+            this.filter_url = '';
+
+            if (this.form.dateRange != null)
+            {
+                this.filter_url += this.form.byDateType + ' gt ' + this.$moment(this.form.dateRange.start).format('YYYY-MM-DD') +
+                ' and ' + this.form.byDateType + ' lt ' + this.$moment(this.form.dateRange.end).format('YYYY-MM-DD');
+            }
+
+            if (this.form.status != 0)
+                this.filter_url += (this.filter_url != '' ? ' and ' : '') + 'Status eq ' + this.form.status;
+
+            if (this.form.clientName != null && this.form.clientName != '')
+                this.filter_url += (this.filter_url != '' ? ' and ' : '') + 'Client lk ' + this.form.clientName;
+           
+            this.get();
         }
     }
 };
