@@ -4,7 +4,7 @@
         <b-table v-bind="{ $scopedSlots }" class="my-2" striped bordered hover responsive
                     :fields="columns"
                     :items="providerFunction"
-                    :per-page="perPage"
+                    :per-page="itemsPerPage"
                     :current-page="currentPage"
                     :busy.sync="isBusy"
                     :id="tableId">
@@ -19,7 +19,7 @@
         </b-table>
         <b-row>
             <b-col>
-                <b-pagination align="right" :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="my-0" />
+                <b-pagination align="right" :total-rows="totalRows" :per-page="itemsPerPage" v-model="currentPage" class="my-0" />
             </b-col>
         </b-row>
     </div>
@@ -50,7 +50,7 @@ export default {
         },
         itemsPerPage: {
             type: Number,
-            required: false,
+            required: true,
         },
         tableId: {
             type: String,
@@ -59,7 +59,6 @@ export default {
     },
     data() {
         return {
-            perPage: this.itemsPerPage || 20,
             currentPage: 1,
             totalRows: 0,
             isBusy: false,
