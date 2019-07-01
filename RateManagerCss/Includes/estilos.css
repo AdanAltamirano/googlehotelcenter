@@ -358,7 +358,7 @@ header .nav-link{ color: #99bbcc !important; }
 {
     width: 100%;
     padding: 20px;
-    min-height: 100vh;
+   /*min-height: 100vh;*/
     position: absolute;
     transition: all 0.3s;
     right: 0;
@@ -1573,7 +1573,7 @@ a
     color: #3E7BAC;
     font-size: 12px;
 }
-span
+span:not(.swal2-x-mark,.swal2-x-mark-line-left,.swal2-x-mark-line-right,.swal2-success-line-tip,.swal2-success-line-long)
 {
     font-size: 12px;
 }

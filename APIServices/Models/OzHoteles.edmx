@@ -195,32 +195,42 @@ warning 6002: The table/view 'OzHoteles.dbo.vDayRates' does not have a primary k
             <PropertyRef Name="RateId" />
             <PropertyRef Name="HotelId" />
             <PropertyRef Name="RoomId" />
+            
+            
+            
+            
+            
+            
+            
+            <PropertyRef Name="Id" />
             <PropertyRef Name="RatePlanId" />
-            <PropertyRef Name="Occupancy" />
-            <PropertyRef Name="Price" />
-            <PropertyRef Name="ExceptionPrice" />
-            <PropertyRef Name="Discount" />
-            <PropertyRef Name="Currency" />
+            <PropertyRef Name="RatePlanName" />
+            <PropertyRef Name="StartDate" />
+            <PropertyRef Name="EndDate" />
+            <PropertyRef Name="Language" />
           </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" />
           <Property Name="RateId" Type="int" Nullable="false" />
           <Property Name="HotelId" Type="int" Nullable="false" />
           <Property Name="RoomId" Type="int" Nullable="false" />
-          <Property Name="RatePlanId" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="RatePlanName" Type="nvarchar" MaxLength="80" />
-          <Property Name="StartDate" Type="smalldatetime" />
-          <Property Name="EndDate" Type="smalldatetime" />
+          <Property Name="RatePlanId" Type="nvarchar" MaxLength="54" Nullable="false" />
+          <Property Name="RatePlanName" Type="nvarchar" MaxLength="80" Nullable="false" />
+          <Property Name="StartDate" Type="smalldatetime" Nullable="false" />
+          <Property Name="EndDate" Type="smalldatetime" Nullable="false" />
           <Property Name="NoArrivalsMap" Type="char" MaxLength="7" />
           <Property Name="ExceptionMap" Type="nvarchar" MaxLength="7" />
           <Property Name="Occupancy" Type="tinyint" Nullable="false" />
           <Property Name="Price" Type="money" Nullable="false" />
           <Property Name="ExceptionPrice" Type="money" Nullable="false" />
           <Property Name="Discount" Type="smallmoney" Nullable="false" />
+          <Property Name="DayDiscount" Type="smallmoney" Nullable="false" />
+          <Property Name="DiscountLevel" Type="int" Nullable="false" />
           <Property Name="Factor" Type="smallmoney" />
           <Property Name="Offset" Type="smallmoney" />
           <Property Name="Currency" Type="nvarchar" MaxLength="3" Nullable="false" />
-          <Property Name="ParentRatePlanId" Type="nvarchar" MaxLength="50" />
+          <Property Name="ParentRatePlanId" Type="nvarchar" MaxLength="4" />
           <Property Name="IsPromotion" Type="bit" />
-          <Property Name="Language" Type="int" />
+          <Property Name="Language" Type="int" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'OzHoteles.dbo.vHotelBasicInfo' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -281,16 +291,12 @@ warning 6002: The table/view 'OzHoteles.dbo.vHotelRoom' does not have a primary 
             <PropertyRef Name="Name" />
             <PropertyRef Name="Type" />
             <PropertyRef Name="HotelId" />
-            <PropertyRef Name="TotalRooms" />
-            <PropertyRef Name="MaxOccupancy" />
-            <PropertyRef Name="ExtraOccupancyAllowed" />
-            <PropertyRef Name="MaxAdultsOccupancy" />
-            <PropertyRef Name="MinAdultsOccupancy" />
-            <PropertyRef Name="MaxChildrenOccupancy" />
-            <PropertyRef Name="Order" />
+            <PropertyRef Name="Code" />
+            <PropertyRef Name="Language" />
+            <PropertyRef Name="Active" />
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
-          <Property Name="Code" Type="nvarchar" MaxLength="4" />
+          <Property Name="Code" Type="nvarchar" MaxLength="4" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="80" Nullable="false" />
           <Property Name="Type" Type="int" Nullable="false" />
           <Property Name="HotelId" Type="int" Nullable="false" />
@@ -303,8 +309,12 @@ warning 6002: The table/view 'OzHoteles.dbo.vHotelRoom' does not have a primary 
           <Property Name="JuniorsAllowed" Type="bit" />
           <Property Name="Order" Type="smallint" Nullable="false" />
           <Property Name="IsLinked" Type="bit" />
-          <Property Name="Active" Type="bit" />
-          <Property Name="Language" Type="int" />
+          <Property Name="ParentRoomId" Type="int" />
+          <Property Name="ParenteRoomCode" Type="nvarchar" MaxLength="4" />
+          <Property Name="Factor" Type="smallmoney" />
+          <Property Name="Offset" Type="smallmoney" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="Language" Type="int" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'OzHoteles.dbo.vReservation' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -317,6 +327,8 @@ warning 6002: The table/view 'OzHoteles.dbo.vReservation' does not have a primar
             <PropertyRef Name="CheckIn" />
             <PropertyRef Name="CheckOut" />
             <PropertyRef Name="Status" />
+            <PropertyRef Name="IdEmpresa" />
+            <PropertyRef Name="idTipoHabitacion_Hotel" />
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="ConfirmNumber" Type="nvarchar" MaxLength="24" Nullable="false" />
@@ -328,6 +340,10 @@ warning 6002: The table/view 'OzHoteles.dbo.vReservation' does not have a primar
           <Property Name="Client" Type="nvarchar" MaxLength="161" />
           <Property Name="Status" Type="tinyint" Nullable="false" />
           <Property Name="RoomCount" Type="int" />
+          <Property Name="IdEmpresa" Type="int" Nullable="false" />
+          <Property Name="source" Type="nvarchar" MaxLength="4" />
+          <Property Name="idTipoHabitacion_Hotel" Type="int" Nullable="false" />
+          <Property Name="sourceids" Type="nvarchar" MaxLength="25" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -407,6 +423,7 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           </EntitySet>
           <EntitySet Name="vDayRates" EntityType="Self.vDayRates" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
+    [vDayRates].[Id] AS [Id], 
     [vDayRates].[RateId] AS [RateId], 
     [vDayRates].[HotelId] AS [HotelId], 
     [vDayRates].[RoomId] AS [RoomId], 
@@ -420,6 +437,8 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
     [vDayRates].[Price] AS [Price], 
     [vDayRates].[ExceptionPrice] AS [ExceptionPrice], 
     [vDayRates].[Discount] AS [Discount], 
+    [vDayRates].[DayDiscount] AS [DayDiscount], 
+    [vDayRates].[DiscountLevel] AS [DiscountLevel], 
     [vDayRates].[Factor] AS [Factor], 
     [vDayRates].[Offset] AS [Offset], 
     [vDayRates].[Currency] AS [Currency], 
@@ -478,6 +497,10 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
     [vHotelRoom].[JuniorsAllowed] AS [JuniorsAllowed], 
     [vHotelRoom].[Order] AS [Order], 
     [vHotelRoom].[IsLinked] AS [IsLinked], 
+    [vHotelRoom].[ParentRoomId] AS [ParentRoomId], 
+    [vHotelRoom].[ParenteRoomCode] AS [ParenteRoomCode], 
+    [vHotelRoom].[Factor] AS [Factor], 
+    [vHotelRoom].[Offset] AS [Offset], 
     [vHotelRoom].[Active] AS [Active], 
     [vHotelRoom].[Language] AS [Language]
     FROM [dbo].[vHotelRoom] AS [vHotelRoom]</DefiningQuery>
@@ -493,7 +516,11 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
     [vReservation].[CheckOut] AS [CheckOut], 
     [vReservation].[Client] AS [Client], 
     [vReservation].[Status] AS [Status], 
-    [vReservation].[RoomCount] AS [RoomCount]
+    [vReservation].[RoomCount] AS [RoomCount], 
+    [vReservation].[IdEmpresa] AS [IdEmpresa], 
+    [vReservation].[source] AS [source], 
+    [vReservation].[idTipoHabitacion_Hotel] AS [idTipoHabitacion_Hotel], 
+    [vReservation].[sourceids] AS [sourceids]
     FROM [dbo].[vReservation] AS [vReservation]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vRoomInventory" EntityType="Self.vRoomInventory" store:Type="Views" store:Schema="dbo">
@@ -539,10 +566,10 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           <EntitySet Name="vHotelByUser" EntityType="Models.vHotelByUser" />
           <EntitySet Name="vAdministrator" EntityType="Models.vAdministrator" />
           <EntitySet Name="vHotelPlan" EntityType="Models.vHotelPlan" />
-          <EntitySet Name="vHotelRoom" EntityType="Models.vHotelRoom" />
-          <EntitySet Name="vDayRates" EntityType="Models.vDayRates" />
           <EntitySet Name="vHotelBasicInfo" EntityType="Models.vHotelBasicInfo" />
           <EntitySet Name="vDayRateDetail" EntityType="Models.vDayRateDetail" />
+          <EntitySet Name="vDayRates" EntityType="Models.vDayRates" />
+          <EntitySet Name="vHotelRoom" EntityType="Models.vHotelRoom" />
         </EntityContainer>
         <EntityType Name="RatesPlan">
           <Key>
@@ -718,6 +745,8 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
             <PropertyRef Name="CheckIn" />
             <PropertyRef Name="CheckOut" />
             <PropertyRef Name="Status" />
+            <PropertyRef Name="IdEmpresa" />
+            <PropertyRef Name="idTipoHabitacion_Hotel" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" />
           <Property Name="ConfirmNumber" Type="String" Nullable="false" MaxLength="24" FixedLength="false" Unicode="true" />
@@ -729,6 +758,10 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           <Property Name="Client" Type="String" MaxLength="161" FixedLength="false" Unicode="true" />
           <Property Name="Status" Type="Byte" Nullable="false" />
           <Property Name="RoomCount" Type="Int32" />
+          <Property Name="IdEmpresa" Type="Int32" Nullable="false" />
+          <Property Name="source" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="idTipoHabitacion_Hotel" Type="Int32" Nullable="false" />
+          <Property Name="sourceids" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="vRoomInventory">
           <Key>
@@ -793,69 +826,6 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           <Property Name="IsLinked" Type="Boolean" />
           <Property Name="Active" Type="Boolean" />
         </EntityType>
-        <EntityType Name="vHotelRoom">
-          <Key>
-            <PropertyRef Name="Id" />
-            <PropertyRef Name="Name" />
-            <PropertyRef Name="Type" />
-            <PropertyRef Name="HotelId" />
-            <PropertyRef Name="TotalRooms" />
-            <PropertyRef Name="MaxOccupancy" />
-            <PropertyRef Name="ExtraOccupancyAllowed" />
-            <PropertyRef Name="MaxAdultsOccupancy" />
-            <PropertyRef Name="MinAdultsOccupancy" />
-            <PropertyRef Name="MaxChildrenOccupancy" />
-            <PropertyRef Name="Order" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="Code" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="true" />
-          <Property Name="Type" Type="Int32" Nullable="false" />
-          <Property Name="HotelId" Type="Int32" Nullable="false" />
-          <Property Name="TotalRooms" Type="Int32" Nullable="false" />
-          <Property Name="MaxOccupancy" Type="Byte" Nullable="false" />
-          <Property Name="ExtraOccupancyAllowed" Type="Byte" Nullable="false" />
-          <Property Name="MaxAdultsOccupancy" Type="Byte" Nullable="false" />
-          <Property Name="MinAdultsOccupancy" Type="Byte" Nullable="false" />
-          <Property Name="MaxChildrenOccupancy" Type="Byte" Nullable="false" />
-          <Property Name="JuniorsAllowed" Type="Boolean" />
-          <Property Name="Order" Type="Int16" Nullable="false" />
-          <Property Name="IsLinked" Type="Boolean" />
-          <Property Name="Active" Type="Boolean" />
-          <Property Name="Language" Type="Int32" />
-        </EntityType>
-        <EntityType Name="vDayRates">
-          <Key>
-            <PropertyRef Name="RateId" />
-            <PropertyRef Name="HotelId" />
-            <PropertyRef Name="RoomId" />
-            <PropertyRef Name="RatePlanId" />
-            <PropertyRef Name="Occupancy" />
-            <PropertyRef Name="Price" />
-            <PropertyRef Name="ExceptionPrice" />
-            <PropertyRef Name="Discount" />
-            <PropertyRef Name="Currency" />
-          </Key>
-          <Property Name="RateId" Type="Int32" Nullable="false" />
-          <Property Name="HotelId" Type="Int32" Nullable="false" />
-          <Property Name="RoomId" Type="Int32" Nullable="false" />
-          <Property Name="RatePlanId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="RatePlanName" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
-          <Property Name="StartDate" Type="DateTime" Precision="0" />
-          <Property Name="EndDate" Type="DateTime" Precision="0" />
-          <Property Name="NoArrivalsMap" Type="String" MaxLength="7" FixedLength="true" Unicode="false" />
-          <Property Name="ExceptionMap" Type="String" MaxLength="7" FixedLength="false" Unicode="true" />
-          <Property Name="Occupancy" Type="Byte" Nullable="false" />
-          <Property Name="Price" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
-          <Property Name="ExceptionPrice" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
-          <Property Name="Discount" Type="Decimal" Nullable="false" Precision="10" Scale="4" />
-          <Property Name="Factor" Type="Decimal" Precision="10" Scale="4" />
-          <Property Name="Offset" Type="Decimal" Precision="10" Scale="4" />
-          <Property Name="Currency" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="true" />
-          <Property Name="ParentRatePlanId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="IsPromotion" Type="Boolean" />
-          <Property Name="Language" Type="Int32" />
-        </EntityType>
         <EntityType Name="vHotelBasicInfo">
           <Key>
             <PropertyRef Name="Id" />
@@ -897,6 +867,72 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           <Property Name="ExtraAdultPrice" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
           <Property Name="ExtraChildPrice" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
           <Property Name="ExtraJuniorPrice" Type="Decimal" Precision="19" Scale="4" />
+        </EntityType>
+        <EntityType Name="vDayRates">
+          <Key>
+            <PropertyRef Name="RateId" />
+            <PropertyRef Name="HotelId" />
+            <PropertyRef Name="RoomId" />
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="RatePlanId" />
+            <PropertyRef Name="RatePlanName" />
+            <PropertyRef Name="StartDate" />
+            <PropertyRef Name="EndDate" />
+            <PropertyRef Name="Language" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="RateId" Type="Int32" Nullable="false" />
+          <Property Name="HotelId" Type="Int32" Nullable="false" />
+          <Property Name="RoomId" Type="Int32" Nullable="false" />
+          <Property Name="RatePlanId" Type="String" MaxLength="54" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RatePlanName" Type="String" MaxLength="80" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="StartDate" Type="DateTime" Precision="0" Nullable="false" />
+          <Property Name="EndDate" Type="DateTime" Precision="0" Nullable="false" />
+          <Property Name="NoArrivalsMap" Type="String" MaxLength="7" FixedLength="true" Unicode="false" />
+          <Property Name="ExceptionMap" Type="String" MaxLength="7" FixedLength="false" Unicode="true" />
+          <Property Name="Occupancy" Type="Byte" Nullable="false" />
+          <Property Name="Price" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="ExceptionPrice" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="Discount" Type="Decimal" Nullable="false" Precision="10" Scale="4" />
+          <Property Name="DayDiscount" Type="Decimal" Nullable="false" Precision="10" Scale="4" />
+          <Property Name="DiscountLevel" Type="Int32" Nullable="false" />
+          <Property Name="Factor" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="Offset" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="Currency" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="ParentRatePlanId" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="IsPromotion" Type="Boolean" />
+          <Property Name="Language" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="vHotelRoom">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="Type" />
+            <PropertyRef Name="HotelId" />
+            <PropertyRef Name="Code" />
+            <PropertyRef Name="Language" />
+            <PropertyRef Name="Active" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Code" Type="String" MaxLength="4" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="Int32" Nullable="false" />
+          <Property Name="HotelId" Type="Int32" Nullable="false" />
+          <Property Name="TotalRooms" Type="Int32" Nullable="false" />
+          <Property Name="MaxOccupancy" Type="Byte" Nullable="false" />
+          <Property Name="ExtraOccupancyAllowed" Type="Byte" Nullable="false" />
+          <Property Name="MaxAdultsOccupancy" Type="Byte" Nullable="false" />
+          <Property Name="MinAdultsOccupancy" Type="Byte" Nullable="false" />
+          <Property Name="MaxChildrenOccupancy" Type="Byte" Nullable="false" />
+          <Property Name="JuniorsAllowed" Type="Boolean" />
+          <Property Name="Order" Type="Int16" Nullable="false" />
+          <Property Name="IsLinked" Type="Boolean" />
+          <Property Name="ParentRoomId" Type="Int32" />
+          <Property Name="ParenteRoomCode" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="Factor" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="Offset" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="Language" Type="Int32" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1044,6 +1080,10 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           <EntitySetMapping Name="vReservation">
             <EntityTypeMapping TypeName="Models.vReservation">
               <MappingFragment StoreEntitySet="vReservation">
+                <ScalarProperty Name="sourceids" ColumnName="sourceids" />
+                <ScalarProperty Name="idTipoHabitacion_Hotel" ColumnName="idTipoHabitacion_Hotel" />
+                <ScalarProperty Name="source" ColumnName="source" />
+                <ScalarProperty Name="IdEmpresa" ColumnName="IdEmpresa" />
                 <ScalarProperty Name="RoomCount" ColumnName="RoomCount" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="Client" ColumnName="Client" />
@@ -1115,53 +1155,6 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="vHotelRoom">
-            <EntityTypeMapping TypeName="Models.vHotelRoom">
-              <MappingFragment StoreEntitySet="vHotelRoom">
-                <ScalarProperty Name="Language" ColumnName="Language" />
-                <ScalarProperty Name="Active" ColumnName="Active" />
-                <ScalarProperty Name="IsLinked" ColumnName="IsLinked" />
-                <ScalarProperty Name="Order" ColumnName="Order" />
-                <ScalarProperty Name="JuniorsAllowed" ColumnName="JuniorsAllowed" />
-                <ScalarProperty Name="MaxChildrenOccupancy" ColumnName="MaxChildrenOccupancy" />
-                <ScalarProperty Name="MinAdultsOccupancy" ColumnName="MinAdultsOccupancy" />
-                <ScalarProperty Name="MaxAdultsOccupancy" ColumnName="MaxAdultsOccupancy" />
-                <ScalarProperty Name="ExtraOccupancyAllowed" ColumnName="ExtraOccupancyAllowed" />
-                <ScalarProperty Name="MaxOccupancy" ColumnName="MaxOccupancy" />
-                <ScalarProperty Name="TotalRooms" ColumnName="TotalRooms" />
-                <ScalarProperty Name="HotelId" ColumnName="HotelId" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Code" ColumnName="Code" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="vDayRates">
-            <EntityTypeMapping TypeName="Models.vDayRates">
-              <MappingFragment StoreEntitySet="vDayRates">
-                <ScalarProperty Name="Language" ColumnName="Language" />
-                <ScalarProperty Name="IsPromotion" ColumnName="IsPromotion" />
-                <ScalarProperty Name="ParentRatePlanId" ColumnName="ParentRatePlanId" />
-                <ScalarProperty Name="Currency" ColumnName="Currency" />
-                <ScalarProperty Name="Offset" ColumnName="Offset" />
-                <ScalarProperty Name="Factor" ColumnName="Factor" />
-                <ScalarProperty Name="Discount" ColumnName="Discount" />
-                <ScalarProperty Name="ExceptionPrice" ColumnName="ExceptionPrice" />
-                <ScalarProperty Name="Price" ColumnName="Price" />
-                <ScalarProperty Name="Occupancy" ColumnName="Occupancy" />
-                <ScalarProperty Name="ExceptionMap" ColumnName="ExceptionMap" />
-                <ScalarProperty Name="NoArrivalsMap" ColumnName="NoArrivalsMap" />
-                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
-                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
-                <ScalarProperty Name="RatePlanName" ColumnName="RatePlanName" />
-                <ScalarProperty Name="RatePlanId" ColumnName="RatePlanId" />
-                <ScalarProperty Name="RoomId" ColumnName="RoomId" />
-                <ScalarProperty Name="HotelId" ColumnName="HotelId" />
-                <ScalarProperty Name="RateId" ColumnName="RateId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="vHotelBasicInfo">
             <EntityTypeMapping TypeName="Models.vHotelBasicInfo">
               <MappingFragment StoreEntitySet="vHotelBasicInfo">
@@ -1192,6 +1185,60 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
                 <ScalarProperty Name="Children" ColumnName="Children" />
                 <ScalarProperty Name="Adults" ColumnName="Adults" />
                 <ScalarProperty Name="RateId" ColumnName="RateId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vDayRates">
+            <EntityTypeMapping TypeName="Models.vDayRates">
+              <MappingFragment StoreEntitySet="vDayRates">
+                <ScalarProperty Name="Language" ColumnName="Language" />
+                <ScalarProperty Name="IsPromotion" ColumnName="IsPromotion" />
+                <ScalarProperty Name="ParentRatePlanId" ColumnName="ParentRatePlanId" />
+                <ScalarProperty Name="Currency" ColumnName="Currency" />
+                <ScalarProperty Name="Offset" ColumnName="Offset" />
+                <ScalarProperty Name="Factor" ColumnName="Factor" />
+                <ScalarProperty Name="DiscountLevel" ColumnName="DiscountLevel" />
+                <ScalarProperty Name="DayDiscount" ColumnName="DayDiscount" />
+                <ScalarProperty Name="Discount" ColumnName="Discount" />
+                <ScalarProperty Name="ExceptionPrice" ColumnName="ExceptionPrice" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Occupancy" ColumnName="Occupancy" />
+                <ScalarProperty Name="ExceptionMap" ColumnName="ExceptionMap" />
+                <ScalarProperty Name="NoArrivalsMap" ColumnName="NoArrivalsMap" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="RatePlanName" ColumnName="RatePlanName" />
+                <ScalarProperty Name="RatePlanId" ColumnName="RatePlanId" />
+                <ScalarProperty Name="RoomId" ColumnName="RoomId" />
+                <ScalarProperty Name="HotelId" ColumnName="HotelId" />
+                <ScalarProperty Name="RateId" ColumnName="RateId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vHotelRoom">
+            <EntityTypeMapping TypeName="Models.vHotelRoom">
+              <MappingFragment StoreEntitySet="vHotelRoom">
+                <ScalarProperty Name="Language" ColumnName="Language" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Offset" ColumnName="Offset" />
+                <ScalarProperty Name="Factor" ColumnName="Factor" />
+                <ScalarProperty Name="ParenteRoomCode" ColumnName="ParenteRoomCode" />
+                <ScalarProperty Name="ParentRoomId" ColumnName="ParentRoomId" />
+                <ScalarProperty Name="IsLinked" ColumnName="IsLinked" />
+                <ScalarProperty Name="Order" ColumnName="Order" />
+                <ScalarProperty Name="JuniorsAllowed" ColumnName="JuniorsAllowed" />
+                <ScalarProperty Name="MaxChildrenOccupancy" ColumnName="MaxChildrenOccupancy" />
+                <ScalarProperty Name="MinAdultsOccupancy" ColumnName="MinAdultsOccupancy" />
+                <ScalarProperty Name="MaxAdultsOccupancy" ColumnName="MaxAdultsOccupancy" />
+                <ScalarProperty Name="ExtraOccupancyAllowed" ColumnName="ExtraOccupancyAllowed" />
+                <ScalarProperty Name="MaxOccupancy" ColumnName="MaxOccupancy" />
+                <ScalarProperty Name="TotalRooms" ColumnName="TotalRooms" />
+                <ScalarProperty Name="HotelId" ColumnName="HotelId" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

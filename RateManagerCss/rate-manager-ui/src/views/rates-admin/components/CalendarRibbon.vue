@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import Utilities from '../../../core/utilities';
+import Utilities from '../helpers/utilities';
 
 export default {
     name: 'calendar-ribbon',

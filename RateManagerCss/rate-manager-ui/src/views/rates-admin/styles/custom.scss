@@ -177,9 +177,21 @@ body {
 .form-control:disabled, .form-control[readonly]{
     background-color: white;
 }
-.swal2-modal{
-    box-shadow:  0 0 10px rgba(0,0,0, .5);;
-}
 .bg-unavail{
     background-color:  theme-color-level(danger, -10);
+}
+.bg-noarrival{
+    background-color:  theme-color-level(warning, -10);
+}
+.bg-promo{
+    background-color:  theme-color-level(info, -10);
+}
+.popover-form input{
+    max-width: 100px;
+    padding: 0.2rem 0.3rem;
+    margin-right:  0.5rem;
+    margin-left:  0.5rem;
+}
+.popover-inner hr{
+    margin: initial!important;
 }

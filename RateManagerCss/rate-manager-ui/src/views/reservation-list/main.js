@@ -24,7 +24,6 @@ Vue.use(VueMoment, {
 Vue.use(VCalendar);
 
 
-
 new Vue({
     store,
     render: h => h(View),

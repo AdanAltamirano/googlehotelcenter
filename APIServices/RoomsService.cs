@@ -37,7 +37,7 @@ namespace APIServices
                     Id = r.Id,
                     Name = r.Name,
                     Code = r.Code,
-                    Active = r.Active.Value,
+                    Active = r.Active,
                     ExtraOccupancyAllowed = r.ExtraOccupancyAllowed,
                     MinAdultsOccupancy = r.MinAdultsOccupancy,
                     MaxAdultsOccupancy = r.MaxAdultsOccupancy,
@@ -46,7 +46,12 @@ namespace APIServices
                     JuniorsAllowed = r.JuniorsAllowed ?? false,
                     Order = r.Order,
                     TotalRooms = r.TotalRooms,
-                    Type = r.Type
+                    Type = r.Type,
+                    IsLinked = r.IsLinked ?? false,
+                    ParentRoomId = r.ParentRoomId,
+                    ParentRoomCode = r.ParenteRoomCode,
+                    Factor = r.Factor,
+                    Offset = r.Offset
                 }).ToArray();
             }
 

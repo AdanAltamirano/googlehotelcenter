@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import Utilities from '../../core/utilities';
+import Utilities from './helpers/utilities';
 import HotelService from '../../api/hotels-service';
 import RoomsService from '../../api/rooms-service';
 import RatesService from '../../api/rates-service';

@@ -14,24 +14,27 @@ namespace APIServices.Models
     
     public partial class vDayRates
     {
+        public long Id { get; set; }
         public int RateId { get; set; }
         public int HotelId { get; set; }
         public int RoomId { get; set; }
         public string RatePlanId { get; set; }
         public string RatePlanName { get; set; }
-        public Nullable<System.DateTime> StartDate { get; set; }
-        public Nullable<System.DateTime> EndDate { get; set; }
+        public System.DateTime StartDate { get; set; }
+        public System.DateTime EndDate { get; set; }
         public string NoArrivalsMap { get; set; }
         public string ExceptionMap { get; set; }
         public byte Occupancy { get; set; }
         public decimal Price { get; set; }
         public decimal ExceptionPrice { get; set; }
         public decimal Discount { get; set; }
+        public decimal DayDiscount { get; set; }
+        public int DiscountLevel { get; set; }
         public Nullable<decimal> Factor { get; set; }
         public Nullable<decimal> Offset { get; set; }
         public string Currency { get; set; }
         public string ParentRatePlanId { get; set; }
         public Nullable<bool> IsPromotion { get; set; }
-        public Nullable<int> Language { get; set; }
+        public int Language { get; set; }
     }
 }

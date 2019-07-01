@@ -36,9 +36,9 @@ namespace APIServices.Models
         public virtual DbSet<vHotelByUser> vHotelByUser { get; set; }
         public virtual DbSet<vAdministrator> vAdministrator { get; set; }
         public virtual DbSet<vHotelPlan> vHotelPlan { get; set; }
-        public virtual DbSet<vHotelRoom> vHotelRoom { get; set; }
-        public virtual DbSet<vDayRates> vDayRates { get; set; }
         public virtual DbSet<vHotelBasicInfo> vHotelBasicInfo { get; set; }
         public virtual DbSet<vDayRateDetail> vDayRateDetail { get; set; }
+        public virtual DbSet<vDayRates> vDayRates { get; set; }
+        public virtual DbSet<vHotelRoom> vHotelRoom { get; set; }
     }
 }

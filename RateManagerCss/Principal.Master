@@ -4,25 +4,43 @@
 <%@ Register Src="Portal/Modules/ctrlHeader.ascx" TagName="ctrlHeader" TagPrefix="uc1" %>
 <%@ Register Src="Portal/Modules/ctrlMenuLeft.ascx" TagName="ctrlMenuLeft" TagPrefix="uc3" %>
 <%@ Register Src="Portal/Modules/ctrlMenuTap.ascx" TagName="ctrlMenuTap" TagPrefix="uc2" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-	
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+	<html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>Sistema de Administración de Tarifas</title>
-
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-
     <link href="Includes/estilos.css" rel="stylesheet" type="text/css" />
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-	<link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous /">
+	<link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous' />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script> 
+   
+     <!-- SWEET ALERT -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@8.13.0/dist/sweetalert2.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8.13.0/dist/sweetalert2.all.min.js"></script>
+    <script type="text/javascript">
+        // HUB de alertas
+        var fireAlert = function(alertData){
+            var dfd = $.Deferred();
+            Swal.fire(alertData).then(function (response) {
+                dfd.resolve(response);
+            })
+            .catch(function (reason) {
+                dfd.reject(reason);
+            });
+            return dfd.promise();
+        }
+
+        window.$swal = fireAlert;
+
+    </script>
+
+
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
 
-    <script language="JavaScript" type="text/javascript">
+    <script type="text/javascript">
         function remove_leftMenu() {
             //David Bustamante
             //Se quita el menu izquierdo para mostrar completo el iframe
@@ -41,8 +59,6 @@
             });
 
             jQuery("#submenuDiv .dvhide").hide();
-
-
             /*jQuery('*.dropdown-item[href*="rate-manager-ui"]').click(function () {
                 functionSetOptionMenu(jQuery(this)[0].href);
             });*/
@@ -115,16 +131,12 @@
                 jQuery(this).toggleClass("hideOptionsLf");
             });
         });
-
-
-
         function HideMenu()
         {
             jQuery('#sidebarContent').hide();
             jQuery('#menuPrincipal li').removeClass('active');
             jQuery('#submenuDiv .dvhide').hide();
         }
-
         //Script para el link de "Subir"
         jQuery(function() {
             jQuery(window).scroll(function() {
@@ -159,7 +171,6 @@
             	jQuery('.overlay').removeClass('active');
             })
         });
-
     </script>
 
 </head>
@@ -169,7 +180,7 @@
     </asp:ScriptManager>
     
     <header class="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar">
-        <a href="<%=Request.Url.AbsolutePath%>" class="navbar-brand mr-0 mr-md-2" aria-label="Bootstrap">
+        <a href="<%=Request.Url.AbsolutePath%>" class="navbar-brand mr-0 mr-md-2 p-0" aria-label="Bootstrap">
 	        <img src="Includes/imagenes/istotipo-internetpowerhotel-blanco.png" style="width: 25px;">
         </a>
         <div id="menuPrincipal" class="navbar-nav-scroll">
@@ -340,7 +351,7 @@
     %>
     
     <div class="subir">
-        <a href="#top" boder="0">
+        <a href="#top">
             <i class="fa fa-arrow-circle-up"></i>
         </a>
     </div>

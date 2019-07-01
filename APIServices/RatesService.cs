@@ -125,7 +125,7 @@ namespace APIServices
                 if (roomId != null)
                     query = query.Where(r => r.RoomId == roomId);
 
-                result = query.OrderBy(r => r.StartDate).ToArray();
+                result = query.OrderBy(x => x.Id).ToArray();
             }
 
             return result;
@@ -167,14 +167,16 @@ namespace APIServices
                 .GroupBy(r =>
                    new
                    {
-                       r.RatePlanId,
-                       r.RatePlanName,
-                       r.RoomId,
-                       r.ParentRatePlanId,
-                       r.Currency,
-                       r.IsPromotion,
-                       r.Factor,
-                       r.Offset
+                       RatePlanId = r.RatePlanId,
+                       RatePlanName = r.RatePlanName,
+                       ParentRatePlan = r.ParentRatePlanId,
+                       RoomId = r.RoomId,
+                       IsPromotion = r.IsPromotion,
+                       Currency = r.Currency,
+                       Factor = r.Factor,
+                       Offset = r.Offset,
+                       Discount = r.Discount,
+                       DiscountLevel = r.DiscountLevel
                    })
                 .Select(r =>
                 {
@@ -183,19 +185,21 @@ namespace APIServices
                         RatePlanId = r.Key.RatePlanId,
                         RatePlan = r.Key.RatePlanName,
                         RoomId = r.Key.RoomId,
-                        ParentRatePlanId = r.Key.ParentRatePlanId,
+                        ParentRatePlanId = r.Key.ParentRatePlan,
                         Currency = r.Key.Currency,
                         Factor = r.Key.Factor,
                         Offset = r.Key.Offset,
-                        IsPromotion = r.Key.IsPromotion
+                        IsPromotion = r.Key.IsPromotion,
+                        DiscountLevel = (byte)r.Key.DiscountLevel,
+                        Discount = r.Key.Discount
                     };
 
                     groupedRates.DailyRates = r.SelectMany(rate =>
                     {
                         // cada tarifa siempre traera fecha por lo que es seguro acceder directo 
                         // al valor de start y end date
-                        DateTime startDay = startDate >= rate.StartDate.Value ? startDate : rate.StartDate.Value;
-                        DateTime endDay = endDate <= rate.EndDate.Value ? endDate : rate.EndDate.Value;
+                        DateTime startDay = startDate >= rate.StartDate ? startDate : rate.StartDate;
+                        DateTime endDay = endDate <= rate.EndDate ? endDate : rate.EndDate;
 
                         // arreglo de días que se usara para dividir el rango de las tarifas por día
                         DateTime[] days = Enumerable.Range(0, 1 + endDay.Subtract(startDay).Days)
@@ -210,7 +214,7 @@ namespace APIServices
                             Occupancy = rate.Occupancy,
                             Price = Utilities.IsInUVMap(rate.ExceptionMap, d) ? rate.ExceptionPrice : rate.Price,
                             NoArrival = Utilities.IsInUVMap(rate.NoArrivalsMap, d) ? (bool?)true : null,
-                            Discount = rate.Discount
+                            Discount = rate.DayDiscount
                         });
 
                     }).ToArray();

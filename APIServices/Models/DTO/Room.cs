@@ -21,5 +21,10 @@ namespace APIServices.Models.DTO
         public bool JuniorsAllowed { get; set; }
         public short Order { get; set; }
         public bool Active { get; set; }
+        public bool IsLinked { get; set; }
+        public int? ParentRoomId { get; set; }
+        public string ParentRoomCode { get; set; }
+        public decimal? Factor { get; set; }
+        public decimal? Offset { get; set; }
     }
 }

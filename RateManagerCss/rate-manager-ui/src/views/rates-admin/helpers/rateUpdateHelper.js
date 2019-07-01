@@ -97,7 +97,10 @@ class RateUpdatHelper {
 
 
             // si hay dia de excepcion seleccionado
-            if (this.__$.prices.exceptions && Object.keys(this.__$.prices.exceptions.apply).some(k => this.__$.prices.exceptions.apply[k])) {
+            if (
+                this.__$.prices.exceptions
+                && Object.keys(this.__$.prices.exceptions.apply).some(k => this.__$.prices.exceptions.apply[k])
+            ) {
                 const { exceptions } = this.__$.prices;
                 if (exceptions.adult.some(rate => toNumber(rate.price) <= 0)) {
                     this.errors.push('exception adult rates must be greater than 0');

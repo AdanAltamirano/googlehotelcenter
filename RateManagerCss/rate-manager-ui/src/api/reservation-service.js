@@ -10,16 +10,15 @@ const resource = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations/{hote
 export default
 {
     /**
-     * 
+     *
      * @param {*} hotelId
      * @return {Promise<[Any]>}
      */
-    GetAll(filter, page, pageSize)
-    {
+    GetAll(filter, page, pageSize) {
         return resource.get({
             filter,
             page,
             pageSize,
         });
-    }
-}
+    },
+};
