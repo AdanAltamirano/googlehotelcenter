@@ -22,7 +22,7 @@ Namespace API.Controller
 
             ElseIf roles.Contains("userchain") Then
                 Dim userCorpId = GetUserCorpId(GetUserId().Value)
-                Return ReservationService.GetAll().Where(Function(h) h.IdEmpresa = userCorpId)
+                Return ReservationService.GetAll().Where(Function(h) h.CompanyId = userCorpId)
 
             ElseIf roles.Contains("hotelcompany") Then
                 Dim hotels() As Integer = GetUserHotels(GetUserId().Value).Select(Function(h) h.HotelId).ToArray()

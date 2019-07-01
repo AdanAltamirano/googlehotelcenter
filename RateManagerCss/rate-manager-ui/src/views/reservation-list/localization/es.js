@@ -28,5 +28,6 @@ export default {
     'Find Hotel':'Buscar Hotel',
     'select':'seleccionar',
     'It has priority over advanced search': 'Tiene prioridad sobre la búsqueda avanzada',
-    'Items per page': 'Elementos por página'
+    'Items per page': 'Elementos por página',
+    'Download': 'Descargar'
 };

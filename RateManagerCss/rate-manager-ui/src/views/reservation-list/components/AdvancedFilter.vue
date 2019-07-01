@@ -1,21 +1,34 @@
 <template>
     <b-card style="border:0px">
         <b-row>
-            <b-col md="4" class="my-1">
+            <b-col md="3" class="my-1">
                 <b-form-group :description="$t('It has priority over advanced search')">
                     <b-form-input v-model="noReservation" :placeholder="$t('Reservation number')" />
                 </b-form-group>
             </b-col>
-            <b-col md="4" class="my-1">
-                <b-button variant="primary" @click="search">{{$t('Search')}}</b-button>
+            <b-col md="3" class="my-1">
+                <b-row>
+                    <b-col md="3">
+                        <b-button variant="primary" @click="search">{{$t('Search')}}</b-button>
+                    </b-col>
+                    <b-col md="9">
+                        <b-button class="float-right" v-b-toggle.filter_content variant="link">{{$t('Advanced Search')}}</b-button>
+                    </b-col>
+                </b-row>
             </b-col>
-            <!--<b-col v-if="result.length > 0" md="2" class="my-1">
-                <b-button @click="exportToExcel" variant="primary" style="background-color:green">
-                    <i class="fas fa-file-excel"></i>&nbsp;Descargar
-                </b-button>
-            </b-col>-->
-            <b-col md="4" class="my-1">
-                <b-button class="float-right" v-b-toggle.filter_content variant="link">{{$t('Advanced Search')}}</b-button>
+            <b-col md="6" class="my-1">
+                <b-row>
+                    <b-col md="8">
+                        <b-button v-if="result.length > 0" @click="exportToExcel" variant="primary" style="background-color:green;float:right">
+                            <i class="fas fa-file-excel"></i>&nbsp;{{$t('Download')}}
+                        </b-button>
+                    </b-col>
+                    <b-col md="4" style="margin-top:-1.9rem;">
+                        <b-form-group label="Items por pagina">
+                            <b-form-select @change="changeItemsPerPage" class="float-right" v-model.number="itemPerPage" :options="itemsPerPage"></b-form-select>
+                        </b-form-group>
+                    </b-col>
+                </b-row>
             </b-col>
         </b-row>
         <b-row>
@@ -102,12 +115,20 @@ export default {
     mounted() {
         this.getHotels();
     },
-    /*props: {
+    props: {
         result: {
             required: false,
             type: Array
+        },
+        itemPerPage: {
+            required: true,
+            type: Number
+        },
+        itemsPerPage: {
+            required: true,
+            type: Array
         }
-    },*/
+    },
     data() {
         return {
             includeDates: false,
@@ -158,9 +179,9 @@ export default {
         search() {
             this.$emit('search', this.getFilter());
         },
-        /*exportToExcel() {
+        exportToExcel() {
             this.$emit('exportToExcel');
-        },*/
+        },
         getFilter() {
             let filter = '';
 
@@ -184,10 +205,10 @@ export default {
                 filter += (filter !== '' ? ' and ' : '') + 'Client lk ' + this.clientName;
             
             if (this.source != 'ALL')
-                filter += (filter !== '' ? ' and ' : '') + 'source eq ' + this.source;
+                filter += (filter !== '' ? ' and ' : '') + 'Source eq ' + this.source;
 
             if (this.source === 'IDS' && this.ota != 'ALL')
-                filter += (filter !== '' ? ' and ' : '') + 'sourceids eq ' + this.ota;
+                filter += (filter !== '' ? ' and ' : '') + 'Portal eq ' + this.ota;
 
             if (this.hotel.length > 0) {
                 filter += (filter !== '' ? ' and ' : '');
@@ -216,7 +237,10 @@ export default {
             this.clientName = '';
             this.source = 'ALL';
             this.hotel = [];
-        }   
+        },
+        changeItemsPerPage() {
+            this.$emit('changeItems', this.itemPerPage);
+        }
     }
 };
 </script>

@@ -24,9 +24,9 @@ namespace APIServices.Models
         public string Client { get; set; }
         public byte Status { get; set; }
         public Nullable<int> RoomCount { get; set; }
-        public int IdEmpresa { get; set; }
-        public string source { get; set; }
-        public int idTipoHabitacion_Hotel { get; set; }
-        public string sourceids { get; set; }
+        public int CompanyId { get; set; }
+        public string Source { get; set; }
+        public int RoomId { get; set; }
+        public string Portal { get; set; }
     }
 }

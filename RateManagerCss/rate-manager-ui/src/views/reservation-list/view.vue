@@ -2,27 +2,14 @@
     <div id="app">
         <b-container fluid>
             <h2 class="text-primary">{{$t('Reservation List')}}</h2>
-            <advanced-filter @search="search"></advanced-filter>
-            <b-row>
-                <b-col md="6"></b-col>
-                <b-col md="2">
-                    <b-button @click="exportToExcel" variant="primary" style="background-color:green">
-                        <i class="fas fa-file-excel"></i>&nbsp;Descargar
-                    </b-button>
-                </b-col>
-                <b-col md="4">
-                    <b-row>
-                        <b-col md="9" class="my-1">
-                            <label for="">{{$t('Items per page')}}</label>
-                        </b-col>
-                        <b-col md="3">
-                            <b-form-group>
-                                <b-form-select v-model.number="itemPerPage" :options="itemsPerPage"></b-form-select>
-                            </b-form-group>
-                        </b-col>
-                    </b-row>
-                </b-col>
-            </b-row>
+            <advanced-filter
+            :item-per-page="itemPerPage" 
+            :items-per-page="itemsPerPage"
+            :result="result"
+            @exportToExcel="exportToExcel"
+            @changeItems="changeItems"
+            @search="search"></advanced-filter>
+
             <data-table table-id="rsv_table"
             :columns="fields"
             :resource-function="get"
@@ -110,7 +97,7 @@ export default {
                     sortable: true
                 },
                 {
-                    key: 'source',
+                    key: 'Source',
                     label: this.$t('Origin')
                 },
                 {
@@ -175,6 +162,9 @@ export default {
 
             //export excel file
             XLSX.writeFile(wb, 'reservaciones.xlsx'); //name of the file
+        },
+        changeItems(value) {
+            this.itemPerPage = value; 
         }
     }
 };
