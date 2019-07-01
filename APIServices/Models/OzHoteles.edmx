@@ -291,9 +291,16 @@ warning 6002: The table/view 'OzHoteles.dbo.vHotelRoom' does not have a primary 
             <PropertyRef Name="Name" />
             <PropertyRef Name="Type" />
             <PropertyRef Name="HotelId" />
+            
+            
+            
+            
+            
+            
+            
             <PropertyRef Name="Code" />
-            <PropertyRef Name="Language" />
             <PropertyRef Name="Active" />
+            <PropertyRef Name="Language" />
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="Code" Type="nvarchar" MaxLength="4" Nullable="false" />
@@ -560,7 +567,6 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
             <End Role="Indice" EntitySet="Indice" />
             <End Role="Diccionario" EntitySet="Diccionario" />
           </AssociationSet>
-          <EntitySet Name="vReservation" EntityType="Models.vReservation" />
           <EntitySet Name="vRoomInventory" EntityType="Models.vRoomInventory" />
           <EntitySet Name="ContratosNR" EntityType="Models.ContratosNR" />
           <EntitySet Name="vHotelByUser" EntityType="Models.vHotelByUser" />
@@ -570,6 +576,7 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           <EntitySet Name="vDayRateDetail" EntityType="Models.vDayRateDetail" />
           <EntitySet Name="vDayRates" EntityType="Models.vDayRates" />
           <EntitySet Name="vHotelRoom" EntityType="Models.vHotelRoom" />
+          <EntitySet Name="vReservation" EntityType="Models.vReservation" />
         </EntityContainer>
         <EntityType Name="RatesPlan">
           <Key>
@@ -736,33 +743,6 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="vReservation">
-          <Key>
-            <PropertyRef Name="Id" />
-            <PropertyRef Name="ConfirmNumber" />
-            <PropertyRef Name="HotelId" />
-            <PropertyRef Name="ReservationDate" />
-            <PropertyRef Name="CheckIn" />
-            <PropertyRef Name="CheckOut" />
-            <PropertyRef Name="Status" />
-            <PropertyRef Name="IdEmpresa" />
-            <PropertyRef Name="idTipoHabitacion_Hotel" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="ConfirmNumber" Type="String" Nullable="false" MaxLength="24" FixedLength="false" Unicode="true" />
-          <Property Name="HotelId" Type="Int32" Nullable="false" />
-          <Property Name="Hotel" Type="String" MaxLength="180" FixedLength="false" Unicode="true" />
-          <Property Name="ReservationDate" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="CheckIn" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="CheckOut" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="Client" Type="String" MaxLength="161" FixedLength="false" Unicode="true" />
-          <Property Name="Status" Type="Byte" Nullable="false" />
-          <Property Name="RoomCount" Type="Int32" />
-          <Property Name="IdEmpresa" Type="Int32" Nullable="false" />
-          <Property Name="source" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
-          <Property Name="idTipoHabitacion_Hotel" Type="Int32" Nullable="false" />
-          <Property Name="sourceids" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="vRoomInventory">
           <Key>
             <PropertyRef Name="Date" />
@@ -934,6 +914,33 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           <Property Name="Active" Type="Boolean" Nullable="false" />
           <Property Name="Language" Type="Int32" Nullable="false" />
         </EntityType>
+        <EntityType Name="vReservation">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="ConfirmNumber" />
+            <PropertyRef Name="HotelId" />
+            <PropertyRef Name="ReservationDate" />
+            <PropertyRef Name="CheckIn" />
+            <PropertyRef Name="CheckOut" />
+            <PropertyRef Name="Status" />
+            <PropertyRef Name="IdEmpresa" />
+            <PropertyRef Name="idTipoHabitacion_Hotel" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="ConfirmNumber" Type="String" Nullable="false" MaxLength="24" FixedLength="false" Unicode="true" />
+          <Property Name="HotelId" Type="Int32" Nullable="false" />
+          <Property Name="Hotel" Type="String" MaxLength="180" FixedLength="false" Unicode="true" />
+          <Property Name="ReservationDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="CheckIn" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="CheckOut" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Client" Type="String" MaxLength="161" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="Byte" Nullable="false" />
+          <Property Name="RoomCount" Type="Int32" />
+          <Property Name="IdEmpresa" Type="Int32" Nullable="false" />
+          <Property Name="source" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="idTipoHabitacion_Hotel" Type="Int32" Nullable="false" />
+          <Property Name="sourceids" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1074,26 +1081,6 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
               <MappingFragment StoreEntitySet="Indice">
                 <ScalarProperty Name="Eliminado" ColumnName="Eliminado" />
                 <ScalarProperty Name="idDiccionario" ColumnName="idDiccionario" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="vReservation">
-            <EntityTypeMapping TypeName="Models.vReservation">
-              <MappingFragment StoreEntitySet="vReservation">
-                <ScalarProperty Name="sourceids" ColumnName="sourceids" />
-                <ScalarProperty Name="idTipoHabitacion_Hotel" ColumnName="idTipoHabitacion_Hotel" />
-                <ScalarProperty Name="source" ColumnName="source" />
-                <ScalarProperty Name="IdEmpresa" ColumnName="IdEmpresa" />
-                <ScalarProperty Name="RoomCount" ColumnName="RoomCount" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="Client" ColumnName="Client" />
-                <ScalarProperty Name="CheckOut" ColumnName="CheckOut" />
-                <ScalarProperty Name="CheckIn" ColumnName="CheckIn" />
-                <ScalarProperty Name="ReservationDate" ColumnName="ReservationDate" />
-                <ScalarProperty Name="Hotel" ColumnName="Hotel" />
-                <ScalarProperty Name="HotelId" ColumnName="HotelId" />
-                <ScalarProperty Name="ConfirmNumber" ColumnName="ConfirmNumber" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1239,6 +1226,26 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
                 <ScalarProperty Name="Type" ColumnName="Type" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vReservation">
+            <EntityTypeMapping TypeName="Models.vReservation">
+              <MappingFragment StoreEntitySet="vReservation">
+                <ScalarProperty Name="sourceids" ColumnName="sourceids" />
+                <ScalarProperty Name="idTipoHabitacion_Hotel" ColumnName="idTipoHabitacion_Hotel" />
+                <ScalarProperty Name="source" ColumnName="source" />
+                <ScalarProperty Name="IdEmpresa" ColumnName="IdEmpresa" />
+                <ScalarProperty Name="RoomCount" ColumnName="RoomCount" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Client" ColumnName="Client" />
+                <ScalarProperty Name="CheckOut" ColumnName="CheckOut" />
+                <ScalarProperty Name="CheckIn" ColumnName="CheckIn" />
+                <ScalarProperty Name="ReservationDate" ColumnName="ReservationDate" />
+                <ScalarProperty Name="Hotel" ColumnName="Hotel" />
+                <ScalarProperty Name="HotelId" ColumnName="HotelId" />
+                <ScalarProperty Name="ConfirmNumber" ColumnName="ConfirmNumber" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
