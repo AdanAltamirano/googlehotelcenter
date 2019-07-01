@@ -1,9 +1,9 @@
 <template>
 <!-- eslint-disable -->
     <div class="p-0" id="app">
-        <div class="d-flex flex-row-reverse justify-content-between pl-5 pr-5">
+        <div class="d-flex flex-row-reverse justify-content-between pl-3 pr-3">
             <button data-toggle="collapse" class="btn btn-link mb-2 pr-0" data-target="#bulk-update-form">
-                <span>{{'bulk update' | translate}} <i class="fa fa-archive"></i></span>
+                <span>{{'bulk update' | translate}} <i class="fa fa-archive ml-2"></i></span>
             </button>
             <h2 class="text-primary mb-2">{{'Daily rates' | translate}}</h2>
         </div>
@@ -24,7 +24,7 @@ import EventBus from '../../core/event-bus';
 import CalendarRibbon from './components/CalendarRibbon.vue';
 import RoomTable from './components/RoomTable.vue';
 import BulkUpdate from './components/BulkUpdate.vue';
-import Utilities from '../../core/utilities';
+import Utilities from './helpers/utilities';
 
 export default {
     name: 'app',
@@ -66,15 +66,14 @@ export default {
     },
     methods: {
         showLoader() {
-            this.loader = this.$loading.show({ color: '#007bff', height: 128, width: 128 });
+            this.loader = this.$loading.show({ color: this.$appConfig.themeColors.info, height: 128, width: 128 });
         },
         hideLoader() {
             this.loader.hide();
         },
-        reload(){
+        reload() {
             this.$store.commit('update', this.dateRange);
-        }
-
+        },
     },
 };
 </script>

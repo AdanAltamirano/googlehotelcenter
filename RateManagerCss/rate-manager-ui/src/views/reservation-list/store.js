@@ -8,20 +8,18 @@ export default new Vuex.Store({
     state:
     {
         reservations: [],
-        hotelId: Vue.appConfig.session.hotelId
+        hotelId: Vue.appConfig.session.hotelId,
     },
     mutations:
     {
-        GetAll(state, filter)
-        {
-            reservationService.GetAll(state.hotelId, filter).then((response) =>
-            {
+        GetAll(state, filter) {
+            reservationService.GetAll(state.hotelId, filter).then((response) => {
                 state.reservations = response.body;
-            })
-        }
+            });
+        },
     },
     getters:
     {
-        reservations: state => state.reservations
-    }
-})
+        reservations: state => state.reservations,
+    },
+});

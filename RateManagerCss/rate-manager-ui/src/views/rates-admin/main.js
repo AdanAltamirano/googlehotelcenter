@@ -8,7 +8,6 @@ import Loading from 'vue-loading-overlay';
 import VCalendar from 'v-calendar';
 import VueCurrencyFilter from 'vue-currency-filter';
 import VTooltip from 'v-tooltip';
-import VueSweetalert2 from 'vue-sweetalert2';
 import locale from '../../core/localization';
 import es from './localization/es';
 import esErrors from './localization/errors.es';
@@ -40,7 +39,6 @@ Vue.use(VueCurrencyFilter, {
 Vue.use(Loading);
 Vue.use(VCalendar);
 Vue.use(VTooltip);
-Vue.use(VueSweetalert2, { includeCss: false });
 
 Vue.config.productionTip = false;
 

@@ -34,7 +34,7 @@ Public Class RoomsController
             .Id = r.Id,
             .Name = r.Name,
             .Code = r.Code,
-            .Active = r.Active.Value,
+            .Active = r.Active,
             .ExtraOccupancyAllowed = r.ExtraOccupancyAllowed,
             .MinAdultsOccupancy = r.MinAdultsOccupancy,
             .MaxAdultsOccupancy = r.MaxAdultsOccupancy,
@@ -43,7 +43,12 @@ Public Class RoomsController
             .MaxOccupancy = r.MaxOccupancy,
             .Order = r.Order,
             .TotalRooms = r.TotalRooms,
-            .Type = r.Type
+            .Type = r.Type,
+            .IsLinked = r.IsLinked,
+            .ParentRoomId = r.ParentRoomId,
+            .ParentRoomCode = r.ParenteRoomCode,
+            .Factor = r.Factor,
+            .Offset = r.Offset
         })
     End Function
 

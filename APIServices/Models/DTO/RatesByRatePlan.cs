@@ -17,5 +17,7 @@ namespace APIServices.Models.DTO
         public decimal? Factor { get; set; }
         public decimal? Offset { get; set; }
         public bool? IsPromotion { get; set; }
+        public decimal Discount { get; set; }
+        public byte DiscountLevel { get; set; }
     }
 }

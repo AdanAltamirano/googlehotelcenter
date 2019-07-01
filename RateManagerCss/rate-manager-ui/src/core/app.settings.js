@@ -1,25 +1,41 @@
+
 import Vue from 'vue';
 
-const AppConfig = {
+const appConfig = {
     // APP configurations
     language: window.app.language || 'es',
     session: {
         hotelId: window.app.hotelId,
     },
+    themeColors: {
+        primary: '#10467a',
+        info: '#007bff',
+        warning: '#ff6c00',
+    },
 };
 
+function appAlert(alertData) {
+    if (!window.parent?.$swal) {
+        throw new Error('Whoops! - APP ALERT HUB NOT DEFINED');
+    }
+    return window.parent.$swal(alertData);
+};
 
 const ConfigsPlugIn = {
     install($Vue) {
-        $Vue.prototype.$appConfig = AppConfig;
-        $Vue.appConfig = AppConfig;
+        // app config
+        $Vue.prototype.$appConfig = appConfig;
+        $Vue.appConfig = appConfig;
+        // app alerts
+        $Vue.prototype.$appAlert = appAlert;
+        $Vue.appAlert = appAlert;
     },
 };
 
 Vue.use(ConfigsPlugIn);
 
-
-//when https://github.com/vuejs/vue/pull/7765
+/* eslint-disable */
+// when https://github.com/vuejs/vue/pull/7765
 Vue.prototype._b = (function (bind) {
     return function (data, tag, value, asProp, isSync) {
         if (value && value.$scopedSlots) {
@@ -28,4 +44,5 @@ Vue.prototype._b = (function (bind) {
         }
         return bind.apply(this, arguments);
     };
-})(Vue.prototype._b);
+}(Vue.prototype._b));
+/* eslint-enable */

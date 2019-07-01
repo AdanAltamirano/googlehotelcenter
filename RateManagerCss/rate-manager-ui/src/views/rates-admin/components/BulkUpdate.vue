@@ -8,7 +8,7 @@
                         <label>{{'room' | translate}}:</label>
                         <div class="form-group">
                             <select v-model="room" class="form-control text-dark" id="room" name="room">
-                                <option v-for="room in hotel.rooms" :value="room" :key="room.id">{{room.code}} - {{room.name}}</option>
+                                <option v-for="room in hotelRooms" :value="room" :key="room.id">{{room.code}} - {{room.name}}</option>
                             </select>
                         </div>
                     </div>
@@ -74,7 +74,7 @@
                                 <div class="tab-content">
                                     <div id="priceRates" class="tab-pane active">
                                         <div class="form-check d-flex pl-0">
-                                            <div class="price-rates">
+                                            <div class="rates-col col-4 p-0">
                                                 <div class="p-2 text-center text-primary">
                                                     <label class="m-0">{{'adults' | translate}}</label>
                                                 </div>
@@ -100,7 +100,7 @@
                                                         </div>
                                                 </div>
                                             </div>
-                                            <div class="price-rates" v-if="room.maxChildrenOccupancy > 0">
+                                            <div class="rates-col col-4 p-0" v-if="room.maxChildrenOccupancy > 0">
                                                 <div class="p-2 text-center text-primary">
                                                     <label class="m-0">{{'children' | translate}}</label>
                                                 </div>
@@ -126,7 +126,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="junior-rates" v-if="room.maxChildrenOccupancy > 0 && room.juniorsAllowed">
+                                            <div class="rates-col col-4 p-0" v-if="room.maxChildrenOccupancy > 0 && room.juniorsAllowed">
                                                 <div class="p-2 text-center text-primary">
                                                     <label class="m-0">{{'juniors' | translate}}</label>
                                                 </div>
@@ -443,8 +443,8 @@
                 </div>
                 <div class="gds-container border-top">
                     <div class="p-3">
-                        <button type="button" @click="reset" class="btn text-primary m-2"><i class="fa fa-undo mr-3"></i>{{'reset' | translate}}</button>
-                        <button type="button" @click="verifyRequest" class="btn btn-success m-2">{{'save' | translate}}</button>
+                        <button type="button" @click="reset" class="btn text-primary m-2"><i class="fa fa-undo mr-2"></i>{{'reset' | translate}}</button>
+                        <button type="button" @click="verifyRequest" class="btn btn-success m-2"><i class="fa fa-save mr-2"></i> {{'save' | translate}}</button>
                     </div>
                 </div>
             </div>
@@ -457,7 +457,7 @@
 
 import RQHelper from '../helpers/rateUpdateHelper';
 import ratesService from '../../../api/rates-service';
-import utilities from '../../../core/utilities';
+import utilities from '../helpers/utilities';
 
 const initalState = (room, ratePlan, start, end) => ({
     room,
@@ -556,6 +556,10 @@ export default {
         stateDateRangeStart() {
             return this.$store.getters.dateRange.start;
         },
+        hotelRooms() {
+            // solo habitaciones no linkeadas
+            return this.hotel.rooms.filter(x => !x.isLinked);
+        },
     },
     methods: {
         updateOccupancyPrices() {
@@ -603,10 +607,9 @@ export default {
                 }
 
                 // mostrar alerta con errores
-                this.$swal({
+                this.$appAlert({
                     type: 'error',
                     html,
-                    position: 'top',
                 });
 
                 return;
@@ -614,18 +617,19 @@ export default {
 
             if (rqHelper.warnings.length > 0) {
                 for (let i = 0; i < rqHelper.warnings.length; i += 1) {
+                    /* eslint-disable max-len */
                     html += `<div class="alert alert-info mt-1 mb-1" role="alert">
                                 <i class="fa fa-exclamation-triangle"></i> <small>${this.$t(rqHelper.warnings[i])}</small>
                             </div>`;
+                    /* eslint-enable max-len */
                 }
             }
 
 
             // mostrar alerca con advertencias y si lo quiere continuar
-            this.$swal({
+            this.$appAlert({
                 type: 'info',
                 title: this.$t('are you sure?'),
-                position: 'top',
                 html,
                 showCancelButton: true,
                 confirmButtonText: this.$t('yes, save it!'),
@@ -638,9 +642,8 @@ export default {
         sendRequest(RQ) {
             ratesService.bulkUpdate(this.$appConfig.session.hotelId, RQ)
                 .then(() => {
-                    this.$swal({
+                    this.$appAlert({
                         type: 'success',
-                        position: 'top',
                         title: this.$t('successful update'),
                     }).then(() => {
                         $('#bulk-update-form').collapse('hide');
@@ -651,15 +654,14 @@ export default {
                         this.resetData();
                     });
                 }).catch(() => {
-                    this.$swal({
+                    this.$appAlert({
                         type: 'error',
-                        position: 'top',
                         title: this.$t('invalid request, please contact support'),
                     });
                 });
         },
         reset() {
-            this.$swal({
+            this.$appAlert({
                 type: 'question',
                 title: this.$t('are you sure?'),
                 text: this.$t('the form will be set to its initial state'),

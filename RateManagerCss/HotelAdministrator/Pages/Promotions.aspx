@@ -3,8 +3,6 @@
 <%@ Import Namespace="RateManager" %>
 
 <%@ Register Src="~/Modulos/CtrlIdioma.ascx" TagPrefix="uc2" TagName="CtrlIdioma" %>
-<%@ Register TagPrefix="anthem" Namespace="Anthem" Assembly="Anthem" %>
-<%@ Register Src="~/Portal/Modules/CtrlPreserveScrolls.ascx" TagName="CtrlPreserveScrolls" TagPrefix="uc2" %>
 <%@ Register TagPrefix="uc1" TagName="ctlMensajes" Src="../../Modulos/ctlMensajes.ascx" %>
 <%@ Register Src="../../Modulos/ctrlAutoComplete.ascx" TagName="ctrlAutoComplete" TagPrefix="uc2" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
@@ -22,6 +20,9 @@
     <script type="text/jscript" src="../../Includes/Script/JsSearch-1.0.js"></script>
 
     <style type="text/css">
+        div {
+            overflow: hidden;
+        }
         .promoName {
             width: 510px;
             height: 85px;

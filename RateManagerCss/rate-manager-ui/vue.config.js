@@ -36,11 +36,11 @@ module.exports = {
             template: 'public/reservation-list.aspx',
             filename: 'reservation-list.aspx',
         },
-        hotel_list: {
+        /*hotel_list: {
             entry: 'src/views/hotel-list/main.js',
             template: 'public/hotel-list.aspx',
             filename: 'hotel-list.aspx',
-        },
+        },*/
         // subpage: 'src/subpage/main.js'
     },
 };
