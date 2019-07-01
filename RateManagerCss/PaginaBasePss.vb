@@ -689,7 +689,7 @@ Public Class PaginaBase
         'Dim tkt As FormsAuthenticationTicket
         'Dim cookiestr As String
         'Dim ck As HttpCookie
-        Dim roles As String
+        Dim roles As String = String.Empty
         'Dim stmp As String
 
         Try
@@ -706,7 +706,15 @@ Public Class PaginaBase
                     roles = "HotelAvanzado,HotelNetRate"
             End Select
 
-            Session.Item("RolesUsuario") = String.Concat(roles)
+            If Session("RolesUsuario") IsNot Nothing Then
+                If Not String.IsNullOrEmpty(roles) Then
+                    For Each r As String In roles.Split(",")
+                        If Not Session("RolesUsario").ToString.Contains(r) Then
+                            Session.Item("RolesUsario") += "," & r
+                        End If
+                    Next
+                End If
+            End If
         Catch ex As Exception
 
         End Try

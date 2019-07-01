@@ -7,15 +7,17 @@ import VueMoment from 'vue-moment';
 import VCalendar from 'v-calendar';
 import locale from '../../core/localization';
 import es from './localization/es';
-import store from './store';
+/*import store from './store';*/
 import View from './view.vue';
-
-import '../../styles/base.scss';
-import 'bootstrap-vue/dist/bootstrap-vue.css';
 
 Vue.use(BootstrapVue);
 
-locale([{ language: 'es', localeFile: es }], moment, store);
+import './styles/custom.scss';
+import 'bootstrap-vue/dist/bootstrap-vue.css';
+import 'vue-multiselect/dist/vue-multiselect.min.css'
+
+
+locale([{ language: 'es', localeFile: es }], moment, false);
 
 Vue.use(VueMoment, {
     moment,
@@ -26,6 +28,6 @@ Vue.use(VCalendar);
 
 
 new Vue({
-    store,
+    //store,
     render: h => h(View),
 }).$mount('#app');

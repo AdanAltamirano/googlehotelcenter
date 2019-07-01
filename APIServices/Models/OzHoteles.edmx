@@ -195,17 +195,20 @@ warning 6002: The table/view 'OzHoteles.dbo.vDayRates' does not have a primary k
             <PropertyRef Name="RateId" />
             <PropertyRef Name="HotelId" />
             <PropertyRef Name="RoomId" />
-            <PropertyRef Name="RatePlanId" />
             <PropertyRef Name="Occupancy" />
             <PropertyRef Name="Price" />
             <PropertyRef Name="ExceptionPrice" />
             <PropertyRef Name="Discount" />
+            <PropertyRef Name="DayDiscount" />
+            <PropertyRef Name="DiscountLevel" />
             <PropertyRef Name="Currency" />
+            <PropertyRef Name="RatePlanId" />
           </Key>
+          <Property Name="Id" Type="bigint" />
           <Property Name="RateId" Type="int" Nullable="false" />
           <Property Name="HotelId" Type="int" Nullable="false" />
           <Property Name="RoomId" Type="int" Nullable="false" />
-          <Property Name="RatePlanId" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="RatePlanId" Type="nvarchar" MaxLength="54" Nullable="false" />
           <Property Name="RatePlanName" Type="nvarchar" MaxLength="80" />
           <Property Name="StartDate" Type="smalldatetime" />
           <Property Name="EndDate" Type="smalldatetime" />
@@ -215,10 +218,12 @@ warning 6002: The table/view 'OzHoteles.dbo.vDayRates' does not have a primary k
           <Property Name="Price" Type="money" Nullable="false" />
           <Property Name="ExceptionPrice" Type="money" Nullable="false" />
           <Property Name="Discount" Type="smallmoney" Nullable="false" />
+          <Property Name="DayDiscount" Type="smallmoney" Nullable="false" />
+          <Property Name="DiscountLevel" Type="int" Nullable="false" />
           <Property Name="Factor" Type="smallmoney" />
           <Property Name="Offset" Type="smallmoney" />
           <Property Name="Currency" Type="nvarchar" MaxLength="3" Nullable="false" />
-          <Property Name="ParentRatePlanId" Type="nvarchar" MaxLength="50" />
+          <Property Name="ParentRatePlanId" Type="nvarchar" MaxLength="4" />
           <Property Name="IsPromotion" Type="bit" />
           <Property Name="Language" Type="int" />
         </EntityType>
@@ -317,6 +322,8 @@ warning 6002: The table/view 'OzHoteles.dbo.vReservation' does not have a primar
             <PropertyRef Name="CheckIn" />
             <PropertyRef Name="CheckOut" />
             <PropertyRef Name="Status" />
+            <PropertyRef Name="IdEmpresa" />
+            <PropertyRef Name="idTipoHabitacion_Hotel" />
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="ConfirmNumber" Type="nvarchar" MaxLength="24" Nullable="false" />
@@ -328,6 +335,10 @@ warning 6002: The table/view 'OzHoteles.dbo.vReservation' does not have a primar
           <Property Name="Client" Type="nvarchar" MaxLength="161" />
           <Property Name="Status" Type="tinyint" Nullable="false" />
           <Property Name="RoomCount" Type="int" />
+          <Property Name="IdEmpresa" Type="int" Nullable="false" />
+          <Property Name="source" Type="nvarchar" MaxLength="4" />
+          <Property Name="idTipoHabitacion_Hotel" Type="int" Nullable="false" />
+          <Property Name="sourceids" Type="nvarchar" MaxLength="25" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -407,6 +418,7 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           </EntitySet>
           <EntitySet Name="vDayRates" EntityType="Self.vDayRates" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
+    [vDayRates].[Id] AS [Id], 
     [vDayRates].[RateId] AS [RateId], 
     [vDayRates].[HotelId] AS [HotelId], 
     [vDayRates].[RoomId] AS [RoomId], 
@@ -420,6 +432,8 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
     [vDayRates].[Price] AS [Price], 
     [vDayRates].[ExceptionPrice] AS [ExceptionPrice], 
     [vDayRates].[Discount] AS [Discount], 
+    [vDayRates].[DayDiscount] AS [DayDiscount], 
+    [vDayRates].[DiscountLevel] AS [DiscountLevel], 
     [vDayRates].[Factor] AS [Factor], 
     [vDayRates].[Offset] AS [Offset], 
     [vDayRates].[Currency] AS [Currency], 
@@ -493,7 +507,11 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
     [vReservation].[CheckOut] AS [CheckOut], 
     [vReservation].[Client] AS [Client], 
     [vReservation].[Status] AS [Status], 
-    [vReservation].[RoomCount] AS [RoomCount]
+    [vReservation].[RoomCount] AS [RoomCount], 
+    [vReservation].[IdEmpresa] AS [IdEmpresa], 
+    [vReservation].[source] AS [source], 
+    [vReservation].[idTipoHabitacion_Hotel] AS [idTipoHabitacion_Hotel], 
+    [vReservation].[sourceids] AS [sourceids]
     FROM [dbo].[vReservation] AS [vReservation]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vRoomInventory" EntityType="Self.vRoomInventory" store:Type="Views" store:Schema="dbo">
@@ -718,6 +736,8 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
             <PropertyRef Name="CheckIn" />
             <PropertyRef Name="CheckOut" />
             <PropertyRef Name="Status" />
+            <PropertyRef Name="IdEmpresa" />
+            <PropertyRef Name="idTipoHabitacion_Hotel" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" />
           <Property Name="ConfirmNumber" Type="String" Nullable="false" MaxLength="24" FixedLength="false" Unicode="true" />
@@ -729,6 +749,10 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           <Property Name="Client" Type="String" MaxLength="161" FixedLength="false" Unicode="true" />
           <Property Name="Status" Type="Byte" Nullable="false" />
           <Property Name="RoomCount" Type="Int32" />
+          <Property Name="IdEmpresa" Type="Int32" Nullable="false" />
+          <Property Name="source" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="idTipoHabitacion_Hotel" Type="Int32" Nullable="false" />
+          <Property Name="sourceids" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="vRoomInventory">
           <Key>
@@ -835,11 +859,13 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
             <PropertyRef Name="ExceptionPrice" />
             <PropertyRef Name="Discount" />
             <PropertyRef Name="Currency" />
+            <PropertyRef Name="DayDiscount" />
+            <PropertyRef Name="DiscountLevel" />
           </Key>
           <Property Name="RateId" Type="Int32" Nullable="false" />
           <Property Name="HotelId" Type="Int32" Nullable="false" />
           <Property Name="RoomId" Type="Int32" Nullable="false" />
-          <Property Name="RatePlanId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RatePlanId" Type="String" Nullable="false" MaxLength="54" FixedLength="false" Unicode="true" />
           <Property Name="RatePlanName" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
           <Property Name="StartDate" Type="DateTime" Precision="0" />
           <Property Name="EndDate" Type="DateTime" Precision="0" />
@@ -852,9 +878,12 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           <Property Name="Factor" Type="Decimal" Precision="10" Scale="4" />
           <Property Name="Offset" Type="Decimal" Precision="10" Scale="4" />
           <Property Name="Currency" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="true" />
-          <Property Name="ParentRatePlanId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ParentRatePlanId" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
           <Property Name="IsPromotion" Type="Boolean" />
           <Property Name="Language" Type="Int32" />
+          <Property Name="Id" Type="Int64" />
+          <Property Name="DayDiscount" Type="Decimal" Nullable="false" Precision="10" Scale="4" />
+          <Property Name="DiscountLevel" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="vHotelBasicInfo">
           <Key>
@@ -1044,6 +1073,10 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           <EntitySetMapping Name="vReservation">
             <EntityTypeMapping TypeName="Models.vReservation">
               <MappingFragment StoreEntitySet="vReservation">
+                <ScalarProperty Name="sourceids" ColumnName="sourceids" />
+                <ScalarProperty Name="idTipoHabitacion_Hotel" ColumnName="idTipoHabitacion_Hotel" />
+                <ScalarProperty Name="source" ColumnName="source" />
+                <ScalarProperty Name="IdEmpresa" ColumnName="IdEmpresa" />
                 <ScalarProperty Name="RoomCount" ColumnName="RoomCount" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="Client" ColumnName="Client" />
@@ -1140,6 +1173,9 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           <EntitySetMapping Name="vDayRates">
             <EntityTypeMapping TypeName="Models.vDayRates">
               <MappingFragment StoreEntitySet="vDayRates">
+                <ScalarProperty Name="DiscountLevel" ColumnName="DiscountLevel" />
+                <ScalarProperty Name="DayDiscount" ColumnName="DayDiscount" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Language" ColumnName="Language" />
                 <ScalarProperty Name="IsPromotion" ColumnName="IsPromotion" />
                 <ScalarProperty Name="ParentRatePlanId" ColumnName="ParentRatePlanId" />

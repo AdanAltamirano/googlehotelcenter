@@ -27,7 +27,7 @@ export default {
     },
     methods:{
         provider(filter, order, pageSize, page) {
-            return hotelsService.getList(filter, order, pageSize, page);
+            return hotelsService.getList(filter, order, page, pageSize);
         },
         update() {
             this.$root.$emit('bv::refresh::table', 'hotels-table')

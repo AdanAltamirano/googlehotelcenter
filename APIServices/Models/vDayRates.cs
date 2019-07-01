@@ -33,5 +33,8 @@ namespace APIServices.Models
         public string ParentRatePlanId { get; set; }
         public Nullable<bool> IsPromotion { get; set; }
         public Nullable<int> Language { get; set; }
+        public Nullable<long> Id { get; set; }
+        public decimal DayDiscount { get; set; }
+        public int DiscountLevel { get; set; }
     }
 }

@@ -1,27 +1,26 @@
 <template>
-<div>
-    <b-table v-bind="{ $scopedSlots }" class="my-2" striped bordered hover responsive
-                :fields="columns"
-                :items="providerFunction"
-                :per-page="perPage"
-                :current-page="currentPage"
-                :busy.sync="isBusy"
-                :id="tableId">
-        <template slot="table-busy">
-            <div class="vld-parent" style="height:200px">
-                <loading :active="true"
-                    :is-full-page="false"
-                    color="#007bff">
-                </loading>
-            </div>
-        </template>
-    </b-table>
-    <b-row>
-        <b-col>
-            <b-pagination align="right" :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="my-0" />
-        </b-col>
-    </b-row>
-</div>
+    <div>
+        <b-table v-bind="{ $scopedSlots }" class="my-2" show-empty striped bordered hover responsive
+        :fields="columns"
+        :items="providerFunction"
+        :per-page="perPage"
+        :current-page="currentPage"
+        :busy.sync="isBusy"
+        :id="tableId">
+            <template slot="table-busy">
+                <div class="vld-parent" style="height:200px">
+                    <loading :active="true"
+                        :is-full-page="false"
+                        color="#007bff">
+                    </loading>
+                </div>
+            </template>
+            <template slot="empty" slot-scope="scope">
+                <h4>{{scope.emptyText}}</h4>
+            </template>
+        </b-table>
+        <b-pagination align="right" :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="my-0" />
+    </div>
 </template>
 
 <script>
@@ -61,10 +60,12 @@ export default {
     },
     data() {
         return {
+            result: [],
             perPage: this.itemsPerPage || 20,
             currentPage: 1,
             totalRows: 0,
-            isBusy: false
+            isBusy: false,
+            emptyText: 'No hay registros que coincidan con su solicitud'
         }
     },
     methods: {
@@ -93,6 +94,7 @@ export default {
                 this.totalRows = Number(response.headers.map['x-total-count'][0]);
                 // prooveer el arreglo de elementos
                 callback(response.body);
+                this.result = response.body;
                 // marcar como que ya no está ocupado
                 this.hideLoader();
             }).catch(error => {
@@ -115,7 +117,13 @@ export default {
          */
         hideLoader() {
             this.isBusy = false;
-        },
+        }
+    },
+    watch:
+    {
+        result: function(val) {
+            this.$root.$emit('table-result', val);   
+        }
     }
 
 }

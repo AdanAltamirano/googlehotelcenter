@@ -6,23 +6,30 @@ Imports NinjAPI.Query
 Imports RateManager.API.Helpers
 
 Namespace API.Controller
-    <RoutePrefix("api/reservations"), AuthorizeUser(Roles:="supervisor")>
+    <RoutePrefix("api/reservations"), AuthorizeUser(Roles:="supervisor,userchain,hotelcompany")>
     Public Class ReservationController
         Inherits ShurikenController
 
         Public ReservationService As New ReservationService
 
 
-
         <Route(""), HttpGet, Queryable>
         Public Function GetAll() As IQueryable(Of vReservation)
-            Return ReservationService.GetAll()
-        End Function
 
+            Dim roles() As String = GetRoles()
+            If roles.Contains("supervisor") Then
+                Return ReservationService.GetAll()
 
-        <Route("{hotelId:int}"), HttpGet, Queryable>
-        Public Function GetByHotelId(ByVal hotelId As Integer) As IQueryable(Of vReservation)
-            Return ReservationService.Get(hotelId)
+            ElseIf roles.Contains("userchain") Then
+                Dim userCorpId = GetUserCorpId(GetUserId().Value)
+                Return ReservationService.GetAll().Where(Function(h) h.IdEmpresa = userCorpId)
+
+            ElseIf roles.Contains("hotelcompany") Then
+                Dim hotels() As Integer = GetUserHotels(GetUserId().Value).Select(Function(h) h.HotelId).ToArray()
+                Return ReservationService.GetAll().Where(Function(h) hotels.Contains(h.HotelId))
+            End If
+
+            Return New vReservation() {}.AsQueryable()
         End Function
 
     End Class
