@@ -2,7 +2,7 @@ export default {
     'Reservation number':'No. de reservación',
     'Date':'Fecha',
     'Client':'Cliente',
-    'Rooms':'Habitaciones',
+    'Rooms':'# Hab.',
     'Checkin':'Salida',
     'Checkout':'Llegada',
     'Status':'Estatus',
@@ -29,5 +29,6 @@ export default {
     'select':'seleccionar',
     'It has priority over advanced search': 'Tiene prioridad sobre la búsqueda avanzada',
     'Items per page': 'Elementos por página',
-    'Download': 'Descargar'
+    'Download': 'Descargar',
+    'There are no records that match your request':'No hay registros que coincidan con su solicitud',
 };

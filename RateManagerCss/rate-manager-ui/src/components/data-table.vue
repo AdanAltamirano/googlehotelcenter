@@ -6,7 +6,8 @@
         :per-page="itemsPerPage"
         :current-page="currentPage"
         :busy.sync="isBusy"
-        :id="tableId">
+        :id="tableId"
+        :empty-text="emptyText">
             <template slot="table-busy">
                 <div class="vld-parent" style="height:200px">
                     <loading :active="true"
@@ -60,7 +61,7 @@ export default {
             currentPage: 1,
             totalRows: 0,
             isBusy: false,
-            emptyText: 'No hay registros que coincidan con su solicitud'
+            emptyText: this.$t('There are no records that match your request'),
         }
     },
     methods: {

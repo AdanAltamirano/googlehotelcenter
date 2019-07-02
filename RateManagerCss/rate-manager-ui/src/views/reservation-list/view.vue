@@ -15,13 +15,22 @@
             :resource-function="get"
             :filter="filter_url"
             :items-per-page="itemPerPage">
-                <template slot="confirmNumber" slot-scope="data">
+                <template slot="id" slot-scope="data">
                     <b-link :href="'/RateManager/HotelAdministrator/Pages/ReservationDetails.aspx?qs=' + data.value">{{data.value}}</b-link>
                 </template>
                 <template slot="status" slot-scope="data">
                     <b-badge v-if="data.value == 1" variant="success">{{$t('Reserved')}}</b-badge>
                     <b-badge v-if="data.value == 3" variant="danger">{{$t('Cancelled')}}</b-badge>
                     <b-badge v-if="data.value == 4" variant="warning">{{$t('In process')}}</b-badge>
+                </template>
+                <template slot="source" slot-scope="data">
+                    <span v-if="data.value == 'POR'">Portal</span>
+                    <span v-if="data.value == 'CCT'">Call Center</span>
+                    <span v-if="data.value == 'UNI'">{{$t('One Page')}}</span>
+                    <span v-if="data.value == 'HTL'">{{$t('Front Desk')}}</span>
+                    <span v-if="data.value == 'WIZ'">GDS</span>
+                    <span v-if="data.value == 'ADS'">ADS</span>
+                    <span v-if="data.value == 'IDS'">OTA</span>
                 </template>
             </data-table>
         </b-container>
@@ -56,7 +65,7 @@ export default {
             filter_url: null,
             fields: [
                 {
-                    key: 'confirmNumber',
+                    key: 'id',
                     label: '#',//this.$t('Reservation Number')
                 },
                 {
@@ -97,7 +106,7 @@ export default {
                     sortable: true
                 },
                 {
-                    key: 'Source',
+                    key: 'source',
                     label: this.$t('Origin')
                 },
                 {
