@@ -1475,18 +1475,24 @@ Partial Class ReservationDetails
                     End If
                 End If
 
+
+                Dim cvv As String = IIf(.IsNull(dsReservaciones.FIELD_DIGITOCC), "", .Item(dsReservaciones.FIELD_DIGITOCC))
+
                 If Not Session(AppSettings("RestTarjetas")) Is Nothing AndAlso Session(AppSettings("RestTarjetas")) = "1" Then
-                    Dim ccn As String = IIf(.IsNull(dsReservaciones.FIELD_DIGITOCC), " -", .Item(dsReservaciones.FIELD_DIGITOCC))
-                    If ccn.Length >= 3 Then
+                    'Dim ccn As String = IIf(.IsNull(dsReservaciones.FIELD_DIGITOCC), " -", .Item(dsReservaciones.FIELD_DIGITOCC))
+                    If cvv.Length >= 3 Then
                         lblCCcvNumber.Text = "XXX"
                     Else
-                        lblCCcvNumber.Text = IIf(.IsNull(dsReservaciones.FIELD_DIGITOCC), " -", .Item(dsReservaciones.FIELD_DIGITOCC))
+                        lblCCcvNumber.Text = IIf(cvv = String.Empty, " -", cvv)
                     End If
                 Else
                     If Not IsSupervisor And isNR = True Then
                         lblCCcvNumber.Text = "XXX"
                     Else
-                        lblCCcvNumber.Text = IIf(.IsNull(dsReservaciones.FIELD_DIGITOCC), " -", .Item(dsReservaciones.FIELD_DIGITOCC))
+                        If Regex.IsMatch(cvv, "[A-Z]") Then
+                            cvv = crypto.DecryptString128Bit(cvv, crypto.PublicKey)
+                        End If
+                        lblCCcvNumber.Text = IIf(cvv = String.Empty, " -", cvv)
                     End If
 
                 End If
