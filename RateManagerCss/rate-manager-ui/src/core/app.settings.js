@@ -19,7 +19,7 @@ function appAlert(alertData) {
         throw new Error('Whoops! - APP ALERT HUB NOT DEFINED');
     }
     return window.parent.$swal(alertData);
-};
+}
 
 const ConfigsPlugIn = {
     install($Vue) {

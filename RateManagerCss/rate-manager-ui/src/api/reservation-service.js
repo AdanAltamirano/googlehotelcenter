@@ -10,19 +10,18 @@ const resource = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations{?filt
 export default
 {
     /**
-     * 
-     * @param {*} filter 
-     * @param {*} orderBy 
-     * @param {*} pageSize 
-     * @param {*} page 
+     *
+     * @param {*} filter
+     * @param {*} orderBy
+     * @param {*} pageSize
+     * @param {*} page
      */
-    GetAll(filter, orderBy, pageSize, page)
-    {
+    GetAll(filter, orderBy, pageSize, page) {
         return resource.get({
             filter,
             orderBy,
             pageSize,
             page,
         });
-    }
-}
+    },
+};

@@ -1,4 +1,5 @@
 <template>
+<!-- eslint-disable -->
     <b-card style="border:0px">
         <b-row>
             <b-col md="3" class="my-1">
@@ -44,7 +45,7 @@
                             <b-col md="4">
                                 <b-form-group :label="$t('Date Range')">
                                     <b-input-group>
-                                        <v-date-picker 
+                                        <v-date-picker
                                         v-model="dates"
                                         class="form-control p-0"
                                         mode="range"
@@ -83,7 +84,7 @@
                             </b-col>
                             <b-col md="4">
                                 <b-form-group v-if="hotels.length > 0" :label="$t('Hotels')">
-                                    <multiselect label="name" 
+                                    <multiselect label="name"
                                     v-model="hotel"
                                     :options="hotels"
                                     track-by="id"
@@ -100,17 +101,17 @@
             </b-col>
         </b-row>
     </b-card>
-    
+<!-- eslint-enable -->
 </template>
 
 <script>
-import HotelService from '../../../api/hotels-service';
 import Multiselect from 'vue-multiselect';
+import HotelService from '../../../api/hotels-service';
 
 export default {
     name: 'advance-filter',
     components: {
-        Multiselect
+        Multiselect,
     },
     mounted() {
         this.getHotels();
@@ -118,16 +119,16 @@ export default {
     props: {
         result: {
             required: false,
-            type: Array
+            type: Array,
         },
         itemPerPage: {
             required: true,
-            type: Number
+            type: Number,
         },
         itemsPerPage: {
             required: true,
-            type: Array
-        }
+            type: Array,
+        },
     },
     data() {
         return {
@@ -146,34 +147,34 @@ export default {
             typeDates: [
                 { text: this.$t('Reservation date'), value: 'ReservationDate' },
                 { text: this.$t('Arrival date'), value: 'CheckOut' },
-                { text: this.$t('Departure date'), value: 'CheckIn' }
+                { text: this.$t('Departure date'), value: 'CheckIn' },
             ],
             allStatus: [
-                { text: '-- ' + this.$t('All') + ' --', value: 0 },
+                { text: `-- ${this.$t('All')} --`, value: 0 },
                 { text: this.$t('Reserved'), value: 1 },
                 { text: this.$t('Cancelled'), value: 3 },
-                { text: this.$t('In process'), value: 4 }
+                { text: this.$t('In process'), value: 4 },
             ],
             sources: [
-                { text: '-- ' + this.$t('All') + ' --', value: 'ALL' },
+                { text: `-- ${this.$t('All')} --`, value: 'ALL' },
                 { text: 'Portal', value: 'POR' },
                 { text: 'Call Center', value: 'CCT' },
                 { text: this.$t('One Page'), value: 'UNI' },
-                { text: this.$t('Front Desk'), value:'HTL' },
+                { text: this.$t('Front Desk'), value: 'HTL' },
                 { text: 'GDS', value: 'WIZ' },
                 { text: 'ADS', value: 'ADS' },
-                { text: 'OTAS', value: 'IDS' }
+                { text: 'OTAS', value: 'IDS' },
             ],
             otas: [
-                { text: '-- ' + this.$t('All') + ' --', value: 'ALL'},
-                { text: 'BestDay', value: 'BestDay'},
-                { text: 'Booking', value: 'Booking'},
-                { text: 'Bookit.com', value: 'Bookit.com'},
-                { text: 'Expedia', value: 'Expedia'},
-                { text: 'Hotel Beds', value: 'Hotel Beds'},
-                { text: 'PriceTravel', value: 'PriceTravel'}
-            ]
-        }
+                { text: `-- ${this.$t('All')} --`, value: 'ALL' },
+                { text: 'BestDay', value: 'BestDay' },
+                { text: 'Booking', value: 'Booking' },
+                { text: 'Bookit.com', value: 'Bookit.com' },
+                { text: 'Expedia', value: 'Expedia' },
+                { text: 'Hotel Beds', value: 'Hotel Beds' },
+                { text: 'PriceTravel', value: 'PriceTravel' },
+            ],
+        };
     },
     methods: {
         search() {
@@ -185,40 +186,36 @@ export default {
         getFilter() {
             let filter = '';
 
-            //filtran solo el #reservacion
+            // filtran solo el #reservacion
             if (this.noReservation !== '') {
-                filter = 'confirmNumber eq ' + this.noReservation;
+                filter = `confirmNumber eq ${this.noReservation}`;
                 this.cleanFilters();
                 return filter;
             }
 
-            //si #reservacion es vacio, filtrar por lo demas
+            // si #reservacion es vacio, filtrar por lo demas
+            /* eslint-disable max-len */
             if (this.dates != null) {
-                filter += this.typeDate + ' gt ' + this.dateFormat(this.dates.start) +
-                ' and ' + this.typeDate + ' lt ' + this.dateFormat(this.dates.end);
+                filter += `${this.typeDate} gt ${this.dateFormat(this.dates.start)
+                } and ${this.typeDate} lt ${this.dateFormat(this.dates.end)}`;
             }
 
-            if (this.status != 0)
-                filter += (filter !== '' ? ' and ' : '') + 'Status eq ' + this.status;
+            if (this.status !== 0) filter += `${filter !== '' ? ' and ' : ''}Status eq ${this.status}`;
 
-            if (this.clientName !== '')
-                filter += (filter !== '' ? ' and ' : '') + 'Client lk ' + this.clientName;
-            
-            if (this.source != 'ALL')
-                filter += (filter !== '' ? ' and ' : '') + 'Source eq ' + this.source;
+            if (this.clientName !== '') filter += `${filter !== '' ? ' and ' : ''}Client lk ${this.clientName}`;
 
-            if (this.source === 'IDS' && this.ota != 'ALL')
-                filter += (filter !== '' ? ' and ' : '') + 'Portal eq ' + this.ota;
+            if (this.source !== 'ALL') filter += `${filter !== '' ? ' and ' : ''}Source eq ${this.source}`;
+
+            if (this.source === 'IDS' && this.ota !== 'ALL') filter += `${filter !== '' ? ' and ' : ''}Portal eq ${this.ota}`;
 
             if (this.hotel.length > 0) {
                 filter += (filter !== '' ? ' and ' : '');
                 this.hotel.forEach((value, index) => {
-                    if (index > 0)
-                        filter += ' or ';
-                    filter += 'hotelId eq ' + value.id;
+                    if (index > 0) filter += ' or ';
+                    filter += `hotelId eq ${value.id}`;
                 });
             }
-
+            /* eslint-enable max-len */
             return (filter === '' ? null : filter);
         },
 
@@ -240,7 +237,7 @@ export default {
         },
         changeItemsPerPage() {
             this.$emit('changeItems', this.itemPerPage);
-        }
-    }
+        },
+    },
 };
 </script>

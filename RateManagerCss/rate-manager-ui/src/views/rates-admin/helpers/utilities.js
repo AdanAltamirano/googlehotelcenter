@@ -62,17 +62,17 @@ export default {
      * @param {[Any]} rates rateplan array
      */
     mixRoomsAndRates(rooms, rates) {
-        const ratesTree = this.makeRatesTree(rates).sort((a) => a.parentRatePlanId ? 1 : -1);
+        const ratesTree = this.makeRatesTree(rates).sort(a => (a.parentRatePlanId ? 1 : -1));
         return rooms.map((room) => {
             room.rates = ratesTree.filter(plan => plan.roomId === room.id);
             return room;
         }).filter(room => room.rates && room.rates.length > 0);
     },
 
-    getFinalPrice(dayRate, rateInfo, room){
-        let { discount, discountLevel } = rateInfo;
+    getFinalPrice(dayRate, rateInfo, room) {
+        const { discount, discountLevel } = rateInfo;
         let { price } = dayRate;
-        let dayDiscount = dayRate.discount;
+        const dayDiscount = dayRate.discount;
 
         // primero se aplica la regla del linkeo
         if (rateInfo.factor !== undefined) price *= rateInfo.factor;
@@ -82,14 +82,14 @@ export default {
         // se tiene el descuento de tarifa primero que es el mayor jerarquía
         // si es 0 se cambia por el del rateplan
         let finalDiscount = 0;
-        if (discountLevel == 0) finalDiscount = dayDiscount || discount;
+        if (discountLevel === 0) finalDiscount = dayDiscount || discount;
         // suma de descuentos
         else if (discountLevel === 1) finalDiscount = dayDiscount + discount;
         // descuento adicional
         else if (discountLevel === 2) {
             // adicionar 2 descuentos
-            if (discount && dayDiscount) finalDiscount =  100 - ((100 - discount) * (100 - dayDiscount) / 100);
-             // descuento adicional solo hay descuento rateplan
+            if (discount && dayDiscount) finalDiscount = 100 - ((100 - discount) * (100 - dayDiscount) / 100);
+            // descuento adicional solo hay descuento rateplan
             else if (discount > 0) finalDiscount = discount;
             // descuento adicional solo hay descuento diario
             else if (dayDiscount > 0) finalDiscount = dayDiscount;
@@ -98,12 +98,12 @@ export default {
         // aplicar descuento final
         price *= (1 - (finalDiscount / 100));
 
-        //aplicar linkeo de habitación en caso de tenerlo.
-        if(room?.isLiked){
+        // aplicar linkeo de habitación en caso de tenerlo.
+        if (room?.isLiked) {
             if (room.factor !== undefined) price *= room.factor;
             else if (room.offset !== undefined) price += room.offset;
         }
 
         return price;
-    }
+    },
 };

@@ -63,8 +63,13 @@ export default {
             currentPage: 1,
             totalRows: 0,
             isBusy: false,
+<<<<<<< HEAD
+            emptyText: 'No hay registros que coincidan con su solicitud',
+        };
+=======
             emptyText: this.$t('There are no records that match your request'),
         }
+>>>>>>> 79684a5966216b4890a60efb5cd690d882b3413d
     },
     methods: {
         /**
