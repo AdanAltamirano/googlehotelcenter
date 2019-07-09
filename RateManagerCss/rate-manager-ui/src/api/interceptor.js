@@ -16,5 +16,6 @@ export default (request) => {
     return () => {
         proccessing.count -= 1;
         if (proccessing.count === 0) EventBus.$emit(`api.call.end${evt}`);
+        window.session_counter = 0;
     };
 };

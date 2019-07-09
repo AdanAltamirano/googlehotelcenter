@@ -170,6 +170,51 @@
             	jQuery('#sidebar').removeClass('active');
             	jQuery('.overlay').removeClass('active');
             })
+
+            //session warning
+            var minutes_session = 10;
+            var minutes_session_user = 2;
+            window.session_counter = 0;
+            window.wait_user_counter = 0;
+
+            setInterval(sessionWarning, 60000);
+            function sessionWarning() {
+                window.session_counter++;
+                if (window.session_counter >= minutes_session) {
+                    if (!Swal.isVisible()) {
+                        Swal.fire({
+                            title: '<%=GetLabel("01655") %>',
+                            text: '<%=GetLabel("01656") %>',
+                            type: 'warning',
+                            confirmButtonText: '<%=GetLabel("01657") %>',
+                            cancelButtonText: '<%=GetLabel("00159") %>',
+                            showCloseButton: false,
+                            showCancelButton: true,
+                            allowOutsideClick: false,
+                            allowEscapeKey: false
+                        }).then(function (result) {
+                            if (result.value)
+                                window.session_counter = 0;
+                            else logOut();
+                        })
+
+                        setInterval(sessionWarningTime, 60000);
+                    } 
+                }
+            }
+
+            function sessionWarningTime() {
+                window.wait_user_counter++;
+                if (window.wait_user_counter >= minutes_session_user) logOut();
+            }
+
+            jQuery('#frmPrincipal').load(function () {
+                window.session_counter = 0;
+            })
+
+            function logOut() {
+                window.location = jQuery('#ctl00_linkLogOut').attr('href');
+            }
         });
     </script>
 
@@ -355,8 +400,7 @@
             <i class="fa fa-arrow-circle-up"></i>
         </a>
     </div>
-    
-    
+        
     </form>
 </body>
 </html>

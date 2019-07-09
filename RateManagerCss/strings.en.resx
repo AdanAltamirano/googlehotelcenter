@@ -8850,4 +8850,13 @@
   <data name="01654" xml:space="preserve">
     <value>Support</value>
   </data>
+  <data name="01655" xml:space="preserve">
+    <value>Expired session</value>
+  </data>
+  <data name="01656" xml:space="preserve">
+    <value>The session expires due to inactivity</value>
+  </data>
+  <data name="01657" xml:space="preserve">
+    <value>Keep</value>
+  </data>
 </root>
