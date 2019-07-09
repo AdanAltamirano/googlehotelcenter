@@ -1,10 +1,9 @@
 <template>
-<!-- eslint-disable -->
     <div id="app">
         <b-container fluid>
             <h2 class="text-primary">{{$t('Reservation List')}}</h2>
             <advanced-filter
-            :item-per-page="itemPerPage"
+            :item-per-page="itemPerPage" 
             :items-per-page="itemsPerPage"
             :result="result"
             @exportToExcel="exportToExcel"
@@ -16,7 +15,7 @@
             :resource-function="get"
             :filter="filter_url"
             :items-per-page="itemPerPage">
-                <template slot="confirmNumber" slot-scope="data">
+                <template slot="id" slot-scope="data">
                     <b-link :href="'/RateManager/HotelAdministrator/Pages/ReservationDetails.aspx?qs=' + data.value">{{data.value}}</b-link>
                 </template>
                 <template slot="status" slot-scope="data">
@@ -24,23 +23,31 @@
                     <b-badge v-if="data.value == 3" variant="danger">{{$t('Cancelled')}}</b-badge>
                     <b-badge v-if="data.value == 4" variant="warning">{{$t('In process')}}</b-badge>
                 </template>
+                <template slot="source" slot-scope="data">
+                    <span v-if="data.value == 'POR'">Portal</span>
+                    <span v-if="data.value == 'CCT'">Call Center</span>
+                    <span v-if="data.value == 'UNI'">{{$t('One Page')}}</span>
+                    <span v-if="data.value == 'HTL'">{{$t('Front Desk')}}</span>
+                    <span v-if="data.value == 'WIZ'">GDS</span>
+                    <span v-if="data.value == 'ADS'">ADS</span>
+                    <span v-if="data.value == 'IDS'">OTA</span>
+                </template>
             </data-table>
         </b-container>
     </div>
-<!-- eslint-enable -->
 </template>
 
 <script>
-import XLSX from 'xlsx';
 import AdvancedFilter from './components/AdvancedFilter.vue';
-import DataTable from '../../components/data-table.vue';
+import DataTable from '../../components/data-table.vue'
 import ReservationService from '../../api/reservation-service';
+import XLSX from 'xlsx';
 
 export default {
     name: 'app',
     components: {
         AdvancedFilter,
-        DataTable,
+        DataTable
     },
     mounted() {
         this.$root.$on('table-result', (val) => {
@@ -52,117 +59,122 @@ export default {
         return {
             default: {
                 once: true,
-                orderBy: 'reservationDate desc',
+                orderBy: 'reservationDate desc'
             },
             result: [],
             filter_url: null,
             fields: [
                 {
-                    key: 'confirmNumber',
-                    label: '#', // this.$t('Reservation Number')
+                    key: 'id',
+                    label: '#',//this.$t('Reservation Number')
                 },
                 {
                     key: 'hotel',
-                    label: 'Hotel',
+                    label: 'Hotel'
                 },
                 {
                     key: 'client',
-                    label: this.$t('Client'),
+                    label: this.$t('Client')
                 },
                 {
                     key: 'reservationDate',
                     label: this.$t('Date'),
-                    formatter: value => this.$moment(value).format('D MMM YYYY'),
+                    formatter: value => {
+                        return this.$moment(value).format('D MMM YYYY')
+                    },
                     sortable: true,
-                    sortDirection: 'last',
+                    sortDirection: 'last'
                 },
                 {
                     key: 'roomCount',
-                    label: this.$t('Rooms'),
+                    label: this.$t('Rooms')
                 },
                 {
                     key: 'checkIn',
                     label: this.$t('Checkin'),
-                    formatter: value => this.$moment(value).format('D MMM YYYY'),
-                    sortable: true,
+                    formatter: value => {
+                        return this.$moment(value).format('D MMM YYYY')
+                    },
+                    sortable: true
                 },
                 {
                     key: 'checkOut',
                     label: this.$t('Checkout'),
-                    formatter: value => this.$moment(value).format('D MMM YYYY'),
-                    sortable: true,
+                    formatter: value => {
+                        return this.$moment(value).format('D MMM YYYY')
+                    },
+                    sortable: true
                 },
                 {
-                    key: 'Source',
-                    label: this.$t('Origin'),
+                    key: 'source',
+                    label: this.$t('Origin')
                 },
                 {
                     key: 'status',
                     label: this.$t('Status'),
-                    sortable: true,
-                },
+                    sortable: true
+                }
             ],
             itemPerPage: 20,
-            itemsPerPage: [20, 50, 100, 200],
-        };
+            itemsPerPage: [20, 50, 100, 200]
+        }
     },
     methods: {
         get(filter, orderBy, pageSize, page) {
-            let order = orderBy;
             if (this.default.once) {
-                order = this.default.orderBy;
+                orderBy = this.default.orderBy;
                 this.default.once = false;
             }
-            return ReservationService.GetAll(filter, order, pageSize, page);
+            return ReservationService.GetAll(filter, orderBy, pageSize, page);
         },
         search(filter) {
             this.filter_url = filter;
             this.$root.$emit('bv::refresh::table', 'rsv_table');
         },
         excelFormat() {
-            const bkResult = this.result;
+            let bkResult = this.result;
             this.result = [];
-            bkResult.forEach((value) => {
-                const row = {};
-                this.fields.forEach((valueF) => {
-                    if (valueF.key in value) {
+            bkResult.forEach((value, index) => {
+                let row = {};
+                this.fields.forEach((valueF, indexF) => {
+                    if (value.hasOwnProperty(valueF.key)) {
                         let val = value[valueF.key];
 
-                        if ('formatter' in valueF) {
+                        if (valueF.hasOwnProperty('formatter')) {
                             val = this.$moment(val).format('D MMM YYYY');
                             row[valueF.label] = val;
                         }
-
+                        
                         if (valueF.key === 'status') {
-                            switch (val) {
-                            case 1: val = this.$t('Reserved'); break;
-                            case 3: val = this.$t('Cancelled'); break;
-                            default: val = this.$t('In process');
-                            }
+                            switch(val) {
+                                case 1: val = this.$t('Reserved'); break;
+                                case 3: val = this.$t('Cancelled'); break;
+                                case 4: val = this.$t('In process'); break;
+                            } 
                         }
                         row[valueF.label] = val;
                     }
                 });
                 this.result.push(row);
-            });
+            })
         },
         exportToExcel() {
-            // only array possible
-            const data = XLSX.utils.json_to_sheet(this.result);
+            //only array possible
+            var data = XLSX.utils.json_to_sheet(this.result);
 
-            // a workbook is the name given to an excel file
-            const wb = XLSX.utils.book_new(); // make workbook of excel
+            //a workbook is the name given to an excel file
+            var wb = XLSX.utils.book_new(); //make workbook of excel
 
-            // add worksheet to workbook
-            // workbook contains one or more worksheets
+            //add worksheet to workbook
+            //workbook contains one or more worksheets
             XLSX.utils.book_append_sheet(wb, data, this.$t('Reservation List'));
 
-            // export excel file
-            XLSX.writeFile(wb, 'reservaciones.xlsx'); // name of the file
+            //export excel file
+            XLSX.writeFile(wb, 'reservaciones.xlsx'); //name of the file
         },
         changeItems(value) {
-            this.itemPerPage = value;
-        },
-    },
+            this.itemPerPage = value; 
+        }
+    }
 };
 </script>
