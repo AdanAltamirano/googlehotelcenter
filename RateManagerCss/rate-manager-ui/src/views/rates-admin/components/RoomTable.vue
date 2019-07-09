@@ -90,7 +90,7 @@
 </template>
 
 <script>
-import Utilities from '../helpers/utilities'
+import Utilities from '../helpers/utilities';
 import DayRateDetail from './DayRateDetail.vue';
 
 export default {
@@ -115,27 +115,29 @@ export default {
         getPrice(dayRate, rate, room) {
             return Utilities.getFinalPrice(dayRate, rate, room);
         },
-        getPlanLinkDesc(rate){
+        getPlanLinkDesc(rate) {
             let desc = '';
             if (rate.factor !== undefined) {
                 desc = `${rate.parentRatePlanId} * ${this.$options.filters.currency(rate.factor)}`;
-            }
-            else if (rate.offset !== undefined) {
+            } else if (rate.offset !== undefined) {
+                /* eslint-disable max-len */
                 desc = `${rate.parentRatePlanId} ${rate.offset > 0 ? '+' : '-'} ${this.$options.filters.currency(Math.abs(rate.offset))}`;
+                /* eslint-enable max-len */
             }
             return desc;
         },
-        getRoomLinkDesc(room){
+        getRoomLinkDesc(room) {
             let desc = '';
             if (room.factor !== undefined) {
                 desc = `${room.parentRoomCode} * ${this.$options.filters.currency(room.factor)}`;
-            }
-            else if (room.offset !== undefined) {
+            } else if (room.offset !== undefined) {
+                /* eslint-disable max-len */
                 desc = `${room.parentRoomCode} ${room.offset > 0 ? '+' : '-'} ${this.$options.filters.currency(Math.abs(room.offset))}`;
+                /* eslint-enable max-len */
             }
             return desc;
         },
-        dayPromotionText(dayRate, rate){
+        dayPromotionText(dayRate, rate) {
             let desc = '';
             let { discount } = dayRate;
             if (discount > 0) {
@@ -150,7 +152,7 @@ export default {
                 desc += this.$t('{discount}% Off', { discount });
             }
             return desc;
-        }
+        },
     },
 };
 </script>

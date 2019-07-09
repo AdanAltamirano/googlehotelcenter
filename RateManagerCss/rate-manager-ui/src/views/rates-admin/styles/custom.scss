@@ -186,6 +186,9 @@ body {
 .bg-promo{
     background-color:  theme-color-level(info, -10);
 }
+.popover-form {
+    min-width: 250px;
+}
 .popover-form input{
     max-width: 100px;
     padding: 0.2rem 0.3rem;

@@ -5,7 +5,7 @@
             <a href="javascript:;" v-tooltip="{ content: dayPromotionText(dayRate, rate), classes: ['warning']}"  :class="{'text-warning': dayRate.discount > 0}">{{ getPrice(dayRate, rate, room) | currency}}</a>
             <template slot="popover">
                 <div class="d-flex flex-row-reverse justify-content-between">
-                    <a ref="close" v-close-popover href="javascript:;" class="text-primary"><i class="fa fa-times"></i></a>
+                    <a ref="close" v-close-popover href="javascript:;" class="text-danger"><i class="fa fa-times"></i></a>
                     <h4 class="text-primary text-uppercase font-weight-bold mb-2">{{this.room.code}} / {{this.rate.ratePlanId}} / {{this.dayRate.date | moment('DD-MMM-YYYY')}}</h4>
                 </div>
                 <hr style="">
@@ -251,7 +251,11 @@ export default {
         },
         showLoader() {
             this.loader = this.$loading.show({
-                color: this.$appConfig.themeColors.info, height: 64, width: 64, isFullPage: false,
+                color: this.$appConfig.themeColors.info,
+                height: 64,
+                width: 64,
+                isFullPage: false,
+                container: $(`#popover-${this.idString}`),
             });
         },
         hideLoader() {
@@ -318,7 +322,7 @@ export default {
 
             this.rateDayDetails = rateDetails;
         },
-        dayPromotionText(dayRate, rate){
+        dayPromotionText(dayRate, rate) {
             let desc = '';
             let { discount } = dayRate;
             if (discount > 0) {

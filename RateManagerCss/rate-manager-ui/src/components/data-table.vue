@@ -1,4 +1,5 @@
 <template>
+<!-- eslint-disable -->
     <div>
         <b-table v-bind="{ $scopedSlots }" class="my-2" show-empty striped bordered hover responsive
         :fields="columns"
@@ -21,6 +22,7 @@
         </b-table>
         <b-pagination align="right" :total-rows="totalRows" :per-page="itemsPerPage" v-model="currentPage" class="my-0" />
     </div>
+<!-- eslint-enable -->
 </template>
 
 <script>
@@ -30,29 +32,29 @@ import Loading from 'vue-loading-overlay';
 export default {
     name: 'data-table',
     components: {
-        Loading
+        Loading,
     },
     props: {
         columns: {
             type: Array,
-            required: true
+            required: true,
         },
         resourceFunction: {
             type: Function,
-            required: false
+            required: false,
         },
-        filter:{
+        filter: {
             type: String,
-            required: false
+            required: false,
         },
-        itemsPerPage:{
+        itemsPerPage: {
             type: Number,
-            required: true
+            required: true,
         },
-        tableId:{
+        tableId: {
             type: String,
-            required: false
-        }
+            required: false,
+        },
     },
     data() {
         return {
@@ -60,8 +62,8 @@ export default {
             currentPage: 1,
             totalRows: 0,
             isBusy: false,
-            emptyText: 'No hay registros que coincidan con su solicitud'
-        }
+            emptyText: 'No hay registros que coincidan con su solicitud',
+        };
     },
     methods: {
         /**
@@ -72,7 +74,7 @@ export default {
         */
         formatOrder(sortBy, sortDesc) {
             if (!sortBy) return '';
-            return `${sortBy} ${sortDesc ? "desc" : "asc"}`;
+            return `${sortBy} ${sortDesc ? 'desc' : 'asc'}`;
         },
         /**
          * función proveedora de datos para b-table
@@ -83,7 +85,7 @@ export default {
                 this.filter,
                 this.formatOrder(ctx.sortBy, ctx.sortDesc),
                 ctx.perPage,
-                ctx.currentPage
+                ctx.currentPage,
             ).then((response) => {
                 // establecer el total de elementos
                 this.totalRows = Number(response.headers.map['x-total-count'][0]);
@@ -92,12 +94,12 @@ export default {
                 this.result = response.body;
                 // marcar como que ya no está ocupado
                 this.hideLoader();
-            }).catch(error => {
+            }).catch(() => {
                 // TODO: MOSTRAR Error
                 // agrear un arreglo sin elementos
                 callback([]);
                 // marcar como que ya no está ocupado
-                 this.hideLoader();
+                this.hideLoader();
             });
         },
         /**
@@ -105,21 +107,20 @@ export default {
          */
         showLoader() {
             this.isBusy = true;
-            //this.loader = this.$loading.show({ color: '#007bff', height: 64, width: 64, isFullPage: false, container: this.$refs.loadingContainer, });
         },
         /**
          * ocultar la animacion de loading
          */
         hideLoader() {
             this.isBusy = false;
-        }
+        },
     },
     watch:
     {
-        result: function(val) {
-            this.$root.$emit('table-result', val);   
-        }
-    }
+        result(val) {
+            this.$root.$emit('table-result', val);
+        },
+    },
 
-}
+};
 </script>

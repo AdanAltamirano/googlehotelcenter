@@ -19,18 +19,19 @@
 
 <script>
 import dataTable from '../../components/data-table.vue';
-import hotelsService from '../../api/hotels-service'
+import hotelsService from '../../api/hotels-service';
+
 export default {
     name: 'app',
     components: {
         dataTable,
     },
-    methods:{
+    methods: {
         provider(filter, order, pageSize, page) {
             return hotelsService.getList(filter, order, page, pageSize);
         },
         update() {
-            this.$root.$emit('bv::refresh::table', 'hotels-table')
+            this.$root.$emit('bv::refresh::table', 'hotels-table');
         },
     },
     data() {
@@ -56,7 +57,7 @@ export default {
                     key: 'status',
                     label: this.$t('status'),
                     sortable: true,
-                }
+                },
             ],
         };
     },
