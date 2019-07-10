@@ -1,6 +1,6 @@
 <template>
 <!-- eslint-disable -->
-    <b-card style="border:0px">
+    <b-card no-body style="border:0px">
         <b-row>
             <b-col md="3" class="my-1">
                 <b-form-group :description="$t('It has priority over advanced search')">
@@ -94,6 +94,11 @@
                                     :deselectLabel="''"
                                     :placeholder="$t('Find Hotel')"></multiselect>
                                 </b-form-group>
+                            </b-col>
+                        </b-row>
+                        <b-row>
+                            <b-col>
+                                <b-button variant="primary" @click="search">{{$t('Search')}}</b-button>
                             </b-col>
                         </b-row>
                     </b-card>

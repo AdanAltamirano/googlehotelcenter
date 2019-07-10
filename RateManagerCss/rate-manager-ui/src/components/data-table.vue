@@ -8,7 +8,10 @@
         :current-page="currentPage"
         :busy.sync="isBusy"
         :id="tableId"
-        :empty-text="emptyText">
+        :empty-text="emptyText"
+        :small="small"
+        :sort-by="sortBy"
+        :sort-desc="sortDesc">
             <template slot="table-busy">
                 <div class="vld-parent" style="height:200px">
                     <loading :active="true"
@@ -54,6 +57,18 @@ export default {
         },
         tableId: {
             type: String,
+            required: false,
+        },
+        sortBy:{
+            type: String,
+            required: false,
+        },
+        sortDesc:{
+            type: Boolean,
+            required: false,
+        },
+        small:{
+            type: Boolean,
             required: false,
         },
     },

@@ -3,7 +3,7 @@
         <b-container fluid>
             <h2 class="text-primary">{{$t('Reservation List')}}</h2>
             <advanced-filter
-            :item-per-page="itemPerPage" 
+            :item-per-page="itemPerPage"
             :items-per-page="itemsPerPage"
             :result="result"
             @exportToExcel="exportToExcel"
@@ -14,23 +14,23 @@
             :columns="fields"
             :resource-function="get"
             :filter="filter_url"
-            :items-per-page="itemPerPage">
-                <template slot="id" slot-scope="data">
-                    <b-link :href="'/RateManager/HotelAdministrator/Pages/ReservationDetails.aspx?qs=' + data.value">{{data.value}}</b-link>
+            :items-per-page="itemPerPage"
+            sort-by="reservationDate"
+            :sort-desc="true"
+            :small="true">
+                <template slot="idconfirmNumber" slot-scope="data">
+                    <b-link :href="'/RateManager/HotelAdministrator/Pages/ReservationDetails.aspx?qs=' + data.item.id">{{data.item.confirmNumber}}</b-link>
+                </template>
+                <template slot="hotel" slot-scope="data">
+                    <span class="d-block text-truncate" style="width:150px;">{{data.value}}</span>
                 </template>
                 <template slot="status" slot-scope="data">
                     <b-badge v-if="data.value == 1" variant="success">{{$t('Reserved')}}</b-badge>
                     <b-badge v-if="data.value == 3" variant="danger">{{$t('Cancelled')}}</b-badge>
                     <b-badge v-if="data.value == 4" variant="warning">{{$t('In process')}}</b-badge>
                 </template>
-                <template slot="source" slot-scope="data">
-                    <span v-if="data.value == 'POR'">Portal</span>
-                    <span v-if="data.value == 'CCT'">Call Center</span>
-                    <span v-if="data.value == 'UNI'">{{$t('One Page')}}</span>
-                    <span v-if="data.value == 'HTL'">{{$t('Front Desk')}}</span>
-                    <span v-if="data.value == 'WIZ'">GDS</span>
-                    <span v-if="data.value == 'ADS'">ADS</span>
-                    <span v-if="data.value == 'IDS'">OTA</span>
+                <template slot="portal" slot-scope="data">
+                     <span class="d-block text-truncate" style="width:120px;">{{data.value}}</span>
                 </template>
             </data-table>
         </b-container>
@@ -65,7 +65,7 @@ export default {
             filter_url: null,
             fields: [
                 {
-                    key: 'id',
+                    key: 'idconfirmNumber',
                     label: '#',//this.$t('Reservation Number')
                 },
                 {
@@ -83,11 +83,7 @@ export default {
                         return this.$moment(value).format('D MMM YYYY')
                     },
                     sortable: true,
-                    sortDirection: 'last'
-                },
-                {
-                    key: 'roomCount',
-                    label: this.$t('Rooms')
+                    sortDirection: 'desc'
                 },
                 {
                     key: 'checkIn',
@@ -106,7 +102,7 @@ export default {
                     sortable: true
                 },
                 {
-                    key: 'source',
+                    key: 'portal',
                     label: this.$t('Origin')
                 },
                 {
@@ -144,13 +140,13 @@ export default {
                             val = this.$moment(val).format('D MMM YYYY');
                             row[valueF.label] = val;
                         }
-                        
+
                         if (valueF.key === 'status') {
                             switch(val) {
                                 case 1: val = this.$t('Reserved'); break;
                                 case 3: val = this.$t('Cancelled'); break;
                                 case 4: val = this.$t('In process'); break;
-                            } 
+                            }
                         }
                         row[valueF.label] = val;
                     }
@@ -173,7 +169,7 @@ export default {
             XLSX.writeFile(wb, 'reservaciones.xlsx'); //name of the file
         },
         changeItems(value) {
-            this.itemPerPage = value; 
+            this.itemPerPage = value;
         }
     }
 };
