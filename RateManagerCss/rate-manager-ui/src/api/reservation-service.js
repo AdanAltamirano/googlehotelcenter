@@ -5,7 +5,8 @@ import Interceptor from './interceptor';
 Vue.use(VueResource);
 Vue.http.interceptors.push(Interceptor);
 
-const resource = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations{?filter,orderBy,pageSize,page}`);
+const reservationList = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations{?filter,orderBy,pageSize,page}`);
+const reservationDetails = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations/details/{reservationId}`);
 
 export default
 {
@@ -17,11 +18,17 @@ export default
      * @param {*} page
      */
     GetAll(filter, orderBy, pageSize, page) {
-        return resource.get({
+        return reservationList.get({
             filter,
             orderBy,
             pageSize,
             page,
         });
     },
+
+    GetDetails(reservationId) {
+        return reservationDetails.get({
+            reservationId
+        });
+    }
 };

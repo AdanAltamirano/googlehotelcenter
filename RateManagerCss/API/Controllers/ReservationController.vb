@@ -32,6 +32,12 @@ Namespace API.Controller
             Return New vReservation() {}.AsQueryable()
         End Function
 
+
+        <Route("details"), HttpGet>
+        Public Function GetDetailsById(ByVal reservationId As Integer) As DTO.ReservationDetailsModel
+            Return ReservationService.GetDetailsById(reservationId)
+        End Function
+
     End Class
 End Namespace
 

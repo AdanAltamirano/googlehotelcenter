@@ -63,6 +63,7 @@
     <Compile Include="Models\DTO\DailyRateDetail.cs" />
     <Compile Include="Models\DTO\HotelInfo.cs" />
     <Compile Include="Models\DTO\RatePlanHeader.cs" />
+    <Compile Include="Models\DTO\ReservationDetailsModel.cs" />
     <Compile Include="Models\DTO\Room.cs" />
     <Compile Include="Models\DTO\RoomInventoryInfo.cs" />
     <Compile Include="Models\DTO\UpdateRateRequest.cs" />
@@ -116,6 +117,9 @@
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\vReservation.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\vReservationDetails.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\vRoomInventory.cs">
