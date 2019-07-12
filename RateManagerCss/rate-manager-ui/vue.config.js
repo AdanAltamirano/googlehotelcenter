@@ -23,7 +23,7 @@ module.exports = {
                         chunks: 'initial',
                         minChunks: 2,
                         reuseExistingChunk: true,
-                        enforce: true
+                        enforce: true,
                     },
                 },
             },
@@ -46,13 +46,13 @@ module.exports = {
             entry: 'src/views/rates-admin/main.js',
             template: 'public/rates-admin.aspx',
             filename: 'rates-admin.aspx',
-            chunks: [ 'commons', 'rates_admin'],
+            chunks: ['commons', 'rates_admin'],
         },
         reservation_list: {
             entry: 'src/views/reservation-list/main.js',
             template: 'public/reservation-list.aspx',
             filename: 'reservation-list.aspx',
-            chunks: [ 'commons', 'reservation_list'],
+            chunks: ['commons', 'reservation_list'],
         },
         /* hotel_list: {
             entry: 'src/views/hotel-list/main.js',
