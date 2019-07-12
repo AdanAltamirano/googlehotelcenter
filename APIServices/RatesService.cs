@@ -125,7 +125,7 @@ namespace APIServices
                 if (roomId != null)
                     query = query.Where(r => r.RoomId == roomId);
 
-                result = query.OrderBy(x => x.Id).ToArray();
+                result = query.ToArray();
             }
 
             return result;

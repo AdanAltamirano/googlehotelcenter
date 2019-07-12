@@ -25,7 +25,7 @@
                         </b-button>
                     </b-col>
                     <b-col md="4" style="margin-top:-1.9rem;">
-                        <b-form-group label="Items por pagina">
+                        <b-form-group :label="$t('items per page')">
                             <b-form-select @change="changeItemsPerPage" class="float-right" v-model.number="itemPerPage" :options="itemsPerPage"></b-form-select>
                         </b-form-group>
                     </b-col>
@@ -49,7 +49,7 @@
                                         v-model="dates"
                                         class="form-control p-0"
                                         mode="range"
-                                        :max-date="new Date()"
+                                        :min-date="minDate"
                                         :popover="{ placement: 'bottom', visibility: 'click' }"
                                         :columns="2"></v-date-picker>
                                         <b-input-group-append>
@@ -135,6 +135,13 @@ export default {
             type: Array,
         },
     },
+    computed: {
+        minDate() {
+            const date = new Date();
+            date.setFullYear(date.getFullYear() - 1);
+            return date;
+        },
+    },
     data() {
         return {
             includeDates: false,
@@ -147,8 +154,6 @@ export default {
             hotel: [],
             hotels: [],
             ota: 'ALL',
-
-
             typeDates: [
                 { text: this.$t('Reservation date'), value: 'ReservationDate' },
                 { text: this.$t('Arrival date'), value: 'CheckOut' },
@@ -173,8 +178,7 @@ export default {
             otas: [
                 { text: `-- ${this.$t('All')} --`, value: 'ALL' },
                 { text: 'BestDay', value: 'BestDay' },
-                { text: 'Booking', value: 'Booking' },
-                { text: 'Bookit.com', value: 'Bookit.com' },
+                { text: 'Booking.com', value: 'Booking' },
                 { text: 'Expedia', value: 'Expedia' },
                 { text: 'Hotel Beds', value: 'Hotel Beds' },
                 { text: 'PriceTravel', value: 'PriceTravel' },

@@ -5,6 +5,7 @@ import BootstrapVue from 'bootstrap-vue';
 import '../../core/app.settings';
 import VueMoment from 'vue-moment';
 import VCalendar from 'v-calendar';
+import VTooltip from 'v-tooltip';
 import locale from '../../core/localization';
 import es from './localization/es';
 /* import store from './store'; */
@@ -24,7 +25,7 @@ Vue.use(VueMoment, {
 });
 
 Vue.use(VCalendar);
-
+Vue.use(VTooltip);
 
 new Vue({
     // store,

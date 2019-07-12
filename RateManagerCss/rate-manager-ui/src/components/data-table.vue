@@ -59,15 +59,15 @@ export default {
             type: String,
             required: false,
         },
-        sortBy:{
+        sortBy: {
             type: String,
             required: false,
         },
-        sortDesc:{
+        sortDesc: {
             type: Boolean,
             required: false,
         },
-        small:{
+        small: {
             type: Boolean,
             required: false,
         },
@@ -79,7 +79,7 @@ export default {
             totalRows: 0,
             isBusy: false,
             emptyText: this.$t('There are no records that match your request'),
-        }
+        };
     },
     methods: {
         /**
