@@ -101,7 +101,7 @@
                 </div>
             </template>
         </v-popover>
-        <span v-else-if="room.isLinked || (rate.parentRatePlanId && dayRate.price > 0)"
+        <span v-else-if="(room.isLinked ||rate.parentRatePlanId) && dayRate.price > 0"
             v-tooltip="{ content: dayPromotionText(dayRate, rate), classes: ['warning']}"
             :class="{'text-warning': dayRate.discount > 0, 'text-muted': room.isLinked && !dayRate.discount}">{{ getPrice(dayRate, rate, room) | currency}}
         </span>

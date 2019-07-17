@@ -26,7 +26,7 @@ namespace APIServices.Models
         public Nullable<int> RoomCount { get; set; }
         public int CompanyId { get; set; }
         public string Source { get; set; }
-        public int RoomId { get; set; }
+        public Nullable<int> RoomId { get; set; }
         public string Portal { get; set; }
     }
 }
