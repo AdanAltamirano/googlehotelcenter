@@ -552,6 +552,8 @@
     <Content Include="Casas\RegistroCasas.aspx" />
     <Content Include="Casas\HousesCatalogue.aspx" />
     <Content Include="Control De cambios Rate Manager.txt" />
+    <Content Include="Correos\html\codecc_en.htm" />
+    <Content Include="Correos\html\codecc_es.htm" />
     <Content Include="Correos\html\AsociateProfileAgent_EN.htm" />
     <Content Include="Correos\html\AsociateProfileAgent_ES.htm" />
     <Content Include="Correos\html\AsociateProfileHotel_EN.htm" />
@@ -1202,6 +1204,7 @@
     <Content Include="Images\usa.gif" />
     <Content Include="Images\xml.gif" />
     <Content Include="Includes\bootstrap.min.css" />
+    <Content Include="Includes\imagenes\cards\visa.png" />
     <Content Include="Includes\imagenes\istotipo-internetpowerhotel-blanco.png" />
     <Content Include="Includes\imagenes\istotipo-internetpowerhotel-normal.png" />
     <Content Include="Includes\imagenes\logo.png" />
@@ -1475,6 +1478,7 @@
     <Compile Include="API\Models\DateRangeRQ.vb" />
     <Compile Include="API\Models\RatesByPlanRQ.vb" />
     <Compile Include="API\Models\RateUpdateRQ.vb" />
+    <Compile Include="API\Models\ReservationUpdateRQ.vb" />
     <Compile Include="App_Data\Agreement.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

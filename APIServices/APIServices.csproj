@@ -35,6 +35,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="emailTemplates">
+      <HintPath>..\RateManagerCss\bin\emailTemplates.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
@@ -42,6 +45,9 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="PortalLibraries">
+      <HintPath>..\RateManagerCss\bin\PortalLibraries.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -53,6 +59,7 @@
   <ItemGroup>
     <Compile Include="Dictionary.cs" />
     <Compile Include="HotelService.cs" />
+    <Compile Include="Models\DTO\CancelBooking.cs" />
     <Compile Include="Models\ContratosNR.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
@@ -62,11 +69,15 @@
     <Compile Include="Models\DTO\DailyRate.cs" />
     <Compile Include="Models\DTO\DailyRateDetail.cs" />
     <Compile Include="Models\DTO\HotelInfo.cs" />
+    <Compile Include="Models\DTO\ModifyBooking.cs" />
     <Compile Include="Models\DTO\RatePlanHeader.cs" />
     <Compile Include="Models\DTO\ReservationDetailsModel.cs" />
     <Compile Include="Models\DTO\Room.cs" />
     <Compile Include="Models\DTO\RoomInventoryInfo.cs" />
     <Compile Include="Models\DTO\UpdateRateRequest.cs" />
+    <Compile Include="Models\Hoteles.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Indice.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
@@ -116,10 +127,19 @@
     <Compile Include="Models\vHotelRoom.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\vPermissions.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\vReservation.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\vReservationDetails.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\vReservationRoomDetails.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\VReservationRoomPriceDetails.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\vRoomInventory.cs">

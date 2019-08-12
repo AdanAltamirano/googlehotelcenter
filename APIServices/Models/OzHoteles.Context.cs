@@ -12,6 +12,8 @@ namespace APIServices.Models
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class OzHotelesEntities : DbContext
     {
@@ -39,6 +41,105 @@ namespace APIServices.Models
         public virtual DbSet<vDayRateDetail> vDayRateDetail { get; set; }
         public virtual DbSet<vHotelRoom> vHotelRoom { get; set; }
         public virtual DbSet<vDayRates> vDayRates { get; set; }
+        public virtual DbSet<vPermissions> vPermissions { get; set; }
+        public virtual DbSet<VReservationRoomPriceDetails> VReservationRoomPriceDetails { get; set; }
+        public virtual DbSet<Hoteles> Hoteles { get; set; }
+        public virtual DbSet<vReservationRoomDetails> vReservationRoomDetails { get; set; }
+        public virtual DbSet<vReservationDetails> vReservationDetails { get; set; }
         public virtual DbSet<vReservation> vReservation { get; set; }
+    
+        public virtual int spReservationCancel(Nullable<int> idReservacion, string noConfCancelGalileo, string noCancelacion, string txCode, Nullable<bool> statusConf, string systemCode, string travelAgencyName, string voucher, string wizcomPassOn, string wizcomSequenceNumber, string motivoCancelacion, Nullable<bool> cancelWithError, string sessionId, Nullable<int> iduser)
+        {
+            var idReservacionParameter = idReservacion.HasValue ?
+                new ObjectParameter("idReservacion", idReservacion) :
+                new ObjectParameter("idReservacion", typeof(int));
+    
+            var noConfCancelGalileoParameter = noConfCancelGalileo != null ?
+                new ObjectParameter("NoConfCancelGalileo", noConfCancelGalileo) :
+                new ObjectParameter("NoConfCancelGalileo", typeof(string));
+    
+            var noCancelacionParameter = noCancelacion != null ?
+                new ObjectParameter("NoCancelacion", noCancelacion) :
+                new ObjectParameter("NoCancelacion", typeof(string));
+    
+            var txCodeParameter = txCode != null ?
+                new ObjectParameter("TxCode", txCode) :
+                new ObjectParameter("TxCode", typeof(string));
+    
+            var statusConfParameter = statusConf.HasValue ?
+                new ObjectParameter("StatusConf", statusConf) :
+                new ObjectParameter("StatusConf", typeof(bool));
+    
+            var systemCodeParameter = systemCode != null ?
+                new ObjectParameter("SystemCode", systemCode) :
+                new ObjectParameter("SystemCode", typeof(string));
+    
+            var travelAgencyNameParameter = travelAgencyName != null ?
+                new ObjectParameter("TravelAgencyName", travelAgencyName) :
+                new ObjectParameter("TravelAgencyName", typeof(string));
+    
+            var voucherParameter = voucher != null ?
+                new ObjectParameter("Voucher", voucher) :
+                new ObjectParameter("Voucher", typeof(string));
+    
+            var wizcomPassOnParameter = wizcomPassOn != null ?
+                new ObjectParameter("WizcomPassOn", wizcomPassOn) :
+                new ObjectParameter("WizcomPassOn", typeof(string));
+    
+            var wizcomSequenceNumberParameter = wizcomSequenceNumber != null ?
+                new ObjectParameter("WizcomSequenceNumber", wizcomSequenceNumber) :
+                new ObjectParameter("WizcomSequenceNumber", typeof(string));
+    
+            var motivoCancelacionParameter = motivoCancelacion != null ?
+                new ObjectParameter("MotivoCancelacion", motivoCancelacion) :
+                new ObjectParameter("MotivoCancelacion", typeof(string));
+    
+            var cancelWithErrorParameter = cancelWithError.HasValue ?
+                new ObjectParameter("CancelWithError", cancelWithError) :
+                new ObjectParameter("CancelWithError", typeof(bool));
+    
+            var sessionIdParameter = sessionId != null ?
+                new ObjectParameter("SessionId", sessionId) :
+                new ObjectParameter("SessionId", typeof(string));
+    
+            var iduserParameter = iduser.HasValue ?
+                new ObjectParameter("iduser", iduser) :
+                new ObjectParameter("iduser", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spReservationCancel", idReservacionParameter, noConfCancelGalileoParameter, noCancelacionParameter, txCodeParameter, statusConfParameter, systemCodeParameter, travelAgencyNameParameter, voucherParameter, wizcomPassOnParameter, wizcomSequenceNumberParameter, motivoCancelacionParameter, cancelWithErrorParameter, sessionIdParameter, iduserParameter);
+        }
+    
+        public virtual int spModificarReservacionByid(Nullable<int> idReservacion, string nombreCL, string apellidoCL, Nullable<decimal> total, Nullable<decimal> totalNR, Nullable<System.DateTime> checkIn, Nullable<System.DateTime> checkOut)
+        {
+            var idReservacionParameter = idReservacion.HasValue ?
+                new ObjectParameter("idReservacion", idReservacion) :
+                new ObjectParameter("idReservacion", typeof(int));
+    
+            var nombreCLParameter = nombreCL != null ?
+                new ObjectParameter("NombreCL", nombreCL) :
+                new ObjectParameter("NombreCL", typeof(string));
+    
+            var apellidoCLParameter = apellidoCL != null ?
+                new ObjectParameter("ApellidoCL", apellidoCL) :
+                new ObjectParameter("ApellidoCL", typeof(string));
+    
+            var totalParameter = total.HasValue ?
+                new ObjectParameter("Total", total) :
+                new ObjectParameter("Total", typeof(decimal));
+    
+            var totalNRParameter = totalNR.HasValue ?
+                new ObjectParameter("TotalNR", totalNR) :
+                new ObjectParameter("TotalNR", typeof(decimal));
+    
+            var checkInParameter = checkIn.HasValue ?
+                new ObjectParameter("CheckIn", checkIn) :
+                new ObjectParameter("CheckIn", typeof(System.DateTime));
+    
+            var checkOutParameter = checkOut.HasValue ?
+                new ObjectParameter("CheckOut", checkOut) :
+                new ObjectParameter("CheckOut", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spModificarReservacionByid", idReservacionParameter, nombreCLParameter, apellidoCLParameter, totalParameter, totalNRParameter, checkInParameter, checkOutParameter);
+        }
     }
 }

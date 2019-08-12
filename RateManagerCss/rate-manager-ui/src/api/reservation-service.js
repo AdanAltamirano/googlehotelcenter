@@ -6,7 +6,8 @@ Vue.use(VueResource);
 Vue.http.interceptors.push(Interceptor);
 
 const reservationList = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations{?filter,orderBy,pageSize,page}`);
-const reservationDetails = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations/details/{reservationId}`);
+const reservationDetails = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations/{reservationId}/{patch}`);
+const creditcard = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations/{reservationId}/creditcard/{code}`);
 
 export default
 {
@@ -26,9 +27,30 @@ export default
         });
     },
 
+
     GetDetails(reservationId) {
         return reservationDetails.get({
-            reservationId
+            reservationId,
         });
+    },
+
+    SendCode(reservationId) {
+        return creditcard.get({
+            reservationId,
+        })
+    },
+
+    GetCreditCard(reservationId, code) {
+        return creditcard.get({
+            reservationId,
+            code,
+        })
+    },
+
+    ReservationUpdate(reservationId, patch, request) {
+        return reservationDetails.save({
+            reservationId,
+            patch,
+        }, request)
     }
 };

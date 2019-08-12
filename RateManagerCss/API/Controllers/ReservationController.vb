@@ -33,11 +33,45 @@ Namespace API.Controller
         End Function
 
 
-        <Route("details"), HttpGet>
-        Public Function GetDetailsById(ByVal reservationId As Integer) As DTO.ReservationDetailsModel
-            Return ReservationService.GetDetailsById(reservationId)
+        <Route("{reservationId:Int}"), HttpGet>
+        Public Function GetDetails(ByVal reservationId As Integer) As DTO.ReservationDetailsModel
+            Dim isSupervisor As Boolean = GetRoles().Contains("supervisor")
+
+            Return ReservationService.GetDetails(reservationId, isSupervisor, GetUserId().Value)
         End Function
 
+
+        <Route("{reservationId:int}/cancel"), HttpPost>
+        Public Function Update(ByVal reservationId As Integer, <FromBody> req As DTO.CancelBookingRQ) As DTO.CancelBookingRS
+
+            Return ReservationService.Cancel(reservationId, GetUserId().Value, req.Reason)
+        End Function
+
+        <Route("{reservationId:int}/modify"), HttpPost>
+        Public Function Update(ByVal reservationId As Integer, <FromBody> req As DTO.ModifyBookingRQ) As DTO.ModifyBookingRS
+
+            Return ReservationService.Modify(reservationId, req)
+        End Function
+
+        <Route("{reservationId:int}/creditcard"), HttpGet>
+        Public Function GetCode(ByVal reservationId As Integer)
+            Dim code As String = ReservationService.GetCode(10)
+            HttpContext.Current.Session("code_cc") = code
+            Return Ok(New With {Key .success = ReservationService.SendCodeToEmail(reservationId, code)})
+        End Function
+
+        <Route("{reservationId:int}/creditcard/{code}"), HttpGet>
+        Public Function GetCreditCard(ByVal reservationId As Integer, ByVal code As String) As DTO.CardDetails
+            Dim generatedCode As String = ""
+            If HttpContext.Current.Session("code_cc") IsNot Nothing Then
+                generatedCode = HttpContext.Current.Session("code_cc")
+            End If
+            If (code = generatedCode) Then
+                HttpContext.Current.Session("code_cc") = Nothing
+                Return ReservationService.GetCreditCardDetails(reservationId)
+            End If
+            Return New DTO.CardDetails()
+        End Function
     End Class
 End Namespace
 

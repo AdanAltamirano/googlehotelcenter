@@ -16,7 +16,7 @@ namespace APIServices.Models
     {
         public int Id { get; set; }
         public string ConfirmNumber { get; set; }
-        public int HotelId { get; set; }
+        public Nullable<int> HotelId { get; set; }
         public string Hotel { get; set; }
         public System.DateTime ReservationDate { get; set; }
         public System.DateTime CheckIn { get; set; }
@@ -24,9 +24,8 @@ namespace APIServices.Models
         public string Client { get; set; }
         public byte Status { get; set; }
         public Nullable<int> RoomCount { get; set; }
-        public int CompanyId { get; set; }
+        public Nullable<int> CompanyId { get; set; }
         public string Source { get; set; }
-        public Nullable<int> RoomId { get; set; }
         public string Portal { get; set; }
     }
 }
