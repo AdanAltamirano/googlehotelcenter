@@ -14,6 +14,7 @@ namespace APIServices.Models
     
     public partial class vReservationDetails
     {
+        public Nullable<int> hotelId { get; set; }
         public string hotelName { get; set; }
         public string address { get; set; }
         public string city { get; set; }
@@ -24,14 +25,22 @@ namespace APIServices.Models
         public System.DateTime checkIn { get; set; }
         public System.DateTime checkOut { get; set; }
         public string source { get; set; }
+        public string Portal { get; set; }
         public int reservationId { get; set; }
+        public string cancellationNumber { get; set; }
+        public string cancellationReason { get; set; }
         public string reservationIdXProvider { get; set; }
-        public decimal totalReservation { get; set; }
-        public string TotalProviderCurrencyCode { get; set; }
+        public decimal total { get; set; }
+        public Nullable<decimal> totalNetRate { get; set; }
+        public Nullable<bool> includesTax { get; set; }
+        public decimal tax { get; set; }
+        public string currency { get; set; }
+        public Nullable<bool> IsNetRateUV { get; set; }
         public string customerName { get; set; }
+        public string customerLastName { get; set; }
         public string customerEmail { get; set; }
         public string customerPhone { get; set; }
-        public string paymentMethod { get; set; }
+        public Nullable<int> paymentType { get; set; }
         public string onlinePaymentMethod { get; set; }
         public string authorizationNumber { get; set; }
         public string cardNumber { get; set; }
@@ -39,6 +48,19 @@ namespace APIServices.Models
         public string cardExpYear { get; set; }
         public string cardCvv { get; set; }
         public string cardCustomerName { get; set; }
+        public decimal depositAmount { get; set; }
+        public string depositCurrency { get; set; }
+        public string depositReference { get; set; }
         public int provider { get; set; }
+        public string rp_cancellationPolicies { get; set; }
+        public string rp_guaranteePolicies { get; set; }
+        public string rp_creditcardPolicies { get; set; }
+        public string h_cancellationPolicies { get; set; }
+        public string h_guaranteePolicies { get; set; }
+        public string h_creditcardPolicies { get; set; }
+        public string pmsReservationNumber { get; set; }
+        public Nullable<bool> pmsStatus { get; set; }
+        public string pmsAction { get; set; }
+        public int companyId { get; set; }
     }
 }

@@ -62,7 +62,11 @@
                             </b-col>
                             <b-col md="4">
                                 <b-form-group :label="$t('Status')">
-                                    <b-form-select v-model="status" :options="allStatus"></b-form-select>
+                                    <b-form-checkbox-group v-model="checkStatus">
+                                        <b-form-checkbox value="1">{{$t('Reserved')}}</b-form-checkbox>
+                                        <b-form-checkbox value="4">{{$t('In process')}}</b-form-checkbox>
+                                        <b-form-checkbox value="3">{{$t('Cancelled')}}</b-form-checkbox>
+                                    </b-form-checkbox-group>
                                 </b-form-group>
                             </b-col>
                         </b-row>
@@ -147,7 +151,7 @@ export default {
             includeDates: false,
             dates: null,
             noReservation: '',
-            status: 0,
+            checkStatus: [],
             typeDate: 'ReservationDate',
             clientName: '',
             source: 'ALL',
@@ -158,12 +162,6 @@ export default {
                 { text: this.$t('Reservation date'), value: 'ReservationDate' },
                 { text: this.$t('Arrival date'), value: 'CheckOut' },
                 { text: this.$t('Departure date'), value: 'CheckIn' },
-            ],
-            allStatus: [
-                { text: `-- ${this.$t('All')} --`, value: 0 },
-                { text: this.$t('Reserved'), value: 1 },
-                { text: this.$t('Cancelled'), value: 3 },
-                { text: this.$t('In process'), value: 4 },
             ],
             sources: [
                 { text: `-- ${this.$t('All')} --`, value: 'ALL' },
@@ -209,7 +207,13 @@ export default {
                 } and ${this.typeDate} lt ${this.dateFormat(this.dates.end)}`;
             }
 
-            if (this.status !== 0) filter += `${filter !== '' ? ' and ' : ''}Status eq ${this.status}`;
+            if (this.checkStatus.length > 0) {
+                filter += (filter !== '' ? ' and ': '');
+                this.checkStatus.forEach((value, index) => {
+                    if (index > 0) filter += ' or ';
+                    filter += `Status eq ${value}`;
+                });
+            }
 
             if (this.clientName !== '') filter += `${filter !== '' ? ' and ' : ''}Client lk ${this.clientName}`;
 

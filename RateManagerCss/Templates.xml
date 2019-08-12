@@ -1,5 +1,25 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Templates>
+  <!--Envia el codigo de verificacion para ver los datos de tarjeta-->
+  <CodeCC descripcion="codigo cc">
+    <subject>
+      <es-MX valor="Código de verificación"></es-MX>
+      <en-US valor="Verification code"></en-US>
+    </subject>
+    <from valor="custsrvc@univisit.com" />
+    <parametros>
+      <code/>
+    </parametros>
+    <html>
+      <es-MX valor="/correos/html/codecc_es.htm"></es-MX>
+      <en-US valor="/correos/html/codecc_en.htm"></en-US>
+    </html>
+    <text>
+			<es-MX valor="/correos/texto/codecc_es.txt" />
+			<en-US valor="/correos/texto/codecc_en.txt" />
+		</text>
+  </CodeCC>
+  
 	<T01 descripcion="Template de Usuario Nuevo">
 		<subject>
 			<es-MX valor="[Univisit] Creación de Cuenta." />

@@ -195,7 +195,10 @@
                             allowEscapeKey: false
                         }).then(function (result) {
                             if (result.value)
+                            {
                                 window.session_counter = 0;
+                                window.wait_user_counter = 0;
+                            }
                             else logOut();
                         })
 
@@ -205,8 +208,10 @@
             }
 
             function sessionWarningTime() {
-                window.wait_user_counter++;
-                if (window.wait_user_counter >= minutes_session_user) logOut();
+                if (window.session_counter >= minutes_session) {
+                    window.wait_user_counter++;
+                    if (window.wait_user_counter >= minutes_session_user) logOut();
+                }
             }
 
             jQuery('#frmPrincipal').load(function () {
