@@ -150,7 +150,7 @@ export default {
                     self.$swal
                         .fire({
                             title: self.$t('Expired session'),
-                            text: self.$t('he session expires due to inactivity'),
+                            text: self.$t('The session expires due to inactivity'),
                             type: 'warning',
                             confirmButtonText: self.$t('Keep'),
                             cancelButtonText: self.$t('Exit'),
