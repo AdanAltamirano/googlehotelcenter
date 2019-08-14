@@ -11,7 +11,7 @@
             </div>
         </div>
         <div class="form-row">
-            <div class="form-group col-md-3">
+            <div :class="col" class="form-group">
                 <label>{{$t('Check in')}}</label>
                 <v-date-picker
                 v-model="_checkIn"
@@ -20,7 +20,7 @@
                 class="form-control p-0">
                 </v-date-picker>
             </div>
-            <div class="form-group col-md-3">
+            <div :class="col" class="form-group">
                 <label>{{$t('Check out')}}</label>
                 <v-date-picker
                 v-model="_checkOut"
@@ -29,11 +29,11 @@
                 class="form-control p-0">
                 </v-date-picker>
             </div>
-            <div class="form-group col-md-3">
+            <div v-if="showTotalNR" class="form-group col-md-3">
                 <label>TotalNR</label>
                 <b-form-input id="totalnr" v-model="totalNR"></b-form-input>
             </div>
-            <div class="form-group col-md-3">
+            <div :class="col" class="form-group">
                 <label>Total</label>
                 <b-form-input id="total" v-model="total"></b-form-input>
             </div>
@@ -47,7 +47,8 @@ export default {
     'total',
     'totalNR',
     'checkIn',
-    'checkOut'],
+    'checkOut',
+    'showTotalNR'],
 
     computed: {
         _checkIn() {
@@ -55,6 +56,12 @@ export default {
         },
         _checkOut() {
             return new Date(this.checkOut);
+        },
+        col() {
+            return {
+                'col-md-4': !this.showTotalNR,
+                'col-md-3': this.showTotalNR,
+            }
         },
     },
 }

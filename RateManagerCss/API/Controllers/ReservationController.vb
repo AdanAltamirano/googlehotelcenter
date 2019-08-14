@@ -4,6 +4,7 @@ Imports APIServices.Models
 Imports NinjAPI
 Imports NinjAPI.Query
 Imports RateManager.API.Helpers
+Imports RateManager.PaginaBase
 
 Namespace API.Controller
     <RoutePrefix("api/reservations"), AuthorizeUser(Roles:="supervisor,userchain,hotelcompany")>
@@ -36,28 +37,60 @@ Namespace API.Controller
         <Route("{reservationId:Int}"), HttpGet>
         Public Function GetDetails(ByVal reservationId As Integer) As DTO.ReservationDetailsModel
             Dim isSupervisor As Boolean = GetRoles().Contains("supervisor")
+            Dim isHotelCompany As Boolean = GetRoles().Contains("hotelcompany")
 
-            Return ReservationService.GetDetails(reservationId, isSupervisor, GetUserId().Value)
+            Return ReservationService.GetDetails(reservationId, isSupervisor, isHotelCompany, GetUserId().Value)
         End Function
 
 
         <Route("{reservationId:int}/cancel"), HttpPost>
         Public Function Update(ByVal reservationId As Integer, <FromBody> req As DTO.CancelBookingRQ) As DTO.CancelBookingRS
 
-            Return ReservationService.Cancel(reservationId, GetUserId().Value, req.Reason)
+            Dim isSupervisor As Boolean = GetRoles().Contains("supervisor")
+            Dim rsv As vReservationDetails = ReservationService.GetReservation(reservationId)
+
+            Dim result As DTO.CancelBookingRS = ReservationService.Cancel(rsv, GetUserId().Value, req.Reason)
+            If result.IsSuccess Then
+                Log(reservationId, acciones.Eliminar)
+
+                'no enviar correo de cancelación si está en proceso
+                If rsv.status <> 4 Then
+                    rsv = ReservationService.GetReservation(reservationId)
+                    Dim roomRsv As List(Of vReservationRoomDetails) = ReservationService.GetRoomsReservation(reservationId)
+
+                    If Not String.IsNullOrEmpty(rsv.customerEmail) Then
+                        'enviar correo al cliente
+                        SendCancellationEmail(rsv, roomRsv, rsv.customerEmail)
+                    End If
+                    If Not String.IsNullOrEmpty(rsv.hotelEmail) Then
+                        'enviar correo al hotel
+                        SendCancellationEmail(rsv, roomRsv, rsv.hotelEmail)
+                    End If
+                    If String.IsNullOrEmpty(rsv.customerEmail) AndAlso String.IsNullOrEmpty(rsv.hotelEmail) Then
+                        'enviar correo a algun admin
+                        SendCancellationEmail(rsv, roomRsv, "soporte@internetpowerhotel.com")
+                    End If
+                End If
+            End If
+            Return result
         End Function
 
         <Route("{reservationId:int}/modify"), HttpPost>
         Public Function Update(ByVal reservationId As Integer, <FromBody> req As DTO.ModifyBookingRQ) As DTO.ModifyBookingRS
 
-            Return ReservationService.Modify(reservationId, req)
+            Dim result As DTO.ModifyBookingRS = ReservationService.Modify(reservationId, req)
+            If result.IsSuccess Then
+                Log(reservationId, acciones.Modificar)
+            End If
+            Return result
         End Function
 
         <Route("{reservationId:int}/creditcard"), HttpGet>
         Public Function GetCode(ByVal reservationId As Integer)
             Dim code As String = ReservationService.GetCode(10)
             HttpContext.Current.Session("code_cc") = code
-            Return Ok(New With {Key .success = ReservationService.SendCodeToEmail(reservationId, code)})
+
+            Return Ok(New With {Key .success = SendVerificationCodeEmail(code)})
         End Function
 
         <Route("{reservationId:int}/creditcard/{code}"), HttpGet>
@@ -68,10 +101,26 @@ Namespace API.Controller
             End If
             If (code = generatedCode) Then
                 HttpContext.Current.Session("code_cc") = Nothing
-                Return ReservationService.GetCreditCardDetails(reservationId)
+                Dim isHotelCompany As Boolean = GetRoles().Contains("hotelcompany")
+
+                Return ReservationService.GetCreditCardDetails(reservationId, isHotelCompany, GetUserId().Value)
             End If
             Return New DTO.CardDetails()
         End Function
+
+
+
+        Sub Log(ByVal reservationId As Integer, ByVal action As acciones)
+            Dim pb As New PaginaBase
+            Dim msg As String = ""
+            Select Case action
+                Case acciones.Eliminar
+                    msg = "Canceló la reserva#" & reservationId
+                Case acciones.Modificar
+                    msg = "Modifico la reserva#" & reservationId
+            End Select
+            pb.guardalog("/rate-manager-ui/dist/reservation-details.aspx?qs=" & reservationId, action, msg)
+        End Sub
     End Class
 End Namespace
 

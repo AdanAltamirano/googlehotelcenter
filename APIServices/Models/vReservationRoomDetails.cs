@@ -21,6 +21,8 @@ namespace APIServices.Models
         public string roomCode { get; set; }
         public string roomDescription { get; set; }
         public string roomPreferences { get; set; }
+        public string customerName { get; set; }
+        public string customerLastName { get; set; }
         public byte adults { get; set; }
         public Nullable<byte> extraAdults { get; set; }
         public byte childrens { get; set; }

@@ -40,6 +40,11 @@
                 <b-row class="mt-2">
                     <b-col>
                         <address>
+                            <span v-if="room.customerName != '' && room.customerLastName != ''">
+                                {{$t('Guest name')}}:
+                                <strong>{{room.customerName}} {{room.customerLastName}}</strong>
+                                <br>
+                            </span>
                             {{$t('Occupation')}}:
                             <strong>{{room.adults}} {{$t('Adult(s)')}}
                                 <span v-if="room.childrens > 0">, {{room.childrens}} {{$t('Children')}}</span>

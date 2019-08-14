@@ -105,6 +105,8 @@ namespace APIServices.Models.DTO
         public double Total { get; set; }
         public string Img { get; set; }
         public string Currency { get; set; }
+        public string CustomerName { get; set; }
+        public string CustomerLastName { get; set; }
     }
 
     public class RoomPriceDetails

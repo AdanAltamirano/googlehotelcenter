@@ -13,6 +13,8 @@ const appConfig = {
         warning: '#ff6c00',
     },
     confirmNumber: window.app.confirmNumber,
+    session_counter: window.session_counter,
+    wait_user_counter: window.wait_user_counter,
 };
 
 function appAlert(alertData) {

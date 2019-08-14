@@ -5,12 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Net;
 using System.Text.RegularExpressions;
-using System.Threading;
-using System.Web;
 using System.IO;
-using emailTemplates;
 
 namespace APIServices
 {
@@ -30,11 +26,17 @@ namespace APIServices
 
 
         #region detalles de la reserva
-        public ReservationDetailsModel GetDetails(int reservationId, bool isSupervisor, int UserId)
+
+        public vReservationDetails GetReservation(int reservationId)
+        {
+            return dbContext.vReservationDetails
+                .FirstOrDefault(x => x.reservationId == reservationId);
+        }
+
+        public ReservationDetailsModel GetDetails(int reservationId, bool isSupervisor, bool isHotelCompany, int userId)
         {
 
-            var details = dbContext.vReservationDetails
-                .FirstOrDefault(x => x.reservationId == reservationId);
+            var details = GetReservation(reservationId);
 
             var model = new ReservationDetailsModel();
             if (details != null)
@@ -90,7 +92,7 @@ namespace APIServices
 
                 /*credit card*/
                 var showCreditCard = dbContext.vPermissions
-                    .FirstOrDefault(x => x.userId == UserId)?.showCreditCard;
+                    .FirstOrDefault(x => x.userId == userId)?.showCreditCard;
 
                 if (!string.IsNullOrEmpty(details.cardNumber))
                 {
@@ -100,7 +102,7 @@ namespace APIServices
                     model.Customer.CardDetails.Number = cc;
                     model.Customer.CardDetails.IsSuccess = true;
                 }
-                if (isSupervisor || showCreditCard.Value)
+                if (isHotelCompany || showCreditCard.Value)
                     model.Customer.CardDetails.AllowsShowCreditCardData = true;
                 /*fin credit card*/
 
@@ -125,11 +127,16 @@ namespace APIServices
             return model;
         }
 
-        void GetRooms(ref ReservationDetailsModel model, int reservationId, int companyId, out double totalRooms)
+        public List<vReservationRoomDetails> GetRoomsReservation(int reservationId)
         {
-            var rooms = dbContext.vReservationRoomDetails
+            return dbContext.vReservationRoomDetails
                 .Where(x => x.reservationId == reservationId)
                 .ToList();
+        }
+
+        void GetRooms(ref ReservationDetailsModel model, int reservationId, int companyId, out double totalRooms)
+        {
+            var rooms = GetRoomsReservation(reservationId);
 
             model.RoomDetails = new List<RoomDetails>();
             int index = 0;
@@ -177,6 +184,8 @@ namespace APIServices
                     RatePlan = room.ratePlan,
                     RateCode = room.rateCode,
                     Img = $"http://test.univisit.com/RateManager/ozportalglobal/Images/Rooms/{companyId}/{room.roomTypeId}",
+                    CustomerName = room.customerName ?? "",
+                    CustomerLastName = room.customerLastName ?? "",
                 });
 
                 model.RoomDetails[index].PriceDetails.AddRange(priceDetails);
@@ -186,21 +195,25 @@ namespace APIServices
             totalRooms = totalRoom;
         }
 
-        string GetEmail(int reservationId)
-        {
-            return dbContext.vReservationDetails
-                .FirstOrDefault(x => x.reservationId == reservationId)?.customerEmail;
-        }
         #endregion
 
 
+
+
+
+
+
+
         #region credit card
-        public CardDetails GetCreditCardDetails(int reservationId)
+
+        public CardDetails GetCreditCardDetails(int reservationId, bool isHotelCompany, int userId)
         {
             var result = new CardDetails();
-            var details = dbContext.vReservationDetails
-                .FirstOrDefault(x => x.reservationId == reservationId);
-            if (details != null)
+            var details = GetReservation(reservationId);
+            var showCreditCard = dbContext.vPermissions
+                .FirstOrDefault(x => x.userId == userId)?.showCreditCard;
+
+            if (details != null && (isHotelCompany || showCreditCard.Value))
             {
                 string cc = crypto.DecryptString128Bit(details.cardNumber, crypto.PublicKey);
                 string cvv = details.cardCvv;
@@ -219,25 +232,6 @@ namespace APIServices
             return result;
         }
 
-        public bool SendCodeToEmail(int reservationId, string code)
-        {
-            Template mail = new Template();
-            mail.To = GetEmail(reservationId);
-            mail.SubjectParam = "Código";
-            mail.TemplateName = "CodeCC";
-            mail.Idioma = Thread.CurrentThread.CurrentCulture.Name;
-            mail.Html = true;
-            mail.set_AddParameter("code", code);
-            try
-            {
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-                mail.Send();
-                return true;
-            }
-            catch { }
-            return false;
-        }
-
         public string GetCode(int length)
         {
             Random random = new Random();
@@ -245,7 +239,11 @@ namespace APIServices
             return new string(Enumerable.Repeat(chars, length)
               .Select(s => s[random.Next(s.Length)]).ToArray());
         }
+
         #endregion
+
+
+
 
 
 
@@ -283,30 +281,29 @@ namespace APIServices
 
 
 
-        #region cancelar reserva
-        public CancelBookingRS Cancel(int reservationId, int userId, string reasonToCancel)
-        {
-            var details = dbContext.vReservationDetails
-                .FirstOrDefault(x => x.reservationId == reservationId);
 
-            if (details != null)
+        #region cancelar reserva
+
+        public CancelBookingRS Cancel(vReservationDetails rsv, int userId, string reasonToCancel)
+        {
+            if (rsv != null)
             {
                 var minimumDays = dbContext.Hoteles
-                    .FirstOrDefault(x => x.idHotel == details.hotelId)?.DiasMinCancelar ?? 0;
+                    .FirstOrDefault(x => x.idHotel == rsv.hotelId)?.DiasMinCancelar ?? 0;
 
-                if (!MinimumDaysToCancel(details.checkIn, minimumDays))
+                if (!MinimumDaysToCancel(rsv.checkIn, minimumDays))
                 {
                     return new CancelBookingRS
                     {
-                        Error = $"No se cumple con el mínimo de días para canclar. La reserva debe ser cancelada {minimumDays} días antes de la llegada",
+                        Error = $"No se cumple con el mínimo de días para cancelar. La reserva debe ser cancelada {minimumDays} días antes de la llegada",
                     };
                 }
-                return LocalCancel(reservationId, userId, reasonToCancel);
+                return LocalCancel(rsv.reservationId, userId, reasonToCancel);
             }
 
             return new CancelBookingRS
             {
-                Error = $"reservation not found {reservationId}"
+                Error = $"reservation not found {rsv.reservationId}"
             };
         }
 
@@ -325,7 +322,6 @@ namespace APIServices
                     transaction.Commit();
                     res.CancelNumber = cancelNumber;
                     res.IsSuccess = true;
-                    
                 }
                 catch (Exception ex)
                 {
@@ -335,6 +331,7 @@ namespace APIServices
             }
             return res;
         }
+
         #endregion
 
 

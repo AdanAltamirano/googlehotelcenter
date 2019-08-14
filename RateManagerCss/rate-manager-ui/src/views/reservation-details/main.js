@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'bootstrap';
 import moment from 'moment';
+import Loading from 'vue-loading-overlay';
 import BootstrapVue from 'bootstrap-vue';
 import '../../core/app.settings';
 import VueMoment from 'vue-moment';
@@ -29,6 +30,7 @@ Vue.use(VueCurrencyFilter, {
     symbolPosition: 'front',
     symbolSpacing: false,
 });
+Vue.use(Loading);
 Vue.use(VCalendar);
 
 new Vue({

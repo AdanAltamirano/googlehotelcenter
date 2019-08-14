@@ -125,6 +125,9 @@ export default {
     mounted() {
         this.getHotels();
     },
+    created() {
+        this.dates = this.$parent.defaultDates();
+    },
     props: {
         result: {
             required: false,
@@ -151,7 +154,7 @@ export default {
             includeDates: false,
             dates: null,
             noReservation: '',
-            checkStatus: [],
+            checkStatus: ['1'],
             typeDate: 'ReservationDate',
             clientName: '',
             source: 'ALL',

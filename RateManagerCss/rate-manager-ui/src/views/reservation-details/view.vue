@@ -1,7 +1,7 @@
 <template>
-    <div id="app">
+    <div v-if="showInfo" id="app">
         <b-container class="text-muted" style="padding:15px;" fluid>
-            <h2 class="text-primary">{{$t('Reservation details')}}</h2>
+            <h2 class="text-primary">{{$t('Reservation details')}} - #{{noReservation}}</h2>
             <b-row class="pt-4 pb-1">
                 <b-col>
                     <actions :noReservation="noReservation" :result="result"></actions>
@@ -97,14 +97,21 @@ export default {
         PaymentMethods,
     },
     created() {
+        this.session();
+        this.showLoader();
         ReservationService.GetDetails(this.noReservation).then(response => {
             this.result = response.body;
+            this.hideLoader();
         });
     },
     data() {
         return {
             noReservation: this.$appConfig.confirmNumber,
             result: [],
+            showInfo: false,
+            loader: null,
+            minutes_session: 1,
+            minutes_session_user: 2,
         }
     },
     computed: {
@@ -117,6 +124,57 @@ export default {
             }
             return r;
         }
+    },
+    methods: {
+        showLoader() {
+            this.loader = this.$loading.show({
+                color: this.$appConfig.themeColors.info,
+                height: 128,
+                width: 128,
+            });
+        },
+        hideLoader() {
+            this.loader.hide();
+            this.showInfo = true;
+        },
+        session() {
+            const minutes_session = 10;
+            const minutes_session_user = 3;
+            window.session_counter = 0;
+            window.wait_user_counter = 0;
+
+            const self = this;
+            setInterval(function() {
+                window.session_counter++;
+                if (window.session_counter >= minutes_session) {
+                    self.$swal
+                        .fire({
+                            title: self.$t('Expired session'),
+                            text: self.$t('he session expires due to inactivity'),
+                            type: 'warning',
+                            confirmButtonText: self.$t('Keep'),
+                            cancelButtonText: self.$t('Exit'),
+                            showCloseButton: false,
+                            showCancelButton: true,
+                            allowOutsideClick: false,
+                            allowEscapeKey: false
+                        }).then(result => {
+                            if (result.value) {
+                                window.session_counter = 0;
+                                window.wait_user_counter = 0;
+                            } else window.close();
+                        })
+
+                        setInterval(function() {
+                            if (window.session_counter >= minutes_session) {
+                                window.wait_user_counter++;
+                                if (window.wait_user_counter >= minutes_session_user)
+                                    window.close();
+                            }
+                        }, 60000);
+                }
+            }, 60000);
+        },
     }
 }
 </script>

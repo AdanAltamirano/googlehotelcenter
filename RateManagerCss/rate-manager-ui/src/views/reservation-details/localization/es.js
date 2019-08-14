@@ -76,4 +76,8 @@ export default {
     'Collection dept':'Depto. cobranza',
     'Invalid verification code':'Código de verificación incorrecto',
     'There was a problem sending the mail':'Hubo un problema al enviar el correo',
+    'Guest name':'Nombre dl huésped',
+    'Expired session':'Sesión expirada',
+    'The session expires due to inactivity':'La sesión expiro por inactividad',
+    Keep:'Mantener',
 };

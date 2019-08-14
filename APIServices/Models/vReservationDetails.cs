@@ -62,5 +62,6 @@ namespace APIServices.Models
         public Nullable<bool> pmsStatus { get; set; }
         public string pmsAction { get; set; }
         public int companyId { get; set; }
+        public string hotelEmail { get; set; }
     }
 }

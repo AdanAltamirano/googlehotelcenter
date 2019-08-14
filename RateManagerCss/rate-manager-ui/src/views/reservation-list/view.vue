@@ -60,6 +60,9 @@ export default {
             this.excelFormat();
         });
     },
+    created() {
+        this.filter_url = this.defaultSearch();
+    },
     data() {
         return {
             result: [],
@@ -162,6 +165,20 @@ export default {
         },
         changeItems(value) {
             this.itemPerPage = value;
+        },
+        defaultDates() {
+            const start = new Date();
+            start.setMonth(start.getMonth() - 1);
+            return {
+                start: start,
+                end: new Date(),
+            }
+        },
+        defaultSearch() {
+            const x = this.defaultDates();
+            const s = `Status eq 1 and ReservationDate gt ${this.$moment(x.start).format('YYYY-MM-DD')} 
+            and ReservationDate lt ${this.$moment(x.end).format('YYYY-MM-DD')}`;
+            return s;
         },
     },
 };

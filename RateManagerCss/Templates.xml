@@ -7,6 +7,11 @@
       <en-US valor="Verification code"></en-US>
     </subject>
     <from valor="custsrvc@univisit.com" />
+    <smtpServer valor="smtp.mandrillapp.com"/>
+    <userName valor="javier@univisit.com"/>
+    <password valor="NCxlNTHApCDYtSZjtyRvvQ"/>
+    <port valor="587"/>
+    <ssl valor="true"/>
     <parametros>
       <code/>
     </parametros>
