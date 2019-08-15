@@ -78,6 +78,6 @@ export default {
     'There was a problem sending the mail':'Hubo un problema al enviar el correo',
     'Guest name':'Nombre dl huésped',
     'Expired session':'Sesión expirada',
-    'The session expires due to inactivity':'La sesión expiro por inactividad',
+    'The session expires due to inactivity':'La sesión expiró por inactividad',
     Keep:'Mantener',
 };

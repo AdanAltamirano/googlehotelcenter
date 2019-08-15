@@ -1,7 +1,10 @@
 <template>
     <div v-if="showInfo" id="app">
         <b-container class="text-muted" style="padding:15px;" fluid>
-            <h2 class="text-primary">{{$t('Reservation details')}} - #{{noReservation}}</h2>
+            <h2 class="text-primary">
+                <img src="http://test.com/Ratemanager/Includes/imagenes/istotipo-internetpowerhotel-normal.png" style="width:25px;margin-right:5px;">
+                {{$t('Reservation details')}} - #{{noReservation}}
+            </h2>
             <b-row class="pt-4 pb-1">
                 <b-col>
                     <actions :noReservation="noReservation" :result="result"></actions>
@@ -110,8 +113,6 @@ export default {
             result: [],
             showInfo: false,
             loader: null,
-            minutes_session: 1,
-            minutes_session_user: 2,
         }
     },
     computed: {
@@ -147,6 +148,8 @@ export default {
             setInterval(function() {
                 window.session_counter++;
                 if (window.session_counter >= minutes_session) {
+                    if (self.$swal.isVisible())
+                        return;
                     self.$swal
                         .fire({
                             title: self.$t('Expired session'),
@@ -163,15 +166,15 @@ export default {
                                 window.session_counter = 0;
                                 window.wait_user_counter = 0;
                             } else window.close();
-                        })
-
-                        setInterval(function() {
-                            if (window.session_counter >= minutes_session) {
-                                window.wait_user_counter++;
-                                if (window.wait_user_counter >= minutes_session_user)
-                                    window.close();
-                            }
-                        }, 60000);
+                        });
+                
+                    setInterval(function() {
+                        if (window.session_counter >= minutes_session) {
+                            window.wait_user_counter++;
+                            if (window.wait_user_counter >= minutes_session_user)
+                                window.close();
+                        }
+                    }, 60000);
                 }
             }, 60000);
         },
