@@ -292,7 +292,7 @@ namespace APIServices
                 var minimumDays = dbContext.Hoteles
                     .FirstOrDefault(x => x.idHotel == rsv.hotelId)?.DiasMinCancelar ?? 0;
 
-                if (!MinimumDaysToCancel(rsv.checkIn, minimumDays))
+                if (MinimumDaysToCancel(rsv.checkIn, minimumDays))
                 {
                     return new CancelBookingRS
                     {
