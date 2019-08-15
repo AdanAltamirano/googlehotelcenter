@@ -7,6 +7,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.IO;
+using System.Configuration;
 
 namespace APIServices
 {
@@ -183,7 +184,7 @@ namespace APIServices
                     Currency = room.currency,
                     RatePlan = room.ratePlan,
                     RateCode = room.rateCode,
-                    Img = $"http://test.univisit.com/RateManager/ozportalglobal/Images/Rooms/{companyId}/{room.roomTypeId}",
+                    Img = $"{ConfigurationManager.AppSettings["pathimgrooms"] ?? ""}/{companyId}/{room.roomTypeId}",
                     CustomerName = room.customerName ?? "",
                     CustomerLastName = room.customerLastName ?? "",
                 });
