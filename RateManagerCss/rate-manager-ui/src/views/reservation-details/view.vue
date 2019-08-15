@@ -2,7 +2,7 @@
     <div v-if="showInfo" id="app">
         <b-container class="text-muted" style="padding:15px;" fluid>
             <h2 class="text-primary">
-                <img src="http://test.com/Ratemanager/Includes/imagenes/istotipo-internetpowerhotel-normal.png" style="width:25px;margin-right:5px;">
+                <img src="http://test.univisit.com/Ratemanager/Includes/imagenes/istotipo-internetpowerhotel-normal.png" style="width:25px;margin-right:5px;">
                 {{$t('Reservation details')}} - #{{noReservation}}
             </h2>
             <b-row class="pt-4 pb-1">

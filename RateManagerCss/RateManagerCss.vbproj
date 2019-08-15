@@ -570,6 +570,8 @@
     <Content Include="Correos\html\ForgotPasswordUser_ES.htm" />
     <Content Include="Correos\html\HotelLog_EN.htm" />
     <Content Include="Correos\html\HotelLog_ES.htm" />
+    <Content Include="Correos\html\HotelReservationCancellation-EN.html" />
+    <Content Include="Correos\html\HotelReservationCancellation-ES.html" />
     <Content Include="Correos\html\HotelReservationCancellation_EN.htm" />
     <Content Include="Correos\html\HotelReservationCancellation_ES.htm" />
     <Content Include="Correos\html\NewAcountUser_EN.htm" />
