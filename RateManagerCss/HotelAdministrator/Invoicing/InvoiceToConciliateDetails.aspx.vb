@@ -152,7 +152,7 @@ Partial Class InvoiceToConciliateDetails
 
             If dsAux.ReservationCharges.Count > 0 AndAlso Now.Date <= dsAux.ReservationCharges(0).LimitToReconcile AndAlso Not GetIsInvoiceReservation() Then
                 btnUpdateConciliation.Visible = True
-                btnFinalizeConciliation.Visible = True
+                'btnFinalizeConciliation.Visible = True
             End If
         End If
         hplinvoicebyperiod.NavigateUrl = Me.UrlPage(PaginaBase.pages.InvoiceByPeriod)
@@ -275,7 +275,7 @@ Partial Class InvoiceToConciliateDetails
         lblInvoiceConciliated.Visible = True
         lblInvoiceConciliated.Text = msg
         btnUpdateConciliation.Enabled = False
-        btnFinalizeConciliation.Disabled = True
+        'btnFinalizeConciliation.Disabled = True
     End Sub
 
     Private Sub ShowInfo(ByVal ds As BillingStatementDataSet)
@@ -414,7 +414,7 @@ Partial Class InvoiceToConciliateDetails
             '    Total -= ds.ReservationCharges(0).Total
             'End If
             btnUpdateConciliation.Visible = True
-            btnFinalizeConciliation.Visible = True
+            'btnFinalizeConciliation.Visible = True
         Else
             Generated(False)
         End If
@@ -480,7 +480,7 @@ Partial Class InvoiceToConciliateDetails
         lblTotalRva.Visible = value
         lblReservationsList.Visible = value
         btnUpdateConciliation.Visible = value
-        btnFinalizeConciliation.Visible = value
+        'btnFinalizeConciliation.Visible = value
         lblNoRvas.Visible = Not value
     End Sub
 
@@ -1038,13 +1038,13 @@ Partial Class InvoiceToConciliateDetails
                     Else
                         lblInvoiceConciliated.Visible = True
                         btnUpdateConciliation.Enabled = False
-                        btnFinalizeConciliation.Disabled = True
+                        'btnFinalizeConciliation.Disabled = True
                     End If
                 End If
             Else
                 lblInvoiceConciliated.Visible = True
                 btnUpdateConciliation.Enabled = False
-                btnFinalizeConciliation.Disabled = True
+                'btnFinalizeConciliation.Disabled = True
             End If
         End If
     End Sub
