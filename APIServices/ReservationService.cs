@@ -24,6 +24,22 @@ namespace APIServices
                 .Where(x => x.HotelId == hotelId);
         }
 
+        public List<Excel.ReservationList> GetExcel()
+        {
+            var result = dbContext.vReservation.Select(p => new Excel.ReservationList
+            {
+                NoReservation = p.ConfirmNumber,
+                Hotel = p.Hotel,
+                Customer = p.Client,
+                Date = p.ReservationDate.ToString("YYYY MM DD"),
+                CheckIn = p.CheckIn.ToString("YYYY MM DD"),
+                CheckOut = p.CheckOut.ToString("YYYY MM DD"),
+                Origin = Excel.ReservationList.GetOrigin(p.Source),
+                Status = Excel.ReservationList.GetStatus(p.Status)
+            }).ToList();
+            return result;
+        }
+
 
 
         #region detalles de la reserva

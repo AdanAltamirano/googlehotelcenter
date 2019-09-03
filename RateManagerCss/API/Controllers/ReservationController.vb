@@ -1,4 +1,6 @@
-﻿Imports System.Web.Http
+﻿Imports System.Net.Http
+Imports System.Web.Http
+Imports System.Web.UI.WebControls
 Imports APIServices
 Imports APIServices.Models
 Imports NinjAPI
@@ -13,7 +15,7 @@ Namespace API.Controller
 
         Public ReservationService As New ReservationService
 
-
+        'GET api/reservations
         <Route(""), HttpGet, Queryable>
         Public Function GetAll() As IQueryable(Of vReservation)
 
@@ -33,7 +35,21 @@ Namespace API.Controller
             Return New vReservation() {}.AsQueryable()
         End Function
 
+        'GET api/reservations/excel
+        '<Route("excel"), HttpGet, Queryable>
+        Public Function GetExcel() As HttpResponseMessage
+            Dim gv As New GridView()
+            gv.DataSource = ReservationService.GetExcel()
+            gv.DataBind()
 
+            Dim response As New HttpResponseMessage(Net.HttpStatusCode.OK)
+
+            response.Content.Headers.ContentType = New Headers.MediaTypeHeaderValue("application/ms-excel")
+
+            Return response
+        End Function
+
+        'GET api/reservations/1978
         <Route("{reservationId:Int}"), HttpGet>
         Public Function GetDetails(ByVal reservationId As Integer) As DTO.ReservationDetailsModel
             Dim isSupervisor As Boolean = GetRoles().Contains("supervisor")
@@ -42,7 +58,7 @@ Namespace API.Controller
             Return ReservationService.GetDetails(reservationId, isSupervisor, isHotelCompany, GetUserId().Value)
         End Function
 
-
+        'POST api/reservations/1978/cancel
         <Route("{reservationId:int}/cancel"), HttpPost>
         Public Function Update(ByVal reservationId As Integer, <FromBody> req As DTO.CancelBookingRQ) As DTO.CancelBookingRS
 
@@ -75,6 +91,7 @@ Namespace API.Controller
             Return result
         End Function
 
+        'POST api/reservations/1978/modify
         <Route("{reservationId:int}/modify"), HttpPost>
         Public Function Update(ByVal reservationId As Integer, <FromBody> req As DTO.ModifyBookingRQ) As DTO.ModifyBookingRS
 
@@ -85,6 +102,7 @@ Namespace API.Controller
             Return result
         End Function
 
+        'GET api/reservations/1978/creditcard
         <Route("{reservationId:int}/creditcard"), HttpGet>
         Public Function GetCode(ByVal reservationId As Integer)
             Dim code As String = ReservationService.GetCode(10)
@@ -93,6 +111,7 @@ Namespace API.Controller
             Return Ok(New With {Key .success = SendVerificationCodeEmail(code)})
         End Function
 
+        'GET api/reservations/1978/creditcard/1234
         <Route("{reservationId:int}/creditcard/{code}"), HttpGet>
         Public Function GetCreditCard(ByVal reservationId As Integer, ByVal code As String) As DTO.CardDetails
             Dim generatedCode As String = ""
@@ -107,6 +126,7 @@ Namespace API.Controller
             End If
             Return New DTO.CardDetails()
         End Function
+
 
 
 

@@ -24,7 +24,10 @@
                 <h4>{{scope.emptyText}}</h4>
             </template>
         </b-table>
-        <b-pagination align="right" :total-rows="totalRows" :per-page="itemsPerPage" v-model="currentPage" class="my-0" />
+        <div class="d-flex">
+            <span>Mostrando del {{currentPage}} al {{totalPages}} de {{totalRows}} reservas</span>
+            <b-pagination align="right" style="margin-left:auto !important;" :total-rows="totalRows" :per-page="itemsPerPage" v-model="currentPage" class="my-0" />
+        </div>
     </div>
 <!-- eslint-enable -->
 </template>
@@ -103,6 +106,7 @@ export default {
                 ctx.perPage,
                 ctx.currentPage,
             ).then((response) => {
+                console.log(response);
                 // establecer el total de elementos
                 this.totalRows = Number(response.headers.map['x-total-count'][0]);
                 // prooveer el arreglo de elementos
@@ -129,6 +133,11 @@ export default {
          */
         hideLoader() {
             this.isBusy = false;
+        },
+    },
+    computed: {
+        totalPages() {
+            return Math.ceil(this.totalRows / this.itemsPerPage);
         },
     },
     watch:
