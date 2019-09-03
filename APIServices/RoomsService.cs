@@ -68,7 +68,7 @@ namespace APIServices
                     .Where(r => r.HotelId == hotelid && r.RoomId == roomId && r.Date >= startDate && r.Date <= endDate)
                     .OrderBy(r => r.Date).ToArray();
 
-                // arreglo de días que se usara para dividir el rango de las tarifas por día
+                // arreglo de días que se usará para dividir el rango de las tarifas por día
                 DateTime[] days = Enumerable.Range(0, 1 + endDate.Subtract(startDate).Days)
                 .Select(offset => startDate.AddDays(offset))
                 .ToArray();
