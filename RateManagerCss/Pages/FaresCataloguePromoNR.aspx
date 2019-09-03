@@ -82,10 +82,10 @@
     
         function CheckValContract(min, max, nr, uv, msgMax, msgMin) {
             <% if me.issupervisor then %>
-            valMin = parseInt(document.getElementById(min).value);
-            valMax = parseInt(document.getElementById(max).value);
-            valNR = parseInt(document.getElementById(nr).value);
-            valUV = parseInt(document.getElementById(uv).value);
+            valMin = parseFloat(document.getElementById(min).value);
+            valMax = parseFloat(document.getElementById(max).value);
+            valNR = parseFloat(document.getElementById(nr).value);
+            valUV = parseFloat(document.getElementById(uv).value);
 
             if (document.getElementById(uv)) {
                 //valUV = parseFloat(document.getElementById(uv).value);

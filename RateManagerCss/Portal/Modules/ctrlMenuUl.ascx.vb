@@ -64,7 +64,7 @@ Partial Public Class ctrlMenuUl
             Dim userRoles As String = CurrentRoles
 
 
-            ds.ReadXml(New System.Xml.XmlTextReader(New System.IO.StringReader(xmlMenu)))
+            ds.ReadXml(New System.Xml.XmlTextReader(New System.IO.StringReader(xmlMenu.Replace("//", "/"))))
             If (ds.Tables("menuItem").Rows.Count > 0) Then
                 BuilMenu(-1, 1, ds, userRoles, itemNumber, result)
                 Select Case CurrentMenuType

@@ -42,7 +42,7 @@ Partial Public Class ctrlMenuLeft
             '// Agrega los roles del usuario.
             HttpContext.Current.User = New Principal.GenericPrincipal(HttpContext.Current.User.Identity, roleListArray)
 
-            menuXml = cMenu.GetMenu(AppSettings("idSistema"), (New AuthUser).IdIdiomaMenu, "sys_deals")
+            menuXml = cMenu.GetMenu(AppSettings("idSistema"), (New AuthUser).IdIdiomaMenu, "sys_deals").Replace("//", "/")
             If menuXml <> String.Empty Then
 
                 ctrlMenuUl1.CurrentRoles = ""

@@ -51,7 +51,7 @@ Partial Public Class ctrlMenuTap
                 Next
                 ctrlMenuUl1.CurrentMenuType = ctrlMenuUl.MenuType.SoloPrimerNivel
                 ctrlMenuUl1.DefaultTarget = "frmPrincipal"
-                ctrlMenuUl1.LoadMenu(menuXml)
+                ctrlMenuUl1.LoadMenu(menuXml.Replace("//", "/"))
             End If
         End If
     End Function
