@@ -1,7 +1,0 @@
-15:16:56: No se puede validar el control 'lblConfirmNumber' al que hace referencia la propiedad ControlToValidate de 'rfvResConfirm'.   en System.Web.UI.WebControls.BaseValidator.CheckControlValidationProperty(String name, String propertyName)
-   en System.Web.UI.WebControls.BaseValidator.ControlPropertiesValid()
-   en System.Web.UI.WebControls.BaseValidator.OnPreRender(EventArgs e)
-   en System.Web.UI.Control.PreRenderRecursiveInternal()
-   en System.Web.UI.Control.PreRenderRecursiveInternal()
-   en System.Web.UI.Control.PreRenderRecursiveInternal()
-   en System.Web.UI.Page.ProcessRequestMain(Boolean includeStagesBeforeAsyncPoint, Boolean includeStagesAfterAsyncPoint)
