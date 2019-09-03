@@ -22,12 +22,13 @@
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
     <TargetFrameworkProfile />
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
-    <IISExpressAnonymousAuthentication />
-    <IISExpressWindowsAuthentication />
-    <IISExpressUseClassicPipelineMode />
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
     <UseGlobalApplicationHostFile />
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -52,32 +53,70 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Albums.AccesoDato, Version=1.0.4490.24136, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="Albums.Comun, Version=1.0.4490.24135, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="Albums.Facade, Version=1.0.4490.24137, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="Albums.Reglas, Version=1.0.4490.24136, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="Anthem, Version=1.3.2.0, Culture=neutral">
-      <Private>False</Private>
+    <Reference Include="Albums.AccesoDato">
+      <HintPath>..\packages\RateManager.IvSolution.1.0.0\lib\net45\Albums.AccesoDato.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Autorentas.Common, Version=1.0.3749.15772, Culture=neutral, processorArchitecture=MSIL">
-      <Private>False</Private>
+    <Reference Include="Albums.Comun">
+      <HintPath>..\packages\RateManager.IvSolution.1.0.0\lib\net45\Albums.Comun.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Autorentas.Facade, Version=1.0.3749.15782, Culture=neutral, processorArchitecture=MSIL">
-      <Private>False</Private>
+    <Reference Include="Albums.Facade">
+      <HintPath>..\packages\RateManager.IvSolution.1.0.0\lib\net45\Albums.Facade.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="bkHotelesGWS, Version=1.0.3747.23463, Culture=neutral, processorArchitecture=MSIL">
-      <Private>False</Private>
+    <Reference Include="Albums.Reglas">
+      <HintPath>..\packages\RateManager.IvSolution.1.0.0\lib\net45\Albums.Reglas.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Club100, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <Private>False</Private>
+    <Reference Include="Anthem">
+      <HintPath>..\packages\RateManager.AnotherDependencies.1.0.0\lib\net45\Anthem.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Common, Version=1.0.5010.24634, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="Contenido.Comun, Version=1.0.4233.14376, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="Contenido.Config, Version=1.0.4233.14376, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="Contenido.Datos, Version=1.0.4233.14377, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="Contenido.Negocio, Version=1.0.4233.14379, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="Contenido.Presentacion, Version=1.0.4233.14379, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="Autorentas.Common">
+      <HintPath>..\packages\RateManager.IvSolution.1.0.0\lib\net45\Autorentas.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Autorentas.Facade">
+      <HintPath>..\packages\RateManager.IvSolution.1.0.0\lib\net45\Autorentas.Facade.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="bkHotelesGWS">
+      <HintPath>..\packages\RateManager.AnotherDependencies.1.0.0\lib\net45\bkHotelesGWS.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ClosedXML, Version=0.94.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ClosedXML.0.94.2\lib\net40\ClosedXML.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Club100">
+      <HintPath>..\packages\RateManager.AnotherDependencies.1.0.0\lib\net45\Club100.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Common">
+      <HintPath>..\packages\RateManager.IvSolution.1.0.0\lib\net45\Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Contenido.Comun">
+      <HintPath>..\packages\RateManager.IvSolution.1.0.0\lib\net45\Contenido.Comun.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Contenido.Config">
+      <HintPath>..\packages\RateManager.IvSolution.1.0.0\lib\net45\Contenido.Config.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Contenido.Datos">
+      <HintPath>..\packages\RateManager.IvSolution.1.0.0\lib\net45\Contenido.Datos.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Contenido.Negocio">
+      <HintPath>..\packages\RateManager.IvSolution.1.0.0\lib\net45\Contenido.Negocio.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Contenido.Presentacion">
+      <HintPath>..\packages\RateManager.IvSolution.1.0.0\lib\net45\Contenido.Presentacion.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=10.5.3700.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
     <Reference Include="CrystalDecisions.Enterprise.InfoStore, Version=10.5.3700.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
     <Reference Include="CrystalDecisions.ReportSource, Version=10.5.3700.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
@@ -85,122 +124,253 @@
     <Reference Include="CrystalDecisions.VSDesigner, Version=10.5.3700.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
     <Reference Include="CrystalDecisions.Web, Version=10.5.3700.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
     <Reference Include="CrystalDecisions.Windows.Forms, Version=10.5.3700.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
-    <Reference Include="DataAccess, Version=1.0.5010.24636, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="emailTemplates, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="Facade, Version=1.0.5010.24465, Culture=neutral, processorArchitecture=MSIL">
-      <Private>False</Private>
+    <Reference Include="DataAccess">
+      <HintPath>..\packages\RateManager.IvSolution.1.0.0\lib\net45\DataAccess.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="FredCK.FCKeditorV2, Version=2.6.3.23773, Culture=neutral, PublicKeyToken=4f86767c9b519a06">
-      <Private>False</Private>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.7.2.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.2.7.2\lib\net40\DocumentFormat.OpenXml.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="ImageQuantization, Version=1.0.1528.26722, Culture=neutral" />
-    <Reference Include="LoginAuthenticate, Version=1.0.3835.15113, Culture=neutral, processorArchitecture=MSIL">
-      <Private>False</Private>
+    <Reference Include="emailTemplates">
+      <HintPath>..\packages\RateManager.IvSolution.1.0.0\lib\net45\emailTemplates.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Mailer35, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="MiscComponent, Version=1.0.4094.26951, Culture=neutral, processorArchitecture=MSIL">
-      <Private>False</Private>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Miscelaneos, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="Newtonsoft.Json, Version=3.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <Private>False</Private>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Oz.BillingSystem.Banking, Version=1.0.3770.15554, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ExcelNumberFormat, Version=1.0.3.0, Culture=neutral, PublicKeyToken=23c6f5d73be07eca, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExcelNumberFormat.1.0.3\lib\net20\ExcelNumberFormat.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Facade">
+      <HintPath>..\packages\RateManager.IvSolution.1.0.0\lib\net45\Facade.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FastMember, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FastMember.1.3.0\lib\net45\FastMember.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FluentValidation, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentValidation.8.4.0\lib\net45\FluentValidation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FluentValidation.ValidatorAttribute, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentValidation.ValidatorAttribute.8.4.0\lib\net45\FluentValidation.ValidatorAttribute.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FluentValidation.WebApi, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentValidation.WebApi.8.4.0\lib\net45\FluentValidation.WebApi.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FredCK.FCKeditorV2">
+      <HintPath>..\packages\RateManager.AnotherDependencies.1.0.0\lib\net45\FredCK.FCKeditorV2.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ImageQuantization">
+      <HintPath>..\packages\RateManager.AnotherDependencies.1.0.0\lib\net45\ImageQuantization.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="LoginAuthenticate">
+      <HintPath>..\packages\RateManager.AnotherDependencies.1.0.0\lib\net45\LoginAuthenticate.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Mailer35">
+      <HintPath>..\packages\RateManager.AnotherDependencies.1.0.0\lib\net45\Mailer35.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="MiscComponent">
+      <HintPath>..\packages\RateManager.AnotherDependencies.1.0.0\lib\net45\MiscComponent.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Miscelaneos">
+      <HintPath>..\packages\Miscelaneos.1.0.0\lib\net45\Miscelaneos.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <Private>False</Private>
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Oz.BillingSystem.Common, Version=1.0.3901.24197, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <Private>False</Private>
+    <Reference Include="NinjAPI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NinjAPI.0.1.5-alpha\lib\net45\NinjAPI.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Oz.BillingSystem.eBillingEngine, Version=1.0.3770.15554, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <Private>False</Private>
+    <Reference Include="Oz.BillingSystem.Banking">
+      <HintPath>..\packages\Oz.Unibilling.1.0.0\lib\net45\Oz.BillingSystem.Banking.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Oz.BillingSystem.HotelBillingEngine, Version=1.0.3770.15554, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <Private>False</Private>
+    <Reference Include="Oz.BillingSystem.Common">
+      <HintPath>..\packages\Oz.Unibilling.1.0.0\lib\net45\Oz.BillingSystem.Common.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Oz.UniBilling.Banking.Business, Version=1.0.0.0, Culture=neutral, PublicKeyToken=38b5c620e4c4648d, processorArchitecture=MSIL" />
-    <Reference Include="Oz.UniBilling.Banking.DataAccess, Version=1.0.0.0, Culture=neutral, PublicKeyToken=38b5c620e4c4648d, processorArchitecture=MSIL" />
-    <Reference Include="Oz.UniBilling.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=38b5c620e4c4648d, processorArchitecture=MSIL" />
-    <Reference Include="Oz.UniBilling.CryptoSysPKI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=38b5c620e4c4648d, processorArchitecture=MSIL" />
-    <Reference Include="Oz.UniBilling.DataSchemas, Version=1.0.0.0, Culture=neutral, PublicKeyToken=38b5c620e4c4648d, processorArchitecture=MSIL" />
-    <Reference Include="Oz.UniBilling.DigitalInvoicing.Business, Version=1.0.0.0, Culture=neutral, PublicKeyToken=38b5c620e4c4648d, processorArchitecture=MSIL" />
-    <Reference Include="Oz.UniBilling.DigitalInvoicing.DataAccess, Version=1.0.0.0, Culture=neutral, PublicKeyToken=38b5c620e4c4648d, processorArchitecture=MSIL" />
-    <Reference Include="Oz.UniBilling.Hotels.Business, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="Oz.UniBilling.Hotels.DataAccess, Version=1.0.0.0, Culture=neutral, PublicKeyToken=38b5c620e4c4648d, processorArchitecture=MSIL" />
-    <Reference Include="PaymentLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <Private>False</Private>
+    <Reference Include="Oz.BillingSystem.eBillingEngine">
+      <HintPath>..\packages\Oz.Unibilling.1.0.0\lib\net45\Oz.BillingSystem.eBillingEngine.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Portal, Version=1.0.4659.18684, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="Portal.Catalogos.Common, Version=1.0.4440.17329, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="Portal.Catalogos.DataAccess, Version=1.0.4440.17330, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="Portal.Catalogos.Facade, Version=1.0.4440.17332, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="Portal.Catalogos.Rules, Version=1.0.4440.17331, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="Portal.General.Common, Version=1.0.5457.25769, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="Portal.General.DataAccess, Version=1.0.5457.25770, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="Portal.General.Empresas.Common, Version=1.0.6220.24205, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Portal.General.Empresas.Common.dll</HintPath>
+    <Reference Include="Oz.BillingSystem.HotelBillingEngine">
+      <HintPath>..\packages\Oz.Unibilling.1.0.0\lib\net45\Oz.BillingSystem.HotelBillingEngine.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Portal.General.Empresas.DataAccess, Version=1.0.6220.24206, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Portal.General.Empresas.DataAccess.dll</HintPath>
+    <Reference Include="Oz.UniBilling.Banking.Business">
+      <HintPath>..\packages\Oz.Unibilling.1.0.0\lib\net45\Oz.UniBilling.Banking.Business.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Portal.General.Empresas.Facade, Version=1.0.6220.24215, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Portal.General.Empresas.Facade.dll</HintPath>
+    <Reference Include="Oz.UniBilling.Banking.DataAccess">
+      <HintPath>..\packages\Oz.Unibilling.1.0.0\lib\net45\Oz.UniBilling.Banking.DataAccess.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Portal.General.Empresas.Rules, Version=1.0.6220.24214, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Portal.General.Empresas.Rules.dll</HintPath>
+    <Reference Include="Oz.UniBilling.Common">
+      <HintPath>..\packages\Oz.Unibilling.1.0.0\lib\net45\Oz.UniBilling.Common.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Portal.General.Facade, Version=1.0.5444.26328, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="Portal.General.Rules, Version=1.0.5457.25771, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="Portal.Hotel.Common, Version=1.0.6045.33346, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Portal.Hotel.Common.dll</HintPath>
+    <Reference Include="Oz.UniBilling.CryptoSysPKI">
+      <HintPath>..\packages\Oz.Unibilling.1.0.0\lib\net45\Oz.UniBilling.CryptoSysPKI.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Portal.Hotel.DataAccess, Version=1.0.6045.33351, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Portal.Hotel.DataAccess.dll</HintPath>
+    <Reference Include="Oz.UniBilling.DataSchemas">
+      <HintPath>..\packages\Oz.Unibilling.1.0.0\lib\net45\Oz.UniBilling.DataSchemas.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Portal.Hotel.Facade, Version=1.0.6045.33354, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Portal.Hotel.Facade.dll</HintPath>
+    <Reference Include="Oz.UniBilling.DigitalInvoicing.Business">
+      <HintPath>..\packages\Oz.Unibilling.1.0.0\lib\net45\Oz.UniBilling.DigitalInvoicing.Business.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Portal.Hotel.Rules, Version=1.0.6045.33353, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Portal.Hotel.Rules.dll</HintPath>
+    <Reference Include="Oz.UniBilling.DigitalInvoicing.DataAccess">
+      <HintPath>..\packages\Oz.Unibilling.1.0.0\lib\net45\Oz.UniBilling.DigitalInvoicing.DataAccess.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Portal.SearchEngine.Common, Version=1.0.3750.15069, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <Private>False</Private>
+    <Reference Include="Oz.UniBilling.Hotels.Business">
+      <HintPath>..\packages\Oz.Unibilling.1.0.0\lib\net45\Oz.UniBilling.Hotels.Business.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Portal.SearchEngine.DataAccess, Version=1.0.3750.15069, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <Private>False</Private>
+    <Reference Include="Oz.UniBilling.Hotels.DataAccess">
+      <HintPath>..\packages\Oz.Unibilling.1.0.0\lib\net45\Oz.UniBilling.Hotels.DataAccess.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Portal.SearchEngine.Facade, Version=1.0.3759.18648, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <Private>False</Private>
+    <Reference Include="Oz.UniBilling.Web.UI">
+      <HintPath>..\packages\Oz.Unibilling.1.0.0\lib\net45\Oz.UniBilling.Web.UI.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="PortalLibraries, Version=5.0.2.9, Culture=neutral, processorArchitecture=MSIL">
-      <Private>False</Private>
+    <Reference Include="PaymentLibrary">
+      <HintPath>..\packages\RateManager.AnotherDependencies.1.0.0\lib\net45\PaymentLibrary.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="ReferencesSystem, Version=1.0.3825.20193, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="skmmenu, Version=2.3.3695.14864, Culture=neutral, processorArchitecture=MSIL">
-      <Private>False</Private>
+    <Reference Include="Portal">
+      <HintPath>..\packages\RateManager.IvSolution.1.0.0\lib\net45\Portal.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Portal.Catalogos.Common">
+      <HintPath>..\packages\RateManager.IvSolution.1.0.0\lib\net45\Portal.Catalogos.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Portal.Catalogos.DataAccess">
+      <HintPath>..\packages\RateManager.IvSolution.1.0.0\lib\net45\Portal.Catalogos.DataAccess.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Portal.Catalogos.Facade">
+      <HintPath>..\packages\RateManager.IvSolution.1.0.0\lib\net45\Portal.Catalogos.Facade.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Portal.Catalogos.Rules">
+      <HintPath>..\packages\RateManager.IvSolution.1.0.0\lib\net45\Portal.Catalogos.Rules.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Portal.General.Common">
+      <HintPath>..\packages\RateManager.IvSolution.1.0.0\lib\net45\Portal.General.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Portal.General.DataAccess">
+      <HintPath>..\packages\RateManager.IvSolution.1.0.0\lib\net45\Portal.General.DataAccess.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Portal.General.Empresas.Common">
+      <HintPath>..\packages\RateManager.IvSolution.1.0.0\lib\net45\Portal.General.Empresas.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Portal.General.Empresas.DataAccess">
+      <HintPath>..\packages\RateManager.IvSolution.1.0.0\lib\net45\Portal.General.Empresas.DataAccess.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Portal.General.Empresas.Facade">
+      <HintPath>..\packages\RateManager.IvSolution.1.0.0\lib\net45\Portal.General.Empresas.Facade.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Portal.General.Empresas.Rules">
+      <HintPath>..\packages\RateManager.IvSolution.1.0.0\lib\net45\Portal.General.Empresas.Rules.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Portal.General.Facade">
+      <HintPath>..\packages\RateManager.IvSolution.1.0.0\lib\net45\Portal.General.Facade.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Portal.General.Rules">
+      <HintPath>..\packages\RateManager.IvSolution.1.0.0\lib\net45\Portal.General.Rules.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Portal.Hotel.Common">
+      <HintPath>..\packages\RateManager.IvSolution.1.0.0\lib\net45\Portal.Hotel.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Portal.Hotel.DataAccess">
+      <HintPath>..\packages\RateManager.IvSolution.1.0.0\lib\net45\Portal.Hotel.DataAccess.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Portal.Hotel.Facade">
+      <HintPath>..\packages\RateManager.IvSolution.1.0.0\lib\net45\Portal.Hotel.Facade.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Portal.Hotel.Rules">
+      <HintPath>..\packages\RateManager.IvSolution.1.0.0\lib\net45\Portal.Hotel.Rules.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Portal.SearchEngine.Common">
+      <HintPath>..\packages\RateManager.IvSolution.1.0.0\lib\net45\Portal.SearchEngine.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Portal.SearchEngine.DataAccess">
+      <HintPath>..\packages\RateManager.IvSolution.1.0.0\lib\net45\Portal.SearchEngine.DataAccess.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Portal.SearchEngine.Facade">
+      <HintPath>..\packages\RateManager.IvSolution.1.0.0\lib\net45\Portal.SearchEngine.Facade.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PortalLibraries">
+      <HintPath>..\packages\PortalLibraries.1.0.0\lib\net45\PortalLibraries.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ReferencesSystem">
+      <HintPath>..\packages\RateManager.AnotherDependencies.1.0.0\lib\net45\ReferencesSystem.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Rules">
+      <HintPath>..\packages\RateManager.IvSolution.1.0.0\lib\net45\Rules.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="skmMenu">
+      <HintPath>..\packages\RateManager.IvSolution.1.0.0\lib\net45\skmMenu.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data">
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Drawing">
       <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
@@ -213,6 +383,14 @@
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Extensions.Design" />
+    <Reference Include="System.Web.Http, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.7\lib\net45\System.Web.Http.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.7\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml">
       <Private>False</Private>
     </Reference>
@@ -229,34 +407,51 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="TaskManager.Common, Version=1.0.0.0, Culture=neutral">
-      <Private>False</Private>
+    <Reference Include="TaskManager.Common">
+      <HintPath>..\packages\RateManager.IvSolution.1.0.0\lib\net45\TaskManager.Common.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="TaskManager.Facade, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <Private>False</Private>
+    <Reference Include="TaskManager.DataAccess">
+      <HintPath>..\packages\RateManager.IvSolution.1.0.0\lib\net45\TaskManager.DataAccess.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="WSHOTEL, Version=1.0.5800.21324, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="TaskManager.Facade">
+      <HintPath>..\packages\RateManager.IvSolution.1.0.0\lib\net45\TaskManager.Facade.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="TaskManager.Rules">
+      <HintPath>..\packages\RateManager.IvSolution.1.0.0\lib\net45\TaskManager.Rules.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="WSHOTEL, Version=1.0.7086.16933, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\WSHOTEL.dll</HintPath>
+      <HintPath>..\packages\WsHotel.Core.1.0.0\lib\net45\WSHOTEL.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="WSHotelCommon, Version=1.0.5800.21314, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="WSHotelCommon, Version=1.0.7086.16932, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\WSHotelCommon.dll</HintPath>
+      <HintPath>..\packages\WsHotel.Core.1.0.0\lib\net45\WSHotelCommon.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="WSHotelDataAccess, Version=1.0.5800.21322, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="WSHotelDataAccess, Version=1.0.7086.16933, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\WSHotelDataAccess.dll</HintPath>
+      <HintPath>..\packages\WsHotel.Core.1.0.0\lib\net45\WSHotelDataAccess.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="WSHotelFacade, Version=1.0.5800.21324, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="WSHotelFacade, Version=1.0.7086.16933, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\WSHotelFacade.dll</HintPath>
+      <HintPath>..\packages\WsHotel.Core.1.0.0\lib\net45\WSHotelFacade.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="WSHotelRules, Version=1.0.5800.21324, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="WSHotelRules, Version=1.0.7086.16933, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\WSHotelRules.dll</HintPath>
+      <HintPath>..\packages\WsHotel.Core.1.0.0\lib\net45\WSHotelRules.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="XCrypt, Version=1.0.2586.21614, Culture=neutral">
-      <Private>False</Private>
+    <Reference Include="XCrypt">
+      <HintPath>..\packages\RateManager.AnotherDependencies.1.0.0\lib\net45\XCrypt.dll</HintPath>
+      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -318,6 +513,7 @@
     <Content Include="bin\Oz.UniBilling.DigitalInvoicing.DataAccess.dll" />
     <Content Include="bin\Oz.UniBilling.Hotels.Business.dll" />
     <Content Include="bin\Oz.UniBilling.Hotels.DataAccess.dll" />
+    <Content Include="bin\Oz.UniBilling.Web.UI.dll" />
     <Content Include="bin\Portal.Catalogos.Common.dll" />
     <Content Include="bin\Portal.Catalogos.DataAccess.dll" />
     <Content Include="bin\Portal.Catalogos.Facade.dll" />
@@ -374,6 +570,8 @@
     <Content Include="Casas\RegistroCasas.aspx" />
     <Content Include="Casas\HousesCatalogue.aspx" />
     <Content Include="Control De cambios Rate Manager.txt" />
+    <Content Include="Correos\html\codecc_en.htm" />
+    <Content Include="Correos\html\codecc_es.htm" />
     <Content Include="Correos\html\AsociateProfileAgent_EN.htm" />
     <Content Include="Correos\html\AsociateProfileAgent_ES.htm" />
     <Content Include="Correos\html\AsociateProfileHotel_EN.htm" />
@@ -390,6 +588,8 @@
     <Content Include="Correos\html\ForgotPasswordUser_ES.htm" />
     <Content Include="Correos\html\HotelLog_EN.htm" />
     <Content Include="Correos\html\HotelLog_ES.htm" />
+    <Content Include="Correos\html\HotelReservationCancellation-EN.html" />
+    <Content Include="Correos\html\HotelReservationCancellation-ES.html" />
     <Content Include="Correos\html\HotelReservationCancellation_EN.htm" />
     <Content Include="Correos\html\HotelReservationCancellation_ES.htm" />
     <Content Include="Correos\html\NewAcountUser_EN.htm" />
@@ -1024,6 +1224,9 @@
     <Content Include="Images\usa.gif" />
     <Content Include="Images\xml.gif" />
     <Content Include="Includes\bootstrap.min.css" />
+    <Content Include="Includes\imagenes\cards\visa.png" />
+    <Content Include="Includes\imagenes\istotipo-internetpowerhotel-blanco.png" />
+    <Content Include="Includes\imagenes\istotipo-internetpowerhotel-normal.png" />
     <Content Include="Includes\imagenes\logo.png" />
     <Content Include="Includes\report\Angular1-2.js" />
     <Content Include="Includes\report\bootstrap.min.css" />
@@ -1272,6 +1475,7 @@
     <Content Include="XmlHttp.js" />
     <Content Include="Pages\F2goGetReport.ashx" />
     <Content Include="Correos\html\Notificaciones Email Pago No Completado Call Center.rar" />
+    <Content Include="packages.config" />
     <None Include="Web References\WsConnectWcf\wsConnectWCFv2.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -1283,6 +1487,19 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API\Controllers\HotelsController.vb" />
+    <Compile Include="API\Controllers\RatesController.vb" />
+    <Compile Include="API\Controllers\ReservationController.vb" />
+    <Compile Include="API\Controllers\RoomsController.vb" />
+    <Compile Include="API\Helpers\Date+Extensions.vb" />
+    <Compile Include="API\Helpers\Email.vb" />
+    <Compile Include="API\Helpers\HttpRequestMessage+Extensions.vb" />
+    <Compile Include="API\Helpers\AuthorizeUserAttribute.vb" />
+    <Compile Include="API\Helpers\UserDataHelper.vb" />
+    <Compile Include="API\Models\DateRangeRQ.vb" />
+    <Compile Include="API\Models\RatesByPlanRQ.vb" />
+    <Compile Include="API\Models\RateUpdateRQ.vb" />
+    <Compile Include="API\Models\ReservationUpdateRQ.vb" />
     <Compile Include="App_Data\Agreement.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1705,7 +1922,7 @@
     </Compile>
     <Compile Include="Pages\uvReport.aspx.vb">
       <DependentUpon>uvReport.aspx</DependentUpon>
-      <SubType>ASPXCodebehind</SubType>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\AgenciasModulo.ascx.designer.vb">
       <DependentUpon>AgenciasModulo.ascx</DependentUpon>
@@ -3148,9 +3365,7 @@
       <DependentUpon>CtrMenu.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Portal\Opciones.vb">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
+    <Compile Include="Portal\Opciones.vb" />
     <Compile Include="Portal\Pages\Home.aspx.designer.vb">
       <DependentUpon>Home.aspx</DependentUpon>
     </Compile>
@@ -4159,7 +4374,6 @@
     </Content>
     <Content Include="HotelAdministrator\Data\HdrRetentionsConfig.ashx" />
     <None Include="My Project\PublishProfiles\RateManager.pubxml" />
-    <Content Include="packages.config" />
     <None Include="Reports\Agreements\1\agreement_ES.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>agreement_ES.vb</LastGenOutput>
@@ -4700,6 +4914,12 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\APIServices\APIServices.csproj">
+      <Project>{66017370-9f20-4fc4-97ef-e00fd5fe80ce}</Project>
+      <Name>APIServices</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -4718,12 +4938,13 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>False</AutoAssignPort>
           <DevelopmentServerPort>15903</DevelopmentServerPort>
           <DevelopmentServerVPath>/Ratemanager/</DevelopmentServerVPath>
-          <IISUrl>
-          </IISUrl>
+          <IISUrl>http://localhost:15903/Ratemanager</IISUrl>
+          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
+          <IISAppRootUrl>http://localhost:15903/Ratemanager</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

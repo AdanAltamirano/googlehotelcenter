@@ -9,7 +9,9 @@
                     field: $tag[0],
                     numberOfMonths: 1,
                     bound: true,
-                    defaultDate: new Date()
+                    defaultDate: new Date(),
+                    position: 'bottom right',
+                    reposition: false,
                 });
             }
         }

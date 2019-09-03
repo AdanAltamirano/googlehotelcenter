@@ -8853,4 +8853,16 @@
   <data name="01653" xml:space="preserve">
     <value>Descargar Comprobante</value>
   </data>
+  <data name="01654" xml:space="preserve">
+    <value>Soporte</value>
+  </data>
+  <data name="01655" xml:space="preserve">
+    <value>Sesión expirada</value>
+  </data>
+  <data name="01656" xml:space="preserve">
+    <value>La sesión expiro por inactividad</value>
+  </data>
+  <data name="01657" xml:space="preserve">
+    <value>Mantener</value>
+  </data>
 </root>

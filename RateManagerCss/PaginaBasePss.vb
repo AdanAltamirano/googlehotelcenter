@@ -689,7 +689,7 @@ Public Class PaginaBase
         'Dim tkt As FormsAuthenticationTicket
         'Dim cookiestr As String
         'Dim ck As HttpCookie
-        Dim roles As String
+        Dim roles As String = String.Empty
         'Dim stmp As String
 
         Try
@@ -704,11 +704,17 @@ Public Class PaginaBase
                     roles = "HotelNetRate"
                 Case CInt(PerfilHotel.Mixto)
                     roles = "HotelAvanzado,HotelNetRate"
-                Case Else
-                    roles = "Casas"
             End Select
 
-            Session.Item("RolesUsuario") = String.Concat(roles)
+            If Session("RolesUsuario") IsNot Nothing Then
+                If Not String.IsNullOrEmpty(roles) Then
+                    For Each r As String In roles.Split(",")
+                        If Not Session("RolesUsuario").ToString.Contains(r) Then
+                            Session.Item("RolesUsuario") += "," & r
+                        End If
+                    Next
+                End If
+            End If
         Catch ex As Exception
 
         End Try
@@ -1135,8 +1141,6 @@ Public Class PaginaBase
     End Sub
 
     Private Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Load
-
-
         Dim log As String = Request.QueryString("lgid")
         Dim id As String = String.Empty
 
@@ -1171,8 +1175,8 @@ Public Class PaginaBase
 
         Response.Expires = 0
         If Me.IsAuthenticated Then
-            If IsHotel Or IsSupervisor Or IsUsuarioHotel Or Me.cInfoActual.UserPerfil = PerfilHotel.Avanzado Or _
-            Me.cInfoActual.UserPerfil = PerfilHotel.Basico Or Me.cInfoActual.UserPerfil = PerfilHotel.Medio Or _
+            If IsHotel Or IsSupervisor Or IsUsuarioHotel Or Me.cInfoActual.UserPerfil = PerfilHotel.Avanzado Or
+            Me.cInfoActual.UserPerfil = PerfilHotel.Basico Or Me.cInfoActual.UserPerfil = PerfilHotel.Medio Or
             Me.IsUnibilling Or Me.IsContent Or Me.cInfoActual.UserPerfil = PerfilHotel.NetRate Or IsUsuarioCallCenter Then
                 Usuario = ((New AuthUser).Usuario)
             End If
@@ -1209,6 +1213,15 @@ Public Class PaginaBase
 
         ElseIf IsUsuarioHotel Then
             PermissionSeePage()
+        End If
+
+        If Context.Session("once_script") Is Nothing Then
+            Dim script_iframeHeight As String = ""
+            script_iframeHeight &= "<script>"
+            script_iframeHeight &= "sendHeight = function(){ var height = $('div').offsetHeight; window.parent.postMessage({'height': height}, '*');}"
+            script_iframeHeight &= "</script>"
+            ClientScript.RegisterStartupScript(Me.GetType(), "clientScript", script_iframeHeight)
+            Context.Session("once_script") = True
         End If
     End Sub
 

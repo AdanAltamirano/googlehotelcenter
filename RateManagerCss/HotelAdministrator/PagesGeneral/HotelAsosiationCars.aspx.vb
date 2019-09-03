@@ -76,7 +76,7 @@ Partial Class HotelAsosiationCars
         Try
             Dim SearchCar As New SearchEngine.CarRents.Facade.BookingAutosFacade
             Dim Franquicias As DataSet
-            Franquicias = SearchCar.SearchAutosFranquiciasList
+            'Franquicias = SearchCar.SearchAutosFranquiciasList
 
             Dim valor = Franquicias.Tables(0).Rows.Count - 1 / 4
 
@@ -135,7 +135,7 @@ Partial Class HotelAsosiationCars
 
 
             Dim FR As DataSet
-            FR = SearchCar.SearchAutosFranquiciasCorporativoList(Chaincode)
+            'FR = SearchCar.SearchAutosFranquiciasCorporativoList(Chaincode)
 
             If Not FR Is Nothing AndAlso FR.Tables(0).Rows.Count > 0 Then
 
@@ -212,34 +212,34 @@ Partial Class HotelAsosiationCars
             Dim SearchCar As New SearchEngine.CarRents.Facade.BookingAutosFacade
             For indice As Integer = 0 To chkFranquicias1.Items.Count - 1
                 If chkFranquicias1.Items(indice).Selected Then
-                    SearchCar.SearchAutosFranquiciasCorporativoInsert(Chaincode, chkFranquicias1.Items(indice).Value, 1)
+                    'SearchCar.SearchAutosFranquiciasCorporativoInsert(Chaincode, chkFranquicias1.Items(indice).Value, 1)
                 Else
-                    SearchCar.SearchAutosFranquiciasCorporativoInsert(Chaincode, chkFranquicias1.Items(indice).Value, 0)
+                    'SearchCar.SearchAutosFranquiciasCorporativoInsert(Chaincode, chkFranquicias1.Items(indice).Value, 0)
                 End If
             Next
 
 
             For indice As Integer = 0 To chkFranquicias2.Items.Count - 1
                 If chkFranquicias2.Items(indice).Selected Then
-                    SearchCar.SearchAutosFranquiciasCorporativoInsert(Chaincode, chkFranquicias2.Items(indice).Value, 1)
+                    'SearchCar.SearchAutosFranquiciasCorporativoInsert(Chaincode, chkFranquicias2.Items(indice).Value, 1)
                 Else
-                    SearchCar.SearchAutosFranquiciasCorporativoInsert(Chaincode, chkFranquicias2.Items(indice).Value, 0)
+                    'SearchCar.SearchAutosFranquiciasCorporativoInsert(Chaincode, chkFranquicias2.Items(indice).Value, 0)
                 End If
             Next
 
             For indice As Integer = 0 To chkFranquicias3.Items.Count - 1
                 If chkFranquicias3.Items(indice).Selected Then
-                    SearchCar.SearchAutosFranquiciasCorporativoInsert(Chaincode, chkFranquicias3.Items(indice).Value, 1)
+                    'SearchCar.SearchAutosFranquiciasCorporativoInsert(Chaincode, chkFranquicias3.Items(indice).Value, 1)
                 Else
-                    SearchCar.SearchAutosFranquiciasCorporativoInsert(Chaincode, chkFranquicias3.Items(indice).Value, 0)
+                    'SearchCar.SearchAutosFranquiciasCorporativoInsert(Chaincode, chkFranquicias3.Items(indice).Value, 0)
                 End If
             Next
 
             For indice As Integer = 0 To chkFranquicias4.Items.Count - 1
                 If chkFranquicias4.Items(indice).Selected Then
-                    SearchCar.SearchAutosFranquiciasCorporativoInsert(Chaincode, chkFranquicias4.Items(indice).Value, 1)
+                    'SearchCar.SearchAutosFranquiciasCorporativoInsert(Chaincode, chkFranquicias4.Items(indice).Value, 1)
                 Else
-                    SearchCar.SearchAutosFranquiciasCorporativoInsert(Chaincode, chkFranquicias4.Items(indice).Value, 0)
+                    'SearchCar.SearchAutosFranquiciasCorporativoInsert(Chaincode, chkFranquicias4.Items(indice).Value, 0)
                 End If
             Next
         Catch ex As Exception

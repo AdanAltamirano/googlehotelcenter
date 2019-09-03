@@ -1,0 +1,200 @@
+h3, .h3 {
+    font-size: 20px;
+    margin-bottom: 0;
+}
+h4, .h4 {
+    font-size: 15px;
+}
+a, h5, .h5, .btn, span:not(.swal2-x-mark, .swal2-x-mark-line-left, .swal2-x-mark-line-right, .swal2-success-line-tip, .swal2-success-line-long), .form-control {
+    font-size: 12px;
+}
+.w-15 {
+    width: 15% !important;
+}
+.w-20 {
+    width: 20% !important;
+}
+.w-30 {
+    width: 30% !important;
+}
+.w-40 {
+    width: 40% !important;
+}
+.w-35 {
+    width: 35% !important;
+}
+.w-60 {
+    width: 60% !important;
+}
+.w-65 {
+    width: 65% !important;
+}
+.w-70 {
+    width: 70% !important;
+}
+.w-80 {
+    width: 80% !important;
+}
+.fs-12{
+    font-size: 12px
+}
+body {
+    height: 100vh;
+    overflow-x: hidden;
+    width: 100vw;
+}
+.border-5 {
+    border-width: 5px !important;
+}
+.rate-plan > div:first-child button:hover {
+    background-color: #e9ecef !important;
+} 
+.marked-background {
+    background-color: #ffeee2;
+}
+.disabled-background {
+    background-color: #dee2e6;
+}
+.avail-selected {
+    background-color: #dee2e6;
+}
+.warning-selected {
+    background-color: #ffc107;
+    padding: 0 !important;
+}
+.warning-selected-circle {
+    background-color: #ffc107;
+}
+.warning-selected:hover,
+.warning-selected:active {
+    background-color: #e0a800;
+}
+.warning-selected a {
+    color: #000;
+    display: block;
+    height: 100%;
+    width: 100%;
+}
+.warning-selected:hover a {
+    color: #fff;
+    text-decoration: none;
+}
+.bg-blue-created {
+    background-color: #dff3fa;
+}
+.btn-group-primary .active {
+    background-color: theme-color("primary") !important;
+    border-color: theme-color("primary") !important;
+}
+.btn-group-warning .active {
+    background-color: theme-color("warning") !important;
+    border-color: theme-color("warning") !important;
+}
+.btn-group-danger .active {
+    background-color: theme-color("danger") !important;
+    border-color: theme-color("danger") !important;
+}
+.form-control > .form-control-deep {
+    margin: 0;
+    border: 0;
+    width: 100%;
+    height: 100%;
+    padding: .375rem .75rem;
+    color: #495057;
+}
+.dark-gray-created {
+    background-color: #e9ecef;
+}
+.external-link {
+    transform: rotate(90deg);
+}
+.two-weeks .border {
+    border-bottom: none !important;
+    border-top: none !important;
+}
+.w-70 .flex-fill {
+    width: 7.14%;
+}
+.form-check.d-flex.justify-content-between.pl-0 > div {
+    width: 33.3333%;
+}
+@media (min-width: 1024px) and (max-width: 1499px) {
+    .width-test > div {
+        height: calc(100vh - 114px);
+    }
+}
+@media (max-width: 1499px) {
+    .width-test > div {
+        width: 1700px;
+    }
+    .width-test .room-description > div{
+        width: 1600px;
+    }
+}
+@media (max-width: 1024px) {
+    .formulario-page > div {
+        width: 1300px;
+    }
+    .formulario-page .room-description > div{
+        width: 1200px;
+    }
+}
+.price-rates button {
+    background-color: #dee1e6;
+    border-color: #dee1e6;
+    border-radius: .25rem .25rem 0 0;    
+    color: #000;
+}
+.price-rates-selected button {
+    background-color: #e9ecef;
+    border-color: #e9ecef;
+}
+.price-rates-selected .bg-blue-created {
+    background-color: #cae1e9;
+}
+.collapse-containers .collapsed .fa:before  {
+    content: "\f067";   
+}
+.collapse-containers button:hover {
+    background-color: #adb5bd;
+    border-radius: inherit;
+}
+.collapse-containers button div label:hover {
+    cursor: pointer;
+}
+.heading-divider > p {
+    font-size: 12px !important;
+}
+.tab-container ul li .active {
+    background-color: #e9ecef !important;
+}
+.gds-container div:nth-child(2) > div:first-child > div:first-child label  {
+    display: inline !important;
+}
+.vc-popover-content{
+    border-style: solid;
+}
+.form-control:disabled, .form-control[readonly]{
+    background-color: white;
+}
+.bg-unavail{
+    background-color:  theme-color-level(danger, -10);
+}
+.bg-noarrival{
+    background-color:  theme-color-level(warning, -10);
+}
+.bg-promo{
+    background-color:  theme-color-level(info, -10);
+}
+.popover-form {
+    min-width: 250px;
+}
+.popover-form input{
+    max-width: 100px;
+    padding: 0.2rem 0.3rem;
+    margin-right:  0.5rem;
+    margin-left:  0.5rem;
+}
+.popover-inner hr{
+    margin: initial!important;
+}

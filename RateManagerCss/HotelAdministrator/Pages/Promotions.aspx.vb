@@ -316,6 +316,7 @@ Public Class Promotions
             Else
                 Return 2
             End If
+
         End If
 
         Dim ComGDS As Integer = 0.0

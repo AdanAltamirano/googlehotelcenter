@@ -1,0 +1,36 @@
+@import '../../../styles/base.scss';
+
+/*span { font-weight: bold;}
+.ccdata {
+    p {
+        margin-bottom: 0;
+    }
+}*/
+
+.card-body, .card-header { padding: .5rem;}
+address { 
+    margin-bottom: 0;
+    font-size: 15px;
+}
+.alert { margin-bottom: 0;}
+
+.card-accent-primary {
+    border-top-color: #10467a;
+    border-top-width: 2px;
+}
+.card-accent-success {
+    border-top-color: #4dbd74;
+    border-top-width: 2px;
+}
+.card-accent-warning {
+    border-top-color: #ffc107;
+    border-top-width: 2px;
+}
+.card-accent-danger {
+    border-top-color: #f86c6b;
+    border-top-width: 2px;
+}
+.vc-shadow {
+    border-width: 0px !important;
+    box-shadow: none !important;
+}

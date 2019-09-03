@@ -1475,18 +1475,24 @@ Partial Class ReservationDetails
                     End If
                 End If
 
+
+                Dim cvv As String = IIf(.IsNull(dsReservaciones.FIELD_DIGITOCC), "", .Item(dsReservaciones.FIELD_DIGITOCC))
+
                 If Not Session(AppSettings("RestTarjetas")) Is Nothing AndAlso Session(AppSettings("RestTarjetas")) = "1" Then
-                    Dim ccn As String = IIf(.IsNull(dsReservaciones.FIELD_DIGITOCC), " -", .Item(dsReservaciones.FIELD_DIGITOCC))
-                    If ccn.Length >= 3 Then
+                    'Dim ccn As String = IIf(.IsNull(dsReservaciones.FIELD_DIGITOCC), " -", .Item(dsReservaciones.FIELD_DIGITOCC))
+                    If cvv.Length >= 3 Then
                         lblCCcvNumber.Text = "XXX"
                     Else
-                        lblCCcvNumber.Text = IIf(.IsNull(dsReservaciones.FIELD_DIGITOCC), " -", .Item(dsReservaciones.FIELD_DIGITOCC))
+                        lblCCcvNumber.Text = IIf(cvv = String.Empty, " -", cvv)
                     End If
                 Else
                     If Not IsSupervisor And isNR = True Then
                         lblCCcvNumber.Text = "XXX"
                     Else
-                        lblCCcvNumber.Text = IIf(.IsNull(dsReservaciones.FIELD_DIGITOCC), " -", .Item(dsReservaciones.FIELD_DIGITOCC))
+                        If Regex.IsMatch(cvv, "[A-Z]") Then
+                            cvv = crypto.DecryptString128Bit(cvv, crypto.PublicKey)
+                        End If
+                        lblCCcvNumber.Text = IIf(cvv = String.Empty, " -", cvv)
                     End If
 
                 End If
@@ -1795,7 +1801,7 @@ Partial Class ReservationDetails
                     Catch ex As Exception
 
                     End Try
-                    
+
                 Else
                     lb.Text = e.Item.Cells(Columns.BDPreferencias).Text
                 End If
@@ -2002,6 +2008,28 @@ Partial Class ReservationDetails
         Return False
 
     End Function
+
+    Private Sub btnSendZun_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnSendZun.Click
+        Dim dsReservaciones As ReservaDatos
+        Try
+            Dim idRes As String = Request.QueryString("qs")
+            With New ReservaFacade
+                dsReservaciones = .GetDataReserva(idRes)
+            End With
+
+            If Not String.IsNullOrEmpty(AppSettings("ZunUrl")) Then
+                If dsReservaciones.Tables(0).Rows(0).Item("CubanTypesPms") = "ZUN" AndAlso dsReservaciones.Tables(0).Rows(0).Item("pmsStatus") = 0 AndAlso dsReservaciones.Tables(0).Rows(0).Item("pmsAct") = "SS" Then
+                    With New WSHotelRules.clsRUZun
+                        .clsRUZun(IdReservacion, CurrencyConfirm, dsReservaciones.Tables(0).Rows(0).Item(dsReservaciones.FIELD_SOURCE).ToString)
+                        .sendReservation(WSHotelRules.ZunPSMws.Estados.nuevo)
+                    End With
+                End If
+            End If
+        Catch ex As Exception
+            lblError.Text = ex.Message
+            lblError.Visible = True
+        End Try
+    End Sub
 
     Private Sub btnMultiCancel_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnMultiCancel.Click
         Dim ids() As String = txtMultiCancel.Text.Split(",")

@@ -1,0 +1,2131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Models.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ContratosNR">
+          <Key>
+            <PropertyRef Name="idContrato" />
+          </Key>
+          <Property Name="idContrato" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="500" />
+          <Property Name="PorcentajeMax" Type="int" />
+          <Property Name="PorcentajeMin" Type="int" />
+          <Property Name="idHotel" Type="int" />
+        </EntityType>
+        <EntityType Name="Diccionario">
+          <Key>
+            <PropertyRef Name="idRepl1" />
+          </Key>
+          <Property Name="IdDiccionario" Type="int" Nullable="false" />
+          <Property Name="IdIdioma" Type="int" Nullable="false" />
+          <Property Name="Texto" Type="nvarchar" MaxLength="4000" Nullable="false" />
+          <Property Name="idRepl1" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Hoteles">
+          <Key>
+            <PropertyRef Name="idHotel" />
+          </Key>
+          <Property Name="idHotel" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idEmpresa" Type="int" Nullable="false" />
+          <Property Name="Categoria" Type="tinyint" Nullable="false" />
+          <Property Name="CheckIn" Type="smalldatetime" Nullable="false" />
+          <Property Name="CheckOut" Type="smalldatetime" Nullable="false" />
+          <Property Name="idMoneda" Type="int" Nullable="false" />
+          <Property Name="MaxDiasRenta" Type="tinyint" Nullable="false" />
+          <Property Name="MaxNumCuartos" Type="tinyint" Nullable="false" />
+          <Property Name="MaxNumAdultos" Type="tinyint" Nullable="false" />
+          <Property Name="MaxNumNinios" Type="tinyint" Nullable="false" />
+          <Property Name="DiasLibres" Type="tinyint" Nullable="false" />
+          <Property Name="DiasMinCancelar" Type="tinyint" />
+          <Property Name="Impuesto" Type="smallmoney" />
+          <Property Name="EdadApartirPagaExtra" Type="tinyint" Nullable="false" />
+          <Property Name="MaxEdadNinio" Type="tinyint" Nullable="false" />
+          <Property Name="idCiudad" Type="int" />
+          <Property Name="idfranquicia" Type="int" />
+          <Property Name="CiudadCercana" Type="nvarchar" MaxLength="30" />
+          <Property Name="AeropuertoCercano" Type="nvarchar" MaxLength="30" />
+          <Property Name="CityTax" Type="smallmoney" />
+          <Property Name="OccupancyTax" Type="smallmoney" />
+          <Property Name="ServiceCharge" Type="smallmoney" />
+          <Property Name="ComisionAgentes" Type="smallmoney" />
+          <Property Name="PoliticaCancelacion" Type="nvarchar" MaxLength="400" />
+          <Property Name="FechaApertura" Type="smalldatetime" />
+          <Property Name="FechaInicioRes" Type="smalldatetime" />
+          <Property Name="EmailReservas" Type="nvarchar" MaxLength="240" />
+          <Property Name="PropertyNumber" Type="nvarchar" MaxLength="6" />
+          <Property Name="GetRates" Type="bit" />
+          <Property Name="ChainCode" Type="char" MaxLength="2" />
+          <Property Name="DepartureRestricted" Type="nvarchar" MaxLength="1" />
+          <Property Name="EndDate" Type="smalldatetime" />
+          <Property Name="StartDate" Type="smalldatetime" />
+          <Property Name="NotApplyRestrictedDays" Type="char" MaxLength="7" />
+          <Property Name="HurdleRate" Type="smallmoney" />
+          <Property Name="CancelPrioridad" Type="smallint" />
+          <Property Name="MinLengthStay" Type="smallint" />
+          <Property Name="StatusAvailability" Type="nvarchar" MaxLength="1" />
+          <Property Name="defaultComission" Type="smallmoney" />
+          <Property Name="defaultComissionVal" Type="smallmoney" />
+          <Property Name="PGalileo" Type="nvarchar" MaxLength="12" />
+          <Property Name="PAmadeus" Type="nvarchar" MaxLength="12" />
+          <Property Name="PSabre" Type="nvarchar" MaxLength="12" />
+          <Property Name="PWorldspan" Type="nvarchar" MaxLength="12" />
+          <Property Name="PlusTax" Type="bit" />
+          <Property Name="PoliticaGarantia" Type="nvarchar" MaxLength="400" />
+          <Property Name="PoliticaCreditCard" Type="nvarchar" MaxLength="400" />
+          <Property Name="ExtraCargos" Type="nvarchar" MaxLength="400" />
+          <Property Name="idiomaemail" Type="nvarchar" MaxLength="5" />
+          <Property Name="noarrivals" Type="nvarchar" MaxLength="7" />
+          <Property Name="CancelPriorHours" Type="tinyint" />
+          <Property Name="CancelPriorSpecificT" Type="nvarchar" MaxLength="4" />
+          <Property Name="UserPerfil" Type="int" />
+          <Property Name="SendFaxReserva" Type="bit" />
+          <Property Name="emailComments" Type="nvarchar" MaxLength="600" />
+          <Property Name="idDiccemailComments" Type="int" />
+          <Property Name="urlWebSite" Type="nvarchar" MaxLength="180" />
+          <Property Name="idDiccUrlWebSite" Type="int" />
+          <Property Name="AvailOnPortal" Type="bit" />
+          <Property Name="AvailOnGDS" Type="bit" />
+          <Property Name="AvailOnOnePage" Type="bit" />
+          <Property Name="Latitud" Type="float" />
+          <Property Name="Longitud" Type="float" />
+          <Property Name="AllowBankDeposit" Type="bit" />
+          <Property Name="Emprhotur" Type="bit" />
+          <Property Name="AmhmRes" Type="bit" />
+          <Property Name="idCorporativo" Type="int" />
+          <Property Name="idDiccExtraCargos" Type="int" />
+          <Property Name="idDiccPoliticaGarantia" Type="int" />
+          <Property Name="idDiccPoliticaCreditCard" Type="int" />
+          <Property Name="idDiccPoliticaCancelacionFull" Type="int" />
+          <Property Name="idDiccPoliticaCancelacionReview" Type="int" />
+          <Property Name="AvailOnADS" Type="bit" />
+          <Property Name="EsMoroso" Type="bit" />
+          <Property Name="EsPagoCero" Type="bit" />
+          <Property Name="AvailOnIDS" Type="bit" />
+          <Property Name="MinNumCuartos" Type="tinyint" />
+          <Property Name="MinEdadNinio" Type="tinyint" />
+          <Property Name="MaxNumOcupacion" Type="tinyint" />
+          <Property Name="MinNumOcupacion" Type="tinyint" />
+          <Property Name="AllowSpecificPayment" Type="bit" />
+          <Property Name="AllowBankDepositCCT" Type="bit" />
+          <Property Name="TransbyEmail" Type="bit" />
+          <Property Name="maxEdadAdolecente" Type="tinyint" />
+          <Property Name="EdadAdolecente" Type="tinyint" />
+          <Property Name="AvlOnCorpModule" Type="bit" />
+          <Property Name="idcadena" Type="int" />
+          <Property Name="FechaConstruccion" Type="smallint" />
+          <Property Name="FechaFundacion" Type="smalldatetime" />
+          <Property Name="FechaRemodelacion" Type="smallint" />
+          <Property Name="ConfirmacionTelefonica" Type="smallint" />
+          <Property Name="IVA" Type="smallmoney" />
+          <Property Name="ISH" Type="smallmoney" />
+          <Property Name="orden" Type="int" />
+          <Property Name="SaveCurrencyShown" Type="bit" />
+          <Property Name="IsHouse" Type="bit" />
+          <Property Name="tipoPago" Type="int" />
+          <Property Name="IdOwnerDesc" Type="int" />
+          <Property Name="AmaLlaves" Type="bit" />
+          <Property Name="CategoriaCasa" Type="int" />
+          <Property Name="Banios" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="Area" Type="int" />
+          <Property Name="AreaUnidad" Type="varchar" MaxLength="6" />
+          <Property Name="ApiKey" Type="nvarchar" MaxLength="60" />
+          <Property Name="isSingleImgInv" Type="bit" />
+          <Property Name="IsPMSPushNotifActive" Type="bit" />
+        </EntityType>
+        <EntityType Name="Indice">
+          <Key>
+            <PropertyRef Name="idDiccionario" />
+          </Key>
+          <Property Name="idDiccionario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Eliminado" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RatesPlan">
+          <Key>
+            <PropertyRef Name="idRatePlan" />
+            <PropertyRef Name="IdHotel" />
+          </Key>
+          <Property Name="idRatePlan" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="400" Nullable="false" />
+          <Property Name="IdHotel" Type="int" Nullable="false" />
+          <Property Name="Segment" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="IdDictionaryDescription" Type="int" />
+          <Property Name="AccessCode" Type="nvarchar" MaxLength="10" />
+          <Property Name="CorporateDisscount" Type="nvarchar" MaxLength="25" />
+          <Property Name="IdHotelPlan" Type="int" />
+          <Property Name="SegmentRacPrinc" Type="bit" />
+          <Property Name="idRule" Type="int" />
+          <Property Name="Name" Type="nvarchar" MaxLength="80" />
+          <Property Name="RateCCT" Type="bit" />
+          <Property Name="QtyRooms" Type="int" />
+          <Property Name="RateGDS" Type="bit" />
+          <Property Name="RatePortal" Type="bit" />
+          <Property Name="RateUnip" Type="bit" />
+          <Property Name="IdDiccShortDesc" Type="int" />
+          <Property Name="codigotarifa" Type="nvarchar" MaxLength="50" />
+          <Property Name="DescPromotion" Type="smallmoney" />
+          <Property Name="DaysFree" Type="smallint" />
+          <Property Name="DepositType" Type="smallint" />
+          <Property Name="RateADS" Type="bit" />
+          <Property Name="gdsApply" Type="nvarchar" MaxLength="4" />
+          <Property Name="orden" Type="int" />
+          <Property Name="ComGDS" Type="smallmoney" />
+          <Property Name="ComPortal" Type="smallmoney" />
+          <Property Name="ComOnePage" Type="smallmoney" />
+          <Property Name="ComADS" Type="smallmoney" />
+          <Property Name="idContrado" Type="int" />
+          <Property Name="idContrato" Type="int" />
+          <Property Name="RateIDS" Type="bit" />
+          <Property Name="idMoneda" Type="int" />
+          <Property Name="WaitListAvailable" Type="bit" />
+          <Property Name="idDiccPromoDesc" Type="int" />
+          <Property Name="Deleted" Type="bit" />
+          <Property Name="RatePlanRac" Type="bit" />
+          <Property Name="hotelPayment" Type="bit" />
+          <Property Name="tipoPago" Type="int" />
+          <Property Name="IsPromo" Type="bit" />
+          <Property Name="TipoDescuento" Type="smallint" />
+          <Property Name="DaysFreeType" Type="bit" />
+          <Property Name="DiscountLevel" Type="int" />
+        </EntityType>
+        <EntityType Name="Tarifas">
+          <Key>
+            <PropertyRef Name="idTarifa" />
+          </Key>
+          <Property Name="idTarifa" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idTipoHabitacion_Hotel" Type="int" Nullable="false" />
+          <Property Name="FechaInicia" Type="smalldatetime" Nullable="false" />
+          <Property Name="FechaFinaliza" Type="smalldatetime" Nullable="false" />
+          <Property Name="Precio" Type="money" Nullable="false" />
+          <Property Name="PrecioExtraAdulto" Type="money" Nullable="false" />
+          <Property Name="PrecioExtraNinio" Type="money" Nullable="false" />
+          <Property Name="idHotelPlan" Type="int" />
+          <Property Name="TipoTarifa" Type="char" MaxLength="1" />
+          <Property Name="CodigoTarifa" Type="nvarchar" MaxLength="8" />
+          <Property Name="CorporateDiscount" Type="nvarchar" MaxLength="50" />
+          <Property Name="AccessCode" Type="nvarchar" MaxLength="14" />
+          <Property Name="Excepciones" Type="nvarchar" MaxLength="7" />
+          <Property Name="AdvBooking" Type="tinyint" />
+          <Property Name="MaxDias" Type="tinyint" />
+          <Property Name="MinDias" Type="tinyint" />
+          <Property Name="NoArrivos" Type="char" MaxLength="7" />
+          <Property Name="GuarDep" Type="char" MaxLength="1" />
+          <Property Name="idrateplan" Type="nvarchar" MaxLength="4" />
+          <Property Name="NiniosRate" Type="money" />
+          <Property Name="RateRulesDefault" Type="bit" />
+          <Property Name="PackageType" Type="nvarchar" MaxLength="2" />
+          <Property Name="PrecioExtraAdultoNR" Type="money" />
+          <Property Name="PrecioExtraNinioNR" Type="money" />
+          <Property Name="PrecioNR" Type="money" />
+          <Property Name="NiniosRateNR" Type="money" />
+          <Property Name="DescPromotion" Type="smallmoney" />
+          <Property Name="BookingWindowStart" Type="datetime" />
+          <Property Name="BookingWindowEnd" Type="datetime" />
+          <Property Name="Personas" Type="tinyint" />
+          <Property Name="PersonasExtras" Type="tinyint" />
+          <Property Name="MinAdultos" Type="tinyint" />
+          <Property Name="MaxAdultos" Type="tinyint" />
+          <Property Name="MaxNinios" Type="tinyint" />
+          <Property Name="PrecioAdolescente" Type="money" />
+          <Property Name="PrecioAdolescenteNR" Type="money" />
+          <Property Name="PrecioAdolescenteExtra" Type="money" />
+          <Property Name="PrecioAdolescenteExtraNR" Type="money" />
+          <Property Name="idDiccPromoDesc" Type="int" />
+          <Property Name="waitListAvailable" Type="bit" />
+          <Property Name="IsRateExtension" Type="bit" />
+          <Property Name="MaxAdvBooking" Type="int" />
+        </EntityType>
+        <EntityType Name="TarifasRestricciones">
+          <Key>
+            <PropertyRef Name="idRestriccion" />
+          </Key>
+          <Property Name="idRestriccion" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idTarifa" Type="int" Nullable="false" />
+          <Property Name="TarifaAdulto" Type="money" Nullable="false" />
+          <Property Name="TarifaNinio" Type="money" Nullable="false" />
+          <Property Name="Adultos" Type="int" Nullable="false" />
+          <Property Name="Ninios" Type="int" Nullable="false" />
+          <Property Name="TarifaAdultoExc" Type="money" />
+          <Property Name="TarifaNinioExc" Type="money" />
+          <Property Name="TarifaAdultoNR" Type="money" />
+          <Property Name="TarifaNinioNR" Type="money" />
+          <Property Name="TarifaAdultoExcNR" Type="money" />
+          <Property Name="TarifaNinioExcNR" Type="money" />
+          <Property Name="TarifaAdolescente" Type="money" />
+          <Property Name="TarifaAdolescenteExc" Type="money" />
+          <Property Name="TarifaAdolescenteNR" Type="money" />
+          <Property Name="TarifaAdolescenteExcNR" Type="money" />
+          <Property Name="Applyday" Type="nvarchar" MaxLength="7" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'OzHoteles.dbo.vAdministrator' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vAdministrator">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="Type" />
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="Type" Type="tinyint" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="80" Nullable="false" />
+          <Property Name="CorpId" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'OzHoteles.dbo.vDayRateDetail' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vDayRateDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="RateId" />
+            <PropertyRef Name="Adults" />
+            <PropertyRef Name="Children" />
+            <PropertyRef Name="AdultPrice" />
+            <PropertyRef Name="ChildPrice" />
+            <PropertyRef Name="ExtraAdultPrice" />
+            <PropertyRef Name="ExtraChildPrice" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="RateId" Type="int" Nullable="false" />
+          <Property Name="Adults" Type="int" Nullable="false" />
+          <Property Name="Children" Type="int" Nullable="false" />
+          <Property Name="AdultPrice" Type="money" Nullable="false" />
+          <Property Name="AdultExceptionPrice" Type="money" />
+          <Property Name="ChildPrice" Type="money" Nullable="false" />
+          <Property Name="ChildExceptionPrice" Type="money" />
+          <Property Name="JuniorPrice" Type="money" />
+          <Property Name="JuniorExceptionPrice" Type="money" />
+          <Property Name="ExtraAdultPrice" Type="money" Nullable="false" />
+          <Property Name="ExtraChildPrice" Type="money" Nullable="false" />
+          <Property Name="ExtraJuniorPrice" Type="money" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'OzHoteles.dbo.vDayRates' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vDayRates">
+          <Key>
+            
+            
+            
+            
+            <PropertyRef Name="Currency" />
+            <PropertyRef Name="IsPromotion" />
+            <PropertyRef Name="RateId" />
+            <PropertyRef Name="HotelId" />
+            <PropertyRef Name="RoomId" />
+            <PropertyRef Name="RatePlanId" />
+            <PropertyRef Name="StartDate" />
+            <PropertyRef Name="EndDate" />
+            <PropertyRef Name="Price" />
+            <PropertyRef Name="Language" />
+          </Key>
+          <Property Name="RateId" Type="int" Nullable="false" />
+          <Property Name="HotelId" Type="int" Nullable="false" />
+          <Property Name="RoomId" Type="int" Nullable="false" />
+          <Property Name="RatePlanId" Type="nvarchar" MaxLength="54" Nullable="false" />
+          <Property Name="RatePlanName" Type="nvarchar" MaxLength="80" />
+          <Property Name="StartDate" Type="smalldatetime" Nullable="false" />
+          <Property Name="EndDate" Type="smalldatetime" Nullable="false" />
+          <Property Name="NoArrivalsMap" Type="char" MaxLength="7" />
+          <Property Name="ExceptionMap" Type="nvarchar" MaxLength="7" />
+          <Property Name="Occupancy" Type="tinyint" />
+          <Property Name="Price" Type="money" Nullable="false" />
+          <Property Name="ExceptionPrice" Type="money" Nullable="false" />
+          <Property Name="Discount" Type="smallmoney" Nullable="false" />
+          <Property Name="DayDiscount" Type="smallmoney" Nullable="false" />
+          <Property Name="DiscountLevel" Type="int" Nullable="false" />
+          <Property Name="Factor" Type="smallmoney" />
+          <Property Name="Offset" Type="smallmoney" />
+          <Property Name="Currency" Type="nvarchar" MaxLength="3" Nullable="false" />
+          <Property Name="ParentRatePlanId" Type="nvarchar" MaxLength="4" />
+          <Property Name="IsPromotion" Type="bit" Nullable="false" />
+          <Property Name="Language" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'OzHoteles.dbo.vHotelBasicInfo' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vHotelBasicInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="CompanyId" />
+            <PropertyRef Name="TaxIncluded" />
+            <PropertyRef Name="Status" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="CompanyId" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="180" />
+          <Property Name="Currency" Type="nvarchar" MaxLength="3" />
+          <Property Name="Tax" Type="smallmoney" />
+          <Property Name="TaxIncluded" Type="bit" Nullable="false" />
+          <Property Name="CorpId" Type="int" />
+          <Property Name="Corp" Type="nvarchar" MaxLength="20" />
+          <Property Name="Status" Type="tinyint" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'OzHoteles.dbo.vHotelByUser' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vHotelByUser">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="CompanyId" />
+            <PropertyRef Name="HotelId" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="CompanyId" Type="int" Nullable="false" />
+          <Property Name="HotelId" Type="int" Nullable="false" />
+          <Property Name="HotelName" Type="nvarchar" MaxLength="180" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'OzHoteles.dbo.vHotelPlan' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vHotelPlan">
+          <Key>
+            <PropertyRef Name="Code" />
+            <PropertyRef Name="HotelId" />
+            <PropertyRef Name="CommissionPercentage" />
+            <PropertyRef Name="Segment" />
+          </Key>
+          <Property Name="Code" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="80" />
+          <Property Name="HotelId" Type="int" Nullable="false" />
+          <Property Name="Currency" Type="nvarchar" MaxLength="3" />
+          <Property Name="Language" Type="int" />
+          <Property Name="CommissionPercentage" Type="int" Nullable="false" />
+          <Property Name="Segment" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="IsLinked" Type="bit" />
+          <Property Name="Active" Type="bit" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'OzHoteles.dbo.vHotelRoom' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vHotelRoom">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="Type" />
+            <PropertyRef Name="HotelId" />
+            
+            
+            
+            
+            
+            
+            
+            <PropertyRef Name="Code" />
+            <PropertyRef Name="Active" />
+            <PropertyRef Name="Language" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Code" Type="nvarchar" MaxLength="4" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="80" Nullable="false" />
+          <Property Name="Type" Type="int" Nullable="false" />
+          <Property Name="HotelId" Type="int" Nullable="false" />
+          <Property Name="TotalRooms" Type="int" Nullable="false" />
+          <Property Name="MaxOccupancy" Type="tinyint" Nullable="false" />
+          <Property Name="ExtraOccupancyAllowed" Type="tinyint" Nullable="false" />
+          <Property Name="MaxAdultsOccupancy" Type="tinyint" Nullable="false" />
+          <Property Name="MinAdultsOccupancy" Type="tinyint" Nullable="false" />
+          <Property Name="MaxChildrenOccupancy" Type="tinyint" Nullable="false" />
+          <Property Name="JuniorsAllowed" Type="bit" />
+          <Property Name="Order" Type="smallint" Nullable="false" />
+          <Property Name="IsLinked" Type="bit" />
+          <Property Name="ParentRoomId" Type="int" />
+          <Property Name="ParenteRoomCode" Type="nvarchar" MaxLength="4" />
+          <Property Name="Factor" Type="smallmoney" />
+          <Property Name="Offset" Type="smallmoney" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="Language" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'OzHoteles.dbo.vPermissions' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vPermissions">
+          <Key>
+            <PropertyRef Name="userId" />
+          </Key>
+          <Property Name="showCreditCard" Type="bit" />
+          <Property Name="userId" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'OzHoteles.dbo.vReservation' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vReservation">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="ConfirmNumber" />
+            <PropertyRef Name="ReservationDate" />
+            <PropertyRef Name="CheckIn" />
+            <PropertyRef Name="CheckOut" />
+            <PropertyRef Name="Status" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="ConfirmNumber" Type="nvarchar" MaxLength="24" Nullable="false" />
+          <Property Name="HotelId" Type="int" />
+          <Property Name="Hotel" Type="nvarchar" MaxLength="180" />
+          <Property Name="ReservationDate" Type="smalldatetime" Nullable="false" />
+          <Property Name="CheckIn" Type="smalldatetime" Nullable="false" />
+          <Property Name="CheckOut" Type="smalldatetime" Nullable="false" />
+          <Property Name="Client" Type="nvarchar" MaxLength="161" />
+          <Property Name="Status" Type="tinyint" Nullable="false" />
+          <Property Name="RoomCount" Type="int" />
+          <Property Name="CompanyId" Type="int" />
+          <Property Name="Source" Type="nvarchar" MaxLength="4" />
+          <Property Name="Portal" Type="nvarchar" MaxLength="80" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'OzHoteles.dbo.vReservationDetails' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vReservationDetails">
+          <Key>
+            <PropertyRef Name="city" />
+            <PropertyRef Name="country" />
+            <PropertyRef Name="status" />
+            <PropertyRef Name="reservationDate" />
+            <PropertyRef Name="checkIn" />
+            <PropertyRef Name="checkOut" />
+            <PropertyRef Name="reservationId" />
+            <PropertyRef Name="total" />
+            <PropertyRef Name="tax" />
+            <PropertyRef Name="depositAmount" />
+            <PropertyRef Name="provider" />
+            <PropertyRef Name="rp_cancellationPolicies" />
+            <PropertyRef Name="rp_guaranteePolicies" />
+            <PropertyRef Name="rp_creditcardPolicies" />
+            <PropertyRef Name="h_cancellationPolicies" />
+            <PropertyRef Name="h_guaranteePolicies" />
+            <PropertyRef Name="h_creditcardPolicies" />
+            <PropertyRef Name="companyId" />
+          </Key>
+          <Property Name="hotelId" Type="int" />
+          <Property Name="hotelName" Type="nvarchar" MaxLength="180" />
+          <Property Name="address" Type="nvarchar" MaxLength="120" />
+          <Property Name="city" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="country" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="status" Type="tinyint" Nullable="false" />
+          <Property Name="accessCode" Type="nvarchar" MaxLength="20" />
+          <Property Name="reservationDate" Type="smalldatetime" Nullable="false" />
+          <Property Name="checkIn" Type="smalldatetime" Nullable="false" />
+          <Property Name="checkOut" Type="smalldatetime" Nullable="false" />
+          <Property Name="source" Type="nvarchar" MaxLength="4" />
+          <Property Name="Portal" Type="nvarchar" MaxLength="80" />
+          <Property Name="reservationId" Type="int" Nullable="false" />
+          <Property Name="cancellationNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="cancellationReason" Type="nvarchar" MaxLength="250" />
+          <Property Name="reservationIdXProvider" Type="nvarchar" MaxLength="50" />
+          <Property Name="total" Type="money" Nullable="false" />
+          <Property Name="totalNetRate" Type="money" />
+          <Property Name="includesTax" Type="bit" />
+          <Property Name="tax" Type="smallmoney" Nullable="false" />
+          <Property Name="currency" Type="nvarchar" MaxLength="3" />
+          <Property Name="IsNetRateUV" Type="bit" />
+          <Property Name="customerName" Type="nvarchar" MaxLength="80" />
+          <Property Name="customerLastName" Type="nvarchar" MaxLength="80" />
+          <Property Name="customerEmail" Type="nvarchar" MaxLength="80" />
+          <Property Name="customerPhone" Type="nvarchar" MaxLength="38" />
+          <Property Name="paymentType" Type="int" />
+          <Property Name="onlinePaymentMethod" Type="varchar" MaxLength="9" />
+          <Property Name="authorizationNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="cardNumber" Type="ntext" />
+          <Property Name="cardExpMonth" Type="nvarchar" MaxLength="2" />
+          <Property Name="cardExpYear" Type="nvarchar" MaxLength="4" />
+          <Property Name="cardCvv" Type="ntext" />
+          <Property Name="cardCustomerName" Type="nvarchar" MaxLength="80" />
+          <Property Name="depositAmount" Type="money" Nullable="false" />
+          <Property Name="depositCurrency" Type="nvarchar" MaxLength="3" />
+          <Property Name="depositReference" Type="nvarchar" MaxLength="20" />
+          <Property Name="provider" Type="int" Nullable="false" />
+          <Property Name="rp_cancellationPolicies" Type="nvarchar" MaxLength="4000" Nullable="false" />
+          <Property Name="rp_guaranteePolicies" Type="nvarchar" MaxLength="4000" Nullable="false" />
+          <Property Name="rp_creditcardPolicies" Type="nvarchar" MaxLength="4000" Nullable="false" />
+          <Property Name="h_cancellationPolicies" Type="nvarchar" MaxLength="4000" Nullable="false" />
+          <Property Name="h_guaranteePolicies" Type="nvarchar" MaxLength="4000" Nullable="false" />
+          <Property Name="h_creditcardPolicies" Type="nvarchar" MaxLength="4000" Nullable="false" />
+          <Property Name="pmsReservationNumber" Type="nvarchar" MaxLength="500" />
+          <Property Name="pmsStatus" Type="bit" />
+          <Property Name="pmsAction" Type="char" MaxLength="2" />
+          <Property Name="companyId" Type="int" Nullable="false" />
+          <Property Name="hotelEmail" Type="nvarchar" MaxLength="240" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'OzHoteles.dbo.vReservationRoomDetails' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vReservationRoomDetails">
+          <Key>
+            <PropertyRef Name="reservationId" />
+            <PropertyRef Name="roomPriceId" />
+            <PropertyRef Name="roomPreferences" />
+            <PropertyRef Name="adults" />
+            <PropertyRef Name="childrens" />
+            <PropertyRef Name="ageChildren" />
+          </Key>
+          <Property Name="roomTypeId" Type="int" />
+          <Property Name="reservationId" Type="int" Nullable="false" />
+          <Property Name="roomPriceId" Type="int" Nullable="false" />
+          <Property Name="roomName" Type="nvarchar" MaxLength="80" />
+          <Property Name="roomCode" Type="nvarchar" MaxLength="4" />
+          <Property Name="roomDescription" Type="nvarchar(max)" />
+          <Property Name="roomPreferences" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="customerName" Type="nvarchar" MaxLength="40" />
+          <Property Name="customerLastName" Type="nvarchar" MaxLength="40" />
+          <Property Name="adults" Type="tinyint" Nullable="false" />
+          <Property Name="extraAdults" Type="tinyint" />
+          <Property Name="childrens" Type="tinyint" Nullable="false" />
+          <Property Name="extraChildrens" Type="tinyint" />
+          <Property Name="ageChildren" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="roomCheckIn" Type="smalldatetime" />
+          <Property Name="roomCheckOut" Type="smalldatetime" />
+          <Property Name="ratePlan" Type="nvarchar" MaxLength="80" />
+          <Property Name="rateCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="currency" Type="nvarchar" MaxLength="3" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'OzHoteles.dbo.VReservationRoomPriceDetails' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="VReservationRoomPriceDetails">
+          <Key>
+            <PropertyRef Name="roomPriceId" />
+            <PropertyRef Name="price" />
+            <PropertyRef Name="extraPrice" />
+            <PropertyRef Name="checkIn" />
+            <PropertyRef Name="checkOut" />
+          </Key>
+          <Property Name="roomPriceId" Type="int" Nullable="false" />
+          <Property Name="price" Type="smallmoney" Nullable="false" />
+          <Property Name="extraPrice" Type="smallmoney" Nullable="false" />
+          <Property Name="checkIn" Type="smalldatetime" Nullable="false" />
+          <Property Name="checkOut" Type="smalldatetime" Nullable="false" />
+          <Property Name="currency" Type="nvarchar" MaxLength="3" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vRoomInventory">
+          <Key>
+            <PropertyRef Name="Date" />
+            <PropertyRef Name="RoomId" />
+            <PropertyRef Name="FullInventory" />
+            <PropertyRef Name="HotelId" />
+          </Key>
+          <Property Name="Date" Type="smalldatetime" Nullable="false" />
+          <Property Name="RoomId" Type="int" Nullable="false" />
+          <Property Name="HotelId" Type="int" Nullable="false" />
+          <Property Name="FullInventory" Type="smallint" Nullable="false" />
+          <Property Name="Reserved" Type="int" />
+          <Property Name="Available" Type="int" />
+        </EntityType>
+        <Association Name="FK_Diccionario_Indice1">
+          <End Role="Indice" Type="Self.Indice" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Diccionario" Type="Self.Diccionario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Indice">
+              <PropertyRef Name="idDiccionario" />
+            </Principal>
+            <Dependent Role="Diccionario">
+              <PropertyRef Name="IdDiccionario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RatesPlan_Hoteles">
+          <End Role="Hoteles" Type="Self.Hoteles" Multiplicity="1" />
+          <End Role="RatesPlan" Type="Self.RatesPlan" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Hoteles">
+              <PropertyRef Name="idHotel" />
+            </Principal>
+            <Dependent Role="RatesPlan">
+              <PropertyRef Name="IdHotel" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Tarifas_Tarifas_Planes_FK1">
+          <End Role="Tarifas" Type="Self.Tarifas" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="TarifasRestricciones" Type="Self.TarifasRestricciones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tarifas">
+              <PropertyRef Name="idTarifa" />
+            </Principal>
+            <Dependent Role="TarifasRestricciones">
+              <PropertyRef Name="idTarifa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="spModificarReservacionByid" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idReservacion" Type="int" Mode="In" />
+          <Parameter Name="NombreCL" Type="nvarchar" Mode="In" />
+          <Parameter Name="ApellidoCL" Type="nvarchar" Mode="In" />
+          <Parameter Name="Total" Type="money" Mode="In" />
+          <Parameter Name="TotalNR" Type="money" Mode="In" />
+          <Parameter Name="CheckIn" Type="smalldatetime" Mode="In" />
+          <Parameter Name="CheckOut" Type="smalldatetime" Mode="In" />
+        </Function>
+        <Function Name="spReservationCancel" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idReservacion" Type="int" Mode="In" />
+          <Parameter Name="NoConfCancelGalileo" Type="nvarchar" Mode="In" />
+          <Parameter Name="NoCancelacion" Type="nvarchar" Mode="In" />
+          <Parameter Name="TxCode" Type="nvarchar" Mode="In" />
+          <Parameter Name="StatusConf" Type="bit" Mode="In" />
+          <Parameter Name="SystemCode" Type="nvarchar" Mode="In" />
+          <Parameter Name="TravelAgencyName" Type="nvarchar" Mode="In" />
+          <Parameter Name="Voucher" Type="nvarchar" Mode="In" />
+          <Parameter Name="WizcomPassOn" Type="nvarchar" Mode="In" />
+          <Parameter Name="WizcomSequenceNumber" Type="nvarchar" Mode="In" />
+          <Parameter Name="MotivoCancelacion" Type="nvarchar" Mode="In" />
+          <Parameter Name="CancelWithError" Type="bit" Mode="In" />
+          <Parameter Name="SessionId" Type="nvarchar" Mode="In" />
+          <Parameter Name="iduser" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="ModelsStoreContainer">
+          <EntitySet Name="ContratosNR" EntityType="Self.ContratosNR" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Diccionario" EntityType="Self.Diccionario" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Hoteles" EntityType="Self.Hoteles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Indice" EntityType="Self.Indice" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RatesPlan" EntityType="Self.RatesPlan" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tarifas" EntityType="Self.Tarifas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TarifasRestricciones" EntityType="Self.TarifasRestricciones" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="vAdministrator" EntityType="Self.vAdministrator" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vAdministrator].[UserId] AS [UserId], 
+    [vAdministrator].[Type] AS [Type], 
+    [vAdministrator].[Name] AS [Name], 
+    [vAdministrator].[CorpId] AS [CorpId]
+    FROM [dbo].[vAdministrator] AS [vAdministrator]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vDayRateDetail" EntityType="Self.vDayRateDetail" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vDayRateDetail].[Id] AS [Id], 
+    [vDayRateDetail].[RateId] AS [RateId], 
+    [vDayRateDetail].[Adults] AS [Adults], 
+    [vDayRateDetail].[Children] AS [Children], 
+    [vDayRateDetail].[AdultPrice] AS [AdultPrice], 
+    [vDayRateDetail].[AdultExceptionPrice] AS [AdultExceptionPrice], 
+    [vDayRateDetail].[ChildPrice] AS [ChildPrice], 
+    [vDayRateDetail].[ChildExceptionPrice] AS [ChildExceptionPrice], 
+    [vDayRateDetail].[JuniorPrice] AS [JuniorPrice], 
+    [vDayRateDetail].[JuniorExceptionPrice] AS [JuniorExceptionPrice], 
+    [vDayRateDetail].[ExtraAdultPrice] AS [ExtraAdultPrice], 
+    [vDayRateDetail].[ExtraChildPrice] AS [ExtraChildPrice], 
+    [vDayRateDetail].[ExtraJuniorPrice] AS [ExtraJuniorPrice]
+    FROM [dbo].[vDayRateDetail] AS [vDayRateDetail]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vDayRates" EntityType="Self.vDayRates" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vDayRates].[RateId] AS [RateId], 
+    [vDayRates].[HotelId] AS [HotelId], 
+    [vDayRates].[RoomId] AS [RoomId], 
+    [vDayRates].[RatePlanId] AS [RatePlanId], 
+    [vDayRates].[RatePlanName] AS [RatePlanName], 
+    [vDayRates].[StartDate] AS [StartDate], 
+    [vDayRates].[EndDate] AS [EndDate], 
+    [vDayRates].[NoArrivalsMap] AS [NoArrivalsMap], 
+    [vDayRates].[ExceptionMap] AS [ExceptionMap], 
+    [vDayRates].[Occupancy] AS [Occupancy], 
+    [vDayRates].[Price] AS [Price], 
+    [vDayRates].[ExceptionPrice] AS [ExceptionPrice], 
+    [vDayRates].[Discount] AS [Discount], 
+    [vDayRates].[DayDiscount] AS [DayDiscount], 
+    [vDayRates].[DiscountLevel] AS [DiscountLevel], 
+    [vDayRates].[Factor] AS [Factor], 
+    [vDayRates].[Offset] AS [Offset], 
+    [vDayRates].[Currency] AS [Currency], 
+    [vDayRates].[ParentRatePlanId] AS [ParentRatePlanId], 
+    [vDayRates].[IsPromotion] AS [IsPromotion], 
+    [vDayRates].[Language] AS [Language]
+    FROM [dbo].[vDayRates] AS [vDayRates]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vHotelBasicInfo" EntityType="Self.vHotelBasicInfo" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vHotelBasicInfo].[Id] AS [Id], 
+    [vHotelBasicInfo].[CompanyId] AS [CompanyId], 
+    [vHotelBasicInfo].[Name] AS [Name], 
+    [vHotelBasicInfo].[Currency] AS [Currency], 
+    [vHotelBasicInfo].[Tax] AS [Tax], 
+    [vHotelBasicInfo].[TaxIncluded] AS [TaxIncluded], 
+    [vHotelBasicInfo].[CorpId] AS [CorpId], 
+    [vHotelBasicInfo].[Corp] AS [Corp], 
+    [vHotelBasicInfo].[Status] AS [Status]
+    FROM [dbo].[vHotelBasicInfo] AS [vHotelBasicInfo]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vHotelByUser" EntityType="Self.vHotelByUser" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vHotelByUser].[UserId] AS [UserId], 
+    [vHotelByUser].[CompanyId] AS [CompanyId], 
+    [vHotelByUser].[HotelId] AS [HotelId], 
+    [vHotelByUser].[HotelName] AS [HotelName]
+    FROM [dbo].[vHotelByUser] AS [vHotelByUser]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vHotelPlan" EntityType="Self.vHotelPlan" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vHotelPlan].[Code] AS [Code], 
+    [vHotelPlan].[Name] AS [Name], 
+    [vHotelPlan].[HotelId] AS [HotelId], 
+    [vHotelPlan].[Currency] AS [Currency], 
+    [vHotelPlan].[Language] AS [Language], 
+    [vHotelPlan].[CommissionPercentage] AS [CommissionPercentage], 
+    [vHotelPlan].[Segment] AS [Segment], 
+    [vHotelPlan].[IsLinked] AS [IsLinked], 
+    [vHotelPlan].[Active] AS [Active]
+    FROM [dbo].[vHotelPlan] AS [vHotelPlan]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vHotelRoom" EntityType="Self.vHotelRoom" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vHotelRoom].[Id] AS [Id], 
+    [vHotelRoom].[Code] AS [Code], 
+    [vHotelRoom].[Name] AS [Name], 
+    [vHotelRoom].[Type] AS [Type], 
+    [vHotelRoom].[HotelId] AS [HotelId], 
+    [vHotelRoom].[TotalRooms] AS [TotalRooms], 
+    [vHotelRoom].[MaxOccupancy] AS [MaxOccupancy], 
+    [vHotelRoom].[ExtraOccupancyAllowed] AS [ExtraOccupancyAllowed], 
+    [vHotelRoom].[MaxAdultsOccupancy] AS [MaxAdultsOccupancy], 
+    [vHotelRoom].[MinAdultsOccupancy] AS [MinAdultsOccupancy], 
+    [vHotelRoom].[MaxChildrenOccupancy] AS [MaxChildrenOccupancy], 
+    [vHotelRoom].[JuniorsAllowed] AS [JuniorsAllowed], 
+    [vHotelRoom].[Order] AS [Order], 
+    [vHotelRoom].[IsLinked] AS [IsLinked], 
+    [vHotelRoom].[ParentRoomId] AS [ParentRoomId], 
+    [vHotelRoom].[ParenteRoomCode] AS [ParenteRoomCode], 
+    [vHotelRoom].[Factor] AS [Factor], 
+    [vHotelRoom].[Offset] AS [Offset], 
+    [vHotelRoom].[Active] AS [Active], 
+    [vHotelRoom].[Language] AS [Language]
+    FROM [dbo].[vHotelRoom] AS [vHotelRoom]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vPermissions" EntityType="Self.vPermissions" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vPermissions].[showCreditCard] AS [showCreditCard], 
+    [vPermissions].[userId] AS [userId]
+    FROM [dbo].[vPermissions] AS [vPermissions]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vReservation" EntityType="Self.vReservation" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vReservation].[Id] AS [Id], 
+    [vReservation].[ConfirmNumber] AS [ConfirmNumber], 
+    [vReservation].[HotelId] AS [HotelId], 
+    [vReservation].[Hotel] AS [Hotel], 
+    [vReservation].[ReservationDate] AS [ReservationDate], 
+    [vReservation].[CheckIn] AS [CheckIn], 
+    [vReservation].[CheckOut] AS [CheckOut], 
+    [vReservation].[Client] AS [Client], 
+    [vReservation].[Status] AS [Status], 
+    [vReservation].[RoomCount] AS [RoomCount], 
+    [vReservation].[CompanyId] AS [CompanyId], 
+    [vReservation].[Source] AS [Source], 
+    [vReservation].[Portal] AS [Portal]
+    FROM [dbo].[vReservation] AS [vReservation]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vReservationDetails" EntityType="Self.vReservationDetails" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vReservationDetails].[hotelId] AS [hotelId], 
+    [vReservationDetails].[hotelName] AS [hotelName], 
+    [vReservationDetails].[address] AS [address], 
+    [vReservationDetails].[city] AS [city], 
+    [vReservationDetails].[country] AS [country], 
+    [vReservationDetails].[status] AS [status], 
+    [vReservationDetails].[accessCode] AS [accessCode], 
+    [vReservationDetails].[reservationDate] AS [reservationDate], 
+    [vReservationDetails].[checkIn] AS [checkIn], 
+    [vReservationDetails].[checkOut] AS [checkOut], 
+    [vReservationDetails].[source] AS [source], 
+    [vReservationDetails].[Portal] AS [Portal], 
+    [vReservationDetails].[reservationId] AS [reservationId], 
+    [vReservationDetails].[cancellationNumber] AS [cancellationNumber], 
+    [vReservationDetails].[cancellationReason] AS [cancellationReason], 
+    [vReservationDetails].[reservationIdXProvider] AS [reservationIdXProvider], 
+    [vReservationDetails].[total] AS [total], 
+    [vReservationDetails].[totalNetRate] AS [totalNetRate], 
+    [vReservationDetails].[includesTax] AS [includesTax], 
+    [vReservationDetails].[tax] AS [tax], 
+    [vReservationDetails].[currency] AS [currency], 
+    [vReservationDetails].[IsNetRateUV] AS [IsNetRateUV], 
+    [vReservationDetails].[customerName] AS [customerName], 
+    [vReservationDetails].[customerLastName] AS [customerLastName], 
+    [vReservationDetails].[customerEmail] AS [customerEmail], 
+    [vReservationDetails].[customerPhone] AS [customerPhone], 
+    [vReservationDetails].[paymentType] AS [paymentType], 
+    [vReservationDetails].[onlinePaymentMethod] AS [onlinePaymentMethod], 
+    [vReservationDetails].[authorizationNumber] AS [authorizationNumber], 
+    [vReservationDetails].[cardNumber] AS [cardNumber], 
+    [vReservationDetails].[cardExpMonth] AS [cardExpMonth], 
+    [vReservationDetails].[cardExpYear] AS [cardExpYear], 
+    [vReservationDetails].[cardCvv] AS [cardCvv], 
+    [vReservationDetails].[cardCustomerName] AS [cardCustomerName], 
+    [vReservationDetails].[depositAmount] AS [depositAmount], 
+    [vReservationDetails].[depositCurrency] AS [depositCurrency], 
+    [vReservationDetails].[depositReference] AS [depositReference], 
+    [vReservationDetails].[provider] AS [provider], 
+    [vReservationDetails].[rp_cancellationPolicies] AS [rp_cancellationPolicies], 
+    [vReservationDetails].[rp_guaranteePolicies] AS [rp_guaranteePolicies], 
+    [vReservationDetails].[rp_creditcardPolicies] AS [rp_creditcardPolicies], 
+    [vReservationDetails].[h_cancellationPolicies] AS [h_cancellationPolicies], 
+    [vReservationDetails].[h_guaranteePolicies] AS [h_guaranteePolicies], 
+    [vReservationDetails].[h_creditcardPolicies] AS [h_creditcardPolicies], 
+    [vReservationDetails].[pmsReservationNumber] AS [pmsReservationNumber], 
+    [vReservationDetails].[pmsStatus] AS [pmsStatus], 
+    [vReservationDetails].[pmsAction] AS [pmsAction], 
+    [vReservationDetails].[companyId] AS [companyId], 
+    [vReservationDetails].[hotelEmail] AS [hotelEmail]
+    FROM [dbo].[vReservationDetails] AS [vReservationDetails]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vReservationRoomDetails" EntityType="Self.vReservationRoomDetails" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vReservationRoomDetails].[roomTypeId] AS [roomTypeId], 
+    [vReservationRoomDetails].[reservationId] AS [reservationId], 
+    [vReservationRoomDetails].[roomPriceId] AS [roomPriceId], 
+    [vReservationRoomDetails].[roomName] AS [roomName], 
+    [vReservationRoomDetails].[roomCode] AS [roomCode], 
+    [vReservationRoomDetails].[roomDescription] AS [roomDescription], 
+    [vReservationRoomDetails].[roomPreferences] AS [roomPreferences], 
+    [vReservationRoomDetails].[customerName] AS [customerName], 
+    [vReservationRoomDetails].[customerLastName] AS [customerLastName], 
+    [vReservationRoomDetails].[adults] AS [adults], 
+    [vReservationRoomDetails].[extraAdults] AS [extraAdults], 
+    [vReservationRoomDetails].[childrens] AS [childrens], 
+    [vReservationRoomDetails].[extraChildrens] AS [extraChildrens], 
+    [vReservationRoomDetails].[ageChildren] AS [ageChildren], 
+    [vReservationRoomDetails].[roomCheckIn] AS [roomCheckIn], 
+    [vReservationRoomDetails].[roomCheckOut] AS [roomCheckOut], 
+    [vReservationRoomDetails].[ratePlan] AS [ratePlan], 
+    [vReservationRoomDetails].[rateCode] AS [rateCode], 
+    [vReservationRoomDetails].[currency] AS [currency]
+    FROM [dbo].[vReservationRoomDetails] AS [vReservationRoomDetails]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="VReservationRoomPriceDetails" EntityType="Self.VReservationRoomPriceDetails" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [VReservationRoomPriceDetails].[roomPriceId] AS [roomPriceId], 
+    [VReservationRoomPriceDetails].[price] AS [price], 
+    [VReservationRoomPriceDetails].[extraPrice] AS [extraPrice], 
+    [VReservationRoomPriceDetails].[checkIn] AS [checkIn], 
+    [VReservationRoomPriceDetails].[checkOut] AS [checkOut], 
+    [VReservationRoomPriceDetails].[currency] AS [currency]
+    FROM [dbo].[VReservationRoomPriceDetails] AS [VReservationRoomPriceDetails]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vRoomInventory" EntityType="Self.vRoomInventory" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vRoomInventory].[Date] AS [Date], 
+    [vRoomInventory].[RoomId] AS [RoomId], 
+    [vRoomInventory].[HotelId] AS [HotelId], 
+    [vRoomInventory].[FullInventory] AS [FullInventory], 
+    [vRoomInventory].[Reserved] AS [Reserved], 
+    [vRoomInventory].[Available] AS [Available]
+    FROM [dbo].[vRoomInventory] AS [vRoomInventory]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_Diccionario_Indice1" Association="Self.FK_Diccionario_Indice1">
+            <End Role="Indice" EntitySet="Indice" />
+            <End Role="Diccionario" EntitySet="Diccionario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RatesPlan_Hoteles" Association="Self.FK_RatesPlan_Hoteles">
+            <End Role="Hoteles" EntitySet="Hoteles" />
+            <End Role="RatesPlan" EntitySet="RatesPlan" />
+          </AssociationSet>
+          <AssociationSet Name="Tarifas_Tarifas_Planes_FK1" Association="Self.Tarifas_Tarifas_Planes_FK1">
+            <End Role="Tarifas" EntitySet="Tarifas" />
+            <End Role="TarifasRestricciones" EntitySet="TarifasRestricciones" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Models" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="OzHotelesEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="RatesPlan" EntityType="Models.RatesPlan" />
+          <EntitySet Name="Tarifas" EntityType="Models.Tarifas" />
+          <EntitySet Name="TarifasRestricciones" EntityType="Models.TarifasRestricciones" />
+          <AssociationSet Name="Tarifas_Tarifas_Planes_FK1" Association="Models.Tarifas_Tarifas_Planes_FK1">
+            <End Role="Tarifas" EntitySet="Tarifas" />
+            <End Role="TarifasRestricciones" EntitySet="TarifasRestricciones" />
+          </AssociationSet>
+          <EntitySet Name="Diccionario" EntityType="Models.Diccionario" />
+          <EntitySet Name="Indice" EntityType="Models.Indice" />
+          <AssociationSet Name="FK_Diccionario_Indice1" Association="Models.FK_Diccionario_Indice1">
+            <End Role="Indice" EntitySet="Indice" />
+            <End Role="Diccionario" EntitySet="Diccionario" />
+          </AssociationSet>
+          <EntitySet Name="vRoomInventory" EntityType="Models.vRoomInventory" />
+          <EntitySet Name="ContratosNR" EntityType="Models.ContratosNR" />
+          <EntitySet Name="vHotelByUser" EntityType="Models.vHotelByUser" />
+          <EntitySet Name="vAdministrator" EntityType="Models.vAdministrator" />
+          <EntitySet Name="vHotelPlan" EntityType="Models.vHotelPlan" />
+          <EntitySet Name="vHotelBasicInfo" EntityType="Models.vHotelBasicInfo" />
+          <EntitySet Name="vDayRateDetail" EntityType="Models.vDayRateDetail" />
+          <EntitySet Name="vHotelRoom" EntityType="Models.vHotelRoom" />
+          <EntitySet Name="vDayRates" EntityType="Models.vDayRates" />
+          <EntitySet Name="vPermissions" EntityType="Models.vPermissions" />
+          <EntitySet Name="VReservationRoomPriceDetails" EntityType="Models.VReservationRoomPriceDetails" />
+          <FunctionImport Name="spReservationCancel">
+            <Parameter Name="idReservacion" Mode="In" Type="Int32" />
+            <Parameter Name="NoConfCancelGalileo" Mode="In" Type="String" />
+            <Parameter Name="NoCancelacion" Mode="In" Type="String" />
+            <Parameter Name="TxCode" Mode="In" Type="String" />
+            <Parameter Name="StatusConf" Mode="In" Type="Boolean" />
+            <Parameter Name="SystemCode" Mode="In" Type="String" />
+            <Parameter Name="TravelAgencyName" Mode="In" Type="String" />
+            <Parameter Name="Voucher" Mode="In" Type="String" />
+            <Parameter Name="WizcomPassOn" Mode="In" Type="String" />
+            <Parameter Name="WizcomSequenceNumber" Mode="In" Type="String" />
+            <Parameter Name="MotivoCancelacion" Mode="In" Type="String" />
+            <Parameter Name="CancelWithError" Mode="In" Type="Boolean" />
+            <Parameter Name="SessionId" Mode="In" Type="String" />
+            <Parameter Name="iduser" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="Hoteles" EntityType="Models.Hoteles" />
+          <AssociationSet Name="FK_RatesPlan_Hoteles" Association="Models.FK_RatesPlan_Hoteles">
+            <End Role="Hoteles" EntitySet="Hoteles" />
+            <End Role="RatesPlan" EntitySet="RatesPlan" />
+          </AssociationSet>
+          <FunctionImport Name="spModificarReservacionByid">
+            <Parameter Name="idReservacion" Mode="In" Type="Int32" />
+            <Parameter Name="NombreCL" Mode="In" Type="String" />
+            <Parameter Name="ApellidoCL" Mode="In" Type="String" />
+            <Parameter Name="Total" Mode="In" Type="Decimal" />
+            <Parameter Name="TotalNR" Mode="In" Type="Decimal" />
+            <Parameter Name="CheckIn" Mode="In" Type="DateTime" />
+            <Parameter Name="CheckOut" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <EntitySet Name="vReservation" EntityType="Models.vReservation" />
+          <EntitySet Name="vReservationDetails" EntityType="Models.vReservationDetails" />
+          <EntitySet Name="vReservationRoomDetails" EntityType="Models.vReservationRoomDetails" />
+        </EntityContainer>
+        <EntityType Name="RatesPlan">
+          <Key>
+            <PropertyRef Name="idRatePlan" />
+            <PropertyRef Name="IdHotel" />
+          </Key>
+          <Property Name="idRatePlan" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="400" FixedLength="false" Unicode="true" />
+          <Property Name="IdHotel" Type="Int32" Nullable="false" />
+          <Property Name="Segment" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="IdDictionaryDescription" Type="Int32" />
+          <Property Name="AccessCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="CorporateDisscount" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="IdHotelPlan" Type="Int32" />
+          <Property Name="SegmentRacPrinc" Type="Boolean" />
+          <Property Name="idRule" Type="Int32" />
+          <Property Name="Name" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="RateCCT" Type="Boolean" />
+          <Property Name="QtyRooms" Type="Int32" />
+          <Property Name="RateGDS" Type="Boolean" />
+          <Property Name="RatePortal" Type="Boolean" />
+          <Property Name="RateUnip" Type="Boolean" />
+          <Property Name="IdDiccShortDesc" Type="Int32" />
+          <Property Name="codigotarifa" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DescPromotion" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="DaysFree" Type="Int16" />
+          <Property Name="DepositType" Type="Int16" />
+          <Property Name="RateADS" Type="Boolean" />
+          <Property Name="gdsApply" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="orden" Type="Int32" />
+          <Property Name="ComGDS" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="ComPortal" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="ComOnePage" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="ComADS" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="idContrado" Type="Int32" />
+          <Property Name="idContrato" Type="Int32" />
+          <Property Name="RateIDS" Type="Boolean" />
+          <Property Name="idMoneda" Type="Int32" />
+          <Property Name="WaitListAvailable" Type="Boolean" />
+          <Property Name="idDiccPromoDesc" Type="Int32" />
+          <Property Name="Deleted" Type="Boolean" />
+          <Property Name="RatePlanRac" Type="Boolean" />
+          <Property Name="hotelPayment" Type="Boolean" />
+          <Property Name="tipoPago" Type="Int32" />
+          <Property Name="IsPromo" Type="Boolean" />
+          <Property Name="TipoDescuento" Type="Int16" />
+          <Property Name="DaysFreeType" Type="Boolean" />
+          <Property Name="DiscountLevel" Type="Int32" />
+          <NavigationProperty Name="Hoteles" Relationship="Models.FK_RatesPlan_Hoteles" FromRole="RatesPlan" ToRole="Hoteles" />
+        </EntityType>
+        <EntityType Name="Tarifas">
+          <Key>
+            <PropertyRef Name="idTarifa" />
+          </Key>
+          <Property Name="idTarifa" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idTipoHabitacion_Hotel" Type="Int32" Nullable="false" />
+          <Property Name="FechaInicia" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="FechaFinaliza" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Precio" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="PrecioExtraAdulto" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="PrecioExtraNinio" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="idHotelPlan" Type="Int32" />
+          <Property Name="TipoTarifa" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="CodigoTarifa" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
+          <Property Name="CorporateDiscount" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AccessCode" Type="String" MaxLength="14" FixedLength="false" Unicode="true" />
+          <Property Name="Excepciones" Type="String" MaxLength="7" FixedLength="false" Unicode="true" />
+          <Property Name="AdvBooking" Type="Byte" />
+          <Property Name="MaxDias" Type="Byte" />
+          <Property Name="MinDias" Type="Byte" />
+          <Property Name="NoArrivos" Type="String" MaxLength="7" FixedLength="true" Unicode="false" />
+          <Property Name="GuarDep" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="idrateplan" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="NiniosRate" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="RateRulesDefault" Type="Boolean" />
+          <Property Name="PackageType" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="PrecioExtraAdultoNR" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="PrecioExtraNinioNR" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="PrecioNR" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="NiniosRateNR" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="DescPromotion" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="BookingWindowStart" Type="DateTime" Precision="3" />
+          <Property Name="BookingWindowEnd" Type="DateTime" Precision="3" />
+          <Property Name="Personas" Type="Byte" />
+          <Property Name="PersonasExtras" Type="Byte" />
+          <Property Name="MinAdultos" Type="Byte" />
+          <Property Name="MaxAdultos" Type="Byte" />
+          <Property Name="MaxNinios" Type="Byte" />
+          <Property Name="PrecioAdolescente" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="PrecioAdolescenteNR" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="PrecioAdolescenteExtra" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="PrecioAdolescenteExtraNR" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="idDiccPromoDesc" Type="Int32" />
+          <Property Name="waitListAvailable" Type="Boolean" />
+          <Property Name="IsRateExtension" Type="Boolean" />
+          <Property Name="MaxAdvBooking" Type="Int32" />
+          <NavigationProperty Name="TarifasRestricciones" Relationship="Models.Tarifas_Tarifas_Planes_FK1" FromRole="Tarifas" ToRole="TarifasRestricciones" />
+        </EntityType>
+        <EntityType Name="TarifasRestricciones">
+          <Key>
+            <PropertyRef Name="idRestriccion" />
+          </Key>
+          <Property Name="idRestriccion" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idTarifa" Type="Int32" Nullable="false" />
+          <Property Name="TarifaAdulto" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="TarifaNinio" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="Adultos" Type="Int32" Nullable="false" />
+          <Property Name="Ninios" Type="Int32" Nullable="false" />
+          <Property Name="TarifaAdultoExc" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TarifaNinioExc" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TarifaAdultoNR" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TarifaNinioNR" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TarifaAdultoExcNR" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TarifaNinioExcNR" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TarifaAdolescente" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TarifaAdolescenteExc" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TarifaAdolescenteNR" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TarifaAdolescenteExcNR" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Applyday" Type="String" MaxLength="7" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Tarifas" Relationship="Models.Tarifas_Tarifas_Planes_FK1" FromRole="TarifasRestricciones" ToRole="Tarifas" />
+        </EntityType>
+        <Association Name="Tarifas_Tarifas_Planes_FK1">
+          <End Type="Models.Tarifas" Role="Tarifas" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Models.TarifasRestricciones" Role="TarifasRestricciones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tarifas">
+              <PropertyRef Name="idTarifa" />
+            </Principal>
+            <Dependent Role="TarifasRestricciones">
+              <PropertyRef Name="idTarifa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Diccionario">
+          <Key>
+            <PropertyRef Name="idRepl1" />
+          </Key>
+          <Property Name="IdDiccionario" Type="Int32" Nullable="false" />
+          <Property Name="IdIdioma" Type="Int32" Nullable="false" />
+          <Property Name="Texto" Type="String" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="idRepl1" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Indice" Relationship="Models.FK_Diccionario_Indice1" FromRole="Diccionario" ToRole="Indice" />
+        </EntityType>
+        <EntityType Name="Indice">
+          <Key>
+            <PropertyRef Name="idDiccionario" />
+          </Key>
+          <Property Name="idDiccionario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Eliminado" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Diccionario" Relationship="Models.FK_Diccionario_Indice1" FromRole="Indice" ToRole="Diccionario" />
+        </EntityType>
+        <Association Name="FK_Diccionario_Indice1">
+          <End Type="Models.Indice" Role="Indice" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Models.Diccionario" Role="Diccionario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Indice">
+              <PropertyRef Name="idDiccionario" />
+            </Principal>
+            <Dependent Role="Diccionario">
+              <PropertyRef Name="IdDiccionario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="vRoomInventory">
+          <Key>
+            <PropertyRef Name="Date" />
+            <PropertyRef Name="RoomId" />
+            <PropertyRef Name="HotelId" />
+            <PropertyRef Name="FullInventory" />
+          </Key>
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="RoomId" Type="Int32" Nullable="false" />
+          <Property Name="HotelId" Type="Int32" Nullable="false" />
+          <Property Name="FullInventory" Type="Int16" Nullable="false" />
+          <Property Name="Reserved" Type="Int32" />
+          <Property Name="Available" Type="Int32" />
+        </EntityType>
+        <EntityType Name="ContratosNR">
+          <Key>
+            <PropertyRef Name="idContrato" />
+          </Key>
+          <Property Name="idContrato" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="PorcentajeMax" Type="Int32" />
+          <Property Name="PorcentajeMin" Type="Int32" />
+          <Property Name="idHotel" Type="Int32" />
+        </EntityType>
+        <EntityType Name="vHotelByUser">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="CompanyId" />
+            <PropertyRef Name="HotelId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="CompanyId" Type="Int32" Nullable="false" />
+          <Property Name="HotelId" Type="Int32" Nullable="false" />
+          <Property Name="HotelName" Type="String" MaxLength="180" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="vAdministrator">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="Type" />
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="Type" Type="Byte" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="CorpId" Type="Int32" />
+        </EntityType>
+        <EntityType Name="vHotelPlan">
+          <Key>
+            <PropertyRef Name="Code" />
+            <PropertyRef Name="HotelId" />
+            <PropertyRef Name="CommissionPercentage" />
+            <PropertyRef Name="Segment" />
+          </Key>
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="HotelId" Type="Int32" Nullable="false" />
+          <Property Name="Currency" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="Language" Type="Int32" />
+          <Property Name="CommissionPercentage" Type="Int32" Nullable="false" />
+          <Property Name="Segment" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="IsLinked" Type="Boolean" />
+          <Property Name="Active" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="vHotelBasicInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="CompanyId" />
+            <PropertyRef Name="TaxIncluded" />
+            <PropertyRef Name="Status" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="CompanyId" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="180" FixedLength="false" Unicode="true" />
+          <Property Name="Currency" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="Tax" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="TaxIncluded" Type="Boolean" Nullable="false" />
+          <Property Name="CorpId" Type="Int32" />
+          <Property Name="Corp" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="Byte" Nullable="false" />
+        </EntityType>
+        <EntityType Name="vDayRateDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="RateId" />
+            <PropertyRef Name="Adults" />
+            <PropertyRef Name="Children" />
+            <PropertyRef Name="AdultPrice" />
+            <PropertyRef Name="ChildPrice" />
+            <PropertyRef Name="ExtraAdultPrice" />
+            <PropertyRef Name="ExtraChildPrice" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="RateId" Type="Int32" Nullable="false" />
+          <Property Name="Adults" Type="Int32" Nullable="false" />
+          <Property Name="Children" Type="Int32" Nullable="false" />
+          <Property Name="AdultPrice" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="AdultExceptionPrice" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="ChildPrice" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="ChildExceptionPrice" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="JuniorPrice" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="JuniorExceptionPrice" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="ExtraAdultPrice" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="ExtraChildPrice" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="ExtraJuniorPrice" Type="Decimal" Precision="19" Scale="4" />
+        </EntityType>
+        <EntityType Name="vHotelRoom">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="Type" />
+            <PropertyRef Name="HotelId" />
+            <PropertyRef Name="Code" />
+            <PropertyRef Name="Language" />
+            <PropertyRef Name="Active" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Code" Type="String" MaxLength="4" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="Int32" Nullable="false" />
+          <Property Name="HotelId" Type="Int32" Nullable="false" />
+          <Property Name="TotalRooms" Type="Int32" Nullable="false" />
+          <Property Name="MaxOccupancy" Type="Byte" Nullable="false" />
+          <Property Name="ExtraOccupancyAllowed" Type="Byte" Nullable="false" />
+          <Property Name="MaxAdultsOccupancy" Type="Byte" Nullable="false" />
+          <Property Name="MinAdultsOccupancy" Type="Byte" Nullable="false" />
+          <Property Name="MaxChildrenOccupancy" Type="Byte" Nullable="false" />
+          <Property Name="JuniorsAllowed" Type="Boolean" />
+          <Property Name="Order" Type="Int16" Nullable="false" />
+          <Property Name="IsLinked" Type="Boolean" />
+          <Property Name="ParentRoomId" Type="Int32" />
+          <Property Name="ParenteRoomCode" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="Factor" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="Offset" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="Language" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="vDayRates">
+          <Key>
+            <PropertyRef Name="Currency" />
+            <PropertyRef Name="RateId" />
+            <PropertyRef Name="HotelId" />
+            <PropertyRef Name="RoomId" />
+            <PropertyRef Name="RatePlanId" />
+            <PropertyRef Name="StartDate" />
+            <PropertyRef Name="EndDate" />
+            <PropertyRef Name="Language" />
+            <PropertyRef Name="IsPromotion" />
+            <PropertyRef Name="Price" />
+          </Key>
+          <Property Name="RateId" Type="Int32" Nullable="false" />
+          <Property Name="HotelId" Type="Int32" Nullable="false" />
+          <Property Name="RoomId" Type="Int32" Nullable="false" />
+          <Property Name="RatePlanId" Type="String" MaxLength="54" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RatePlanName" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="StartDate" Type="DateTime" Precision="0" Nullable="false" />
+          <Property Name="EndDate" Type="DateTime" Precision="0" Nullable="false" />
+          <Property Name="NoArrivalsMap" Type="String" MaxLength="7" FixedLength="true" Unicode="false" />
+          <Property Name="ExceptionMap" Type="String" MaxLength="7" FixedLength="false" Unicode="true" />
+          <Property Name="Occupancy" Type="Byte" />
+          <Property Name="Price" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="ExceptionPrice" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="Discount" Type="Decimal" Nullable="false" Precision="10" Scale="4" />
+          <Property Name="DayDiscount" Type="Decimal" Nullable="false" Precision="10" Scale="4" />
+          <Property Name="DiscountLevel" Type="Int32" Nullable="false" />
+          <Property Name="Factor" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="Offset" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="Currency" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="ParentRatePlanId" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="IsPromotion" Type="Boolean" Nullable="false" />
+          <Property Name="Language" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="vPermissions">
+          <Key>
+            <PropertyRef Name="userId" />
+          </Key>
+          <Property Name="showCreditCard" Type="Boolean" />
+          <Property Name="userId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="VReservationRoomPriceDetails">
+          <Key>
+            <PropertyRef Name="roomPriceId" />
+            <PropertyRef Name="price" />
+            <PropertyRef Name="extraPrice" />
+            <PropertyRef Name="checkIn" />
+            <PropertyRef Name="checkOut" />
+          </Key>
+          <Property Name="roomPriceId" Type="Int32" Nullable="false" />
+          <Property Name="price" Type="Decimal" Nullable="false" Precision="10" Scale="4" />
+          <Property Name="extraPrice" Type="Decimal" Nullable="false" Precision="10" Scale="4" />
+          <Property Name="checkIn" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="checkOut" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="currency" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Hoteles">
+          <Key>
+            <PropertyRef Name="idHotel" />
+          </Key>
+          <Property Name="idHotel" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idEmpresa" Type="Int32" Nullable="false" />
+          <Property Name="Categoria" Type="Byte" Nullable="false" />
+          <Property Name="CheckIn" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="CheckOut" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="idMoneda" Type="Int32" Nullable="false" />
+          <Property Name="MaxDiasRenta" Type="Byte" Nullable="false" />
+          <Property Name="MaxNumCuartos" Type="Byte" Nullable="false" />
+          <Property Name="MaxNumAdultos" Type="Byte" Nullable="false" />
+          <Property Name="MaxNumNinios" Type="Byte" Nullable="false" />
+          <Property Name="DiasLibres" Type="Byte" Nullable="false" />
+          <Property Name="DiasMinCancelar" Type="Byte" />
+          <Property Name="Impuesto" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="EdadApartirPagaExtra" Type="Byte" Nullable="false" />
+          <Property Name="MaxEdadNinio" Type="Byte" Nullable="false" />
+          <Property Name="idCiudad" Type="Int32" />
+          <Property Name="idfranquicia" Type="Int32" />
+          <Property Name="CiudadCercana" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="AeropuertoCercano" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="CityTax" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="OccupancyTax" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="ServiceCharge" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="ComisionAgentes" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="PoliticaCancelacion" Type="String" MaxLength="400" FixedLength="false" Unicode="true" />
+          <Property Name="FechaApertura" Type="DateTime" Precision="0" />
+          <Property Name="FechaInicioRes" Type="DateTime" Precision="0" />
+          <Property Name="EmailReservas" Type="String" MaxLength="240" FixedLength="false" Unicode="true" />
+          <Property Name="PropertyNumber" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
+          <Property Name="GetRates" Type="Boolean" />
+          <Property Name="ChainCode" Type="String" MaxLength="2" FixedLength="true" Unicode="false" />
+          <Property Name="DepartureRestricted" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="EndDate" Type="DateTime" Precision="0" />
+          <Property Name="StartDate" Type="DateTime" Precision="0" />
+          <Property Name="NotApplyRestrictedDays" Type="String" MaxLength="7" FixedLength="true" Unicode="false" />
+          <Property Name="HurdleRate" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="CancelPrioridad" Type="Int16" />
+          <Property Name="MinLengthStay" Type="Int16" />
+          <Property Name="StatusAvailability" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="defaultComission" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="defaultComissionVal" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="PGalileo" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
+          <Property Name="PAmadeus" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
+          <Property Name="PSabre" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
+          <Property Name="PWorldspan" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
+          <Property Name="PlusTax" Type="Boolean" />
+          <Property Name="PoliticaGarantia" Type="String" MaxLength="400" FixedLength="false" Unicode="true" />
+          <Property Name="PoliticaCreditCard" Type="String" MaxLength="400" FixedLength="false" Unicode="true" />
+          <Property Name="ExtraCargos" Type="String" MaxLength="400" FixedLength="false" Unicode="true" />
+          <Property Name="idiomaemail" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="noarrivals" Type="String" MaxLength="7" FixedLength="false" Unicode="true" />
+          <Property Name="CancelPriorHours" Type="Byte" />
+          <Property Name="CancelPriorSpecificT" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="UserPerfil" Type="Int32" />
+          <Property Name="SendFaxReserva" Type="Boolean" />
+          <Property Name="emailComments" Type="String" MaxLength="600" FixedLength="false" Unicode="true" />
+          <Property Name="idDiccemailComments" Type="Int32" />
+          <Property Name="urlWebSite" Type="String" MaxLength="180" FixedLength="false" Unicode="true" />
+          <Property Name="idDiccUrlWebSite" Type="Int32" />
+          <Property Name="AvailOnPortal" Type="Boolean" />
+          <Property Name="AvailOnGDS" Type="Boolean" />
+          <Property Name="AvailOnOnePage" Type="Boolean" />
+          <Property Name="Latitud" Type="Double" />
+          <Property Name="Longitud" Type="Double" />
+          <Property Name="AllowBankDeposit" Type="Boolean" />
+          <Property Name="Emprhotur" Type="Boolean" />
+          <Property Name="AmhmRes" Type="Boolean" />
+          <Property Name="idCorporativo" Type="Int32" />
+          <Property Name="idDiccExtraCargos" Type="Int32" />
+          <Property Name="idDiccPoliticaGarantia" Type="Int32" />
+          <Property Name="idDiccPoliticaCreditCard" Type="Int32" />
+          <Property Name="idDiccPoliticaCancelacionFull" Type="Int32" />
+          <Property Name="idDiccPoliticaCancelacionReview" Type="Int32" />
+          <Property Name="AvailOnADS" Type="Boolean" />
+          <Property Name="EsMoroso" Type="Boolean" />
+          <Property Name="EsPagoCero" Type="Boolean" />
+          <Property Name="AvailOnIDS" Type="Boolean" />
+          <Property Name="MinNumCuartos" Type="Byte" />
+          <Property Name="MinEdadNinio" Type="Byte" />
+          <Property Name="MaxNumOcupacion" Type="Byte" />
+          <Property Name="MinNumOcupacion" Type="Byte" />
+          <Property Name="AllowSpecificPayment" Type="Boolean" />
+          <Property Name="AllowBankDepositCCT" Type="Boolean" />
+          <Property Name="TransbyEmail" Type="Boolean" />
+          <Property Name="maxEdadAdolecente" Type="Byte" />
+          <Property Name="EdadAdolecente" Type="Byte" />
+          <Property Name="AvlOnCorpModule" Type="Boolean" />
+          <Property Name="idcadena" Type="Int32" />
+          <Property Name="FechaConstruccion" Type="Int16" />
+          <Property Name="FechaFundacion" Type="DateTime" Precision="0" />
+          <Property Name="FechaRemodelacion" Type="Int16" />
+          <Property Name="ConfirmacionTelefonica" Type="Int16" />
+          <Property Name="IVA" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="ISH" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="orden" Type="Int32" />
+          <Property Name="SaveCurrencyShown" Type="Boolean" />
+          <Property Name="IsHouse" Type="Boolean" />
+          <Property Name="tipoPago" Type="Int32" />
+          <Property Name="IdOwnerDesc" Type="Int32" />
+          <Property Name="AmaLlaves" Type="Boolean" />
+          <Property Name="CategoriaCasa" Type="Int32" />
+          <Property Name="Banios" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="Area" Type="Int32" />
+          <Property Name="AreaUnidad" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="ApiKey" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="isSingleImgInv" Type="Boolean" />
+          <Property Name="IsPMSPushNotifActive" Type="Boolean" />
+          <NavigationProperty Name="RatesPlan" Relationship="Models.FK_RatesPlan_Hoteles" FromRole="Hoteles" ToRole="RatesPlan" />
+        </EntityType>
+        <Association Name="FK_RatesPlan_Hoteles">
+          <End Type="Models.Hoteles" Role="Hoteles" Multiplicity="1" />
+          <End Type="Models.RatesPlan" Role="RatesPlan" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Hoteles">
+              <PropertyRef Name="idHotel" />
+            </Principal>
+            <Dependent Role="RatesPlan">
+              <PropertyRef Name="IdHotel" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="vReservation">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="ConfirmNumber" />
+            <PropertyRef Name="ReservationDate" />
+            <PropertyRef Name="CheckIn" />
+            <PropertyRef Name="CheckOut" />
+            <PropertyRef Name="Status" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="ConfirmNumber" Type="String" Nullable="false" MaxLength="24" FixedLength="false" Unicode="true" />
+          <Property Name="HotelId" Type="Int32" />
+          <Property Name="Hotel" Type="String" MaxLength="180" FixedLength="false" Unicode="true" />
+          <Property Name="ReservationDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="CheckIn" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="CheckOut" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Client" Type="String" MaxLength="161" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="Byte" Nullable="false" />
+          <Property Name="RoomCount" Type="Int32" />
+          <Property Name="CompanyId" Type="Int32" />
+          <Property Name="Source" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="Portal" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="vReservationDetails">
+          <Key>
+            <PropertyRef Name="city" />
+            <PropertyRef Name="country" />
+            <PropertyRef Name="status" />
+            <PropertyRef Name="reservationDate" />
+            <PropertyRef Name="checkIn" />
+            <PropertyRef Name="checkOut" />
+            <PropertyRef Name="reservationId" />
+            <PropertyRef Name="total" />
+            <PropertyRef Name="tax" />
+            <PropertyRef Name="depositAmount" />
+            <PropertyRef Name="provider" />
+            <PropertyRef Name="rp_cancellationPolicies" />
+            <PropertyRef Name="rp_guaranteePolicies" />
+            <PropertyRef Name="rp_creditcardPolicies" />
+            <PropertyRef Name="h_cancellationPolicies" />
+            <PropertyRef Name="h_guaranteePolicies" />
+            <PropertyRef Name="h_creditcardPolicies" />
+            <PropertyRef Name="companyId" />
+          </Key>
+          <Property Name="hotelId" Type="Int32" />
+          <Property Name="hotelName" Type="String" MaxLength="180" FixedLength="false" Unicode="true" />
+          <Property Name="address" Type="String" MaxLength="120" FixedLength="false" Unicode="true" />
+          <Property Name="city" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="country" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="status" Type="Byte" Nullable="false" />
+          <Property Name="accessCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="reservationDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="checkIn" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="checkOut" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="source" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="Portal" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="reservationId" Type="Int32" Nullable="false" />
+          <Property Name="cancellationNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cancellationReason" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="reservationIdXProvider" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="total" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="totalNetRate" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="includesTax" Type="Boolean" />
+          <Property Name="tax" Type="Decimal" Nullable="false" Precision="10" Scale="4" />
+          <Property Name="currency" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="IsNetRateUV" Type="Boolean" />
+          <Property Name="customerName" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="customerLastName" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="customerEmail" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="customerPhone" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
+          <Property Name="paymentType" Type="Int32" />
+          <Property Name="onlinePaymentMethod" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="authorizationNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cardNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="cardExpMonth" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="cardExpYear" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="cardCvv" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="cardCustomerName" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="depositAmount" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="depositCurrency" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="depositReference" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="provider" Type="Int32" Nullable="false" />
+          <Property Name="rp_cancellationPolicies" Type="String" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="rp_guaranteePolicies" Type="String" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="rp_creditcardPolicies" Type="String" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="h_cancellationPolicies" Type="String" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="h_guaranteePolicies" Type="String" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="h_creditcardPolicies" Type="String" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="pmsReservationNumber" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="pmsStatus" Type="Boolean" />
+          <Property Name="pmsAction" Type="String" MaxLength="2" FixedLength="true" Unicode="false" />
+          <Property Name="companyId" Type="Int32" Nullable="false" />
+          <Property Name="hotelEmail" Type="String" MaxLength="240" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="vReservationRoomDetails">
+          <Key>
+            <PropertyRef Name="reservationId" />
+            <PropertyRef Name="roomPriceId" />
+            <PropertyRef Name="roomPreferences" />
+            <PropertyRef Name="adults" />
+            <PropertyRef Name="childrens" />
+            <PropertyRef Name="ageChildren" />
+          </Key>
+          <Property Name="roomTypeId" Type="Int32" />
+          <Property Name="reservationId" Type="Int32" Nullable="false" />
+          <Property Name="roomPriceId" Type="Int32" Nullable="false" />
+          <Property Name="roomName" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="roomCode" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="roomDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="roomPreferences" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="customerName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="customerLastName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="adults" Type="Byte" Nullable="false" />
+          <Property Name="extraAdults" Type="Byte" />
+          <Property Name="childrens" Type="Byte" Nullable="false" />
+          <Property Name="extraChildrens" Type="Byte" />
+          <Property Name="ageChildren" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="roomCheckIn" Type="DateTime" Precision="0" />
+          <Property Name="roomCheckOut" Type="DateTime" Precision="0" />
+          <Property Name="ratePlan" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="rateCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="currency" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ModelsStoreContainer" CdmEntityContainer="OzHotelesEntities">
+          <EntitySetMapping Name="RatesPlan">
+            <EntityTypeMapping TypeName="Models.RatesPlan">
+              <MappingFragment StoreEntitySet="RatesPlan">
+                <ScalarProperty Name="DiscountLevel" ColumnName="DiscountLevel" />
+                <ScalarProperty Name="DaysFreeType" ColumnName="DaysFreeType" />
+                <ScalarProperty Name="TipoDescuento" ColumnName="TipoDescuento" />
+                <ScalarProperty Name="IsPromo" ColumnName="IsPromo" />
+                <ScalarProperty Name="tipoPago" ColumnName="tipoPago" />
+                <ScalarProperty Name="hotelPayment" ColumnName="hotelPayment" />
+                <ScalarProperty Name="RatePlanRac" ColumnName="RatePlanRac" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="idDiccPromoDesc" ColumnName="idDiccPromoDesc" />
+                <ScalarProperty Name="WaitListAvailable" ColumnName="WaitListAvailable" />
+                <ScalarProperty Name="idMoneda" ColumnName="idMoneda" />
+                <ScalarProperty Name="RateIDS" ColumnName="RateIDS" />
+                <ScalarProperty Name="idContrato" ColumnName="idContrato" />
+                <ScalarProperty Name="idContrado" ColumnName="idContrado" />
+                <ScalarProperty Name="ComADS" ColumnName="ComADS" />
+                <ScalarProperty Name="ComOnePage" ColumnName="ComOnePage" />
+                <ScalarProperty Name="ComPortal" ColumnName="ComPortal" />
+                <ScalarProperty Name="ComGDS" ColumnName="ComGDS" />
+                <ScalarProperty Name="orden" ColumnName="orden" />
+                <ScalarProperty Name="gdsApply" ColumnName="gdsApply" />
+                <ScalarProperty Name="RateADS" ColumnName="RateADS" />
+                <ScalarProperty Name="DepositType" ColumnName="DepositType" />
+                <ScalarProperty Name="DaysFree" ColumnName="DaysFree" />
+                <ScalarProperty Name="DescPromotion" ColumnName="DescPromotion" />
+                <ScalarProperty Name="codigotarifa" ColumnName="codigotarifa" />
+                <ScalarProperty Name="IdDiccShortDesc" ColumnName="IdDiccShortDesc" />
+                <ScalarProperty Name="RateUnip" ColumnName="RateUnip" />
+                <ScalarProperty Name="RatePortal" ColumnName="RatePortal" />
+                <ScalarProperty Name="RateGDS" ColumnName="RateGDS" />
+                <ScalarProperty Name="QtyRooms" ColumnName="QtyRooms" />
+                <ScalarProperty Name="RateCCT" ColumnName="RateCCT" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="idRule" ColumnName="idRule" />
+                <ScalarProperty Name="SegmentRacPrinc" ColumnName="SegmentRacPrinc" />
+                <ScalarProperty Name="IdHotelPlan" ColumnName="IdHotelPlan" />
+                <ScalarProperty Name="CorporateDisscount" ColumnName="CorporateDisscount" />
+                <ScalarProperty Name="AccessCode" ColumnName="AccessCode" />
+                <ScalarProperty Name="IdDictionaryDescription" ColumnName="IdDictionaryDescription" />
+                <ScalarProperty Name="Segment" ColumnName="Segment" />
+                <ScalarProperty Name="IdHotel" ColumnName="IdHotel" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="idRatePlan" ColumnName="idRatePlan" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tarifas">
+            <EntityTypeMapping TypeName="Models.Tarifas">
+              <MappingFragment StoreEntitySet="Tarifas">
+                <ScalarProperty Name="MaxAdvBooking" ColumnName="MaxAdvBooking" />
+                <ScalarProperty Name="IsRateExtension" ColumnName="IsRateExtension" />
+                <ScalarProperty Name="waitListAvailable" ColumnName="waitListAvailable" />
+                <ScalarProperty Name="idDiccPromoDesc" ColumnName="idDiccPromoDesc" />
+                <ScalarProperty Name="PrecioAdolescenteExtraNR" ColumnName="PrecioAdolescenteExtraNR" />
+                <ScalarProperty Name="PrecioAdolescenteExtra" ColumnName="PrecioAdolescenteExtra" />
+                <ScalarProperty Name="PrecioAdolescenteNR" ColumnName="PrecioAdolescenteNR" />
+                <ScalarProperty Name="PrecioAdolescente" ColumnName="PrecioAdolescente" />
+                <ScalarProperty Name="MaxNinios" ColumnName="MaxNinios" />
+                <ScalarProperty Name="MaxAdultos" ColumnName="MaxAdultos" />
+                <ScalarProperty Name="MinAdultos" ColumnName="MinAdultos" />
+                <ScalarProperty Name="PersonasExtras" ColumnName="PersonasExtras" />
+                <ScalarProperty Name="Personas" ColumnName="Personas" />
+                <ScalarProperty Name="BookingWindowEnd" ColumnName="BookingWindowEnd" />
+                <ScalarProperty Name="BookingWindowStart" ColumnName="BookingWindowStart" />
+                <ScalarProperty Name="DescPromotion" ColumnName="DescPromotion" />
+                <ScalarProperty Name="NiniosRateNR" ColumnName="NiniosRateNR" />
+                <ScalarProperty Name="PrecioNR" ColumnName="PrecioNR" />
+                <ScalarProperty Name="PrecioExtraNinioNR" ColumnName="PrecioExtraNinioNR" />
+                <ScalarProperty Name="PrecioExtraAdultoNR" ColumnName="PrecioExtraAdultoNR" />
+                <ScalarProperty Name="PackageType" ColumnName="PackageType" />
+                <ScalarProperty Name="RateRulesDefault" ColumnName="RateRulesDefault" />
+                <ScalarProperty Name="NiniosRate" ColumnName="NiniosRate" />
+                <ScalarProperty Name="idrateplan" ColumnName="idrateplan" />
+                <ScalarProperty Name="GuarDep" ColumnName="GuarDep" />
+                <ScalarProperty Name="NoArrivos" ColumnName="NoArrivos" />
+                <ScalarProperty Name="MinDias" ColumnName="MinDias" />
+                <ScalarProperty Name="MaxDias" ColumnName="MaxDias" />
+                <ScalarProperty Name="AdvBooking" ColumnName="AdvBooking" />
+                <ScalarProperty Name="Excepciones" ColumnName="Excepciones" />
+                <ScalarProperty Name="AccessCode" ColumnName="AccessCode" />
+                <ScalarProperty Name="CorporateDiscount" ColumnName="CorporateDiscount" />
+                <ScalarProperty Name="CodigoTarifa" ColumnName="CodigoTarifa" />
+                <ScalarProperty Name="TipoTarifa" ColumnName="TipoTarifa" />
+                <ScalarProperty Name="idHotelPlan" ColumnName="idHotelPlan" />
+                <ScalarProperty Name="PrecioExtraNinio" ColumnName="PrecioExtraNinio" />
+                <ScalarProperty Name="PrecioExtraAdulto" ColumnName="PrecioExtraAdulto" />
+                <ScalarProperty Name="Precio" ColumnName="Precio" />
+                <ScalarProperty Name="FechaFinaliza" ColumnName="FechaFinaliza" />
+                <ScalarProperty Name="FechaInicia" ColumnName="FechaInicia" />
+                <ScalarProperty Name="idTipoHabitacion_Hotel" ColumnName="idTipoHabitacion_Hotel" />
+                <ScalarProperty Name="idTarifa" ColumnName="idTarifa" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TarifasRestricciones">
+            <EntityTypeMapping TypeName="Models.TarifasRestricciones">
+              <MappingFragment StoreEntitySet="TarifasRestricciones">
+                <ScalarProperty Name="Applyday" ColumnName="Applyday" />
+                <ScalarProperty Name="TarifaAdolescenteExcNR" ColumnName="TarifaAdolescenteExcNR" />
+                <ScalarProperty Name="TarifaAdolescenteNR" ColumnName="TarifaAdolescenteNR" />
+                <ScalarProperty Name="TarifaAdolescenteExc" ColumnName="TarifaAdolescenteExc" />
+                <ScalarProperty Name="TarifaAdolescente" ColumnName="TarifaAdolescente" />
+                <ScalarProperty Name="TarifaNinioExcNR" ColumnName="TarifaNinioExcNR" />
+                <ScalarProperty Name="TarifaAdultoExcNR" ColumnName="TarifaAdultoExcNR" />
+                <ScalarProperty Name="TarifaNinioNR" ColumnName="TarifaNinioNR" />
+                <ScalarProperty Name="TarifaAdultoNR" ColumnName="TarifaAdultoNR" />
+                <ScalarProperty Name="TarifaNinioExc" ColumnName="TarifaNinioExc" />
+                <ScalarProperty Name="TarifaAdultoExc" ColumnName="TarifaAdultoExc" />
+                <ScalarProperty Name="Ninios" ColumnName="Ninios" />
+                <ScalarProperty Name="Adultos" ColumnName="Adultos" />
+                <ScalarProperty Name="TarifaNinio" ColumnName="TarifaNinio" />
+                <ScalarProperty Name="TarifaAdulto" ColumnName="TarifaAdulto" />
+                <ScalarProperty Name="idTarifa" ColumnName="idTarifa" />
+                <ScalarProperty Name="idRestriccion" ColumnName="idRestriccion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Diccionario">
+            <EntityTypeMapping TypeName="Models.Diccionario">
+              <MappingFragment StoreEntitySet="Diccionario">
+                <ScalarProperty Name="idRepl1" ColumnName="idRepl1" />
+                <ScalarProperty Name="Texto" ColumnName="Texto" />
+                <ScalarProperty Name="IdIdioma" ColumnName="IdIdioma" />
+                <ScalarProperty Name="IdDiccionario" ColumnName="IdDiccionario" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Indice">
+            <EntityTypeMapping TypeName="Models.Indice">
+              <MappingFragment StoreEntitySet="Indice">
+                <ScalarProperty Name="Eliminado" ColumnName="Eliminado" />
+                <ScalarProperty Name="idDiccionario" ColumnName="idDiccionario" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vRoomInventory">
+            <EntityTypeMapping TypeName="Models.vRoomInventory">
+              <MappingFragment StoreEntitySet="vRoomInventory">
+                <ScalarProperty Name="Available" ColumnName="Available" />
+                <ScalarProperty Name="Reserved" ColumnName="Reserved" />
+                <ScalarProperty Name="FullInventory" ColumnName="FullInventory" />
+                <ScalarProperty Name="HotelId" ColumnName="HotelId" />
+                <ScalarProperty Name="RoomId" ColumnName="RoomId" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ContratosNR">
+            <EntityTypeMapping TypeName="Models.ContratosNR">
+              <MappingFragment StoreEntitySet="ContratosNR">
+                <ScalarProperty Name="idHotel" ColumnName="idHotel" />
+                <ScalarProperty Name="PorcentajeMin" ColumnName="PorcentajeMin" />
+                <ScalarProperty Name="PorcentajeMax" ColumnName="PorcentajeMax" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="idContrato" ColumnName="idContrato" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vHotelByUser">
+            <EntityTypeMapping TypeName="Models.vHotelByUser">
+              <MappingFragment StoreEntitySet="vHotelByUser">
+                <ScalarProperty Name="HotelName" ColumnName="HotelName" />
+                <ScalarProperty Name="HotelId" ColumnName="HotelId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vAdministrator">
+            <EntityTypeMapping TypeName="Models.vAdministrator">
+              <MappingFragment StoreEntitySet="vAdministrator">
+                <ScalarProperty Name="CorpId" ColumnName="CorpId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vHotelPlan">
+            <EntityTypeMapping TypeName="Models.vHotelPlan">
+              <MappingFragment StoreEntitySet="vHotelPlan">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="IsLinked" ColumnName="IsLinked" />
+                <ScalarProperty Name="Segment" ColumnName="Segment" />
+                <ScalarProperty Name="CommissionPercentage" ColumnName="CommissionPercentage" />
+                <ScalarProperty Name="Language" ColumnName="Language" />
+                <ScalarProperty Name="Currency" ColumnName="Currency" />
+                <ScalarProperty Name="HotelId" ColumnName="HotelId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vHotelBasicInfo">
+            <EntityTypeMapping TypeName="Models.vHotelBasicInfo">
+              <MappingFragment StoreEntitySet="vHotelBasicInfo">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Corp" ColumnName="Corp" />
+                <ScalarProperty Name="CorpId" ColumnName="CorpId" />
+                <ScalarProperty Name="TaxIncluded" ColumnName="TaxIncluded" />
+                <ScalarProperty Name="Tax" ColumnName="Tax" />
+                <ScalarProperty Name="Currency" ColumnName="Currency" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vDayRateDetail">
+            <EntityTypeMapping TypeName="Models.vDayRateDetail">
+              <MappingFragment StoreEntitySet="vDayRateDetail">
+                <ScalarProperty Name="ExtraJuniorPrice" ColumnName="ExtraJuniorPrice" />
+                <ScalarProperty Name="ExtraChildPrice" ColumnName="ExtraChildPrice" />
+                <ScalarProperty Name="ExtraAdultPrice" ColumnName="ExtraAdultPrice" />
+                <ScalarProperty Name="JuniorExceptionPrice" ColumnName="JuniorExceptionPrice" />
+                <ScalarProperty Name="JuniorPrice" ColumnName="JuniorPrice" />
+                <ScalarProperty Name="ChildExceptionPrice" ColumnName="ChildExceptionPrice" />
+                <ScalarProperty Name="ChildPrice" ColumnName="ChildPrice" />
+                <ScalarProperty Name="AdultExceptionPrice" ColumnName="AdultExceptionPrice" />
+                <ScalarProperty Name="AdultPrice" ColumnName="AdultPrice" />
+                <ScalarProperty Name="Children" ColumnName="Children" />
+                <ScalarProperty Name="Adults" ColumnName="Adults" />
+                <ScalarProperty Name="RateId" ColumnName="RateId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vHotelRoom">
+            <EntityTypeMapping TypeName="Models.vHotelRoom">
+              <MappingFragment StoreEntitySet="vHotelRoom">
+                <ScalarProperty Name="Language" ColumnName="Language" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Offset" ColumnName="Offset" />
+                <ScalarProperty Name="Factor" ColumnName="Factor" />
+                <ScalarProperty Name="ParenteRoomCode" ColumnName="ParenteRoomCode" />
+                <ScalarProperty Name="ParentRoomId" ColumnName="ParentRoomId" />
+                <ScalarProperty Name="IsLinked" ColumnName="IsLinked" />
+                <ScalarProperty Name="Order" ColumnName="Order" />
+                <ScalarProperty Name="JuniorsAllowed" ColumnName="JuniorsAllowed" />
+                <ScalarProperty Name="MaxChildrenOccupancy" ColumnName="MaxChildrenOccupancy" />
+                <ScalarProperty Name="MinAdultsOccupancy" ColumnName="MinAdultsOccupancy" />
+                <ScalarProperty Name="MaxAdultsOccupancy" ColumnName="MaxAdultsOccupancy" />
+                <ScalarProperty Name="ExtraOccupancyAllowed" ColumnName="ExtraOccupancyAllowed" />
+                <ScalarProperty Name="MaxOccupancy" ColumnName="MaxOccupancy" />
+                <ScalarProperty Name="TotalRooms" ColumnName="TotalRooms" />
+                <ScalarProperty Name="HotelId" ColumnName="HotelId" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vDayRates">
+            <EntityTypeMapping TypeName="Models.vDayRates">
+              <MappingFragment StoreEntitySet="vDayRates">
+                <ScalarProperty Name="Language" ColumnName="Language" />
+                <ScalarProperty Name="IsPromotion" ColumnName="IsPromotion" />
+                <ScalarProperty Name="ParentRatePlanId" ColumnName="ParentRatePlanId" />
+                <ScalarProperty Name="Currency" ColumnName="Currency" />
+                <ScalarProperty Name="Offset" ColumnName="Offset" />
+                <ScalarProperty Name="Factor" ColumnName="Factor" />
+                <ScalarProperty Name="DiscountLevel" ColumnName="DiscountLevel" />
+                <ScalarProperty Name="DayDiscount" ColumnName="DayDiscount" />
+                <ScalarProperty Name="Discount" ColumnName="Discount" />
+                <ScalarProperty Name="ExceptionPrice" ColumnName="ExceptionPrice" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Occupancy" ColumnName="Occupancy" />
+                <ScalarProperty Name="ExceptionMap" ColumnName="ExceptionMap" />
+                <ScalarProperty Name="NoArrivalsMap" ColumnName="NoArrivalsMap" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="RatePlanName" ColumnName="RatePlanName" />
+                <ScalarProperty Name="RatePlanId" ColumnName="RatePlanId" />
+                <ScalarProperty Name="RoomId" ColumnName="RoomId" />
+                <ScalarProperty Name="HotelId" ColumnName="HotelId" />
+                <ScalarProperty Name="RateId" ColumnName="RateId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vPermissions">
+            <EntityTypeMapping TypeName="Models.vPermissions">
+              <MappingFragment StoreEntitySet="vPermissions">
+                <ScalarProperty Name="userId" ColumnName="userId" />
+                <ScalarProperty Name="showCreditCard" ColumnName="showCreditCard" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VReservationRoomPriceDetails">
+            <EntityTypeMapping TypeName="Models.VReservationRoomPriceDetails">
+              <MappingFragment StoreEntitySet="VReservationRoomPriceDetails">
+                <ScalarProperty Name="currency" ColumnName="currency" />
+                <ScalarProperty Name="checkOut" ColumnName="checkOut" />
+                <ScalarProperty Name="checkIn" ColumnName="checkIn" />
+                <ScalarProperty Name="extraPrice" ColumnName="extraPrice" />
+                <ScalarProperty Name="price" ColumnName="price" />
+                <ScalarProperty Name="roomPriceId" ColumnName="roomPriceId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spReservationCancel" FunctionName="Models.Store.spReservationCancel" />
+          <EntitySetMapping Name="Hoteles">
+            <EntityTypeMapping TypeName="Models.Hoteles">
+              <MappingFragment StoreEntitySet="Hoteles">
+                <ScalarProperty Name="IsPMSPushNotifActive" ColumnName="IsPMSPushNotifActive" />
+                <ScalarProperty Name="isSingleImgInv" ColumnName="isSingleImgInv" />
+                <ScalarProperty Name="ApiKey" ColumnName="ApiKey" />
+                <ScalarProperty Name="AreaUnidad" ColumnName="AreaUnidad" />
+                <ScalarProperty Name="Area" ColumnName="Area" />
+                <ScalarProperty Name="Banios" ColumnName="Banios" />
+                <ScalarProperty Name="CategoriaCasa" ColumnName="CategoriaCasa" />
+                <ScalarProperty Name="AmaLlaves" ColumnName="AmaLlaves" />
+                <ScalarProperty Name="IdOwnerDesc" ColumnName="IdOwnerDesc" />
+                <ScalarProperty Name="tipoPago" ColumnName="tipoPago" />
+                <ScalarProperty Name="IsHouse" ColumnName="IsHouse" />
+                <ScalarProperty Name="SaveCurrencyShown" ColumnName="SaveCurrencyShown" />
+                <ScalarProperty Name="orden" ColumnName="orden" />
+                <ScalarProperty Name="ISH" ColumnName="ISH" />
+                <ScalarProperty Name="IVA" ColumnName="IVA" />
+                <ScalarProperty Name="ConfirmacionTelefonica" ColumnName="ConfirmacionTelefonica" />
+                <ScalarProperty Name="FechaRemodelacion" ColumnName="FechaRemodelacion" />
+                <ScalarProperty Name="FechaFundacion" ColumnName="FechaFundacion" />
+                <ScalarProperty Name="FechaConstruccion" ColumnName="FechaConstruccion" />
+                <ScalarProperty Name="idcadena" ColumnName="idcadena" />
+                <ScalarProperty Name="AvlOnCorpModule" ColumnName="AvlOnCorpModule" />
+                <ScalarProperty Name="EdadAdolecente" ColumnName="EdadAdolecente" />
+                <ScalarProperty Name="maxEdadAdolecente" ColumnName="maxEdadAdolecente" />
+                <ScalarProperty Name="TransbyEmail" ColumnName="TransbyEmail" />
+                <ScalarProperty Name="AllowBankDepositCCT" ColumnName="AllowBankDepositCCT" />
+                <ScalarProperty Name="AllowSpecificPayment" ColumnName="AllowSpecificPayment" />
+                <ScalarProperty Name="MinNumOcupacion" ColumnName="MinNumOcupacion" />
+                <ScalarProperty Name="MaxNumOcupacion" ColumnName="MaxNumOcupacion" />
+                <ScalarProperty Name="MinEdadNinio" ColumnName="MinEdadNinio" />
+                <ScalarProperty Name="MinNumCuartos" ColumnName="MinNumCuartos" />
+                <ScalarProperty Name="AvailOnIDS" ColumnName="AvailOnIDS" />
+                <ScalarProperty Name="EsPagoCero" ColumnName="EsPagoCero" />
+                <ScalarProperty Name="EsMoroso" ColumnName="EsMoroso" />
+                <ScalarProperty Name="AvailOnADS" ColumnName="AvailOnADS" />
+                <ScalarProperty Name="idDiccPoliticaCancelacionReview" ColumnName="idDiccPoliticaCancelacionReview" />
+                <ScalarProperty Name="idDiccPoliticaCancelacionFull" ColumnName="idDiccPoliticaCancelacionFull" />
+                <ScalarProperty Name="idDiccPoliticaCreditCard" ColumnName="idDiccPoliticaCreditCard" />
+                <ScalarProperty Name="idDiccPoliticaGarantia" ColumnName="idDiccPoliticaGarantia" />
+                <ScalarProperty Name="idDiccExtraCargos" ColumnName="idDiccExtraCargos" />
+                <ScalarProperty Name="idCorporativo" ColumnName="idCorporativo" />
+                <ScalarProperty Name="AmhmRes" ColumnName="AmhmRes" />
+                <ScalarProperty Name="Emprhotur" ColumnName="Emprhotur" />
+                <ScalarProperty Name="AllowBankDeposit" ColumnName="AllowBankDeposit" />
+                <ScalarProperty Name="Longitud" ColumnName="Longitud" />
+                <ScalarProperty Name="Latitud" ColumnName="Latitud" />
+                <ScalarProperty Name="AvailOnOnePage" ColumnName="AvailOnOnePage" />
+                <ScalarProperty Name="AvailOnGDS" ColumnName="AvailOnGDS" />
+                <ScalarProperty Name="AvailOnPortal" ColumnName="AvailOnPortal" />
+                <ScalarProperty Name="idDiccUrlWebSite" ColumnName="idDiccUrlWebSite" />
+                <ScalarProperty Name="urlWebSite" ColumnName="urlWebSite" />
+                <ScalarProperty Name="idDiccemailComments" ColumnName="idDiccemailComments" />
+                <ScalarProperty Name="emailComments" ColumnName="emailComments" />
+                <ScalarProperty Name="SendFaxReserva" ColumnName="SendFaxReserva" />
+                <ScalarProperty Name="UserPerfil" ColumnName="UserPerfil" />
+                <ScalarProperty Name="CancelPriorSpecificT" ColumnName="CancelPriorSpecificT" />
+                <ScalarProperty Name="CancelPriorHours" ColumnName="CancelPriorHours" />
+                <ScalarProperty Name="noarrivals" ColumnName="noarrivals" />
+                <ScalarProperty Name="idiomaemail" ColumnName="idiomaemail" />
+                <ScalarProperty Name="ExtraCargos" ColumnName="ExtraCargos" />
+                <ScalarProperty Name="PoliticaCreditCard" ColumnName="PoliticaCreditCard" />
+                <ScalarProperty Name="PoliticaGarantia" ColumnName="PoliticaGarantia" />
+                <ScalarProperty Name="PlusTax" ColumnName="PlusTax" />
+                <ScalarProperty Name="PWorldspan" ColumnName="PWorldspan" />
+                <ScalarProperty Name="PSabre" ColumnName="PSabre" />
+                <ScalarProperty Name="PAmadeus" ColumnName="PAmadeus" />
+                <ScalarProperty Name="PGalileo" ColumnName="PGalileo" />
+                <ScalarProperty Name="defaultComissionVal" ColumnName="defaultComissionVal" />
+                <ScalarProperty Name="defaultComission" ColumnName="defaultComission" />
+                <ScalarProperty Name="StatusAvailability" ColumnName="StatusAvailability" />
+                <ScalarProperty Name="MinLengthStay" ColumnName="MinLengthStay" />
+                <ScalarProperty Name="CancelPrioridad" ColumnName="CancelPrioridad" />
+                <ScalarProperty Name="HurdleRate" ColumnName="HurdleRate" />
+                <ScalarProperty Name="NotApplyRestrictedDays" ColumnName="NotApplyRestrictedDays" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="DepartureRestricted" ColumnName="DepartureRestricted" />
+                <ScalarProperty Name="ChainCode" ColumnName="ChainCode" />
+                <ScalarProperty Name="GetRates" ColumnName="GetRates" />
+                <ScalarProperty Name="PropertyNumber" ColumnName="PropertyNumber" />
+                <ScalarProperty Name="EmailReservas" ColumnName="EmailReservas" />
+                <ScalarProperty Name="FechaInicioRes" ColumnName="FechaInicioRes" />
+                <ScalarProperty Name="FechaApertura" ColumnName="FechaApertura" />
+                <ScalarProperty Name="PoliticaCancelacion" ColumnName="PoliticaCancelacion" />
+                <ScalarProperty Name="ComisionAgentes" ColumnName="ComisionAgentes" />
+                <ScalarProperty Name="ServiceCharge" ColumnName="ServiceCharge" />
+                <ScalarProperty Name="OccupancyTax" ColumnName="OccupancyTax" />
+                <ScalarProperty Name="CityTax" ColumnName="CityTax" />
+                <ScalarProperty Name="AeropuertoCercano" ColumnName="AeropuertoCercano" />
+                <ScalarProperty Name="CiudadCercana" ColumnName="CiudadCercana" />
+                <ScalarProperty Name="idfranquicia" ColumnName="idfranquicia" />
+                <ScalarProperty Name="idCiudad" ColumnName="idCiudad" />
+                <ScalarProperty Name="MaxEdadNinio" ColumnName="MaxEdadNinio" />
+                <ScalarProperty Name="EdadApartirPagaExtra" ColumnName="EdadApartirPagaExtra" />
+                <ScalarProperty Name="Impuesto" ColumnName="Impuesto" />
+                <ScalarProperty Name="DiasMinCancelar" ColumnName="DiasMinCancelar" />
+                <ScalarProperty Name="DiasLibres" ColumnName="DiasLibres" />
+                <ScalarProperty Name="MaxNumNinios" ColumnName="MaxNumNinios" />
+                <ScalarProperty Name="MaxNumAdultos" ColumnName="MaxNumAdultos" />
+                <ScalarProperty Name="MaxNumCuartos" ColumnName="MaxNumCuartos" />
+                <ScalarProperty Name="MaxDiasRenta" ColumnName="MaxDiasRenta" />
+                <ScalarProperty Name="idMoneda" ColumnName="idMoneda" />
+                <ScalarProperty Name="CheckOut" ColumnName="CheckOut" />
+                <ScalarProperty Name="CheckIn" ColumnName="CheckIn" />
+                <ScalarProperty Name="Categoria" ColumnName="Categoria" />
+                <ScalarProperty Name="idEmpresa" ColumnName="idEmpresa" />
+                <ScalarProperty Name="idHotel" ColumnName="idHotel" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spModificarReservacionByid" FunctionName="Models.Store.spModificarReservacionByid" />
+          <EntitySetMapping Name="vReservation">
+            <EntityTypeMapping TypeName="Models.vReservation">
+              <MappingFragment StoreEntitySet="vReservation">
+                <ScalarProperty Name="Portal" ColumnName="Portal" />
+                <ScalarProperty Name="Source" ColumnName="Source" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="RoomCount" ColumnName="RoomCount" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Client" ColumnName="Client" />
+                <ScalarProperty Name="CheckOut" ColumnName="CheckOut" />
+                <ScalarProperty Name="CheckIn" ColumnName="CheckIn" />
+                <ScalarProperty Name="ReservationDate" ColumnName="ReservationDate" />
+                <ScalarProperty Name="Hotel" ColumnName="Hotel" />
+                <ScalarProperty Name="HotelId" ColumnName="HotelId" />
+                <ScalarProperty Name="ConfirmNumber" ColumnName="ConfirmNumber" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vReservationDetails">
+            <EntityTypeMapping TypeName="Models.vReservationDetails">
+              <MappingFragment StoreEntitySet="vReservationDetails">
+                <ScalarProperty Name="hotelEmail" ColumnName="hotelEmail" />
+                <ScalarProperty Name="companyId" ColumnName="companyId" />
+                <ScalarProperty Name="pmsAction" ColumnName="pmsAction" />
+                <ScalarProperty Name="pmsStatus" ColumnName="pmsStatus" />
+                <ScalarProperty Name="pmsReservationNumber" ColumnName="pmsReservationNumber" />
+                <ScalarProperty Name="h_creditcardPolicies" ColumnName="h_creditcardPolicies" />
+                <ScalarProperty Name="h_guaranteePolicies" ColumnName="h_guaranteePolicies" />
+                <ScalarProperty Name="h_cancellationPolicies" ColumnName="h_cancellationPolicies" />
+                <ScalarProperty Name="rp_creditcardPolicies" ColumnName="rp_creditcardPolicies" />
+                <ScalarProperty Name="rp_guaranteePolicies" ColumnName="rp_guaranteePolicies" />
+                <ScalarProperty Name="rp_cancellationPolicies" ColumnName="rp_cancellationPolicies" />
+                <ScalarProperty Name="provider" ColumnName="provider" />
+                <ScalarProperty Name="depositReference" ColumnName="depositReference" />
+                <ScalarProperty Name="depositCurrency" ColumnName="depositCurrency" />
+                <ScalarProperty Name="depositAmount" ColumnName="depositAmount" />
+                <ScalarProperty Name="cardCustomerName" ColumnName="cardCustomerName" />
+                <ScalarProperty Name="cardCvv" ColumnName="cardCvv" />
+                <ScalarProperty Name="cardExpYear" ColumnName="cardExpYear" />
+                <ScalarProperty Name="cardExpMonth" ColumnName="cardExpMonth" />
+                <ScalarProperty Name="cardNumber" ColumnName="cardNumber" />
+                <ScalarProperty Name="authorizationNumber" ColumnName="authorizationNumber" />
+                <ScalarProperty Name="onlinePaymentMethod" ColumnName="onlinePaymentMethod" />
+                <ScalarProperty Name="paymentType" ColumnName="paymentType" />
+                <ScalarProperty Name="customerPhone" ColumnName="customerPhone" />
+                <ScalarProperty Name="customerEmail" ColumnName="customerEmail" />
+                <ScalarProperty Name="customerLastName" ColumnName="customerLastName" />
+                <ScalarProperty Name="customerName" ColumnName="customerName" />
+                <ScalarProperty Name="IsNetRateUV" ColumnName="IsNetRateUV" />
+                <ScalarProperty Name="currency" ColumnName="currency" />
+                <ScalarProperty Name="tax" ColumnName="tax" />
+                <ScalarProperty Name="includesTax" ColumnName="includesTax" />
+                <ScalarProperty Name="totalNetRate" ColumnName="totalNetRate" />
+                <ScalarProperty Name="total" ColumnName="total" />
+                <ScalarProperty Name="reservationIdXProvider" ColumnName="reservationIdXProvider" />
+                <ScalarProperty Name="cancellationReason" ColumnName="cancellationReason" />
+                <ScalarProperty Name="cancellationNumber" ColumnName="cancellationNumber" />
+                <ScalarProperty Name="reservationId" ColumnName="reservationId" />
+                <ScalarProperty Name="Portal" ColumnName="Portal" />
+                <ScalarProperty Name="source" ColumnName="source" />
+                <ScalarProperty Name="checkOut" ColumnName="checkOut" />
+                <ScalarProperty Name="checkIn" ColumnName="checkIn" />
+                <ScalarProperty Name="reservationDate" ColumnName="reservationDate" />
+                <ScalarProperty Name="accessCode" ColumnName="accessCode" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="country" ColumnName="country" />
+                <ScalarProperty Name="city" ColumnName="city" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="hotelName" ColumnName="hotelName" />
+                <ScalarProperty Name="hotelId" ColumnName="hotelId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vReservationRoomDetails">
+            <EntityTypeMapping TypeName="Models.vReservationRoomDetails">
+              <MappingFragment StoreEntitySet="vReservationRoomDetails">
+                <ScalarProperty Name="currency" ColumnName="currency" />
+                <ScalarProperty Name="rateCode" ColumnName="rateCode" />
+                <ScalarProperty Name="ratePlan" ColumnName="ratePlan" />
+                <ScalarProperty Name="roomCheckOut" ColumnName="roomCheckOut" />
+                <ScalarProperty Name="roomCheckIn" ColumnName="roomCheckIn" />
+                <ScalarProperty Name="ageChildren" ColumnName="ageChildren" />
+                <ScalarProperty Name="extraChildrens" ColumnName="extraChildrens" />
+                <ScalarProperty Name="childrens" ColumnName="childrens" />
+                <ScalarProperty Name="extraAdults" ColumnName="extraAdults" />
+                <ScalarProperty Name="adults" ColumnName="adults" />
+                <ScalarProperty Name="customerLastName" ColumnName="customerLastName" />
+                <ScalarProperty Name="customerName" ColumnName="customerName" />
+                <ScalarProperty Name="roomPreferences" ColumnName="roomPreferences" />
+                <ScalarProperty Name="roomDescription" ColumnName="roomDescription" />
+                <ScalarProperty Name="roomCode" ColumnName="roomCode" />
+                <ScalarProperty Name="roomName" ColumnName="roomName" />
+                <ScalarProperty Name="roomPriceId" ColumnName="roomPriceId" />
+                <ScalarProperty Name="reservationId" ColumnName="reservationId" />
+                <ScalarProperty Name="roomTypeId" ColumnName="roomTypeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

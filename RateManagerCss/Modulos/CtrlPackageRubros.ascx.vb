@@ -131,19 +131,19 @@ Partial Class CtrlPackageRubros
     End Sub
 
     Private Sub loadActivities(ByVal IdCorporativo As Integer)
-        Dim ds As bookingActivityCommon
-        With New BookingActivityFacade
-            ds = .SearchActivitiesByCityId(CityId, IdCorporativo)
-        End With
+        'Dim ds As bookingActivityCommon
+        'With New BookingActivityFacade
+        'ds = .SearchActivitiesByCityId(CityId, IdCorporativo)
+        'End With
 
-        ds.Tables(bookingActivityCommon.Tabla_Booking).Columns.Add("Texto", GetType(String), "nombre + ' - ' + Empresa ")
-        
+        'ds.Tables(bookingActivityCommon.Tabla_Booking).Columns.Add("Texto", GetType(String), "nombre + ' - ' + Empresa ")
 
 
-        lstActividades.DataSource = ds
-        lstActividades.DataTextField = "Texto"
-        lstActividades.DataValueField = "idactividad"
-        lstActividades.DataBind()
+
+        'lstActividades.DataSource = ds
+        'lstActividades.DataTextField = "Texto"
+        'lstActividades.DataValueField = "idactividad"
+        'lstActividades.DataBind()
     End Sub
 
     Private Sub LoadFranquicias(ByVal NombreCorp As String)
@@ -152,13 +152,13 @@ Partial Class CtrlPackageRubros
 
             If CType(Me.Page, PaginaBase).isUserChain Then
                 If NombreCorp <> "" Then
-                    Franq = .SearchAutosFranquiciasCorporativoList(NombreCorp)
+                    ' Franq = .SearchAutosFranquiciasCorporativoList(NombreCorp)
                 End If
                 Me.ddlFranquicia.DataSource = Franq
                 Me.ddlFranquicia.DataValueField = "Franquicia"
                 Me.ddlFranquicia.DataTextField = "Descripcion"
             Else
-                Franq = .SearchAutosFranquiciasList()
+                'Franq = .SearchAutosFranquiciasList()
                 Me.ddlFranquicia.DataSource = Franq
                 Me.ddlFranquicia.DataValueField = "Codigo"
                 Me.ddlFranquicia.DataTextField = "Descripcion"
