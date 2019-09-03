@@ -19,10 +19,16 @@
         <EntityTypeShape EntityType="Models.vHotelPlan" Width="1.5" PointX="10.375" PointY="6.75" />
         <EntityTypeShape EntityType="Models.vHotelBasicInfo" Width="1.5" PointX="12.375" PointY="6.75" />
         <EntityTypeShape EntityType="Models.vDayRateDetail" Width="1.5" PointX="0.75" PointY="0.75" />
-        <EntityTypeShape EntityType="Models.vDayRates" Width="1.5" PointX="7.375" PointY="0.75" />
         <EntityTypeShape EntityType="Models.vHotelRoom" Width="1.5" PointX="13.375" PointY="10.75" />
+        <EntityTypeShape EntityType="Models.vDayRates" Width="1.5" PointX="7.375" PointY="0.75" />
+        <EntityTypeShape EntityType="Models.vPermissions" Width="1.5" PointX="14.375" PointY="0.75" />
+        <EntityTypeShape EntityType="Models.VReservationRoomPriceDetails" Width="1.5" PointX="14.75" PointY="6.75" />
+        <EntityTypeShape EntityType="Models.Hoteles" Width="1.5" PointX="0.75" PointY="43.5" />
+        <AssociationConnector Association="Models.FK_RatesPlan_Hoteles" />
         <EntityTypeShape EntityType="Models.vReservation" Width="1.5" PointX="10.375" PointY="10.75" />
-      </Diagram>
+        <EntityTypeShape EntityType="Models.vReservationDetails" Width="1.5" PointX="7.375" PointY="15.75" />
+        <EntityTypeShape EntityType="Models.vReservationRoomDetails" Width="1.5" PointX="3.375" PointY="14.75" />
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

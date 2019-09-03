@@ -25,7 +25,7 @@
                         </b-button>
                     </b-col>
                     <b-col md="4" style="margin-top:-1.9rem;">
-                        <b-form-group label="Items por pagina">
+                        <b-form-group :label="$t('items per page')">
                             <b-form-select @change="changeItemsPerPage" class="float-right" v-model.number="itemPerPage" :options="itemsPerPage"></b-form-select>
                         </b-form-group>
                     </b-col>
@@ -49,7 +49,7 @@
                                         v-model="dates"
                                         class="form-control p-0"
                                         mode="range"
-                                        :max-date="new Date()"
+                                        :min-date="minDate"
                                         :popover="{ placement: 'bottom', visibility: 'click' }"
                                         :columns="2"></v-date-picker>
                                         <b-input-group-append>
@@ -62,7 +62,11 @@
                             </b-col>
                             <b-col md="4">
                                 <b-form-group :label="$t('Status')">
-                                    <b-form-select v-model="status" :options="allStatus"></b-form-select>
+                                    <b-form-checkbox-group v-model="checkStatus">
+                                        <b-form-checkbox value="1">{{$t('Reserved')}}</b-form-checkbox>
+                                        <b-form-checkbox value="4">{{$t('In process')}}</b-form-checkbox>
+                                        <b-form-checkbox value="3">{{$t('Cancelled')}}</b-form-checkbox>
+                                    </b-form-checkbox-group>
                                 </b-form-group>
                             </b-col>
                         </b-row>
@@ -121,6 +125,9 @@ export default {
     mounted() {
         this.getHotels();
     },
+    created() {
+        this.dates = this.$parent.defaultDates();
+    },
     props: {
         result: {
             required: false,
@@ -135,30 +142,29 @@ export default {
             type: Array,
         },
     },
+    computed: {
+        minDate() {
+            const date = new Date();
+            date.setFullYear(date.getFullYear() - 1);
+            return date;
+        },
+    },
     data() {
         return {
             includeDates: false,
             dates: null,
             noReservation: '',
-            status: 0,
+            checkStatus: ['1'],
             typeDate: 'ReservationDate',
             clientName: '',
             source: 'ALL',
             hotel: [],
             hotels: [],
             ota: 'ALL',
-
-
             typeDates: [
                 { text: this.$t('Reservation date'), value: 'ReservationDate' },
                 { text: this.$t('Arrival date'), value: 'CheckOut' },
                 { text: this.$t('Departure date'), value: 'CheckIn' },
-            ],
-            allStatus: [
-                { text: `-- ${this.$t('All')} --`, value: 0 },
-                { text: this.$t('Reserved'), value: 1 },
-                { text: this.$t('Cancelled'), value: 3 },
-                { text: this.$t('In process'), value: 4 },
             ],
             sources: [
                 { text: `-- ${this.$t('All')} --`, value: 'ALL' },
@@ -173,8 +179,7 @@ export default {
             otas: [
                 { text: `-- ${this.$t('All')} --`, value: 'ALL' },
                 { text: 'BestDay', value: 'BestDay' },
-                { text: 'Booking', value: 'Booking' },
-                { text: 'Bookit.com', value: 'Bookit.com' },
+                { text: 'Booking.com', value: 'Booking' },
                 { text: 'Expedia', value: 'Expedia' },
                 { text: 'Hotel Beds', value: 'Hotel Beds' },
                 { text: 'PriceTravel', value: 'PriceTravel' },
@@ -205,7 +210,13 @@ export default {
                 } and ${this.typeDate} lt ${this.dateFormat(this.dates.end)}`;
             }
 
-            if (this.status !== 0) filter += `${filter !== '' ? ' and ' : ''}Status eq ${this.status}`;
+            if (this.checkStatus.length > 0) {
+                filter += (filter !== '' ? ' and ': '');
+                this.checkStatus.forEach((value, index) => {
+                    if (index > 0) filter += ' or ';
+                    filter += `Status eq ${value}`;
+                });
+            }
 
             if (this.clientName !== '') filter += `${filter !== '' ? ' and ' : ''}Client lk ${this.clientName}`;
 

@@ -3,6 +3,10 @@
 Namespace API.Helpers
     Public Module UserDataHelper
 
+        Public Function GetUserEmail() As String
+            Return HttpContext.Current.Session("EmailLoginUser").ToString
+        End Function
+
         Public Function GetUserId() As Integer?
             Dim userId As Integer
 

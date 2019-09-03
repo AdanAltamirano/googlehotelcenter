@@ -12,6 +12,7 @@ const appConfig = {
         info: '#007bff',
         warning: '#ff6c00',
     },
+    confirmNumber: window.app.confirmNumber,
 };
 
 function appAlert(alertData) {

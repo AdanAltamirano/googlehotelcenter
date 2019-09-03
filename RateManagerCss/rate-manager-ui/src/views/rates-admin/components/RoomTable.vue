@@ -4,7 +4,7 @@
         <div class="d-flex border dark-gray-created">
             <div class="d-flex w-30 align-items-center">
                 <div class="border-right p-1 flex-fill d-flex w-80 justify-content-between">
-                    <h5 class="font-weight-bold m-0" :class="{ 'text-secondary': room.isLinked}"><i class="fa fa-bed mr-1"></i> {{room.code}} - {{room.name}}</h5>
+                    <h5 class="font-weight-bold m-0 text-truncate" v-tooltip="room.name" :class="{ 'text-secondary': room.isLinked}"><i class="fa fa-bed mr-1"></i> {{room.code}} - {{room.name}}</h5>
                     <h5 class="text-primary m-0">
                         <i v-if="room.isLinked" v-tooltip="{ content: getRoomLinkDesc(room), classes: ['primary']}" class="fa fa-link"></i>
                     </h5>

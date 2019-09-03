@@ -709,8 +709,8 @@ Public Class PaginaBase
             If Session("RolesUsuario") IsNot Nothing Then
                 If Not String.IsNullOrEmpty(roles) Then
                     For Each r As String In roles.Split(",")
-                        If Not Session("RolesUsario").ToString.Contains(r) Then
-                            Session.Item("RolesUsario") += "," & r
+                        If Not Session("RolesUsuario").ToString.Contains(r) Then
+                            Session.Item("RolesUsuario") += "," & r
                         End If
                     Next
                 End If

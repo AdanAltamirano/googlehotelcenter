@@ -56,5 +56,7 @@ namespace APIServices.Models
         public Nullable<short> TipoDescuento { get; set; }
         public Nullable<bool> DaysFreeType { get; set; }
         public Nullable<int> DiscountLevel { get; set; }
+    
+        public virtual Hoteles Hoteles { get; set; }
     }
 }

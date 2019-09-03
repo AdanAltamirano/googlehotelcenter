@@ -597,7 +597,7 @@ Partial Class CtrlPlanFaresExcNR
 
         If Not txtAdultFareNR Is Nothing AndAlso Not txtAdultFare Is Nothing Then
             txtAdultFareNR.Attributes.Add("onChange", "javascript:CheckValContract('" & m_TextBoxPorcMin & "','" & m_TextBoxPorcMax & "','" & txtAdultFareNR.ClientID & "','" & txtAdultFare.ClientID & "','" & lblAdultValMax.ClientID & "','" & lblAdultValMin.ClientID & "')")
-            txtAdultFare.Attributes.Add("onChange", "javascript:CheckValContract('" & m_TextBoxPorcMin & "','" & m_TextBoxPorcMax & "','" & txtAdultFareNR.ClientID & "','" & txtAdultFare.ClientID & "','" & lblAdultValMax.ClientID & "','" & lblAdultValMin.ClientID & "')")
+            'txtAdultFare.Attributes.Add("onChange", "javascript:CheckValContract('" & m_TextBoxPorcMin & "','" & m_TextBoxPorcMax & "','" & txtAdultFareNR.ClientID & "','" & txtAdultFare.ClientID & "','" & lblAdultValMax.ClientID & "','" & lblAdultValMin.ClientID & "')")
         End If
 
         Dim chkActive As CheckBox
@@ -676,7 +676,7 @@ Partial Class CtrlPlanFaresExcNR
         'Validacion del porcentaje maximo y minimo de ganancia UV
         If Not txtChildFareNR Is Nothing AndAlso Not txtChildFare Is Nothing Then
             txtChildFareNR.Attributes.Add("onChange", "javascript:CheckValContract('" & m_TextBoxPorcMin & "','" & m_TextBoxPorcMax & "','" & txtChildFareNR.ClientID & "','" & txtChildFare.ClientID & "','" & lblChildValMax.ClientID & "','" & lblChildValMin.ClientID & "')")
-            txtChildFare.Attributes.Add("onChange", "javascript:CheckValContract('" & m_TextBoxPorcMin & "','" & m_TextBoxPorcMax & "','" & txtChildFareNR.ClientID & "','" & txtChildFare.ClientID & "','" & lblChildValMax.ClientID & "','" & lblChildValMin.ClientID & "')")
+            'txtChildFare.Attributes.Add("onChange", "javascript:CheckValContract('" & m_TextBoxPorcMin & "','" & m_TextBoxPorcMax & "','" & txtChildFareNR.ClientID & "','" & txtChildFare.ClientID & "','" & lblChildValMax.ClientID & "','" & lblChildValMin.ClientID & "')")
         End If
 
         Dim chkActive As CheckBox
@@ -754,7 +754,7 @@ Partial Class CtrlPlanFaresExcNR
 
         If Not txtChildFareNR Is Nothing AndAlso Not txtChildFare Is Nothing Then
             txtChildFareNR.Attributes.Add("onChange", "javascript:CheckValContract('" & m_TextBoxPorcMin & "','" & m_TextBoxPorcMax & "','" & txtChildFareNR.ClientID & "','" & txtChildFare.ClientID & "','" & lblChildValMax.ClientID & "','" & lblChildValMin.ClientID & "')")
-            txtChildFare.Attributes.Add("onChange", "javascript:CheckValContract('" & m_TextBoxPorcMin & "','" & m_TextBoxPorcMax & "','" & txtChildFareNR.ClientID & "','" & txtChildFare.ClientID & "','" & lblChildValMax.ClientID & "','" & lblChildValMin.ClientID & "')")
+            'txtChildFare.Attributes.Add("onChange", "javascript:CheckValContract('" & m_TextBoxPorcMin & "','" & m_TextBoxPorcMax & "','" & txtChildFareNR.ClientID & "','" & txtChildFare.ClientID & "','" & lblChildValMax.ClientID & "','" & lblChildValMin.ClientID & "')")
         End If
 
         Dim chkActive As CheckBox
