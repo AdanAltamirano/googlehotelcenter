@@ -2,7 +2,7 @@
     <div class="d-flex">
         <h4 class="text-info">{{result.hotelName}}</h4>
         <b-button-toolbar v-if="showCancelButton || showModifyButton" class="ml-auto">
-            <b-dropdown class="mx-1" right variant="primary" text="Opciones">
+            <b-dropdown class="mx-1" right variant="primary" :text="$t('Options')">
                 <b-dropdown-item v-if="showModifyButton" @click="modify">{{$t('Modify')}}</b-dropdown-item>
                 <b-dropdown-item v-if="showCancelButton" @click="cancel">{{$t('Cancel')}}</b-dropdown-item>
             </b-dropdown>

@@ -80,4 +80,5 @@ export default {
     'Expired session':'Sesión expirada',
     'The session expires due to inactivity':'La sesión expiró por inactividad',
     Keep:'Mantener',
+    Options:'Opciones',
 };
