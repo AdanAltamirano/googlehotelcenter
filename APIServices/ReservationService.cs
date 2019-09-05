@@ -119,7 +119,7 @@ namespace APIServices
                     model.Customer.CardDetails.Number = cc;
                     model.Customer.CardDetails.IsSuccess = true;
                 }
-                if (isHotelCompany || showCreditCard.Value)
+                if (isHotelCompany || (showCreditCard.HasValue ? showCreditCard.Value : false))
                     model.Customer.CardDetails.AllowsShowCreditCardData = true;
                 /*fin credit card*/
 

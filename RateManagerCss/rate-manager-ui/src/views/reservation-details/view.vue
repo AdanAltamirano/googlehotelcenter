@@ -65,11 +65,11 @@
                             <b-collapse visible id="pms">
                                 <b-alert show variant="secondary">
                                     <address>
-                                        <strong>{{(result.pms.status === 0 ? $t('Waiting to be confirmed') : $t('Reservation confirmed'))}}</strong>
+                                        <strong>{{(!result.pms.status ? $t('Waiting to be confirmed') : $t('Reservation confirmed'))}}</strong>
                                         <br>
                                         <strong>{{$t('Status')}}:</strong> {{PmsStatus}}
                                         <br>
-                                        <span v-if="result.pms.status === 1">
+                                        <span v-if="result.pms.status">
                                             <strong>{{$t('Reservation number')}}:</strong> {{result.pms.reservationNumber}}
                                         </span>
                                     </address>
