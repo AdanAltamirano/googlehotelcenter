@@ -5,7 +5,7 @@
             <div class="card-header">
                 <h6>{{room.roomCode}} - {{room.name}}</h6>
                 <small v-if="room.checkIn && room.checkOut">
-                    {{$t('Check in')}}: {{$moment(room.checkOut).format('D MMM YYYY')}} / 
+                    {{$t('Check in')}}: {{$moment(room.checkIn).format('D MMM YYYY')}} / 
                     {{$t('Check out')}}: {{$moment(room.checkOut).format('D MMM YYYY')}}
                 </small>
             </div>
