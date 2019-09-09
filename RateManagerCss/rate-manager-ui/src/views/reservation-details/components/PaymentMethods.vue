@@ -105,7 +105,7 @@ export default {
             required: true,
             type: Object,
         },
-        noReservation: {
+        reservationId: {
             required: false,
             type: String
         },
@@ -119,7 +119,7 @@ export default {
             this.sendEmail();
         },
         getCreditCardData() {
-            ReservationService.GetCreditCard(this.noReservation, this.code)
+            ReservationService.GetCreditCard(this.reservationId, this.code)
             .then(response => {
                 this.ccDetails = response.body;
                 if (this.ccDetails.isSuccess)
@@ -131,7 +131,7 @@ export default {
             });
         },
         sendEmail() {
-            ReservationService.SendCode(this.noReservation)
+            ReservationService.SendCode(this.reservationId)
             .then(response => {
                 if (!response.body.success)
                 {

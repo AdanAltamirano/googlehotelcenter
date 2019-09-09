@@ -3,11 +3,11 @@
         <b-container class="text-muted" style="padding:15px;" fluid>
             <h2 class="text-primary">
                 <img src="http://test.univisit.com/Ratemanager/Includes/imagenes/istotipo-internetpowerhotel-normal.png" style="width:25px;margin-right:5px;">
-                {{$t('Reservation details')}} - #{{noReservation}}
+                {{$t('Reservation details')}} - #{{reservationId}}
             </h2>
             <b-row class="pt-4 pb-1">
                 <b-col>
-                    <actions :noReservation="noReservation" :result="result"></actions>
+                    <actions :reservationId="reservationId" :result="result"></actions>
                 </b-col>
             </b-row>
             <b-row class="pt-1">
@@ -19,7 +19,7 @@
                 <b-col md="6">
                     <b-row v-if="result.roomDetails">
                         <b-col>
-                            <rooms :rooms="result.roomDetails"></rooms>
+                            <rooms :ratePlan="result.ratePlan" :rooms="result.roomDetails"></rooms>
                         </b-col>
                     </b-row>
                     <b-row v-if="result.policyDetails" class="pt-3">
@@ -29,9 +29,9 @@
                     </b-row>
                 </b-col>
                 <b-col md="6">
-                    <b-row>
+                    <b-row v-if="result.paymentWay >= 0">
                         <b-col>
-                            <payment-methods :result="result" :noReservation="this.noReservation"></payment-methods>
+                            <payment-methods :result="result" :reservationId="this.reservationId"></payment-methods>
                         </b-col>
                     </b-row>
                     <b-row v-if="result.totalDetails" class="pt-3">
@@ -102,14 +102,14 @@ export default {
     created() {
         this.session();
         this.showLoader();
-        ReservationService.GetDetails(this.noReservation).then(response => {
+        ReservationService.GetDetails(this.reservationId).then(response => {
             this.result = response.body;
             this.hideLoader();
         });
     },
     data() {
         return {
-            noReservation: this.$appConfig.confirmNumber,
+            reservationId: this.$appConfig.confirmNumber,
             result: [],
             showInfo: false,
             loader: null,

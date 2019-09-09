@@ -18,6 +18,7 @@ namespace APIServices.Models.DTO
         public DateTime? CheckOut { get; set; }
         public int Nights { get; set; }
         public int ReservationId { get; set; }
+        public string RatePlan { get; set; }
         public string Source { get; set; }
         public string Portal { get; set; }
         public Pms Pms { get; set; }

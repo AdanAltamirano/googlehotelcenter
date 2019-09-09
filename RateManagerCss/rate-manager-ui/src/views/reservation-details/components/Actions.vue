@@ -19,7 +19,7 @@ export default {
             required: true,
             type: Object,
         },
-        noReservation: {
+        reservationId: {
             required: true,
             type: String,
         }
@@ -67,7 +67,7 @@ export default {
                             totalNR: parseFloat(self.getElement('totalnr')),
                         };
 
-                        return ReservationService.ReservationUpdate(self.noReservation, 'modify', req)
+                        return ReservationService.ReservationUpdate(self.reservationId, 'modify', req)
                         .then(response => {
                             return {
                                 response: response.body,
@@ -113,7 +113,7 @@ export default {
                     cancelButtonText: self.$t('Exit'),
                     preConfirm: (textarea) => {
                         self.result.cancellationReason = textarea;
-                        return ReservationService.ReservationUpdate(self.noReservation, 'cancel', {reason: textarea})
+                        return ReservationService.ReservationUpdate(self.reservationId, 'cancel', {reason: textarea})
                         .then(response => {
                             return response.body;
                         })
