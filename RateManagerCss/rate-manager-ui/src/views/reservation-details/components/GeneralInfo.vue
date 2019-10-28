@@ -13,10 +13,14 @@
                 <b-col md="5" v-if="result.customer">
                     <h3>{{result.customer.name}} {{result.customer.lastName}}</h3>
                     <address>
-                        {{$t('Email')}}: <strong>{{result.customer.email}}</strong>
-                        <br>
-                        {{$t('Phone')}}: <strong>{{result.customer.phone}}</strong>
-                        <br>
+                        <span v-if="result.customer.email != ''">
+                            {{$t('Email')}}: <strong>{{result.customer.email}}</strong>
+                            <br>
+                        </span>
+                        <span v-if="result.customer.phone != ''">
+                            {{$t('Phone')}}: <strong>{{result.customer.phone}}</strong>
+                            <br>
+                        </span>
                         <span>{{result.nights}} {{$t('Night(s)')}}</span>
                         <br>
                         <span>{{occupation}}</span>

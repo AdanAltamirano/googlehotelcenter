@@ -58,7 +58,8 @@ namespace APIServices
             var model = new ReservationDetailsModel();
             if (details != null)
             {
-                model.ReservationNumber = details.reservationId.ToString();
+                model.ReservationNumber = details.reservationNumber;
+                model.ReservationId = reservationId;
                 model.CancellationNumber = details.cancellationNumber;
                 model.HotelName = details.hotelName;
                 model.Address = details.address;
@@ -70,6 +71,7 @@ namespace APIServices
                 model.City = details.city;
                 model.Country = details.country;
                 model.AccessCode = details.accessCode;
+                model.RatePlan = details.ratePlan;
                 model.Source = details.source;
                 model.CancellationReason = details.cancellationReason;
                 model.Portal = details.Portal;
@@ -133,7 +135,7 @@ namespace APIServices
                 model.TotalDetails.IncludesTax = details.includesTax.Value;
 
                 double tax = (double)details.tax;
-                double totalTax = (double)(details.IsNetRateUV.Value ? details.totalNetRate : details.total);
+                double totalTax = (double)(details.IsNetRateUV ? details.totalNetRate : details.total);
 
                 model.TotalDetails.Taxes = Math.Round(totalTax - (totalTax / ((tax / 100) + 1)), 2);
                 model.TotalDetails.Currency = details.currency;

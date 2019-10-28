@@ -5,7 +5,7 @@
             <div class="card-header">
                 <h6>{{room.roomCode}} - {{room.name}}</h6>
                 <small v-if="room.checkIn && room.checkOut">
-                    {{$t('Check in')}}: {{$moment(room.checkOut).format('D MMM YYYY')}} / 
+                    {{$t('Check in')}}: {{$moment(room.checkIn).format('D MMM YYYY')}} / 
                     {{$t('Check out')}}: {{$moment(room.checkOut).format('D MMM YYYY')}}
                 </small>
             </div>
@@ -50,7 +50,7 @@
                                 <span v-if="room.childrens > 0">, {{room.childrens}} {{$t('Children')}}</span>
                             </strong>
                             <br>
-                            {{$t('Rate plan')}}: <strong>{{room.rateCode}} - {{room.ratePlan}}</strong>
+                            {{$t('Rate plan')}}: <strong>{{room.rateCode != '' ? room.rateCode : ratePlan}} - {{room.ratePlan}}</strong>
                             <br>
                             {{$t('Preferences')}}: <strong>{{room.preferences}}</strong>
                         </address>
@@ -66,6 +66,10 @@ export default {
         rooms: {
             required: true,
             type: Array,
+        },
+        ratePlan: {
+            required: false,
+            type: String,
         },
     },
 }
