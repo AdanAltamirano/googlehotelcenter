@@ -1147,6 +1147,9 @@ Public Class Promotions
         txtPromoDiscount.Text = ""
         edicion = False
 
+        idDiccPCFull = 0
+        idDiccPCReview = 0
+        idDicc = 0
     End Sub
 
     Public Function SaveRules(ByVal publish As Boolean, ByRef IdRule As Integer) As Boolean
@@ -1456,6 +1459,12 @@ Public Class Promotions
         End If
     End Sub
 
+    Private Sub dgRatePlans_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles grid.PageIndexChanged
+        Me.grid.CurrentPageIndex = e.NewPageIndex
+        Me.grid.SelectedIndex = -1
+        LoadGridRatePlans(ctrlAutoComplete1.GetFilter)
+        'ScriptManager.RegisterStartupScript(Me.Page, Me.GetType(), "ShowInfo", "ShowNewInfo(0);", True)
+    End Sub
 
     Private Sub dgPromo_ItemCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles grid.ItemCreated
         If e.Item.ItemType = ListItemType.Pager Then
