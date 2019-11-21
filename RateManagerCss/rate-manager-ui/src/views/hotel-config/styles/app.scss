@@ -1,0 +1,21 @@
+@import '../../../styles/base.scss';
+.success-text {
+    color: #155724;
+}
+
+.warning-text {
+    color: #856404;
+}
+
+.error-text {
+    color: #721c24;
+}
+
+.rates-class {
+    height: 358px;
+    overflow-y: scroll;
+}
+
+.hidden_header {
+    display: none;
+}

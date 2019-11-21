@@ -1,9 +1,15 @@
 ﻿Imports System.Globalization
 Imports System.Threading
 Imports APIServices.Models
+Imports RateManager.API.Models
+Imports System.Configuration
 
 Namespace API.Helpers
     Public Module Email
+        Private username As String = ConfigurationManager.AppSettings("usernameNotification")
+        Private password As String = ConfigurationManager.AppSettings("passwordNotification")
+        Private host As String = ConfigurationManager.AppSettings("hostNotification")
+        Private port As Integer = CInt(ConfigurationManager.AppSettings("portNotification"))
 
         Sub New()
             Thread.CurrentThread.CurrentCulture = New CultureInfo(PortalCulture.GetCulture.ToString)
@@ -59,6 +65,57 @@ Namespace API.Helpers
             End Try
             Return False
         End Function
+
+
+        Public Function SendPortalMail(ByVal response As String) As Boolean
+            Try
+                Dim Smtp_Server As New Net.Mail.SmtpClient
+                Dim e_mail As New Net.Mail.MailMessage()
+                Smtp_Server.UseDefaultCredentials = False
+                Smtp_Server.Credentials = New Net.NetworkCredential(username, password)
+                Smtp_Server.Port = port
+                Smtp_Server.EnableSsl = True
+                Smtp_Server.Host = host
+                e_mail = New Net.Mail.MailMessage()
+                e_mail.From = New Net.Mail.MailAddress("not-reply@internetpowerhotel.com")
+                e_mail.To.Add("soporte@internetpowerhotel.com")
+                e_mail.Subject = "Portal Creado"
+                e_mail.IsBodyHtml = False
+                e_mail.Body = response
+                Smtp_Server.Send(e_mail)
+                Return True
+            Catch ex As Exception
+
+            End Try
+            Return False
+        End Function
+
+
+        Public Function SendNotificationEmail(ByVal template As String, ByVal emails As String, ByVal reservationNumber As String) As Boolean
+            Try
+                Dim Smtp_Server As New Net.Mail.SmtpClient
+                Dim e_mail As New Net.Mail.MailMessage()
+                Smtp_Server.UseDefaultCredentials = False
+                Smtp_Server.Credentials = New Net.NetworkCredential(username, password)
+                Smtp_Server.Port = port
+                Smtp_Server.EnableSsl = True
+                Smtp_Server.Host = host
+                For Each email As String In emails.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                    e_mail = New Net.Mail.MailMessage()
+                    e_mail.From = New Net.Mail.MailAddress("not-reply@internetpowerhotel.com")
+                    e_mail.To.Add(email)
+                    e_mail.Subject = "Reservación #" & reservationNumber
+                    e_mail.IsBodyHtml = True
+                    e_mail.Body = template
+                    Smtp_Server.Send(e_mail)
+                Next
+                Return True
+            Catch ex As Exception
+
+            End Try
+            Return False
+        End Function
+
 
         Function GetRooms(ByVal rooms As List(Of vReservationRoomDetails)) As String
             Dim html As New StringBuilder

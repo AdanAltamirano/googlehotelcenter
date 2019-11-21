@@ -63,5 +63,7 @@ namespace APIServices.Models
         public string pmsAction { get; set; }
         public int companyId { get; set; }
         public string hotelEmail { get; set; }
+        public string reservationNumber { get; set; }
+        public string ratePlan { get; set; }
     }
 }

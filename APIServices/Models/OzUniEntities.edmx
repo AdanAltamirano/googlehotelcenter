@@ -1,0 +1,177 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="OzUniModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AplicacionPortal">
+          <Key>
+            <PropertyRef Name="idAplicacionPortal" />
+          </Key>
+          <Property Name="idAplicacionPortal" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idHotel" Type="int" />
+          <Property Name="idPortal" Type="int" />
+          <Property Name="opcion" Type="int" />
+          <Property Name="IdRatePlan" Type="nvarchar" MaxLength="4" />
+          <Property Name="aplicar" Type="int" />
+        </EntityType>
+        <EntityType Name="Ciudades">
+          <Key>
+            <PropertyRef Name="IdCiudad" />
+          </Key>
+          <Property Name="IdCiudad" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdMunicipio" Type="int" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="codigo" Type="char" MaxLength="3" />
+          <Property Name="latitud" Type="float" />
+          <Property Name="longitud" Type="float" />
+          <Property Name="IdDiccionario" Type="int" />
+          <Property Name="keywords" Type="nvarchar" MaxLength="200" />
+          <Property Name="Distancia" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="RatioSearch" Type="int" />
+        </EntityType>
+        <EntityType Name="Portales">
+          <Key>
+            <PropertyRef Name="IdPortal" />
+          </Key>
+          <Property Name="IdPortal" Type="int" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="80" Nullable="false" />
+          <Property Name="Descripcion" Type="nvarchar" MaxLength="120" Nullable="false" />
+          <Property Name="PaginaWeb" Type="nvarchar" MaxLength="80" Nullable="false" />
+          <Property Name="idCorporativo" Type="int" />
+          <Property Name="idasociacion" Type="int" />
+          <Property Name="IdSegmento" Type="int" />
+          <Property Name="activo" Type="bit" />
+          <Property Name="idAfiliate" Type="int" />
+          <Property Name="idempresa" Type="int" />
+        </EntityType>
+        <EntityContainer Name="OzUniModelStoreContainer">
+          <EntitySet Name="AplicacionPortal" EntityType="Self.AplicacionPortal" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ciudades" EntityType="Self.Ciudades" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Portales" EntityType="Self.Portales" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="OzUniModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Portales">
+          <Key>
+            <PropertyRef Name="IdPortal" />
+          </Key>
+          <Property Name="IdPortal" Type="Int32" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="80" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="120" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PaginaWeb" Type="String" MaxLength="80" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="idCorporativo" Type="Int32" />
+          <Property Name="idasociacion" Type="Int32" />
+          <Property Name="IdSegmento" Type="Int32" />
+          <Property Name="activo" Type="Boolean" />
+          <Property Name="idAfiliate" Type="Int32" />
+          <Property Name="idempresa" Type="Int32" />
+        </EntityType>
+        <EntityContainer Name="OzUniEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Portales" EntityType="Self.Portales" />
+          <EntitySet Name="AplicacionPortal" EntityType="OzUniModel.AplicacionPortal" />
+          <EntitySet Name="Ciudades" EntityType="OzUniModel.Ciudades" />
+        </EntityContainer>
+        <EntityType Name="AplicacionPortal">
+          <Key>
+            <PropertyRef Name="idAplicacionPortal" />
+          </Key>
+          <Property Name="idAplicacionPortal" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idHotel" Type="Int32" />
+          <Property Name="idPortal" Type="Int32" />
+          <Property Name="opcion" Type="Int32" />
+          <Property Name="IdRatePlan" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="aplicar" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Ciudades">
+          <Key>
+            <PropertyRef Name="IdCiudad" />
+          </Key>
+          <Property Name="IdCiudad" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdMunicipio" Type="Int32" Nullable="false" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="codigo" Type="String" MaxLength="3" FixedLength="true" Unicode="false" />
+          <Property Name="latitud" Type="Double" />
+          <Property Name="longitud" Type="Double" />
+          <Property Name="IdDiccionario" Type="Int32" />
+          <Property Name="keywords" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Distancia" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="RatioSearch" Type="Int32" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="OzUniModelStoreContainer" CdmEntityContainer="OzUniEntities">
+          <EntitySetMapping Name="Portales">
+            <EntityTypeMapping TypeName="OzUniModel.Portales">
+              <MappingFragment StoreEntitySet="Portales">
+                <ScalarProperty Name="IdPortal" ColumnName="IdPortal" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="PaginaWeb" ColumnName="PaginaWeb" />
+                <ScalarProperty Name="idCorporativo" ColumnName="idCorporativo" />
+                <ScalarProperty Name="idasociacion" ColumnName="idasociacion" />
+                <ScalarProperty Name="IdSegmento" ColumnName="IdSegmento" />
+                <ScalarProperty Name="activo" ColumnName="activo" />
+                <ScalarProperty Name="idAfiliate" ColumnName="idAfiliate" />
+                <ScalarProperty Name="idempresa" ColumnName="idempresa" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AplicacionPortal">
+            <EntityTypeMapping TypeName="OzUniModel.AplicacionPortal">
+              <MappingFragment StoreEntitySet="AplicacionPortal">
+                <ScalarProperty Name="aplicar" ColumnName="aplicar" />
+                <ScalarProperty Name="IdRatePlan" ColumnName="IdRatePlan" />
+                <ScalarProperty Name="opcion" ColumnName="opcion" />
+                <ScalarProperty Name="idPortal" ColumnName="idPortal" />
+                <ScalarProperty Name="idHotel" ColumnName="idHotel" />
+                <ScalarProperty Name="idAplicacionPortal" ColumnName="idAplicacionPortal" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ciudades">
+            <EntityTypeMapping TypeName="OzUniModel.Ciudades">
+              <MappingFragment StoreEntitySet="Ciudades">
+                <ScalarProperty Name="RatioSearch" ColumnName="RatioSearch" />
+                <ScalarProperty Name="Distancia" ColumnName="Distancia" />
+                <ScalarProperty Name="keywords" ColumnName="keywords" />
+                <ScalarProperty Name="IdDiccionario" ColumnName="IdDiccionario" />
+                <ScalarProperty Name="longitud" ColumnName="longitud" />
+                <ScalarProperty Name="latitud" ColumnName="latitud" />
+                <ScalarProperty Name="codigo" ColumnName="codigo" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="IdMunicipio" ColumnName="IdMunicipio" />
+                <ScalarProperty Name="IdCiudad" ColumnName="IdCiudad" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

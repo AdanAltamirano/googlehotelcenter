@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<errors>
+  <dates>
+    <availability_portal>
+      <success>200</success>
+      <complete>Portal box is enabled</complete>
+      <fail>400</fail>
+      <error>Portal box is disabled</error>
+    </availability_portal>
+    <availability>
+      <success>200</success>
+      <complete>Availability is open</complete>
+      <fail>400</fail>
+      <error>Availability should be open</error>
+    </availability>
+    <allow_bank_deposit>
+      <success>200</success>
+      <complete>Allow deposit bank is enabled</complete>
+      <warning>300</warning>
+      <error>Allow deposit bank is disabled</error>
+    </allow_bank_deposit>
+    <property_number>
+      <success>200</success>
+      <complete>Property number is not empty</complete>
+      <fail>400</fail>
+      <error>Property number can not be empty</error>
+    </property_number>
+  </dates>
+  <creditcard>
+    <success>200</success>
+    <complete>Credit cards have been selected for booking</complete>
+    <fail>400</fail>
+    <error>No credit cards have been selected for booking</error>
+  </creditcard>
+  <rateplan>
+    <name>
+      <success>200</success>
+      <complete>English name is not empty</complete>
+      <fail>400</fail>
+      <error>English name can not be empty</error>
+    </name>
+    <name_es>
+      <success>200</success>
+      <complete>Spanish name is not empty</complete>
+      <fail>400</fail>
+      <error>Spanish name can not be empty</error>
+    </name_es>
+    <description>
+      <success>200</success>
+      <complete>English description is not empty</complete>
+      <fail>400</fail>
+      <error>English description can not be empty</error>
+    </description>
+    <description_es>
+      <success>200</success>
+      <complete>Spanish description is not empty</complete>
+      <fail>400</fail>
+      <error>Spanish description can not be empty</error>
+    </description_es>
+    <hotelpayment>
+      <success>200</success>
+      <complete>Hotel payment is enabled</complete>
+      <fail>300</fail>
+      <error>Hotel payment is disabled</error>
+    </hotelpayment>
+    <portal_availability>
+      <success>200</success>
+      <complete>This rate will be on portals</complete>
+      <fail>400</fail>
+      <error>This rate will not be on the portals</error>
+    </portal_availability>
+    <net_rate_contract>
+      <success>200</success>
+       <complete>Net rate contract has been selected</complete>
+      <fail>400</fail>
+      <error>Net rate contract has not been selected</error>
+    </net_rate_contract>
+    <prepaid_rate_plan>
+      <success>200</success>
+      <complete>The rate plan has a prepaid selected</complete>
+      <fail>400</fail>
+      <error>A prepaid for the rate plan has not been selected</error>
+    </prepaid_rate_plan>
+  </rateplan>
+  <city>
+    <success>200</success>
+    <fail>400</fail>
+    <error>Site admin city code can not be empty</error>
+  </city>
+</errors>

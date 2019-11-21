@@ -29,6 +29,8 @@
     <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
     <UseGlobalApplicationHostFile />
     <Use64BitIISExpress />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -1487,7 +1489,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API\Controllers\HotelConfigurationController.vb" />
     <Compile Include="API\Controllers\HotelsController.vb" />
+    <Compile Include="API\Controllers\PortalController.vb" />
     <Compile Include="API\Controllers\RatesController.vb" />
     <Compile Include="API\Controllers\ReservationController.vb" />
     <Compile Include="API\Controllers\RoomsController.vb" />
@@ -1496,10 +1500,11 @@
     <Compile Include="API\Helpers\HttpRequestMessage+Extensions.vb" />
     <Compile Include="API\Helpers\AuthorizeUserAttribute.vb" />
     <Compile Include="API\Helpers\UserDataHelper.vb" />
-    <Compile Include="API\Models\DateRangeRQ.vb" />
-    <Compile Include="API\Models\RatesByPlanRQ.vb" />
-    <Compile Include="API\Models\RateUpdateRQ.vb" />
-    <Compile Include="API\Models\ReservationUpdateRQ.vb" />
+    <Compile Include="API\Helpers\Models\DateRangeRQ.vb" />
+    <Compile Include="API\Helpers\Models\HotelConfig.vb" />
+    <Compile Include="API\Helpers\Models\RatesByPlanRQ.vb" />
+    <Compile Include="API\Helpers\Models\RateUpdateRQ.vb" />
+    <Compile Include="API\Helpers\Models\ReservationUpdateRQ.vb" />
     <Compile Include="App_Data\Agreement.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -4954,4 +4959,5 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
 </Project>

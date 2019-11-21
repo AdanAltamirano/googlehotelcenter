@@ -60,6 +60,13 @@ module.exports = {
             filename: 'reservation-details.aspx',
             chunks: ['commons', 'reservation_details'],
         },
+        hotel_config: {
+            entry: 'src/views/hotel-config/main.js',
+            template: 'public/hotel-config.aspx',
+            filename: 'hotel-config.aspx',
+            chunks: ['commons', 'hotel_config'],
+
+        }
         /* hotel_list: {
             entry: 'src/views/hotel-list/main.js',
             template: 'public/hotel-list.aspx',
