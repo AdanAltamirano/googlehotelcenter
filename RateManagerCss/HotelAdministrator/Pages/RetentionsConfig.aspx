@@ -270,7 +270,7 @@
             <br />
             <h2>Mensajes de Retencion</h2>
             <asp:GridView CssClass="datagrid" runat="server" ID="gridRetentionMessages"
-                AllowSorting="True" AutoGenerateColumns="False" DataKeyNames="id_retencion">
+                AllowSorting="True" AutoGenerateColumns="False" DataKeyNames="id_retencion" OnRowDeleting="gridRetentionMessages_OnRowDeleting">
                 <AlternatingRowStyle CssClass="dgAlternate" />
                 <SelectedRowStyle CssClass="dgSelected" />
                 <HeaderStyle CssClass="dgHeader"></HeaderStyle>

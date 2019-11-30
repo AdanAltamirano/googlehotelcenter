@@ -533,7 +533,7 @@ Public Class RetentionsConfig
         txtRetTimes.Text = ""
         txtRetTitle.Text = ""
 
-        btnNuevoRetencion.Visible = True
+        'btnNuevoRetencion.Visible = True
         divnuevoRetencion.Visible = False
 
         gridRetentionMessages.SelectedIndex = -1
@@ -585,6 +585,7 @@ Public Class RetentionsConfig
     End Sub
 
     Protected Sub btnNuevoCancelarRetencion_OnClick(sender As Object, e As EventArgs)
+        ClrMsgRetention()
         BindData()
     End Sub
 
