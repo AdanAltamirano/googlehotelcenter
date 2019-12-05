@@ -8,9 +8,9 @@ Vue.http.interceptors.push(Interceptor);
 const reservationList = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations{?filter,orderBy,pageSize,page}`);
 const reservationDetails = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations/{reservationId}/{patch}`);
 const creditcard = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations/{reservationId}/creditcard/{code}`);
+const sendNotification = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations/{reservationId}/sendnotification`);
 
-export default
-{
+export default {
     /**
      *
      * @param {*} filter
@@ -52,5 +52,10 @@ export default
             reservationId,
             patch,
         }, request)
+    },
+    SendNotification(reservationId) {
+        return sendNotification.get({
+            reservationId
+        })
     }
 };
