@@ -8859,4 +8859,7 @@
   <data name="01657" xml:space="preserve">
     <value>Keep</value>
   </data>
+  <data name="01658" xml:space="preserve">
+    <value>This property is a house. Only quantity 1 as inventory is permited.</value>
+  </data>
 </root>

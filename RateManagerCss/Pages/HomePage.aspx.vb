@@ -267,7 +267,12 @@ Partial Class HomePage
         lblYear.Text = PortalCulture.GetString("00312")
         rvRooms.Text = PortalCulture.GetString("00146")
         valTotalRooms.Text = PortalCulture.GetString("01395")
+        lblIsHouse.Text = PortalCulture.GetString("01658")
         'chkOnRequest.Text = PortalCulture.GetString("00314")
+
+        If (cInfoActual.IsHouse) Then
+            lblIsHouse.Visible = True
+        End If
 
     End Sub
 
@@ -718,6 +723,10 @@ Partial Class HomePage
     Private Function SaveRoom(ByVal tipoCuarto As Integer, ByVal inicio As Date, ByVal fin As Date, ByVal Rooms As Integer, ByRef dsBefore As RoomsInventoryData, ByRef dsTrans As RoomsInventoryData) As Boolean
         Dim hr As Boolean
         dsBefore = (New RoomsInventoryFacade).getInventoryByDate_Data(tipoCuarto, inicio, fin)
+
+        If (cInfoActual.IsHouse) Then
+            Rooms = 1
+        End If
 
         If tipoCuarto = 0 Then
             Dim ds As RoomsInventoryData = New RoomsInventoryData

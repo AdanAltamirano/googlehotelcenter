@@ -245,6 +245,7 @@
                                                         <td valign="bottom" align="center" colspan="3">
                                                             <asp:Button ID="btnSaveIntervals" runat="server" CssClass="button" Text='<%=PortalCulture.GetString("00008") %>'>
                                                             </asp:Button>
+                                                            <asp:Label CssClass="Validators" Visible="false" runat="server" ID="lblIsHouse">Esta propiedad es una casa. Solo se permite la cantidad de 1 en inventario.</asp:Label>
                                                         </td>
                                                     </tr>
                                                 </table>

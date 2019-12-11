@@ -419,6 +419,10 @@ Partial Class EmpresaModulo
                 If Not .IsNull(HotelDatos.FIELD_IDMONEDA) Then
                     cmbMonedas.SelectedValue = .Item(HotelDatos.FIELD_IDMONEDA)
                 End If
+                If Not .IsNull(HotelDatos.FIELD_IsHouse) AndAlso .Item(HotelDatos.FIELD_IsHouse) Then
+                    ddlCompanyType.SelectedValue = 1
+                End If
+
             End With
         End If
     End Function
@@ -700,6 +704,7 @@ Partial Class EmpresaModulo
                             If ddlCorporativos.SelectedValue <> 0 Then
                                 .Item(HotelDatos.fld_idcorporativo) = ddlCorporativos.SelectedValue
                             End If
+                            .Item(HotelDatos.FIELD_IsHouse) = CInt(ddlCompanyType.SelectedValue)
                         End With
                         With New Hoteles
                             If .ActualizaHotel(dsHotel, strError) Then
@@ -751,7 +756,7 @@ Partial Class EmpresaModulo
             If ddlCorporativos.SelectedValue <> 0 Then
                 .Item(HotelDatos.fld_idcorporativo) = ddlCorporativos.SelectedValue
             End If
-
+            .Item(HotelDatos.FIELD_IsHouse) = CInt(ddlCompanyType.SelectedValue)
         End With
         ' Add it to the table
 
