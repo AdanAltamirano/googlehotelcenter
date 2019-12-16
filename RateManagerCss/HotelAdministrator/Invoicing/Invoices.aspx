@@ -374,7 +374,7 @@
                                                         <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                                         <ItemTemplate>
                                                             <div style="position: relative; float: left; width: 150px; display: inline; display: block;">
-                                                                <asp:HyperLink ID="hypPdfComp" runat="server" ImageUrl="../../Images/invoice-receipt.jpg" Target="_blank"></asp:HyperLink>
+                                                                <asp:HyperLink ID="hypPdfComp" runat="server" ImageUrl="../../Images/invoice-receipt.jpg" ></asp:HyperLink>
                                                                 <asp:HyperLink ID="hypPdf" runat="server" ImageUrl="../../Images/factura.png"></asp:HyperLink>
                                                                 <asp:HyperLink ID="hypXml" runat="server" ImageUrl="../../Images/xml.gif"></asp:HyperLink>
                                                                 <asp:HyperLink ID="hypExc" runat="server" ImageUrl="../../Images/excel.png"></asp:HyperLink>
