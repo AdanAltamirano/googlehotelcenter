@@ -20,7 +20,7 @@
             :sort-desc="true"
             :small="true">
                 <template slot="idconfirmNumber" slot-scope="data">
-                    <b-link target="_blank" :href="'/ratemanager/rate-manager-ui/dist/reservation-details.aspx?qs=' + data.item.id">{{data.item.confirmNumber}}</b-link>
+                    <b-link target="_blank" :href="'/rate-manager-ui/dist/reservation-details.aspx?qs=' + data.item.id">{{data.item.confirmNumber}}</b-link>
                 </template>
                 <template slot="client" slot-scope="data">
                     <span v-tooltip="data.value" class="d-block text-truncate" style="width:300px;">{{data.value}}</span>
@@ -176,7 +176,7 @@ export default {
         },
         defaultSearch() {
             const x = this.defaultDates();
-            const s = `Status eq 1 and ReservationDate gt ${this.$moment(x.start).format('YYYY-MM-DD')} 
+            const s = `Status eq 1 and ReservationDate gt ${this.$moment(x.start).format('YYYY-MM-DD')}
             and ReservationDate lt ${this.$moment(x.end).format('YYYY-MM-DD')}`;
             return s;
         },
