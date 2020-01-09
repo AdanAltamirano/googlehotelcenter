@@ -1296,6 +1296,24 @@ Public Class PaginaBase
 
     End Sub
 
+    Public Function GetXMLFromObject(o As Object) As String
+        Dim sw As New System.IO.StringWriter()
+        Dim tw As New XmlTextWriter(sw)
+        Try
+            Dim serializer As New System.Xml.Serialization.XmlSerializer(o.[GetType]())
+            serializer.Serialize(tw, o)
+            Return sw.ToString()
+            'Handle Exception Code
+        Catch ex As Exception
+            sw.Close()
+            tw.Close()
+            Return ex.Message
+        Finally
+            sw.Close()
+            tw.Close()
+        End Try
+    End Function
+
     Protected Overrides Sub Render(ByVal writer As System.Web.UI.HtmlTextWriter)
 
         MyBase.Render(writer)

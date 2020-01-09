@@ -484,6 +484,7 @@
     <Content Include="bin\Albums.Facade.dll" />
     <Content Include="bin\Albums.Reglas.dll" />
     <Content Include="bin\Anthem.dll" />
+    <Content Include="bin\App_Code.dll" />
     <Content Include="bin\Autorentas.Common.dll" />
     <Content Include="bin\Autorentas.DataAccess.dll" />
     <Content Include="bin\Autorentas.Facade.dll" />
@@ -1466,11 +1467,14 @@
     <Content Include="Web References\WsConnectWcf\OTA_ResRetrieveRS.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </Content>
-    <Content Include="Web References\WsConnectWcf\Reference.map">
+    <Content Include="Web References\WsConnectWcf\OTA_HotelAvailRS.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <None Include="Web References\WsConnectWcf\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.vb</LastGenOutput>
-    </Content>
-    <Content Include="Web References\WsConnectWcf\wsConnectWCFv2.disco" />
+    </None>
+    <None Include="Web References\WsConnectWcf\wsConnectWCFv2.disco" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -1478,6 +1482,7 @@
     <Content Include="Pages\F2goGetReport.ashx" />
     <Content Include="Correos\html\Notificaciones Email Pago No Completado Call Center.rar" />
     <Content Include="packages.config" />
+    <None Include="Web References\WsConnectWcf\wsConnectWCFv2.wsdl" />
     <None Include="Web References\WsConnectWcf\wsConnectWCFv2.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -4461,7 +4466,6 @@
       <DependentUpon>ctrlChangePassword.ascx.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <Content Include="Web References\WsConnectWcf\wsConnectWCFv2.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App_Data\Agreement.xsc">
@@ -4900,10 +4904,10 @@
       <CachedAppSettingsObjectName>MySettings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>RateManager_RulesWebService_RulesWebService</CachedSettingsPropName>
     </WebReferenceUrl>
-    <WebReferenceUrl Include="http://www.test.com/WsConectividad/wsConnectWCFv2.svc">
+    <WebReferenceUrl Include="http://www.test.com/WsConnectividad-Repo/wsConnectWCFv2.svc">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\WsConnectWcf\</RelPath>
-      <UpdateFromURL>http://www.test.com/WsConectividad/wsConnectWCFv2.svc</UpdateFromURL>
+      <UpdateFromURL>http://www.test.com/WsConnectividad-Repo/wsConnectWCFv2.svc</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>

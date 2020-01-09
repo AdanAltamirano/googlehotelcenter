@@ -49,6 +49,7 @@ Partial Class Search
         IdCorporate
         IdAsociation
         IsHouse
+        IsSingleImgInv
     End Enum
 
     Private Property idSegmento() As Integer
@@ -292,6 +293,7 @@ Partial Class Search
         cInfo.UserPerfil = Grid.Items(Grid.SelectedIndex).Cells(Columns.userperfil).Text
         cInfo.IdPais = Grid.Items(Grid.SelectedIndex).Cells(Columns.idpais).Text
         cInfo.IsHouse = IIf(Grid.Items(Grid.SelectedIndex).Cells.Count > Columns.IsHouse, IIf(Grid.Items(Grid.SelectedIndex).Cells(Columns.IsHouse).Text.ToLower() = "true", True, False), False)
+        cInfo.IsSingleImgInv = IIf(Grid.Items(Grid.SelectedIndex).Cells.Count > Columns.IsSingleImgInv, IIf(Grid.Items(Grid.SelectedIndex).Cells(Columns.IsSingleImgInv).Text.ToLower() = "true", True, False), False)
 
         Integer.TryParse(Grid.Items(Grid.SelectedIndex).Cells(Columns.IdAsociation).Text, cInfo.IdAsociation)
         Integer.TryParse(Grid.Items(Grid.SelectedIndex).Cells(Columns.IdCorporate).Text, cInfo.IdCorporate)
