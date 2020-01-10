@@ -1489,6 +1489,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API\Controllers\F2GController.vb" />
     <Compile Include="API\Controllers\HotelConfigurationController.vb" />
     <Compile Include="API\Controllers\HotelsController.vb" />
     <Compile Include="API\Controllers\PortalController.vb" />

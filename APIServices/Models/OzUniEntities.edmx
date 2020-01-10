@@ -46,6 +46,9 @@
           <Property Name="idAfiliate" Type="int" />
           <Property Name="idempresa" Type="int" />
         </EntityType>
+        <Function Name="GetHotelsByCorporateId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="corporateId" Type="int" Mode="In" />
+        </Function>
         <EntityContainer Name="OzUniModelStoreContainer">
           <EntitySet Name="AplicacionPortal" EntityType="Self.AplicacionPortal" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Ciudades" EntityType="Self.Ciudades" Schema="dbo" store:Type="Tables" />
@@ -74,6 +77,9 @@
           <EntitySet Name="Portales" EntityType="Self.Portales" />
           <EntitySet Name="AplicacionPortal" EntityType="OzUniModel.AplicacionPortal" />
           <EntitySet Name="Ciudades" EntityType="OzUniModel.Ciudades" />
+          <FunctionImport Name="GetHotelsByCorporateId" ReturnType="Collection(OzUniModel.GetHotelsByCorporateId_Result)">
+            <Parameter Name="corporateId" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="AplicacionPortal">
           <Key>
@@ -101,6 +107,12 @@
           <Property Name="Distancia" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="RatioSearch" Type="Int32" />
         </EntityType>
+        <ComplexType Name="GetHotelsByCorporateId_Result">
+          <Property Type="Int32" Name="IdEmpresa" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="true" MaxLength="180" />
+          <Property Type="Int32" Name="idHotel" Nullable="false" />
+          <Property Type="Int32" Name="idCorporativo" Nullable="true" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -151,6 +163,16 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="GetHotelsByCorporateId" FunctionName="OzUniModel.Store.GetHotelsByCorporateId">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="OzUniModel.GetHotelsByCorporateId_Result">
+                <ScalarProperty Name="IdEmpresa" ColumnName="IdEmpresa" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="idHotel" ColumnName="idHotel" />
+                <ScalarProperty Name="idCorporativo" ColumnName="idCorporativo" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -165,7 +187,7 @@
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />

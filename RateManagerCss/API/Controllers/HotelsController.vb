@@ -39,6 +39,7 @@ Namespace API.Controllers
             Return HotelService.Get(HotelId)
         End Function
 
+
         Protected Overrides Sub Dispose(disposing As Boolean)
 
             If disposing Then

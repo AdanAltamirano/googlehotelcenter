@@ -62,6 +62,7 @@
   <ItemGroup>
     <Compile Include="Dictionary.cs" />
     <Compile Include="Extension\ConfigurationExtensions.cs" />
+    <Compile Include="F2GService.cs" />
     <Compile Include="HotelConfigurationService.cs" />
     <Compile Include="HotelService.cs" />
     <Compile Include="Models\AplicacionPortal.cs">
@@ -83,6 +84,7 @@
     <Compile Include="Models\DTO\DailyRate.cs" />
     <Compile Include="Models\DTO\DailyRateDetail.cs" />
     <Compile Include="Models\DTO\Excel.cs" />
+    <Compile Include="Models\DTO\F2GModel.cs" />
     <Compile Include="Models\DTO\HotelConfiguration.cs" />
     <Compile Include="Models\DTO\HotelInfo.cs" />
     <Compile Include="Models\DTO\ModifyBooking.cs" />
@@ -92,6 +94,15 @@
     <Compile Include="Models\DTO\Room.cs" />
     <Compile Include="Models\DTO\RoomInventoryInfo.cs" />
     <Compile Include="Models\DTO\UpdateRateRequest.cs" />
+    <Compile Include="Models\GetAllF2GCode_Result.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GetHotelsByCorporateId_Result.cs">
+      <DependentUpon>OzUniEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GetMappedHotelsWithRatePlan_Result.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Hoteles.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
@@ -203,6 +214,7 @@
     <None Include="App.Config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="ClassDiagram1.cd" />
     <None Include="Models\OzHoteles.edmx.diagram">
       <DependentUpon>OzHoteles.edmx</DependentUpon>
     </None>

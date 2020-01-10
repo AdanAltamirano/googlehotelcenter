@@ -27,7 +27,6 @@ namespace APIServices.Models
         public string source { get; set; }
         public string Portal { get; set; }
         public int reservationId { get; set; }
-        public string reservationNumber { get; set; }
         public string cancellationNumber { get; set; }
         public string cancellationReason { get; set; }
         public string reservationIdXProvider { get; set; }
@@ -36,7 +35,6 @@ namespace APIServices.Models
         public Nullable<bool> includesTax { get; set; }
         public decimal tax { get; set; }
         public string currency { get; set; }
-        public string ratePlan { get; set; }
         public bool IsNetRateUV { get; set; }
         public string customerName { get; set; }
         public string customerLastName { get; set; }
@@ -65,7 +63,7 @@ namespace APIServices.Models
         public string pmsAction { get; set; }
         public int companyId { get; set; }
         public string hotelEmail { get; set; }
-        //public string reservationNumber { get; set; }
-        //public string ratePlan { get; set; }
+        public string reservationNumber { get; set; }
+        public string ratePlan { get; set; }
     }
 }

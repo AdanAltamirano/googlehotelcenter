@@ -677,6 +677,14 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="GetAllF2GCode" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="corporateId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetMappedHotelsWithRatePlan" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="corporateId" Type="int" Mode="In" />
+          <Parameter Name="ratePlanF2G" Type="nchar" Mode="In" />
+          <Parameter Name="promoCode" Type="nchar" Mode="In" />
+        </Function>
         <Function Name="spModificarReservacionByid" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="idReservacion" Type="int" Mode="In" />
           <Parameter Name="NombreCL" Type="nvarchar" Mode="In" />
@@ -701,6 +709,13 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           <Parameter Name="CancelWithError" Type="bit" Mode="In" />
           <Parameter Name="SessionId" Type="nvarchar" Mode="In" />
           <Parameter Name="iduser" Type="int" Mode="In" />
+        </Function>
+        <Function Name="UpdateF2GRatePlan" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idRatePlanUv" Type="nvarchar" Mode="In" />
+          <Parameter Name="idHotel" Type="int" Mode="In" />
+          <Parameter Name="idRatePlanF2G" Type="nvarchar" Mode="In" />
+          <Parameter Name="promoCode" Type="nvarchar" Mode="In" />
+          <Parameter Name="action" Type="int" Mode="In" />
         </Function>
         <EntityContainer Name="ModelsStoreContainer">
           <EntitySet Name="ContratosNR" EntityType="Self.ContratosNR" Schema="dbo" store:Type="Tables" />
@@ -1020,6 +1035,21 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           <EntitySet Name="Corporativos" EntityType="Models.Corporativos" />
           <EntitySet Name="TarjetasHotel" EntityType="Models.TarjetasHotel" />
           <EntitySet Name="PrepagoRatesPlan" EntityType="Models.PrepagoRatesPlan" />
+          <FunctionImport Name="GetMappedHotelsWithRatePlan" ReturnType="Collection(Models.GetMappedHotelsWithRatePlan_Result)">
+            <Parameter Name="corporateId" Mode="In" Type="Int32" />
+            <Parameter Name="ratePlanF2G" Mode="In" Type="String" />
+            <Parameter Name="promoCode" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GetAllF2GCode" ReturnType="Collection(Models.GetAllF2GCode_Result)">
+          <Parameter Name="corporateId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="UpdateF2GRatePlan">
+            <Parameter Name="idRatePlanUv" Mode="In" Type="String" />
+            <Parameter Name="idHotel" Mode="In" Type="Int32" />
+            <Parameter Name="idRatePlanF2G" Mode="In" Type="String" />
+            <Parameter Name="promoCode" Mode="In" Type="String" />
+            <Parameter Name="action" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="RatesPlan">
           <Key>
@@ -1661,6 +1691,18 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           <Property Name="PrepagoTipo" Type="Int16" />
           <Property Name="PrepaymentPerc" Type="Decimal" Precision="10" Scale="4" />
         </EntityType>
+        <ComplexType Name="GetMappedHotelsWithRatePlan_Result">
+          <Property Type="Int32" Name="IdEmpresa" Nullable="false" />
+          <Property Type="Int32" Name="idHotel" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="true" MaxLength="180" />
+          <Property Type="String" Name="idRatePlan_uv" Nullable="false" MaxLength="4" />
+          <Property Type="String" Name="idrateplan_f2g" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="promoCode" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="GetAllF2GCode_Result">
+          <Property Type="String" Name="idrateplan_f2g" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="promoCode" Nullable="true" MaxLength="50" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2218,6 +2260,27 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="GetMappedHotelsWithRatePlan" FunctionName="Models.Store.GetMappedHotelsWithRatePlan">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Models.GetMappedHotelsWithRatePlan_Result">
+                <ScalarProperty Name="IdEmpresa" ColumnName="IdEmpresa" />
+                <ScalarProperty Name="idHotel" ColumnName="idHotel" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="idRatePlan_uv" ColumnName="idRatePlan_uv" />
+                <ScalarProperty Name="idrateplan_f2g" ColumnName="idrateplan_f2g" />
+                <ScalarProperty Name="promoCode" ColumnName="promoCode" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetAllF2GCode" FunctionName="Models.Store.GetAllF2GCode">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Models.GetAllF2GCode_Result">
+                <ScalarProperty Name="idrateplan_f2g" ColumnName="idrateplan_f2g" />
+                <ScalarProperty Name="promoCode" ColumnName="promoCode" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="UpdateF2GRatePlan" FunctionName="Models.Store.UpdateF2GRatePlan" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

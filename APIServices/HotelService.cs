@@ -1,6 +1,8 @@
 ﻿using APIServices.Models;
 using APIServices.Models.DTO;
 using System.Linq;
+using System.Collections.Generic;
+using System;
 
 namespace APIServices
 {
@@ -8,6 +10,7 @@ namespace APIServices
     {
 
         public OzHotelesEntities DbContext = new OzHotelesEntities();
+        OzUniEntities DbContextUnivisit = new OzUniEntities();
 
         /// <summary>
         /// Búsqueda de tarifas diarias
