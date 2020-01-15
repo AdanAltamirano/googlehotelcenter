@@ -12,6 +12,8 @@ namespace APIServices.Models
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class OzUniEntities : DbContext
     {
@@ -28,5 +30,14 @@ namespace APIServices.Models
         public virtual DbSet<Portales> Portales { get; set; }
         public virtual DbSet<AplicacionPortal> AplicacionPortal { get; set; }
         public virtual DbSet<Ciudades> Ciudades { get; set; }
+    
+        public virtual ObjectResult<GetHotelsByCorporateId_Result> GetHotelsByCorporateId(Nullable<int> corporateId)
+        {
+            var corporateIdParameter = corporateId.HasValue ?
+                new ObjectParameter("corporateId", corporateId) :
+                new ObjectParameter("corporateId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetHotelsByCorporateId_Result>("GetHotelsByCorporateId", corporateIdParameter);
+        }
     }
 }

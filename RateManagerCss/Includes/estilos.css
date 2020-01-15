@@ -2242,3 +2242,7 @@ table.HotelRatesDetailsBox thead tr td
 .table td {
     font-weight:bold;
 }
+.rates-hotels-table{
+    height:350px !important;
+    overflow-y:auto !important;
+}

@@ -144,5 +144,56 @@ namespace APIServices.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spModificarReservacionByid", idReservacionParameter, nombreCLParameter, apellidoCLParameter, totalParameter, totalNRParameter, checkInParameter, checkOutParameter);
         }
+    
+        public virtual ObjectResult<GetMappedHotelsWithRatePlan_Result> GetMappedHotelsWithRatePlan(Nullable<int> corporateId, string ratePlanF2G, string promoCode)
+        {
+            var corporateIdParameter = corporateId.HasValue ?
+                new ObjectParameter("corporateId", corporateId) :
+                new ObjectParameter("corporateId", typeof(int));
+    
+            var ratePlanF2GParameter = ratePlanF2G != null ?
+                new ObjectParameter("ratePlanF2G", ratePlanF2G) :
+                new ObjectParameter("ratePlanF2G", typeof(string));
+    
+            var promoCodeParameter = promoCode != null ?
+                new ObjectParameter("promoCode", promoCode) :
+                new ObjectParameter("promoCode", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetMappedHotelsWithRatePlan_Result>("GetMappedHotelsWithRatePlan", corporateIdParameter, ratePlanF2GParameter, promoCodeParameter);
+        }
+    
+        public virtual ObjectResult<GetAllF2GCode_Result> GetAllF2GCode(Nullable<int> corporateId)
+        {
+            var corporateIdParameter = corporateId.HasValue ?
+                new ObjectParameter("corporateId", corporateId) :
+                new ObjectParameter("corporateId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetAllF2GCode_Result>("GetAllF2GCode", corporateIdParameter);
+        }
+    
+        public virtual int UpdateF2GRatePlan(string idRatePlanUv, Nullable<int> idHotel, string idRatePlanF2G, string promoCode, Nullable<int> action)
+        {
+            var idRatePlanUvParameter = idRatePlanUv != null ?
+                new ObjectParameter("idRatePlanUv", idRatePlanUv) :
+                new ObjectParameter("idRatePlanUv", typeof(string));
+    
+            var idHotelParameter = idHotel.HasValue ?
+                new ObjectParameter("idHotel", idHotel) :
+                new ObjectParameter("idHotel", typeof(int));
+    
+            var idRatePlanF2GParameter = idRatePlanF2G != null ?
+                new ObjectParameter("idRatePlanF2G", idRatePlanF2G) :
+                new ObjectParameter("idRatePlanF2G", typeof(string));
+    
+            var promoCodeParameter = promoCode != null ?
+                new ObjectParameter("promoCode", promoCode) :
+                new ObjectParameter("promoCode", typeof(string));
+    
+            var actionParameter = action.HasValue ?
+                new ObjectParameter("action", action) :
+                new ObjectParameter("action", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateF2GRatePlan", idRatePlanUvParameter, idHotelParameter, idRatePlanF2GParameter, promoCodeParameter, actionParameter);
+        }
     }
 }

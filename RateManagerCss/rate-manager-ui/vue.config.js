@@ -66,6 +66,12 @@ module.exports = {
             filename: 'hotel-config.aspx',
             chunks: ['commons', 'hotel_config'],
 
+        },
+        mapping_f2g: {
+            entry: 'src/views/mapping-f2g/main.js',
+            template: 'public/mapping-rate-plans.aspx',
+            filename: 'mapping-rate-plans.aspx',
+            chunks: ['commons', 'mapping_f2g'],
         }
         /* hotel_list: {
             entry: 'src/views/hotel-list/main.js',
