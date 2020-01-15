@@ -25,7 +25,7 @@
         <template slot="idconfirmNumber" slot-scope="data">
           <b-link
             target="_blank"
-            :href="'/ratemanager/rate-manager-ui/dist/reservation-details.aspx?qs=' + data.item.id"
+            :href="'/ratemanagerdemo/rate-manager-ui/dist/reservation-details.aspx?qs=' + data.item.id"
           >{{data.item.confirmNumber}}</b-link>
         </template>
         <template slot="client" slot-scope="data">
