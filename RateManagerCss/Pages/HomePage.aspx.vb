@@ -1063,7 +1063,7 @@ Partial Class HomePage
             Index += 1
         Next
 
-        AvailStatusMessages.HotelCode = cInfoActual.Hotel.ToString()
+        AvailStatusMessages.HotelCode = cInfoActual.Empresa.ToString()
         AvailStatusMessages.AvailStatusMessage = AvailStatusMessage
 
         RQ.POS = POS
