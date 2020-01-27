@@ -782,7 +782,7 @@ Partial Class Hotel
                             End If
                         End With
                     End If
-
+                    cInfoActual.IsSingleImgInv = chkSingleImgInv.Checked
                     sData = getDataXML(MyBase.cInfoActual.Hotel)
                     'me.cInfoActual.perfil = nuevo perfil
                     Me.guardalog("/HotelAdministrator/PagesGeneral/Hotel.aspx", If(publish, PaginaBase.acciones.Publicar, PaginaBase.acciones.Modificar), "Modificacion de los datos del hotel", "", sDataPrev, sData)

@@ -3,6 +3,7 @@ Imports Portal.Hotel.Common.Data
 Imports Portal.General.Common.Data
 Imports Portal.General.Facade
 Imports Portal.Hotel.Facade
+
 Imports System.Text
 Imports System.IO
 
@@ -11,52 +12,52 @@ Partial Class HomePage
     Inherits PaginaBase
     Public Property SelectedMes() As Integer
         Get
-            Return viewstate("SelectedMes")
+            Return ViewState("SelectedMes")
         End Get
         Set(ByVal Value As Integer)
-            viewstate("SelectedMes") = Value
+            ViewState("SelectedMes") = Value
         End Set
     End Property
 
     Public Property SelectedYear() As String
         Get
-            Return viewstate("SelectedYear")
+            Return ViewState("SelectedYear")
         End Get
         Set(ByVal Value As String)
-            viewstate("SelectedYear") = Value
+            ViewState("SelectedYear") = Value
         End Set
     End Property
     Private Property selectedRoomCode() As String
         Get
-            Return viewstate("selectedRoomCode")
+            Return ViewState("selectedRoomCode")
         End Get
         Set(ByVal Value As String)
-            viewstate("selectedRoomCode") = Value
+            ViewState("selectedRoomCode") = Value
         End Set
     End Property
 
     Private Property selectedRoom() As Integer
         Get
-            Return viewstate("selectedRoom")
+            Return ViewState("selectedRoom")
         End Get
         Set(ByVal Value As Integer)
-            viewstate("selectedRoom") = Value
+            ViewState("selectedRoom") = Value
         End Set
     End Property
     Private Property RackRate() As String
         Get
-            Return viewstate("_RackRate")
+            Return ViewState("_RackRate")
         End Get
         Set(ByVal Value As String)
-            viewstate("_RackRate") = Value
+            ViewState("_RackRate") = Value
         End Set
     End Property
     Private Property StatusHotel() As String
         Get
-            Return viewstate("_SH")
+            Return ViewState("_SH")
         End Get
         Set(ByVal Value As String)
-            viewstate("_SH") = Value
+            ViewState("_SH") = Value
         End Set
     End Property
     'Public Property SourceName() As String
@@ -134,8 +135,8 @@ Partial Class HomePage
     Protected CtlMensajes1 As ctlMensajes
 
     Public Function getFunctionShow() As String
-        Return "javascript:var e=document.getElementById('" & Me.TxtRooms.ClientID & "'); if (eval(e.value)==0) { " & _
-             CtlMensajes1.getShow(Me.btnSaveIntervals.ClientID, "", PortalCulture.GetString("00607")) & _
+        Return "javascript:var e=document.getElementById('" & Me.TxtRooms.ClientID & "'); if (eval(e.value)==0) { " &
+             CtlMensajes1.getShow(Me.btnSaveIntervals.ClientID, "", PortalCulture.GetString("00607")) &
                  "}else{var o;o=document.getElementById('" & Me.btnSaveIntervals.ClientID & "'); o.click();}  "
 
     End Function
@@ -665,7 +666,7 @@ Partial Class HomePage
                             Catch ex As Exception
 
                             End Try
-                            
+
                             AddUpdateInventoryByInterval(selectedRoom, dsBefore)
                             sdato = Util.Utility.GetXml(dsTrans.TBL_ROOMS_INVENTORY, "UpdateInventory", dsBefore)
 
@@ -703,6 +704,8 @@ Partial Class HomePage
 
     End Sub
     Private Sub saveRowRooms(ByVal ds As RoomsInventoryData, ByVal inicio As Date, ByVal fin As Date, ByVal Rooms As Integer)
+        ds.Tables(0).Columns.Add("RoomCode", GetType(System.String))
+
         For i As Integer = 0 To Me.ddlRoomtype.Items.Count - 1
             If Me.ddlRoomtype.Items(i).Value <> 0 Then
                 Dim dr As DataRow = ds.Tables(ds.TBL_ROOMS_INVENTORY).NewRow
@@ -712,6 +715,7 @@ Partial Class HomePage
                 dr(ds.FLD_ID_ROOM_HOTEL) = Me.ddlRoomtype.Items(i).Value
                 dr(ds.FLD_NUMBER_ROOMS) = Rooms
                 dr(ds.FLD_STATUS) = 0
+                dr("RoomCode") = Me.ddlRoomtype.Items(i).Text.Split("-")(0).Trim()
                 ds.Tables(ds.TBL_ROOMS_INVENTORY).Rows.Add(dr)
                 dr.AcceptChanges()
                 dr(ds.FLD_STATUS) = dr(ds.FLD_STATUS)
@@ -736,6 +740,11 @@ Partial Class HomePage
                 hr = .update(ds, GetDataExeption)
                 dsTrans = ds
                 dsTrans.AcceptChanges()
+
+                If hr AndAlso cInfoActual.IsSingleImgInv Then
+                    TwoWayUpdate(ds)
+                End If
+
                 Return hr
             End With
         Else
@@ -743,6 +752,25 @@ Partial Class HomePage
                 ' sdatodespues = String.Format("<NewDataSet><InventarioHabitaciones>room {0} begin date {1} end date {2} rooms {3} exception {4} </InventarioHabitaciones></NewDataSet>", tipoCuarto, inicio, fin, Rooms, GetDataExeption)
                 hr = .update(tipoCuarto, inicio, fin, Rooms, 0, GetDataExeption)
                 dsTrans = (New RoomsInventoryFacade).getInventoryByDate_Data(tipoCuarto, inicio, fin)
+
+                If hr Then
+                    Dim ds As RoomsInventoryData = New RoomsInventoryData
+                    ds.Tables(0).Columns.Add("RoomCode", GetType(System.String))
+
+                    Dim dr As DataRow = ds.Tables(ds.TBL_ROOMS_INVENTORY).NewRow
+                    dr(ds.FLD_DATE) = inicio
+                    dr(ds.FLD_STARTDATE) = inicio
+                    dr(ds.FLD_ENDDATE) = fin
+                    dr(ds.FLD_ID_ROOM_HOTEL) = tipoCuarto 'Me.ddlRoomtype.Items(i).Value
+                    dr(ds.FLD_NUMBER_ROOMS) = Rooms
+                    dr(ds.FLD_STATUS) = 0
+                    dr("RoomCode") = Me.ddlRoomtype.Items(ddlRoomtype.Items.IndexOf(ddlRoomtype.Items.FindByValue(tipoCuarto))).Text.Split("-")(0).Trim()
+                    ds.Tables(ds.TBL_ROOMS_INVENTORY).Rows.Add(dr)
+                    dr.AcceptChanges()
+                    dr(ds.FLD_STATUS) = dr(ds.FLD_STATUS)
+
+                    TwoWayUpdate(ds)
+                End If
                 Return hr
             End With
         End If
@@ -750,7 +778,7 @@ Partial Class HomePage
     End Function
 
 
-    Public Function CreateAvailHtml(ByVal room As String, ByVal dsBefore As RoomsInventoryData, _
+    Public Function CreateAvailHtml(ByVal room As String, ByVal dsBefore As RoomsInventoryData,
                                     ByVal dsTrans As RoomsInventoryData, ByVal IdRoom As Integer) As String
         Dim menu As New Table
         Dim tr As TableRow
@@ -862,7 +890,7 @@ Partial Class HomePage
                         Catch ex As Exception
 
                         End Try
-                        
+
                         AddUpdateInventoryByInterval(selectedRoom, dsBefore)
                         sdato = Util.Utility.GetXml(dsTrans.TBL_ROOMS_INVENTORY, "UpdateInventoryByInterval", dsBefore)
                         AddUpdateInventoryByInterval(selectedRoom, dsTrans)
@@ -879,7 +907,7 @@ Partial Class HomePage
                 End If
             End If
         Else
-            lblRoomsError.Text = PortalCulture.GetString("00146")            
+            lblRoomsError.Text = PortalCulture.GetString("00146")
             lblRoomsError.Visible = True
         End If
         Try
@@ -890,7 +918,6 @@ Partial Class HomePage
             Me.ddlMonth.SelectedIndex = Now.Date.Month - 1
             Me.ddlyear.SelectedValue = Now.Date.Year
         End Try
-
     End Sub
 
 
@@ -988,4 +1015,81 @@ Partial Class HomePage
         Me.txtFinal.Text = searched.AddDays(Date.DaysInMonth(year, month) - 1).ToString("MM/dd/yyyy")
     End Sub
 
+    Private Sub TwoWayUpdate(ByVal dsRooms As RoomsInventoryData)
+        Dim service As New WsConnectWcf.wsConnectWCFv2
+        Dim RQ As New WsConnectWcf.OTA_HotelAvailNotifRQ
+        Dim POS(0) As WsConnectWcf.SourceType
+        POS(0) = New WsConnectWcf.SourceType
+        Dim RequestorID As New WsConnectWcf.SourceTypeRequestorID
+        Dim AvailStatusMessages As New WsConnectWcf.OTA_HotelAvailNotifRQAvailStatusMessages
+        Dim ASMQuantity As Integer = 0
+        Dim Index As Integer = 0
+
+        RQ.Version = 1
+        RequestorID.Type = "22"
+        RequestorID.ID = "IPRM"
+
+        ASMQuantity = dsRooms.Tables(0).Rows.Count - 1
+
+        Dim AvailStatusMessage(ASMQuantity) As WsConnectWcf.AvailStatusMessageType
+        For Each dr As DataRow In dsRooms.Tables(0).Rows
+            AvailStatusMessage(Index) = New WsConnectWcf.AvailStatusMessageType
+
+            Dim StatusApplicationControl As New WsConnectWcf.StatusApplicationControlType
+
+            AvailStatusMessage(Index).BookingLimit = dr(RoomsInventoryData.FLD_NUMBER_ROOMS)
+            StatusApplicationControl.InvTypeCode = dr("RoomCode")
+            StatusApplicationControl.Start = CDate(dr(RoomsInventoryData.FLD_STARTDATE)).ToString("yyyy-MM-dd").Replace("-", "")
+            StatusApplicationControl.End = CDate(dr(RoomsInventoryData.FLD_ENDDATE)).ToString("yyyy-MM-dd").Replace("-", "")
+
+            If Not Chk1.Checked Or Not Chk2.Checked Or Not Chk3.Checked Or Not Chk4.Checked Or Not Chk5.Checked Or Not Chk6.Checked Or Not Chk7.Checked Then
+                StatusApplicationControl.Mon = Chk1.Checked
+                StatusApplicationControl.Tue = Chk2.Checked
+                StatusApplicationControl.Weds = Chk3.Checked
+                StatusApplicationControl.Thur = Chk4.Checked
+                StatusApplicationControl.Fri = Chk5.Checked
+                StatusApplicationControl.Sat = Chk6.Checked
+                StatusApplicationControl.Sun = Chk7.Checked
+
+                StatusApplicationControl.MonSpecified = True
+                StatusApplicationControl.WedsSpecified = True
+                StatusApplicationControl.ThurSpecified = True
+                StatusApplicationControl.TueSpecified = True
+                StatusApplicationControl.SatSpecified = True
+                StatusApplicationControl.SunSpecified = True
+                StatusApplicationControl.FriSpecified = True
+            End If
+            AvailStatusMessage(Index).StatusApplicationControl = StatusApplicationControl
+            Index += 1
+        Next
+
+        AvailStatusMessages.HotelCode = cInfoActual.Empresa.ToString()
+        AvailStatusMessages.AvailStatusMessage = AvailStatusMessage
+
+        RQ.POS = POS
+        RQ.AvailStatusMessages = AvailStatusMessages
+        POS(0).RequestorID = RequestorID
+
+        Dim strRequest As String = MyBase.GetXMLFromObject(RQ)
+
+        Dim url As String = ConfigurationManager.AppSettings("TwoWayUpdateURL")
+        Dim strError As String = String.Empty
+        Try
+            Dim HttpReq As System.Net.HttpWebRequest = System.Net.WebRequest.Create(url)
+
+            HttpReq.Method = "POST"
+            Dim bytes() As Byte = System.Text.Encoding.ASCII.GetBytes(strRequest)
+            HttpReq.ContentType = "application/xml; encoding='utf-8'"
+            HttpReq.ContentLength = bytes.Length
+            Dim requestStream As System.IO.Stream = HttpReq.GetRequestStream()
+            requestStream.Write(bytes, 0, bytes.Length)
+            requestStream.Close()
+            Dim response As System.Net.HttpWebResponse = HttpReq.GetResponse()
+            If Not response.StatusCode = System.Net.HttpStatusCode.OK Then
+                strError = "Falló el envío de inventario a channel manager"
+            End If
+        Catch ex As Exception
+            strError = ex.Message
+        End Try
+    End Sub
 End Class

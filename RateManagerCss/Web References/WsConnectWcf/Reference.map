@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <DiscoveryClientResultsFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Results>
-    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.ContractReference" url="http://www.test.com/WsConectividad/wsConnectWCFv2.svc?wsdl" filename="wsConnectWCFv2.wsdl" />
-    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.DiscoveryDocumentReference" url="http://www.test.com/WsConectividad/wsConnectWCFv2.svc?disco" filename="wsConnectWCFv2.disco" />
-    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://www.test.com/WsConectividad/wsConnectWCFv2.svc?xsd=xsd2" filename="wsConnectWCFv2.xsd" />
-    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://www.test.com/WsConectividad/wsConnectWCFv2.svc?xsd=xsd1" filename="wsConnectWCFv20.xsd" />
-    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://www.test.com/WsConectividad/wsConnectWCFv2.svc?xsd=xsd0" filename="wsConnectWCFv21.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://www.test.com/WsConnectividad-Repo/wsConnectWCFv2.svc?xsd=xsd0" filename="wsConnectWCFv2.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://www.test.com/WsConnectividad-Repo/wsConnectWCFv2.svc?xsd=xsd2" filename="wsConnectWCFv20.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.ContractReference" url="http://www.test.com/WsConnectividad-Repo/wsConnectWCFv2.svc?wsdl" filename="wsConnectWCFv2.wsdl" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://www.test.com/WsConnectividad-Repo/wsConnectWCFv2.svc?xsd=xsd1" filename="wsConnectWCFv21.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.DiscoveryDocumentReference" url="http://www.test.com/WsConnectividad-Repo/wsConnectWCFv2.svc?disco" filename="wsConnectWCFv2.disco" />
   </Results>
 </DiscoveryClientResultsFile>
