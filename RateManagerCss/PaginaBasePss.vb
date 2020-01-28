@@ -1459,6 +1459,21 @@ Public Class PaginaBase
         End Try
         Return sPages
     End Function
+
+    Public Shared Sub WriteLog(ByVal Log As String, LogName As String)
+        Try
+            Dim path As String = AppSettings("Log_Path")
+            If System.IO.Directory.Exists(path) Then
+                Dim fileName As String = String.Format("{0}{1}{2}.log", path, LogName, DateTime.Now.ToString("yyyyMMdd"))
+                Dim osW As System.IO.StreamWriter = New System.IO.StreamWriter(fileName, True)
+                osW.WriteLine(String.Format("{0} ==> {1}", DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss ->fffffff"), Log))
+                osW.Flush()
+                osW.Close()
+            End If
+        Catch ex As Exception
+            Dim s As String = ex.Message
+        End Try
+    End Sub
 End Class
 
 Public Class AuthUser

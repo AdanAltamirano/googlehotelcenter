@@ -1071,7 +1071,7 @@ Partial Class HomePage
         POS(0).RequestorID = RequestorID
 
         Dim strRequest As String = MyBase.GetXMLFromObject(RQ)
-
+        MyBase.WriteLog(String.Format("Request: {0}", strRequest), "SingleImgInv")
         Dim url As String = ConfigurationManager.AppSettings("TwoWayUpdateURL")
         Dim strError As String = String.Empty
         Try
@@ -1086,10 +1086,16 @@ Partial Class HomePage
             requestStream.Close()
             Dim response As System.Net.HttpWebResponse = HttpReq.GetResponse()
             If Not response.StatusCode = System.Net.HttpStatusCode.OK Then
-                strError = "Falló el envío de inventario a channel manager"
+                lblError.Text = "Falló el envío de inventario a channel manager: " & response.StatusCode.ToString()
+                lblError.Visible = True
+            Else
+                MyBase.WriteLog(String.Format("Response: {0}", response.StatusCode.ToString()), "SingleImgInv")
             End If
         Catch ex As Exception
-            strError = ex.Message
+            lblError.Text = ex.Message
+            lblError.Visible = True
+
+            MyBase.WriteLog(String.Format("Response: {0}", ex.StackTrace), "SingleImgInv")
         End Try
     End Sub
 End Class
