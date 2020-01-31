@@ -394,17 +394,21 @@ warning 6002: The table/view 'OzHoteles.dbo.vHotelBasicInfo' does not have a pri
 warning 6002: The table/view 'OzHoteles.dbo.vHotelBasicInfoGalileo' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vHotelBasicInfoGalileo">
           <Key>
+            
+            
+            
+            
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="CompanyId" Type="int" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Currency" Type="nvarchar" MaxLength="3" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Currency" Type="nvarchar" MaxLength="3" />
           <Property Name="Tax" Type="numeric" Precision="2" Scale="2" Nullable="false" />
-          <Property Name="TaxIncluded" Type="bit" Nullable="false" />
+          <Property Name="TaxIncluded" Type="bit" />
           <Property Name="CorpId" Type="int" Nullable="false" />
           <Property Name="Corp" Type="varchar" MaxLength="1" Nullable="false" />
-          <Property Name="Status" Type="tinyint" Nullable="false" />
+          <Property Name="Status" Type="tinyint" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'OzHoteles.dbo.vHotelByUser' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -1360,9 +1364,9 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           <EntitySet Name="vHotelBasicInfoGalileo" EntityType="Models.vHotelBasicInfoGalileo" />
           <EntitySet Name="vReservation" EntityType="Models.vReservation" />
           <EntitySet Name="vReservationDetails" EntityType="Models.vReservationDetails" />
-          <EntitySet Name="vReservationDetailsGalileoNew" EntityType="Models.vReservationDetailsGalileoNew" />
           <EntitySet Name="vReservationGalileoNew" EntityType="Models.vReservationGalileoNew" />
           <EntitySet Name="vReservationRoomDetailsGalileo" EntityType="Models.vReservationRoomDetailsGalileo" />
+          <EntitySet Name="vReservationDetailsGalileoNew" EntityType="Models.vReservationDetailsGalileoNew" />
         </EntityContainer>
         <EntityType Name="RatesPlan">
           <Key>
@@ -1946,13 +1950,13 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" />
           <Property Name="CompanyId" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Currency" Type="String" MaxLength="3" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Currency" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
           <Property Name="Tax" Type="Decimal" Nullable="false" Precision="2" Scale="2" />
-          <Property Name="TaxIncluded" Type="Boolean" Nullable="false" />
+          <Property Name="TaxIncluded" Type="Boolean" />
           <Property Name="CorpId" Type="Int32" Nullable="false" />
           <Property Name="Corp" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Name="Status" Type="Byte" Nullable="false" />
+          <Property Name="Status" Type="Byte" />
         </EntityType>
         <EntityType Name="vReservation">
           <Key>
@@ -2056,6 +2060,59 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           <Property Name="corporateName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="hotelEmail" Type="String" MaxLength="240" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="vReservationGalileoNew">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="ReservationDate" />
+            <PropertyRef Name="CheckIn" />
+            <PropertyRef Name="CheckOut" />
+            <PropertyRef Name="Status" />
+            <PropertyRef Name="Total" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="ConfirmNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="HotelId" Type="Int32" />
+          <Property Name="Hotel" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ReservationDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="CheckIn" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="CheckOut" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Client" Type="String" MaxLength="161" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="Byte" Nullable="false" />
+          <Property Name="RoomCount" Type="Int32" />
+          <Property Name="CompanyId" Type="Int32" />
+          <Property Name="Source" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="Portal" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="Total" Type="String" Nullable="false" MaxLength="44" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="vReservationRoomDetailsGalileo">
+          <Key>
+            <PropertyRef Name="reservationId" />
+            <PropertyRef Name="roomPriceId" />
+            <PropertyRef Name="roomPreferences" />
+            <PropertyRef Name="adults" />
+            <PropertyRef Name="childrens" />
+            <PropertyRef Name="ageChildren" />
+          </Key>
+          <Property Name="roomTypeId" Type="Int32" />
+          <Property Name="reservationId" Type="Int32" Nullable="false" />
+          <Property Name="roomPriceId" Type="Int32" Nullable="false" />
+          <Property Name="roomName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="roomCode" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="roomDescription" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="roomPreferences" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="customerName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="customerLastName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="adults" Type="Byte" Nullable="false" />
+          <Property Name="extraAdults" Type="Byte" />
+          <Property Name="childrens" Type="Byte" Nullable="false" />
+          <Property Name="extraChildrens" Type="Byte" />
+          <Property Name="ageChildren" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="roomCheckIn" Type="DateTime" Precision="0" />
+          <Property Name="roomCheckOut" Type="DateTime" Precision="0" />
+          <Property Name="ratePlan" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="rateCode" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="currency" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+        </EntityType>
         <EntityType Name="vReservationDetailsGalileoNew">
           <Key>
             <PropertyRef Name="status" />
@@ -2130,59 +2187,6 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           <Property Name="corporateId" Type="Int32" Nullable="false" />
           <Property Name="corporateName" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
           <Property Name="hotelEmail" Type="Int32" />
-        </EntityType>
-        <EntityType Name="vReservationGalileoNew">
-          <Key>
-            <PropertyRef Name="Id" />
-            <PropertyRef Name="ReservationDate" />
-            <PropertyRef Name="CheckIn" />
-            <PropertyRef Name="CheckOut" />
-            <PropertyRef Name="Status" />
-            <PropertyRef Name="Total" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="ConfirmNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="HotelId" Type="Int32" />
-          <Property Name="Hotel" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ReservationDate" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="CheckIn" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="CheckOut" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="Client" Type="String" MaxLength="161" FixedLength="false" Unicode="true" />
-          <Property Name="Status" Type="Byte" Nullable="false" />
-          <Property Name="RoomCount" Type="Int32" />
-          <Property Name="CompanyId" Type="Int32" />
-          <Property Name="Source" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
-          <Property Name="Portal" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
-          <Property Name="Total" Type="String" Nullable="false" MaxLength="44" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="vReservationRoomDetailsGalileo">
-          <Key>
-            <PropertyRef Name="reservationId" />
-            <PropertyRef Name="roomPriceId" />
-            <PropertyRef Name="roomPreferences" />
-            <PropertyRef Name="adults" />
-            <PropertyRef Name="childrens" />
-            <PropertyRef Name="ageChildren" />
-          </Key>
-          <Property Name="roomTypeId" Type="Int32" />
-          <Property Name="reservationId" Type="Int32" Nullable="false" />
-          <Property Name="roomPriceId" Type="Int32" Nullable="false" />
-          <Property Name="roomName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="roomCode" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
-          <Property Name="roomDescription" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="roomPreferences" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="customerName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
-          <Property Name="customerLastName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
-          <Property Name="adults" Type="Byte" Nullable="false" />
-          <Property Name="extraAdults" Type="Byte" />
-          <Property Name="childrens" Type="Byte" Nullable="false" />
-          <Property Name="extraChildrens" Type="Byte" />
-          <Property Name="ageChildren" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="roomCheckIn" Type="DateTime" Precision="0" />
-          <Property Name="roomCheckOut" Type="DateTime" Precision="0" />
-          <Property Name="ratePlan" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
-          <Property Name="rateCode" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
-          <Property Name="currency" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -2799,6 +2803,51 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="vReservationGalileoNew">
+            <EntityTypeMapping TypeName="Models.vReservationGalileoNew">
+              <MappingFragment StoreEntitySet="vReservationGalileoNew">
+                <ScalarProperty Name="Total" ColumnName="Total" />
+                <ScalarProperty Name="Portal" ColumnName="Portal" />
+                <ScalarProperty Name="Source" ColumnName="Source" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="RoomCount" ColumnName="RoomCount" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Client" ColumnName="Client" />
+                <ScalarProperty Name="CheckOut" ColumnName="CheckOut" />
+                <ScalarProperty Name="CheckIn" ColumnName="CheckIn" />
+                <ScalarProperty Name="ReservationDate" ColumnName="ReservationDate" />
+                <ScalarProperty Name="Hotel" ColumnName="Hotel" />
+                <ScalarProperty Name="HotelId" ColumnName="HotelId" />
+                <ScalarProperty Name="ConfirmNumber" ColumnName="ConfirmNumber" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vReservationRoomDetailsGalileo">
+            <EntityTypeMapping TypeName="Models.vReservationRoomDetailsGalileo">
+              <MappingFragment StoreEntitySet="vReservationRoomDetailsGalileo">
+                <ScalarProperty Name="currency" ColumnName="currency" />
+                <ScalarProperty Name="rateCode" ColumnName="rateCode" />
+                <ScalarProperty Name="ratePlan" ColumnName="ratePlan" />
+                <ScalarProperty Name="roomCheckOut" ColumnName="roomCheckOut" />
+                <ScalarProperty Name="roomCheckIn" ColumnName="roomCheckIn" />
+                <ScalarProperty Name="ageChildren" ColumnName="ageChildren" />
+                <ScalarProperty Name="extraChildrens" ColumnName="extraChildrens" />
+                <ScalarProperty Name="childrens" ColumnName="childrens" />
+                <ScalarProperty Name="extraAdults" ColumnName="extraAdults" />
+                <ScalarProperty Name="adults" ColumnName="adults" />
+                <ScalarProperty Name="customerLastName" ColumnName="customerLastName" />
+                <ScalarProperty Name="customerName" ColumnName="customerName" />
+                <ScalarProperty Name="roomPreferences" ColumnName="roomPreferences" />
+                <ScalarProperty Name="roomDescription" ColumnName="roomDescription" />
+                <ScalarProperty Name="roomCode" ColumnName="roomCode" />
+                <ScalarProperty Name="roomName" ColumnName="roomName" />
+                <ScalarProperty Name="roomPriceId" ColumnName="roomPriceId" />
+                <ScalarProperty Name="reservationId" ColumnName="reservationId" />
+                <ScalarProperty Name="roomTypeId" ColumnName="roomTypeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="vReservationDetailsGalileoNew">
             <EntityTypeMapping TypeName="Models.vReservationDetailsGalileoNew">
               <MappingFragment StoreEntitySet="vReservationDetailsGalileoNew">
@@ -2855,51 +2904,6 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
                 <ScalarProperty Name="address" ColumnName="address" />
                 <ScalarProperty Name="hotelName" ColumnName="hotelName" />
                 <ScalarProperty Name="hotelId" ColumnName="hotelId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="vReservationGalileoNew">
-            <EntityTypeMapping TypeName="Models.vReservationGalileoNew">
-              <MappingFragment StoreEntitySet="vReservationGalileoNew">
-                <ScalarProperty Name="Total" ColumnName="Total" />
-                <ScalarProperty Name="Portal" ColumnName="Portal" />
-                <ScalarProperty Name="Source" ColumnName="Source" />
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="RoomCount" ColumnName="RoomCount" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="Client" ColumnName="Client" />
-                <ScalarProperty Name="CheckOut" ColumnName="CheckOut" />
-                <ScalarProperty Name="CheckIn" ColumnName="CheckIn" />
-                <ScalarProperty Name="ReservationDate" ColumnName="ReservationDate" />
-                <ScalarProperty Name="Hotel" ColumnName="Hotel" />
-                <ScalarProperty Name="HotelId" ColumnName="HotelId" />
-                <ScalarProperty Name="ConfirmNumber" ColumnName="ConfirmNumber" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="vReservationRoomDetailsGalileo">
-            <EntityTypeMapping TypeName="Models.vReservationRoomDetailsGalileo">
-              <MappingFragment StoreEntitySet="vReservationRoomDetailsGalileo">
-                <ScalarProperty Name="currency" ColumnName="currency" />
-                <ScalarProperty Name="rateCode" ColumnName="rateCode" />
-                <ScalarProperty Name="ratePlan" ColumnName="ratePlan" />
-                <ScalarProperty Name="roomCheckOut" ColumnName="roomCheckOut" />
-                <ScalarProperty Name="roomCheckIn" ColumnName="roomCheckIn" />
-                <ScalarProperty Name="ageChildren" ColumnName="ageChildren" />
-                <ScalarProperty Name="extraChildrens" ColumnName="extraChildrens" />
-                <ScalarProperty Name="childrens" ColumnName="childrens" />
-                <ScalarProperty Name="extraAdults" ColumnName="extraAdults" />
-                <ScalarProperty Name="adults" ColumnName="adults" />
-                <ScalarProperty Name="customerLastName" ColumnName="customerLastName" />
-                <ScalarProperty Name="customerName" ColumnName="customerName" />
-                <ScalarProperty Name="roomPreferences" ColumnName="roomPreferences" />
-                <ScalarProperty Name="roomDescription" ColumnName="roomDescription" />
-                <ScalarProperty Name="roomCode" ColumnName="roomCode" />
-                <ScalarProperty Name="roomName" ColumnName="roomName" />
-                <ScalarProperty Name="roomPriceId" ColumnName="roomPriceId" />
-                <ScalarProperty Name="reservationId" ColumnName="reservationId" />
-                <ScalarProperty Name="roomTypeId" ColumnName="roomTypeId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
