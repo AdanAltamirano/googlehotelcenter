@@ -12,7 +12,7 @@ namespace APIServices.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class vReservationDetails
+    public partial class vReservationDetailsGalileoNew
     {
         public Nullable<int> hotelId { get; set; }
         public string hotelName { get; set; }
@@ -31,7 +31,7 @@ namespace APIServices.Models
         public string cancellationNumber { get; set; }
         public string cancellationReason { get; set; }
         public string reservationIdXProvider { get; set; }
-        public decimal total { get; set; }
+        public Nullable<decimal> total { get; set; }
         public Nullable<decimal> totalNetRate { get; set; }
         public Nullable<bool> includesTax { get; set; }
         public decimal tax { get; set; }
@@ -64,8 +64,8 @@ namespace APIServices.Models
         public Nullable<bool> pmsStatus { get; set; }
         public string pmsAction { get; set; }
         public int companyId { get; set; }
-        public Nullable<int> corporateId { get; set; }
+        public int corporateId { get; set; }
         public string corporateName { get; set; }
-        public string hotelEmail { get; set; }
+        public Nullable<int> hotelEmail { get; set; }
     }
 }

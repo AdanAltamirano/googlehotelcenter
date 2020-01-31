@@ -119,6 +119,12 @@ export default {
         ctx.currentPage
       )
         .then(response => {
+          this.$root.$emit("queryString", [
+            this.filter,
+            this.formatOrder(ctx.sortBy, ctx.sortDesc),
+            ctx.perPage,
+            ctx.currentPage
+          ]);
           console.log(response);
           // establecer el total de elementos
           this.totalRows = Number(response.headers.map["x-total-count"][0]);

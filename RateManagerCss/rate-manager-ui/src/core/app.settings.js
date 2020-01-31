@@ -6,6 +6,8 @@ const appConfig = {
     session: {
         hotelId: window.app.hotelId,
         hotelName: window.app.hotelName,
+        corporateId: window.app.corporateId,
+        corporateName: window.app.corporateName
     },
     themeColors: {
         primary: '#10467a',

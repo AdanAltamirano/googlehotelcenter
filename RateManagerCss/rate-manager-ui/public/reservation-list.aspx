@@ -13,6 +13,8 @@
             {
                 hotelId: <%= Me.cInfoActual.Hotel%>,
                 language: '<%= If(Me.IdIdiomaMenu = 1, "es", "en" )%>',
+                corporateId: <%= Me.cInfoActual.IdCorporate%>,
+                corporateName: '<%= Me.cInfoActual.CorporateName%>',
             };
     </script>
     <div id="app"></div>

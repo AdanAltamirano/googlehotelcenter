@@ -115,6 +115,16 @@ Public Class PaginaBase
 
 #Region "propiedades"
 
+    'Public ReadOnly Property iduser() As Integer
+    '    Get
+    '        With New HotelSistema 'Procedimientos almacenados 
+    '            Dim corporated As DataSet = .GetCorporativos(Me.Usuario)
+    '            Dim idcoporate As Integer = corporated.Tables(0).Rows(0).Item("idcorporativo")
+    '        End With
+    '        Return 5532
+    '    End Get
+    'End Property
+
     Property ReloadMe() As Boolean
         Get
             Return _Reload
@@ -232,6 +242,20 @@ Public Class PaginaBase
         Set(ByVal Value As Integer)
             ViewState.Item("KEY_IDUSUARIO") = Value
         End Set
+    End Property
+
+    Public ReadOnly Property CorporateName As String
+        Get
+            Dim sessionValues As companyInfo = Session(SESSION_INFO)
+            Return sessionValues.CorporateName
+        End Get
+    End Property
+
+    Public ReadOnly Property CorporateId As Integer
+        Get
+            Dim sessionValues As companyInfo = Session(SESSION_INFO)
+            Return sessionValues.IdCorporate
+        End Get
     End Property
 
     Public Property PermisoUser(ByVal permiso As String) As DerechoUsuario
@@ -1222,6 +1246,14 @@ Public Class PaginaBase
             script_iframeHeight &= "</script>"
             ClientScript.RegisterStartupScript(Me.GetType(), "clientScript", script_iframeHeight)
             Context.Session("once_script") = True
+        End If
+
+        If Me.isUserChain Then
+            With New HotelSistema
+                Dim corporated As DataSet = .GetCorporativos(Me.Usuario)
+                Me.cInfoActual.IdCorporate = corporated.Tables(0).Rows(0).Item("idcorporativo")
+                Me.cInfoActual.CorporateName = corporated.Tables(0).Rows(0).Item("NombreCorp")
+            End With
         End If
     End Sub
 

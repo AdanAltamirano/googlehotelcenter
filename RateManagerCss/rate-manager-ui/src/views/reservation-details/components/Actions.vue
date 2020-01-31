@@ -1,6 +1,9 @@
 <template>
   <div class="d-flex">
-    <h4 class="text-info">{{result.hotelName}}</h4>
+    <h4 class="text-info" style="color:#10467a !important;">
+      <i class="fas fa-hotel fa-sm"></i>
+      {{result.hotelName}} {{showCorporate}}
+    </h4>
     <b-button-toolbar v-if="showCancelButton || showModifyButton" class="ml-auto">
       <b-dropdown class="mx-1" right variant="primary" :text="$t('Options')">
         <b-dropdown-item v-if="showModifyButton" @click="modify">{{$t('Modify')}}</b-dropdown-item>
@@ -226,6 +229,12 @@ export default {
     },
     showSendNotificationButton() {
       return this.result.status === 1;
+    },
+    showCorporate() {
+      if (this.result.corporateName) {
+        return "- " + this.result.corporateName;
+      }
+      return "";
     }
   }
 };

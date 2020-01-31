@@ -3,6 +3,7 @@ using APIServices.Models.DTO;
 using System.Linq;
 using System.Collections.Generic;
 using System;
+using APIServices.Extension;
 
 namespace APIServices
 {
@@ -87,6 +88,15 @@ namespace APIServices
         public IQueryable<vHotelBasicInfo> GetAll()
         {
             return DbContext.vHotelBasicInfo.AsQueryable();
+        }
+
+        public IQueryable<vHotelBasicInfo> GetAllGalileo(string corporate)
+        {
+            var hotels = DbContext.vHotelBasicInfoGalileo.
+               Where(h => h.Name.Contains(corporate)).
+                ToDTO<vHotelBasicInfoGalileo, vHotelBasicInfo>();
+
+            return hotels;
         }
     }
 }

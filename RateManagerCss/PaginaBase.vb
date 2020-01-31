@@ -1004,6 +1004,7 @@ End Class
     Implements ISerializable
 
     Public HotelName As String
+    Public CorporateName As String
     Public Rubro As Integer
     Public Empresa As Integer
     Public Hotel As Integer
@@ -1031,6 +1032,7 @@ End Class
     Public Sub New(ByVal info As System.Runtime.Serialization.SerializationInfo, ByVal context As System.Runtime.Serialization.StreamingContext)
         With info
             Me.HotelName = .GetValue("HotelName", GetType(String))
+            Me.CorporateName = .GetValue("CorporateName", GetType(String))
             Me.Rubro = .GetValue("Rubro", GetType(Integer))
             Me.Empresa = .GetValue("Empresa", GetType(Integer))
             Me.Hotel = .GetValue("Hotel", GetType(Integer))
@@ -1057,6 +1059,7 @@ End Class
     Public Sub GetObjectData(ByVal info As System.Runtime.Serialization.SerializationInfo, ByVal context As System.Runtime.Serialization.StreamingContext) Implements System.Runtime.Serialization.ISerializable.GetObjectData
         With info
             .AddValue("HotelName", Me.HotelName, GetType(String))
+            .AddValue("CorporateName", Me.CorporateName, GetType(String))
             .AddValue("Rubro", Me.Rubro, GetType(Integer))
             .AddValue("Empresa", Me.Empresa, GetType(Integer))
             .AddValue("Hotel", Me.Hotel, GetType(Integer))
