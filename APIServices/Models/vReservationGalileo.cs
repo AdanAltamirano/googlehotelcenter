@@ -12,7 +12,7 @@ namespace APIServices.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class vReservationGalileoNew
+    public partial class vReservationGalileo
     {
         public int Id { get; set; }
         public string ConfirmNumber { get; set; }

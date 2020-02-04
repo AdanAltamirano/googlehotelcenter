@@ -12,7 +12,7 @@ namespace APIServices.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class vReservationDetailsGalileoNew
+    public partial class vReservationDetailsGalileo
     {
         public Nullable<int> hotelId { get; set; }
         public string hotelName { get; set; }

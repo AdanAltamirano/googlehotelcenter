@@ -52,9 +52,9 @@ namespace APIServices.Models
         public virtual DbSet<vHotelBasicInfoGalileo> vHotelBasicInfoGalileo { get; set; }
         public virtual DbSet<vReservation> vReservation { get; set; }
         public virtual DbSet<vReservationDetails> vReservationDetails { get; set; }
-        public virtual DbSet<vReservationGalileoNew> vReservationGalileoNew { get; set; }
         public virtual DbSet<vReservationRoomDetailsGalileo> vReservationRoomDetailsGalileo { get; set; }
-        public virtual DbSet<vReservationDetailsGalileoNew> vReservationDetailsGalileoNew { get; set; }
+        public virtual DbSet<vReservationDetailsGalileo> vReservationDetailsGalileo { get; set; }
+        public virtual DbSet<vReservationGalileo> vReservationGalileo { get; set; }
     
         public virtual int spReservationCancel(Nullable<int> idReservacion, string noConfCancelGalileo, string noCancelacion, string txCode, Nullable<bool> statusConf, string systemCode, string travelAgencyName, string voucher, string wizcomPassOn, string wizcomSequenceNumber, string motivoCancelacion, Nullable<bool> cancelWithError, string sessionId, Nullable<int> iduser)
         {

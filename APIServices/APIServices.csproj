@@ -199,10 +199,10 @@
     <Compile Include="Models\vReservationDetails.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\vReservationDetailsGalileoNew.cs">
+    <Compile Include="Models\vReservationDetailsGalileo.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\vReservationGalileoNew.cs">
+    <Compile Include="Models\vReservationGalileo.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\vReservationPayments.cs">

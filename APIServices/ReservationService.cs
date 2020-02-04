@@ -26,9 +26,9 @@ namespace APIServices
         public IQueryable<vReservation> GetAllGalileo(string corporate)
         {
 
-            var reservations = dbContext.vReservationGalileoNew.
+            var reservations = dbContext.vReservationGalileo.
                 Where(h => h.Hotel.Contains(corporate)).
-                ToDTO<vReservationGalileoNew, vReservation>();
+                ToDTO<vReservationGalileo, vReservation>();
 
             return reservations;
         }
@@ -144,9 +144,9 @@ namespace APIServices
 
         public vReservationDetails GetReservationGalileo(int reservationId)
         {
-            var details = dbContext.vReservationDetailsGalileoNew.
+            var details = dbContext.vReservationDetailsGalileo.
                 FirstOrDefault(r => r.reservationId == reservationId).
-                ToDTO<vReservationDetailsGalileoNew, vReservationDetails>();
+                ToDTO<vReservationDetailsGalileo, vReservationDetails>();
 
             return details;
         }

@@ -598,8 +598,8 @@ warning 6002: The table/view 'OzHoteles.dbo.vReservationDetails' does not have a
           <Property Name="hotelEmail" Type="nvarchar" MaxLength="240" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'OzHoteles.dbo.vReservationDetailsGalileoNew' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="vReservationDetailsGalileoNew">
+warning 6002: The table/view 'OzHoteles.dbo.vReservationDetailsGalileo' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vReservationDetailsGalileo">
           <Key>
             <PropertyRef Name="status" />
             <PropertyRef Name="reservationDate" />
@@ -675,8 +675,8 @@ warning 6002: The table/view 'OzHoteles.dbo.vReservationDetailsGalileoNew' does 
           <Property Name="hotelEmail" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'OzHoteles.dbo.vReservationGalileoNew' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="vReservationGalileoNew">
+warning 6002: The table/view 'OzHoteles.dbo.vReservationGalileo' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vReservationGalileo">
           <Key>
             <PropertyRef Name="Id" />
             <PropertyRef Name="ReservationDate" />
@@ -1111,80 +1111,80 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
     [vReservationDetails].[hotelEmail] AS [hotelEmail]
     FROM [dbo].[vReservationDetails] AS [vReservationDetails]</DefiningQuery>
           </EntitySet>
-          <EntitySet Name="vReservationDetailsGalileoNew" EntityType="Self.vReservationDetailsGalileoNew" store:Type="Views" store:Schema="dbo">
+          <EntitySet Name="vReservationDetailsGalileo" EntityType="Self.vReservationDetailsGalileo" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
-    [vReservationDetailsGalileoNew].[hotelId] AS [hotelId], 
-    [vReservationDetailsGalileoNew].[hotelName] AS [hotelName], 
-    [vReservationDetailsGalileoNew].[address] AS [address], 
-    [vReservationDetailsGalileoNew].[city] AS [city], 
-    [vReservationDetailsGalileoNew].[country] AS [country], 
-    [vReservationDetailsGalileoNew].[status] AS [status], 
-    [vReservationDetailsGalileoNew].[accessCode] AS [accessCode], 
-    [vReservationDetailsGalileoNew].[reservationDate] AS [reservationDate], 
-    [vReservationDetailsGalileoNew].[checkIn] AS [checkIn], 
-    [vReservationDetailsGalileoNew].[checkOut] AS [checkOut], 
-    [vReservationDetailsGalileoNew].[source] AS [source], 
-    [vReservationDetailsGalileoNew].[Portal] AS [Portal], 
-    [vReservationDetailsGalileoNew].[reservationId] AS [reservationId], 
-    [vReservationDetailsGalileoNew].[reservationNumber] AS [reservationNumber], 
-    [vReservationDetailsGalileoNew].[cancellationNumber] AS [cancellationNumber], 
-    [vReservationDetailsGalileoNew].[cancellationReason] AS [cancellationReason], 
-    [vReservationDetailsGalileoNew].[reservationIdXProvider] AS [reservationIdXProvider], 
-    [vReservationDetailsGalileoNew].[total] AS [total], 
-    [vReservationDetailsGalileoNew].[totalNetRate] AS [totalNetRate], 
-    [vReservationDetailsGalileoNew].[includesTax] AS [includesTax], 
-    [vReservationDetailsGalileoNew].[tax] AS [tax], 
-    [vReservationDetailsGalileoNew].[currency] AS [currency], 
-    [vReservationDetailsGalileoNew].[ratePlan] AS [ratePlan], 
-    [vReservationDetailsGalileoNew].[IsNetRateUV] AS [IsNetRateUV], 
-    [vReservationDetailsGalileoNew].[customerName] AS [customerName], 
-    [vReservationDetailsGalileoNew].[customerLastName] AS [customerLastName], 
-    [vReservationDetailsGalileoNew].[customerEmail] AS [customerEmail], 
-    [vReservationDetailsGalileoNew].[customerPhone] AS [customerPhone], 
-    [vReservationDetailsGalileoNew].[paymentType] AS [paymentType], 
-    [vReservationDetailsGalileoNew].[onlinePaymentMethod] AS [onlinePaymentMethod], 
-    [vReservationDetailsGalileoNew].[authorizationNumber] AS [authorizationNumber], 
-    [vReservationDetailsGalileoNew].[cardNumber] AS [cardNumber], 
-    [vReservationDetailsGalileoNew].[cardExpMonth] AS [cardExpMonth], 
-    [vReservationDetailsGalileoNew].[cardExpYear] AS [cardExpYear], 
-    [vReservationDetailsGalileoNew].[cardCvv] AS [cardCvv], 
-    [vReservationDetailsGalileoNew].[cardCustomerName] AS [cardCustomerName], 
-    [vReservationDetailsGalileoNew].[depositAmount] AS [depositAmount], 
-    [vReservationDetailsGalileoNew].[depositCurrency] AS [depositCurrency], 
-    [vReservationDetailsGalileoNew].[depositReference] AS [depositReference], 
-    [vReservationDetailsGalileoNew].[provider] AS [provider], 
-    [vReservationDetailsGalileoNew].[rp_cancellationPolicies] AS [rp_cancellationPolicies], 
-    [vReservationDetailsGalileoNew].[rp_guaranteePolicies] AS [rp_guaranteePolicies], 
-    [vReservationDetailsGalileoNew].[rp_creditcardPolicies] AS [rp_creditcardPolicies], 
-    [vReservationDetailsGalileoNew].[h_cancellationPolicies] AS [h_cancellationPolicies], 
-    [vReservationDetailsGalileoNew].[h_guaranteePolicies] AS [h_guaranteePolicies], 
-    [vReservationDetailsGalileoNew].[h_creditcardPolicies] AS [h_creditcardPolicies], 
-    [vReservationDetailsGalileoNew].[pmsReservationNumber] AS [pmsReservationNumber], 
-    [vReservationDetailsGalileoNew].[pmsStatus] AS [pmsStatus], 
-    [vReservationDetailsGalileoNew].[pmsAction] AS [pmsAction], 
-    [vReservationDetailsGalileoNew].[companyId] AS [companyId], 
-    [vReservationDetailsGalileoNew].[corporateId] AS [corporateId], 
-    [vReservationDetailsGalileoNew].[corporateName] AS [corporateName], 
-    [vReservationDetailsGalileoNew].[hotelEmail] AS [hotelEmail]
-    FROM [dbo].[vReservationDetailsGalileoNew] AS [vReservationDetailsGalileoNew]</DefiningQuery>
+    [vReservationDetailsGalileo].[hotelId] AS [hotelId], 
+    [vReservationDetailsGalileo].[hotelName] AS [hotelName], 
+    [vReservationDetailsGalileo].[address] AS [address], 
+    [vReservationDetailsGalileo].[city] AS [city], 
+    [vReservationDetailsGalileo].[country] AS [country], 
+    [vReservationDetailsGalileo].[status] AS [status], 
+    [vReservationDetailsGalileo].[accessCode] AS [accessCode], 
+    [vReservationDetailsGalileo].[reservationDate] AS [reservationDate], 
+    [vReservationDetailsGalileo].[checkIn] AS [checkIn], 
+    [vReservationDetailsGalileo].[checkOut] AS [checkOut], 
+    [vReservationDetailsGalileo].[source] AS [source], 
+    [vReservationDetailsGalileo].[Portal] AS [Portal], 
+    [vReservationDetailsGalileo].[reservationId] AS [reservationId], 
+    [vReservationDetailsGalileo].[reservationNumber] AS [reservationNumber], 
+    [vReservationDetailsGalileo].[cancellationNumber] AS [cancellationNumber], 
+    [vReservationDetailsGalileo].[cancellationReason] AS [cancellationReason], 
+    [vReservationDetailsGalileo].[reservationIdXProvider] AS [reservationIdXProvider], 
+    [vReservationDetailsGalileo].[total] AS [total], 
+    [vReservationDetailsGalileo].[totalNetRate] AS [totalNetRate], 
+    [vReservationDetailsGalileo].[includesTax] AS [includesTax], 
+    [vReservationDetailsGalileo].[tax] AS [tax], 
+    [vReservationDetailsGalileo].[currency] AS [currency], 
+    [vReservationDetailsGalileo].[ratePlan] AS [ratePlan], 
+    [vReservationDetailsGalileo].[IsNetRateUV] AS [IsNetRateUV], 
+    [vReservationDetailsGalileo].[customerName] AS [customerName], 
+    [vReservationDetailsGalileo].[customerLastName] AS [customerLastName], 
+    [vReservationDetailsGalileo].[customerEmail] AS [customerEmail], 
+    [vReservationDetailsGalileo].[customerPhone] AS [customerPhone], 
+    [vReservationDetailsGalileo].[paymentType] AS [paymentType], 
+    [vReservationDetailsGalileo].[onlinePaymentMethod] AS [onlinePaymentMethod], 
+    [vReservationDetailsGalileo].[authorizationNumber] AS [authorizationNumber], 
+    [vReservationDetailsGalileo].[cardNumber] AS [cardNumber], 
+    [vReservationDetailsGalileo].[cardExpMonth] AS [cardExpMonth], 
+    [vReservationDetailsGalileo].[cardExpYear] AS [cardExpYear], 
+    [vReservationDetailsGalileo].[cardCvv] AS [cardCvv], 
+    [vReservationDetailsGalileo].[cardCustomerName] AS [cardCustomerName], 
+    [vReservationDetailsGalileo].[depositAmount] AS [depositAmount], 
+    [vReservationDetailsGalileo].[depositCurrency] AS [depositCurrency], 
+    [vReservationDetailsGalileo].[depositReference] AS [depositReference], 
+    [vReservationDetailsGalileo].[provider] AS [provider], 
+    [vReservationDetailsGalileo].[rp_cancellationPolicies] AS [rp_cancellationPolicies], 
+    [vReservationDetailsGalileo].[rp_guaranteePolicies] AS [rp_guaranteePolicies], 
+    [vReservationDetailsGalileo].[rp_creditcardPolicies] AS [rp_creditcardPolicies], 
+    [vReservationDetailsGalileo].[h_cancellationPolicies] AS [h_cancellationPolicies], 
+    [vReservationDetailsGalileo].[h_guaranteePolicies] AS [h_guaranteePolicies], 
+    [vReservationDetailsGalileo].[h_creditcardPolicies] AS [h_creditcardPolicies], 
+    [vReservationDetailsGalileo].[pmsReservationNumber] AS [pmsReservationNumber], 
+    [vReservationDetailsGalileo].[pmsStatus] AS [pmsStatus], 
+    [vReservationDetailsGalileo].[pmsAction] AS [pmsAction], 
+    [vReservationDetailsGalileo].[companyId] AS [companyId], 
+    [vReservationDetailsGalileo].[corporateId] AS [corporateId], 
+    [vReservationDetailsGalileo].[corporateName] AS [corporateName], 
+    [vReservationDetailsGalileo].[hotelEmail] AS [hotelEmail]
+    FROM [dbo].[vReservationDetailsGalileo] AS [vReservationDetailsGalileo]</DefiningQuery>
           </EntitySet>
-          <EntitySet Name="vReservationGalileoNew" EntityType="Self.vReservationGalileoNew" store:Type="Views" store:Schema="dbo">
+          <EntitySet Name="vReservationGalileo" EntityType="Self.vReservationGalileo" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
-    [vReservationGalileoNew].[Id] AS [Id], 
-    [vReservationGalileoNew].[ConfirmNumber] AS [ConfirmNumber], 
-    [vReservationGalileoNew].[HotelId] AS [HotelId], 
-    [vReservationGalileoNew].[Hotel] AS [Hotel], 
-    [vReservationGalileoNew].[ReservationDate] AS [ReservationDate], 
-    [vReservationGalileoNew].[CheckIn] AS [CheckIn], 
-    [vReservationGalileoNew].[CheckOut] AS [CheckOut], 
-    [vReservationGalileoNew].[Client] AS [Client], 
-    [vReservationGalileoNew].[Status] AS [Status], 
-    [vReservationGalileoNew].[RoomCount] AS [RoomCount], 
-    [vReservationGalileoNew].[CompanyId] AS [CompanyId], 
-    [vReservationGalileoNew].[Source] AS [Source], 
-    [vReservationGalileoNew].[Portal] AS [Portal], 
-    [vReservationGalileoNew].[Total] AS [Total]
-    FROM [dbo].[vReservationGalileoNew] AS [vReservationGalileoNew]</DefiningQuery>
+    [vReservationGalileo].[Id] AS [Id], 
+    [vReservationGalileo].[ConfirmNumber] AS [ConfirmNumber], 
+    [vReservationGalileo].[HotelId] AS [HotelId], 
+    [vReservationGalileo].[Hotel] AS [Hotel], 
+    [vReservationGalileo].[ReservationDate] AS [ReservationDate], 
+    [vReservationGalileo].[CheckIn] AS [CheckIn], 
+    [vReservationGalileo].[CheckOut] AS [CheckOut], 
+    [vReservationGalileo].[Client] AS [Client], 
+    [vReservationGalileo].[Status] AS [Status], 
+    [vReservationGalileo].[RoomCount] AS [RoomCount], 
+    [vReservationGalileo].[CompanyId] AS [CompanyId], 
+    [vReservationGalileo].[Source] AS [Source], 
+    [vReservationGalileo].[Portal] AS [Portal], 
+    [vReservationGalileo].[Total] AS [Total]
+    FROM [dbo].[vReservationGalileo] AS [vReservationGalileo]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vReservationPayments" EntityType="Self.vReservationPayments" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -1364,9 +1364,9 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           <EntitySet Name="vHotelBasicInfoGalileo" EntityType="Models.vHotelBasicInfoGalileo" />
           <EntitySet Name="vReservation" EntityType="Models.vReservation" />
           <EntitySet Name="vReservationDetails" EntityType="Models.vReservationDetails" />
-          <EntitySet Name="vReservationGalileoNew" EntityType="Models.vReservationGalileoNew" />
           <EntitySet Name="vReservationRoomDetailsGalileo" EntityType="Models.vReservationRoomDetailsGalileo" />
-          <EntitySet Name="vReservationDetailsGalileoNew" EntityType="Models.vReservationDetailsGalileoNew" />
+          <EntitySet Name="vReservationDetailsGalileo" EntityType="Models.vReservationDetailsGalileo" />
+          <EntitySet Name="vReservationGalileo" EntityType="Models.vReservationGalileo" />
         </EntityContainer>
         <EntityType Name="RatesPlan">
           <Key>
@@ -2060,30 +2060,6 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           <Property Name="corporateName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="hotelEmail" Type="String" MaxLength="240" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="vReservationGalileoNew">
-          <Key>
-            <PropertyRef Name="Id" />
-            <PropertyRef Name="ReservationDate" />
-            <PropertyRef Name="CheckIn" />
-            <PropertyRef Name="CheckOut" />
-            <PropertyRef Name="Status" />
-            <PropertyRef Name="Total" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="ConfirmNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="HotelId" Type="Int32" />
-          <Property Name="Hotel" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ReservationDate" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="CheckIn" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="CheckOut" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="Client" Type="String" MaxLength="161" FixedLength="false" Unicode="true" />
-          <Property Name="Status" Type="Byte" Nullable="false" />
-          <Property Name="RoomCount" Type="Int32" />
-          <Property Name="CompanyId" Type="Int32" />
-          <Property Name="Source" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
-          <Property Name="Portal" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
-          <Property Name="Total" Type="String" Nullable="false" MaxLength="44" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="vReservationRoomDetailsGalileo">
           <Key>
             <PropertyRef Name="reservationId" />
@@ -2113,7 +2089,7 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           <Property Name="rateCode" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
           <Property Name="currency" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="vReservationDetailsGalileoNew">
+        <EntityType Name="vReservationDetailsGalileo">
           <Key>
             <PropertyRef Name="status" />
             <PropertyRef Name="reservationDate" />
@@ -2187,6 +2163,30 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           <Property Name="corporateId" Type="Int32" Nullable="false" />
           <Property Name="corporateName" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
           <Property Name="hotelEmail" Type="Int32" />
+        </EntityType>
+        <EntityType Name="vReservationGalileo">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="ReservationDate" />
+            <PropertyRef Name="CheckIn" />
+            <PropertyRef Name="CheckOut" />
+            <PropertyRef Name="Status" />
+            <PropertyRef Name="Total" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="ConfirmNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="HotelId" Type="Int32" />
+          <Property Name="Hotel" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ReservationDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="CheckIn" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="CheckOut" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Client" Type="String" MaxLength="161" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="Byte" Nullable="false" />
+          <Property Name="RoomCount" Type="Int32" />
+          <Property Name="CompanyId" Type="Int32" />
+          <Property Name="Source" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="Portal" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="Total" Type="String" Nullable="false" MaxLength="44" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -2803,26 +2803,6 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="vReservationGalileoNew">
-            <EntityTypeMapping TypeName="Models.vReservationGalileoNew">
-              <MappingFragment StoreEntitySet="vReservationGalileoNew">
-                <ScalarProperty Name="Total" ColumnName="Total" />
-                <ScalarProperty Name="Portal" ColumnName="Portal" />
-                <ScalarProperty Name="Source" ColumnName="Source" />
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="RoomCount" ColumnName="RoomCount" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="Client" ColumnName="Client" />
-                <ScalarProperty Name="CheckOut" ColumnName="CheckOut" />
-                <ScalarProperty Name="CheckIn" ColumnName="CheckIn" />
-                <ScalarProperty Name="ReservationDate" ColumnName="ReservationDate" />
-                <ScalarProperty Name="Hotel" ColumnName="Hotel" />
-                <ScalarProperty Name="HotelId" ColumnName="HotelId" />
-                <ScalarProperty Name="ConfirmNumber" ColumnName="ConfirmNumber" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="vReservationRoomDetailsGalileo">
             <EntityTypeMapping TypeName="Models.vReservationRoomDetailsGalileo">
               <MappingFragment StoreEntitySet="vReservationRoomDetailsGalileo">
@@ -2848,9 +2828,9 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="vReservationDetailsGalileoNew">
-            <EntityTypeMapping TypeName="Models.vReservationDetailsGalileoNew">
-              <MappingFragment StoreEntitySet="vReservationDetailsGalileoNew">
+          <EntitySetMapping Name="vReservationDetailsGalileo">
+            <EntityTypeMapping TypeName="Models.vReservationDetailsGalileo">
+              <MappingFragment StoreEntitySet="vReservationDetailsGalileo">
                 <ScalarProperty Name="hotelEmail" ColumnName="hotelEmail" />
                 <ScalarProperty Name="corporateName" ColumnName="corporateName" />
                 <ScalarProperty Name="corporateId" ColumnName="corporateId" />
@@ -2904,6 +2884,26 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
                 <ScalarProperty Name="address" ColumnName="address" />
                 <ScalarProperty Name="hotelName" ColumnName="hotelName" />
                 <ScalarProperty Name="hotelId" ColumnName="hotelId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vReservationGalileo">
+            <EntityTypeMapping TypeName="Models.vReservationGalileo">
+              <MappingFragment StoreEntitySet="vReservationGalileo">
+                <ScalarProperty Name="Total" ColumnName="Total" />
+                <ScalarProperty Name="Portal" ColumnName="Portal" />
+                <ScalarProperty Name="Source" ColumnName="Source" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="RoomCount" ColumnName="RoomCount" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Client" ColumnName="Client" />
+                <ScalarProperty Name="CheckOut" ColumnName="CheckOut" />
+                <ScalarProperty Name="CheckIn" ColumnName="CheckIn" />
+                <ScalarProperty Name="ReservationDate" ColumnName="ReservationDate" />
+                <ScalarProperty Name="Hotel" ColumnName="Hotel" />
+                <ScalarProperty Name="HotelId" ColumnName="HotelId" />
+                <ScalarProperty Name="ConfirmNumber" ColumnName="ConfirmNumber" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
