@@ -375,6 +375,7 @@ warning 6002: The table/view 'OzHoteles.dbo.vDayRates' does not have a primary k
 warning 6002: The table/view 'OzHoteles.dbo.vHotelBasicInfo' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vHotelBasicInfo">
           <Key>
+            <PropertyRef Name="Provider" />
             <PropertyRef Name="Id" />
             <PropertyRef Name="CompanyId" />
             <PropertyRef Name="TaxIncluded" />
@@ -384,31 +385,12 @@ warning 6002: The table/view 'OzHoteles.dbo.vHotelBasicInfo' does not have a pri
           <Property Name="CompanyId" Type="int" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="180" />
           <Property Name="Currency" Type="nvarchar" MaxLength="3" />
-          <Property Name="Tax" Type="smallmoney" />
+          <Property Name="Tax" Type="numeric" Precision="10" Scale="4" />
           <Property Name="TaxIncluded" Type="bit" Nullable="false" />
           <Property Name="CorpId" Type="int" />
           <Property Name="Corp" Type="nvarchar" MaxLength="20" />
           <Property Name="Status" Type="tinyint" Nullable="false" />
-        </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'OzHoteles.dbo.vHotelBasicInfoGalileo' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="vHotelBasicInfoGalileo">
-          <Key>
-            
-            
-            
-            
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
-          <Property Name="CompanyId" Type="int" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="50" />
-          <Property Name="Currency" Type="nvarchar" MaxLength="3" />
-          <Property Name="Tax" Type="numeric" Precision="2" Scale="2" Nullable="false" />
-          <Property Name="TaxIncluded" Type="bit" />
-          <Property Name="CorpId" Type="int" Nullable="false" />
-          <Property Name="Corp" Type="varchar" MaxLength="1" Nullable="false" />
-          <Property Name="Status" Type="tinyint" />
+          <Property Name="Provider" Type="varchar" MaxLength="14" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'OzHoteles.dbo.vHotelByUser' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -496,15 +478,13 @@ warning 6002: The table/view 'OzHoteles.dbo.vReservation' does not have a primar
         <EntityType Name="vReservation">
           <Key>
             <PropertyRef Name="Id" />
-            <PropertyRef Name="ConfirmNumber" />
             <PropertyRef Name="ReservationDate" />
             <PropertyRef Name="CheckIn" />
             <PropertyRef Name="CheckOut" />
             <PropertyRef Name="Status" />
-            <PropertyRef Name="Total" />
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
-          <Property Name="ConfirmNumber" Type="nvarchar" MaxLength="24" Nullable="false" />
+          <Property Name="ConfirmNumber" Type="nvarchar" MaxLength="50" />
           <Property Name="HotelId" Type="int" />
           <Property Name="Hotel" Type="nvarchar" MaxLength="180" />
           <Property Name="ReservationDate" Type="smalldatetime" Nullable="false" />
@@ -516,21 +496,18 @@ warning 6002: The table/view 'OzHoteles.dbo.vReservation' does not have a primar
           <Property Name="CompanyId" Type="int" />
           <Property Name="Source" Type="nvarchar" MaxLength="4" />
           <Property Name="Portal" Type="nvarchar" MaxLength="80" />
-          <Property Name="Total" Type="nvarchar" MaxLength="44" Nullable="false" />
+          <Property Name="Total" Type="nvarchar" MaxLength="44" />
+          <Property Name="Provider" Type="varchar" MaxLength="14" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'OzHoteles.dbo.vReservationDetails' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vReservationDetails">
           <Key>
-            <PropertyRef Name="city" />
-            <PropertyRef Name="country" />
             <PropertyRef Name="status" />
             <PropertyRef Name="reservationDate" />
             <PropertyRef Name="checkIn" />
             <PropertyRef Name="checkOut" />
             <PropertyRef Name="reservationId" />
-            <PropertyRef Name="reservationNumber" />
-            <PropertyRef Name="total" />
             <PropertyRef Name="tax" />
             <PropertyRef Name="IsNetRateUV" />
             <PropertyRef Name="depositAmount" />
@@ -541,13 +518,12 @@ warning 6002: The table/view 'OzHoteles.dbo.vReservationDetails' does not have a
             <PropertyRef Name="h_cancellationPolicies" />
             <PropertyRef Name="h_guaranteePolicies" />
             <PropertyRef Name="h_creditcardPolicies" />
-            <PropertyRef Name="companyId" />
           </Key>
           <Property Name="hotelId" Type="int" />
           <Property Name="hotelName" Type="nvarchar" MaxLength="180" />
           <Property Name="address" Type="nvarchar" MaxLength="120" />
-          <Property Name="city" Type="nvarchar" MaxLength="30" Nullable="false" />
-          <Property Name="country" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="city" Type="nvarchar" MaxLength="50" />
+          <Property Name="country" Type="nvarchar" MaxLength="30" />
           <Property Name="status" Type="tinyint" Nullable="false" />
           <Property Name="accessCode" Type="nvarchar" MaxLength="20" />
           <Property Name="reservationDate" Type="smalldatetime" Nullable="false" />
@@ -555,12 +531,13 @@ warning 6002: The table/view 'OzHoteles.dbo.vReservationDetails' does not have a
           <Property Name="checkOut" Type="smalldatetime" Nullable="false" />
           <Property Name="source" Type="nvarchar" MaxLength="4" />
           <Property Name="Portal" Type="nvarchar" MaxLength="80" />
+          <Property Name="Provisioner" Type="varchar" MaxLength="14" />
           <Property Name="reservationId" Type="int" Nullable="false" />
-          <Property Name="reservationNumber" Type="nvarchar" MaxLength="24" Nullable="false" />
+          <Property Name="reservationNumber" Type="nvarchar" MaxLength="50" />
           <Property Name="cancellationNumber" Type="nvarchar" MaxLength="50" />
           <Property Name="cancellationReason" Type="nvarchar" MaxLength="250" />
           <Property Name="reservationIdXProvider" Type="nvarchar" MaxLength="50" />
-          <Property Name="total" Type="money" Nullable="false" />
+          <Property Name="total" Type="money" />
           <Property Name="totalNetRate" Type="money" />
           <Property Name="includesTax" Type="bit" />
           <Property Name="tax" Type="smallmoney" Nullable="false" />
@@ -592,113 +569,10 @@ warning 6002: The table/view 'OzHoteles.dbo.vReservationDetails' does not have a
           <Property Name="pmsReservationNumber" Type="nvarchar" MaxLength="20" />
           <Property Name="pmsStatus" Type="bit" />
           <Property Name="pmsAction" Type="char" MaxLength="2" />
-          <Property Name="companyId" Type="int" Nullable="false" />
+          <Property Name="companyId" Type="int" />
           <Property Name="corporateId" Type="int" />
           <Property Name="corporateName" Type="nvarchar" MaxLength="20" />
           <Property Name="hotelEmail" Type="nvarchar" MaxLength="240" />
-        </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'OzHoteles.dbo.vReservationDetailsGalileo' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="vReservationDetailsGalileo">
-          <Key>
-            <PropertyRef Name="status" />
-            <PropertyRef Name="reservationDate" />
-            <PropertyRef Name="checkIn" />
-            <PropertyRef Name="checkOut" />
-            <PropertyRef Name="reservationId" />
-            <PropertyRef Name="tax" />
-            <PropertyRef Name="IsNetRateUV" />
-            <PropertyRef Name="depositAmount" />
-            <PropertyRef Name="provider" />
-            <PropertyRef Name="rp_cancellationPolicies" />
-            <PropertyRef Name="rp_guaranteePolicies" />
-            <PropertyRef Name="rp_creditcardPolicies" />
-            <PropertyRef Name="h_cancellationPolicies" />
-            <PropertyRef Name="h_guaranteePolicies" />
-            <PropertyRef Name="h_creditcardPolicies" />
-            <PropertyRef Name="companyId" />
-            <PropertyRef Name="corporateId" />
-            <PropertyRef Name="corporateName" />
-          </Key>
-          <Property Name="hotelId" Type="int" />
-          <Property Name="hotelName" Type="nvarchar" MaxLength="50" />
-          <Property Name="address" Type="nvarchar" MaxLength="50" />
-          <Property Name="city" Type="nvarchar" MaxLength="50" />
-          <Property Name="country" Type="nvarchar" MaxLength="3" />
-          <Property Name="status" Type="tinyint" Nullable="false" />
-          <Property Name="accessCode" Type="nvarchar" MaxLength="20" />
-          <Property Name="reservationDate" Type="smalldatetime" Nullable="false" />
-          <Property Name="checkIn" Type="smalldatetime" Nullable="false" />
-          <Property Name="checkOut" Type="smalldatetime" Nullable="false" />
-          <Property Name="source" Type="nvarchar" MaxLength="4" />
-          <Property Name="Portal" Type="nvarchar" MaxLength="80" />
-          <Property Name="reservationId" Type="int" Nullable="false" />
-          <Property Name="reservationNumber" Type="nvarchar" MaxLength="50" />
-          <Property Name="cancellationNumber" Type="nvarchar" MaxLength="50" />
-          <Property Name="cancellationReason" Type="nvarchar" MaxLength="250" />
-          <Property Name="reservationIdXProvider" Type="nvarchar" MaxLength="50" />
-          <Property Name="total" Type="money" />
-          <Property Name="totalNetRate" Type="money" />
-          <Property Name="includesTax" Type="bit" />
-          <Property Name="tax" Type="smallmoney" Nullable="false" />
-          <Property Name="currency" Type="nvarchar" MaxLength="3" />
-          <Property Name="ratePlan" Type="nvarchar" MaxLength="4" />
-          <Property Name="IsNetRateUV" Type="bit" Nullable="false" />
-          <Property Name="customerName" Type="nvarchar" MaxLength="80" />
-          <Property Name="customerLastName" Type="nvarchar" MaxLength="80" />
-          <Property Name="customerEmail" Type="nvarchar" MaxLength="80" />
-          <Property Name="customerPhone" Type="nvarchar" MaxLength="38" />
-          <Property Name="paymentType" Type="int" />
-          <Property Name="onlinePaymentMethod" Type="varchar" MaxLength="9" />
-          <Property Name="authorizationNumber" Type="nvarchar" MaxLength="50" />
-          <Property Name="cardNumber" Type="ntext" />
-          <Property Name="cardExpMonth" Type="nvarchar" MaxLength="2" />
-          <Property Name="cardExpYear" Type="nvarchar" MaxLength="4" />
-          <Property Name="cardCvv" Type="ntext" />
-          <Property Name="cardCustomerName" Type="nvarchar" MaxLength="80" />
-          <Property Name="depositAmount" Type="money" Nullable="false" />
-          <Property Name="depositCurrency" Type="nvarchar" MaxLength="3" />
-          <Property Name="depositReference" Type="nvarchar" MaxLength="20" />
-          <Property Name="provider" Type="int" Nullable="false" />
-          <Property Name="rp_cancellationPolicies" Type="varchar" MaxLength="1" Nullable="false" />
-          <Property Name="rp_guaranteePolicies" Type="varchar" MaxLength="1" Nullable="false" />
-          <Property Name="rp_creditcardPolicies" Type="varchar" MaxLength="1" Nullable="false" />
-          <Property Name="h_cancellationPolicies" Type="varchar" MaxLength="1" Nullable="false" />
-          <Property Name="h_guaranteePolicies" Type="varchar" MaxLength="1" Nullable="false" />
-          <Property Name="h_creditcardPolicies" Type="varchar" MaxLength="1" Nullable="false" />
-          <Property Name="pmsReservationNumber" Type="nvarchar" MaxLength="20" />
-          <Property Name="pmsStatus" Type="bit" />
-          <Property Name="pmsAction" Type="char" MaxLength="2" />
-          <Property Name="companyId" Type="int" Nullable="false" />
-          <Property Name="corporateId" Type="int" Nullable="false" />
-          <Property Name="corporateName" Type="varchar" MaxLength="1" Nullable="false" />
-          <Property Name="hotelEmail" Type="int" />
-        </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'OzHoteles.dbo.vReservationGalileo' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="vReservationGalileo">
-          <Key>
-            <PropertyRef Name="Id" />
-            <PropertyRef Name="ReservationDate" />
-            <PropertyRef Name="CheckIn" />
-            <PropertyRef Name="CheckOut" />
-            <PropertyRef Name="Status" />
-            <PropertyRef Name="Total" />
-          </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
-          <Property Name="ConfirmNumber" Type="nvarchar" MaxLength="50" />
-          <Property Name="HotelId" Type="int" />
-          <Property Name="Hotel" Type="nvarchar" MaxLength="50" />
-          <Property Name="ReservationDate" Type="smalldatetime" Nullable="false" />
-          <Property Name="CheckIn" Type="smalldatetime" Nullable="false" />
-          <Property Name="CheckOut" Type="smalldatetime" Nullable="false" />
-          <Property Name="Client" Type="nvarchar" MaxLength="161" />
-          <Property Name="Status" Type="tinyint" Nullable="false" />
-          <Property Name="RoomCount" Type="int" />
-          <Property Name="CompanyId" Type="int" />
-          <Property Name="Source" Type="nvarchar" MaxLength="4" />
-          <Property Name="Portal" Type="nvarchar" MaxLength="80" />
-          <Property Name="Total" Type="nvarchar" MaxLength="44" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'OzHoteles.dbo.vReservationPayments' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -737,7 +611,7 @@ warning 6002: The table/view 'OzHoteles.dbo.vReservationRoomDetails' does not ha
           <Property Name="roomTypeId" Type="int" />
           <Property Name="reservationId" Type="int" Nullable="false" />
           <Property Name="roomPriceId" Type="int" Nullable="false" />
-          <Property Name="roomName" Type="nvarchar" MaxLength="80" />
+          <Property Name="roomName" Type="nvarchar" MaxLength="255" />
           <Property Name="roomCode" Type="nvarchar" MaxLength="4" />
           <Property Name="roomDescription" Type="nvarchar(max)" />
           <Property Name="roomPreferences" Type="nvarchar" MaxLength="255" Nullable="false" />
@@ -752,37 +626,6 @@ warning 6002: The table/view 'OzHoteles.dbo.vReservationRoomDetails' does not ha
           <Property Name="roomCheckOut" Type="smalldatetime" />
           <Property Name="ratePlan" Type="nvarchar" MaxLength="80" />
           <Property Name="rateCode" Type="nvarchar" MaxLength="50" />
-          <Property Name="currency" Type="nvarchar" MaxLength="3" />
-        </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'OzHoteles.dbo.vReservationRoomDetailsGalileo' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="vReservationRoomDetailsGalileo">
-          <Key>
-            <PropertyRef Name="reservationId" />
-            <PropertyRef Name="roomPriceId" />
-            <PropertyRef Name="roomPreferences" />
-            <PropertyRef Name="adults" />
-            <PropertyRef Name="childrens" />
-            <PropertyRef Name="ageChildren" />
-          </Key>
-          <Property Name="roomTypeId" Type="int" />
-          <Property Name="reservationId" Type="int" Nullable="false" />
-          <Property Name="roomPriceId" Type="int" Nullable="false" />
-          <Property Name="roomName" Type="nvarchar" MaxLength="255" />
-          <Property Name="roomCode" Type="nvarchar" MaxLength="4" />
-          <Property Name="roomDescription" Type="nvarchar" MaxLength="255" />
-          <Property Name="roomPreferences" Type="nvarchar" MaxLength="255" Nullable="false" />
-          <Property Name="customerName" Type="nvarchar" MaxLength="40" />
-          <Property Name="customerLastName" Type="nvarchar" MaxLength="40" />
-          <Property Name="adults" Type="tinyint" Nullable="false" />
-          <Property Name="extraAdults" Type="tinyint" />
-          <Property Name="childrens" Type="tinyint" Nullable="false" />
-          <Property Name="extraChildrens" Type="tinyint" />
-          <Property Name="ageChildren" Type="nvarchar" MaxLength="255" Nullable="false" />
-          <Property Name="roomCheckIn" Type="smalldatetime" />
-          <Property Name="roomCheckOut" Type="smalldatetime" />
-          <Property Name="ratePlan" Type="nvarchar" MaxLength="4" />
-          <Property Name="rateCode" Type="nvarchar" MaxLength="4" />
           <Property Name="currency" Type="nvarchar" MaxLength="3" />
         </EntityType>
         <!--Errors Found During Generation:
@@ -969,21 +812,9 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
     [vHotelBasicInfo].[TaxIncluded] AS [TaxIncluded], 
     [vHotelBasicInfo].[CorpId] AS [CorpId], 
     [vHotelBasicInfo].[Corp] AS [Corp], 
-    [vHotelBasicInfo].[Status] AS [Status]
+    [vHotelBasicInfo].[Status] AS [Status], 
+    [vHotelBasicInfo].[Provider] AS [Provider]
     FROM [dbo].[vHotelBasicInfo] AS [vHotelBasicInfo]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="vHotelBasicInfoGalileo" EntityType="Self.vHotelBasicInfoGalileo" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [vHotelBasicInfoGalileo].[Id] AS [Id], 
-    [vHotelBasicInfoGalileo].[CompanyId] AS [CompanyId], 
-    [vHotelBasicInfoGalileo].[Name] AS [Name], 
-    [vHotelBasicInfoGalileo].[Currency] AS [Currency], 
-    [vHotelBasicInfoGalileo].[Tax] AS [Tax], 
-    [vHotelBasicInfoGalileo].[TaxIncluded] AS [TaxIncluded], 
-    [vHotelBasicInfoGalileo].[CorpId] AS [CorpId], 
-    [vHotelBasicInfoGalileo].[Corp] AS [Corp], 
-    [vHotelBasicInfoGalileo].[Status] AS [Status]
-    FROM [dbo].[vHotelBasicInfoGalileo] AS [vHotelBasicInfoGalileo]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vHotelByUser" EntityType="Self.vHotelByUser" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -1051,7 +882,8 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
     [vReservation].[CompanyId] AS [CompanyId], 
     [vReservation].[Source] AS [Source], 
     [vReservation].[Portal] AS [Portal], 
-    [vReservation].[Total] AS [Total]
+    [vReservation].[Total] AS [Total], 
+    [vReservation].[Provider] AS [Provider]
     FROM [dbo].[vReservation] AS [vReservation]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vReservationDetails" EntityType="Self.vReservationDetails" store:Type="Views" store:Schema="dbo">
@@ -1068,6 +900,7 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
     [vReservationDetails].[checkOut] AS [checkOut], 
     [vReservationDetails].[source] AS [source], 
     [vReservationDetails].[Portal] AS [Portal], 
+    [vReservationDetails].[Provisioner] AS [Provisioner], 
     [vReservationDetails].[reservationId] AS [reservationId], 
     [vReservationDetails].[reservationNumber] AS [reservationNumber], 
     [vReservationDetails].[cancellationNumber] AS [cancellationNumber], 
@@ -1111,81 +944,6 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
     [vReservationDetails].[hotelEmail] AS [hotelEmail]
     FROM [dbo].[vReservationDetails] AS [vReservationDetails]</DefiningQuery>
           </EntitySet>
-          <EntitySet Name="vReservationDetailsGalileo" EntityType="Self.vReservationDetailsGalileo" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [vReservationDetailsGalileo].[hotelId] AS [hotelId], 
-    [vReservationDetailsGalileo].[hotelName] AS [hotelName], 
-    [vReservationDetailsGalileo].[address] AS [address], 
-    [vReservationDetailsGalileo].[city] AS [city], 
-    [vReservationDetailsGalileo].[country] AS [country], 
-    [vReservationDetailsGalileo].[status] AS [status], 
-    [vReservationDetailsGalileo].[accessCode] AS [accessCode], 
-    [vReservationDetailsGalileo].[reservationDate] AS [reservationDate], 
-    [vReservationDetailsGalileo].[checkIn] AS [checkIn], 
-    [vReservationDetailsGalileo].[checkOut] AS [checkOut], 
-    [vReservationDetailsGalileo].[source] AS [source], 
-    [vReservationDetailsGalileo].[Portal] AS [Portal], 
-    [vReservationDetailsGalileo].[reservationId] AS [reservationId], 
-    [vReservationDetailsGalileo].[reservationNumber] AS [reservationNumber], 
-    [vReservationDetailsGalileo].[cancellationNumber] AS [cancellationNumber], 
-    [vReservationDetailsGalileo].[cancellationReason] AS [cancellationReason], 
-    [vReservationDetailsGalileo].[reservationIdXProvider] AS [reservationIdXProvider], 
-    [vReservationDetailsGalileo].[total] AS [total], 
-    [vReservationDetailsGalileo].[totalNetRate] AS [totalNetRate], 
-    [vReservationDetailsGalileo].[includesTax] AS [includesTax], 
-    [vReservationDetailsGalileo].[tax] AS [tax], 
-    [vReservationDetailsGalileo].[currency] AS [currency], 
-    [vReservationDetailsGalileo].[ratePlan] AS [ratePlan], 
-    [vReservationDetailsGalileo].[IsNetRateUV] AS [IsNetRateUV], 
-    [vReservationDetailsGalileo].[customerName] AS [customerName], 
-    [vReservationDetailsGalileo].[customerLastName] AS [customerLastName], 
-    [vReservationDetailsGalileo].[customerEmail] AS [customerEmail], 
-    [vReservationDetailsGalileo].[customerPhone] AS [customerPhone], 
-    [vReservationDetailsGalileo].[paymentType] AS [paymentType], 
-    [vReservationDetailsGalileo].[onlinePaymentMethod] AS [onlinePaymentMethod], 
-    [vReservationDetailsGalileo].[authorizationNumber] AS [authorizationNumber], 
-    [vReservationDetailsGalileo].[cardNumber] AS [cardNumber], 
-    [vReservationDetailsGalileo].[cardExpMonth] AS [cardExpMonth], 
-    [vReservationDetailsGalileo].[cardExpYear] AS [cardExpYear], 
-    [vReservationDetailsGalileo].[cardCvv] AS [cardCvv], 
-    [vReservationDetailsGalileo].[cardCustomerName] AS [cardCustomerName], 
-    [vReservationDetailsGalileo].[depositAmount] AS [depositAmount], 
-    [vReservationDetailsGalileo].[depositCurrency] AS [depositCurrency], 
-    [vReservationDetailsGalileo].[depositReference] AS [depositReference], 
-    [vReservationDetailsGalileo].[provider] AS [provider], 
-    [vReservationDetailsGalileo].[rp_cancellationPolicies] AS [rp_cancellationPolicies], 
-    [vReservationDetailsGalileo].[rp_guaranteePolicies] AS [rp_guaranteePolicies], 
-    [vReservationDetailsGalileo].[rp_creditcardPolicies] AS [rp_creditcardPolicies], 
-    [vReservationDetailsGalileo].[h_cancellationPolicies] AS [h_cancellationPolicies], 
-    [vReservationDetailsGalileo].[h_guaranteePolicies] AS [h_guaranteePolicies], 
-    [vReservationDetailsGalileo].[h_creditcardPolicies] AS [h_creditcardPolicies], 
-    [vReservationDetailsGalileo].[pmsReservationNumber] AS [pmsReservationNumber], 
-    [vReservationDetailsGalileo].[pmsStatus] AS [pmsStatus], 
-    [vReservationDetailsGalileo].[pmsAction] AS [pmsAction], 
-    [vReservationDetailsGalileo].[companyId] AS [companyId], 
-    [vReservationDetailsGalileo].[corporateId] AS [corporateId], 
-    [vReservationDetailsGalileo].[corporateName] AS [corporateName], 
-    [vReservationDetailsGalileo].[hotelEmail] AS [hotelEmail]
-    FROM [dbo].[vReservationDetailsGalileo] AS [vReservationDetailsGalileo]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="vReservationGalileo" EntityType="Self.vReservationGalileo" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [vReservationGalileo].[Id] AS [Id], 
-    [vReservationGalileo].[ConfirmNumber] AS [ConfirmNumber], 
-    [vReservationGalileo].[HotelId] AS [HotelId], 
-    [vReservationGalileo].[Hotel] AS [Hotel], 
-    [vReservationGalileo].[ReservationDate] AS [ReservationDate], 
-    [vReservationGalileo].[CheckIn] AS [CheckIn], 
-    [vReservationGalileo].[CheckOut] AS [CheckOut], 
-    [vReservationGalileo].[Client] AS [Client], 
-    [vReservationGalileo].[Status] AS [Status], 
-    [vReservationGalileo].[RoomCount] AS [RoomCount], 
-    [vReservationGalileo].[CompanyId] AS [CompanyId], 
-    [vReservationGalileo].[Source] AS [Source], 
-    [vReservationGalileo].[Portal] AS [Portal], 
-    [vReservationGalileo].[Total] AS [Total]
-    FROM [dbo].[vReservationGalileo] AS [vReservationGalileo]</DefiningQuery>
-          </EntitySet>
           <EntitySet Name="vReservationPayments" EntityType="Self.vReservationPayments" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [vReservationPayments].[reservationId] AS [reservationId], 
@@ -1225,29 +983,6 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
     [vReservationRoomDetails].[rateCode] AS [rateCode], 
     [vReservationRoomDetails].[currency] AS [currency]
     FROM [dbo].[vReservationRoomDetails] AS [vReservationRoomDetails]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="vReservationRoomDetailsGalileo" EntityType="Self.vReservationRoomDetailsGalileo" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [vReservationRoomDetailsGalileo].[roomTypeId] AS [roomTypeId], 
-    [vReservationRoomDetailsGalileo].[reservationId] AS [reservationId], 
-    [vReservationRoomDetailsGalileo].[roomPriceId] AS [roomPriceId], 
-    [vReservationRoomDetailsGalileo].[roomName] AS [roomName], 
-    [vReservationRoomDetailsGalileo].[roomCode] AS [roomCode], 
-    [vReservationRoomDetailsGalileo].[roomDescription] AS [roomDescription], 
-    [vReservationRoomDetailsGalileo].[roomPreferences] AS [roomPreferences], 
-    [vReservationRoomDetailsGalileo].[customerName] AS [customerName], 
-    [vReservationRoomDetailsGalileo].[customerLastName] AS [customerLastName], 
-    [vReservationRoomDetailsGalileo].[adults] AS [adults], 
-    [vReservationRoomDetailsGalileo].[extraAdults] AS [extraAdults], 
-    [vReservationRoomDetailsGalileo].[childrens] AS [childrens], 
-    [vReservationRoomDetailsGalileo].[extraChildrens] AS [extraChildrens], 
-    [vReservationRoomDetailsGalileo].[ageChildren] AS [ageChildren], 
-    [vReservationRoomDetailsGalileo].[roomCheckIn] AS [roomCheckIn], 
-    [vReservationRoomDetailsGalileo].[roomCheckOut] AS [roomCheckOut], 
-    [vReservationRoomDetailsGalileo].[ratePlan] AS [ratePlan], 
-    [vReservationRoomDetailsGalileo].[rateCode] AS [rateCode], 
-    [vReservationRoomDetailsGalileo].[currency] AS [currency]
-    FROM [dbo].[vReservationRoomDetailsGalileo] AS [vReservationRoomDetailsGalileo]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="VReservationRoomPriceDetails" EntityType="Self.VReservationRoomPriceDetails" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -1341,7 +1076,6 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
             <Parameter Name="CheckIn" Mode="In" Type="DateTime" />
             <Parameter Name="CheckOut" Mode="In" Type="DateTime" />
           </FunctionImport>
-          <EntitySet Name="vReservationRoomDetails" EntityType="Models.vReservationRoomDetails" />
           <EntitySet Name="Corporativos" EntityType="Models.Corporativos" />
           <EntitySet Name="TarjetasHotel" EntityType="Models.TarjetasHotel" />
           <EntitySet Name="PrepagoRatesPlan" EntityType="Models.PrepagoRatesPlan" />
@@ -1361,12 +1095,9 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
             <Parameter Name="action" Mode="In" Type="Int32" />
           </FunctionImport>
           <EntitySet Name="vReservationPayments" EntityType="Models.vReservationPayments" />
-          <EntitySet Name="vHotelBasicInfoGalileo" EntityType="Models.vHotelBasicInfoGalileo" />
           <EntitySet Name="vReservation" EntityType="Models.vReservation" />
           <EntitySet Name="vReservationDetails" EntityType="Models.vReservationDetails" />
-          <EntitySet Name="vReservationRoomDetailsGalileo" EntityType="Models.vReservationRoomDetailsGalileo" />
-          <EntitySet Name="vReservationDetailsGalileo" EntityType="Models.vReservationDetailsGalileo" />
-          <EntitySet Name="vReservationGalileo" EntityType="Models.vReservationGalileo" />
+          <EntitySet Name="vReservationRoomDetails" EntityType="Models.vReservationRoomDetails" />
         </EntityContainer>
         <EntityType Name="RatesPlan">
           <Key>
@@ -1603,6 +1334,7 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
             <PropertyRef Name="CompanyId" />
             <PropertyRef Name="TaxIncluded" />
             <PropertyRef Name="Status" />
+            <PropertyRef Name="Provider" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" />
           <Property Name="CompanyId" Type="Int32" Nullable="false" />
@@ -1613,6 +1345,7 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           <Property Name="CorpId" Type="Int32" />
           <Property Name="Corp" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="Status" Type="Byte" Nullable="false" />
+          <Property Name="Provider" Type="String" Nullable="false" MaxLength="14" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="vDayRateDetail">
           <Key>
@@ -1851,35 +1584,6 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="vReservationRoomDetails">
-          <Key>
-            <PropertyRef Name="reservationId" />
-            <PropertyRef Name="roomPriceId" />
-            <PropertyRef Name="roomPreferences" />
-            <PropertyRef Name="adults" />
-            <PropertyRef Name="childrens" />
-            <PropertyRef Name="ageChildren" />
-          </Key>
-          <Property Name="roomTypeId" Type="Int32" />
-          <Property Name="reservationId" Type="Int32" Nullable="false" />
-          <Property Name="roomPriceId" Type="Int32" Nullable="false" />
-          <Property Name="roomName" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
-          <Property Name="roomCode" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
-          <Property Name="roomDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="roomPreferences" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="customerName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
-          <Property Name="customerLastName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
-          <Property Name="adults" Type="Byte" Nullable="false" />
-          <Property Name="extraAdults" Type="Byte" />
-          <Property Name="childrens" Type="Byte" Nullable="false" />
-          <Property Name="extraChildrens" Type="Byte" />
-          <Property Name="ageChildren" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="roomCheckIn" Type="DateTime" Precision="0" />
-          <Property Name="roomCheckOut" Type="DateTime" Precision="0" />
-          <Property Name="ratePlan" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
-          <Property Name="rateCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="currency" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="Corporativos">
           <Key>
             <PropertyRef Name="idCorporativo" />
@@ -1944,32 +1648,16 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           <Property Name="totalPay" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="currencyPay" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="vHotelBasicInfoGalileo">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="CompanyId" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Currency" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
-          <Property Name="Tax" Type="Decimal" Nullable="false" Precision="2" Scale="2" />
-          <Property Name="TaxIncluded" Type="Boolean" />
-          <Property Name="CorpId" Type="Int32" Nullable="false" />
-          <Property Name="Corp" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Name="Status" Type="Byte" />
-        </EntityType>
         <EntityType Name="vReservation">
           <Key>
             <PropertyRef Name="Id" />
-            <PropertyRef Name="ConfirmNumber" />
             <PropertyRef Name="ReservationDate" />
             <PropertyRef Name="CheckIn" />
             <PropertyRef Name="CheckOut" />
             <PropertyRef Name="Status" />
-            <PropertyRef Name="Total" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="ConfirmNumber" Type="String" Nullable="false" MaxLength="24" FixedLength="false" Unicode="true" />
+          <Property Name="ConfirmNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="HotelId" Type="Int32" />
           <Property Name="Hotel" Type="String" MaxLength="180" FixedLength="false" Unicode="true" />
           <Property Name="ReservationDate" Type="DateTime" Nullable="false" Precision="0" />
@@ -1981,19 +1669,16 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           <Property Name="CompanyId" Type="Int32" />
           <Property Name="Source" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
           <Property Name="Portal" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
-          <Property Name="Total" Type="String" Nullable="false" MaxLength="44" FixedLength="false" Unicode="true" />
+          <Property Name="Total" Type="String" MaxLength="44" FixedLength="false" Unicode="true" />
+          <Property Name="Provider" Type="String" MaxLength="14" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="vReservationDetails">
           <Key>
-            <PropertyRef Name="city" />
-            <PropertyRef Name="country" />
             <PropertyRef Name="status" />
             <PropertyRef Name="reservationDate" />
             <PropertyRef Name="checkIn" />
             <PropertyRef Name="checkOut" />
             <PropertyRef Name="reservationId" />
-            <PropertyRef Name="reservationNumber" />
-            <PropertyRef Name="total" />
             <PropertyRef Name="tax" />
             <PropertyRef Name="IsNetRateUV" />
             <PropertyRef Name="depositAmount" />
@@ -2004,13 +1689,12 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
             <PropertyRef Name="h_cancellationPolicies" />
             <PropertyRef Name="h_guaranteePolicies" />
             <PropertyRef Name="h_creditcardPolicies" />
-            <PropertyRef Name="companyId" />
           </Key>
           <Property Name="hotelId" Type="Int32" />
           <Property Name="hotelName" Type="String" MaxLength="180" FixedLength="false" Unicode="true" />
           <Property Name="address" Type="String" MaxLength="120" FixedLength="false" Unicode="true" />
-          <Property Name="city" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
-          <Property Name="country" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="city" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="country" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
           <Property Name="status" Type="Byte" Nullable="false" />
           <Property Name="accessCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="reservationDate" Type="DateTime" Nullable="false" Precision="0" />
@@ -2018,12 +1702,13 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           <Property Name="checkOut" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="source" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
           <Property Name="Portal" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="Provisioner" Type="String" MaxLength="14" FixedLength="false" Unicode="false" />
           <Property Name="reservationId" Type="Int32" Nullable="false" />
-          <Property Name="reservationNumber" Type="String" Nullable="false" MaxLength="24" FixedLength="false" Unicode="true" />
+          <Property Name="reservationNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="cancellationNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="cancellationReason" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="reservationIdXProvider" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="total" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="total" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="totalNetRate" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="includesTax" Type="Boolean" />
           <Property Name="tax" Type="Decimal" Nullable="false" Precision="10" Scale="4" />
@@ -2055,12 +1740,12 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           <Property Name="pmsReservationNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="pmsStatus" Type="Boolean" />
           <Property Name="pmsAction" Type="String" MaxLength="2" FixedLength="true" Unicode="false" />
-          <Property Name="companyId" Type="Int32" Nullable="false" />
+          <Property Name="companyId" Type="Int32" />
           <Property Name="corporateId" Type="Int32" />
           <Property Name="corporateName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="hotelEmail" Type="String" MaxLength="240" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="vReservationRoomDetailsGalileo">
+        <EntityType Name="vReservationRoomDetails">
           <Key>
             <PropertyRef Name="reservationId" />
             <PropertyRef Name="roomPriceId" />
@@ -2074,7 +1759,7 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           <Property Name="roomPriceId" Type="Int32" Nullable="false" />
           <Property Name="roomName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="roomCode" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
-          <Property Name="roomDescription" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="roomDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="roomPreferences" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="customerName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
           <Property Name="customerLastName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
@@ -2085,108 +1770,9 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           <Property Name="ageChildren" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="roomCheckIn" Type="DateTime" Precision="0" />
           <Property Name="roomCheckOut" Type="DateTime" Precision="0" />
-          <Property Name="ratePlan" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
-          <Property Name="rateCode" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="ratePlan" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="rateCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="currency" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="vReservationDetailsGalileo">
-          <Key>
-            <PropertyRef Name="status" />
-            <PropertyRef Name="reservationDate" />
-            <PropertyRef Name="checkIn" />
-            <PropertyRef Name="checkOut" />
-            <PropertyRef Name="reservationId" />
-            <PropertyRef Name="tax" />
-            <PropertyRef Name="IsNetRateUV" />
-            <PropertyRef Name="depositAmount" />
-            <PropertyRef Name="provider" />
-            <PropertyRef Name="rp_cancellationPolicies" />
-            <PropertyRef Name="rp_guaranteePolicies" />
-            <PropertyRef Name="rp_creditcardPolicies" />
-            <PropertyRef Name="h_cancellationPolicies" />
-            <PropertyRef Name="h_guaranteePolicies" />
-            <PropertyRef Name="h_creditcardPolicies" />
-            <PropertyRef Name="companyId" />
-            <PropertyRef Name="corporateId" />
-            <PropertyRef Name="corporateName" />
-          </Key>
-          <Property Name="hotelId" Type="Int32" />
-          <Property Name="hotelName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="city" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="country" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
-          <Property Name="status" Type="Byte" Nullable="false" />
-          <Property Name="accessCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="reservationDate" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="checkIn" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="checkOut" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="source" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
-          <Property Name="Portal" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
-          <Property Name="reservationId" Type="Int32" Nullable="false" />
-          <Property Name="reservationNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="cancellationNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="cancellationReason" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="reservationIdXProvider" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="total" Type="Decimal" Precision="19" Scale="4" />
-          <Property Name="totalNetRate" Type="Decimal" Precision="19" Scale="4" />
-          <Property Name="includesTax" Type="Boolean" />
-          <Property Name="tax" Type="Decimal" Nullable="false" Precision="10" Scale="4" />
-          <Property Name="currency" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
-          <Property Name="ratePlan" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
-          <Property Name="IsNetRateUV" Type="Boolean" Nullable="false" />
-          <Property Name="customerName" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
-          <Property Name="customerLastName" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
-          <Property Name="customerEmail" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
-          <Property Name="customerPhone" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
-          <Property Name="paymentType" Type="Int32" />
-          <Property Name="onlinePaymentMethod" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
-          <Property Name="authorizationNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="cardNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="cardExpMonth" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
-          <Property Name="cardExpYear" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
-          <Property Name="cardCvv" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="cardCustomerName" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
-          <Property Name="depositAmount" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
-          <Property Name="depositCurrency" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
-          <Property Name="depositReference" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="provider" Type="Int32" Nullable="false" />
-          <Property Name="rp_cancellationPolicies" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Name="rp_guaranteePolicies" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Name="rp_creditcardPolicies" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Name="h_cancellationPolicies" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Name="h_guaranteePolicies" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Name="h_creditcardPolicies" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Name="pmsReservationNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="pmsStatus" Type="Boolean" />
-          <Property Name="pmsAction" Type="String" MaxLength="2" FixedLength="true" Unicode="false" />
-          <Property Name="companyId" Type="Int32" Nullable="false" />
-          <Property Name="corporateId" Type="Int32" Nullable="false" />
-          <Property Name="corporateName" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Name="hotelEmail" Type="Int32" />
-        </EntityType>
-        <EntityType Name="vReservationGalileo">
-          <Key>
-            <PropertyRef Name="Id" />
-            <PropertyRef Name="ReservationDate" />
-            <PropertyRef Name="CheckIn" />
-            <PropertyRef Name="CheckOut" />
-            <PropertyRef Name="Status" />
-            <PropertyRef Name="Total" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="ConfirmNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="HotelId" Type="Int32" />
-          <Property Name="Hotel" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ReservationDate" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="CheckIn" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="CheckOut" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="Client" Type="String" MaxLength="161" FixedLength="false" Unicode="true" />
-          <Property Name="Status" Type="Byte" Nullable="false" />
-          <Property Name="RoomCount" Type="Int32" />
-          <Property Name="CompanyId" Type="Int32" />
-          <Property Name="Source" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
-          <Property Name="Portal" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
-          <Property Name="Total" Type="String" Nullable="false" MaxLength="44" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -2392,6 +1978,7 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           <EntitySetMapping Name="vHotelBasicInfo">
             <EntityTypeMapping TypeName="Models.vHotelBasicInfo">
               <MappingFragment StoreEntitySet="vHotelBasicInfo">
+                <ScalarProperty Name="Provider" ColumnName="Provider" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="Corp" ColumnName="Corp" />
                 <ScalarProperty Name="CorpId" ColumnName="CorpId" />
@@ -2610,31 +2197,6 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="spModificarReservacionByid" FunctionName="Models.Store.spModificarReservacionByid" />
-          <EntitySetMapping Name="vReservationRoomDetails">
-            <EntityTypeMapping TypeName="Models.vReservationRoomDetails">
-              <MappingFragment StoreEntitySet="vReservationRoomDetails">
-                <ScalarProperty Name="currency" ColumnName="currency" />
-                <ScalarProperty Name="rateCode" ColumnName="rateCode" />
-                <ScalarProperty Name="ratePlan" ColumnName="ratePlan" />
-                <ScalarProperty Name="roomCheckOut" ColumnName="roomCheckOut" />
-                <ScalarProperty Name="roomCheckIn" ColumnName="roomCheckIn" />
-                <ScalarProperty Name="ageChildren" ColumnName="ageChildren" />
-                <ScalarProperty Name="extraChildrens" ColumnName="extraChildrens" />
-                <ScalarProperty Name="childrens" ColumnName="childrens" />
-                <ScalarProperty Name="extraAdults" ColumnName="extraAdults" />
-                <ScalarProperty Name="adults" ColumnName="adults" />
-                <ScalarProperty Name="customerLastName" ColumnName="customerLastName" />
-                <ScalarProperty Name="customerName" ColumnName="customerName" />
-                <ScalarProperty Name="roomPreferences" ColumnName="roomPreferences" />
-                <ScalarProperty Name="roomDescription" ColumnName="roomDescription" />
-                <ScalarProperty Name="roomCode" ColumnName="roomCode" />
-                <ScalarProperty Name="roomName" ColumnName="roomName" />
-                <ScalarProperty Name="roomPriceId" ColumnName="roomPriceId" />
-                <ScalarProperty Name="reservationId" ColumnName="reservationId" />
-                <ScalarProperty Name="roomTypeId" ColumnName="roomTypeId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Corporativos">
             <EntityTypeMapping TypeName="Models.Corporativos">
               <MappingFragment StoreEntitySet="Corporativos">
@@ -2709,24 +2271,10 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="vHotelBasicInfoGalileo">
-            <EntityTypeMapping TypeName="Models.vHotelBasicInfoGalileo">
-              <MappingFragment StoreEntitySet="vHotelBasicInfoGalileo">
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="Corp" ColumnName="Corp" />
-                <ScalarProperty Name="CorpId" ColumnName="CorpId" />
-                <ScalarProperty Name="TaxIncluded" ColumnName="TaxIncluded" />
-                <ScalarProperty Name="Tax" ColumnName="Tax" />
-                <ScalarProperty Name="Currency" ColumnName="Currency" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="vReservation">
             <EntityTypeMapping TypeName="Models.vReservation">
               <MappingFragment StoreEntitySet="vReservation">
+                <ScalarProperty Name="Provider" ColumnName="Provider" />
                 <ScalarProperty Name="Total" ColumnName="Total" />
                 <ScalarProperty Name="Portal" ColumnName="Portal" />
                 <ScalarProperty Name="Source" ColumnName="Source" />
@@ -2788,6 +2336,7 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
                 <ScalarProperty Name="cancellationNumber" ColumnName="cancellationNumber" />
                 <ScalarProperty Name="reservationNumber" ColumnName="reservationNumber" />
                 <ScalarProperty Name="reservationId" ColumnName="reservationId" />
+                <ScalarProperty Name="Provisioner" ColumnName="Provisioner" />
                 <ScalarProperty Name="Portal" ColumnName="Portal" />
                 <ScalarProperty Name="source" ColumnName="source" />
                 <ScalarProperty Name="checkOut" ColumnName="checkOut" />
@@ -2803,9 +2352,9 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="vReservationRoomDetailsGalileo">
-            <EntityTypeMapping TypeName="Models.vReservationRoomDetailsGalileo">
-              <MappingFragment StoreEntitySet="vReservationRoomDetailsGalileo">
+          <EntitySetMapping Name="vReservationRoomDetails">
+            <EntityTypeMapping TypeName="Models.vReservationRoomDetails">
+              <MappingFragment StoreEntitySet="vReservationRoomDetails">
                 <ScalarProperty Name="currency" ColumnName="currency" />
                 <ScalarProperty Name="rateCode" ColumnName="rateCode" />
                 <ScalarProperty Name="ratePlan" ColumnName="ratePlan" />
@@ -2825,85 +2374,6 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
                 <ScalarProperty Name="roomPriceId" ColumnName="roomPriceId" />
                 <ScalarProperty Name="reservationId" ColumnName="reservationId" />
                 <ScalarProperty Name="roomTypeId" ColumnName="roomTypeId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="vReservationDetailsGalileo">
-            <EntityTypeMapping TypeName="Models.vReservationDetailsGalileo">
-              <MappingFragment StoreEntitySet="vReservationDetailsGalileo">
-                <ScalarProperty Name="hotelEmail" ColumnName="hotelEmail" />
-                <ScalarProperty Name="corporateName" ColumnName="corporateName" />
-                <ScalarProperty Name="corporateId" ColumnName="corporateId" />
-                <ScalarProperty Name="companyId" ColumnName="companyId" />
-                <ScalarProperty Name="pmsAction" ColumnName="pmsAction" />
-                <ScalarProperty Name="pmsStatus" ColumnName="pmsStatus" />
-                <ScalarProperty Name="pmsReservationNumber" ColumnName="pmsReservationNumber" />
-                <ScalarProperty Name="h_creditcardPolicies" ColumnName="h_creditcardPolicies" />
-                <ScalarProperty Name="h_guaranteePolicies" ColumnName="h_guaranteePolicies" />
-                <ScalarProperty Name="h_cancellationPolicies" ColumnName="h_cancellationPolicies" />
-                <ScalarProperty Name="rp_creditcardPolicies" ColumnName="rp_creditcardPolicies" />
-                <ScalarProperty Name="rp_guaranteePolicies" ColumnName="rp_guaranteePolicies" />
-                <ScalarProperty Name="rp_cancellationPolicies" ColumnName="rp_cancellationPolicies" />
-                <ScalarProperty Name="provider" ColumnName="provider" />
-                <ScalarProperty Name="depositReference" ColumnName="depositReference" />
-                <ScalarProperty Name="depositCurrency" ColumnName="depositCurrency" />
-                <ScalarProperty Name="depositAmount" ColumnName="depositAmount" />
-                <ScalarProperty Name="cardCustomerName" ColumnName="cardCustomerName" />
-                <ScalarProperty Name="cardCvv" ColumnName="cardCvv" />
-                <ScalarProperty Name="cardExpYear" ColumnName="cardExpYear" />
-                <ScalarProperty Name="cardExpMonth" ColumnName="cardExpMonth" />
-                <ScalarProperty Name="cardNumber" ColumnName="cardNumber" />
-                <ScalarProperty Name="authorizationNumber" ColumnName="authorizationNumber" />
-                <ScalarProperty Name="onlinePaymentMethod" ColumnName="onlinePaymentMethod" />
-                <ScalarProperty Name="paymentType" ColumnName="paymentType" />
-                <ScalarProperty Name="customerPhone" ColumnName="customerPhone" />
-                <ScalarProperty Name="customerEmail" ColumnName="customerEmail" />
-                <ScalarProperty Name="customerLastName" ColumnName="customerLastName" />
-                <ScalarProperty Name="customerName" ColumnName="customerName" />
-                <ScalarProperty Name="IsNetRateUV" ColumnName="IsNetRateUV" />
-                <ScalarProperty Name="ratePlan" ColumnName="ratePlan" />
-                <ScalarProperty Name="currency" ColumnName="currency" />
-                <ScalarProperty Name="tax" ColumnName="tax" />
-                <ScalarProperty Name="includesTax" ColumnName="includesTax" />
-                <ScalarProperty Name="totalNetRate" ColumnName="totalNetRate" />
-                <ScalarProperty Name="total" ColumnName="total" />
-                <ScalarProperty Name="reservationIdXProvider" ColumnName="reservationIdXProvider" />
-                <ScalarProperty Name="cancellationReason" ColumnName="cancellationReason" />
-                <ScalarProperty Name="cancellationNumber" ColumnName="cancellationNumber" />
-                <ScalarProperty Name="reservationNumber" ColumnName="reservationNumber" />
-                <ScalarProperty Name="reservationId" ColumnName="reservationId" />
-                <ScalarProperty Name="Portal" ColumnName="Portal" />
-                <ScalarProperty Name="source" ColumnName="source" />
-                <ScalarProperty Name="checkOut" ColumnName="checkOut" />
-                <ScalarProperty Name="checkIn" ColumnName="checkIn" />
-                <ScalarProperty Name="reservationDate" ColumnName="reservationDate" />
-                <ScalarProperty Name="accessCode" ColumnName="accessCode" />
-                <ScalarProperty Name="status" ColumnName="status" />
-                <ScalarProperty Name="country" ColumnName="country" />
-                <ScalarProperty Name="city" ColumnName="city" />
-                <ScalarProperty Name="address" ColumnName="address" />
-                <ScalarProperty Name="hotelName" ColumnName="hotelName" />
-                <ScalarProperty Name="hotelId" ColumnName="hotelId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="vReservationGalileo">
-            <EntityTypeMapping TypeName="Models.vReservationGalileo">
-              <MappingFragment StoreEntitySet="vReservationGalileo">
-                <ScalarProperty Name="Total" ColumnName="Total" />
-                <ScalarProperty Name="Portal" ColumnName="Portal" />
-                <ScalarProperty Name="Source" ColumnName="Source" />
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="RoomCount" ColumnName="RoomCount" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="Client" ColumnName="Client" />
-                <ScalarProperty Name="CheckOut" ColumnName="CheckOut" />
-                <ScalarProperty Name="CheckIn" ColumnName="CheckIn" />
-                <ScalarProperty Name="ReservationDate" ColumnName="ReservationDate" />
-                <ScalarProperty Name="Hotel" ColumnName="Hotel" />
-                <ScalarProperty Name="HotelId" ColumnName="HotelId" />
-                <ScalarProperty Name="ConfirmNumber" ColumnName="ConfirmNumber" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

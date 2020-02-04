@@ -178,9 +178,6 @@
     <Compile Include="Models\vHotelBasicInfo.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\vHotelBasicInfoGalileo.cs">
-      <DependentUpon>OzHoteles.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\vHotelByUser.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
@@ -199,19 +196,10 @@
     <Compile Include="Models\vReservationDetails.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\vReservationDetailsGalileo.cs">
-      <DependentUpon>OzHoteles.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\vReservationGalileo.cs">
-      <DependentUpon>OzHoteles.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\vReservationPayments.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\vReservationRoomDetails.cs">
-      <DependentUpon>OzHoteles.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\vReservationRoomDetailsGalileo.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\VReservationRoomPriceDetails.cs">

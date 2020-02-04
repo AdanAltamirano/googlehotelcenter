@@ -26,12 +26,13 @@ namespace APIServices.Models
         public System.DateTime checkOut { get; set; }
         public string source { get; set; }
         public string Portal { get; set; }
+        public string Provisioner { get; set; }
         public int reservationId { get; set; }
         public string reservationNumber { get; set; }
         public string cancellationNumber { get; set; }
         public string cancellationReason { get; set; }
         public string reservationIdXProvider { get; set; }
-        public decimal total { get; set; }
+        public Nullable<decimal> total { get; set; }
         public Nullable<decimal> totalNetRate { get; set; }
         public Nullable<bool> includesTax { get; set; }
         public decimal tax { get; set; }
@@ -63,7 +64,7 @@ namespace APIServices.Models
         public string pmsReservationNumber { get; set; }
         public Nullable<bool> pmsStatus { get; set; }
         public string pmsAction { get; set; }
-        public int companyId { get; set; }
+        public Nullable<int> companyId { get; set; }
         public Nullable<int> corporateId { get; set; }
         public string corporateName { get; set; }
         public string hotelEmail { get; set; }

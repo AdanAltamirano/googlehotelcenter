@@ -21,14 +21,16 @@ namespace APIServices
         
 
 
-        public IQueryable<vReservation> GetAll() => dbContext.vReservation.AsQueryable();
+        public IQueryable<vReservation> GetAll() => dbContext.vReservation.Where(r => r.Provider != "IDISO").AsQueryable();
 
         public IQueryable<vReservation> GetAllGalileo(string corporate)
         {
 
-            var reservations = dbContext.vReservationGalileo.
-                Where(h => h.Hotel.Contains(corporate)).
-                ToDTO<vReservationGalileo, vReservation>();
+            //var reservations = dbContext.vReservationGalileo.
+            //    Where(h => h.Hotel.Contains(corporate)).
+            //    ToDTO<vReservationGalileo, vReservationNew>();
+
+            var reservations = dbContext.vReservation.Where(h => h.Hotel.Contains(corporate) && h.Provider == "IDISO");
 
             return reservations;
         }
@@ -38,22 +40,6 @@ namespace APIServices
             return dbContext.vReservation.AsQueryable()
                 .Where(x => x.HotelId == hotelId);
         }
-
-        //public List<Excel.ReservationList> GetExcel()
-        //{
-        //    var result = dbContext.vReservation.Select(p => new Excel.ReservationList
-        //    {
-        //        NoReservation = p.ConfirmNumber,
-        //        Hotel = p.Hotel,
-        //        Customer = p.Client,
-        //       //Date = p.ReservationDate.ToString("YYYY MM DD"),
-        //        //CheckIn = p.CheckIn.ToString("YYYY MM DD"),
-        //        //CheckOut = p.CheckOut.ToString("YYYY MM DD"),
-        //        //Origin = Excel.ReservationList.GetOrigin(p.Source),
-        //        //Status = Excel.ReservationList.GetStatus(p.Status)
-        //    }).ToList();
-        //    return result;
-        //}
 
         public HttpResponseMessage GetExcel(IQueryable<vReservation> query)
         {
@@ -144,9 +130,11 @@ namespace APIServices
 
         public vReservationDetails GetReservationGalileo(int reservationId)
         {
-            var details = dbContext.vReservationDetailsGalileo.
-                FirstOrDefault(r => r.reservationId == reservationId).
-                ToDTO<vReservationDetailsGalileo, vReservationDetails>();
+            //var details = dbContext.vReservationDetailsGalileo.
+            //    FirstOrDefault(r => r.reservationId == reservationId).
+            //    ToDTO<vReservationDetailsGalileo, vReservationDetails>();
+
+            var details = dbContext.vReservationDetails.FirstOrDefault(r => r.reservationId == reservationId);
 
             return details;
         }
@@ -264,10 +252,12 @@ namespace APIServices
 
         public List<vReservationRoomDetails> GetRoomsReservationGalileo(int reservationId)
         {
-            var roomsDetails = dbContext.vReservationRoomDetailsGalileo.
-                Where(x => x.reservationId == reservationId).
-                ToDTO<vReservationRoomDetailsGalileo, vReservationRoomDetails>().
-                ToList();
+            //var roomsDetails = dbContext.vReservationRoomDetailsGalileo.
+            //    Where(x => x.reservationId == reservationId).
+            //    ToDTO<vReservationRoomDetailsGalileo, vReservationRoomDetails>().
+            //    ToList();
+
+            var roomsDetails = dbContext.vReservationRoomDetails.Where(r => r.reservationId == reservationId).ToList();
 
             return roomsDetails;
         }
@@ -279,7 +269,7 @@ namespace APIServices
                 && r.paymentType == 1);
         }
 
-        void GetRooms(ref ReservationDetailsModel model, int reservationId, int companyId,bool isUserChainIdiso,out double totalRooms)
+        void GetRooms(ref ReservationDetailsModel model, int reservationId, int? companyId,bool isUserChainIdiso,out double totalRooms)
         {
             var rooms = (isUserChainIdiso) ? GetRoomsReservationGalileo(reservationId)
                 : GetRoomsReservation(reservationId);

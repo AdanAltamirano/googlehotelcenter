@@ -28,9 +28,9 @@ Namespace API.Controller
 
             ElseIf roles.Contains("userchain") Then
                 Dim page As New PaginaBase
-                If Page.CorporateId <> 0 And IsNothing(Page.CorporateName) <> True Then
-                    If Page.CorporateName.Contains(":") Then
-                        Return ReservationService.GetAllGalileo(Page.CorporateName.Split(New Char() {":"})(1))
+                If page.CorporateId <> 0 And IsNothing(page.CorporateName) <> True Then
+                    If page.CorporateName.Contains(":") Then
+                        Return ReservationService.GetAllGalileo(page.CorporateName.Split(New Char() {":"})(1))
                     End If
                 End If
                 Dim userCorpId = GetUserCorpId(GetUserId().Value)

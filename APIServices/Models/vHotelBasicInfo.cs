@@ -23,5 +23,6 @@ namespace APIServices.Models
         public Nullable<int> CorpId { get; set; }
         public string Corp { get; set; }
         public byte Status { get; set; }
+        public string Provider { get; set; }
     }
 }
