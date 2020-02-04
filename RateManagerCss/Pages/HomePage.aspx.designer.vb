@@ -410,6 +410,15 @@ Partial Public Class HomePage
     Protected WithEvents btnSaveIntervals As Global.System.Web.UI.WebControls.Button
     
     '''<summary>
+    '''Control btnSingleImgInv.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents btnSingleImgInv As Global.System.Web.UI.WebControls.Button
+    
+    '''<summary>
     '''Control lblIsHouse.
     '''</summary>
     '''<remarks>

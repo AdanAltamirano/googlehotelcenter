@@ -197,6 +197,10 @@ Partial Class HomePage
             hplOcultar.Style.Add("display", "block")
             Div1.Style.Add("display", "block")
         End If
+
+        If cInfoActual.IsSingleImgInv Then
+            btnSingleImgInv.Visible = True
+        End If
         'If SourceName <> "" Then
         '    lblRoomName.Text = Me.SourceName.Split("//")(2 * ddlRoomtype.SelectedIndex)
         'End If
@@ -865,6 +869,40 @@ Partial Class HomePage
         dsBefore.Tables(0).Columns.Add("Descr_room")
         dsBefore.Tables(0).Rows(0)("Descr_room") = selectedRoomCode
     End Function
+
+    Private Sub btnSingleImgInv_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSingleImgInv.Click
+        Dim ds As New RoomsInventoryData
+        ds.Tables(0).Columns.Add("RoomCode", GetType(System.String))
+
+        Dim dsActualInventory As RoomsInventoryData
+        Dim fini As Date = CDate(txtInicio.Text)
+        Dim fend As Date = CDate(txtFinal.Text)
+
+        For i As Integer = 0 To Me.ddlRoomtype.Items.Count - 1
+            If Me.ddlRoomtype.Items(i).Value <> 0 Then
+                dsActualInventory = (New RoomsInventoryFacade).getInventoryByDate_Data(Me.ddlRoomtype.Items(i).Value, fini, fend)
+
+                For Each row As DataRow In dsActualInventory.Tables(0).Rows
+                    Dim dr As DataRow = ds.Tables(RoomsInventoryData.TBL_ROOMS_INVENTORY).NewRow
+
+                    dr(RoomsInventoryData.FLD_DATE) = row(RoomsInventoryData.FLD_DATE)
+                    dr(RoomsInventoryData.FLD_STARTDATE) = row(RoomsInventoryData.FLD_DATE)
+                    dr(RoomsInventoryData.FLD_ENDDATE) = row(RoomsInventoryData.FLD_DATE)
+                    dr(RoomsInventoryData.FLD_ID_ROOM_HOTEL) = Me.ddlRoomtype.Items(i).Value
+                    dr(RoomsInventoryData.FLD_NUMBER_ROOMS) = row(RoomsInventoryData.FLD_NUMBER_ROOMS)
+                    dr(RoomsInventoryData.FLD_STATUS) = 0
+                    dr("RoomCode") = Me.ddlRoomtype.Items(i).Text.Split("-")(0).Trim()
+                    ds.Tables(RoomsInventoryData.TBL_ROOMS_INVENTORY).Rows.Add(dr)
+                    dr.AcceptChanges()
+                    dr(RoomsInventoryData.FLD_STATUS) = dr(RoomsInventoryData.FLD_STATUS)
+                Next
+
+            End If
+        Next
+
+        TwoWayUpdate(ds)
+
+    End Sub
 
     Private Sub btnSaveIntervals_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSaveIntervals.Click
         If Not Page.IsValid Then Return
