@@ -9,6 +9,9 @@ using System.Text.RegularExpressions;
 using System.IO;
 using System.Configuration;
 using APIServices.Extension;
+using System.Net.Http;
+using OfficeOpenXml;
+
 
 namespace APIServices
 {
@@ -18,7 +21,19 @@ namespace APIServices
         
 
 
-        public IQueryable<vReservation> GetAll() => dbContext.vReservation.AsQueryable();
+        public IQueryable<vReservation> GetAll() => dbContext.vReservation.Where(r => r.Provider != "IDISO").AsQueryable();
+
+        public IQueryable<vReservation> GetAllGalileo(string corporate)
+        {
+
+            //var reservations = dbContext.vReservationGalileo.
+            //    Where(h => h.Hotel.Contains(corporate)).
+            //    ToDTO<vReservationGalileo, vReservationNew>();
+
+            var reservations = dbContext.vReservation.Where(h => h.Hotel.Contains(corporate) && h.Provider == "IDISO");
+
+            return reservations;
+        }
 
         public IQueryable<vReservation> Get(int hotelId)
         {
@@ -26,20 +41,81 @@ namespace APIServices
                 .Where(x => x.HotelId == hotelId);
         }
 
-        public List<Excel.ReservationList> GetExcel()
+        public HttpResponseMessage GetExcel(IQueryable<vReservation> query)
         {
-            var result = dbContext.vReservation.Select(p => new Excel.ReservationList
+            var result = query.Select(r => new Excel.ReservationList
             {
-                NoReservation = p.ConfirmNumber,
-                Hotel = p.Hotel,
-                Customer = p.Client,
-                Date = p.ReservationDate.ToString("YYYY MM DD"),
-                CheckIn = p.CheckIn.ToString("YYYY MM DD"),
-                CheckOut = p.CheckOut.ToString("YYYY MM DD"),
-                Origin = Excel.ReservationList.GetOrigin(p.Source),
-                Status = Excel.ReservationList.GetStatus(p.Status)
+                NoReservation = r.ConfirmNumber,
+                Hotel = r.Hotel,
+                Customer =r.Client,
+                Date = r.ReservationDate,
+                CheckIn = r.CheckIn,
+                CheckOut = r.CheckOut,
+                Origin = r.Portal,
+                Total = r.Total,
+                Status = (r.Status == 1) ? "Reservado" : (r.Status == 3) ? "Cancelado" : "En proceso",
             }).ToList();
-            return result;
+
+
+            MemoryStream file = new MemoryStream();
+            var excelPackage = new ExcelPackage(file);
+
+            ExcelWorksheet excelWorksheet = excelPackage.Workbook.Worksheets.Add("reservaciones");
+            //add the headers
+            excelWorksheet.Cells[1, 1].Value = "#";
+            excelWorksheet.Cells[1, 2].Value = "Hotel";
+            excelWorksheet.Cells[1, 3].Value = "Cliente";
+            excelWorksheet.Cells[1, 4].Value = "Fecha de reservación";
+            excelWorksheet.Cells[1, 5].Value = "Fecha de llegada";
+            excelWorksheet.Cells[1, 6].Value = "Fecha de salida";
+            excelWorksheet.Cells[1, 7].Value = "Origen";
+            excelWorksheet.Cells[1, 8].Value = "Total";
+            excelWorksheet.Cells[1, 9].Value = "Status";
+
+            
+
+            //Add some items...
+          
+            int row = 2;
+
+            for(int i = 0; i  < result.Count; i++)
+            {
+                string rowNumber = row.ToString();
+
+                excelWorksheet.Cells["A"+rowNumber].Value = result.ElementAt(i).NoReservation;
+                excelWorksheet.Cells["B" + rowNumber].Value = result.ElementAt(i).Hotel;
+                excelWorksheet.Cells["C" + rowNumber].Value = result.ElementAt(i).Customer;
+                excelWorksheet.Cells["D" + rowNumber].Value = result.ElementAt(i).Date.ToString("dd/MM/yyyy");
+                excelWorksheet.Cells["E" + rowNumber].Value = result.ElementAt(i).CheckIn.ToString("dd/MM/yyyy");
+                excelWorksheet.Cells["F" + rowNumber].Value = result.ElementAt(i).CheckOut.ToString("dd/MM/yyyy");
+                excelWorksheet.Cells["G" + rowNumber].Value = result.ElementAt(i).Origin;
+                excelWorksheet.Cells["H" + rowNumber].Value = result.ElementAt(i).Total;
+                excelWorksheet.Cells["I" + rowNumber].Value = result.ElementAt(i).Status;
+                row++;
+            }
+            excelWorksheet.Cells["A1:I" + row.ToString()].AutoFitColumns();
+
+            //excelWorksheet.Cells["A2"].Value = "12001";
+            //excelWorksheet.Cells["B2"].Value = "Nails";
+            //excelWorksheet.Cells["C2"].Value = "asdfasfd";
+            //excelWorksheet.Cells["D2"].Value = 3.99;
+
+            excelPackage.Workbook.Properties.Title = "reservaciones";
+            excelPackage.Workbook.Properties.Author = "Internet Power";
+            excelPackage.Workbook.Properties.Company = "Internet Power";
+
+            excelPackage.Save();
+
+            HttpResponseMessage response = new HttpResponseMessage();
+            response.StatusCode = System.Net.HttpStatusCode.OK;
+            response.Content = new ByteArrayContent(file.ToArray());
+            response.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
+            response.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment")
+            {
+                FileName = "reservaciones.xlsx"
+            };
+
+            return response;
         }
 
 
@@ -52,10 +128,21 @@ namespace APIServices
                 .FirstOrDefault(x => x.reservationId == reservationId);
         }
 
-        public ReservationDetailsModel GetDetails(int reservationId, bool isSupervisor, bool isHotelCompany, int userId)
+        public vReservationDetails GetReservationGalileo(int reservationId)
         {
+            //var details = dbContext.vReservationDetailsGalileo.
+            //    FirstOrDefault(r => r.reservationId == reservationId).
+            //    ToDTO<vReservationDetailsGalileo, vReservationDetails>();
 
-            var details = GetReservation(reservationId);
+            var details = dbContext.vReservationDetails.FirstOrDefault(r => r.reservationId == reservationId);
+
+            return details;
+        }
+
+        public ReservationDetailsModel GetDetails(int reservationId, bool isSupervisor, bool isHotelCompany,bool isUserChainIdiso,int userId)
+        {
+            var details = (isUserChainIdiso) ? GetReservationGalileo(reservationId)
+                : GetReservation(reservationId);
 
             var model = new ReservationDetailsModel();
             if (details != null)
@@ -66,6 +153,8 @@ namespace APIServices
                 model.HotelName = details.hotelName;
                 model.HotelId = details.hotelId;
                 model.CompanyId = details.companyId;
+                model.CorporateId = details.corporateId;
+                model.CorporateName = details.corporateName;
                 model.Address = details.address;
                 model.Status = details.status;
                 model.ReservationDate = details.reservationDate;
@@ -79,6 +168,7 @@ namespace APIServices
                 model.Source = details.source;
                 model.CancellationReason = details.cancellationReason;
                 model.Portal = details.Portal;
+                model.IsNetRateUV = details.IsNetRateUV;
                 model.PaymentWay = details.paymentType;
                 model.BankDepositDetails = new BankDepositDetails();
                 if (details.paymentType == 0)
@@ -129,8 +219,10 @@ namespace APIServices
                     model.Customer.CardDetails.AllowsShowCreditCardData = true;
                 /*fin credit card*/
 
+                GetPayments(ref model, reservationId);
+
                 double totalRooms = 0;
-                GetRooms(ref model, reservationId, details.companyId, out totalRooms);
+                GetRooms(ref model, reservationId, details.companyId,isUserChainIdiso, out totalRooms);
 
                 model.TotalDetails = new TotalDetails();
                 model.TotalDetails.SubTotal = totalRooms;
@@ -143,6 +235,7 @@ namespace APIServices
 
                 model.TotalDetails.Taxes = Math.Round(totalTax - (totalTax / ((tax / 100) + 1)), 2);
                 model.TotalDetails.Currency = details.currency;
+                model.TotalDetails.Commission = (double)(details.IsNetRateUV ? details.total - details.totalNetRate : 0);
 
                 Permissions(ref model, isSupervisor);
             }
@@ -157,9 +250,29 @@ namespace APIServices
                 .ToList();
         }
 
-        void GetRooms(ref ReservationDetailsModel model, int reservationId, int companyId, out double totalRooms)
+        public List<vReservationRoomDetails> GetRoomsReservationGalileo(int reservationId)
         {
-            var rooms = GetRoomsReservation(reservationId);
+            //var roomsDetails = dbContext.vReservationRoomDetailsGalileo.
+            //    Where(x => x.reservationId == reservationId).
+            //    ToDTO<vReservationRoomDetailsGalileo, vReservationRoomDetails>().
+            //    ToList();
+
+            var roomsDetails = dbContext.vReservationRoomDetails.Where(r => r.reservationId == reservationId).ToList();
+
+            return roomsDetails;
+        }
+
+        public vReservationPayments GetPaymentsDetail(int reservationId)
+        {
+            return dbContext.vReservationPayments.
+                FirstOrDefault(r => r.reservationId == reservationId
+                && r.paymentType == 1);
+        }
+
+        void GetRooms(ref ReservationDetailsModel model, int reservationId, int? companyId,bool isUserChainIdiso,out double totalRooms)
+        {
+            var rooms = (isUserChainIdiso) ? GetRoomsReservationGalileo(reservationId)
+                : GetRoomsReservation(reservationId);
 
             model.RoomDetails = new List<RoomDetails>();
             int index = 0;
@@ -174,7 +287,13 @@ namespace APIServices
                 double totalPerRoom = 0;
                 foreach(var price in prices)
                 {
-                    int nights = (price.checkOut - price.checkIn).Days + 1;
+                    var checkOutReservation = (DateTime)model.CheckOut;
+
+                    int nights = (DateTime.Compare(checkOutReservation, price.checkOut) == 0) 
+                        ? (price.checkOut - price.checkIn).Days 
+                        : (price.checkOut - price.checkIn).Days + 1;
+                    //int nights = (price.checkOut - price.checkIn).Days + 1;
+                    //int nights = (price.checkOut - price.checkIn).Days;
                     totalPerRoom += (double)price.price * nights;
                     priceDetails.Add(new RoomPriceDetails
                     {
@@ -207,6 +326,7 @@ namespace APIServices
                     RatePlan = room.ratePlan,
                     RateCode = room.rateCode,
                     Img = $"{ConfigurationManager.AppSettings["pathimgrooms"] ?? ""}/{companyId}/{room.roomTypeId}",
+                    ImgDefault = ConfigurationManager.AppSettings["pathimgroomsdefault"],
                     CustomerName = room.customerName ?? "",
                     CustomerLastName = room.customerLastName ?? "",
                 });
@@ -217,6 +337,32 @@ namespace APIServices
 
             totalRooms = totalRoom;
         }
+
+        void GetPayments(ref ReservationDetailsModel model, int reservationId)
+        {
+            var payments = GetPaymentsDetail(reservationId);
+
+            if (payments != null)
+            {
+                model.PaymentDetails = new PaymentDetails()
+                {
+                    ReservationId = payments.reservationId,
+                    CustomerName = payments.customerName,
+                    CustomerLastName = payments.customerLastName,
+                    ReservationDate = payments.reservationDate,
+                    Status = payments.Status,
+                    Source = payments.Source,
+                    PaymentMethod = payments.paymentmethod,
+                    PaymentType = payments.paymentType,
+                    Pasarela = payments.Pasarela,
+                    Reference = payments.reference,
+                    AuthorizationNumber = payments.authorizationNumber,
+                    TotalPay = payments.totalPay,
+                    CurrencyPay = payments.currencyPay
+                };
+            }
+        }
+
 
         #endregion
 
@@ -515,6 +661,6 @@ namespace APIServices
             return template;
         }
         #endregion
-        
+
     }
 }

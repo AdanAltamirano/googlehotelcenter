@@ -1,7 +1,9 @@
 import Vue from 'vue';
 import EventBus from '../core/event-bus';
 
-const proccessing = { count: 0 };
+const proccessing = {
+    count: 0
+};
 
 export default (request) => {
     request.headers.set('Accept-Language', Vue.appConfig.language);

@@ -7,6 +7,8 @@ Imports NinjAPI
 Imports NinjAPI.Query
 Imports RateManager.API.Helpers
 Imports RateManager.PaginaBase
+Imports System.IO
+Imports System.Linq
 
 Namespace API.Controller
     <RoutePrefix("api/reservations"), AuthorizeUser(Roles:="supervisor,userchain,hotelcompany")>
@@ -14,6 +16,7 @@ Namespace API.Controller
         Inherits ShurikenController
 
         Public ReservationService As New ReservationService
+
 
         'GET api/reservations
         <Route(""), HttpGet, Queryable>
@@ -24,6 +27,12 @@ Namespace API.Controller
                 Return ReservationService.GetAll()
 
             ElseIf roles.Contains("userchain") Then
+                Dim page As New PaginaBase
+                If page.CorporateId <> 0 And IsNothing(page.CorporateName) <> True Then
+                    If page.CorporateName.Contains(":") Then
+                        Return ReservationService.GetAllGalileo(page.CorporateName.Split(New Char() {":"})(1))
+                    End If
+                End If
                 Dim userCorpId = GetUserCorpId(GetUserId().Value)
                 Return ReservationService.GetAll().Where(Function(h) h.CompanyId = userCorpId)
 
@@ -35,17 +44,32 @@ Namespace API.Controller
             Return New vReservation() {}.AsQueryable()
         End Function
 
+
+
         'GET api/reservations/excel
-        '<Route("excel"), HttpGet, Queryable>
+        <Route("excel"), HttpGet>
         Public Function GetExcel() As HttpResponseMessage
-            Dim gv As New GridView()
-            gv.DataSource = ReservationService.GetExcel()
-            gv.DataBind()
-
-            Dim response As New HttpResponseMessage(Net.HttpStatusCode.OK)
-
-            response.Content.Headers.ContentType = New Headers.MediaTypeHeaderValue("application/ms-excel")
-
+            Dim roles() As String = GetRoles()
+            If roles.Contains("userchain") Then
+                Dim page As New PaginaBase
+                If page.CorporateId <> 0 And IsNothing(page.CorporateName) <> True Then
+                    If page.CorporateName.Contains(":") Then
+                        Dim parserG = New QueryParser()
+                        Dim _queryG As QueryData = parserG.CreateAndValidateQuery(ActionContext, "reservationId", GetType(vReservation))
+                        Dim queryResultG As IQueryable(Of vReservation)
+                        queryResultG = _queryG.ApplyTo(ReservationService.GetAllGalileo(page.CorporateName.Split(New Char() {":"})(1)))
+                        Dim responseG As New HttpResponseMessage
+                        responseG = ReservationService.GetExcel(queryResultG)
+                        Return responseG
+                    End If
+                End If
+            End If
+            Dim parser = New QueryParser()
+            Dim _query As QueryData = parser.CreateAndValidateQuery(ActionContext, "reservationId", GetType(vReservation))
+            Dim queryResult As IQueryable(Of vReservation)
+            queryResult = _query.ApplyTo(ReservationService.GetAll())
+            Dim response As New HttpResponseMessage
+            response = ReservationService.GetExcel(queryResult)
             Return response
         End Function
 
@@ -54,8 +78,15 @@ Namespace API.Controller
         Public Function GetDetails(ByVal reservationId As Integer) As DTO.ReservationDetailsModel
             Dim isSupervisor As Boolean = GetRoles().Contains("supervisor")
             Dim isHotelCompany As Boolean = GetRoles().Contains("hotelcompany")
-
-            Return ReservationService.GetDetails(reservationId, isSupervisor, isHotelCompany, GetUserId().Value)
+            Dim page As New PaginaBase
+            Dim isUserChainIdiso = False
+            If page.CorporateId <> 0 And IsNothing(page.CorporateName) <> True Then
+                If page.CorporateName.Contains(":") Then
+                    isUserChainIdiso = True
+                    Return ReservationService.GetDetails(reservationId, isSupervisor, isHotelCompany, isUserChainIdiso, GetUserId().Value)
+                End If
+            End If
+            Return ReservationService.GetDetails(reservationId, isSupervisor, isHotelCompany, isUserChainIdiso, GetUserId().Value)
         End Function
 
         'POST api/reservations/1978/cancel
@@ -132,7 +163,14 @@ Namespace API.Controller
         Public Function SendNotification(ByVal reservationId As Integer) As HttpResponseMessage
             Dim isSupervisor As Boolean = GetRoles().Contains("supervisor")
             Dim isHotelCompany As Boolean = GetRoles().Contains("hotelcompany")
-            Dim detailsReservation As DTO.ReservationDetailsModel = ReservationService.GetDetails(reservationId, isSupervisor, isHotelCompany, GetUserId().Value)
+            Dim isUserChainIdiso = False
+            Dim page As New PaginaBase
+            If page.CorporateId <> 0 And IsNothing(page.CorporateName) <> True Then
+                If page.CorporateName.Contains(":") Then
+                    isUserChainIdiso = True
+                End If
+            End If
+            Dim detailsReservation As DTO.ReservationDetailsModel = ReservationService.GetDetails(reservationId, isSupervisor, isHotelCompany, isUserChainIdiso, GetUserId().Value)
             'Enviar Correo
             'Dim logoUrl As String = "https://crs.univisit.com/Images/global/ImagesSystem/Logos/LogoCompany_"
             Dim logoUrl As String = System.Configuration.ConfigurationManager.AppSettings("logoUrl")
@@ -163,6 +201,13 @@ Namespace API.Controller
             End Select
             pb.guardalog("/rate-manager-ui/dist/reservation-details.aspx?qs=" & reservationId, action, msg)
         End Sub
+        Function GetQuery(request As HttpRequestMessage, actionContext As Http.Controllers.HttpActionContext) As IQueryable
+            Dim parser = New QueryParser()
+            Dim _query As QueryData = parser.CreateAndValidateQuery(request, actionContext, "reservationId")
+            Dim queryResult As IQueryable
+            queryResult = _query.ApplyTo(ReservationService.GetAll())
+            Return queryResult
+        End Function
     End Class
 End Namespace
 

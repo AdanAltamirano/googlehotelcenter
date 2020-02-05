@@ -5,6 +5,7 @@ Imports APIServices.Models
 Imports NinjAPI
 Imports NinjAPI.Query
 Imports RateManager.API.Helpers
+Imports RateManager.PaginaBase
 
 Namespace API.Controllers
     <RoutePrefix("api/hotels"), AuthorizeUser(Roles:="supervisor,userchain,hotelcompany")>
@@ -22,6 +23,12 @@ Namespace API.Controllers
             If userRoles.Contains("supervisor") Then
                 Return HotelService.GetAll()
             ElseIf userRoles.Contains("userchain") Then
+                Dim page As New PaginaBase
+                If page.CorporateId <> 0 And IsNothing(page.CorporateName) <> True Then
+                    If page.CorporateName.Contains(":") Then
+                        Return HotelService.GetAllGalileo(page.CorporateName.Split(New Char() {":"})(1))
+                    End If
+                End If
                 Dim userCorpId = UserDataHelper.GetUserCorpId(GetUserId().Value)
                 Return HotelService.GetAll().Where(Function(h) (Not h.CorpId Is Nothing) AndAlso h.CorpId = userCorpId)
             ElseIf userRoles.Contains("hotelcompany") Then

@@ -84,6 +84,8 @@ export default {
     SendNotification: 'Enviar Notificaciones',
     'Send Notifications': "Enviar Notificaciones",
     'Notifications Sent': 'Notificaciones Enviadas',
-    'Notificationes Not Sent': 'Notificaciones no enviadas'
+    'Notificationes Not Sent': 'Notificaciones no enviadas',
+    'Commission Internet Power': 'Comisión Internet Power',
+    'Payment Gateway': 'Pasarela'
 
 };

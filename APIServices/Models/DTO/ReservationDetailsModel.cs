@@ -9,7 +9,9 @@ namespace APIServices.Models.DTO
         public string CancellationNumber { get; set; }
         public string HotelName { get; set; }
         public int? HotelId { get; set; }
-        public int CompanyId { get; set; }
+        public int? CompanyId { get; set; }
+        public Nullable<int> CorporateId { get; set; }
+        public string CorporateName { get; set; }
         public string Address { get; set; }
         public string City { get; set; }
         public string Country { get; set; }
@@ -23,10 +25,12 @@ namespace APIServices.Models.DTO
         public string RatePlan { get; set; }
         public string Source { get; set; }
         public string Portal { get; set; }
+        public bool IsNetRateUV { get; set; }
         public Pms Pms { get; set; }
         public CustomerDetails Customer { get; set; }
         public List<RoomDetails> RoomDetails { get; set; }
         public TotalDetails TotalDetails { get; set; }
+        public PaymentDetails PaymentDetails { get; set; }
         /**
         * paymentType
         * 0 = bank deposit
@@ -82,6 +86,23 @@ namespace APIServices.Models.DTO
         }
     }
 
+    public class PaymentDetails
+    {
+        public int ReservationId { get; set; }
+        public string CustomerName { get; set; }
+        public string CustomerLastName { get; set; }
+        public DateTime ReservationDate { get; set; }
+        public Byte Status { get; set; }
+        public string Source { get; set; }
+        public string PaymentMethod { get; set; }
+        public Nullable<int> PaymentType { get; set; }
+        public string Pasarela { get; set; }
+        public string Reference { get; set; }
+        public string AuthorizationNumber { get; set; }
+        public Nullable<decimal> TotalPay { get; set; }
+        public string CurrencyPay { get; set; }
+    }
+
     public class BankDepositDetails
     {
         public double Total { get; set; }
@@ -107,6 +128,7 @@ namespace APIServices.Models.DTO
         public List<RoomPriceDetails> PriceDetails { get; set; }
         public double Total { get; set; }
         public string Img { get; set; }
+        public string ImgDefault { get; set; }
         public string Currency { get; set; }
         public string CustomerName { get; set; }
         public string CustomerLastName { get; set; }
@@ -126,6 +148,7 @@ namespace APIServices.Models.DTO
         public double SubTotal { get; set; }
         public double Total { get; set; }
         public double Taxes { get; set; }
+        public double Commission { get; set; }
         public bool IncludesTax { get; set; }
         public double TotalNR { get; set; }
         public string Currency { get; set; }
