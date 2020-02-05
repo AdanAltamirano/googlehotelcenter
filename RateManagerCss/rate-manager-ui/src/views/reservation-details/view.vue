@@ -59,6 +59,10 @@
                     <td>{{$t('Commission Internet Power')}}</td>
                     <td>{{result.totalDetails.commission | currency}} {{result.totalDetails.currency}}</td>
                   </tr>
+                  <tr v-if="result.isNetRateUV" style="font-size:smaller;">
+                    <td>{{$t('Total Hotel')}}</td>
+                    <td>{{result.totalDetails.totalNR | currency}} {{result.totalDetails.currency}}</td>
+                  </tr>
                 </tbody>
               </table>
             </b-col>

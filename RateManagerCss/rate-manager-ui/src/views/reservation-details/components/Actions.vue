@@ -11,7 +11,7 @@
         <b-dropdown-item
           v-if="showSendNotificationButton"
           @click="sendNotification"
-        >{{$t('SendNotification')}}</b-dropdown-item>
+        >{{$t('SendEmail')}}</b-dropdown-item>
       </b-dropdown>
     </b-button-toolbar>
   </div>
@@ -182,7 +182,7 @@ export default {
       let self = this;
       this.$swal
         .fire({
-          title: self.$t("Send Notifications"),
+          title: self.$t("Send email with reservation details?"),
           type: "info",
           showCancelButton: true,
           cancelButtonColor: "#d33",
@@ -204,7 +204,7 @@ export default {
             if (result.value) {
               this.$swal.fire({
                 type: "success",
-                title: self.$t("Notifications Sent"),
+                title: self.$t("Email Sent"),
                 showConfirmButton: false,
                 showCloseButton: true,
                 timer: 2500
@@ -212,7 +212,7 @@ export default {
             } else {
               this.$swal.fire({
                 type: "error",
-                title: self.$t("Notifications Not Sent"),
+                title: self.$t("Email Not Sent"),
                 showConfirmButton: false
               });
             }
