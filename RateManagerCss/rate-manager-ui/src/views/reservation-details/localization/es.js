@@ -81,11 +81,12 @@ export default {
     'The session expires due to inactivity': 'La sesión expiró por inactividad',
     Keep: 'Mantener',
     Options: 'Opciones',
-    SendNotification: 'Enviar Notificaciones',
-    'Send Notifications': "Enviar Notificaciones",
-    'Notifications Sent': 'Notificaciones Enviadas',
-    'Notificationes Not Sent': 'Notificaciones no enviadas',
+    SendEmail: 'Enviar Correo',
+    'Send email with reservation details?': "¿Enviar correo electrónico con detalles de la reserva?",
+    'Email Sent': 'Correo Enviado',
+    'Email Not Sent': 'Correo no enviado',
     'Commission Internet Power': 'Comisión Internet Power',
-    'Payment Gateway': 'Pasarela'
+    'Payment Gateway': 'Pasarela',
+    'Total Hotel': 'Total Hotel'
 
 };
