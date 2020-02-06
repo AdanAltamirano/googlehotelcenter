@@ -30,7 +30,10 @@ Namespace API.Controller
                 Dim page As New PaginaBase
                 If page.CorporateId <> 0 And IsNothing(page.CorporateName) <> True Then
                     If page.CorporateName.Contains(":") Then
-                        Return ReservationService.GetAllGalileo(page.CorporateName.Split(New Char() {":"})(1))
+                        'Return ReservationService.GetAllGalileo(page.CorporateName.Split(New Char() {":"})(1))
+                        Dim corporate As String = page.CorporateName.Split(New Char() {":"})(1)
+                        Return ReservationService.GetAll().Where(Function(h) h.Hotel.Contains(corporate) And h.Provider = "IDISO")
+
                     End If
                 End If
                 Dim userCorpId = GetUserCorpId(GetUserId().Value)
@@ -38,7 +41,7 @@ Namespace API.Controller
 
             ElseIf roles.Contains("hotelcompany") Then
                 Dim hotels() As Integer = GetUserHotels(GetUserId().Value).Select(Function(h) h.HotelId).ToArray()
-                Return ReservationService.GetAll().Where(Function(h) hotels.Contains(h.HotelId))
+                Return ReservationService.GetAll().Where(Function(h) hotels.Contains(h.HotelId) And h.Provider = "INTERNET POWER")
             End If
 
             Return New vReservation() {}.AsQueryable()
@@ -57,7 +60,9 @@ Namespace API.Controller
                         Dim parserG = New QueryParser()
                         Dim _queryG As QueryData = parserG.CreateAndValidateQuery(ActionContext, "reservationId", GetType(vReservation))
                         Dim queryResultG As IQueryable(Of vReservation)
-                        queryResultG = _queryG.ApplyTo(ReservationService.GetAllGalileo(page.CorporateName.Split(New Char() {":"})(1)))
+                        Dim corporate As String = page.CorporateName.Split(New Char() {":"})(1)
+                        'queryResultG = _queryG.ApplyTo(ReservationService.GetAllGalileo(page.CorporateName.Split(New Char() {":"})(1)))
+                        queryResultG = _queryG.ApplyTo(ReservationService.GetAll().Where(Function(h) h.Hotel.Contains(corporate) And h.Provider = "IDISO"))
                         Dim responseG As New HttpResponseMessage
                         responseG = ReservationService.GetExcel(queryResultG)
                         Return responseG

@@ -26,14 +26,16 @@ Namespace API.Controllers
                 Dim page As New PaginaBase
                 If page.CorporateId <> 0 And IsNothing(page.CorporateName) <> True Then
                     If page.CorporateName.Contains(":") Then
-                        Return HotelService.GetAllGalileo(page.CorporateName.Split(New Char() {":"})(1))
+                        Dim corporate As String = page.CorporateName.Split(New Char() {":"})(1)
+                        Return HotelService.GetAll().Where(Function(h) h.Name.Contains(corporate) And h.Provider = "IDISO")
+                        'Return HotelService.GetAllGalileo(page.CorporateName.Split(New Char() {":"})(1))
                     End If
                 End If
                 Dim userCorpId = UserDataHelper.GetUserCorpId(GetUserId().Value)
                 Return HotelService.GetAll().Where(Function(h) (Not h.CorpId Is Nothing) AndAlso h.CorpId = userCorpId)
             ElseIf userRoles.Contains("hotelcompany") Then
                 Dim hotels() As Integer = UserDataHelper.GetUserHotels(GetUserId().Value).Select(Function(h) h.HotelId).ToArray()
-                Return HotelService.GetAll().Where(Function(h) hotels.Contains(h.Id))
+                Return HotelService.GetAll().Where(Function(h) hotels.Contains(h.Id) And h.Provider = "INTERNET POWER")
             End If
 
             'regresa vacio cualquier caso extra
