@@ -8,10 +8,10 @@
       <b-dropdown class="mx-1" right variant="primary" :text="$t('Options')">
         <b-dropdown-item v-if="showModifyButton" @click="modify">{{$t('Modify')}}</b-dropdown-item>
         <b-dropdown-item v-if="showCancelButton" @click="cancel">{{$t('Cancel')}}</b-dropdown-item>
-        <b-dropdown-item
+        <!--<b-dropdown-item
           v-if="showSendNotificationButton"
           @click="sendNotification"
-        >{{$t('SendEmail')}}</b-dropdown-item>
+        >{{$t('SendEmail')}}</b-dropdown-item>-->
       </b-dropdown>
     </b-button-toolbar>
   </div>

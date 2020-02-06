@@ -15,6 +15,7 @@ const appConfig = {
         warning: '#ff6c00',
     },
     confirmNumber: window.app.confirmNumber,
+    basePath: process.env.VUE_APP_URL,
 };
 
 function appAlert(alertData) {
