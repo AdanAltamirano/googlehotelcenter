@@ -1,14 +1,8 @@
-$theme-colors: (
-    "primary": #10467a,
-    "info": #007bff,
-    "warning": #ff6c00
-);
-
+$theme-colors: ("primary": #10467a, "info": #007bff, "warning": #ff6c00);
 // Required
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
 @import "../../node_modules/bootstrap/scss/mixins";
-
 // Optional
 @import "~bootstrap/scss/root";
 @import "~bootstrap/scss/reboot";

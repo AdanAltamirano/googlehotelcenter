@@ -464,7 +464,7 @@ namespace APIServices
 
             vHotelPlan hotelPlan = contextDb.vHotelPlan.FirstOrDefault(hp => hp.Code == rate.RatePlanCode && hp.HotelId == rate.HotelId);
             vHotelBasicInfo hotelInfo = contextDb.vHotelBasicInfo.FirstOrDefault(h => h.Id == rate.HotelId);
-            vHotelRoom hotelRoom = contextDb.vHotelRoom.FirstOrDefault(hr => hr.Id == rate.RoomId);
+            vHotelRoom hotelRoom = contextDb.vHotelRoom.Where(hr => hr.Id == rate.RoomId &&  hr.Language == 1).FirstOrDefault();
 
             hotelTaxes = hotelInfo.Tax;
 

@@ -12,8 +12,6 @@ import es from './localization/es';
 import View from './view.vue';
 
 import './styles/custom.scss';
-import 'bootstrap-vue/dist/bootstrap-vue.css';
-import 'vue-multiselect/dist/vue-multiselect.min.css';
 
 Vue.use(BootstrapVue);
 

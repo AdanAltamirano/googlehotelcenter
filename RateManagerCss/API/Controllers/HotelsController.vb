@@ -5,6 +5,7 @@ Imports APIServices.Models
 Imports NinjAPI
 Imports NinjAPI.Query
 Imports RateManager.API.Helpers
+Imports RateManager.PaginaBase
 
 Namespace API.Controllers
     <RoutePrefix("api/hotels"), AuthorizeUser(Roles:="supervisor,userchain,hotelcompany")>
@@ -22,11 +23,19 @@ Namespace API.Controllers
             If userRoles.Contains("supervisor") Then
                 Return HotelService.GetAll()
             ElseIf userRoles.Contains("userchain") Then
+                Dim page As New PaginaBase
+                If page.CorporateId <> 0 And IsNothing(page.CorporateName) <> True Then
+                    If page.CorporateName.Contains(":") Then
+                        Dim corporate As String = page.CorporateName.Split(New Char() {":"})(1)
+                        Return HotelService.GetAll().Where(Function(h) h.Name.Contains(corporate) And h.Provider = "IDISO")
+                        'Return HotelService.GetAllGalileo(page.CorporateName.Split(New Char() {":"})(1))
+                    End If
+                End If
                 Dim userCorpId = UserDataHelper.GetUserCorpId(GetUserId().Value)
                 Return HotelService.GetAll().Where(Function(h) (Not h.CorpId Is Nothing) AndAlso h.CorpId = userCorpId)
             ElseIf userRoles.Contains("hotelcompany") Then
                 Dim hotels() As Integer = UserDataHelper.GetUserHotels(GetUserId().Value).Select(Function(h) h.HotelId).ToArray()
-                Return HotelService.GetAll().Where(Function(h) hotels.Contains(h.Id))
+                Return HotelService.GetAll().Where(Function(h) hotels.Contains(h.Id) And h.Provider = "INTERNET POWER")
             End If
 
             'regresa vacio cualquier caso extra
@@ -38,6 +47,7 @@ Namespace API.Controllers
         Public Function GetById(HotelId As Integer) As DTO.HotelInfo
             Return HotelService.Get(HotelId)
         End Function
+
 
         Protected Overrides Sub Dispose(disposing As Boolean)
 

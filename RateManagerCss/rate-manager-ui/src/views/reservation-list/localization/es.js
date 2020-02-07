@@ -28,7 +28,9 @@ export default {
     select: 'seleccionar',
     'It has priority over advanced search': 'Tiene prioridad sobre la búsqueda avanzada',
     'Items per page': 'Elementos por página',
-    Download: 'Descargar',
+    'Export page': 'Exportar página',
     'items per page': 'elementos por página',
     'There are no records that match your request': 'No hay registros que coincidan con su solicitud',
+    'Exit': 'Salir',
+    'Can not export page': 'No se puede exportar la página'
 };

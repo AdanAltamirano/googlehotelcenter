@@ -1,5 +1,5 @@
 <template>
-<!-- eslint-disable -->
+    <!-- eslint-disable -->
     <b-card no-body style="border:0px">
         <b-row>
             <b-col md="3" class="my-1">
@@ -10,23 +10,36 @@
             <b-col md="3" class="my-1">
                 <b-row>
                     <b-col md="3">
-                        <b-button variant="primary" @click="search">{{$t('Search')}}</b-button>
+                        <b-button variant="primary" @click="search">{{ $t("Search") }}</b-button>
                     </b-col>
                     <b-col md="9">
-                        <b-button class="float-right" v-b-toggle.filter_content variant="link">{{$t('Advanced Search')}}</b-button>
+                        <b-button class="float-right" v-b-toggle.filter_content variant="link">{{
+                            $t("Advanced Search")
+                        }}</b-button>
                     </b-col>
                 </b-row>
             </b-col>
             <b-col md="6" class="my-1">
                 <b-row>
                     <b-col md="8">
-                        <b-button v-if="result.length > 0" @click="exportToExcel" variant="primary" style="background-color:green;float:right">
-                            <i class="fas fa-file-excel"></i>&nbsp;{{$t('Download')}}
+                        <b-button
+                            v-if="result.length > 0"
+                            @click="exportToExcel"
+                            variant="primary"
+                            style="background-color:green;float:right"
+                        >
+                            <i class="fas fa-file-excel"></i>
+                            &nbsp;{{ $t("Export page") }}
                         </b-button>
                     </b-col>
                     <b-col md="4" style="margin-top:-1.9rem;">
                         <b-form-group :label="$t('items per page')">
-                            <b-form-select @change="changeItemsPerPage" class="float-right" v-model.number="itemPerPage" :options="itemsPerPage"></b-form-select>
+                            <b-form-select
+                                @change="changeItemsPerPage"
+                                class="float-right"
+                                v-model.number="itemPerPage"
+                                :options="itemsPerPage"
+                            ></b-form-select>
                         </b-form-group>
                     </b-col>
                 </b-row>
@@ -46,12 +59,13 @@
                                 <b-form-group :label="$t('Date Range')">
                                     <b-input-group>
                                         <v-date-picker
-                                        v-model="dates"
-                                        class="form-control p-0"
-                                        mode="range"
-                                        :min-date="minDate"
-                                        :popover="{ placement: 'bottom', visibility: 'click' }"
-                                        :columns="2"></v-date-picker>
+                                            v-model="dates"
+                                            class="form-control p-0"
+                                            mode="range"
+                                            :min-date="minDate"
+                                            :popover="{ placement: 'bottom', visibility: 'click' }"
+                                            :columns="2"
+                                        ></v-date-picker>
                                         <b-input-group-append>
                                             <b-button :disabled="dates == null" variant="danger" @click="dates = null">
                                                 <i class="fa fa-times"></i>
@@ -63,9 +77,9 @@
                             <b-col md="4">
                                 <b-form-group :label="$t('Status')">
                                     <b-form-checkbox-group v-model="checkStatus">
-                                        <b-form-checkbox value="1">{{$t('Reserved')}}</b-form-checkbox>
-                                        <b-form-checkbox value="4">{{$t('In process')}}</b-form-checkbox>
-                                        <b-form-checkbox value="3">{{$t('Cancelled')}}</b-form-checkbox>
+                                        <b-form-checkbox value="1">{{ $t("Reserved") }}</b-form-checkbox>
+                                        <b-form-checkbox value="4">{{ $t("In process") }}</b-form-checkbox>
+                                        <b-form-checkbox value="3">{{ $t("Cancelled") }}</b-form-checkbox>
                                     </b-form-checkbox-group>
                                 </b-form-group>
                             </b-col>
@@ -88,21 +102,23 @@
                             </b-col>
                             <b-col md="4">
                                 <b-form-group v-if="hotels.length > 0" :label="$t('Hotels')">
-                                    <multiselect label="name"
-                                    v-model="hotel"
-                                    :options="hotels"
-                                    track-by="id"
-                                    :multiple="true"
-                                    :selectLabel="$t('select')"
-                                    :selectedLabel="''"
-                                    :deselectLabel="''"
-                                    :placeholder="$t('Find Hotel')"></multiselect>
+                                    <multiselect
+                                        label="name"
+                                        v-model="hotel"
+                                        :options="hotels"
+                                        track-by="id"
+                                        :multiple="true"
+                                        :selectLabel="$t('select')"
+                                        :selectedLabel="''"
+                                        :deselectLabel="''"
+                                        :placeholder="$t('Find Hotel')"
+                                    ></multiselect>
                                 </b-form-group>
                             </b-col>
                         </b-row>
                         <b-row>
                             <b-col>
-                                <b-button variant="primary" @click="search">{{$t('Search')}}</b-button>
+                                <b-button variant="primary" @click="search">{{ $t("Search") }}</b-button>
                             </b-col>
                         </b-row>
                     </b-card>
@@ -110,20 +126,27 @@
             </b-col>
         </b-row>
     </b-card>
-<!-- eslint-enable -->
+    <!-- eslint-enable -->
 </template>
 
 <script>
-import Multiselect from 'vue-multiselect';
-import HotelService from '../../../api/hotels-service';
-
+import Multiselect from "vue-multiselect";
+import HotelService from "../../../api/hotels-service";
+import ReservationService from "../../../api/reservation-service";
+import reservationService from "../../../api/reservation-service";
 export default {
-    name: 'advance-filter',
+    name: "advance-filter",
     components: {
-        Multiselect,
+        Multiselect
     },
     mounted() {
         this.getHotels();
+        this.$root.$on("queryString", array => {
+            this.filterQueryString = array[0];
+            this.formatQueryString = array[1];
+            this.perPageQueryString = array[2];
+            this.currentPageQueryString = array[3];
+        });
     },
     created() {
         this.dates = this.$parent.defaultDates();
@@ -131,16 +154,16 @@ export default {
     props: {
         result: {
             required: false,
-            type: Array,
+            type: Array
         },
         itemPerPage: {
             required: true,
-            type: Number,
+            type: Number
         },
         itemsPerPage: {
             required: true,
-            type: Array,
-        },
+            type: Array
+        }
     },
     computed: {
         minDate() {
@@ -148,56 +171,84 @@ export default {
             date.setFullYear(date.getFullYear() - 1);
             return date;
         },
+        url() {
+            console.log(ReservationService.GetExcel());
+            return ReservationService.GetExcel();
+        }
     },
     data() {
         return {
+            filterQueryString: null,
+            formatQueryString: null,
+            perPageQueryString: null,
+            currentPageQueryString: null,
             includeDates: false,
             dates: null,
-            noReservation: '',
-            checkStatus: ['1'],
-            typeDate: 'ReservationDate',
-            clientName: '',
-            source: 'ALL',
+            noReservation: "",
+            checkStatus: ["1"],
+            typeDate: "ReservationDate",
+            clientName: "",
+            source: "ALL",
             hotel: [],
             hotels: [],
-            ota: 'ALL',
+            ota: "ALL",
             typeDates: [
-                { text: this.$t('Reservation date'), value: 'ReservationDate' },
-                { text: this.$t('Arrival date'), value: 'CheckOut' },
-                { text: this.$t('Departure date'), value: 'CheckIn' },
+                { text: this.$t("Reservation date"), value: "ReservationDate" },
+                { text: this.$t("Arrival date"), value: "CheckOut" },
+                { text: this.$t("Departure date"), value: "CheckIn" }
             ],
             sources: [
-                { text: `-- ${this.$t('All')} --`, value: 'ALL' },
-                { text: 'Portal', value: 'POR' },
-                { text: 'Call Center', value: 'CCT' },
-                { text: this.$t('One Page'), value: 'UNI' },
-                { text: this.$t('Front Desk'), value: 'HTL' },
-                { text: 'GDS', value: 'WIZ' },
-                { text: 'ADS', value: 'ADS' },
-                { text: 'OTAS', value: 'IDS' },
+                { text: `-- ${this.$t("All")} --`, value: "ALL" },
+                { text: "Portal", value: "POR" },
+                { text: "Call Center", value: "CCT" },
+                { text: this.$t("One Page"), value: "UNI" },
+                { text: this.$t("Front Desk"), value: "HTL" },
+                { text: "GDS", value: "WIZ" },
+                { text: "ADS", value: "ADS" },
+                { text: "OTAS", value: "IDS" }
             ],
             otas: [
-                { text: `-- ${this.$t('All')} --`, value: 'ALL' },
-                { text: 'BestDay', value: 'BestDay' },
-                { text: 'Booking.com', value: 'Booking' },
-                { text: 'Expedia', value: 'Expedia' },
-                { text: 'Hotel Beds', value: 'Hotel Beds' },
-                { text: 'PriceTravel', value: 'PriceTravel' },
-            ],
+                { text: `-- ${this.$t("All")} --`, value: "ALL" },
+                { text: "BestDay", value: "BestDay" },
+                { text: "Booking.com", value: "Booking" },
+                { text: "Expedia", value: "Expedia" },
+                { text: "Hotel Beds", value: "Hotel Beds" },
+                { text: "PriceTravel", value: "PriceTravel" }
+            ]
         };
     },
     methods: {
         search() {
-            this.$emit('search', this.getFilter());
+            this.$emit("search", this.getFilter());
         },
         exportToExcel() {
-            this.$emit('exportToExcel');
+            //this.$emit("exportToExcel");
+            console.log("entro");
+            //console.log(ReservationService.GetExcel());
+            ReservationService.GetExcel(
+                this.filterQueryString,
+                this.formatQueryString,
+                this.perPageQueryString,
+                this.currentPageQueryString
+            )
+                .then(res => {
+                    console.log(res);
+                    document.location.href = res.url;
+                })
+                .catch(err => {
+                    this.$appAlert({
+                        type: "error",
+                        title: this.$t("Can not export page"),
+                        confirmButtonText: this.$t("Exit"),
+                        confirmButtonColor: "#d33"
+                    });
+                });
         },
         getFilter() {
-            let filter = '';
+            let filter = "";
 
             // filtran solo el #reservacion
-            if (this.noReservation !== '') {
+            if (this.noReservation !== "") {
                 filter = `confirmNumber eq ${this.noReservation}`;
                 this.cleanFilters();
                 return filter;
@@ -206,54 +257,55 @@ export default {
             // si #reservacion es vacio, filtrar por lo demas
             /* eslint-disable max-len */
             if (this.dates != null) {
-                filter += `${this.typeDate} gt ${this.dateFormat(this.dates.start)
-                } and ${this.typeDate} lt ${this.dateFormat(this.dates.end)}`;
+                filter += `${this.typeDate} gt ${this.dateFormat(this.dates.start)} and ${
+                    this.typeDate
+                } lt ${this.dateFormat(this.dates.end)}`;
             }
 
             if (this.checkStatus.length > 0) {
-                filter += (filter !== '' ? ' and ': '');
+                filter += filter !== "" ? " and " : "";
                 this.checkStatus.forEach((value, index) => {
-                    if (index > 0) filter += ' or ';
+                    if (index > 0) filter += " or ";
                     filter += `Status eq ${value}`;
                 });
             }
 
-            if (this.clientName !== '') filter += `${filter !== '' ? ' and ' : ''}Client lk ${this.clientName}`;
+            if (this.clientName !== "") filter += `${filter !== "" ? " and " : ""}Client lk ${this.clientName}`;
 
-            if (this.source !== 'ALL') filter += `${filter !== '' ? ' and ' : ''}Source eq ${this.source}`;
+            if (this.source !== "ALL") filter += `${filter !== "" ? " and " : ""}Source eq ${this.source}`;
 
-            if (this.source === 'IDS' && this.ota !== 'ALL') filter += `${filter !== '' ? ' and ' : ''}Portal eq ${this.ota}`;
+            if (this.source === "IDS" && this.ota !== "ALL")
+                filter += `${filter !== "" ? " and " : ""}Portal eq ${this.ota}`;
 
             if (this.hotel.length > 0) {
-                filter += (filter !== '' ? ' and ' : '');
+                filter += filter !== "" ? " and " : "";
                 this.hotel.forEach((value, index) => {
-                    if (index > 0) filter += ' or ';
+                    if (index > 0) filter += " or ";
                     filter += `hotelId eq ${value.id}`;
                 });
             }
             /* eslint-enable max-len */
-            return (filter === '' ? null : filter);
+            return filter === "" ? null : filter;
         },
 
-
         getHotels() {
-            HotelService.getList().then((response) => {
+            HotelService.getList().then(response => {
                 this.hotels = response.body;
             });
         },
         dateFormat(date) {
-            return this.$moment(date).format('YYYY-MM-DD');
+            return this.$moment(date).format("YYYY-MM-DD");
         },
         cleanFilters() {
             this.status = 0;
             this.dates = null;
-            this.clientName = '';
-            this.source = 'ALL';
+            this.clientName = "";
+            this.source = "ALL";
             this.hotel = [];
         },
         changeItemsPerPage() {
-            this.$emit('changeItems', this.itemPerPage);
-        },
-    },
+            this.$emit("changeItems", this.itemPerPage);
+        }
+    }
 };
 </script>

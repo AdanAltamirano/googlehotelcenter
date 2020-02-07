@@ -29,6 +29,8 @@
     <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
     <UseGlobalApplicationHostFile />
     <Use64BitIISExpress />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -199,7 +201,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NinjAPI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NinjAPI.0.1.5-alpha\lib\net45\NinjAPI.dll</HintPath>
+      <HintPath>..\packages\NinjAPI.0.1.6-alpha\lib\net45\NinjAPI.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Oz.BillingSystem.Banking">
@@ -482,6 +484,7 @@
     <Content Include="bin\Albums.Facade.dll" />
     <Content Include="bin\Albums.Reglas.dll" />
     <Content Include="bin\Anthem.dll" />
+    <Content Include="bin\App_Code.dll" />
     <Content Include="bin\Autorentas.Common.dll" />
     <Content Include="bin\Autorentas.DataAccess.dll" />
     <Content Include="bin\Autorentas.Facade.dll" />
@@ -1464,11 +1467,14 @@
     <Content Include="Web References\WsConnectWcf\OTA_ResRetrieveRS.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </Content>
-    <Content Include="Web References\WsConnectWcf\Reference.map">
+    <Content Include="Web References\WsConnectWcf\OTA_HotelAvailRS.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <None Include="Web References\WsConnectWcf\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.vb</LastGenOutput>
-    </Content>
-    <Content Include="Web References\WsConnectWcf\wsConnectWCFv2.disco" />
+    </None>
+    <None Include="Web References\WsConnectWcf\wsConnectWCFv2.disco" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -1476,6 +1482,7 @@
     <Content Include="Pages\F2goGetReport.ashx" />
     <Content Include="Correos\html\Notificaciones Email Pago No Completado Call Center.rar" />
     <Content Include="packages.config" />
+    <None Include="Web References\WsConnectWcf\wsConnectWCFv2.wsdl" />
     <None Include="Web References\WsConnectWcf\wsConnectWCFv2.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -1487,7 +1494,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API\Controllers\F2GController.vb" />
+    <Compile Include="API\Controllers\HotelConfigurationController.vb" />
     <Compile Include="API\Controllers\HotelsController.vb" />
+    <Compile Include="API\Controllers\PortalController.vb" />
     <Compile Include="API\Controllers\RatesController.vb" />
     <Compile Include="API\Controllers\ReservationController.vb" />
     <Compile Include="API\Controllers\RoomsController.vb" />
@@ -1496,10 +1506,11 @@
     <Compile Include="API\Helpers\HttpRequestMessage+Extensions.vb" />
     <Compile Include="API\Helpers\AuthorizeUserAttribute.vb" />
     <Compile Include="API\Helpers\UserDataHelper.vb" />
-    <Compile Include="API\Models\DateRangeRQ.vb" />
-    <Compile Include="API\Models\RatesByPlanRQ.vb" />
-    <Compile Include="API\Models\RateUpdateRQ.vb" />
-    <Compile Include="API\Models\ReservationUpdateRQ.vb" />
+    <Compile Include="API\Helpers\Models\DateRangeRQ.vb" />
+    <Compile Include="API\Helpers\Models\HotelConfig.vb" />
+    <Compile Include="API\Helpers\Models\RatesByPlanRQ.vb" />
+    <Compile Include="API\Helpers\Models\RateUpdateRQ.vb" />
+    <Compile Include="API\Helpers\Models\ReservationUpdateRQ.vb" />
     <Compile Include="App_Data\Agreement.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -4456,7 +4467,6 @@
       <DependentUpon>ctrlChangePassword.ascx.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <Content Include="Web References\WsConnectWcf\wsConnectWCFv2.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App_Data\Agreement.xsc">
@@ -4895,10 +4905,10 @@
       <CachedAppSettingsObjectName>MySettings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>RateManager_RulesWebService_RulesWebService</CachedSettingsPropName>
     </WebReferenceUrl>
-    <WebReferenceUrl Include="http://www.test.com/WsConectividad/wsConnectWCFv2.svc">
+    <WebReferenceUrl Include="http://www.test.com/WsConnectividad-Repo/wsConnectWCFv2.svc">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\WsConnectWcf\</RelPath>
-      <UpdateFromURL>http://www.test.com/WsConectividad/wsConnectWCFv2.svc</UpdateFromURL>
+      <UpdateFromURL>http://www.test.com/WsConnectividad-Repo/wsConnectWCFv2.svc</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
@@ -4954,4 +4964,5 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
 </Project>

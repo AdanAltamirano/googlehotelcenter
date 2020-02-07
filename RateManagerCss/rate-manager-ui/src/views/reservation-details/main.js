@@ -14,7 +14,6 @@ import View from './view.vue';
 import es from './localization/es';
 
 import './styles/custom.scss';
-import 'bootstrap-vue/dist/bootstrap-vue.css';
 
 Vue.use(BootstrapVue);
 Vue.use(VueSweetalert2);

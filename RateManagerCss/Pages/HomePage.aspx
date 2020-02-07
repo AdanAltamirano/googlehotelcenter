@@ -245,6 +245,13 @@
                                                         <td valign="bottom" align="center" colspan="3">
                                                             <asp:Button ID="btnSaveIntervals" runat="server" CssClass="button" Text='<%=PortalCulture.GetString("00008") %>'>
                                                             </asp:Button>
+                                                            <asp:Button ID="btnSingleImgInv" runat="server" CssClass="button" CausesValidation="false" Visible="false" Text='Sinc Channel Manager'>
+                                                            </asp:Button>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <asp:Label CssClass="Validators" Visible="false" runat="server" ID="lblIsHouse">Esta propiedad es una casa. Solo se permite la cantidad de 1 en inventario.</asp:Label>
                                                         </td>
                                                     </tr>
                                                 </table>

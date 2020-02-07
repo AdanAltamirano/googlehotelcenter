@@ -164,6 +164,21 @@
         </td>
     </tr>
     <tr>
+        <td align="right">
+            <asp:Label ID="lblCompanyType" runat="server" EnableViewState="False">Tipo de Empresa :</asp:Label>
+        </td>
+        <td>
+            <asp:DropDownList runat="server" ID="ddlCompanyType" Width="150px">
+                <asp:ListItem Value="0" Text="Hotel" Selected="True"></asp:ListItem>
+                <asp:ListItem Value="1" Text="Casa"></asp:ListItem>
+            </asp:DropDownList>
+        </td>
+        <td>
+        </td>
+        <td>
+        </td>
+    </tr>
+    <tr>
         <td align="center" colspan="4" class="dgItem">
             <asp:Label ID="lblHotelInformation" runat="server" EnableViewState="False">Informacion de Hotel</asp:Label>
         </td>

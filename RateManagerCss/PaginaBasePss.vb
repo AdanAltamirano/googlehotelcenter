@@ -115,6 +115,16 @@ Public Class PaginaBase
 
 #Region "propiedades"
 
+    'Public ReadOnly Property iduser() As Integer
+    '    Get
+    '        With New HotelSistema 'Procedimientos almacenados 
+    '            Dim corporated As DataSet = .GetCorporativos(Me.Usuario)
+    '            Dim idcoporate As Integer = corporated.Tables(0).Rows(0).Item("idcorporativo")
+    '        End With
+    '        Return 5532
+    '    End Get
+    'End Property
+
     Property ReloadMe() As Boolean
         Get
             Return _Reload
@@ -232,6 +242,20 @@ Public Class PaginaBase
         Set(ByVal Value As Integer)
             ViewState.Item("KEY_IDUSUARIO") = Value
         End Set
+    End Property
+
+    Public ReadOnly Property CorporateName As String
+        Get
+            Dim sessionValues As companyInfo = Session(SESSION_INFO)
+            Return sessionValues.CorporateName
+        End Get
+    End Property
+
+    Public ReadOnly Property CorporateId As Integer
+        Get
+            Dim sessionValues As companyInfo = Session(SESSION_INFO)
+            Return sessionValues.IdCorporate
+        End Get
     End Property
 
     Public Property PermisoUser(ByVal permiso As String) As DerechoUsuario
@@ -1223,6 +1247,14 @@ Public Class PaginaBase
             ClientScript.RegisterStartupScript(Me.GetType(), "clientScript", script_iframeHeight)
             Context.Session("once_script") = True
         End If
+
+        If Me.isUserChain Then
+            With New HotelSistema
+                Dim corporated As DataSet = .GetCorporativos(Me.Usuario)
+                Me.cInfoActual.IdCorporate = corporated.Tables(0).Rows(0).Item("idcorporativo")
+                Me.cInfoActual.CorporateName = corporated.Tables(0).Rows(0).Item("NombreCorp")
+            End With
+        End If
     End Sub
 
     Private Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.PreRender
@@ -1295,6 +1327,24 @@ Public Class PaginaBase
         End If
 
     End Sub
+
+    Public Function GetXMLFromObject(o As Object) As String
+        Dim sw As New System.IO.StringWriter()
+        Dim tw As New XmlTextWriter(sw)
+        Try
+            Dim serializer As New System.Xml.Serialization.XmlSerializer(o.[GetType]())
+            serializer.Serialize(tw, o)
+            Return sw.ToString()
+            'Handle Exception Code
+        Catch ex As Exception
+            sw.Close()
+            tw.Close()
+            Return ex.Message
+        Finally
+            sw.Close()
+            tw.Close()
+        End Try
+    End Function
 
     Protected Overrides Sub Render(ByVal writer As System.Web.UI.HtmlTextWriter)
 
@@ -1441,6 +1491,21 @@ Public Class PaginaBase
         End Try
         Return sPages
     End Function
+
+    Public Shared Sub WriteLog(ByVal Log As String, LogName As String)
+        Try
+            Dim path As String = AppSettings("Log_Path")
+            If System.IO.Directory.Exists(path) Then
+                Dim fileName As String = String.Format("{0}{1}{2}.log", path, LogName, DateTime.Now.ToString("yyyyMMdd"))
+                Dim osW As System.IO.StreamWriter = New System.IO.StreamWriter(fileName, True)
+                osW.WriteLine(String.Format("{0} ==> {1}", DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss ->fffffff"), Log))
+                osW.Flush()
+                osW.Close()
+            End If
+        Catch ex As Exception
+            Dim s As String = ex.Message
+        End Try
+    End Sub
 End Class
 
 Public Class AuthUser

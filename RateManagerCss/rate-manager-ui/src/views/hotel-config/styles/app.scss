@@ -1,0 +1,22 @@
+@import '../../../styles/base.scss';
+@import '../../../../node_modules/bootstrap-vue/dist/bootstrap-vue.css';
+.success-text {
+    color: #155724;
+}
+
+.warning-text {
+    color: #856404;
+}
+
+.error-text {
+    color: #721c24;
+}
+
+.rates-class {
+    height: 358px;
+    overflow-y: scroll;
+}
+
+.hidden_header {
+    display: none;
+}

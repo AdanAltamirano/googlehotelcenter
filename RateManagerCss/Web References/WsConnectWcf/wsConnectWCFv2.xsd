@@ -1,9 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:tns="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" elementFormDefault="qualified" targetNamespace="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:complexType name="SecurityHeaderType">
-    <xs:sequence>
-      <xs:any minOccurs="0" maxOccurs="unbounded" />
-    </xs:sequence>
-    <xs:anyAttribute />
-  </xs:complexType>
+<xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://www.test.com/WsConnectividad-Repo/wsConnectWCFv2.svc?xsd=xsd1" namespace="http://www.opentravel.org/OTA/2003/05" />
+  <xs:import schemaLocation="http://www.test.com/WsConnectividad-Repo/wsConnectWCFv2.svc?xsd=xsd2" namespace="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" />
+  <xs:element name="ReservationPushNotif">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="IdHotel" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ReservationPushNotifResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="1" name="ReservationPushNotifResult" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element xmlns:q1="http://www.opentravel.org/OTA/2003/05" name="OTA_ReadRQ" type="q1:OTA_ReadRQ" />
+  <xs:element xmlns:q2="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" name="Security" type="q2:SecurityHeaderType" />
+  <xs:element xmlns:q3="http://www.opentravel.org/OTA/2003/05" name="OTA_ResRetriveRS" type="q3:OTA_ResRetrieveRS" />
+  <xs:element xmlns:q4="http://www.opentravel.org/OTA/2003/05" name="OTA_HotelAvailNotifRQ" type="q4:OTA_HotelAvailNotifRQ" />
+  <xs:element xmlns:q5="http://www.opentravel.org/OTA/2003/05" name="OTA_HotelAvailNotifRS" type="q5:MessageAcknowledgementType" />
+  <xs:element xmlns:q6="http://www.opentravel.org/OTA/2003/05" name="OTA_HotelRateAmountNotifRQ" type="q6:OTA_HotelRateAmountNotifRQ" />
+  <xs:element xmlns:q7="http://www.opentravel.org/OTA/2003/05" name="OTA_HotelRateAmountNotifRS" type="q7:MessageAcknowledgementType" />
+  <xs:element xmlns:q8="http://www.opentravel.org/OTA/2003/05" name="OTA_NotifReportRQ" type="q8:OTA_NotifReportRQ" />
+  <xs:element xmlns:q9="http://www.opentravel.org/OTA/2003/05" name="OTA_NotifReportRS" type="q9:MessageAcknowledgementType" />
+  <xs:element xmlns:q10="http://www.opentravel.org/OTA/2003/05" name="OTA_HotelAvailRQ" type="q10:OTA_HotelAvailRQ" />
+  <xs:element xmlns:q11="http://www.opentravel.org/OTA/2003/05" name="OTA_HotelAvailRS" type="q11:OTA_HotelAvailRS" />
 </xs:schema>

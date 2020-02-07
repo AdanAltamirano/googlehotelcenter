@@ -1,6 +1,9 @@
 ﻿using APIServices.Models;
 using APIServices.Models.DTO;
 using System.Linq;
+using System.Collections.Generic;
+using System;
+using APIServices.Extension;
 
 namespace APIServices
 {
@@ -8,6 +11,7 @@ namespace APIServices
     {
 
         public OzHotelesEntities DbContext = new OzHotelesEntities();
+        OzUniEntities DbContextUnivisit = new OzUniEntities();
 
         /// <summary>
         /// Búsqueda de tarifas diarias
@@ -85,5 +89,16 @@ namespace APIServices
         {
             return DbContext.vHotelBasicInfo.AsQueryable();
         }
+
+        //public IQueryable<vHotelBasicInfo> GetAllGalileo(string corporate)
+        //{
+        //    //var hotels = DbContext.vHotelBasicInfoGalileo.
+        //    //   Where(h => h.Name.Contains(corporate)).
+        //    //    ToDTO<vHotelBasicInfoGalileo, vHotelBasicInfo>();
+
+        //    var hotels = DbContext.vHotelBasicInfo.Where(h => h.Name.Contains(corporate) && h.Provider == "IDISO").AsQueryable();
+
+        //    return hotels;
+        //}
     }
 }

@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<errors>
+  <dates>
+    <availability_portal>
+      <success>200</success>
+      <complete>Disponible en portal se encuentra activo</complete>
+      <fail>400</fail>
+      <error>Disponible en portal se encuentra inactivo</error>
+    </availability_portal>
+    <availability>
+      <success>200</success>
+      <complete>Disponibilidad se encuentra abierto</complete>
+      <fail>400</fail>
+      <error>Disponibilidad debe estar abierto</error>
+    </availability>
+    <allow_bank_deposit>
+      <success>200</success>
+      <complete>Depósito bancario para reservar está habilitado</complete>
+      <warning>300</warning>
+      <error>Depósito bancario para reservar está deshabilitado</error>
+    </allow_bank_deposit>
+    <property_number>
+      <success>200</success>
+      <complete>El número de propiedad no está vacío</complete>
+      <fail>400</fail>
+      <error>El número de propiedad no puede estar vacío</error>
+    </property_number>
+  </dates>
+  <creditcard>
+    <success>200</success>
+    <complete>Tiene seleccionadas tarjetas de crédito para reservar</complete>
+    <fail>400</fail>
+    <error>No hay tarjetas de crédito seleccionadas para reservar</error>
+  </creditcard>
+  <rateplan>
+    <name>
+      <success>200</success>
+      <complete>El nombre en inglés no se encuentra vacío</complete>
+      <fail>400</fail>
+      <error>El nombre en inglés no puede estar vacío</error>
+    </name>
+    <name_es>
+      <success>200</success>
+      <complete>El nombre en español no se encuentra vacío</complete>
+      <fail>400</fail>
+      <error>El nombre en español no puede estar vacío</error>
+    </name_es>
+    <description>
+      <success>200</success>
+      <complete>La descripción en inglés no se encuentra vacía</complete>
+      <fail>400</fail>
+      <error>La descripción en inglés no puede estar vacía</error>
+    </description>
+    <description_es>
+      <success>200</success>
+      <complete>La descripción en inglés no se encuentra vacía</complete>
+      <fail>400</fail>
+      <error>La descripción en español no puede estar vacía</error>
+    </description_es>
+    <hotelpayment>
+      <success>200</success>
+      <complete>Pago en el hotel esta habilitado</complete>
+      <fail>300</fail>
+      <error>Pago en el hotel esta deshabilitado</error>
+    </hotelpayment>
+    <portal_availability>
+      <success>200</success>
+      <complete>La tarifa estará disponible en portales</complete>
+      <fail>400</fail>
+      <error>La tarifa no estará disponible en portales</error>
+    </portal_availability>
+    <net_rate_contract>
+      <success>200</success>
+      <complete>Tarifa neta tiene seleccionado un contrato</complete>
+      <fail>400</fail>
+      <error>No se ha seleccionado contrató de tarifa neta</error>
+    </net_rate_contract>
+    <prepaid_rate_plan>
+      <success>200</success>
+      <complete>El plan tarifario tiene seleccionado un prepago</complete>
+      <fail>400</fail>
+      <error>No se ha seleccionado un prepago para el plan tarifario</error>
+    </prepaid_rate_plan>
+  </rateplan>
+  <city>
+    <success>200</success>
+    <fail>400</fail>
+    <error>No puede estar vacío el código de ciudad en Site Admin</error>
+  </city>
+</errors>
+

@@ -1,4 +1,3 @@
-
 import Vue from 'vue';
 
 const appConfig = {
@@ -6,6 +5,9 @@ const appConfig = {
     language: window.app.language || 'es',
     session: {
         hotelId: window.app.hotelId,
+        hotelName: window.app.hotelName,
+        corporateId: window.app.corporateId,
+        corporateName: window.app.corporateName
     },
     themeColors: {
         primary: '#10467a',
@@ -13,6 +15,7 @@ const appConfig = {
         warning: '#ff6c00',
     },
     confirmNumber: window.app.confirmNumber,
+    basePath: process.env.VUE_APP_URL,
 };
 
 function appAlert(alertData) {
@@ -37,8 +40,8 @@ Vue.use(ConfigsPlugIn);
 
 /* eslint-disable */
 // when https://github.com/vuejs/vue/pull/7765
-Vue.prototype._b = (function (bind) {
-    return function (data, tag, value, asProp, isSync) {
+Vue.prototype._b = (function(bind) {
+    return function(data, tag, value, asProp, isSync) {
         if (value && value.$scopedSlots) {
             data.scopedSlots = value.$scopedSlots;
             delete value.$scopedSlots;

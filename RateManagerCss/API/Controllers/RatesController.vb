@@ -156,11 +156,6 @@ Namespace API.Controllers
         Private Function GetDaysOfWeekString(Days As DaysOfWeek) As String
             Dim Week As String = ""
 
-            If Days.Sun Then
-                Week = "Y"
-            Else
-                Week = "N"
-            End If
             If Days.Mon Then
                 Week += "Y"
             Else
@@ -187,6 +182,11 @@ Namespace API.Controllers
                 Week += "N"
             End If
             If Days.Sat Then
+                Week += "Y"
+            Else
+                Week += "N"
+            End If
+            If Days.Sun Then
                 Week += "Y"
             Else
                 Week += "N"
