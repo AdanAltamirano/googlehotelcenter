@@ -9,9 +9,6 @@ import View from './view.vue';
 
 import es from './localization/es';
 
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css';
-import 'vue-multiselect/dist/vue-multiselect.min.css';
 import './styles/app.scss';
 
 Vue.use(BootstrapVue);
