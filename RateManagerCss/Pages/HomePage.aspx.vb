@@ -198,7 +198,7 @@ Partial Class HomePage
             Div1.Style.Add("display", "block")
         End If
 
-        If cInfoActual.IsSingleImgInv Then
+        If cInfoActual.IsSingleImgInv AndAlso IsSupervisor Then
             btnSingleImgInv.Visible = True
         End If
         'If SourceName <> "" Then
@@ -732,7 +732,7 @@ Partial Class HomePage
         Dim hr As Boolean
         dsBefore = (New RoomsInventoryFacade).getInventoryByDate_Data(tipoCuarto, inicio, fin)
 
-        If (cInfoActual.IsHouse) Then
+        If (cInfoActual.IsHouse) AndAlso Rooms > 1 Then
             Rooms = 1
         End If
 
@@ -773,7 +773,10 @@ Partial Class HomePage
                     dr.AcceptChanges()
                     dr(ds.FLD_STATUS) = dr(ds.FLD_STATUS)
 
-                    TwoWayUpdate(ds)
+                    If hr AndAlso cInfoActual.IsSingleImgInv Then
+                        TwoWayUpdate(ds)
+                    End If
+
                 End If
                 Return hr
             End With

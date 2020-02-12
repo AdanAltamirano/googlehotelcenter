@@ -388,12 +388,14 @@ Public Class Promotions
                         Me.txtAddValueDescription.Update(idPromoDescription, publish)
                         If bookingWindowFrom.Text <> "" AndAlso bookingWindowTo.Text <> "" Then
                             If CheckBoxDefHora.Checked = True Then
-                                .InsertRatePlanDeal(Me.txtPromotionCode.Text.ToUpper, Me.m_iHotelId, bookingWindowFrom.Text, bookingWindowTo.Text, HoraInicio.SelectedValue & ":" & MinutoInicio.SelectedValue, HoraFin.SelectedValue & ":" & MinutoFin.SelectedValue)
+                                .InsertRatePlanDeal(Me.txtPromotionCode.Text.ToUpper, Me.m_iHotelId, Date.ParseExact(bookingWindowFrom.Text, "dd/MM/yyyy", Globalization.DateTimeFormatInfo.InvariantInfo).ToString("MM/dd/yyyy"),
+                                                    Date.ParseExact(bookingWindowTo.Text, "dd/MM/yyyy", Globalization.DateTimeFormatInfo.InvariantInfo).ToString("MM/dd/yyyy"), HoraInicio.SelectedValue & ":" & MinutoInicio.SelectedValue, HoraFin.SelectedValue & ":" & MinutoFin.SelectedValue)
                             Else
-                                .InsertRatePlanDeal(Me.txtPromotionCode.Text.ToUpper, Me.m_iHotelId, bookingWindowFrom.Text, bookingWindowTo.Text, "", "")
+                                .InsertRatePlanDeal(Me.txtPromotionCode.Text.ToUpper, Me.m_iHotelId, Date.ParseExact(bookingWindowFrom.Text, "dd/MM/yyyy", Globalization.DateTimeFormatInfo.InvariantInfo).ToString("MM/dd/yyyy"),
+                                                    Date.ParseExact(bookingWindowTo.Text, "dd/MM/yyyy", Globalization.DateTimeFormatInfo.InvariantInfo).ToString("MM/dd/yyyy"), "", "")
                             End If
                         End If
-                        
+
                         For Each plan As ListItem In chlListContract.Items
                             If plan.Selected Then
                                 dsPromoRateplan = New RatePlanData
@@ -427,7 +429,7 @@ Public Class Promotions
                             End If
                         Next
 
-                        If open_blackout.Checked Then
+                        If open_blackout.Checked AndAlso Not txtDiasBlackout.Value = "" Then
                             If Not SaveBlackoutDays() Then
                                 Return 5
                             End If
@@ -531,15 +533,17 @@ Public Class Promotions
 
                     If bookingWindowFrom.Text <> "" AndAlso bookingWindowTo.Text <> "" Then
                         If CheckBoxDefHora.Checked = True Then
-                            .UpdateRatePlanDeal(IdRatePlan, Me.m_iHotelId, bookingWindowFrom.Text, bookingWindowTo.Text, HoraInicio.SelectedValue & ":" & MinutoInicio.SelectedValue, HoraFin.SelectedValue & ":" & MinutoFin.SelectedValue)
+                            .UpdateRatePlanDeal(IdRatePlan, Me.m_iHotelId, Date.ParseExact(bookingWindowFrom.Text, "dd/MM/yyyy", Globalization.DateTimeFormatInfo.InvariantInfo).ToString("MM/dd/yyyy"),
+                                                Date.ParseExact(bookingWindowTo.Text, "dd/MM/yyyy", Globalization.DateTimeFormatInfo.InvariantInfo).ToString("MM/dd/yyyy"), HoraInicio.SelectedValue & ":" & MinutoInicio.SelectedValue, HoraFin.SelectedValue & ":" & MinutoFin.SelectedValue)
                         Else
-                            .UpdateRatePlanDeal(IdRatePlan, Me.m_iHotelId, bookingWindowFrom.Text, bookingWindowTo.Text, "", "")
+                            .UpdateRatePlanDeal(IdRatePlan, Me.m_iHotelId, Date.ParseExact(bookingWindowFrom.Text, "dd/MM/yyyy", Globalization.DateTimeFormatInfo.InvariantInfo).ToString("MM/dd/yyyy"),
+                                                Date.ParseExact(bookingWindowTo.Text, "dd/MM/yyyy", Globalization.DateTimeFormatInfo.InvariantInfo).ToString("MM/dd/yyyy"), "", "")
                         End If
                     Else
                         .DelRateRatePlanDeal(IdRatePlan, Me.m_iHotelId)
                     End If
 
-                    If open_blackout.Checked Then
+                    If open_blackout.Checked AndAlso Not txtDiasBlackout.Value = "" Then
                         SaveBlackoutDays()
                     Else
                         With New RoomClosure
@@ -573,7 +577,8 @@ Public Class Promotions
                             BlackoutFrom = dates.Split("-")(0)
                             BlackoutTo = dates.Split("-")(1)
                             For Each room As ListItem In chkListRoom.Items
-                                If Not .LockRoomTypes(cInfoActual.Hotel, txtPromotionCode.Text.Trim, BlackoutFrom, BlackoutTo, room.Value, "C", strError) Then
+                                If Not .LockRoomTypes(cInfoActual.Hotel, txtPromotionCode.Text.Trim, Date.ParseExact(BlackoutFrom, "dd/MM/yyyy", Globalization.DateTimeFormatInfo.InvariantInfo).ToString("MM/dd/yyyy"),
+                                                      Date.ParseExact(BlackoutTo, "dd/MM/yyyy", Globalization.DateTimeFormatInfo.InvariantInfo).ToString("MM/dd/yyyy"), room.Value, "C", strError) Then
                                     lblError.Text = strError
                                     lblError.Visible = True
                                     Return False
@@ -727,7 +732,9 @@ Public Class Promotions
                 dtDistinct = dvBlackoutDates.ToTable(True, columns)
                 If dtDistinct.Rows.Count > 0 Then
                     For Each row As DataRow In dtDistinct.Rows
-                        txtDiasBlackout.Value &= CDate(row.Item("StartDate")).ToString("MM/dd/yyyy") & "-" & CDate(row.Item("EndDate")).ToString("MM/dd/yyyy") & "|"
+                        txtDiasBlackout.Value &= Date.ParseExact(CType(row.Item("StartDate").ToString(), Date).ToString("MM/dd/yyyy"), "MM/dd/yyyy", System.Globalization.DateTimeFormatInfo.InvariantInfo).ToString("dd/MM/yyyy") & "-" _
+                                                & Date.ParseExact(CType(row.Item("EndDate").ToString(), Date).ToString("MM/dd/yyyy"), "MM/dd/yyyy", System.Globalization.DateTimeFormatInfo.InvariantInfo).ToString("dd/MM/yyyy") & "|"
+                        'CType(row.Item("StartDate").ToString(), Date).ToString("dd/MM/yyyy") & "-" & CType(row.Item("EndDate").ToString(), Date).ToString("dd/MM/yyyy") & "|"
                         open_blackout.Checked = True
                     Next
                     txtDiasBlackout.Value = txtDiasBlackout.Value.Substring(0, txtDiasBlackout.Value.Length - 1)
@@ -739,8 +746,10 @@ Public Class Promotions
                 Dim ds As New DataSet
                 ds = .GetRateRatePlanDeal(IdRatePlan, m_iHotelId)
                 If Not ds Is Nothing AndAlso ds.Tables(0).Rows.Count > 0 Then
-                    bookingWindowFrom.Text = CType(ds.Tables(0).Rows(0)("fechaInicio"), String).Trim
-                    bookingWindowTo.Text = CType(ds.Tables(0).Rows(0)("fechaFin"), String).Trim
+                    Dim startDate, endDate As Date
+
+                    bookingWindowFrom.Text = IIf(Date.TryParse(ds.Tables(0).Rows(0)("fechaInicio"), startDate), startDate.ToString("dd/MM/yyyy"), "")
+                    bookingWindowTo.Text = IIf(Date.TryParse(ds.Tables(0).Rows(0)("fechaFin"), endDate), endDate.ToString("dd/MM/yyyy"), "")
 
                     If ds.Tables(0).Rows(0)("horaInicio") Is DBNull.Value Then
                         CheckBoxDefHora.Checked = False
@@ -913,8 +922,8 @@ Public Class Promotions
                     End If
                 End If
                 If Not .IsNull(RatesPlanRulesData.FIELD_PromoStartDate) Then
-                    travelWindowFrom.Text = CType(.Item(RatesPlanRulesData.FIELD_PromoStartDate), String).Trim '.Item(RatesPlanRulesData.FIELD_PromoStartDate).ToString
-                    travelWindowTo.Text = CType(.Item(RatesPlanRulesData.FIELD_PromoEndDate), String).Trim
+                    travelWindowFrom.Text = CType(.Item(RatesPlanRulesData.FIELD_PromoStartDate), Date).ToString("dd/MM/yyyy") '.Item(RatesPlanRulesData.FIELD_PromoStartDate).ToString
+                    travelWindowTo.Text = CType(.Item(RatesPlanRulesData.FIELD_PromoEndDate), Date).ToString("dd/MM/yyyy")
                 End If
             End With
         End If
@@ -1018,17 +1027,17 @@ Public Class Promotions
             If e.Item.Cells(dgcolumns.orden).Text = "0" Or e.Item.Cells(dgcolumns.orden).Text = "100000" Then
                 e.Item.Cells(dgcolumns.orden).Text = "---"
             End If
-            e.Item.Cells(dgcolumns.StartDate).Text = CDate(e.Item.Cells(dgcolumns.StartDate).Text).ToString("MMM/dd/yyyy")
-            e.Item.Cells(dgcolumns.EndDate).Text = CDate(e.Item.Cells(dgcolumns.EndDate).Text).ToString("MMM/dd/yyyy")
+
+            Dim startDate, endDate As Date
+
+            e.Item.Cells(dgcolumns.StartDate).Text = IIf(Date.TryParse(e.Item.Cells(dgcolumns.StartDate).Text, startDate), startDate.ToString("dd/MM/yyyy"), "")
+            e.Item.Cells(dgcolumns.EndDate).Text = IIf(Date.TryParse(e.Item.Cells(dgcolumns.EndDate).Text, endDate), endDate.ToString("dd/MM/yyyy"), "")
             e.Item.Cells(dgcolumns.segment).Text = GetSegmento(e.Item.Cells(dgcolumns.segment).Text)
             Dim LK As HyperLink
             Dim LK2 As LinkButton
 
-
             LK2 = e.Item.Cells(dgcolumns.eliminar).FindControl("lnkedit")
             LK2.Text = PortalCulture.GetString("00093")
-
-
 
             If e.Item.Cells(dgcolumns.deleted).Text.ToUpper() = "TRUE" Then 'DESACTIVAR
                 e.Item.Cells(dgcolumns.eliminar).Text = ""
@@ -1189,8 +1198,8 @@ Public Class Promotions
                 .Item(RatesPlanRulesData.FIELD_RateRulesDef) = True 'chkRateRules.Checked
                 .Item(RatesPlanRulesData.FIELD_ReqVerif) = True 'ddlVerReq.SelectedValue
                 .Item(RatesPlanRulesData.FIELD_DESCRIPTION) = txtCancelPolicyDescription.Text
-                .Item(RatesPlanRulesData.FIELD_PromoStartDate) = CDate(travelWindowFrom.Text)
-                .Item(RatesPlanRulesData.FIELD_PromoEndDate) = CDate(travelWindowTo.Text)
+                .Item(RatesPlanRulesData.FIELD_PromoStartDate) = Date.ParseExact(travelWindowFrom.Text, "dd/MM/yyyy", Globalization.DateTimeFormatInfo.InvariantInfo)
+                .Item(RatesPlanRulesData.FIELD_PromoEndDate) = Date.ParseExact(travelWindowTo.Text, "dd/MM/yyyy", Globalization.DateTimeFormatInfo.InvariantInfo)
                 .Item(RatesPlanRulesData.FIELD_DESCRIPTION) = txtCancelPolicyDescription.Text
 
 
@@ -1246,9 +1255,11 @@ Public Class Promotions
         Catch ex As Exception
             lblError.Visible = True
             lblError.Text = ex.Message
+
+            Return False
         End Try
         ds.Tables(RatesPlanRulesData.TABLE_RATEPLANRULES).Rows.Add(dr)
-        Dim sw As Boolean
+        Dim sw As Boolean = False
         If edicion = False Then
             Try
                 With New RatesPlanRulesFacade
@@ -1280,7 +1291,9 @@ Public Class Promotions
                 End With
             Catch ex As Exception
                 lblError.Visible = True
-                lblError.Text = ex.Message
+                lblError.Text = "Reglas => " + ex.Message
+
+                Return sw
             End Try
         Else
             ds.AcceptChanges()
@@ -1309,7 +1322,9 @@ Public Class Promotions
                 End With
             Catch ex As Exception
                 lblError.Visible = True
-                lblError.Text = ex.Message
+                lblError.Text = "Reglas => " + ex.Message
+
+                Return sw
             End Try
         End If
     End Function

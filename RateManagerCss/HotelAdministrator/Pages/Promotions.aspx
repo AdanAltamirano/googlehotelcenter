@@ -1330,7 +1330,7 @@
     </script>
     <script type="text/javascript">
         $(function () {
-            var dateFormat = "mm/dd/yy",
+            var dateFormat = 'dd/mm/yy',
               from = $("#travelWindowFrom")
                 .datepicker({
                     showOn: "button",
@@ -1339,7 +1339,8 @@
                     buttonText: "Select date",
                     defaultDate: "+1w",
                     changeMonth: true,
-                    numberOfMonths: 2
+                    numberOfMonths: 2,
+                    dateFormat: dateFormat
                 })
                 .on("change", function () {
                     to.datepicker("option", "minDate", getDate(this));
@@ -1351,7 +1352,8 @@
                   buttonText: "Select date",
                   defaultDate: "+1w",
                   changeMonth: true,
-                  numberOfMonths: 2
+                  numberOfMonths: 2,
+                  dateFormat: dateFormat
               })
               .on("change", function () {
                   from.datepicker("option", "maxDate", getDate(this));
@@ -1370,7 +1372,7 @@
         }); //DATEPICKER
 
         $(function () {
-            var dateFormat = "mm/dd/yy",
+            var dateFormat = "dd/mm/yy",
               from = $("#bookingWindowFrom")
                 .datepicker({
                     showOn: "button",
@@ -1379,7 +1381,8 @@
                     buttonText: "Select date",
                     defaultDate: "+1w",
                     changeMonth: true,
-                    numberOfMonths: 2
+                    numberOfMonths: 2,
+                    dateFormat : dateFormat
                 })
                 .on("change", function () {
                     to.datepicker("option", "minDate", getDate(this));
@@ -1391,7 +1394,8 @@
                   buttonText: "Select date",
                   defaultDate: "+1w",
                   changeMonth: true,
-                  numberOfMonths: 2
+                  numberOfMonths: 2,
+                  dateFormat : dateFormat
               })
               .on("change", function () {
                   from.datepicker("option", "maxDate", getDate(this));
@@ -1410,7 +1414,7 @@
         }); //DATEPICKER
 
         $(function () {
-            var dateFormat = "mm/dd/yy",
+            var dateFormat = "dd/mm/yy",
               from = $("#blackoutFrom")
                 .datepicker({
                     showOn: "button",
@@ -1419,7 +1423,8 @@
                     buttonText: "Select date",
                     defaultDate: "+1w",
                     changeMonth: true,
-                    numberOfMonths: 2
+                    numberOfMonths: 2,
+                    dateFormat : dateFormat
                 })
                 .on("change", function () {
                     to.datepicker("option", "minDate", getDate(this));
@@ -1431,7 +1436,8 @@
                   buttonText: "Select date",
                   defaultDate: "+1w",
                   changeMonth: true,
-                  numberOfMonths: 2
+                  numberOfMonths: 2,
+                  dateFormat : dateFormat
               })
               .on("change", function () {
                   from.datepicker("option", "maxDate", getDate(this));
@@ -1583,7 +1589,7 @@
                     var to = $(this).children(".blackTo")[0].id;
 
                     $("#<%= txtDiasBlackout.ClientID%>").val(function () {
-                        return $(this).val() + from + "-" + to + "| ";
+                        return $(this).val() + from + "-" + to + "|";
                     });
                 });
                 $('#Dates_Blackout').empty();
@@ -1710,12 +1716,12 @@
             if (newFrom === "" || newTo === "")
                 return false;
 
-            var dayNewFrom = newFrom.split("/")[1]
-            var monthNewFrom = newFrom.split("/")[0]
+            var dayNewFrom = newFrom.split("/")[0]
+            var monthNewFrom = newFrom.split("/")[1]
             var yearNewFrom = newFrom.split("/")[2]
 
-            var dayNewTo = newTo.split("/")[1]
-            var monthNewTo = newTo.split("/")[0]
+            var dayNewTo = newTo.split("/")[0]
+            var monthNewTo = newTo.split("/")[1]
             var yearNewTo = newTo.split("/")[2]
 
             newFrom = new Date(yearNewFrom, monthNewFrom - 1, dayNewFrom);
@@ -1725,12 +1731,12 @@
                 var from = $(this).children(".blackFrom")[0].id;
                 var to = $(this).children(".blackTo")[0].id;
 
-                var dayFrom = from.split("/")[1]
-                var monthFrom = from.split("/")[0]
+                var dayFrom = from.split("/")[0]
+                var monthFrom = from.split("/")[1]
                 var yearFrom = from.split("/")[2]
 
-                var dayTo = to.split("/")[1]
-                var monthTo = to.split("/")[0]
+                var dayTo = to.split("/")[0]
+                var monthTo = to.split("/")[1]
                 var yearTo = to.split("/")[2]
 
                 from = new Date(yearFrom, monthFrom - 1, dayFrom);
