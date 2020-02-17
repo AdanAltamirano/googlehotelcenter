@@ -26,6 +26,9 @@
                         <h5 class="m-0 pl-2 w-80 text-truncate" :class="{ 'text-muted': rate.parentRatePlanId}" >
                             <i v-tooltip="{ content: getPlanLinkDesc(rate), classes: ['primary']}" v-if="rate.parentRatePlanId" class="fa fa-link text-primary mr-2"></i>
                             <span v-tooltip="rate.ratePlan">{{rate.ratePlanId}} - {{rate.ratePlan}}</span>
+                            <span class="text-primary m-0">
+                                <i v-tooltip="$t('{discount}% Off', {discount: rate.discount})" v-if="rate.discount > 0" class="fa fa-tag"></i>
+                            </span>
                         </h5>
                         <div class="btn-group ml-3" v-if="rate.children.length > 0">
                             <button data-toggle="collapse" class="btn btn-link btn-sm p-0" :data-target="'#' + rate.ratePlanId + '-'+  rate.roomId + '-lk'">
