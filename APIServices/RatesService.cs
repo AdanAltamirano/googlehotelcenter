@@ -247,6 +247,8 @@ namespace APIServices
             {
                 try
                 {
+                    var copy = CopyRates(ref updateRQ,ref strError);
+
                     if (updateRQ.RateId > 0)
                     {
                         //Busca la tarifa para crear una copia de las reglas
@@ -276,12 +278,64 @@ namespace APIServices
             }
         }
 
-        /// <summary>
-        /// Busca la tarifa para crear una copia de las reglas
-        /// </summary>
-        /// <param name="updateRQ"></param>
-        /// <returns></returns>
-        private bool CompleteRateUpdateRQ(ref RateUpdateRQ updateRQ, ref string strError)
+        private bool CopyRates(ref RateUpdateRQ updateRQ, ref string strError)
+        {
+
+            using (OzHotelesEntities db = new OzHotelesEntities())
+            {
+                IEnumerable<Tarifas> rates = null;
+                int roomId = updateRQ.RoomId;
+                string ratePlanId = updateRQ.RatePlanCode;
+                DateTime startDate = updateRQ.StartDate;
+                DateTime endDate = updateRQ.EndDate;
+
+                rates = db.Tarifas.Where(o =>
+                    o.idTipoHabitacion_Hotel == roomId
+                    && o.idrateplan == ratePlanId
+                    && (((startDate >= o.FechaInicia && startDate <= o.FechaFinaliza) || (endDate >= o.FechaInicia && endDate <= o.FechaFinaliza))
+                          || ((o.FechaInicia >= startDate && o.FechaInicia <= endDate) || (o.FechaFinaliza >= startDate && o.FechaFinaliza <= endDate)))).ToArray();
+
+                foreach (var rate in rates)
+                {
+                    RateUpdateRQBookingWindow bookingWindow = new RateUpdateRQBookingWindow
+                    {
+                        StartDate = rate.BookingWindowStart,
+                        EndDate = rate.BookingWindowEnd
+                    };
+
+                    RateUpdateRQGuestsRestriction guestsRestriction = new RateUpdateRQGuestsRestriction
+                    {
+                        MaxAdults = rate.MaxAdultos,
+                        MinAdults = rate.MinAdultos,
+                        ExtraGuests = rate.PersonasExtras,
+                        Children = rate.MaxNinios,
+                        MaxGuests = rate.Personas
+                    };
+
+                    RateUpdateRQRules rules = new RateUpdateRQRules
+                    {
+                        NoArrival = rate.NoArrivos,
+                        UseDefaultRules = rate.RateRulesDefault,
+                        Segment = rate.TipoTarifa,
+                        MinLOS = rate.MinDias,
+                        MaxLOS = rate.MaxDias,
+                        MaxAdvanceBooking = rate.MaxAdvBooking,
+                        MinAdvanceBooking = rate.AdvBooking,
+                        BookingWindow = bookingWindow,
+                        GuestsRestrictions = guestsRestriction
+                    };
+                    updateRQ.Rules = rules;
+                }
+            }
+            return true;
+        }
+
+            /// <summary>
+            /// Busca la tarifa para crear una copia de las reglas
+            /// </summary>
+            /// <param name="updateRQ"></param>
+            /// <returns></returns>
+            private bool CompleteRateUpdateRQ(ref RateUpdateRQ updateRQ, ref string strError)
         {
             try
             {
@@ -492,7 +546,7 @@ namespace APIServices
                 PrecioExtraNinio = extraChildRate, //(decimal)SetPrice(isNetRate, extraChildRate, (decimal)hotelPlan.CommissionPercentage),
                 PrecioAdolescenteExtra = extraJuniorRate, //(decimal)SetPrice(isNetRate, extraJuniorRate, (decimal)hotelPlan.CommissionPercentage),
                 PrecioNR = isNetRate ? SetPrice(isNetRate, adultRate, (decimal)hotelPlan.CommissionPercentage) : 0,
-                NiniosRateNR = isNetRate ? childRate : 0,
+                NiniosRateNR = isNetRate ? SetPrice(isNetRate, childRate, (decimal)hotelPlan.CommissionPercentage) : 0,
                 PrecioAdolescenteNR = isNetRate ? SetPrice(isNetRate, extraJuniorRate, (decimal)hotelPlan.CommissionPercentage) : 0,
                 PrecioExtraAdultoNR = isNetRate ? SetPrice(isNetRate, extraAdultRate, (decimal)hotelPlan.CommissionPercentage) : 0,
                 PrecioExtraNinioNR = isNetRate ? SetPrice(isNetRate, extraChildRate, (decimal)hotelPlan.CommissionPercentage) : 0,
@@ -503,8 +557,8 @@ namespace APIServices
                 RateRulesDefault = rate.Rules?.UseDefaultRules ?? true,
                 TipoTarifa = hotelPlan.Segment,
                 CodigoTarifa = hotelRoom.Code + rate.RatePlanCode,
-                PrecioAdolescente = SetPrice(isNetRate, juniorRate, (decimal)hotelPlan.CommissionPercentage),
-                NiniosRate = SetPrice(isNetRate, childRate, (decimal)hotelPlan.CommissionPercentage),
+                PrecioAdolescente = juniorRate,
+                NiniosRate = childRate,
                 Precio = adultRate, //(decimal)SetPrice(isNetRate, adultRate, (decimal)hotelPlan.CommissionPercentage),
                 idDiccPromoDesc = newDictionaryId == 0 ? null : newDictionaryId,
                 DescPromotion = promotionDiscount == 0 ? null : promotionDiscount,

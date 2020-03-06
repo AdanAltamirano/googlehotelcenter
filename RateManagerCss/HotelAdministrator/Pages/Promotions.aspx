@@ -1563,10 +1563,10 @@
 
             if (from.length && to.length) {
                 auxDate = from.split('/');
-                auxFrom = new Date(auxDate[2], +auxDate[0] - 1, auxDate[1]);
+                auxFrom = new Date(auxDate[2], +auxDate[1] - 1, auxDate[0]);
 
                 auxDate = to.split('/');
-                auxTo = new Date(auxDate[2], auxDate[0] - 1, auxDate[1]);
+                auxTo = new Date(auxDate[2], auxDate[1] - 1, auxDate[0]);
 
                 if (auxFrom.valueOf() <= auxTo.valueOf()) {
 
