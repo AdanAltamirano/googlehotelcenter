@@ -277,28 +277,31 @@ Partial Class ReservationDetails
         ADetails.Visible = False
         Select Case idstatus
             Case 1
-                lblNoCanc.Visible = False
-                Me.lblNoCancelacion.Visible = False
-                If (source = "UNI") Then
-                    If (Not isNetRateUv) Or Me.IsSupervisor Then
+                If Not cInfoActual.IdPais = "CU" Then
+                    lblNoCanc.Visible = False
+                    Me.lblNoCancelacion.Visible = False
+                    If (source = "UNI") Then
+                        If (Not isNetRateUv) Or Me.IsSupervisor Then
+                            Me.btnCancel.Visible = True
+                        End If
+                    ElseIf (source = "HTL") Or Me.IsSupervisor Then 'Or ((Me.IsUsuarioNivelHotel Or Me.isUserChain) AndAlso source = "HTL") Then
+                        Me.btnCancel.Visible = True
+                    ElseIf Me.isUserChain AndAlso source = "POR" AndAlso IdCorporativoPortal <> -1 AndAlso IdCorporativoUserChain = IdCorporativoPortal Then
                         Me.btnCancel.Visible = True
                     End If
-                ElseIf (source = "HTL") Or Me.IsSupervisor Then 'Or ((Me.IsUsuarioNivelHotel Or Me.isUserChain) AndAlso source = "HTL") Then
-                    Me.btnCancel.Visible = True
-                ElseIf Me.isUserChain AndAlso source = "POR" AndAlso IdCorporativoPortal <> -1 AndAlso IdCorporativoUserChain = IdCorporativoPortal Then
-                    Me.btnCancel.Visible = True
-                End If
-                If source = "POR" And isNetRateUv And Not Me.IsSupervisor Then
-                    Me.btnCancel.Visible = False
-                End If
-                If source = "POR" And Me.IsUsuarioHotelAssociation Then
-                    If idAsociacion = Me.IdAsociation Then
-                        Me.btnCancel.Visible = True
-                    Else
+                    If source = "POR" And isNetRateUv And Not Me.IsSupervisor Then
                         Me.btnCancel.Visible = False
                     End If
+                    If source = "POR" And Me.IsUsuarioHotelAssociation Then
+                        If idAsociacion = Me.IdAsociation Then
+                            Me.btnCancel.Visible = True
+                        Else
+                            Me.btnCancel.Visible = False
+                        End If
+                    End If
+                Else
+                    btnCancel.Visible = True
                 End If
-
                 Return PortalCulture.GetString("M000331")
             Case 2
                 Return PortalCulture.GetString("M000332")

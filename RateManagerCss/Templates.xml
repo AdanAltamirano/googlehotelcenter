@@ -59,8 +59,8 @@
 			<URLPORTAL />
 		</parametros>
 		<html>
-			<es-MX valor="/correos/html/ChangePasswordUser_ES.htm" />
-			<en-US valor="/correos/html/ChangePasswordUser_EN.htm" />
+			<es-MX valor="/correos/html/ChangePasswordUser-ES.htm" />
+			<en-US valor="/correos/html/ChangePasswordUser-EN.htm" />
 		</html>
 		<text>
 			<es-MX valor="/correos/texto/ChangePasswordUser_ES.txt" />
@@ -80,8 +80,8 @@
 			<URLPORTAL />
 		</parametros>
 		<html>
-			<es-MX valor="/correos/html/ForgotPasswordUser_ES.htm" />
-			<en-US valor="/correos/html/ForgotPasswordUser_EN.htm" />
+			<es-MX valor="/correos/html/ForgotPasswordUser-ES.htm" />
+			<en-US valor="/correos/html/ForgotPasswordUser-EN.htm" />
 		</html>
 		<text>
 			<es-MX valor="/correos/texto/ForgotPasswordUser_ES.txt" />
@@ -320,8 +320,8 @@
 			
 		</parametros>
 		<html>
-			<es-MX valor="/correos/html/HotelReservationCancellation_ES.htm" />
-			<en-US valor="/correos/html/HotelReservationCancellation_EN.htm" />
+			<es-MX valor="/correos/html/HotelReservationCancellation-ES.htm" />
+			<en-US valor="/correos/html/HotelReservationCancellation-EN.htm" />
 		</html>
 		<text>
 			<es-MX valor="/correos/texto/HotelReservationCancellation_ES.txt" />

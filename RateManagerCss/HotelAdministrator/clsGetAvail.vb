@@ -28,7 +28,7 @@ Public Class clsGetAvail
             "','" & checkout.ToString("yyyy/MM/dd") & "'" & str, conn)
         Dim ds As New DataSet
         Try
-            da.SelectCommand.CommandTimeout = 300
+            da.SelectCommand.CommandTimeout = 30
             da.Fill(ds)
         Catch ex As Exception
 
