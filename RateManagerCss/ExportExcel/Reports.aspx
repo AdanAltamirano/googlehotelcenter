@@ -16,7 +16,7 @@
             <asp:BoundColumn HeaderText="Status" DataField="Status" />
             <asp:BoundColumn HeaderText="Fecha de reservación" DataField="FechaReservacion" />
             <asp:BoundColumn HeaderText="Nombre del huesped" DataField="Nombre_cl" />
-            <asp:BoundColumn HeaderText="Nombre del huesped" DataField="Apellido_cl" />
+            <asp:BoundColumn HeaderText="Apellido del huesped" DataField="Apellido_cl" />
             <asp:BoundColumn HeaderText="Correo del huesped" DataField="Email_cl" />
             <asp:BoundColumn HeaderText="Hotel" DataField="HotelGNombre" />
             <asp:BoundColumn HeaderText="Fecha de llegada" DataField="CheckIn" />
