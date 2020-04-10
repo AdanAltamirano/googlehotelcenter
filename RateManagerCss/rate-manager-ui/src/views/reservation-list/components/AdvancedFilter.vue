@@ -112,8 +112,8 @@
                                     <!--hoteles-->
                                     <multiselect
                                     v-if="!isCheckCorporate"
-                                    label="name"
                                     v-model="hotel"
+                                    :custom-label="nameWithCorporate"
                                     :options="hotels"
                                     track-by="id"
                                     :multiple="true"
@@ -283,7 +283,7 @@ export default {
 
             /* filtrar demas campos si estan disponibles */
             /* eslint-disable max-len */
-            
+
             if (this.dates != null)
                 filter = `${this.typeDate} gt ${this.dateFormat(this.dates.start)} and ${this.typeDate} lt ${this.dateFormat(this.dates.end)}`;
             if (this.checkStatus.length > 0) {
@@ -333,6 +333,9 @@ export default {
         },
         changeItemsPerPage() {
             this.$emit('changeItems', this.itemPerPage);
+        },
+        nameWithCorporate({name, corp}) {
+            return name + (corp !== '' ? ` - [${corp}]` : '');
         }
     }
 };
