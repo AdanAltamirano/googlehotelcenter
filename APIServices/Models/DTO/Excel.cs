@@ -18,6 +18,7 @@ namespace APIServices.Models.DTO
             public DateTime CheckIn { get; set; }
             public DateTime CheckOut { get; set; }
             public string Origin { get; set; }
+            public string Corporate { get; set; }
             public string Total { get; set; }
             public string Status { get; set; }
         }

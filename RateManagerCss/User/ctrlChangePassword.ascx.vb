@@ -104,7 +104,12 @@ Partial Class ctrlChangePassword
 
             Dim dsUser As UserData
             With New cUserSystem
-                If .changePasswordUser(PortalCulture.GetCulture.ToString, lblEmailUser.Text.Trim, newPassword, lastPassword, dsUser) Then
+                'If .changePasswordUser(PortalCulture.GetCulture.ToString, lblEmailUser.Text.Trim, newPassword, lastPassword, dsUser) Then
+                '    Success = True
+                '    changePassword = True
+                '    CType(Me.Page, PaginaBase).guardalog("User/ChangePassword.aspx", PaginaBase.acciones.Modificar, "Cambió la contraseña " & Me.txtPassword.Text & " a: " & newPassword & " del email " & Me.lblEmailUser.Text)
+                'End If
+                If .changePasswordUser(PortalCulture.GetCulture.ToString, lblEmailUser.Text.Trim, newPassword, dsUser) Then
                     Success = True
                     changePassword = True
                     CType(Me.Page, PaginaBase).guardalog("User/ChangePassword.aspx", PaginaBase.acciones.Modificar, "Cambió la contraseña " & Me.txtPassword.Text & " a: " & newPassword & " del email " & Me.lblEmailUser.Text)

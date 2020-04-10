@@ -4,7 +4,7 @@
 <%@ Page Language="vb" AutoEventWireup="false" CodeBehind="Welcome.aspx.vb" Inherits="RateManager.Welcome1" %>
 
 <script runat="server">
-    
+
     Private Sub Page_PreRender1(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.PreRender
         loadCorporateAndAsociateHotelInfo()
     End Sub
@@ -31,17 +31,17 @@
         End If
 
     End Sub
-    
+
     Private Const CLUB100URL As String = ""
     Private _club100Info As Data.DataRow
-    
+
     Protected Enum Club100StatusEntitie
         Unknow = 0
         Review = 2
         Active = 1
         Unregistred = 3
     End Enum
-    
+
     Private ReadOnly Property Club100Info() As Data.DataRow
         Get
             If Me._club100Info Is Nothing Then
@@ -53,17 +53,17 @@
             Return Me._club100Info
         End Get
     End Property
-    
+
     Protected ReadOnly Property IsClub100Enabled() As Boolean
         Get
-            Return (Me.cInfoActual.IdPais.ToUpper() = "MX")
+            Return If(Me.cInfoActual.IdPais Is Nothing, False, (Me.cInfoActual.IdPais.ToUpper() = "MX"))
         End Get
     End Property
-    
+
     Protected ReadOnly Property Club100Status() As Club100StatusEntitie
         Get
             Dim temp As Club100StatusEntitie = Club100StatusEntitie.Unregistred
-            
+
             If Me.Club100Info IsNot Nothing Then
                 If Me.Club100Info.Table.Columns.Contains("estado") Then
                     Try
@@ -76,11 +76,11 @@
                     End Try
                 End If
             End If
-            
+
             Return temp
         End Get
     End Property
-    
+
     Protected ReadOnly Property Club100Points() As Integer
         Get
             Dim temp As Integer = 0
@@ -90,18 +90,18 @@
             Return temp
         End Get
     End Property
-    
+
     Protected Function GetLabel(ByVal key As String) As String
         Return PortalCulture.GetString(key)
     End Function
-    
-    
+
+
     Protected Sub LoadStatusHotelUniBilling(ByVal companyID As Integer, ByRef showCancel As Boolean, ByRef showWithDebit As Boolean)
-        
+
         showCancel = False
         showWithDebit = False
         Try
-            
+
             Dim da As New Data.SqlClient.SqlDataAdapter
             Dim tb As New Data.DataTable
             Dim cnn As Data.SqlClient.SqlConnection = New Data.SqlClient.SqlConnection(System.Configuration.ConfigurationManager.AppSettings("HotelConnection"))
@@ -122,9 +122,9 @@
             End If
         Catch ex As Exception
         End Try
-        
+
     End Sub
-        
+
 </script>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">

@@ -2,52 +2,48 @@
     <!-- eslint-disable -->
     <div id="app">
         <b-container fluid>
-            <h2 class="text-primary">{{ $t("Reservation List") }}</h2>
+            <h2 class="text-primary">{{ $t('Reservation List') }}</h2>
             <advanced-filter
-                :item-per-page="itemPerPage"
-                :items-per-page="itemsPerPage"
-                :result="result"
-                @exportToExcel="exportToExcel"
-                @changeItems="changeItems"
-                @search="search"
-            ></advanced-filter>
+            :item-per-page="itemPerPage"
+            :items-per-page="itemsPerPage"
+            :result="result"
+            :corporates="corporates"
+            @changeItems="changeItems"
+            @search="search">
+            </advanced-filter>
 
             <data-table
-                table-id="rsv_table"
-                :columns="fields"
-                :resource-function="get"
-                :filter="filter_url"
-                :items-per-page="itemPerPage"
-                sort-by="reservationDate"
-                :sort-desc="true"
-                :small="true"
-            >
+            table-id="rsv_table"
+            :columns="fields"
+            :resource-function="get"
+            :filter="filter_url"
+            :items-per-page="itemPerPage"
+            sort-by="reservationDate"
+            :sort-desc="true"
+            :small="true">
                 <template slot="idconfirmNumber" slot-scope="data">
                     <b-link
-                        target="_blank"
-                        :href=" $appConfig.basePath + 'rate-manager-ui/dist/reservation-details.aspx?qs=' + data.item.id"
-                        >{{ data.item.confirmNumber }}</b-link
-                    >
+                    target="_blank"
+                    :href=" $appConfig.basePath + 'rate-manager-ui/dist/reservation-details.aspx?qs=' + data.item.id">
+                        {{ data.item.confirmNumber }}
+                    </b-link>
                 </template>
                 <template slot="client" slot-scope="data">
-                    <span v-tooltip="data.value" class="d-block text-truncate" style="width:300px;">{{
-                        data.value
-                    }}</span>
+                    <span v-tooltip="data.value" class="d-block text-truncate" style="width:300px;">{{ data.value }}</span>
                 </template>
                 <template slot="hotel" slot-scope="data">
-                    <span v-tooltip="data.value" class="d-block text-truncate" style="width:150px;">{{
-                        data.value
-                    }}</span>
+                    <span v-tooltip="data.value" class="d-block text-truncate" style="width:150px;">{{ data.value }}</span>
+                </template>
+                <template slot="corporateId" slot-scope="data">
+                    <span>{{ getCorporateName(data.value) }}</span>
                 </template>
                 <template slot="status" slot-scope="data">
-                    <b-badge v-if="data.value == 1" variant="success">{{ $t("Reserved") }}</b-badge>
-                    <b-badge v-if="data.value == 3" variant="danger">{{ $t("Cancelled") }}</b-badge>
-                    <b-badge v-if="data.value == 4" variant="warning">{{ $t("In process") }}</b-badge>
+                    <b-badge v-if="data.value == 1" variant="success">{{ $t('Reserved') }}</b-badge>
+                    <b-badge v-if="data.value == 3" variant="danger">{{ $t('Cancelled') }}</b-badge>
+                    <b-badge v-if="data.value == 4" variant="warning">{{ $t('In process') }}</b-badge>
                 </template>
                 <template slot="portal" slot-scope="data">
-                    <span v-tooltip="data.value" class="d-block text-truncate" style="width:120px;">{{
-                        data.value
-                    }}</span>
+                    <span v-tooltip="data.value" class="d-block text-truncate" style="width:120px;">{{ data.value }}</span>
                 </template>
             </data-table>
         </b-container>
@@ -57,9 +53,9 @@
 
 <script>
 //import XLSX from "xlsx";
-import AdvancedFilter from "./components/AdvancedFilter.vue";
-import DataTable from "../../components/data-table.vue";
-import ReservationService from "../../api/reservation-service";
+import AdvancedFilter from './components/AdvancedFilter.vue';
+import DataTable from '../../components/data-table.vue';
+import ReservationService from '../../api/reservation-service';
 
 export default {
     name: "app",
@@ -68,9 +64,9 @@ export default {
         DataTable
     },
     mounted() {
-        this.$root.$on("table-result", val => {
+        this.getCorporate();
+        this.$root.$on('table-result', val => {
             this.result = val;
-            //this.excelFormat();
         });
     },
     created() {
@@ -82,53 +78,58 @@ export default {
             filter_url: null,
             fields: [
                 {
-                    key: "idconfirmNumber",
-                    label: "#"
+                    key: 'idconfirmNumber',
+                    label: '#'
                 },
                 {
-                    key: "hotel",
-                    label: "Hotel"
+                    key: 'hotel',
+                    label: 'Hotel'
                 },
                 {
-                    key: "client",
-                    label: this.$t("Client")
+                    key: 'client',
+                    label: this.$t('Client')
                 },
                 {
-                    key: "reservationDate",
-                    label: this.$t("Date"),
-                    formatter: value => this.$moment(value).format("D MMM YYYY"),
+                    key: 'reservationDate',
+                    label: this.$t('Date'),
+                    formatter: value => this.$moment(value).format('D MMM YYYY'),
                     sortable: true,
-                    sortDirection: "desc"
+                    sortDirection: 'desc'
                 },
                 {
-                    key: "checkIn",
-                    label: this.$t("Checkin"),
-                    formatter: value => this.$moment(value).format("D MMM YYYY"),
+                    key: 'checkIn',
+                    label: this.$t('Checkin'),
+                    formatter: value => this.$moment(value).format('D MMM YYYY'),
                     sortable: true
                 },
                 {
-                    key: "checkOut",
-                    label: this.$t("Checkout"),
-                    formatter: value => this.$moment(value).format("D MMM YYYY"),
+                    key: 'checkOut',
+                    label: this.$t('Checkout'),
+                    formatter: value => this.$moment(value).format('D MMM YYYY'),
                     sortable: true
                 },
                 {
-                    key: "portal",
-                    label: this.$t("Origin")
+                    key: 'portal',
+                    label: this.$t('Origin')
                 },
                 {
-                    key: "total",
-                    label: "Total",
+                    key: 'corporateId',
+                    label: this.$t('Corporate')
+                },
+                {
+                    key: 'total',
+                    label: 'Total',
                     sortable: true
                 },
                 {
-                    key: "status",
-                    label: this.$t("Status"),
+                    key: 'status',
+                    label: this.$t('Status'),
                     sortable: true
                 }
             ],
             itemPerPage: 20,
-            itemsPerPage: [20, 50, 100, 200]
+            itemsPerPage: [20, 50, 100, 200],
+            corporates: []
         };
     },
     methods: {
@@ -136,59 +137,18 @@ export default {
             console.log(window.app);
             return ReservationService.GetAll(filter, orderBy, pageSize, page);
         },
+        getCorporate() {
+            ReservationService.GetCorporate().then(response => {
+                this.corporates = response.body;
+            });
+        },
         search(filter) {
             this.filter_url = filter;
-            this.$root.$emit("bv::refresh::table", "rsv_table");
+            this.$root.$emit('bv::refresh::table', 'rsv_table');
         },
-        // excelFormat() {
-        //   const bkResult = this.result;
-        //   this.result = [];
-        //   bkResult.forEach(value => {
-        //     const row = {};
-        //     this.fields.forEach(valueF => {
-        //       if (valueF.key in value) {
-        //         let val = value[valueF.key];
-
-        //         if ("formatter" in valueF) {
-        //           val = this.$moment(val).format("D MMM YYYY");
-        //           row[valueF.label] = val;
-        //         }
-
-        //         if (valueF.key === "status") {
-        //           switch (val) {
-        //             case 1:
-        //               val = this.$t("Reserved");
-        //               break;
-        //             case 3:
-        //               val = this.$t("Cancelled");
-        //               break;
-        //             case 4:
-        //               val = this.$t("In process");
-        //               break;
-        //             default:
-        //               val = "";
-        //           }
-        //         }
-        //         row[valueF.label] = val;
-        //       }
-        //     });
-        //     this.result.push(row);
-        //   });
-        // },
-        // exportToExcel() {
-        //   // only array possible
-        //   const data = XLSX.utils.json_to_sheet(this.result);
-
-        //   // a workbook is the name given to an excel file
-        //   const wb = XLSX.utils.book_new(); // make workbook of excel
-
-        //   // add worksheet to workbook
-        //   // workbook contains one or more worksheets
-        //   XLSX.utils.book_append_sheet(wb, data, this.$t("Reservation List"));
-
-        //   // export excel file
-        //   XLSX.writeFile(wb, "reservaciones.xlsx"); // name of the file
-        // },
+        getCorporateName(corporateId) {
+            return this.corporates.find(x => x.idCorporativo == corporateId).nombreCorp;
+        },
         changeItems(value) {
             this.itemPerPage = value;
         },
