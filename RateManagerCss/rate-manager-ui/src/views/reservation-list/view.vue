@@ -24,7 +24,7 @@
                 <template slot="idconfirmNumber" slot-scope="data">
                     <b-link
                     target="_blank"
-                    :href=" $appConfig.basePath + 'rate-manager-ui/dist/reservation-details.aspx?qs=' + data.item.id">
+                    :href=" $appConfig.basePath + '/rate-manager-ui/dist/reservation-details.aspx?qs=' + data.item.id">
                         {{ data.item.confirmNumber }}
                     </b-link>
                 </template>
@@ -147,7 +147,8 @@ export default {
             this.$root.$emit('bv::refresh::table', 'rsv_table');
         },
         getCorporateName(corporateId) {
-            return this.corporates.find(x => x.idCorporativo == corporateId).nombreCorp;
+            const corp = this.corporates.find(x => x.idCorporativo == corporateId);
+            return corp !== undefined ? corp.nombreCorp : '';
         },
         changeItems(value) {
             this.itemPerPage = value;

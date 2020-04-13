@@ -29,6 +29,6 @@ namespace APIServices.Models
         public string Portal { get; set; }
         public string Total { get; set; }
         public string Provider { get; set; }
-        public Nullable<int> CorporateId { get; set; }
+        public int CorporateId { get; set; }
     }
 }

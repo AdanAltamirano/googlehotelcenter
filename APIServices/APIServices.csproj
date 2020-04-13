@@ -203,6 +203,9 @@
     <Compile Include="Models\vPermissions.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\vPromotions.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\vReservation.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
