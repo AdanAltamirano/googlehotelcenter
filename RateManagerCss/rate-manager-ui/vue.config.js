@@ -72,6 +72,12 @@ module.exports = {
             template: 'public/mapping-rate-plans.aspx',
             filename: 'mapping-rate-plans.aspx',
             chunks: ['commons', 'mapping_f2g'],
+        },
+        promotions_details: {
+            entry: 'src/views/promotions-details/main.js',
+            template: 'public/promotions-details.aspx',
+            filename: 'promotions-details.aspx',
+            chunks: ['commons', 'promotions_details']
         }
         /* hotel_list: {
             entry: 'src/views/hotel-list/main.js',

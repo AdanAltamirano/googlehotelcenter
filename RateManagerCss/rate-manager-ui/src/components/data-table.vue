@@ -49,15 +49,15 @@
 import Loading from "vue-loading-overlay";
 
 export default {
-  name: "data-table",
-  components: {
-    Loading
-  },
-  props: {
-    columns: {
-      type: Array,
-      required: true
+    name: "data-table",
+    components: {
+        Loading
     },
+    props: {
+        columns: {
+            type: Array,
+            required: true
+        },
     resourceFunction: {
       type: Function,
       required: false
