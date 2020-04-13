@@ -44,5 +44,30 @@ namespace APIServices.Models
         public Nullable<int> IdDictionaryDescription { get; set; }
         public string Description { get; set; }
         public Nullable<int> IdDiccShortDesc { get; set; }
+        public string PromotionCode { get; set; }
+        public int HotelId { get; set; }
+        public Nullable<decimal> Discount { get; set; }
+        public Nullable<int> Active { get; set; }
+        public Nullable<short> DiscountApplicationType { get; set; }
+        public Nullable<int> DiscountApplicationMode { get; set; }
+        public Nullable<System.DateTime> BookingWindowStartDate { get; set; }
+        public Nullable<System.DateTime> BookingWindowEndDate { get; set; }
+        public string BookingWindowStartHour { get; set; }
+        public string BookingWindowEndHour { get; set; }
+        public string CancelPenaltyName { get; set; }
+        public Nullable<byte> MinAdvanceBookin { get; set; }
+        public Nullable<byte> MaxLOS { get; set; }
+        public Nullable<byte> MinLOS { get; set; }
+        public string NoArrivals { get; set; }
+        public string CancelPenaltySpecificTime { get; set; }
+        public string CancelPenaltyDescriprion { get; set; }
+        public Nullable<int> CancelPenaltyReviewId { get; set; }
+        public Nullable<int> CancelPenaltyDetailedId { get; set; }
+        public Nullable<int> MaxAdvanceBooking { get; set; }
+        public Nullable<System.DateTime> StartDate { get; set; }
+        public Nullable<System.DateTime> EndDate { get; set; }
+        public string AppyDays { get; set; }
+        public Nullable<int> DescriptionId { get; set; }
+        public Nullable<int> idDiccPromoDesc { get; set; }
     }
 }

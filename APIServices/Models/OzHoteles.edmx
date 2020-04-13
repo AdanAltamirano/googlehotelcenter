@@ -477,40 +477,41 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vPermissions' no tiene definid
 advertencia 6002: La tabla o vista 'OzHoteles.dbo.vPromotions' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vPromotions">
           <Key>
-            <PropertyRef Name="idRatePlan" />
-            <PropertyRef Name="IdHotel" />
+            <PropertyRef Name="PromotionCode" />
+            <PropertyRef Name="HotelId" />
             <PropertyRef Name="Description" />
           </Key>
-          <Property Name="idRatePlan" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="IdHotel" Type="int" Nullable="false" />
-          <Property Name="DescPromotion" Type="smallmoney" />
+          <Property Name="PromotionCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="HotelId" Type="int" Nullable="false" />
+          <Property Name="Discount" Type="smallmoney" />
           <Property Name="DaysFree" Type="smallint" />
-          <Property Name="Deleted" Type="bit" />
-          <Property Name="TipoDescuento" Type="smallint" />
+          <Property Name="Active" Type="int" />
+          <Property Name="DiscountApplicationType" Type="smallint" />
           <Property Name="DaysFreeType" Type="bit" />
-          <Property Name="DiscountLevel" Type="int" />
-          <Property Name="FechaInicio" Type="smalldatetime" />
-          <Property Name="FechaFin" Type="smalldatetime" />
-          <Property Name="HoraInicio" Type="varchar" MaxLength="5" />
-          <Property Name="HoraFin" Type="varchar" MaxLength="5" />
+          <Property Name="DiscountApplicationMode" Type="int" />
+          <Property Name="BookingWindowStartDate" Type="smalldatetime" />
+          <Property Name="BookingWindowEndDate" Type="smalldatetime" />
+          <Property Name="BookingWindowStartHour" Type="varchar" MaxLength="5" />
+          <Property Name="BookingWindowEndHour" Type="varchar" MaxLength="5" />
           <Property Name="CancelPriorHours" Type="tinyint" />
           <Property Name="CancelPriorDays" Type="tinyint" />
-          <Property Name="RuleDescription" Type="nvarchar" MaxLength="20" />
-          <Property Name="AdvBooking" Type="tinyint" />
-          <Property Name="MaxDias" Type="tinyint" />
-          <Property Name="MinDias" Type="tinyint" />
-          <Property Name="NoArrivos" Type="char" MaxLength="7" />
-          <Property Name="CancelPriorSpecificT" Type="nvarchar" MaxLength="4" />
-          <Property Name="PoliticaCancelacion" Type="nvarchar" MaxLength="200" />
-          <Property Name="idDiccionarioPoliticaCancelacionReview" Type="int" />
-          <Property Name="idDiccionarioPoliticaCancelacionFull" Type="int" />
-          <Property Name="MaxAdvBooking" Type="int" />
-          <Property Name="PromoStartDate" Type="date" />
-          <Property Name="PromoEndDate" Type="date" />
-          <Property Name="PromoSpecificDays" Type="char" MaxLength="7" />
-          <Property Name="IdDictionaryDescription" Type="int" />
+          <Property Name="CancelPenaltyName" Type="nvarchar" MaxLength="20" />
+          <Property Name="MinAdvanceBookin" Type="tinyint" />
+          <Property Name="MaxLOS" Type="tinyint" />
+          <Property Name="MinLOS" Type="tinyint" />
+          <Property Name="NoArrivals" Type="char" MaxLength="7" />
+          <Property Name="CancelPenaltySpecificTime" Type="nvarchar" MaxLength="4" />
+          <Property Name="CancelPenaltyDescriprion" Type="nvarchar" MaxLength="200" />
+          <Property Name="CancelPenaltyReviewId" Type="int" />
+          <Property Name="CancelPenaltyDetailedId" Type="int" />
+          <Property Name="MaxAdvanceBooking" Type="int" />
+          <Property Name="StartDate" Type="date" />
+          <Property Name="EndDate" Type="date" />
+          <Property Name="AppyDays" Type="char" MaxLength="7" />
+          <Property Name="DescriptionId" Type="int" />
           <Property Name="Description" Type="nvarchar" MaxLength="400" Nullable="false" />
           <Property Name="IdDiccShortDesc" Type="int" />
+          <Property Name="idDiccPromoDesc" Type="int" />
         </EntityType>
         <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'OzHoteles.dbo.vReservation' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
@@ -910,36 +911,37 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           </EntitySet>
           <EntitySet Name="vPromotions" EntityType="Self.vPromotions" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
-    [vPromotions].[idRatePlan] AS [idRatePlan], 
-    [vPromotions].[IdHotel] AS [IdHotel], 
-    [vPromotions].[DescPromotion] AS [DescPromotion], 
+    [vPromotions].[PromotionCode] AS [PromotionCode], 
+    [vPromotions].[HotelId] AS [HotelId], 
+    [vPromotions].[Discount] AS [Discount], 
     [vPromotions].[DaysFree] AS [DaysFree], 
-    [vPromotions].[Deleted] AS [Deleted], 
-    [vPromotions].[TipoDescuento] AS [TipoDescuento], 
+    [vPromotions].[Active] AS [Active], 
+    [vPromotions].[DiscountApplicationType] AS [DiscountApplicationType], 
     [vPromotions].[DaysFreeType] AS [DaysFreeType], 
-    [vPromotions].[DiscountLevel] AS [DiscountLevel], 
-    [vPromotions].[FechaInicio] AS [FechaInicio], 
-    [vPromotions].[FechaFin] AS [FechaFin], 
-    [vPromotions].[HoraInicio] AS [HoraInicio], 
-    [vPromotions].[HoraFin] AS [HoraFin], 
+    [vPromotions].[DiscountApplicationMode] AS [DiscountApplicationMode], 
+    [vPromotions].[BookingWindowStartDate] AS [BookingWindowStartDate], 
+    [vPromotions].[BookingWindowEndDate] AS [BookingWindowEndDate], 
+    [vPromotions].[BookingWindowStartHour] AS [BookingWindowStartHour], 
+    [vPromotions].[BookingWindowEndHour] AS [BookingWindowEndHour], 
     [vPromotions].[CancelPriorHours] AS [CancelPriorHours], 
     [vPromotions].[CancelPriorDays] AS [CancelPriorDays], 
-    [vPromotions].[RuleDescription] AS [RuleDescription], 
-    [vPromotions].[AdvBooking] AS [AdvBooking], 
-    [vPromotions].[MaxDias] AS [MaxDias], 
-    [vPromotions].[MinDias] AS [MinDias], 
-    [vPromotions].[NoArrivos] AS [NoArrivos], 
-    [vPromotions].[CancelPriorSpecificT] AS [CancelPriorSpecificT], 
-    [vPromotions].[PoliticaCancelacion] AS [PoliticaCancelacion], 
-    [vPromotions].[idDiccionarioPoliticaCancelacionReview] AS [idDiccionarioPoliticaCancelacionReview], 
-    [vPromotions].[idDiccionarioPoliticaCancelacionFull] AS [idDiccionarioPoliticaCancelacionFull], 
-    [vPromotions].[MaxAdvBooking] AS [MaxAdvBooking], 
-    [vPromotions].[PromoStartDate] AS [PromoStartDate], 
-    [vPromotions].[PromoEndDate] AS [PromoEndDate], 
-    [vPromotions].[PromoSpecificDays] AS [PromoSpecificDays], 
-    [vPromotions].[IdDictionaryDescription] AS [IdDictionaryDescription], 
+    [vPromotions].[CancelPenaltyName] AS [CancelPenaltyName], 
+    [vPromotions].[MinAdvanceBookin] AS [MinAdvanceBookin], 
+    [vPromotions].[MaxLOS] AS [MaxLOS], 
+    [vPromotions].[MinLOS] AS [MinLOS], 
+    [vPromotions].[NoArrivals] AS [NoArrivals], 
+    [vPromotions].[CancelPenaltySpecificTime] AS [CancelPenaltySpecificTime], 
+    [vPromotions].[CancelPenaltyDescriprion] AS [CancelPenaltyDescriprion], 
+    [vPromotions].[CancelPenaltyReviewId] AS [CancelPenaltyReviewId], 
+    [vPromotions].[CancelPenaltyDetailedId] AS [CancelPenaltyDetailedId], 
+    [vPromotions].[MaxAdvanceBooking] AS [MaxAdvanceBooking], 
+    [vPromotions].[StartDate] AS [StartDate], 
+    [vPromotions].[EndDate] AS [EndDate], 
+    [vPromotions].[AppyDays] AS [AppyDays], 
+    [vPromotions].[DescriptionId] AS [DescriptionId], 
     [vPromotions].[Description] AS [Description], 
-    [vPromotions].[IdDiccShortDesc] AS [IdDiccShortDesc]
+    [vPromotions].[IdDiccShortDesc] AS [IdDiccShortDesc], 
+    [vPromotions].[idDiccPromoDesc] AS [idDiccPromoDesc]
     FROM [dbo].[vPromotions] AS [vPromotions]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vReservation" EntityType="Self.vReservation" store:Type="Views" store:Schema="dbo">
@@ -1857,6 +1859,8 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
             <PropertyRef Name="idRatePlan" />
             <PropertyRef Name="IdHotel" />
             <PropertyRef Name="Description" />
+            <PropertyRef Name="PromotionCode" />
+            <PropertyRef Name="HotelId" />
           </Key>
           <Property Name="idRatePlan" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="IdHotel" Type="Int32" Nullable="false" />
@@ -1888,6 +1892,31 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <Property Name="IdDictionaryDescription" Type="Int32" />
           <Property Name="Description" Type="String" Nullable="false" MaxLength="400" FixedLength="false" Unicode="true" />
           <Property Name="IdDiccShortDesc" Type="Int32" />
+          <Property Name="PromotionCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="HotelId" Type="Int32" Nullable="false" />
+          <Property Name="Discount" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="Active" Type="Int32" />
+          <Property Name="DiscountApplicationType" Type="Int16" />
+          <Property Name="DiscountApplicationMode" Type="Int32" />
+          <Property Name="BookingWindowStartDate" Type="DateTime" Precision="0" />
+          <Property Name="BookingWindowEndDate" Type="DateTime" Precision="0" />
+          <Property Name="BookingWindowStartHour" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="BookingWindowEndHour" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="CancelPenaltyName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="MinAdvanceBookin" Type="Byte" />
+          <Property Name="MaxLOS" Type="Byte" />
+          <Property Name="MinLOS" Type="Byte" />
+          <Property Name="NoArrivals" Type="String" MaxLength="7" FixedLength="true" Unicode="false" />
+          <Property Name="CancelPenaltySpecificTime" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="CancelPenaltyDescriprion" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="CancelPenaltyReviewId" Type="Int32" />
+          <Property Name="CancelPenaltyDetailedId" Type="Int32" />
+          <Property Name="MaxAdvanceBooking" Type="Int32" />
+          <Property Name="StartDate" Type="DateTime" Precision="0" />
+          <Property Name="EndDate" Type="DateTime" Precision="0" />
+          <Property Name="AppyDays" Type="String" MaxLength="7" FixedLength="true" Unicode="false" />
+          <Property Name="DescriptionId" Type="Int32" />
+          <Property Name="idDiccPromoDesc" Type="Int32" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -2496,36 +2525,37 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <EntitySetMapping Name="vPromotions">
             <EntityTypeMapping TypeName="Models.vPromotions">
               <MappingFragment StoreEntitySet="vPromotions">
+                <ScalarProperty Name="idDiccPromoDesc" ColumnName="idDiccPromoDesc" />
+                <ScalarProperty Name="DescriptionId" ColumnName="DescriptionId" />
+                <ScalarProperty Name="AppyDays" ColumnName="AppyDays" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="MaxAdvanceBooking" ColumnName="MaxAdvanceBooking" />
+                <ScalarProperty Name="CancelPenaltyDetailedId" ColumnName="CancelPenaltyDetailedId" />
+                <ScalarProperty Name="CancelPenaltyReviewId" ColumnName="CancelPenaltyReviewId" />
+                <ScalarProperty Name="CancelPenaltyDescriprion" ColumnName="CancelPenaltyDescriprion" />
+                <ScalarProperty Name="CancelPenaltySpecificTime" ColumnName="CancelPenaltySpecificTime" />
+                <ScalarProperty Name="NoArrivals" ColumnName="NoArrivals" />
+                <ScalarProperty Name="MinLOS" ColumnName="MinLOS" />
+                <ScalarProperty Name="MaxLOS" ColumnName="MaxLOS" />
+                <ScalarProperty Name="MinAdvanceBookin" ColumnName="MinAdvanceBookin" />
+                <ScalarProperty Name="CancelPenaltyName" ColumnName="CancelPenaltyName" />
+                <ScalarProperty Name="BookingWindowEndHour" ColumnName="BookingWindowEndHour" />
+                <ScalarProperty Name="BookingWindowStartHour" ColumnName="BookingWindowStartHour" />
+                <ScalarProperty Name="BookingWindowEndDate" ColumnName="BookingWindowEndDate" />
+                <ScalarProperty Name="BookingWindowStartDate" ColumnName="BookingWindowStartDate" />
+                <ScalarProperty Name="DiscountApplicationMode" ColumnName="DiscountApplicationMode" />
+                <ScalarProperty Name="DiscountApplicationType" ColumnName="DiscountApplicationType" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Discount" ColumnName="Discount" />
+                <ScalarProperty Name="HotelId" ColumnName="HotelId" />
+                <ScalarProperty Name="PromotionCode" ColumnName="PromotionCode" />
                 <ScalarProperty Name="IdDiccShortDesc" ColumnName="IdDiccShortDesc" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="IdDictionaryDescription" ColumnName="IdDictionaryDescription" />
-                <ScalarProperty Name="PromoSpecificDays" ColumnName="PromoSpecificDays" />
-                <ScalarProperty Name="PromoEndDate" ColumnName="PromoEndDate" />
-                <ScalarProperty Name="PromoStartDate" ColumnName="PromoStartDate" />
-                <ScalarProperty Name="MaxAdvBooking" ColumnName="MaxAdvBooking" />
-                <ScalarProperty Name="idDiccionarioPoliticaCancelacionFull" ColumnName="idDiccionarioPoliticaCancelacionFull" />
-                <ScalarProperty Name="idDiccionarioPoliticaCancelacionReview" ColumnName="idDiccionarioPoliticaCancelacionReview" />
-                <ScalarProperty Name="PoliticaCancelacion" ColumnName="PoliticaCancelacion" />
-                <ScalarProperty Name="CancelPriorSpecificT" ColumnName="CancelPriorSpecificT" />
-                <ScalarProperty Name="NoArrivos" ColumnName="NoArrivos" />
-                <ScalarProperty Name="MinDias" ColumnName="MinDias" />
-                <ScalarProperty Name="MaxDias" ColumnName="MaxDias" />
-                <ScalarProperty Name="AdvBooking" ColumnName="AdvBooking" />
-                <ScalarProperty Name="RuleDescription" ColumnName="RuleDescription" />
                 <ScalarProperty Name="CancelPriorDays" ColumnName="CancelPriorDays" />
                 <ScalarProperty Name="CancelPriorHours" ColumnName="CancelPriorHours" />
-                <ScalarProperty Name="HoraFin" ColumnName="HoraFin" />
-                <ScalarProperty Name="HoraInicio" ColumnName="HoraInicio" />
-                <ScalarProperty Name="FechaFin" ColumnName="FechaFin" />
-                <ScalarProperty Name="FechaInicio" ColumnName="FechaInicio" />
-                <ScalarProperty Name="DiscountLevel" ColumnName="DiscountLevel" />
                 <ScalarProperty Name="DaysFreeType" ColumnName="DaysFreeType" />
-                <ScalarProperty Name="TipoDescuento" ColumnName="TipoDescuento" />
-                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
                 <ScalarProperty Name="DaysFree" ColumnName="DaysFree" />
-                <ScalarProperty Name="DescPromotion" ColumnName="DescPromotion" />
-                <ScalarProperty Name="IdHotel" ColumnName="IdHotel" />
-                <ScalarProperty Name="idRatePlan" ColumnName="idRatePlan" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

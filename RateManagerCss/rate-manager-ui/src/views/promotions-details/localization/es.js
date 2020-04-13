@@ -4,5 +4,6 @@ export default {
     'Promotion description': 'Descripción de la promoción',
     'Promotion name': 'Nombre de la promoción',
     'Spanish': 'Español',
-    'English': 'Ingles'
+    'English': 'Ingles',
+    'Restrictions': 'Restricciones'
 };

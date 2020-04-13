@@ -37,7 +37,26 @@
                     </b-card>
                 </b-col>
                 <b-col md="6">
+                    <!--rate plans y habitaciones-->
                     <rate-plan-rooms></rate-plan-rooms>
+                </b-col>
+            </b-row>
+            <b-row>
+                <b-col md="6">
+                    <!--travel window-->
+
+                </b-col>
+                <b-col md="6">
+                    <!--booking window-->
+                </b-col>
+            </b-row>
+            <b-row>
+                <b-col md="6">
+                    <!--tipo de promocion-->
+                </b-col>
+                <b-col md="6">
+                    <!--restricciones-->
+                    <restrictions></restrictions>
                 </b-col>
             </b-row>
         </b-container>
@@ -45,12 +64,14 @@
 </template>
 
 <script>
-import RatePlanRooms from './components/rateplans-rooms.vue';
+import RatePlanRooms from './components/rateplan-rooms.vue';
+import Restrictions from './components/restrictions.vue';
 
 export default {
     name: 'app',
     components: {
-        RatePlanRooms
+        RatePlanRooms,
+        Restrictions
     }
 }
 </script>
