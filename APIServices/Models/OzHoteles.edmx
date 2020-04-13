@@ -154,6 +154,18 @@
           <Property Name="idDiccionario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Eliminado" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="LockRoomTypes">
+          <Key>
+            <PropertyRef Name="idRepl4" />
+          </Key>
+          <Property Name="idhotel" Type="int" />
+          <Property Name="IdRatePlan" Type="nvarchar" MaxLength="4" />
+          <Property Name="idTipoHabitacion_Hotel" Type="int" />
+          <Property Name="StatusAvail" Type="char" MaxLength="1" />
+          <Property Name="StartDate" Type="smalldatetime" />
+          <Property Name="EndDate" Type="smalldatetime" />
+          <Property Name="idRepl4" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
         <EntityType Name="PrepagoRatesPlan">
           <Key>
             <PropertyRef Name="IdPrepagoRatesPlan" />
@@ -164,6 +176,24 @@
           <Property Name="Source" Type="nvarchar" MaxLength="4" Nullable="false" />
           <Property Name="PrepagoTipo" Type="smallint" />
           <Property Name="PrepaymentPerc" Type="smallmoney" />
+        </EntityType>
+        <EntityType Name="Promociones_RatePlan">
+          <Key>
+            <PropertyRef Name="IdPromocion_RatePlan" />
+          </Key>
+          <Property Name="IdPromocion_RatePlan" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdPromocion" Type="nvarchar" MaxLength="4" Nullable="false" />
+          <Property Name="IdRatePlan" Type="nvarchar" MaxLength="4" Nullable="false" />
+          <Property Name="IdHotel" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Promociones_TipoHabitacionHotel">
+          <Key>
+            <PropertyRef Name="IdPromocion_TipoHabitacionHotel" />
+          </Key>
+          <Property Name="IdPromocion_TipoHabitacionHotel" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdPromocion" Type="nvarchar" MaxLength="4" Nullable="false" />
+          <Property Name="IdTipoHabitacionHotel" Type="int" Nullable="false" />
+          <Property Name="IdHotel" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="RatesPlan">
           <Key>
@@ -789,7 +819,10 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <EntitySet Name="Diccionario" EntityType="Self.Diccionario" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Hoteles" EntityType="Self.Hoteles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Indice" EntityType="Self.Indice" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LockRoomTypes" EntityType="Self.LockRoomTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PrepagoRatesPlan" EntityType="Self.PrepagoRatesPlan" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Promociones_RatePlan" EntityType="Self.Promociones_RatePlan" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Promociones_TipoHabitacionHotel" EntityType="Self.Promociones_TipoHabitacionHotel" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RatesPlan" EntityType="Self.RatesPlan" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tarifas" EntityType="Self.Tarifas" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TarifasRestricciones" EntityType="Self.TarifasRestricciones" Schema="dbo" store:Type="Tables" />
@@ -1177,6 +1210,9 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <EntitySet Name="vReservationDetails" EntityType="Models.vReservationDetails" />
           <EntitySet Name="vReservationRoomDetails" EntityType="Models.vReservationRoomDetails" />
           <EntitySet Name="vPromotions" EntityType="Models.vPromotions" />
+          <EntitySet Name="LockRoomTypes" EntityType="Models.LockRoomTypes" />
+          <EntitySet Name="Promociones_RatePlan" EntityType="Models.Promociones_RatePlan" />
+          <EntitySet Name="Promociones_TipoHabitacionHotel" EntityType="Models.Promociones_TipoHabitacionHotel" />
         </EntityContainer>
         <EntityType Name="RatesPlan">
           <Key>
@@ -1918,6 +1954,36 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <Property Name="DescriptionId" Type="Int32" />
           <Property Name="idDiccPromoDesc" Type="Int32" />
         </EntityType>
+        <EntityType Name="LockRoomTypes">
+          <Key>
+            <PropertyRef Name="idRepl4" />
+          </Key>
+          <Property Name="idhotel" Type="Int32" />
+          <Property Name="IdRatePlan" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="idTipoHabitacion_Hotel" Type="Int32" />
+          <Property Name="StatusAvail" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="StartDate" Type="DateTime" Precision="0" />
+          <Property Name="EndDate" Type="DateTime" Precision="0" />
+          <Property Name="idRepl4" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="Promociones_RatePlan">
+          <Key>
+            <PropertyRef Name="IdPromocion_RatePlan" />
+          </Key>
+          <Property Name="IdPromocion_RatePlan" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdPromocion" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="IdRatePlan" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="IdHotel" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Promociones_TipoHabitacionHotel">
+          <Key>
+            <PropertyRef Name="IdPromocion_TipoHabitacionHotel" />
+          </Key>
+          <Property Name="IdPromocion_TipoHabitacionHotel" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdPromocion" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="IdTipoHabitacionHotel" Type="Int32" Nullable="false" />
+          <Property Name="IdHotel" Type="Int32" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2556,6 +2622,39 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
                 <ScalarProperty Name="CancelPriorHours" ColumnName="CancelPriorHours" />
                 <ScalarProperty Name="DaysFreeType" ColumnName="DaysFreeType" />
                 <ScalarProperty Name="DaysFree" ColumnName="DaysFree" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LockRoomTypes">
+            <EntityTypeMapping TypeName="Models.LockRoomTypes">
+              <MappingFragment StoreEntitySet="LockRoomTypes">
+                <ScalarProperty Name="idRepl4" ColumnName="idRepl4" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="StatusAvail" ColumnName="StatusAvail" />
+                <ScalarProperty Name="idTipoHabitacion_Hotel" ColumnName="idTipoHabitacion_Hotel" />
+                <ScalarProperty Name="IdRatePlan" ColumnName="IdRatePlan" />
+                <ScalarProperty Name="idhotel" ColumnName="idhotel" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Promociones_RatePlan">
+            <EntityTypeMapping TypeName="Models.Promociones_RatePlan">
+              <MappingFragment StoreEntitySet="Promociones_RatePlan">
+                <ScalarProperty Name="IdHotel" ColumnName="IdHotel" />
+                <ScalarProperty Name="IdRatePlan" ColumnName="IdRatePlan" />
+                <ScalarProperty Name="IdPromocion" ColumnName="IdPromocion" />
+                <ScalarProperty Name="IdPromocion_RatePlan" ColumnName="IdPromocion_RatePlan" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Promociones_TipoHabitacionHotel">
+            <EntityTypeMapping TypeName="Models.Promociones_TipoHabitacionHotel">
+              <MappingFragment StoreEntitySet="Promociones_TipoHabitacionHotel">
+                <ScalarProperty Name="IdHotel" ColumnName="IdHotel" />
+                <ScalarProperty Name="IdTipoHabitacionHotel" ColumnName="IdTipoHabitacionHotel" />
+                <ScalarProperty Name="IdPromocion" ColumnName="IdPromocion" />
+                <ScalarProperty Name="IdPromocion_TipoHabitacionHotel" ColumnName="IdPromocion_TipoHabitacionHotel" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -133,6 +133,9 @@
     <Compile Include="Models\Indice.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\LockRoomTypes.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\OzHoteles.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -168,6 +171,12 @@
       <DependentUpon>OzUniEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PrepagoRatesPlan.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Promociones_RatePlan.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Promociones_TipoHabitacionHotel.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\RatesPlan.cs">
