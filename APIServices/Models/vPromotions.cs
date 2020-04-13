@@ -14,46 +14,20 @@ namespace APIServices.Models
     
     public partial class vPromotions
     {
-        public string idRatePlan { get; set; }
-        public int IdHotel { get; set; }
-        public Nullable<decimal> DescPromotion { get; set; }
-        public Nullable<short> DaysFree { get; set; }
-        public Nullable<bool> Deleted { get; set; }
-        public Nullable<short> TipoDescuento { get; set; }
-        public Nullable<bool> DaysFreeType { get; set; }
-        public Nullable<int> DiscountLevel { get; set; }
-        public Nullable<System.DateTime> FechaInicio { get; set; }
-        public Nullable<System.DateTime> FechaFin { get; set; }
-        public string HoraInicio { get; set; }
-        public string HoraFin { get; set; }
-        public Nullable<byte> CancelPriorHours { get; set; }
-        public Nullable<byte> CancelPriorDays { get; set; }
-        public string RuleDescription { get; set; }
-        public Nullable<byte> AdvBooking { get; set; }
-        public Nullable<byte> MaxDias { get; set; }
-        public Nullable<byte> MinDias { get; set; }
-        public string NoArrivos { get; set; }
-        public string CancelPriorSpecificT { get; set; }
-        public string PoliticaCancelacion { get; set; }
-        public Nullable<int> idDiccionarioPoliticaCancelacionReview { get; set; }
-        public Nullable<int> idDiccionarioPoliticaCancelacionFull { get; set; }
-        public Nullable<int> MaxAdvBooking { get; set; }
-        public Nullable<System.DateTime> PromoStartDate { get; set; }
-        public Nullable<System.DateTime> PromoEndDate { get; set; }
-        public string PromoSpecificDays { get; set; }
-        public Nullable<int> IdDictionaryDescription { get; set; }
-        public string Description { get; set; }
-        public Nullable<int> IdDiccShortDesc { get; set; }
         public string PromotionCode { get; set; }
         public int HotelId { get; set; }
         public Nullable<decimal> Discount { get; set; }
+        public Nullable<short> DaysFree { get; set; }
         public Nullable<int> Active { get; set; }
         public Nullable<short> DiscountApplicationType { get; set; }
+        public Nullable<bool> DaysFreeType { get; set; }
         public Nullable<int> DiscountApplicationMode { get; set; }
         public Nullable<System.DateTime> BookingWindowStartDate { get; set; }
         public Nullable<System.DateTime> BookingWindowEndDate { get; set; }
         public string BookingWindowStartHour { get; set; }
         public string BookingWindowEndHour { get; set; }
+        public Nullable<byte> CancelPriorHours { get; set; }
+        public Nullable<byte> CancelPriorDays { get; set; }
         public string CancelPenaltyName { get; set; }
         public Nullable<byte> MinAdvanceBookin { get; set; }
         public Nullable<byte> MaxLOS { get; set; }
@@ -68,6 +42,8 @@ namespace APIServices.Models
         public Nullable<System.DateTime> EndDate { get; set; }
         public string AppyDays { get; set; }
         public Nullable<int> DescriptionId { get; set; }
+        public string Description { get; set; }
+        public Nullable<int> IdDiccShortDesc { get; set; }
         public Nullable<int> idDiccPromoDesc { get; set; }
     }
 }

@@ -5,5 +5,7 @@ export default {
     'Promotion name': 'Nombre de la promoción',
     'Spanish': 'Español',
     'English': 'Ingles',
-    'Restrictions': 'Restricciones'
+    'Restrictions': 'Restricciones',
+    'Minimum nights': 'Noches mínimas',
+    'Maximum nights': 'Noches máximas'
 };

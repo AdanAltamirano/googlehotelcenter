@@ -6,7 +6,7 @@
                 <b-col md="6">
                     <b-card>
                         <b-row>
-                            <b-col md="6">
+                            <b-col md="5">
                                 <b-form-group :label="$t('Promotion code')">
                                     <b-form-input></b-form-input>
                                 </b-form-group>
@@ -21,7 +21,7 @@
                                     </b-tabs>
                                 </b-form-group>
                             </b-col>
-                            <b-col md="6">
+                            <b-col md="7">
                                 <b-form-group :label="$t('Promotion description')">
                                     <b-tabs>
                                         <b-tab :title="$t('Spanish')">
