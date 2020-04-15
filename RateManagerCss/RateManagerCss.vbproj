@@ -26,7 +26,7 @@
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
-    <IISExpressUseClassicPipelineMode>true</IISExpressUseClassicPipelineMode>
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
     <UseGlobalApplicationHostFile />
     <Use64BitIISExpress />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -1495,8 +1495,10 @@
     <Compile Include="API\Controllers\F2GController.vb" />
     <Compile Include="API\Controllers\HotelConfigurationController.vb" />
     <Compile Include="API\Controllers\HotelsController.vb" />
+    <Compile Include="API\Controllers\OffersController.vb" />
     <Compile Include="API\Controllers\PortalController.vb" />
     <Compile Include="API\Controllers\RatesController.vb" />
+    <Compile Include="API\Controllers\RatesPlanController.vb" />
     <Compile Include="API\Controllers\ReservationController.vb" />
     <Compile Include="API\Controllers\RoomsController.vb" />
     <Compile Include="API\Helpers\Date+Extensions.vb" />
