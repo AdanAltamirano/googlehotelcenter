@@ -2,3 +2,38 @@
 /*@import '../../../styles/v-tooltip.scss';*/
 @import '../../../../node_modules/bootstrap-vue/dist/bootstrap-vue.css';
 /*@import '../../../../node_modules/vue-multiselect/dist/vue-multiselect.min.css';*/
+
+.input-border-bottom {
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    width: 80px;
+    text-align: center;
+    &:hover {
+        outline: none;
+    }
+}
+.list-group-scroll {
+    max-height: 200px;
+    overflow-y: scroll;
+}
+.btn-group-toggle .active { 
+    background-color: #10467a !important;
+    border-color: #10467a !important;
+}
+.vc-shadow {
+    border-width: 0px !important;
+    box-shadow: none !important;
+}
+.offset-row-120 {
+    margin-top: -120px !important;
+}
+.offset-row-185 {
+    margin-top: -185px !important;
+}
+.offset-row-30 {
+    margin-top: -30px !important;
+}
+.offset-row-100 {
+    margin-top: -100px !important;
+}
