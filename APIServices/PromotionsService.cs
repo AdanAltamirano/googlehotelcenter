@@ -53,7 +53,7 @@ namespace APIServices
                                ExcludedDates = OfferRule.GetOfferExcludedDates(hotelId, o.PromotionCode)
                            }
                        }
-                   );
+                   ).ToList();
             }
 
             return result;
