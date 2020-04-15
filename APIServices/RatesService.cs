@@ -138,14 +138,13 @@ namespace APIServices
         /// <param name="hotelId"></param>
         /// <param name="ratePlanId"></param>
         /// <returns>Conjunto de RatesPlan</returns>
-        private IEnumerable<RatesPlan> FindHotelRatePlan(int hotelId, string ratePlanId)
+        public IEnumerable<RatesPlan> FindHotelRatesPlan(int hotelId)
         {
             IEnumerable<RatesPlan> result = null;
             using (OzHotelesEntities db = new OzHotelesEntities())
             {
                 result = db.RatesPlan.Where(r =>
-                   r.IdHotel == hotelId
-                   && r.idRatePlan == ratePlanId).ToArray();
+                   r.IdHotel == hotelId).ToArray();
             }
 
             return result;
