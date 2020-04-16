@@ -8,7 +8,7 @@
                         <b-row>
                             <b-col md="5">
                                 <b-form-group :label="$t('Promotion code')">
-                                    <b-form-input></b-form-input>
+                                    <b-form-input :placeholder="$t('Code')"></b-form-input>
                                 </b-form-group>
                                 <b-form-group class="pt-2" :label="$t('Promotion name')">
                                     <b-tabs>
@@ -37,23 +37,23 @@
                     </b-card>
                 </b-col>
                 <b-col>
+                    <type-promotion></type-promotion>
+                </b-col>
+            </b-row>
+            <b-row class="mb-4">
+                <b-col>
+                    <booking-window></booking-window>
+                </b-col>
+                <b-col>
                     <rate-plan-rooms></rate-plan-rooms>
                 </b-col>
             </b-row>
             <b-row class="mb-4">
-                <b-col :class="offset ? 'offset-row-100' : 'offset-row-30'">
+                <b-col>
                     <travel-window></travel-window>
                 </b-col>
-                <b-col :class="offset ? '' : 'offset-row-100'">
-                    <booking-window></booking-window>
-                </b-col>
-            </b-row>
-            <b-row class="mb-4">
-                <b-col :class="offset ? 'offset-row-170' : ''">
+                <b-col :class="offset ? '' : 'offset-row-250'">
                     <restriction></restriction>
-                </b-col>
-                <b-col>
-                    <type-promotion></type-promotion>
                 </b-col>
             </b-row>
             <b-row class="mb-4">

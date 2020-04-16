@@ -14,7 +14,7 @@
     }
 }
 .list-group-scroll {
-    max-height: 200px;
+    max-height: 247px;
     overflow-y: scroll;
 }
 .btn-group-toggle .active { 
@@ -25,17 +25,8 @@
     border-width: 0px !important;
     box-shadow: none !important;
 }
-.offset-row-100 {
-    margin-top: -100px !important;
-}
-.offset-row-170 {
-    margin-top: -170px !important;
-}
-.offset-row-30 {
-    margin-top: -30px !important;
-}
-.offset-row-100 {
-    margin-top: -100px !important;
+.offset-row-250 {
+    margin-top: -250px !important;
 }
 
 .card-header {
@@ -44,6 +35,7 @@
 }
 .cite-date {
     white-space: nowrap;
+    border: 0 !important;
     & span {
         cursor: pointer;
     }

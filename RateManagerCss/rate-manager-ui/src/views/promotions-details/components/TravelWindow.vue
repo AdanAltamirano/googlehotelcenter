@@ -1,9 +1,9 @@
 <template>
     <b-card header="Travel Window">
         <b-row>
-            <b-col md="6">
+            <b-col md="5">
                 <b-row>
-                    <b-col>
+                    <b-col md="12">
                         <b-form-group :label="$t('Start date of the trip')">
                             <b-input-group>
                                 <v-date-picker
@@ -41,34 +41,6 @@
                     </b-col>
                 </b-row>
                 <hr>
-                <b-row>
-                    <b-col>
-                        <h6>{{ $t('Exclude promotion in the following days') }}</h6>
-                        <b-input-group class="mb-3">
-                            <v-date-picker
-                            v-model="excludeDates"
-                            class="form-control p-0"
-                            :min-date="new Date()"
-                            mode="range"
-                            :popover="{ placement: 'bottom', visibility: 'click'}"
-                            :columns="2">
-                            </v-date-picker>
-
-                            <template v-slot:prepend>
-                                <b-input-group-text>
-                                    <i class="fa fa-calendar"></i>
-                                </b-input-group-text>
-                            </template>
-                        </b-input-group>
-                        <cite class="cite-date" v-show="excludeDates != null">
-                            {{ excludeDatesTxt }}
-                            <span @click="excludeDates = null" class="ml-4 mt-2 text-danger">
-                                ( <i class="fa fa-times"></i> ) {{ $t('Remove') }}
-                            </span>
-                        </cite>
-                        <cite v-show="excludeDates == null">&nbsp;</cite>
-                    </b-col>
-                </b-row>
             </b-col>
             <b-col md="auto" class="mr-auto ml-auto">
                 <b-form-group :label="$t('Promotion valid for specific day')">
@@ -93,6 +65,41 @@
                         </label>
                     </div>
                 </b-form-group>
+            </b-col>
+        </b-row>
+        <b-row>
+            <b-col md="9">
+                <h6>{{ $t('Exclude promotion in the following days') }}</h6>
+                <b-input-group class="mb-3">
+                    <v-date-picker
+                    v-model="excludeDates"
+                    class="form-control p-0"
+                    :min-date="new Date()"
+                    mode="range"
+                    :popover="{ placement: 'bottom', visibility: 'click'}"
+                    :columns="2">
+                    </v-date-picker>
+
+                    <template v-slot:prepend>
+                        <b-input-group-text>
+                            <i class="fa fa-calendar"></i>
+                        </b-input-group-text>
+                    </template>
+                    <b-input-group-append>
+                        <b-button :disabled="excludeDates == null" @click="addClosure()" variant="primary">
+                            {{ $t('Add closure') }}
+                        </b-button>
+                    </b-input-group-append>
+                </b-input-group>
+
+                <b-list-group>
+                    <b-list-group-item class="cite-date" v-for="(c, index) in closures" :key="index">
+                        {{ getDateFormat(c) }}
+                        <span @click="removeClosure(index)" class="ml-4 mt-2 text-danger">
+                            ( <i class="fa fa-times"></i> ) {{ $t('Remove') }}
+                        </span>
+                    </b-list-group-item>
+                </b-list-group>
             </b-col>
         </b-row>
     </b-card>
@@ -121,16 +128,8 @@ export default {
             noArrivalDays: [],
             initialDate: null,
             finalDate: null,
-            excludeDates: null
-        }
-    },
-    computed: {
-        excludeDatesTxt() {
-            if (this.excludeDates != null) {
-                return `${this.$moment(this.excludeDates.start).format('DD-MMMM-YYYY')} - 
-                ${this.$moment(this.excludeDates.end).format('DD-MMMM-YYYY')}`;
-            }
-            return '';
+            excludeDates: null,
+            closures: []
         }
     },
     methods: {
@@ -151,6 +150,27 @@ export default {
                 translate = translate.substring(0, 1);
             }
             return translate;
+        },
+        getDateFormat(date) {
+            return `${this.$moment(date.start).format('DD-MMMM-YYYY')} - ${this.$moment(date.end).format('DD-MMMM-YYYY')}`;
+        },
+        addClosure() {
+            let add = false;
+            if (this.closures.length > 0)
+                add =
+                (this.closures.findIndex(x => 
+                    x.start.toString() === this.excludeDates.start.toString() 
+                    && x.end.toString() === this.excludeDates.end.toString()
+                ) === -1)
+            else add = true;
+
+            if (add) {
+                this.closures.push(this.excludeDates);
+                this.excludeDates = null;
+            }
+        },
+        removeClosure(index) {
+            this.closures.splice(index, 1);
         }
     }
 }

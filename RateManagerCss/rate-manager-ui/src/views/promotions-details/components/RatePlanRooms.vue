@@ -7,6 +7,7 @@
                 <b-form-checkbox @change="selectAllRooms" v-model="allRooms">
                     {{ $t('Select all') }}
                 </b-form-checkbox>
+                <hr>
                 <b-list-group class="mt-2 list-group-scroll">
                     <b-list-group-item v-for="room in rooms" :key="room.id">
                         <b-form-checkbox @change="selectRoom" :value="room.id" v-model="selectedRooms">
@@ -21,6 +22,7 @@
                 <b-form-checkbox @change="selectAllRPlans" v-model="allRPlans">
                     {{ $t('Select all') }}
                 </b-form-checkbox>
+                <hr>
                 <b-list-group class="mt-2 list-group-scroll">
                     <b-list-group-item v-for="rp in ratePlans" :key="rp.code">
                         <b-form-checkbox @change="selectRatePlan" :value="rp.code" v-model="selectedRatePlan">

@@ -58,5 +58,6 @@ namespace APIServices.Models
         public Nullable<int> DiscountLevel { get; set; }
     
         public virtual Hoteles Hoteles { get; set; }
+        public virtual RatesPlanRules RatesPlanRules { get; set; }
     }
 }

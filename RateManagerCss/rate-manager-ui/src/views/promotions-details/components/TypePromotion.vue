@@ -8,18 +8,22 @@
                             <b-form-checkbox v-model="freeNightChecked" class="mb-3 text-right" switch>
                                 {{ $t('Add free night') }}
                             </b-form-checkbox>
-                            <b-card-text>
-                                <p>
-                                    <select class="input-border-bottom" v-model="typeFreeNight">
-                                        <option value="0">{{ $t('Every') }}</option>
-                                        <option value="1">{{ $t('Only') }}</option>
-                                    </select>&nbsp;
-                                    <span v-if="typeFreeNight == '1'">{{ $t('the') }}</span>
-                                    <input type="number" v-model="freeNightNumber" min="1" class="input-border-bottom" />
-                                    {{ getPrefix(freeNightNumber) }}&nbsp;{{ $t('will be free') }}
-                                </p>
-                                <cite class="font-weight-bold">"{{ freeNightTxt }}"</cite>
-                            </b-card-text>
+                            <b-row>
+                                <b-col>
+                                    <p>
+                                        <select class="input-border-bottom" v-model="typeFreeNight">
+                                            <option value="0">{{ $t('Every') }}</option>
+                                            <option value="1">{{ $t('Only') }}</option>
+                                        </select>&nbsp;
+                                        <span v-if="typeFreeNight == '1'">{{ $t('the') }}</span>
+                                        <input type="number" v-model="freeNightNumber" min="1" class="input-border-bottom" />
+                                        {{ getPrefix(freeNightNumber) }}&nbsp;{{ $t('will be free') }}
+                                    </p>
+                                    <p>
+                                        <cite class="font-weight-bold">"{{ freeNightTxt }}"</cite>
+                                    </p>
+                                </b-col>
+                            </b-row>
                         </b-tab>
                         <b-tab :title="$t('Discount')">
                             <b-form-checkbox v-model="discountChecked" class="mb-3 text-right" switch>
@@ -33,12 +37,12 @@
                                         </b-input-group>
                                     </b-form-group>
                                 </b-col>
-                                <b-col md="6">
+                                <b-col md="8">
                                     <b-form-group :label="$t('Application mode')">
                                         <b-form-select v-model="applicationMode" :options="options"></b-form-select>
                                     </b-form-group>
                                 </b-col>
-                                <b-col class="mb-5">
+                                <b-col class="text-right">
                                     <b-link @click="help" href="#">{{ $t('Help') }}</b-link>
                                 </b-col>
                             </b-row>

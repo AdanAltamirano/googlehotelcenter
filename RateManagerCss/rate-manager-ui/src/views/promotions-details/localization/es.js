@@ -5,6 +5,7 @@ export default {
     'Promotion name': 'Nombre de la promoción',
     'Spanish': 'Español',
     'English': 'Ingles',
+    'Code': 'Código',
     'Restrictions': 'Restricciones',
     'Min. nights': 'Noches mín.',
     'Max. nights': 'Noches máx.',
@@ -63,6 +64,7 @@ export default {
     'First the 40% discount will be applied and the result of that will be applied the 20% discount.': 'Primero se aplicará el 40% de descuento y al resultado de eso se le aplicará el 20% de descuento.',
     'Add discount': 'Agregar descuento',
     'Add free night': 'Agregar noche gratis',
+    'Add closure': 'Agregar cierre',
 
     //days
     'SU': 'D',

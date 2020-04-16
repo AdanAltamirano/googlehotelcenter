@@ -183,6 +183,12 @@
     <Compile Include="Models\RatesPlan.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ratesPlanDeal.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\RatesPlanRules.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Tarifas.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
