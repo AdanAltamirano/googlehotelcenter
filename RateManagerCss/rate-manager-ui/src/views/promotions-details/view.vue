@@ -66,11 +66,11 @@
 </template>
 
 <script>
-import RatePlanRooms from './components/RatePlan-Rooms.vue';
+import RatePlanRooms from './components/ratePlan-Rooms.vue';
 import TravelWindow from './components/TravelWindow.vue';
 import BookingWindow from './components/BookingWindow.vue';
 import TypePromotion from './components/TypePromotion.vue';
-import Restrictions from './components/Restrictions.vue';
+import Restrictions from './components/restrictions.vue';
 import EventBus from '../../core/event-bus';
 
 export default {
