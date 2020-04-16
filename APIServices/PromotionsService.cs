@@ -10,13 +10,13 @@ namespace APIServices
 {
     public class PromotionsService
     {
-        public IEnumerable<Offer> FindOffers(int hotelId)
+        public IEnumerable<Offer> FindOffers(int hotelId, string offerCode = "")
         {
             IEnumerable<Offer> result = null;
             using (OzHotelesEntities db = new OzHotelesEntities())
             {
                 result = db.vPromotions.Where(p =>
-                   p.HotelId == hotelId).Select(o =>
+                   p.HotelId == hotelId && (p.PromotionCode == offerCode || offerCode == "")).ToList().Select(o =>
                        new Offer()
                        {
                            HotelId = o.HotelId,
@@ -25,6 +25,7 @@ namespace APIServices
                            EndDate = o.EndDate,
                            Active = o.Active == 1 ? true : false,
                            Name = Dictionary.Get(o.DescriptionId),
+                           Description = Dictionary.Get(o.IdDiccShortDesc),
                            Discount = new OfferDiscount() {
                                NightsDiscounted = 1,
                                NightsRequired = o.DaysFree,
