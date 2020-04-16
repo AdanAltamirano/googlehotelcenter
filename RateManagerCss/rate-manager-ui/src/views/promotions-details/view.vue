@@ -50,7 +50,7 @@
             </b-row>
             <b-row class="mb-4">
                 <b-col :class="offset ? 'offset-row-170' : ''">
-                    <restrictions></restrictions>
+                    <restriction></restriction>
                 </b-col>
                 <b-col>
                     <type-promotion></type-promotion>
@@ -66,11 +66,11 @@
 </template>
 
 <script>
-import RatePlanRooms from './components/ratePlan-Rooms.vue';
+import RatePlanRooms from './components/RatePlanRooms.vue';
 import TravelWindow from './components/TravelWindow.vue';
 import BookingWindow from './components/BookingWindow.vue';
 import TypePromotion from './components/TypePromotion.vue';
-import Restrictions from './components/restrictions.vue';
+import Restriction from './components/Restriction.vue';
 import EventBus from '../../core/event-bus';
 
 export default {
@@ -83,7 +83,7 @@ export default {
         TravelWindow,
         BookingWindow,
         TypePromotion,
-        Restrictions
+        Restriction
     },
     data() {
         return {

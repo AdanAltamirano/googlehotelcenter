@@ -72,7 +72,7 @@
 
 <script>
 export default {
-    name: 'restrictions',
+    name: 'restriction',
     data() {
         return {
             minNights: 0,
