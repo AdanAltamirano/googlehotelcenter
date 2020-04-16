@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import VueSweetalert2 from 'vue-sweetalert2';
 import 'bootstrap';
 import moment from 'moment';
 import BootstrapVue from 'bootstrap-vue';
@@ -11,7 +12,7 @@ import View from './view.vue';
 import './styles/custom.scss';
 
 Vue.use(BootstrapVue);
-
+Vue.use(VueSweetalert2);
 locale([{ language: 'es', localeFile: es }], moment, false);
 Vue.use(VueMoment, {
     moment,

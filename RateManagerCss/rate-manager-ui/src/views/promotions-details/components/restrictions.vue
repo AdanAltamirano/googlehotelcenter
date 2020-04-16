@@ -27,7 +27,7 @@
                 </b-row>
                 <b-row v-if="!notCancelable">
                     <b-col>
-                        <p class="mt-2 mr-3 ml-3">
+                        <p class="mt-2 mr-3">
                             {{ $t('Cancel') }}&nbsp;
                             <input type="number" min="1" class="input-border-bottom" v-model="byDay" v-if="cancellationType == 0" />
                             <input type="number" min="1" class="input-border-bottom" v-model="byHour" v-else-if="cancellationType == 1" />
@@ -40,7 +40,7 @@
                             <span v-else-if="cancellationType == 1">{{ perHourTxt }}</span>
                             <span v-else>{{ $t('from check in day') }}</span>
                         </p>
-                        <cite class="mr-3 ml-3 font-weight-bold">"{{ cancellationTxt }}"</cite>
+                        <cite class="mr-3 font-weight-bold">"{{ cancellationTxt }}"</cite>
                     </b-col>
                 </b-row>
             </b-col>

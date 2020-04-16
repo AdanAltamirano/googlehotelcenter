@@ -41,15 +41,15 @@
                 </b-col>
             </b-row>
             <b-row class="mb-4">
-                <b-col :class="offset ? 'offset-row-120' : 'offset-row-30'">
+                <b-col :class="offset ? 'offset-row-100' : 'offset-row-30'">
                     <travel-window></travel-window>
                 </b-col>
-                <b-col>
+                <b-col :class="offset ? '' : 'offset-row-100'">
                     <booking-window></booking-window>
                 </b-col>
             </b-row>
             <b-row class="mb-4">
-                <b-col :class="offset ? 'offset-row-185' : 'offset-row-100'">
+                <b-col :class="offset ? 'offset-row-170' : ''">
                     <restrictions></restrictions>
                 </b-col>
                 <b-col>
@@ -57,7 +57,7 @@
                 </b-col>
             </b-row>
             <b-row class="mb-4">
-                <b-col>
+                <b-col class="text-right mr-4">
                     <b-button variant="success">{{ $t('Save') }}</b-button>
                 </b-col>
             </b-row>

@@ -1,13 +1,13 @@
 <template>
-    <b-card :header="$t('Promotion type')">
+    <b-card no-body :header="$t('Promotion type')">
         <b-row>
             <b-col>
                 <b-card no-body>
                     <b-tabs pills card vertical>
-                        <b-tab>
-                            <template v-slot:title>
-                                <b-form-checkbox v-model="freeNight">{{ $t('Free night') }}</b-form-checkbox>
-                            </template>
+                        <b-tab :title="$t('Free night')">
+                            <b-form-checkbox v-model="freeNightChecked" class="mb-3 text-right" switch>
+                                {{ $t('Add free night') }}
+                            </b-form-checkbox>
                             <b-card-text>
                                 <p>
                                     <select class="input-border-bottom" v-model="typeFreeNight">
@@ -21,13 +21,27 @@
                                 <cite class="font-weight-bold">"{{ freeNightTxt }}"</cite>
                             </b-card-text>
                         </b-tab>
-                        <b-tab>
-                            <template v-slot:title>
-                                <b-form-checkbox v-model="discount">{{ $t('Discount') }}</b-form-checkbox>
-                            </template>
-                            <b-card-text>
-
-                            </b-card-text>
+                        <b-tab :title="$t('Discount')">
+                            <b-form-checkbox v-model="discountChecked" class="mb-3 text-right" switch>
+                                {{ $t('Add discount') }}
+                            </b-form-checkbox>
+                            <b-row>
+                                <b-col md="4">
+                                    <b-form-group :label="$t('Percentage')">
+                                        <b-input-group append="%">
+                                            <b-form-input v-model="percentage"></b-form-input>
+                                        </b-input-group>
+                                    </b-form-group>
+                                </b-col>
+                                <b-col md="6">
+                                    <b-form-group :label="$t('Application mode')">
+                                        <b-form-select v-model="applicationMode" :options="options"></b-form-select>
+                                    </b-form-group>
+                                </b-col>
+                                <b-col class="mb-5">
+                                    <b-link @click="help" href="#">{{ $t('Help') }}</b-link>
+                                </b-col>
+                            </b-row>
                         </b-tab>
                     </b-tabs>
                 </b-card>
@@ -37,6 +51,9 @@
 </template>
 
 <script>
+import Help from '../helper/help.vue';
+import Vue from 'vue';
+
 export default {
     name: 'type-promotion',
     data() {
@@ -45,7 +62,16 @@ export default {
             freeNight: false,
             discount: false,
             typeFreeNight: '0',
-            freeNightNumber: 1
+            freeNightNumber: 1,
+            percentage: 0,
+            options: [
+                { value: 0, text: this.$t('Priority to discount rate') },
+                { value: 1, text: this.$t('Sum discount percentage') },
+                { value: 2, text: this.$t('Additional discount') }
+            ],
+            applicationMode: 0,
+            discountChecked: false,
+            freeNightChecked: false
         }
     },
     computed: {
@@ -78,8 +104,27 @@ export default {
             }
             return prefix;
         },
-        tabChanged() {
+        help() {
+            const component = Vue.extend(Help);
+            const instance = new component({});
+            instance.$mount();
 
+            let self = this;
+            this.$swal
+            .fire({
+                title: self.$t('Discount application method'),
+                icon: 'info',
+                confirmButtonText: '<i class="fa fa-thumbs-up"></i>',
+                showCancelButton: false,
+                showCloseButton: true,
+                html: '<div></div>',
+                onBeforeOpen: () => {
+                    this.$swal
+                    .getContent()
+                    .querySelector('div')
+                    .append(instance.$el);
+                }
+            });
         }
     }
 }
