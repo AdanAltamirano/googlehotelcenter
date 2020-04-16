@@ -10,7 +10,7 @@ namespace APIServices
 {
     class Dictionary
     {
-        public int Insert(string valueEsp, string valueEng)
+        public static int Insert(string valueEsp, string valueEng)
         {
             OzHotelesEntities db = new OzHotelesEntities();
 
@@ -55,20 +55,19 @@ namespace APIServices
             }
         }
 
-        public static MultilanguageTextType Get(int? Id)
+        public static MultiLanguageTextType Get(int? Id)
         {
             
             using (OzHotelesEntities db = new OzHotelesEntities())
             {
                 var texts = db.Diccionario.Where(d => d.IdDiccionario == Id).ToList();
-                return new MultilanguageTextType()
+                return new MultiLanguageTextType()
                 {
                     Eng = texts.Where(t => t.IdIdioma == 2).Select(t => t.Texto)?.First() ?? string.Empty,
                     Esp = texts.Where(t => t.IdIdioma == 1).Select(t => t.Texto)?.First() ?? string.Empty,
                     Id = Id
                 };    
             }
-
         }
     }
 }

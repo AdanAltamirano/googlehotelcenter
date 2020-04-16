@@ -11,7 +11,7 @@ Namespace API.Controllers
     <RoutePrefix("api/hotels/{HotelId:int}/offers")>
     Public Class OffersController
         Inherits ShurikenController
-        Public service As New PromotionsService
+        Public service As New OfferService
 
         <Route(""), HttpGet>
         Public Function GetByHotelId(HotelId As Integer) As IEnumerable(Of DTO.Offer)

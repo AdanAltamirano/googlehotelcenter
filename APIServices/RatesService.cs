@@ -399,9 +399,8 @@ namespace APIServices
             }
 
             if (rate.Prices?.Promotion != null)
-            {
-                Dictionary dictionary = new Dictionary();
-                newDictionaryId = dictionary.Insert(rate.Prices.Promotion.SpanishDescription, rate.Prices.Promotion.EnglishDescription);
+            {                
+                newDictionaryId = Dictionary.Insert(rate.Prices.Promotion.SpanishDescription, rate.Prices.Promotion.EnglishDescription);
                 promotionDiscount = rate.Prices.Promotion.Discount;
                 if (newDictionaryId == 0)
                     return false;
@@ -773,8 +772,7 @@ namespace APIServices
 
             if (rate.Prices?.Promotion != null)
             {
-                Dictionary dictionary = new Dictionary();
-                newDictionaryId = dictionary.Insert(rate.Prices.Promotion.SpanishDescription, rate.Prices.Promotion.EnglishDescription);
+                newDictionaryId = Dictionary.Insert(rate.Prices.Promotion.SpanishDescription, rate.Prices.Promotion.EnglishDescription);
                 promotionDiscount = rate.Prices.Promotion.Discount;
                 if (newDictionaryId == 0)
                     return false;
