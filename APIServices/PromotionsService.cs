@@ -66,7 +66,7 @@ namespace APIServices
             return result;
         }
 
-        public bool Add(Offer offer)
+        public KeyValuePair<string, string> Add(Offer offer)
         {
             OzHotelesEntities db = new OzHotelesEntities();
             using (System.Data.Entity.DbContextTransaction transaction = db.Database.BeginTransaction())
@@ -152,7 +152,7 @@ namespace APIServices
                     Deleted = false
                 };
             }
-            return true;
+            return new KeyValuePair<string, string>("1", "success");
         }
 
         private short GetDiscountApplicationMode(OfferDiscountApplicationMode mode)

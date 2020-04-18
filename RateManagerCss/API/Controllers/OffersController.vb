@@ -22,5 +22,18 @@ Namespace API.Controllers
         Public Function GetByCode(HotelId As Integer, <FromUri> code As String) As IEnumerable(Of DTO.Offer)
             Return service.FindOffers(HotelId, code)
         End Function
+
+        'POST api/hotels/1/offers
+        <Route(""), HttpPost>
+        Public Function OfferAdd(<FromBody> RQ As DTO.Offer, HotelId As Integer) As Net.Http.HttpResponseMessage
+            RQ.HotelId = HotelId
+
+            Dim result As KeyValuePair(Of String, String) = service.Add(RQ)
+
+            If result.Key = 1 Then
+                Return NoContent()
+            End If
+            Return BadRequest(result)
+        End Function
     End Class
 End Namespace
