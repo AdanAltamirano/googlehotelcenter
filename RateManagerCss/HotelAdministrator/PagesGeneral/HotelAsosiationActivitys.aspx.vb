@@ -76,10 +76,10 @@ Partial Class HotelAsosiationActivitys
     End Sub
     Private Sub loadFranquicias(ByVal Chaincode As String)
         Try
-            'Dim Activitys As New SearchEngine.Activitys.Facade.BookingActivityFacade
+            Dim Activitys As New SearchEngine.Activitys.Facade.BookingActivityFacade
             Dim Franquicias As DataSet
 
-            'Franquicias = Activitys.SearchCompanyList()
+            Franquicias = Activitys.SearchCompanyList()
 
             Dim valor As Double = Franquicias.Tables(0).Rows.Count - 1 / 4
 
@@ -138,7 +138,7 @@ Partial Class HotelAsosiationActivitys
 
 
             Dim FR As DataSet
-            'FR = Activitys.SearchEmpresasCadena(Chaincode, 1)
+            FR = Activitys.SearchEmpresasCadena(Chaincode, 1)
             mensaje(FR.GetXml)
             If Not FR Is Nothing AndAlso FR.Tables(0).Rows.Count > 0 Then
 
@@ -181,7 +181,7 @@ Partial Class HotelAsosiationActivitys
 
     Private Sub loadData()
         Dim dsHotel As HotelDatos
-        'Dim dsEtiq As MonedaDatos
+        Dim dsEtiq As MonedaDatos
 
         With New HotelSistema
             dsHotel = .GetHotelById(MyBase.cInfoActual.Hotel)
@@ -193,7 +193,7 @@ Partial Class HotelAsosiationActivitys
                 Try
                     If Not .IsNull(HotelDatos.fld_idcorporativo) Then
                         ddlCorporativos.SelectedValue = .Item(HotelDatos.fld_idcorporativo)
-                        ' ddlCorporativos.Enabled = False
+                        ddlCorporativos.Enabled = False
                         Me.IdChainCode = ddlCorporativos.SelectedValue
                         loadFranquicias(ddlCorporativos.SelectedItem.Text)
                     End If
@@ -207,37 +207,37 @@ Partial Class HotelAsosiationActivitys
 
     Private Sub AltaRelacion(ByVal Chaincode As String)
         Try
-            'Dim Activitys As New SearchEngine.Activitys.Facade.BookingActivityFacade
+            Dim Activitys As New SearchEngine.Activitys.Facade.BookingActivityFacade
             For indice As Integer = 0 To chkFranquicias1.Items.Count - 1
                 If chkFranquicias1.Items(indice).Selected Then
-                    ' Activitys.SearchActividadesRelacionEmpresasCorporativo(Chaincode, chkFranquicias1.Items(indice).Value, 1)
+                    Activitys.SearchActividadesRelacionEmpresasCorporativo(Chaincode, chkFranquicias1.Items(indice).Value, 1)
                 Else
-                    ' Activitys.SearchActividadesRelacionEmpresasCorporativo(Chaincode, chkFranquicias1.Items(indice).Value, 0)
+                    Activitys.SearchActividadesRelacionEmpresasCorporativo(Chaincode, chkFranquicias1.Items(indice).Value, 0)
                 End If
             Next
 
 
             For indice As Integer = 0 To chkFranquicias2.Items.Count - 1
                 If chkFranquicias2.Items(indice).Selected Then
-                    ' Activitys.SearchActividadesRelacionEmpresasCorporativo(Chaincode, chkFranquicias2.Items(indice).Value, 1)
+                    Activitys.SearchActividadesRelacionEmpresasCorporativo(Chaincode, chkFranquicias2.Items(indice).Value, 1)
                 Else
-                    ' Activitys.SearchActividadesRelacionEmpresasCorporativo(Chaincode, chkFranquicias2.Items(indice).Value, 0)
+                    Activitys.SearchActividadesRelacionEmpresasCorporativo(Chaincode, chkFranquicias2.Items(indice).Value, 0)
                 End If
             Next
 
             For indice As Integer = 0 To chkFranquicias3.Items.Count - 1
                 If chkFranquicias3.Items(indice).Selected Then
-                    'Activitys.SearchActividadesRelacionEmpresasCorporativo(Chaincode, chkFranquicias3.Items(indice).Value, 1)
+                    Activitys.SearchActividadesRelacionEmpresasCorporativo(Chaincode, chkFranquicias3.Items(indice).Value, 1)
                 Else
-                    'Activitys.SearchActividadesRelacionEmpresasCorporativo(Chaincode, chkFranquicias3.Items(indice).Value, 0)
+                    Activitys.SearchActividadesRelacionEmpresasCorporativo(Chaincode, chkFranquicias3.Items(indice).Value, 0)
                 End If
             Next
 
             For indice As Integer = 0 To chkFranquicias4.Items.Count - 1
                 If chkFranquicias4.Items(indice).Selected Then
-                    'Activitys.SearchActividadesRelacionEmpresasCorporativo(Chaincode, chkFranquicias4.Items(indice).Value, 1)
+                    Activitys.SearchActividadesRelacionEmpresasCorporativo(Chaincode, chkFranquicias4.Items(indice).Value, 1)
                 Else
-                    'Activitys.SearchActividadesRelacionEmpresasCorporativo(Chaincode, chkFranquicias4.Items(indice).Value, 0)
+                    Activitys.SearchActividadesRelacionEmpresasCorporativo(Chaincode, chkFranquicias4.Items(indice).Value, 0)
                 End If
             Next
         Catch ex As Exception
