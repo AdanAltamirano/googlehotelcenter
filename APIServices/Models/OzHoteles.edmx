@@ -363,8 +363,8 @@
           <Property Name="Code" Type="char" MaxLength="2" />
           <Property Name="idRepl6" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'OzHoteles.dbo.vAdministrator' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'OzHoteles.dbo.vAdministrator' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vAdministrator">
           <Key>
             <PropertyRef Name="UserId" />
@@ -376,8 +376,8 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vAdministrator' no tiene defin
           <Property Name="Name" Type="nvarchar" MaxLength="80" Nullable="false" />
           <Property Name="CorpId" Type="int" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'OzHoteles.dbo.vDayRateDetail' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'OzHoteles.dbo.vDayRateDetail' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vDayRateDetail">
           <Key>
             <PropertyRef Name="Id" />
@@ -403,8 +403,8 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vDayRateDetail' no tiene defin
           <Property Name="ExtraChildPrice" Type="money" Nullable="false" />
           <Property Name="ExtraJuniorPrice" Type="money" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'OzHoteles.dbo.vDayRates' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'OzHoteles.dbo.vDayRates' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vDayRates">
           <Key>
             
@@ -444,8 +444,8 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vDayRates' no tiene definida n
           <Property Name="IsPromotion" Type="bit" Nullable="false" />
           <Property Name="Language" Type="int" Nullable="false" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'OzHoteles.dbo.vHotelBasicInfo' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'OzHoteles.dbo.vHotelBasicInfo' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vHotelBasicInfo">
           <Key>
             <PropertyRef Name="Provider" />
@@ -465,8 +465,8 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vHotelBasicInfo' no tiene defi
           <Property Name="Status" Type="tinyint" Nullable="false" />
           <Property Name="Provider" Type="varchar" MaxLength="14" Nullable="false" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'OzHoteles.dbo.vHotelByUser' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'OzHoteles.dbo.vHotelByUser' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vHotelByUser">
           <Key>
             <PropertyRef Name="UserId" />
@@ -478,8 +478,8 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vHotelByUser' no tiene definid
           <Property Name="HotelId" Type="int" Nullable="false" />
           <Property Name="HotelName" Type="nvarchar" MaxLength="180" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'OzHoteles.dbo.vHotelPlan' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'OzHoteles.dbo.vHotelPlan' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vHotelPlan">
           <Key>
             <PropertyRef Name="Code" />
@@ -497,8 +497,8 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vHotelPlan' no tiene definida 
           <Property Name="IsLinked" Type="bit" />
           <Property Name="Active" Type="bit" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'OzHoteles.dbo.vHotelRoom' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'OzHoteles.dbo.vHotelRoom' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vHotelRoom">
           <Key>
             <PropertyRef Name="Id" />
@@ -537,8 +537,8 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vHotelRoom' no tiene definida 
           <Property Name="Active" Type="bit" Nullable="false" />
           <Property Name="Language" Type="int" Nullable="false" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'OzHoteles.dbo.vPermissions' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'OzHoteles.dbo.vPermissions' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vPermissions">
           <Key>
             <PropertyRef Name="userId" />
@@ -546,8 +546,8 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vPermissions' no tiene definid
           <Property Name="showCreditCard" Type="bit" />
           <Property Name="userId" Type="int" Nullable="false" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'OzHoteles.dbo.vPromotions' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'OzHoteles.dbo.vPromotions' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vPromotions">
           <Key>
             <PropertyRef Name="PromotionCode" />
@@ -585,9 +585,10 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vPromotions' no tiene definida
           <Property Name="Description" Type="nvarchar" MaxLength="400" Nullable="false" />
           <Property Name="IdDiccShortDesc" Type="int" />
           <Property Name="idDiccPromoDesc" Type="int" />
+          <Property Name="idRule" Type="int" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'OzHoteles.dbo.vReservation' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'OzHoteles.dbo.vReservation' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vReservation">
           <Key>
             <PropertyRef Name="Id" />
@@ -614,8 +615,8 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vReservation' no tiene definid
           <Property Name="Provider" Type="varchar" MaxLength="14" />
           <Property Name="CorporateId" Type="int" Nullable="false" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'OzHoteles.dbo.vReservationDetails' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'OzHoteles.dbo.vReservationDetails' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vReservationDetails">
           <Key>
             <PropertyRef Name="status" />
@@ -689,8 +690,8 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vReservationDetails' no tiene 
           <Property Name="corporateName" Type="nvarchar" MaxLength="20" />
           <Property Name="hotelEmail" Type="nvarchar" MaxLength="240" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'OzHoteles.dbo.vReservationPayments' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'OzHoteles.dbo.vReservationPayments' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vReservationPayments">
           <Key>
             <PropertyRef Name="reservationId" />
@@ -712,8 +713,8 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vReservationPayments' no tiene
           <Property Name="totalPay" Type="money" />
           <Property Name="currencyPay" Type="nvarchar" MaxLength="6" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'OzHoteles.dbo.vReservationRoomDetails' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'OzHoteles.dbo.vReservationRoomDetails' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vReservationRoomDetails">
           <Key>
             <PropertyRef Name="reservationId" />
@@ -743,8 +744,8 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vReservationRoomDetails' no ti
           <Property Name="rateCode" Type="nvarchar" MaxLength="50" />
           <Property Name="currency" Type="nvarchar" MaxLength="3" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'OzHoteles.dbo.VReservationRoomPriceDetails' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'OzHoteles.dbo.VReservationRoomPriceDetails' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="VReservationRoomPriceDetails">
           <Key>
             <PropertyRef Name="roomPriceId" />
@@ -760,8 +761,8 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.VReservationRoomPriceDetails' 
           <Property Name="checkOut" Type="smalldatetime" Nullable="false" />
           <Property Name="currency" Type="nvarchar" MaxLength="3" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vRoomInventory">
           <Key>
             <PropertyRef Name="Date" />
@@ -1031,7 +1032,8 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
     [vPromotions].[DescriptionId] AS [DescriptionId], 
     [vPromotions].[Description] AS [Description], 
     [vPromotions].[IdDiccShortDesc] AS [IdDiccShortDesc], 
-    [vPromotions].[idDiccPromoDesc] AS [idDiccPromoDesc]
+    [vPromotions].[idDiccPromoDesc] AS [idDiccPromoDesc], 
+    [vPromotions].[idRule] AS [idRule]
     FROM [dbo].[vPromotions] AS [vPromotions]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vReservation" EntityType="Self.vReservation" store:Type="Views" store:Schema="dbo">
@@ -1273,13 +1275,13 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <EntitySet Name="LockRoomTypes" EntityType="Models.LockRoomTypes" />
           <EntitySet Name="Promociones_RatePlan" EntityType="Models.Promociones_RatePlan" />
           <EntitySet Name="Promociones_TipoHabitacionHotel" EntityType="Models.Promociones_TipoHabitacionHotel" />
-          <EntitySet Name="vPromotions" EntityType="Models.vPromotions" />
           <EntitySet Name="ratesPlanDeal" EntityType="Models.ratesPlanDeal" />
           <EntitySet Name="RatesPlanRules" EntityType="Models.RatesPlanRules" />
           <AssociationSet Name="FK_RatesPlan_RatesPlanRules" Association="Models.FK_RatesPlan_RatesPlanRules">
             <End Role="RatesPlanRules" EntitySet="RatesPlanRules" />
             <End Role="RatesPlan" EntitySet="RatesPlan" />
           </AssociationSet>
+          <EntitySet Name="vPromotions" EntityType="Models.vPromotions" />
         </EntityContainer>
         <EntityType Name="RatesPlan">
           <Key>
@@ -1988,44 +1990,6 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <Property Name="IdTipoHabitacionHotel" Type="Int32" Nullable="false" />
           <Property Name="IdHotel" Type="Int32" Nullable="false" />
         </EntityType>
-        <EntityType Name="vPromotions">
-          <Key>
-            <PropertyRef Name="PromotionCode" />
-            <PropertyRef Name="HotelId" />
-            <PropertyRef Name="Description" />
-          </Key>
-          <Property Name="PromotionCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="HotelId" Type="Int32" Nullable="false" />
-          <Property Name="Discount" Type="Decimal" Precision="10" Scale="4" />
-          <Property Name="DaysFree" Type="Int16" />
-          <Property Name="Active" Type="Int32" />
-          <Property Name="DiscountApplicationType" Type="Int16" />
-          <Property Name="DaysFreeType" Type="Boolean" />
-          <Property Name="DiscountApplicationMode" Type="Int32" />
-          <Property Name="BookingWindowStartDate" Type="DateTime" Precision="0" />
-          <Property Name="BookingWindowEndDate" Type="DateTime" Precision="0" />
-          <Property Name="BookingWindowStartHour" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="BookingWindowEndHour" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="CancelPriorHours" Type="Byte" />
-          <Property Name="CancelPriorDays" Type="Byte" />
-          <Property Name="CancelPenaltyName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="MinAdvanceBookin" Type="Byte" />
-          <Property Name="MaxLOS" Type="Byte" />
-          <Property Name="MinLOS" Type="Byte" />
-          <Property Name="NoArrivals" Type="String" MaxLength="7" FixedLength="true" Unicode="false" />
-          <Property Name="CancelPenaltySpecificTime" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
-          <Property Name="CancelPenaltyDescriprion" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="CancelPenaltyReviewId" Type="Int32" />
-          <Property Name="CancelPenaltyDetailedId" Type="Int32" />
-          <Property Name="MaxAdvanceBooking" Type="Int32" />
-          <Property Name="StartDate" Type="DateTime" Precision="0" />
-          <Property Name="EndDate" Type="DateTime" Precision="0" />
-          <Property Name="AppyDays" Type="String" MaxLength="7" FixedLength="true" Unicode="false" />
-          <Property Name="DescriptionId" Type="Int32" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="400" FixedLength="false" Unicode="true" />
-          <Property Name="IdDiccShortDesc" Type="Int32" />
-          <Property Name="idDiccPromoDesc" Type="Int32" />
-        </EntityType>
         <EntityType Name="ratesPlanDeal">
           <Key>
             <PropertyRef Name="idRatePlan" />
@@ -2082,6 +2046,45 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="vPromotions">
+          <Key>
+            <PropertyRef Name="PromotionCode" />
+            <PropertyRef Name="HotelId" />
+            <PropertyRef Name="Description" />
+          </Key>
+          <Property Name="PromotionCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="HotelId" Type="Int32" Nullable="false" />
+          <Property Name="Discount" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="DaysFree" Type="Int16" />
+          <Property Name="Active" Type="Int32" />
+          <Property Name="DiscountApplicationType" Type="Int16" />
+          <Property Name="DaysFreeType" Type="Boolean" />
+          <Property Name="DiscountApplicationMode" Type="Int32" />
+          <Property Name="BookingWindowStartDate" Type="DateTime" Precision="0" />
+          <Property Name="BookingWindowEndDate" Type="DateTime" Precision="0" />
+          <Property Name="BookingWindowStartHour" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="BookingWindowEndHour" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="CancelPriorHours" Type="Byte" />
+          <Property Name="CancelPriorDays" Type="Byte" />
+          <Property Name="CancelPenaltyName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="MinAdvanceBookin" Type="Byte" />
+          <Property Name="MaxLOS" Type="Byte" />
+          <Property Name="MinLOS" Type="Byte" />
+          <Property Name="NoArrivals" Type="String" MaxLength="7" FixedLength="true" Unicode="false" />
+          <Property Name="CancelPenaltySpecificTime" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="CancelPenaltyDescriprion" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="CancelPenaltyReviewId" Type="Int32" />
+          <Property Name="CancelPenaltyDetailedId" Type="Int32" />
+          <Property Name="MaxAdvanceBooking" Type="Int32" />
+          <Property Name="StartDate" Type="DateTime" Precision="0" />
+          <Property Name="EndDate" Type="DateTime" Precision="0" />
+          <Property Name="AppyDays" Type="String" MaxLength="7" FixedLength="true" Unicode="false" />
+          <Property Name="DescriptionId" Type="Int32" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="400" FixedLength="false" Unicode="true" />
+          <Property Name="IdDiccShortDesc" Type="Int32" />
+          <Property Name="idDiccPromoDesc" Type="Int32" />
+          <Property Name="idRule" Type="Int32" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2719,43 +2722,6 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="vPromotions">
-            <EntityTypeMapping TypeName="Models.vPromotions">
-              <MappingFragment StoreEntitySet="vPromotions">
-                <ScalarProperty Name="idDiccPromoDesc" ColumnName="idDiccPromoDesc" />
-                <ScalarProperty Name="IdDiccShortDesc" ColumnName="IdDiccShortDesc" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="DescriptionId" ColumnName="DescriptionId" />
-                <ScalarProperty Name="AppyDays" ColumnName="AppyDays" />
-                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
-                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
-                <ScalarProperty Name="MaxAdvanceBooking" ColumnName="MaxAdvanceBooking" />
-                <ScalarProperty Name="CancelPenaltyDetailedId" ColumnName="CancelPenaltyDetailedId" />
-                <ScalarProperty Name="CancelPenaltyReviewId" ColumnName="CancelPenaltyReviewId" />
-                <ScalarProperty Name="CancelPenaltyDescriprion" ColumnName="CancelPenaltyDescriprion" />
-                <ScalarProperty Name="CancelPenaltySpecificTime" ColumnName="CancelPenaltySpecificTime" />
-                <ScalarProperty Name="NoArrivals" ColumnName="NoArrivals" />
-                <ScalarProperty Name="MinLOS" ColumnName="MinLOS" />
-                <ScalarProperty Name="MaxLOS" ColumnName="MaxLOS" />
-                <ScalarProperty Name="MinAdvanceBookin" ColumnName="MinAdvanceBookin" />
-                <ScalarProperty Name="CancelPenaltyName" ColumnName="CancelPenaltyName" />
-                <ScalarProperty Name="CancelPriorDays" ColumnName="CancelPriorDays" />
-                <ScalarProperty Name="CancelPriorHours" ColumnName="CancelPriorHours" />
-                <ScalarProperty Name="BookingWindowEndHour" ColumnName="BookingWindowEndHour" />
-                <ScalarProperty Name="BookingWindowStartHour" ColumnName="BookingWindowStartHour" />
-                <ScalarProperty Name="BookingWindowEndDate" ColumnName="BookingWindowEndDate" />
-                <ScalarProperty Name="BookingWindowStartDate" ColumnName="BookingWindowStartDate" />
-                <ScalarProperty Name="DiscountApplicationMode" ColumnName="DiscountApplicationMode" />
-                <ScalarProperty Name="DaysFreeType" ColumnName="DaysFreeType" />
-                <ScalarProperty Name="DiscountApplicationType" ColumnName="DiscountApplicationType" />
-                <ScalarProperty Name="Active" ColumnName="Active" />
-                <ScalarProperty Name="DaysFree" ColumnName="DaysFree" />
-                <ScalarProperty Name="Discount" ColumnName="Discount" />
-                <ScalarProperty Name="HotelId" ColumnName="HotelId" />
-                <ScalarProperty Name="PromotionCode" ColumnName="PromotionCode" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ratesPlanDeal">
             <EntityTypeMapping TypeName="Models.ratesPlanDeal">
               <MappingFragment StoreEntitySet="ratesPlanDeal">
@@ -2797,6 +2763,44 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
                 <ScalarProperty Name="ReqVerification" ColumnName="ReqVerification" />
                 <ScalarProperty Name="IdHotel" ColumnName="IdHotel" />
                 <ScalarProperty Name="idRule" ColumnName="idRule" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vPromotions">
+            <EntityTypeMapping TypeName="Models.vPromotions">
+              <MappingFragment StoreEntitySet="vPromotions">
+                <ScalarProperty Name="idRule" ColumnName="idRule" />
+                <ScalarProperty Name="idDiccPromoDesc" ColumnName="idDiccPromoDesc" />
+                <ScalarProperty Name="IdDiccShortDesc" ColumnName="IdDiccShortDesc" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="DescriptionId" ColumnName="DescriptionId" />
+                <ScalarProperty Name="AppyDays" ColumnName="AppyDays" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="MaxAdvanceBooking" ColumnName="MaxAdvanceBooking" />
+                <ScalarProperty Name="CancelPenaltyDetailedId" ColumnName="CancelPenaltyDetailedId" />
+                <ScalarProperty Name="CancelPenaltyReviewId" ColumnName="CancelPenaltyReviewId" />
+                <ScalarProperty Name="CancelPenaltyDescriprion" ColumnName="CancelPenaltyDescriprion" />
+                <ScalarProperty Name="CancelPenaltySpecificTime" ColumnName="CancelPenaltySpecificTime" />
+                <ScalarProperty Name="NoArrivals" ColumnName="NoArrivals" />
+                <ScalarProperty Name="MinLOS" ColumnName="MinLOS" />
+                <ScalarProperty Name="MaxLOS" ColumnName="MaxLOS" />
+                <ScalarProperty Name="MinAdvanceBookin" ColumnName="MinAdvanceBookin" />
+                <ScalarProperty Name="CancelPenaltyName" ColumnName="CancelPenaltyName" />
+                <ScalarProperty Name="CancelPriorDays" ColumnName="CancelPriorDays" />
+                <ScalarProperty Name="CancelPriorHours" ColumnName="CancelPriorHours" />
+                <ScalarProperty Name="BookingWindowEndHour" ColumnName="BookingWindowEndHour" />
+                <ScalarProperty Name="BookingWindowStartHour" ColumnName="BookingWindowStartHour" />
+                <ScalarProperty Name="BookingWindowEndDate" ColumnName="BookingWindowEndDate" />
+                <ScalarProperty Name="BookingWindowStartDate" ColumnName="BookingWindowStartDate" />
+                <ScalarProperty Name="DiscountApplicationMode" ColumnName="DiscountApplicationMode" />
+                <ScalarProperty Name="DaysFreeType" ColumnName="DaysFreeType" />
+                <ScalarProperty Name="DiscountApplicationType" ColumnName="DiscountApplicationType" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="DaysFree" ColumnName="DaysFree" />
+                <ScalarProperty Name="Discount" ColumnName="Discount" />
+                <ScalarProperty Name="HotelId" ColumnName="HotelId" />
+                <ScalarProperty Name="PromotionCode" ColumnName="PromotionCode" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
