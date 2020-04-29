@@ -35,5 +35,18 @@ Namespace API.Controllers
             End If
             Return BadRequest(result)
         End Function
+
+        'POST api/hotels/1/offers/update
+        <Route("update"), HttpPost>
+        Public Function OfferUpdate(<FromBody> RQ As DTO.Offer, HotelId As Integer) As Net.Http.HttpResponseMessage
+            RQ.HotelId = HotelId
+
+            Dim result As KeyValuePair(Of String, String) = service.Update(RQ)
+
+            If result.Key = 1 Then
+                Return NoContent()
+            End If
+            Return BadRequest(result)
+        End Function
     End Class
 End Namespace

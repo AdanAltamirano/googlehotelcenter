@@ -55,9 +55,35 @@ namespace APIServices
             }
         }
 
+        public static bool Update(MultiLanguageTextType text)
+        {
+            OzHotelesEntities db = new OzHotelesEntities();
+
+            using (System.Data.Entity.DbContextTransaction transaction = db.Database.BeginTransaction())
+            {
+                try
+                {
+                    var esp = db.Diccionario.FirstOrDefault(x => x.IdDiccionario == text.Id && x.IdIdioma == 1);
+                    esp.Texto = text.Esp;
+                   
+                    var eng = db.Diccionario.FirstOrDefault(x => x.IdDiccionario == text.Id && x.IdIdioma == 2);
+                    eng.Texto = text.Eng;
+                    db.SaveChanges();
+                    transaction.Commit();
+                }
+                catch
+                {
+                    transaction.Rollback();
+                    return false;
+                }
+            }
+            return true;
+        }
+
+
         public static MultiLanguageTextType Get(int? Id)
         {
-            
+
             using (OzHotelesEntities db = new OzHotelesEntities())
             {
                 var texts = db.Diccionario.Where(d => d.IdDiccionario == Id).ToList();
@@ -66,7 +92,7 @@ namespace APIServices
                     Eng = texts.Where(t => t.IdIdioma == 2).Select(t => t.Texto)?.First() ?? string.Empty,
                     Esp = texts.Where(t => t.IdIdioma == 1).Select(t => t.Texto)?.First() ?? string.Empty,
                     Id = Id
-                };    
+                };
             }
         }
     }

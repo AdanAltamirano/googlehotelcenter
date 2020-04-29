@@ -113,7 +113,7 @@ namespace APIServices.Models.DTO
 
     public class OfferRule
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
         public DaysOfWeekType NoArrivals { get; set; }
         public DaysOfWeekType ApplyDays { get; set; }
         public List<OfferExcludedDates> ExcludedDates { get; set; }
