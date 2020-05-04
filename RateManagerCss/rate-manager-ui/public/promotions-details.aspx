@@ -12,7 +12,8 @@
         window.app =
             {
                 hotelId: <%= Me.cInfoActual.Hotel%>,
-                language: '<%= If(Me.IdIdiomaMenu = 1, "es", "en" )%>'
+                language: '<%= If(Me.IdIdiomaMenu = 1, "es", "en" )%>',
+                code: '<%=Request.QueryString("qs")%>'
             };
     </script>
     <div id="app"></div>

@@ -7,7 +7,7 @@ if (Vue.http.interceptors.indexOf(Interceptor) === -1) {
     Vue.http.interceptors.push(Interceptor);
 }
 
-const offers = Vue.resource(`${process.env.VUE_APP_API_URL}/hotels/{hotelid}/offers/{code}`);
+const offers = Vue.resource(`${process.env.VUE_APP_API_URL}/hotels/{hotelId}/offers/{code}`);
 
 export default {
     getByCode(hotelId, code) {

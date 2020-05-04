@@ -3,20 +3,20 @@
         <b-container fluid>
             <h2 class="text-primary">{{ $t('Promotions') }}</h2>
             <b-row class="mb-4 mt-4">
-                <b-col>
+                <b-col lg="6">
                     <b-card style="border:none">
                         <b-row>
                             <b-col md="5">
                                 <b-form-group :label="$t('Promotion code')">
-                                    <b-form-input :placeholder="$t('Code')"></b-form-input>
+                                    <b-form-input v-model="code" :placeholder="$t('Code')"></b-form-input>
                                 </b-form-group>
                                 <b-form-group class="pt-2" :label="$t('Promotion name')">
                                     <b-tabs>
                                         <b-tab :title="$t('Spanish')">
-                                            <b-form-input></b-form-input>
+                                            <b-form-input v-model="nameEs"></b-form-input>
                                         </b-tab>
                                         <b-tab :title="$t('English')">
-                                            <b-form-input></b-form-input>
+                                            <b-form-input v-model="nameEn"></b-form-input>
                                         </b-tab>
                                     </b-tabs>
                                 </b-form-group>
@@ -25,10 +25,10 @@
                                 <b-form-group :label="$t('Promotion description')">
                                     <b-tabs>
                                         <b-tab :title="$t('Spanish')">
-                                            <b-form-textarea rows="5" max-rows="5"></b-form-textarea>
+                                            <b-form-textarea v-model="descriptionEs" rows="5" max-rows="5"></b-form-textarea>
                                         </b-tab>
                                         <b-tab :title="$t('English')">
-                                            <b-form-textarea rows="5" max-rows="5"></b-form-textarea>
+                                            <b-form-textarea v-model="descriptionEn" rows="5" max-rows="5"></b-form-textarea>
                                         </b-tab>
                                     </b-tabs>
                                 </b-form-group>
@@ -36,23 +36,23 @@
                         </b-row>
                     </b-card>
                 </b-col>
-                <b-col>
+                <b-col class="mt-3">
                     <type-promotion></type-promotion>
                 </b-col>
             </b-row>
             <b-row class="mb-4">
-                <b-col>
+                <b-col lg="6">
                     <booking-window></booking-window>
                 </b-col>
-                <b-col>
+                <b-col class="sm-margin">
                     <rate-plan-rooms></rate-plan-rooms>
                 </b-col>
             </b-row>
             <b-row class="mb-4">
-                <b-col>
+                <b-col lg="6">
                     <travel-window></travel-window>
                 </b-col>
-                <b-col :class="offset ? '' : 'offset-row-250'">
+                <b-col class="sm-margin" :class="offset ? '' : 'offset-row-250'">
                     <restriction></restriction>
                 </b-col>
             </b-row>
@@ -72,6 +72,7 @@ import BookingWindow from './components/BookingWindow.vue';
 import TypePromotion from './components/TypePromotion.vue';
 import Restriction from './components/Restriction.vue';
 import EventBus from '../../core/event-bus';
+import OffersService from '../../api/offers-service';
 
 export default {
     name: 'app',
@@ -89,6 +90,30 @@ export default {
         return {
             offset: false
         }
+    },
+    computed: {
+        /**->state */
+        code: {
+            get() { return this.$store.state.req.code },
+            set(val) { this.$store.commit('code', val) }
+        },
+        nameEs: {
+            get() { return this.$store.state.req.name.es },
+            set(val) { this.$store.commit('nameEs', val) }
+        },
+        nameEn: {
+            get() { return this.$store.state.req.name.en },
+            set(val) { this.$store.commit('nameEn', val) }
+        },
+        descriptionEs: {
+            get() { return this.$store.state.req.description.es },
+            set(val) { this.$store.commit('descriptionEs', val) }
+        },
+        descriptionEn: {
+            get() { return this.$store.state.req.description.en },
+            set(val) { this.$store.commit('descriptionEn', val) }
+        }
+        /**<- */
     },
     methods: {
         changeOffset() {

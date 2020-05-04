@@ -5,7 +5,7 @@
                 <b-row>
                     <b-col>
                         <b-form-group :label="$t('Min. nights')">
-                            <b-form-input v-model="minNights" type="number"></b-form-input>
+                            <b-form-input v-model="sync_minNights" type="number"></b-form-input>
                         </b-form-group>
                     </b-col>
                     <b-col>
@@ -73,9 +73,14 @@
 <script>
 export default {
     name: 'restriction',
+    props: {
+        minNights: {
+            type: Number,
+            required: true
+        }
+    },
     data() {
         return {
-            minNights: 0,
             maxNights: 0,
             notCancelable: false,
             cancellationType: 0,
@@ -97,6 +102,12 @@ export default {
         }
     },
     computed: {
+        /*--> model */
+        sync_minNights: {
+            get() { return this.minNights },
+            set(val) { this.$emit('update:minNights', val) }
+        },
+        /*<-- */
         perDayTxt() {
             let translate = this.$t('day{s} before check in');
             translate = translate.replace('{s}', this.byDay > 1 ? 's' : '');

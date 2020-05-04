@@ -42,6 +42,18 @@ import EventBus from '../../../core/event-bus';
 
 export default {
     name: 'rate-plan-rooms',
+    props: {
+        /*--> request */
+        selectedRooms: {
+            type: Array,
+            required: true
+        },
+        selectRatePlan: {
+            type: Array,
+            required: true
+        }
+        /*<-- request */
+    },
     created() {
         this.getRooms();
         this.getRatePlans();
@@ -50,12 +62,13 @@ export default {
         return {
             hotelId: this.$appConfig.session.hotelId,
             rooms: [],
-            selectedRooms: [],
             allRooms: false,
             allRPlans: false,
             ratePlans: [],
-            selectedRatePlan: []
         }
+    },
+    computed: {
+        
     },
     methods: {
         //->rooms

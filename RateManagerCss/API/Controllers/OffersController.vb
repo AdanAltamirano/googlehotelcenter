@@ -18,8 +18,9 @@ Namespace API.Controllers
             Return service.FindOffers(HotelId)
         End Function
 
-        <Route(""), HttpGet>
-        Public Function GetByCode(HotelId As Integer, <FromUri> code As String) As IEnumerable(Of DTO.Offer)
+        ' GET api/hotel/1978/PR01
+        <Route("{code}"), HttpGet>
+        Public Function GetByCode(HotelId As Integer, code As String) As IEnumerable(Of DTO.Offer)
             Return service.FindOffers(HotelId, code)
         End Function
     End Class

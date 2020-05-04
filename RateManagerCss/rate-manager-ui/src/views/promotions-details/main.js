@@ -8,6 +8,7 @@ import VueMoment from 'vue-moment';
 import VCalendar from 'v-calendar';
 import locale from '../../core/localization';
 import es from './localization/es';
+import store from './store';
 import View from './view.vue';
 import './styles/custom.scss';
 
@@ -20,5 +21,6 @@ Vue.use(VueMoment, {
 Vue.use(VCalendar);
 
 new Vue({
+    store,
     render: h => h(View)
 }).$mount('#app');

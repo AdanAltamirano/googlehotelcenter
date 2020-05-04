@@ -46,3 +46,13 @@
 .mb-5 {
     margin-top: 2.5rem !important;
 }
+.offset-row-250 {
+    margin-top: -250px !important;
+}
+
+.sm-margin { margin-top: 20px !important; }
+@media (min-width: 576px) {
+    .sm-margin {
+      margin-top: 0px !important;
+    }
+}

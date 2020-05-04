@@ -5,7 +5,7 @@
                 <b-card no-body>
                     <b-tabs pills card vertical>
                         <b-tab :title="$t('Free night')">
-                            <b-form-checkbox v-model="freeNightChecked" class="mb-3 text-right" switch>
+                            <b-form-checkbox v-model="async_freeNight" class="mb-3 text-right" switch>
                                 {{ $t('Add free night') }}
                             </b-form-checkbox>
                             <b-row>
@@ -26,7 +26,7 @@
                             </b-row>
                         </b-tab>
                         <b-tab :title="$t('Discount')">
-                            <b-form-checkbox v-model="discountChecked" class="mb-3 text-right" switch>
+                            <b-form-checkbox v-model="async_discount" class="mb-3 text-right" switch>
                                 {{ $t('Add discount') }}
                             </b-form-checkbox>
                             <b-row>
@@ -63,8 +63,6 @@ export default {
     data() {
         return {
             language: this.$appConfig.language,
-            freeNight: false,
-            discount: false,
             typeFreeNight: '0',
             freeNightNumber: 1,
             percentage: 0,
@@ -79,6 +77,20 @@ export default {
         }
     },
     computed: {
+        /**->state */
+        checkFreeNight: {
+            get() { return this.$store.state.req.typePromotion.freeNight.check },
+            set(val) { this.$store.commit('checkFreeNight', val) }
+        },
+        modeFreeNight: {
+            get() { return this.$store.state.req.typePromotion.freeNight },
+            set(val) { this.$store.commit('modeFreeNight', val) }
+        },
+        quantityFreeNight: {
+            get() { return this.$store.state.req.typePromotion.freeNight },
+            set(val) { this.$store.commit('quantityFreeNight', val) }
+        },
+        /**<- */
         freeNightTxt() {
             let translate = '';
             let prefix = '';
