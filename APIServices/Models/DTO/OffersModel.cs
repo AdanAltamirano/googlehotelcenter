@@ -31,23 +31,22 @@ namespace APIServices.Models.DTO
 
     public enum OfferDiscountDiscountPattern
     {
-        ForEach, //Por cada cada vez que se cumpla NightsRequired en el rago de estancia
+        ForEach, //Por cada vez que se cumpla NightsRequired en el rago de estancia
         Only // Descuento único cuando se cummpla NightsRequired en el rango de la estancia
     }
     public class Offer
     {
-        public string OfferId { get; set; }
+        public string Id { get; set; }
         public int HotelId { get; set; }
         public bool Active { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }        
         public OfferDiscount Discount { get; set; }
-        public OfferCancelPenalty CancelPenalty { get; set; }
-        public MultilanguageTextType Name { get; set; }
-        public MultilanguageTextType Description { get; set; }
+        public MultiLanguageTextType Name { get; set; }
+        public MultiLanguageTextType Description { get; set; }
         public OfferApplicableFor ApplicableFor { get; set; }      
         public OfferRule Rule { get; set; }
-        public OfferApplicableFor GetApplicableFor(int hotelId, string offerCode)
+        public static OfferApplicableFor GetApplicableFor(int hotelId, string offerCode)
         {
             OfferApplicableFor applicableFor = new OfferApplicableFor();
             using (OzHotelesEntities db = new OzHotelesEntities())
@@ -74,7 +73,7 @@ namespace APIServices.Models.DTO
         public decimal? Percent { get; set; } //Porcentaje de descuento
         public decimal? Amount { get; set; } //Monto de descuento
         public OfferDiscountApplicationMode ApplicationMode { get; set; } //Define el comportamiento de la promoción en caso de haber un descuento a nivel tarifa
-        public OfferDiscountApplicationMode GetApplicationMode(int? mode)
+        public static OfferDiscountApplicationMode GetApplicationMode(int? mode)
         {
             switch (mode)
             {
@@ -94,11 +93,12 @@ namespace APIServices.Models.DTO
     {
         public OfferCancelPenaltyOffsetDropTime OffsetDropTime { get; set; }
         public OfferCancelPenaltyOffsetTimeUnit OffsetTimeUnit { get; set; }
-        public int? OffsetTimeUnitMiltiplier { get; set; }
+        public byte? OffsetTimeUnitMiltiplier { get; set; }
+        public string SpecificOffsetTime { get; set; }
         public string Name { get; set; }
-        public MultilanguageTextType ShortDescription { get; set; }
-        public MultilanguageTextType DetailedDescription { get; set; }
-        public OfferCancelPenaltyOffsetTimeUnit GetOffsetTimeUnit(vPromotions offer)
+        public MultiLanguageTextType ShortDescription { get; set; }
+        public MultiLanguageTextType DetailedDescription { get; set; }
+        public static OfferCancelPenaltyOffsetTimeUnit GetOffsetTimeUnit(vPromotions offer)
         {
             if (offer.CancelPriorDays != null)
                 return OfferCancelPenaltyOffsetTimeUnit.Days;
@@ -113,11 +113,12 @@ namespace APIServices.Models.DTO
 
     public class OfferRule
     {
+        public int? Id { get; set; }
         public DaysOfWeekType NoArrivals { get; set; }
         public DaysOfWeekType ApplyDays { get; set; }
         public List<OfferExcludedDates> ExcludedDates { get; set; }
         public OfferBookingWindow BookingWindow { get; set; }
-        public int? MinAdvanceBookingOffset { get; set; }
+        public byte? MinAdvanceBookingOffset { get; set; }
         public int? MaxAdvanceBookingOffset { get; set; }
         public static List<OfferExcludedDates> GetOfferExcludedDates(int hotelId, string offerCode)
         {
@@ -136,12 +137,19 @@ namespace APIServices.Models.DTO
             }
             return result;
         }
+        public OfferCancelPenalty CancelPenalty { get; set; }
+        public byte? MinLOS { get; set; }
+        public byte? MaxLOS { get; set; }
+
     }
 
     public class OfferBookingWindow
     {
+        public int Id { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
+        public string StartHour { get; set; }
+        public string EndHour { get; set; }
     }
 
     public class OfferApplicableFor
@@ -156,7 +164,7 @@ namespace APIServices.Models.DTO
         public DateTime? End { get; set; }
     }
 
-    public class MultilanguageTextType
+    public class MultiLanguageTextType
     {
         public string Eng { get; set; }
         public string Esp { get; set; }

@@ -330,17 +330,17 @@
       <HintPath>..\packages\RateManager.IvSolution.1.0.0\lib\net45\Portal.Hotel.Rules.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Portal.SearchEngine.Common">
-      <HintPath>..\packages\RateManager.IvSolution.1.0.0\lib\net45\Portal.SearchEngine.Common.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Portal.SearchEngine.Common, Version=1.0.7097.24095, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Portal.SearchEngine.Common.dll</HintPath>
     </Reference>
-    <Reference Include="Portal.SearchEngine.DataAccess">
-      <HintPath>..\packages\RateManager.IvSolution.1.0.0\lib\net45\Portal.SearchEngine.DataAccess.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Portal.SearchEngine.DataAccess, Version=1.0.7097.24095, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Portal.SearchEngine.DataAccess.dll</HintPath>
     </Reference>
-    <Reference Include="Portal.SearchEngine.Facade">
-      <HintPath>..\packages\RateManager.IvSolution.1.0.0\lib\net45\Portal.SearchEngine.Facade.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Portal.SearchEngine.Facade, Version=1.0.7097.24157, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Portal.SearchEngine.Facade.dll</HintPath>
     </Reference>
     <Reference Include="PortalLibraries">
       <HintPath>..\packages\PortalLibraries.1.0.0\lib\net45\PortalLibraries.dll</HintPath>

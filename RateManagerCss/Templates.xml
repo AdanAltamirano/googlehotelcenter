@@ -320,8 +320,8 @@
 			
 		</parametros>
 		<html>
-			<es-MX valor="/correos/html/HotelReservationCancellation-ES.htm" />
-			<en-US valor="/correos/html/HotelReservationCancellation-EN.htm" />
+			<es-MX valor="/correos/html/HotelReservationCancellation-ES.html" />
+			<en-US valor="/correos/html/HotelReservationCancellation-EN.html" />
 		</html>
 		<text>
 			<es-MX valor="/correos/texto/HotelReservationCancellation_ES.txt" />

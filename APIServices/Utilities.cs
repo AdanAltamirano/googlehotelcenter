@@ -33,5 +33,46 @@ namespace APIServices
                 Sat = map[6] == 'Y' ? true : false                
             };
         }
+
+        public static string GetDaysOfWeekString(DaysOfWeekType days)
+        {
+            string strDays = "";
+            if (days.Sun)
+                strDays += "Y";
+            else
+                strDays += "N";
+
+            if (days.Mon)
+                strDays += "Y";
+            else
+                strDays += "N";
+
+            if (days.Tue)
+                strDays += "Y";
+            else
+                strDays += "N";
+
+            if (days.Thur)
+                strDays += "Y";
+            else
+                strDays += "N";
+
+            if (days.Weds)
+                strDays += "Y";
+            else
+                strDays += "N";
+
+            if (days.Fri)
+                strDays += "Y";
+            else
+                strDays += "N";
+
+            if (days.Sat)
+                strDays += "Y";
+            else
+                strDays += "N";
+
+            return strDays;
+        }
     }
 }
