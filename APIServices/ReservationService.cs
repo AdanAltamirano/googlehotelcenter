@@ -430,10 +430,11 @@ namespace APIServices
         void Permissions(ref ReservationDetailsModel model, bool isSupervisor)
         {
             string source = model.Source;
+            bool.TryParse(ConfigurationManager.AppSettings["allowsUserchainToModifyReservation"], out bool allowUserChain);
             switch (model.Status)
             {
                 case 1:
-                    if (isSupervisor)
+                    if (isSupervisor || allowUserChain)
                     {
                         model.AllowsCancel = true;
                         model.AllowsModify = true;
@@ -443,7 +444,7 @@ namespace APIServices
                     
                     break;
                 case 4:
-                    if (isSupervisor)
+                    if (isSupervisor || allowUserChain)
                     {
                         model.AllowsCancel = true;
                         model.AllowsModify = true;
