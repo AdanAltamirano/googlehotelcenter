@@ -299,6 +299,11 @@ Partial Class ReservationDetails
                             Me.btnCancel.Visible = False
                         End If
                     End If
+
+                    Dim allowUserChain As Boolean
+                    If Boolean.TryParse(AppSettings("allowsUserchainToModifyReservation"), allowUserChain) Then
+                        btnCancel.Visible = True
+                    End If
                 Else
                     btnCancel.Visible = True
                 End If
