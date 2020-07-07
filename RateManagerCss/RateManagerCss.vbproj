@@ -23,7 +23,7 @@
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
     <TargetFrameworkProfile />
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
@@ -4946,7 +4946,7 @@
           <AutoAssignPort>False</AutoAssignPort>
           <DevelopmentServerPort>15903</DevelopmentServerPort>
           <DevelopmentServerVPath>/Ratemanager/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:15903/Ratemanager</IISUrl>
+          <IISUrl>http://test.com/ratemanager</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
