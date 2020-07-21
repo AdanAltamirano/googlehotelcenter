@@ -5,19 +5,23 @@
                 <b-card no-body>
                     <b-tabs pills card vertical>
                         <b-tab :title="$t('Free night')">
-                            <b-form-checkbox v-model="async_freeNight" class="mb-3 text-right" switch>
-                                {{ $t('Add free night') }}
-                            </b-form-checkbox>
                             <b-row>
                                 <b-col>
                                     <p>
-                                        <select class="input-border-bottom" v-model="typeFreeNight">
+                                        <select
+                                        class="input-border-bottom"
+                                        v-model="typeFreeNight"
+                                        v-on:input="typeFreeNight = $event.target.value">
                                             <option value="0">{{ $t('Every') }}</option>
                                             <option value="1">{{ $t('Only') }}</option>
                                         </select>&nbsp;
-                                        <span v-if="typeFreeNight == '1'">{{ $t('the') }}</span>
-                                        <input type="number" v-model="freeNightNumber" min="1" class="input-border-bottom" />
-                                        {{ getPrefix(freeNightNumber) }}&nbsp;{{ $t('will be free') }}
+                                        <span v-if="typeFreeNight === '1'">{{ $t('the') }}</span>
+                                        <input
+                                        type="number"
+                                        v-model="freeNight"
+                                        min="0"
+                                        class="input-border-bottom" />
+                                        {{ getPrefix(freeNight) }}&nbsp;{{ $t('will be free') }}
                                     </p>
                                     <p>
                                         <cite class="font-weight-bold">"{{ freeNightTxt }}"</cite>
@@ -26,20 +30,17 @@
                             </b-row>
                         </b-tab>
                         <b-tab :title="$t('Discount')">
-                            <b-form-checkbox v-model="async_discount" class="mb-3 text-right" switch>
-                                {{ $t('Add discount') }}
-                            </b-form-checkbox>
                             <b-row>
                                 <b-col md="4">
                                     <b-form-group :label="$t('Percentage')">
                                         <b-input-group append="%">
-                                            <b-form-input v-model="percentage"></b-form-input>
+                                            <b-form-input v-model="discount"></b-form-input>
                                         </b-input-group>
                                     </b-form-group>
                                 </b-col>
                                 <b-col md="8">
                                     <b-form-group :label="$t('Application mode')">
-                                        <b-form-select v-model="applicationMode" :options="options"></b-form-select>
+                                        <b-form-select v-model="typeDiscount" :options="options"></b-form-select>
                                     </b-form-group>
                                 </b-col>
                                 <b-col class="text-right">
@@ -59,38 +60,23 @@ import Help from '../helper/help.vue';
 import Vue from 'vue';
 
 export default {
-    name: 'type-promotion',
+    props: {
+        typeFreeNight: String,
+        freeNight: Number,
+        typeDiscount: String,
+        discount: Number
+    },
     data() {
         return {
             language: this.$appConfig.language,
-            typeFreeNight: '0',
-            freeNightNumber: 1,
-            percentage: 0,
             options: [
                 { value: 0, text: this.$t('Priority to discount rate') },
                 { value: 1, text: this.$t('Sum discount percentage') },
                 { value: 2, text: this.$t('Additional discount') }
-            ],
-            applicationMode: 0,
-            discountChecked: false,
-            freeNightChecked: false
+            ]
         }
     },
     computed: {
-        /**->state */
-        checkFreeNight: {
-            get() { return this.$store.state.req.typePromotion.freeNight.check },
-            set(val) { this.$store.commit('checkFreeNight', val) }
-        },
-        modeFreeNight: {
-            get() { return this.$store.state.req.typePromotion.freeNight },
-            set(val) { this.$store.commit('modeFreeNight', val) }
-        },
-        quantityFreeNight: {
-            get() { return this.$store.state.req.typePromotion.freeNight },
-            set(val) { this.$store.commit('quantityFreeNight', val) }
-        },
-        /**<- */
         freeNightTxt() {
             let translate = '';
             let prefix = '';
@@ -98,8 +84,8 @@ export default {
             if (this.typeFreeNight === '0')
                 translate = this.$t('Every {number}{prefix} night will be free');
             else translate = this.$t('Only the {number}{prefix} night will be free');
-            translate = translate.replace('{number}', this.freeNightNumber);
-            translate = translate.replace('{prefix}', this.getPrefix(this.freeNightNumber));
+            translate = translate.replace('{number}', this.freeNight);
+            translate = translate.replace('{prefix}', this.getPrefix(this.freeNight));
 
             return translate;
         }

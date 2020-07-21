@@ -65,6 +65,7 @@ export default {
     'Add discount': 'Agregar descuento',
     'Add free night': 'Agregar noche gratis',
     'Add closure': 'Agregar cierre',
+    'Combinable promotion': 'Promoción combinable',
 
     //days
     'SU': 'D',
