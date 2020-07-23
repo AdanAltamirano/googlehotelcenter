@@ -284,8 +284,11 @@ export default {
             /* filtrar demas campos si estan disponibles */
             /* eslint-disable max-len */
 
-            if (this.dates != null)
-                filter = `${this.typeDate} gt ${this.dateFormat(this.dates.start)} and ${this.typeDate} lt ${this.dateFormat(this.dates.end)}`;
+            if (this.dates != null){
+                let dateEnd = new Date(this.dates.end);
+                dateEnd.setDate(dateEnd.getDate() + 1);
+                filter = `${this.typeDate} gt ${this.dateFormat(this.dates.start)} and ${this.typeDate} lt ${this.dateFormat(dateEnd)}`;
+                }
             if (this.checkStatus.length > 0) {
                 filter += this.and(filter);
                 this.checkStatus.forEach((value, index) => {
