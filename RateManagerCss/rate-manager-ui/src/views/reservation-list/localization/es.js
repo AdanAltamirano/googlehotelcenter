@@ -24,7 +24,8 @@ export default {
     Hotels: 'Hoteles',
     'One Page': 'Unipantalla',
     'Front Desk': 'Recepción',
-    'Find Hotel': 'Buscar Hotel',
+    'Search Hotel': 'Buscar Hotel',
+    'Search Corporate': 'Buscar Corporativo',
     select: 'seleccionar',
     'It has priority over advanced search': 'Tiene prioridad sobre la búsqueda avanzada',
     'Items per page': 'Elementos por página',
@@ -32,5 +33,6 @@ export default {
     'items per page': 'elementos por página',
     'There are no records that match your request': 'No hay registros que coincidan con su solicitud',
     'Exit': 'Salir',
-    'Can not export page': 'No se puede exportar la página'
+    'Can not export page': 'No se puede exportar la página',
+    'Corporate': 'Corporativo',
 };

@@ -48,6 +48,15 @@ Namespace API.Controller
         End Function
 
 
+        'GET api/reservations/corporate
+        <Route("corporate"), HttpGet>
+        Public Function GetCorporate() As IQueryable(Of Corporativos)
+            Dim roles() As String = GetRoles()
+            If roles.Contains("supervisor") Then
+                Return ReservationService.GetCorporate()
+            End If
+            Return New Corporativos() {}.AsQueryable()
+        End Function
 
         'GET api/reservations/excel
         <Route("excel"), HttpGet>

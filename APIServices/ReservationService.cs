@@ -23,6 +23,11 @@ namespace APIServices
 
         public IQueryable<vReservation> GetAll() => dbContext.vReservation.AsQueryable();
 
+        //obtiene todos los corporativos
+        public IQueryable<Corporativos> GetCorporate() => dbContext.Corporativos.AsQueryable();
+
+
+
         //public IQueryable<vReservation> GetAllGalileo(string corporate)
         //{
 
@@ -41,6 +46,7 @@ namespace APIServices
                 .Where(x => x.HotelId == hotelId);
         }
 
+        #region excel
         public HttpResponseMessage GetExcel(IQueryable<vReservation> query)
         {
             var result = query.Select(r => new Excel.ReservationList
@@ -52,6 +58,7 @@ namespace APIServices
                 CheckIn = r.CheckIn,
                 CheckOut = r.CheckOut,
                 Origin = r.Portal,
+                Corporate = dbContext.Corporativos.FirstOrDefault(x => x.idCorporativo == r.CorporateId).NombreCorp,
                 Total = r.Total,
                 Status = (r.Status == 1) ? "Reservado" : (r.Status == 3) ? "Cancelado" : "En proceso",
             }).ToList();
@@ -69,8 +76,9 @@ namespace APIServices
             excelWorksheet.Cells[1, 5].Value = "Fecha de llegada";
             excelWorksheet.Cells[1, 6].Value = "Fecha de salida";
             excelWorksheet.Cells[1, 7].Value = "Origen";
-            excelWorksheet.Cells[1, 8].Value = "Total";
-            excelWorksheet.Cells[1, 9].Value = "Status";
+            excelWorksheet.Cells[1, 8].Value = "Corporativo";
+            excelWorksheet.Cells[1, 9].Value = "Total";
+            excelWorksheet.Cells[1, 10].Value = "Status";
 
             
 
@@ -78,22 +86,23 @@ namespace APIServices
           
             int row = 2;
 
-            for(int i = 0; i  < result.Count; i++)
+            for(int i = 0; i < result.Count; i++)
             {
                 string rowNumber = row.ToString();
 
-                excelWorksheet.Cells["A"+rowNumber].Value = result.ElementAt(i).NoReservation;
+                excelWorksheet.Cells["A" + rowNumber].Value = result.ElementAt(i).NoReservation;
                 excelWorksheet.Cells["B" + rowNumber].Value = result.ElementAt(i).Hotel;
                 excelWorksheet.Cells["C" + rowNumber].Value = result.ElementAt(i).Customer;
                 excelWorksheet.Cells["D" + rowNumber].Value = result.ElementAt(i).Date.ToString("dd/MM/yyyy");
                 excelWorksheet.Cells["E" + rowNumber].Value = result.ElementAt(i).CheckIn.ToString("dd/MM/yyyy");
                 excelWorksheet.Cells["F" + rowNumber].Value = result.ElementAt(i).CheckOut.ToString("dd/MM/yyyy");
                 excelWorksheet.Cells["G" + rowNumber].Value = result.ElementAt(i).Origin;
-                excelWorksheet.Cells["H" + rowNumber].Value = result.ElementAt(i).Total;
-                excelWorksheet.Cells["I" + rowNumber].Value = result.ElementAt(i).Status;
+                excelWorksheet.Cells["H" + rowNumber].Value = result.ElementAt(i).Corporate;
+                excelWorksheet.Cells["I" + rowNumber].Value = result.ElementAt(i).Total;
+                excelWorksheet.Cells["J" + rowNumber].Value = result.ElementAt(i).Status;
                 row++;
             }
-            excelWorksheet.Cells["A1:I" + row.ToString()].AutoFitColumns();
+            excelWorksheet.Cells["A1:J" + row.ToString()].AutoFitColumns();
 
             //excelWorksheet.Cells["A2"].Value = "12001";
             //excelWorksheet.Cells["B2"].Value = "Nails";
@@ -118,7 +127,7 @@ namespace APIServices
             return response;
         }
 
-
+        #endregion
 
         #region detalles de la reserva
 
@@ -421,10 +430,11 @@ namespace APIServices
         void Permissions(ref ReservationDetailsModel model, bool isSupervisor)
         {
             string source = model.Source;
+            bool.TryParse(ConfigurationManager.AppSettings["allowsUserchainToModifyReservation"], out bool allowUserChain);
             switch (model.Status)
             {
                 case 1:
-                    if (isSupervisor)
+                    if (isSupervisor || allowUserChain)
                     {
                         model.AllowsCancel = true;
                         model.AllowsModify = true;
@@ -434,7 +444,7 @@ namespace APIServices
                     
                     break;
                 case 4:
-                    if (isSupervisor)
+                    if (isSupervisor || allowUserChain)
                     {
                         model.AllowsCancel = true;
                         model.AllowsModify = true;

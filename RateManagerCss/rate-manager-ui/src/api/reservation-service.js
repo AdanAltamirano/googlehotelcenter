@@ -10,6 +10,7 @@ const reservationDetails = Vue.resource(`${process.env.VUE_APP_API_URL}/reservat
 const creditcard = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations/{reservationId}/creditcard/{code}`);
 const sendNotification = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations/{reservationId}/sendnotification`);
 const excel = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations/excel{?filter,orderBy,pageSize,page}`);
+const corporate = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations/corporate`);
 
 export default {
     /**
@@ -69,5 +70,8 @@ export default {
             pageSize,
             page
         });
+    },
+    GetCorporate() {
+        return corporate.get();
     }
 };

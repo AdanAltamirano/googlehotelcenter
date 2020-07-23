@@ -1,0 +1,58 @@
+@import '../../../styles/base.scss';
+/*@import '../../../styles/v-tooltip.scss';*/
+@import '../../../../node_modules/bootstrap-vue/dist/bootstrap-vue.css';
+/*@import '../../../../node_modules/vue-multiselect/dist/vue-multiselect.min.css';*/
+
+.input-border-bottom {
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    width: 80px;
+    text-align: center;
+    &:hover {
+        outline: none;
+    }
+}
+.list-group-scroll {
+    max-height: 247px;
+    overflow-y: scroll;
+}
+.btn-group-toggle .active { 
+    background-color: #dc3545 !important;
+    border-color: #dc3545 !important;
+}
+.vc-shadow {
+    border-width: 0px !important;
+    box-shadow: none !important;
+}
+.offset-row-250 {
+    margin-top: -250px !important;
+}
+
+.card-header {
+    font-size: 18px;
+    font-weight: 700;
+}
+.cite-date {
+    white-space: nowrap;
+    border: 0 !important;
+    & span {
+        cursor: pointer;
+    }
+}
+.no-padding .card-body:nth-child(2) {
+    padding: 0 !important;
+}
+.mb-5 {
+    margin-top: 2.5rem !important;
+}
+.offset-row-250 {
+    margin-top: -250px !important;
+}
+
+.sm-margin { margin-top: 20px !important; }
+@media (min-width: 576px) {
+    .sm-margin {
+      margin-top: 0px !important;
+    }
+}
