@@ -56,7 +56,7 @@
                                     <ItemStyle CssClass="dgItem"></ItemStyle>
                                     <HeaderStyle CssClass="dgHeader"></HeaderStyle>
                                     <Columns>
-                                        <asp:BoundColumn DataField="UserID" HeaderText="UserID" Visible="false"></asp:BoundColumn>                                        
+                                        <asp:BoundColumn DataField="UserCompanyID" HeaderText="UserID" Visible="false"></asp:BoundColumn>                                        
                                         <asp:BoundColumn DataField="Email" HeaderText="Email"></asp:BoundColumn>
                                         <asp:BoundColumn DataField="CompanyName" HeaderText="Nombre"></asp:BoundColumn>
                                         <asp:TemplateColumn Visible="true" HeaderText="Permission">
@@ -67,6 +67,7 @@
                                         </asp:TemplateColumn>
                                         <asp:BoundColumn DataField="CompanyId" HeaderText="CompanyId" Visible="false"></asp:BoundColumn>
                                         <asp:BoundColumn DataField="AllowSeeCC" HeaderText="AllowSeeCC" Visible="false"></asp:BoundColumn>
+                                        <asp:BoundColumn DataField="UserHotelId" HeaderText="UserHotelID" Visible="false"></asp:BoundColumn>
                                     </Columns>
                                     <PagerStyle NextPageText="Siguiente &gt;&gt;" PrevPageText="&lt;&lt; Anterior" HorizontalAlign="Right"
                                         Position="Bottom" CssClass="dgPager" Mode="NumericPages"></PagerStyle>
