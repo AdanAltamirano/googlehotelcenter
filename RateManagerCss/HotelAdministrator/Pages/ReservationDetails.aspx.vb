@@ -579,7 +579,7 @@ Partial Class ReservationDetails
                             sDias = DateTime.Parse(drRate._Date).ToString("dd-MMM-yyy")
                         End If
                         If (dPrecio <> dImporte) Then
-                            sHtmlRate &= String.Format("<tr><td>{0}</td> <td style='padding-left:6px;'>{1} {2}</td></tr> ", _
+                            sHtmlRate &= String.Format("<tr><td>{0}</td> <td style='padding-left:6px;'>{1} {2}</td></tr> ",
                                                         sDias, FCurrency(dImporte, 2), IIf(dImporte > 0, money, ""))
                             dPrecio = dImporte
                             sDias = ""
@@ -631,7 +631,7 @@ Partial Class ReservationDetails
                 'End If
 
                 If (dPrecio <> dImporte) Then
-                    sHtmlRate &= String.Format("<tr><td>{0}</td> <td style='padding-left:6px;'>{1} {2}</td></tr> ", _
+                    sHtmlRate &= String.Format("<tr><td>{0}</td> <td style='padding-left:6px;'>{1} {2}</td></tr> ",
                                                 sDias, FCurrency(dImporte, 2), IIf(dImporte > 0, money, ""))
                     dPrecio = dImporte
                     sDias = ""
@@ -699,15 +699,15 @@ Partial Class ReservationDetails
 
                 Dim stblRooms As String = "<table border=0 cellpadding=0 width=80%>"
                 Dim sHab As String
-                stblRooms &= String.Format("<tr><td>&nbsp;</td><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td><td>{4}</td></tr>", _
-                                          PortalCulture.GetString("00621"), PortalCulture.GetString("M000320"), _
-                                          PortalCulture.GetString("01367"), PortalCulture.GetString("00428"), _
+                stblRooms &= String.Format("<tr><td>&nbsp;</td><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td><td>{4}</td></tr>",
+                                          PortalCulture.GetString("00621"), PortalCulture.GetString("M000320"),
+                                          PortalCulture.GetString("01367"), PortalCulture.GetString("00428"),
                                           PortalCulture.GetString("00429"))
                 Dim i As Byte = 1
                 For Each drRoom As resHotelDisplay.RoomRow In xml.Room
                     '  hab = String.Format("{0}" drRoom.NameRoom)
                     sHab = String.Format(PortalCulture.GetString("01396"), i)
-                    stblRooms &= String.Format("<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td><td>{4}</td><td>{5}</td></tr>", _
+                    stblRooms &= String.Format("<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td><td>{4}</td><td>{5}</td></tr>",
                                          sHab, drRoom.Adults, drRoom.Children, drRoom.ChildrenAges, drRoom.ExtraAdults, drRoom.ExtraChildren)
                     i += 1
                 Next
@@ -914,8 +914,8 @@ Partial Class ReservationDetails
                     If xml.Reservation(0).CancellationidUser > 0 Then
                         Try
                             Dim userData As UserData = (New Portal.General.Facade.cUserSystem()).GetUserById(xml.Reservation(0).CancellationidUser)
-                            If userData IsNot Nothing AndAlso userData.Tables.Contains(userData.USER_TABLE) AndAlso userData.Tables(userData.USER_TABLE).Rows.Count > 0 AndAlso Not userData.Tables(userData.USER_TABLE).Rows(0).IsNull(userData.EMAIL_FIELD) Then
-                                user = userData.Tables(userData.USER_TABLE).Rows(0)(userData.EMAIL_FIELD)
+                            If userData IsNot Nothing AndAlso userData.Tables.Contains(UserData.USER_TABLE) AndAlso userData.Tables(UserData.USER_TABLE).Rows.Count > 0 AndAlso Not userData.Tables(UserData.USER_TABLE).Rows(0).IsNull(UserData.EMAIL_FIELD) Then
+                                user = userData.Tables(UserData.USER_TABLE).Rows(0)(UserData.EMAIL_FIELD)
                             End If
                         Catch ex As Exception
                         End Try
@@ -1019,8 +1019,8 @@ Partial Class ReservationDetails
 
                 'Me.lblpay.Text = String.Format(PortalCulture.GetString("HOTEL000360"), xml.Reservation(0).DepositReference, deposit & " " & xml.Reservation(0).Money) & "<div>" & depositinfo & "</div>"
                 If deposit > 0 Then
-                    Me.lblpay.Text = String.Format(PortalCulture.GetString("01391"), _
-                    If(xml.Reservation(0)("DepositTarget").ToString.ToUpper() = "UV", PortalCulture.GetString("01410"), PortalCulture.GetString("01411")), _
+                    Me.lblpay.Text = String.Format(PortalCulture.GetString("01391"),
+                    If(xml.Reservation(0)("DepositTarget").ToString.ToUpper() = "UV", PortalCulture.GetString("01410"), PortalCulture.GetString("01411")),
                     xml.Reservation(0).DepositReference, "$ " & deposit.ToString("#,###,##0.00") & " ") ' & xml.Reservation(0).Money)
                     'Me.lblStatus.Text = PortalCulture.GetString("01393")
                 End If
@@ -1207,28 +1207,31 @@ Partial Class ReservationDetails
         Dim loadCommand As SqlCommand
 
         Try
-            loadCommand = New SqlCommand("spUserGetUserById", New SqlConnection(ConfigurationSettings.AppSettings("PortalConnectionString")))
+            loadCommand = New SqlCommand("GetUserCompanyAllowSeeCCByIds", New SqlConnection(ConfigurationSettings.AppSettings("PortalConnectionString")))
             loadCommand.CommandType = CommandType.StoredProcedure
-            loadCommand.Parameters.Add(New SqlParameter("@id", SqlDbType.Int))
+            loadCommand.Parameters.Add(New SqlParameter("@UserId", SqlDbType.Int))
+            loadCommand.Parameters.Add(New SqlParameter("@CompanyId", SqlDbType.Int))
             dsCommand.SelectCommand = loadCommand
-            dsCommand.SelectCommand.Parameters("@id").Value = UserId
+            dsCommand.SelectCommand.Parameters("@UserId").Value = UserId
+            dsCommand.SelectCommand.Parameters("@CompanyId").Value = cInfoActual.Empresa
             dsCommand.Fill(data)
-            If data IsNot Nothing AndAlso data.Tables.Count > 0 AndAlso data.Tables(0).Rows.Count > 0 AndAlso CDbl(data.Tables(0).Rows(0)("verDatosTarjeta")) Then
+            If data IsNot Nothing AndAlso data.Tables.Count > 0 AndAlso data.Tables(0).Rows.Count > 0 Then
                 canSeeCArds = True
             Else
-                data = New DataSet
-                loadCommand = New SqlCommand("spUsuarioHotelGetByIdUser", New SqlConnection(ConfigurationSettings.AppSettings("HotelConnection")))
-                loadCommand.Parameters.Clear()
-                loadCommand.CommandType = CommandType.StoredProcedure
-                loadCommand.Parameters.Add(New SqlParameter("@iduserField", SqlDbType.Int))
-                dsCommand.SelectCommand = loadCommand
-                dsCommand.SelectCommand.Parameters("@iduserField").Value = UserId
-                dsCommand.Fill(data)
-                If data IsNot Nothing AndAlso data.Tables(0).Rows.Count > 0 AndAlso CDbl(data.Tables(0).Rows(0)("verDatosTarjeta")) Then
-                    canSeeCArds = True
-                Else
-                    canSeeCArds = False
-                End If
+                canSeeCArds = False
+                'data = New DataSet
+                'loadCommand = New SqlCommand("spUsuarioHotelGetByIdUser", New SqlConnection(ConfigurationSettings.AppSettings("HotelConnection")))
+                'loadCommand.Parameters.Clear()
+                'loadCommand.CommandType = CommandType.StoredProcedure
+                'loadCommand.Parameters.Add(New SqlParameter("@iduserField", SqlDbType.Int))
+                'dsCommand.SelectCommand = loadCommand
+                'dsCommand.SelectCommand.Parameters("@iduserField").Value = UserId
+                'dsCommand.Fill(data)
+                'If data IsNot Nothing AndAlso data.Tables(0).Rows.Count > 0 AndAlso CDbl(data.Tables(0).Rows(0)("verDatosTarjeta")) Then
+                '    canSeeCArds = True
+                'Else
+                '    canSeeCArds = False
+                'End If
             End If
         Catch
         Finally
@@ -1457,6 +1460,7 @@ Partial Class ReservationDetails
                     GetDataWS(dsReservaciones.Tables(dsReservaciones.RESERVA_TABLE).Rows(0).Item(dsReservaciones.FIELD_NORESERVACION))
                 End If
 
+                LoadUserSeeCards(MyBase.Usuario)
                 If Not .IsNull(dsReservaciones.FIELD_NUMEROCC) Then
                     Dim ccN As String = String.Empty
                     ccN = crypto.DecryptString128Bit(.Item(dsReservaciones.FIELD_NUMEROCC), crypto.PublicKey)
@@ -1464,7 +1468,7 @@ Partial Class ReservationDetails
                     If ccN.Length >= 4 Then
                         ccN = Right(("XXXXXXXXXXXXXXXX" & Right(ccN, 4)), 16)
                     End If
-                    If Not Session(AppSettings("RestTarjetas")) Is Nothing AndAlso Session(AppSettings("RestTarjetas")) = "1" Then
+                    If Not Session(AppSettings("RestTarjetas")) Is Nothing AndAlso Session(AppSettings("RestTarjetas")) = "1" AndAlso Not canSeeCArds Then
                         lblCCNumber.Text = ccN
                     Else
                         If (Not IsSupervisor And isNR = True) Or Not lblCCExp.Visible Then
@@ -1482,7 +1486,6 @@ Partial Class ReservationDetails
                         End If
                     End If
                 End If
-
 
                 Dim cvv As String = IIf(.IsNull(dsReservaciones.FIELD_DIGITOCC), "", .Item(dsReservaciones.FIELD_DIGITOCC))
 
@@ -1505,10 +1508,7 @@ Partial Class ReservationDetails
 
                 End If
 
-                If IsHotel Or isUserChain Or Me.IsUsuarioHotel Or IsUsuarioNivelHotel Or Me.cInfoActual.UserPerfil = PerfilHotel.Avanzado Or Me.cInfoActual.UserPerfil = PerfilHotel.Basico Or Me.cInfoActual.UserPerfil = PerfilHotel.Medio Then
-                    LoadUserSeeCards(MyBase.Usuario)
-                End If
-                If Not Session(AppSettings("RestTarjetas")) Is Nothing AndAlso Session(AppSettings("RestTarjetas")) = "1" Then
+                If Not Session(AppSettings("RestTarjetas")) Is Nothing AndAlso Session(AppSettings("RestTarjetas")) = "1" AndAlso Not canSeeCArds Then
                     lnkShowCC.Visible = False
                 Else
                     If (IsSupervisor Or canSeeCArds) And Not .IsNull(dsReservaciones.FIELD_NUMEROCC) Then 'se cambio la linea, quitando el isNR(IsSupervisor Or Not isNR)
