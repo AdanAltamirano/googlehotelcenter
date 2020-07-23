@@ -56,7 +56,7 @@
                                     <ItemStyle CssClass="dgItem"></ItemStyle>
                                     <HeaderStyle CssClass="dgHeader"></HeaderStyle>
                                     <Columns>
-                                        <asp:BoundColumn DataField="UserCompanyID" HeaderText="UserID" Visible="false"></asp:BoundColumn>                                        
+                                        <asp:BoundColumn DataField="UserID" HeaderText="UserID" Visible="false"></asp:BoundColumn>                                        
                                         <asp:BoundColumn DataField="Email" HeaderText="Email"></asp:BoundColumn>
                                         <asp:BoundColumn DataField="CompanyName" HeaderText="Nombre"></asp:BoundColumn>
                                         <asp:TemplateColumn Visible="true" HeaderText="Permission">
