@@ -31,9 +31,9 @@ Namespace API.Controller
                 If page.CorporateId <> 0 And IsNothing(page.CorporateName) <> True Then
                     If page.CorporateName.Contains(":") Then
                         'Return ReservationService.GetAllGalileo(page.CorporateName.Split(New Char() {":"})(1))
-                        Dim corporate As String = page.CorporateName.Split(New Char() {":"})(1)
-                        Return ReservationService.GetAll().Where(Function(h) h.Hotel.Contains(corporate) And h.Provider = "IDISO")
-
+                        'Dim corporate As String = page.CorporateName.Split(New Char() {":"})(1)
+                        'Return ReservationService.GetAll().Where(Function(h) h.Hotel.Contains(corporate) And h.Provider = "IDISO")
+                        Return ReservationService.GetAll().Where(Function(h) h.CorporateId = page.CorporateId)
                     End If
                 End If
                 Dim userCorpId = GetUserCorpId(GetUserId().Value)
