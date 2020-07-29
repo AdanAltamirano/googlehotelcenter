@@ -152,7 +152,7 @@ export default {
             
             if(corp !== undefined)
             {
-                if(corp.includes(":"))
+                if(corp.nombreCorp.includes(":"))
                 {
                     let splitCorpName = corp.nombreCorp.split(":");
 

@@ -246,6 +246,8 @@ export default {
         getHotels() {
             HotelService.getList().then(response => {
                 this.hotels = response.body;
+                console.log(this.hotels);
+                console.log(response.body);
             });
         },
         search() {
@@ -338,7 +340,10 @@ export default {
             this.$emit('changeItems', this.itemPerPage);
         },
         nameWithCorporate({name, corp}) {
-            return name + (corp !== '' ? ` - [${corp}]` : '');
+            
+            let noDots = (corp.includes(":"))? corp.split(":")[1]: corp;
+
+            return name + (corp !== '' ? ` - [${noDots}]` : '');
         }
     }
 };

@@ -71,7 +71,7 @@ Namespace API.Controller
                         Dim queryResultG As IQueryable(Of vReservation)
                         Dim corporate As String = page.CorporateName.Split(New Char() {":"})(1)
                         'queryResultG = _queryG.ApplyTo(ReservationService.GetAllGalileo(page.CorporateName.Split(New Char() {":"})(1)))
-                        queryResultG = _queryG.ApplyTo(ReservationService.GetAll().Where(Function(h) h.Hotel.Contains(corporate) And h.Provider = "IDISO"))
+                        queryResultG = _queryG.ApplyTo(ReservationService.GetAll().Where(Function(h) h.CorporateId = page.CorporateId))
                         Dim responseG As New HttpResponseMessage
                         responseG = ReservationService.GetExcel(queryResultG)
                         Return responseG
