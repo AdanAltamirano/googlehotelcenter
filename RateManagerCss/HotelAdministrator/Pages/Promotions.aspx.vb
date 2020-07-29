@@ -367,7 +367,7 @@ Public Class Promotions
 
             .Item(dsRate.FIELD_IDRULE) = System.DBNull.Value
             .Item(dsRate.FIELD_ORDEN) = System.DBNull.Value
-
+            .Item(RatePlanData.FIELD_IsCOMBINABLEPROMO) = chkIscombinable.Checked
             If SaveRules(True, IdRule) Then
                 .Item(dsRate.FIELD_IDRULE) = IdRule
             End If
@@ -705,10 +705,13 @@ Public Class Promotions
                 Else
                     Me.txtAddValueDescription.CargaDatos(0)
                 End If
-
+                If Not .IsNull(RatePlanData.FIELD_IsCOMBINABLEPROMO) Then
+                    chkIscombinable.Checked = .Item(RatePlanData.FIELD_IsCOMBINABLEPROMO)
+                End If
                 Dim rateCom As Integer
-                
+
                 IdRule = .Item(dsRatePlan.FIELD_IDRULE)
+
                 Try
                     loadRule(IdRule)
                 Catch ex As Exception
@@ -1096,6 +1099,7 @@ Public Class Promotions
     End Function
 
     Public Sub ClearData()
+        chkIscombinable.Checked = False
         txtPromotionCode.Enabled = True
         txtDiasBlackout.Value = ""
         grid.SelectedIndex = -1

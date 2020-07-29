@@ -23,6 +23,7 @@
         div {
             overflow: hidden;
         }
+
         .promoName {
             width: 510px;
             height: 85px;
@@ -392,7 +393,7 @@
             animation-duration: 0.4s;
         }
 
-        
+
         .toolTip-Discount {
             display: none; /* Hidden by default */
             position: fixed; /* Stay in place */
@@ -533,8 +534,14 @@
                     <div id="divContenedor" style="display: none;" runat="server">
                         <div class="CodeNameConteiner">
                             <div>
-                                <asp:Label Style="margin-right: 20px;" runat="server" CssClass="" ID="lblPromotionCode">Código de la promoción: </asp:Label>
-                                <asp:TextBox runat="server" ID="txtPromotionCode" Width="100px" MaxLength="4"></asp:TextBox>
+                                <div>
+                                    <asp:Label Style="margin-right: 20px;" runat="server" CssClass="" ID="lblPromotionCode">Código de la promoción: </asp:Label>
+                                    <asp:TextBox runat="server" ID="txtPromotionCode" Width="100px" MaxLength="4"></asp:TextBox>
+                                </div>
+                                <div style="display:inline;">
+                                    <asp:Label Style="margin-right: 20px;" runat="server" CssClass="" ID="lblIsCombinable">Promoción combinable: </asp:Label>
+                                    <asp:CheckBox ID="chkIscombinable" runat="server" />
+                                </div>
                             </div>
                             <div>
                                 <div style="float: left; margin-right: 5px; height: 30px; width: 150px; padding-top: 48px">
@@ -675,7 +682,7 @@
                                     <div class="SpecificHour">
                                         <asp:CheckBox ID="CheckBoxDefHora" runat="server" Text="Especificar Hora" />
                                         <div class="left">
-                                            <asp:Label Style="Z-INDEX: 0" ID="lblFromHora" runat="server" CssClass="clslabel" EnableViewState="False">Desde</asp:Label>
+                                            <asp:Label Style="z-index: 0" ID="lblFromHora" runat="server" CssClass="clslabel" EnableViewState="False">Desde</asp:Label>
                                             <asp:DropDownList ID="HoraInicio" runat="server" Enabled="False">
                                                 <asp:ListItem Value="00">00</asp:ListItem>
                                                 <asp:ListItem Value="01">01</asp:ListItem>
@@ -702,7 +709,7 @@
                                                 <asp:ListItem Value="22">22</asp:ListItem>
                                                 <asp:ListItem Value="23">23</asp:ListItem>
                                             </asp:DropDownList>:
-							<asp:DropDownList Style="Z-INDEX: 0" ID="MinutoInicio" runat="server" Enabled="False">
+							<asp:DropDownList Style="z-index: 0" ID="MinutoInicio" runat="server" Enabled="False">
                                 <asp:ListItem Value="00">00</asp:ListItem>
                                 <asp:ListItem Value="01">01</asp:ListItem>
                                 <asp:ListItem Value="02">02</asp:ListItem>
@@ -766,7 +773,7 @@
                             </asp:DropDownList>
                                         </div>
                                         <div class="right">
-                                            <asp:Label Style="Z-INDEX: 0" ID="lblToHora" runat="server" CssClass="clslabel" EnableViewState="False">Hasta</asp:Label><asp:DropDownList Style="Z-INDEX: 0" ID="HoraFin" runat="server" Enabled="False">
+                                            <asp:Label Style="z-index: 0" ID="lblToHora" runat="server" CssClass="clslabel" EnableViewState="False">Hasta</asp:Label><asp:DropDownList Style="z-index: 0" ID="HoraFin" runat="server" Enabled="False">
                                                 <asp:ListItem Value="00">00</asp:ListItem>
                                                 <asp:ListItem Value="01">01</asp:ListItem>
                                                 <asp:ListItem Value="02">02</asp:ListItem>
@@ -792,7 +799,7 @@
                                                 <asp:ListItem Value="22">22</asp:ListItem>
                                                 <asp:ListItem Value="23">23</asp:ListItem>
                                             </asp:DropDownList>:
-							<asp:DropDownList Style="Z-INDEX: 0" ID="MinutoFin" runat="server" Enabled="False">
+							<asp:DropDownList Style="z-index: 0" ID="MinutoFin" runat="server" Enabled="False">
                                 <asp:ListItem Value="00">00</asp:ListItem>
                                 <asp:ListItem Value="01">01</asp:ListItem>
                                 <asp:ListItem Value="02">02</asp:ListItem>
@@ -955,11 +962,11 @@
                                             <h3>Prioridad a descuento en Tarifa</h3>
                                             <!--<p>Si la tarifa creada tiene un descuento, el descuento de esta promoción será reemplazado.</p>-->
                                             <p>Solo se aplicará el 20% de descuento.</p>
-                                            
+
                                             <h3>Suma porcentajes de descuento</h3>
                                             <!--<p>Si la tarifa creada tiene un descuento, el descuento de esta promoción será reemplazado.</p>-->
                                             <p>Se aplicará un 60% de descuento.</p>
-                                            
+
                                             <h3>Descuento adicional</h3>
                                             <!--<p>Si la tarifa creada tiene un descuento, el descuento de esta promoción será reemplazado.</p>-->
                                             <p>Primero se aplicará el 40% de descuento y al resultado de eso se le aplicará el 20% de descuento.</p>
@@ -967,7 +974,7 @@
                                         <div class="tooltip-footer">
                                             <input type="button" value="OK" onclick="closeTooltip();" />
                                         </div>
-                                        
+
                                     </div>
                                 </div>
                             </div>
@@ -1179,70 +1186,70 @@
     <script type="text/javascript">
 
         SearchStart.AddParam
-(
-    {
-        searchitems: [
-        { Item: 'RatePlans', IDSearch: 'IdRatePlan', nameSearch: 'CodigoTarifa', isdefault: true },
-        { Item: 'RatePlans', IDSearch: 'IdRatePlan', nameSearch: 'name', isdefault: false }
-        ],
-        colModel: [
-            { display: '<%= RateManager.PortalCulture.GetString("00001") %>' },
-			    { display: '<%= RateManager.PortalCulture.GetString("00073") %>' },
-        ],
-        Data: [{
-            catalogo: 'RatesPlans', idHotel: '<%= MyBase.cInfoActual.Hotel %>',
+            (
+                {
+                    searchitems: [
+                        { Item: 'RatePlans', IDSearch: 'IdRatePlan', nameSearch: 'CodigoTarifa', isdefault: true },
+                        { Item: 'RatePlans', IDSearch: 'IdRatePlan', nameSearch: 'name', isdefault: false }
+                    ],
+                    colModel: [
+                        { display: '<%= RateManager.PortalCulture.GetString("00001") %>' },
+                        { display: '<%= RateManager.PortalCulture.GetString("00073") %>' },
+                    ],
+                    Data: [{
+                        catalogo: 'RatesPlans', idHotel: '<%= MyBase.cInfoActual.Hotel %>',
             idIdioma: '<%= RateManager.PortalCulture.GetIDCulture %>',
             IsSupervisor: '<%= MyBase.IsSupervisor %>'
-        }],
-        id: 'RatePlan',
-        index: 1
-    }
-	);
+                    }],
+                    id: 'RatePlan',
+                    index: 1
+                }
+            );
 
-    var hideCancelPolicies = function () {
-        if ($("#chkNonCancelable")[0].checked) {
-            $(".cancelPolicy").attr("style", "display: none");
-        } else {
-            $(".cancelPolicy").attr("style", "display: block");
+        var hideCancelPolicies = function () {
+            if ($("#chkNonCancelable")[0].checked) {
+                $(".cancelPolicy").attr("style", "display: none");
+            } else {
+                $(".cancelPolicy").attr("style", "display: block");
+            }
         }
-    }
 
-    var discountTooltip = document.getElementById('TooltipDiscount');
+        var discountTooltip = document.getElementById('TooltipDiscount');
 
-    function showToolTip() {
-        var t = document.getElementById('TooltipDiscount');
-        t.style.display = 'block';
-    }
-
-    function closeTooltip() {
-        discountTooltip.style.display = 'none';
-    }
-
-    function FireShow(ID, IDcmd, show) {
-        var e = document.getElementById(ID);
-        var c = document.getElementById(IDcmd);
-        if (e) {
-            e.style.display = show ? 'block' : 'none';
+        function showToolTip() {
+            var t = document.getElementById('TooltipDiscount');
+            t.style.display = 'block';
         }
-        if (c) {
-            c.style.display = !show ? 'block' : 'none';
-        }
-        onResizeIframe();
-    }
 
-    function openPromo(evt, promoName) {
-        var i, tabcontent, tablinks;
-        tabcontent = document.getElementsByClassName("tabcontent");
-        for (i = 0; i < tabcontent.length; i++) {
-            tabcontent[i].style.display = "none";
+        function closeTooltip() {
+            discountTooltip.style.display = 'none';
         }
-        tablinks = document.getElementsByClassName("tablinks");
-        for (i = 0; i < tablinks.length; i++) {
-            tablinks[i].className = tablinks[i].className.replace(" active", "");
+
+        function FireShow(ID, IDcmd, show) {
+            var e = document.getElementById(ID);
+            var c = document.getElementById(IDcmd);
+            if (e) {
+                e.style.display = show ? 'block' : 'none';
+            }
+            if (c) {
+                c.style.display = !show ? 'block' : 'none';
+            }
+            onResizeIframe();
         }
-        document.getElementById(promoName).style.display = "block";
-        evt.currentTarget.className += " active";
-    }
+
+        function openPromo(evt, promoName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(promoName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
     </script>
     <script type="text/javascript">
         function DesabilitarHabilitarHora(check, horainicio, minutoinicio, horafin, minutofin) {
@@ -1323,7 +1330,7 @@
                         $('#<%= Me.lblAux.ClientId %>').html('<%= PortalCulture.GetString("00412") %>');
                         $('#<%= Me.lblEDaysHour.ClientId %>').html('<%= PortalCulture.GetString("00411") %>');
                     }
-            }
+                }
             });
         });
 
@@ -1331,8 +1338,21 @@
     <script type="text/javascript">
         $(function () {
             var dateFormat = 'dd/mm/yy',
-              from = $("#travelWindowFrom")
-                .datepicker({
+                from = $("#travelWindowFrom")
+                    .datepicker({
+                        showOn: "button",
+                        buttonImage: "/RateManager/Calendar/calbtn.gif",
+                        buttonImageOnly: true,
+                        buttonText: "Select date",
+                        defaultDate: "+1w",
+                        changeMonth: true,
+                        numberOfMonths: 2,
+                        dateFormat: dateFormat
+                    })
+                    .on("change", function () {
+                        to.datepicker("option", "minDate", getDate(this));
+                    }),
+                to = $("#travelWindowTo").datepicker({
                     showOn: "button",
                     buttonImage: "/RateManager/Calendar/calbtn.gif",
                     buttonImageOnly: true,
@@ -1342,22 +1362,9 @@
                     numberOfMonths: 2,
                     dateFormat: dateFormat
                 })
-                .on("change", function () {
-                    to.datepicker("option", "minDate", getDate(this));
-                }),
-              to = $("#travelWindowTo").datepicker({
-                  showOn: "button",
-                  buttonImage: "/RateManager/Calendar/calbtn.gif",
-                  buttonImageOnly: true,
-                  buttonText: "Select date",
-                  defaultDate: "+1w",
-                  changeMonth: true,
-                  numberOfMonths: 2,
-                  dateFormat: dateFormat
-              })
-              .on("change", function () {
-                  from.datepicker("option", "maxDate", getDate(this));
-              });
+                    .on("change", function () {
+                        from.datepicker("option", "maxDate", getDate(this));
+                    });
 
             function getDate(element) {
                 var date;
@@ -1373,8 +1380,21 @@
 
         $(function () {
             var dateFormat = "dd/mm/yy",
-              from = $("#bookingWindowFrom")
-                .datepicker({
+                from = $("#bookingWindowFrom")
+                    .datepicker({
+                        showOn: "button",
+                        buttonImage: "/RateManager/Calendar/calbtn.gif",
+                        buttonImageOnly: true,
+                        buttonText: "Select date",
+                        defaultDate: "+1w",
+                        changeMonth: true,
+                        numberOfMonths: 2,
+                        dateFormat: dateFormat
+                    })
+                    .on("change", function () {
+                        to.datepicker("option", "minDate", getDate(this));
+                    }),
+                to = $("#bookingWindowTo").datepicker({
                     showOn: "button",
                     buttonImage: "/RateManager/Calendar/calbtn.gif",
                     buttonImageOnly: true,
@@ -1382,24 +1402,11 @@
                     defaultDate: "+1w",
                     changeMonth: true,
                     numberOfMonths: 2,
-                    dateFormat : dateFormat
+                    dateFormat: dateFormat
                 })
-                .on("change", function () {
-                    to.datepicker("option", "minDate", getDate(this));
-                }),
-              to = $("#bookingWindowTo").datepicker({
-                  showOn: "button",
-                  buttonImage: "/RateManager/Calendar/calbtn.gif",
-                  buttonImageOnly: true,
-                  buttonText: "Select date",
-                  defaultDate: "+1w",
-                  changeMonth: true,
-                  numberOfMonths: 2,
-                  dateFormat : dateFormat
-              })
-              .on("change", function () {
-                  from.datepicker("option", "maxDate", getDate(this));
-              });
+                    .on("change", function () {
+                        from.datepicker("option", "maxDate", getDate(this));
+                    });
 
             function getDate(element) {
                 var date;
@@ -1415,8 +1422,21 @@
 
         $(function () {
             var dateFormat = "dd/mm/yy",
-              from = $("#blackoutFrom")
-                .datepicker({
+                from = $("#blackoutFrom")
+                    .datepicker({
+                        showOn: "button",
+                        buttonImage: "/RateManager/Calendar/calbtn.gif",
+                        buttonImageOnly: true,
+                        buttonText: "Select date",
+                        defaultDate: "+1w",
+                        changeMonth: true,
+                        numberOfMonths: 2,
+                        dateFormat: dateFormat
+                    })
+                    .on("change", function () {
+                        to.datepicker("option", "minDate", getDate(this));
+                    }),
+                to = $("#blackoutTo").datepicker({
                     showOn: "button",
                     buttonImage: "/RateManager/Calendar/calbtn.gif",
                     buttonImageOnly: true,
@@ -1424,24 +1444,11 @@
                     defaultDate: "+1w",
                     changeMonth: true,
                     numberOfMonths: 2,
-                    dateFormat : dateFormat
+                    dateFormat: dateFormat
                 })
-                .on("change", function () {
-                    to.datepicker("option", "minDate", getDate(this));
-                }),
-              to = $("#blackoutTo").datepicker({
-                  showOn: "button",
-                  buttonImage: "/RateManager/Calendar/calbtn.gif",
-                  buttonImageOnly: true,
-                  buttonText: "Select date",
-                  defaultDate: "+1w",
-                  changeMonth: true,
-                  numberOfMonths: 2,
-                  dateFormat : dateFormat
-              })
-              .on("change", function () {
-                  from.datepicker("option", "maxDate", getDate(this));
-              });
+                    .on("change", function () {
+                        from.datepicker("option", "maxDate", getDate(this));
+                    });
 
             function getDate(element) {
                 var date;
