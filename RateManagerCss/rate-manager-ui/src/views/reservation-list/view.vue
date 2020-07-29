@@ -147,8 +147,24 @@ export default {
             this.$root.$emit('bv::refresh::table', 'rsv_table');
         },
         getCorporateName(corporateId) {
+            
             const corp = this.corporates.find(x => x.idCorporativo == corporateId);
-            return corp !== undefined ? corp.nombreCorp : '';
+            
+            if(corp !== undefined)
+            {
+                if(corp.includes(":"))
+                {
+                    let splitCorpName = corp.nombreCorp.split(":");
+
+                    return splitCorpName[1];
+                }
+
+                return corp.nombreCorp
+            }
+
+            return '';
+
+            //return corp !== undefined ? corp.nombreCorp : '';
         },
         changeItems(value) {
             this.itemPerPage = value;
