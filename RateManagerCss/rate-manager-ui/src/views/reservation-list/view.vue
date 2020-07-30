@@ -21,28 +21,28 @@
             sort-by="reservationDate"
             :sort-desc="true"
             :small="true">
-                <template slot="idconfirmNumber" slot-scope="data">
+                <template v-slot:cell(idconfirmNumber)="data">
                     <b-link
                     target="_blank"
                     :href=" $appConfig.basePath + '/rate-manager-ui/dist/reservation-details.aspx?qs=' + data.item.id">
                         {{ data.item.confirmNumber }}
                     </b-link>
                 </template>
-                <template slot="client" slot-scope="data">
+                <template v-slot:cell(client)="data">
                     <span v-tooltip="data.value" class="d-block text-truncate" style="width:300px;">{{ data.value }}</span>
                 </template>
-                <template slot="hotel" slot-scope="data">
+                <template v-slot:cell(hotel)="data">
                     <span v-tooltip="data.value" class="d-block text-truncate" style="width:150px;">{{ data.value }}</span>
                 </template>
-                <template slot="corporateId" slot-scope="data">
+                <template v-slot:cell(corporateId)="data">
                     <span>{{ getCorporateName(data.value) }}</span>
                 </template>
-                <template slot="status" slot-scope="data">
+                <template v-slot:cell(status)="data">
                     <b-badge v-if="data.value == 1" variant="success">{{ $t('Reserved') }}</b-badge>
                     <b-badge v-if="data.value == 3" variant="danger">{{ $t('Cancelled') }}</b-badge>
                     <b-badge v-if="data.value == 4" variant="warning">{{ $t('In process') }}</b-badge>
                 </template>
-                <template slot="portal" slot-scope="data">
+                <template v-slot:cell(portal)="data">
                     <span v-tooltip="data.value" class="d-block text-truncate" style="width:120px;">{{ data.value }}</span>
                 </template>
             </data-table>

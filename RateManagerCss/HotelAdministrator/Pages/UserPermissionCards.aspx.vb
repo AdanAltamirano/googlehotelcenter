@@ -2,8 +2,17 @@
 Imports System.Data
 Imports System.Data.SqlClient
 
-Partial Public Class UserPermissionCards 
+Partial Public Class UserPermissionCards
     Inherits PaginaBase
+
+    Property LastSearchedUser() As String
+        Get
+            Return ViewState("_LastSearchedUser")
+        End Get
+        Set(ByVal value As String)
+            ViewState("_LastSearchedUser") = value
+        End Set
+    End Property
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         If Page.IsPostBack Then
@@ -11,160 +20,184 @@ Partial Public Class UserPermissionCards
                 btnGuardar.Visible = True
             End If
         End If
-        btnBuscar.Text = PortalCulture.GetString("M0BT0000115")
-        btnGuardar.Text = PortalCulture.GetString("00008")
-        lblNombreUsuario.Text = PortalCulture.GetString("M0UT02706")
-        lblTitulo.Text = PortalCulture.GetString("M0UT02707")
+        If Not Page.IsPostBack Then
+            btnBuscar.Text = PortalCulture.GetString("M0BT0000115")
+            btnGuardar.Text = PortalCulture.GetString("00008")
+            lblNombreUsuario.Text = PortalCulture.GetString("M0UT02706")
+            lblTitulo.Text = PortalCulture.GetString("M0UT02707")
+
+            MyBase.guardalog("/HotelAdministrator/Pages/UserPermissionCards.aspx", acciones.Ver, "Accedió al módulo")
+        End If
+
     End Sub
-    Dim ds As DataSet
     Enum gridview
         idusuario
         Email
         Nombre
         Permission
+        CompanyId
+        AllowSeeCc
     End Enum
+
+    Private dsCompanies As DataSet
+
     Protected Sub btnBuscar_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnBuscar.Click
         Me.Grid.CurrentPageIndex = 0
         Me.Grid.SelectedIndex = -1
-        ds = getCompanys(Me.txtEmailSearch.Text)
+        LoadCompanies()
+    End Sub
+
+    Private Sub LoadCompanies()
+        dsCompanies = GetCompanies(Me.txtEmailSearch.Text, Me.txtHotelSearch.Text)
         ltlUserName.Text = Me.txtEmailSearch.Text
-        Dim listaIdentificadores As New List(Of String)
-        If Not ds Is Nothing Then
-            For Each row As DataRow In ds.Tables(0).Rows
-                If listaIdentificadores.Contains(row("idusuario").ToString().Trim) Then
-                    row.Delete()
-                Else
-                    listaIdentificadores.Add(row("idusuario").ToString().Trim)
-                End If
-            Next
-            ds.AcceptChanges()
-            Me.Grid.DataSource = ds
+        If Not dsCompanies Is Nothing Then
+
+            Me.Grid.DataSource = dsCompanies
             Me.Grid.DataBind()
 
             Dim chk As CheckBox
             Dim userName As String
+            Dim CompanyIdx As Integer
             For Each item As DataGridItem In Grid.Items
-                userName = item.Cells(gridview.Email).Text
-                chk = CType(item.Cells(gridview.Permission).FindControl("chkAdd"), CheckBox)
-                Dim drow() As DataRow = ds.Tables(0).Select("email = '" + userName + "'")
-                If drow(0)("verDatosTarjeta").ToString.ToLower = "true" Then
-                    chk.Checked = True
-                Else
-                    chk.Checked = False
-                End If
+
+                CompanyIdx += 1
             Next
         End If
         btnGuardar.Visible = True
-        txtEmailSearch.Text = String.Empty
     End Sub
 
-    Private Function getCompanys(ByVal EmailSearch As String) As DataSet
-        Dim conection As New SqlConnection(AppSettings("PortalConnectionString"))
-        'Dim command As New SqlCommand("spCompanySearchCompanys", conection)
-        Dim spname As String = "spUserGetUserByEmailOrName" 'IIf(isAsoc, "spCompanySearchCompanysAssociation", "spCompanySearchCompanys")
-        Dim command As New SqlCommand(spname, conection)
-        Dim idUsuario = CType(Me.Page, PaginaBase).Usuario
-        Dim idAsociacionHotel As Integer = CType(Me.Page, PaginaBase).GetIdAsociation
-
-        With command
-            .CommandType = CommandType.StoredProcedure
-            .Parameters.Add(New SqlParameter("@email", EmailSearch)) 'Me.txtEmailSearch.Text
-        End With
-        Dim adapter As New SqlDataAdapter(command)
+    Private Function GetCompanies(ByVal EmailSearch As String, ByVal companySearch As String) As DataSet
         Dim dRes As New DataSet
-        adapter.Fill(dRes)
+        Try
+            Dim conection As New SqlConnection(AppSettings("PortalConnectionString"))
+            Dim spname As String = "GetUsersCompanies"
+            Dim command As New SqlCommand(spname, conection)
+            Dim idUsuario = CType(Me.Page, PaginaBase).Usuario
+
+            With command
+                .CommandType = CommandType.StoredProcedure
+                .Parameters.Add(New SqlParameter("@UserEmail", EmailSearch))
+                .Parameters.Add(New SqlParameter("@CompanyName", companySearch))
+
+            End With
+            Dim adapter As New SqlDataAdapter(command)
+
+            adapter.Fill(dRes)
+        Catch ex As Exception
+
+        End Try
+        If Not LastSearchedUser = EmailSearch Then
+            MyBase.guardalog("/HotelAdministrator/Pages/UserPermissionCards.aspx", acciones.Ver, "Consulto permisos del usuario " & EmailSearch)
+        End If
+        LastSearchedUser = EmailSearch
+        Return dRes
+    End Function
+
+    Private Function GetUserCompanyAllowCC() As DataSet
+        Dim dRes As New DataSet
+        Try
+            Dim conection As New SqlConnection(AppSettings("PortalConnectionString"))
+            Dim spname As String = "SELECT * FROM UsersCompany_AllowSeeCC WHERE UserId =" & Grid.DataKeys(0)
+            Dim command As New SqlCommand(spname, conection)
+            Dim idUsuario = CType(Me.Page, PaginaBase).Usuario
+
+            With command
+                .CommandType = CommandType.Text
+            End With
+            Dim adapter As New SqlDataAdapter(command)
+
+            adapter.Fill(dRes)
+        Catch ex As Exception
+
+        End Try
+
         Return dRes
     End Function
 
     Protected Sub btnGuardar_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnGuardar.Click
-        Dim indice As Integer = 0
-        Dim chk As CheckBox
-        Dim listaIdentificadores As New List(Of String)
-        ds = getCompanys(ltlUserName.Text)
+        Dim conection As New SqlConnection(AppSettings("PortalConnectionString"))
         Try
-            If Not ds Is Nothing Then
-                For Each row As DataRow In ds.Tables(0).Rows
-                    If listaIdentificadores.Contains(row("idusuario").ToString().Trim) Then
-                        row.Delete()
+            Dim dsAllowCC As New DataSet
+
+            'SELECT COMMAND
+            Dim spname As String = "SELECT * FROM UsersCompany_AllowSeeCC WHERE UserId =" & Grid.DataKeys(0)
+            Dim command As New SqlCommand(spname, conection)
+            With command
+                .CommandType = CommandType.Text
+            End With
+            Dim adapter As New SqlDataAdapter()
+            adapter.SelectCommand = command
+
+            adapter.InsertCommand = New SqlCommand("InsertUserCompanyAllowSeeCC", conection)
+            With adapter.InsertCommand
+                .Parameters.Add("@CompanyId", SqlDbType.Int)
+                .Parameters.Add("@UserId", SqlDbType.Int)
+
+                .Parameters.Item("@CompanyId").SourceColumn = "CompanyId"
+                .Parameters.Item("@UserId").SourceColumn = "UserId"
+
+                .CommandType = CommandType.StoredProcedure
+            End With
+
+            'DELETE COMMAND
+            adapter.DeleteCommand = New SqlCommand("DeleteUserCompanyAllowSeeCC", conection)
+            With adapter.DeleteCommand
+                .Parameters.Add("@CompanyId", SqlDbType.Int)
+                .Parameters.Add("@UserId", SqlDbType.Int)
+
+                .Parameters.Item("@CompanyId").SourceColumn = "CompanyId"
+                .Parameters.Item("@UserId").SourceColumn = "UserId"
+
+                .CommandType = CommandType.StoredProcedure
+            End With
+
+            adapter.Fill(dsAllowCC)
+
+            Dim chk As CheckBox
+            If Not dsAllowCC Is Nothing AndAlso dsAllowCC.Tables.Count > 0 Then
+                Dim strHotelsName As String = String.Empty
+                For Each item As DataGridItem In Grid.Items
+                    chk = CType(item.Cells(gridview.Permission).FindControl("chkAdd"), CheckBox)
+                    Dim ccRows() As DataRow = dsAllowCC.Tables(0).Select("CompanyId = " & CInt(item.Cells(gridview.CompanyId).Text))
+                    If ccRows.Count > 0 Then
+                        If Not chk.Checked Then
+                            ccRows(0).Delete()
+                        End If
                     Else
-                        listaIdentificadores.Add(row("idusuario").ToString().Trim)
+                        If chk.Checked Then
+                            Dim newRow As DataRow = dsAllowCC.Tables(0).NewRow()
+                            newRow.Item("CompanyId") = CInt(item.Cells(gridview.CompanyId).Text)
+                            newRow.Item("UserId") = CInt(Grid.DataKeys(0))
+
+                            dsAllowCC.Tables(0).Rows.Add(newRow)
+                            strHotelsName = strHotelsName & item.Cells(gridview.Nombre).Text & ", "
+                        End If
                     End If
                 Next
-                ds.AcceptChanges()
+                If Not String.IsNullOrWhiteSpace(strHotelsName) Then
+                    strHotelsName = strHotelsName.Substring(0, strHotelsName.Length - 1)
+                    MyBase.guardalog("/HotelAdministrator/Pages/UserPermissionCards.aspx", acciones.Modificar, "Dio permiso al usuario " & txtEmailSearch.Text & " para " & strHotelsName)
+                End If
             End If
-            Dim dtable As DataTable = ds.Tables(0).Clone()
 
-            For Each item As DataGridItem In Grid.Items
-                Dim iduser As String = Grid.DataKeys(indice)
-                chk = CType(item.Cells(gridview.Permission).FindControl("chkAdd"), CheckBox)
-                Dim dtrow() As DataRow = ds.Tables(0).Select("idusuario = '" + iduser + "'")
-                If Not dtrow Is Nothing AndAlso dtrow(0)("verDatosTarjeta").ToString.ToLower <> chk.Checked.ToString.ToLower Then
-                    dtrow(0)("verDatosTarjeta") = chk.Checked
-                    Dim row As DataRow = dtable.NewRow()
-                    row(0) = dtrow(0)(0)
-                    row(1) = dtrow(0)(1)
-                    row(2) = dtrow(0)(2)
-                    row(3) = dtrow(0)(3)
-                    dtable.Rows.Add(row)
-                End If
-                indice += 1
-            Next
-            dtable.AcceptChanges()
-            If dtable.Rows.Count > 0 Then
-                'guardar en la base de datos
-                If UpdateDB(dtable) = False Then
-                    lblMensajes.Text = PortalCulture.GetString("00189")
+            adapter.Update(dsAllowCC)
+            dsAllowCC.AcceptChanges()
+        Catch ex As Exception
+            lblMensajes.Text = ex.Message
+        Finally
+            If Not conection Is Nothing Then
+                If conection.State = ConnectionState.Open Or conection.State = ConnectionState.Broken Then
+                    conection.Close()
                 End If
             End If
-        Catch
-            Me.lblMensajes.Text = PortalCulture.GetString("00189")
+            LoadCompanies()
         End Try
     End Sub
-
-    Private Function UpdateDB(ByVal dt As DataTable) As Boolean
-        Dim conection As New SqlConnection(AppSettings("PortalConnectionString"))
-        'Dim command As New SqlCommand("spCompanySearchCompanys", conection)
-        Dim spname As String = "UserUpdateDatosTarjetaByIdUsuario" 'IIf(isAsoc, "spCompanySearchCompanysAssociation", "spCompanySearchCompanys")
-        Dim command As New SqlCommand(spname, conection)
-        Dim myTrans As SqlTransaction
-        conection.Open()
-        myTrans = conection.BeginTransaction()
-        Try
-            command.CommandType = CommandType.StoredProcedure
-            command.Transaction = myTrans
-            For Each row As DataRow In dt.Rows
-                command.Parameters.Clear()
-                command.Parameters.Add(New SqlParameter("@idusuario", row("idusuario")))
-                command.Parameters.Add(New SqlParameter("@verDatosTarjeta", row("verDatosTarjeta")))
-                command.ExecuteNonQuery()
-            Next
-            myTrans.Commit()
-            conection.Close()
-            Return True
-        Catch
-            myTrans.Rollback()
-            conection.Close()
-            Return False
-        End Try
-    End Function
 
     Protected Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
         Me.Grid.CurrentPageIndex = e.NewPageIndex
         Me.Grid.SelectedIndex = -1
-        ds = getCompanys(Me.ltlUserName.Text)
-        Dim listaIdentificadores As New List(Of String)
-        If Not ds Is Nothing Then
-            For Each row As DataRow In ds.Tables(0).Rows
-                If listaIdentificadores.Contains(row("idusuario").ToString().Trim) Then
-                    row.Delete()
-                Else
-                    listaIdentificadores.Add(row("idusuario").ToString().Trim)
-                End If
-            Next
-            ds.AcceptChanges()
-            Me.Grid.DataSource = ds
-            Me.Grid.DataBind()
-        End If
+        LoadCompanies()
     End Sub
 
     Protected Sub Grid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemDataBound
@@ -172,6 +205,15 @@ Partial Public Class UserPermissionCards
             e.Item.Cells(gridview.Nombre).Text = PortalCulture.GetString("00073")
             e.Item.Cells(gridview.Email).Text = PortalCulture.GetString("00163")
             e.Item.Cells(gridview.Permission).Text = PortalCulture.GetString("00470")
+        End If
+        If e.Item.ItemType = ListItemType.Item Or e.Item.ItemType = ListItemType.AlternatingItem Then
+            Dim UserName As String
+            Dim chk As CheckBox
+
+            chk = CType(e.Item.Cells(gridview.Permission).FindControl("chkAdd"), CheckBox)
+            If Not chk Is Nothing Then
+                chk.Checked = e.Item.Cells(gridview.AllowSeeCc).Text = "1"
+            End If
         End If
     End Sub
 End Class
