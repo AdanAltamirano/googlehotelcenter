@@ -66,6 +66,7 @@ export default {
     'Add free night': 'Agregar noche gratis',
     'Add closure': 'Agregar cierre',
     'Combinable promotion': 'Promoción combinable',
+    'Rate plans and rooms': 'Planes tarifarios y habitaciones',
 
     //days
     'SU': 'D',

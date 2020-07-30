@@ -1,16 +1,16 @@
 <template>
-    <b-card header="Planes Tarifarios y habitaciones">
+    <b-card :header="$t('Rate plans and rooms')">
         <b-row>
             <b-col>
                 <!--habitaciones-->
-                <h5 class="text-center">{{ $t('Rooms') }}</h5>
+                <h6 class="text-center">{{ $t('Rooms') }}</h6>
                 <b-form-checkbox @change="selectAllRooms" v-model="allRooms">
                     {{ $t('Select all') }}
                 </b-form-checkbox>
                 <hr>
                 <b-list-group class="mt-2 list-group-scroll">
                     <b-list-group-item v-for="room in rooms" :key="room.id">
-                        <b-form-checkbox @change="selectRoom" :value="room.id" v-model="selectedRooms">
+                        <b-form-checkbox @change="allRooms = false" :value="room.id" v-model="model.rooms">
                             {{ room.name }} - [{{ room.code }}]
                         </b-form-checkbox>
                     </b-list-group-item>
@@ -18,14 +18,14 @@
             </b-col>
             <b-col>
                 <!--planes tarifarios-->
-                <h5 class="text-center">{{ $t('Rate plans') }}</h5>
+                <h6 class="text-center">{{ $t('Rate plans') }}</h6>
                 <b-form-checkbox @change="selectAllRPlans" v-model="allRPlans">
                     {{ $t('Select all') }}
                 </b-form-checkbox>
                 <hr>
                 <b-list-group class="mt-2 list-group-scroll">
                     <b-list-group-item v-for="rp in ratePlans" :key="rp.code">
-                        <b-form-checkbox @change="selectRatePlan" :value="rp.code" v-model="selectedRatePlan">
+                        <b-form-checkbox @change="allRPlans = false" :value="rp.code" v-model="model.rateplans">
                             {{rp.name}} - [{{ rp.code }}]
                         </b-form-checkbox>
                     </b-list-group-item>
@@ -36,23 +36,17 @@
 </template>
 
 <script>
-import RoomService from '../../../api/rooms-service';
-import RatePlanService from '../../../api/ratePlans-service';
-import EventBus from '../../../core/event-bus';
+import roomService from '../../../api/rooms-service';
+import ratePlanService from '../../../api/ratePlans-service';
+import eventBus from '../../../core/event-bus';
 
 export default {
     name: 'rate-plan-rooms',
     props: {
-        /*--> request */
-        selectedRooms: {
-            type: Array,
-            required: true
-        },
-        selectRatePlan: {
-            type: Array,
+        dataModel: {
+            type: Object,
             required: true
         }
-        /*<-- request */
     },
     created() {
         this.getRooms();
@@ -60,6 +54,7 @@ export default {
     },
     data() {
         return {
+            model: this.dataModel,
             hotelId: this.$appConfig.session.hotelId,
             rooms: [],
             allRooms: false,
@@ -71,50 +66,42 @@ export default {
         
     },
     methods: {
-        //->rooms
         getRooms() {
-            RoomService.getList(this.hotelId).then(response => {
+            roomService.getList(this.hotelId).then(response => {
                 this.rooms = response.body;
             });
         },
-        selectRoom() {
-            this.allRooms = false;
-        },
         selectAllRooms(checked) {
-            this.selectedRooms = [];
+            this.model.rooms = [];
             if (checked) {
                 this.rooms.forEach((value) => {
-                    this.selectedRooms.push(value.id);
+                    this.model.rooms.push(value.id);
                 });
             }
         },
-        //<-room
 
-        //->rateplan
         getRatePlans() {
-            RatePlanService.getList(this.hotelId).then(response => {
+            ratePlanService.getList(this.hotelId).then(response => {
                 this.ratePlans = response.body;
             });
         },
-        selectRatePlan() {
-            this.allRPlans = false;
-        },
         selectAllRPlans(checked) {
-            this.selectedRatePlan = [];
+            this.model.rateplans = [];
             if (checked) {
                 this.ratePlans.forEach((value) => {
-                    this.selectedRatePlan.push(value.code);
+                    this.model.rateplans.push(value.code);
                 });
             }
         }
-        //<-rateplan
     },
     watch: {
         rooms() {
-            if (this.rooms.length > 0) EventBus.$emit('changeOffset');
+            if (this.rooms.length > 0)
+                eventBus.$emit('changeOffset');
         },
         ratePlans() {
-            if (this.ratePlans.length > 0) EventBus.$emit('changeOffset');
+            if (this.ratePlans.length > 0)
+                eventBus.$emit('changeOffset');
         }
     }
 }

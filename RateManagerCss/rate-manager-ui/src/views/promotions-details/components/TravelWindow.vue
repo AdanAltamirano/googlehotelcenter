@@ -7,7 +7,7 @@
                         <b-form-group :label="$t('Start date of the trip')">
                             <b-input-group>
                                 <v-date-picker
-                                v-model="initialDate"
+                                v-model="model.initialDate"
                                 class="form-control p-0"
                                 :min-date="new Date()"
                                 :popover="{ placement: 'bottom', visibility: 'click' }">
@@ -25,7 +25,7 @@
                         <b-form-group :label="$t('End date of the trip')">
                             <b-input-group>
                                 <v-date-picker
-                                v-model="finalDate"
+                                v-model="model.finalDate"
                                 class="form-control p-0"
                                 :min-date="new Date()"
                                 :popover="{ placement: 'bottom', visibility: 'click' }">
@@ -42,15 +42,15 @@
                 </b-row>
                 <hr>
             </b-col>
-            <b-col md="auto" class="mr-auto ml-auto">
+            <b-col md="auto" class="mr-auto ml-auto pr-1 pl-1">
                 <b-form-group :label="$t('Promotion valid for specific day')">
                     <div class="btn-group-toggle btn-group">
                         <label
                         v-for="d in days"
                         :key="d.day"
                         class="btn btn-secondary"
-                        :class="{active: validDays.includes(d.day)}">
-                            <input type="checkbox" :value="d.day" v-model="validDays" autocomplete="off" /> {{ getDayPrefix(d.day) }}
+                        :class="{'active-blue': model.validDays.includes(d.day)}">
+                            <input type="checkbox" :value="d.day" v-model="model.validDays" autocomplete="off" /> {{ getDayPrefix(d.day) }}
                         </label>
                     </div>
                 </b-form-group>
@@ -60,8 +60,8 @@
                         v-for="d in days"
                         :key="d.day"
                         class="btn btn-secondary"
-                        :class="{active: noArrivalDays.includes(d.day)}">
-                            <input type="checkbox" :value="d.day" v-model="noArrivalDays" autocomplete="off" /> {{ getDayPrefix(d.day) }}
+                        :class="{active: model.noArrivalDays.includes(d.day)}">
+                            <input type="checkbox" :value="d.day" v-model="model.noArrivalDays" autocomplete="off" /> {{ getDayPrefix(d.day) }}
                         </label>
                     </div>
                 </b-form-group>
@@ -93,7 +93,7 @@
                 </b-input-group>
 
                 <b-list-group>
-                    <b-list-group-item class="cite-date" v-for="(c, index) in closures" :key="index">
+                    <b-list-group-item class="cite-date" v-for="(c, index) in model.closures" :key="index">
                         {{ getDateFormat(c) }}
                         <span @click="removeClosure(index)" class="ml-4 mt-2 text-danger">
                             ( <i class="fa fa-times"></i> ) {{ $t('Remove') }}
@@ -107,14 +107,20 @@
 
 <script>
 export default {
-    name: 'travel-window',
     created() {
         this.days.forEach(x => {
             this.validDays.push(x.day);
         });
     },
+    props: {
+        dataModel: {
+            type: Object,
+            required: true
+        }
+    },
     data() {
         return {
+            model: this.dataModel,
             days: [
                 { day: 0}, //domingo
                 { day: 1}, //..
@@ -124,12 +130,7 @@ export default {
                 { day: 5},
                 { day: 6}, //sabado
             ],
-            validDays: [],
-            noArrivalDays: [],
-            initialDate: null,
-            finalDate: null,
-            excludeDates: null,
-            closures: []
+            excludeDates: null
         }
     },
     methods: {
@@ -156,21 +157,21 @@ export default {
         },
         addClosure() {
             let add = false;
-            if (this.closures.length > 0)
+            if (this.model.closures.length > 0)
                 add =
-                (this.closures.findIndex(x => 
+                (this.model.closures.findIndex(x => 
                     x.start.toString() === this.excludeDates.start.toString() 
                     && x.end.toString() === this.excludeDates.end.toString()
                 ) === -1)
             else add = true;
 
             if (add) {
-                this.closures.push(this.excludeDates);
+                this.model.closures.push(this.excludeDates);
                 this.excludeDates = null;
             }
         },
         removeClosure(index) {
-            this.closures.splice(index, 1);
+            this.model.closures.splice(index, 1);
         }
     }
 }

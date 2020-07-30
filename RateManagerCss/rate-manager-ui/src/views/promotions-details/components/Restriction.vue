@@ -5,12 +5,12 @@
                 <b-row>
                     <b-col>
                         <b-form-group :label="$t('Min. nights')">
-                            <b-form-input v-model="sync_minNights" type="number"></b-form-input>
+                            <b-form-input v-model="model.minNights" type="number"></b-form-input>
                         </b-form-group>
                     </b-col>
                     <b-col>
                         <b-form-group :label="$t('Max. nights')">
-                            <b-form-input v-model="maxNights" type="number"></b-form-input>
+                            <b-form-input v-model="model.maxNights" type="number"></b-form-input>
                         </b-form-group>
                     </b-col>
                 </b-row>
@@ -21,7 +21,7 @@
                     </b-col>
                     <b-col md="12" class="mt-3" v-if="!notCancelable">
                         <b-form-group :label="$t('Cancellation policies')">
-                            <b-form-select v-model="cancellationType" :options="options"></b-form-select>
+                            <b-form-select v-model="model.cancellationType" :options="options"></b-form-select>
                         </b-form-group>
                     </b-col>
                 </b-row>
@@ -29,8 +29,8 @@
                     <b-col>
                         <p class="mt-2 mr-3">
                             {{ $t('Cancel') }}&nbsp;
-                            <input type="number" min="1" class="input-border-bottom" v-model="byDay" v-if="cancellationType == 0" />
-                            <input type="number" min="1" class="input-border-bottom" v-model="byHour" v-else-if="cancellationType == 1" />
+                            <input type="number" min="1" class="input-border-bottom" v-model="byDay" v-if="model.cancellationType == 0" />
+                            <input type="number" min="1" class="input-border-bottom" v-model="byHour" v-else-if="model.cancellationType == 1" />
                             <span v-else>
                                 {{ $t('before')}}&nbsp;
                                 <input type="number" min="1" max="23" class="input-border-bottom" v-model="bySpecificTime.hour"/>&nbsp;:&nbsp;
@@ -48,20 +48,20 @@
                 <b-form-group :label="$t('Prior cancellation policy')">
                     <b-tabs>
                         <b-tab :title="$t('Spanish')">
-                            <b-form-input v-model="prevCancel_es"></b-form-input>
+                            <b-form-input v-model="model.prevCancel_es" />
                         </b-tab>
                         <b-tab :title="$t('English')">
-                            <b-form-input v-model="prevCancel_en"></b-form-input>
+                            <b-form-input v-model="model.prevCancel_en" />
                         </b-tab>
                     </b-tabs>
                 </b-form-group>
                 <b-form-group :label="$t('Detailed cancellation policy')">
                     <b-tabs>
                         <b-tab :title="$t('Spanish')">
-                            <b-form-textarea v-model="detsCancel_es" rows="5" max-rows="5"></b-form-textarea>
+                            <b-form-textarea v-model="model.detsCancel_es" rows="5" max-rows="5" />
                         </b-tab>
                         <b-tab :title="$t('English')">
-                            <b-form-textarea v-model="detsCancel_en" rows="5" max-rows="5"></b-form-textarea>
+                            <b-form-textarea v-model="model.detsCancel_en" rows="5" max-rows="5" />
                         </b-tab>
                     </b-tabs>
                 </b-form-group>
@@ -72,18 +72,20 @@
 
 <script>
 export default {
-    name: 'restriction',
     props: {
         minNights: {
             type: Number,
+            required: true
+        },
+        dataModel: {
+            type: Object,
             required: true
         }
     },
     data() {
         return {
-            maxNights: 0,
+            model: this.dataModel,
             notCancelable: false,
-            cancellationType: 0,
             options: [
                 { value: 0, text: this.$t('For days') },
                 { value: 1, text: this.$t('For hours') },
@@ -94,20 +96,10 @@ export default {
             bySpecificTime: {
                 hour: 1,
                 minuts: 0
-            },
-            prevCancel_es: '',
-            prevCancel_en: '',
-            detsCancel_es: '',
-            detsCancel_en: ''
+            }
         }
     },
     computed: {
-        /*--> model */
-        sync_minNights: {
-            get() { return this.minNights },
-            set(val) { this.$emit('update:minNights', val) }
-        },
-        /*<-- */
         perDayTxt() {
             let translate = this.$t('day{s} before check in');
             translate = translate.replace('{s}', this.byDay > 1 ? 's' : '');
@@ -121,12 +113,12 @@ export default {
         cancellationTxt() {
             let translate = '';
 
-            if (this.cancellationType === 0) {
+            if (this.model.cancellationType === 0) {
                 translate = this.$t('Cancel {number} day{s} before check in');
                 translate = translate.replace('{number}', this.byDay);
                 translate = translate.replace('{s}', this.byDay > 1 ? 's' : '');
             }
-            else if (this.cancellationType == 1) {
+            else if (this.model.cancellationType == 1) {
                 translate = this.$t('Cancel {number} hour{s} before check in');
                 translate = translate.replace('{number}', this.byHour);
                 translate = translate.replace('{s}', this.byHour > 1 ? 's' : '');
