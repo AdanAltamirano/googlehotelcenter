@@ -8868,4 +8868,7 @@
   <data name="01658" xml:space="preserve">
     <value>Esta propiedad es una casa. Solo se permite la cantidad de 1 en inventario.</value>
   </data>
+  <data name="01659" xml:space="preserve">
+    <value>Reservaciones pendientes de confirmar cryptomoneda</value>
+  </data>
 </root>

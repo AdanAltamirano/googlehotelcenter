@@ -599,6 +599,7 @@ Partial Class Welcome1
         Me.lblTarifas.Text = PortalCulture.GetString("00508")
         lblLastResevations.Text = PortalCulture.GetString("00511")
         lblLastResevationsDep.Text = PortalCulture.GetString("01341")
+        lblCryptoDeposits.Text = PortalCulture.GetString("01659")
         Me.lblLastAccess.Text = PortalCulture.GetString("00512", True)
         hplFrontDeskRes.Text = PortalCulture.GetString("00813")
         'el idioma del dg
