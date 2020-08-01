@@ -193,6 +193,29 @@ Partial Class Welcome1
         Dim ci As System.Globalization.CultureInfo
         ci = System.Threading.Thread.CurrentThread.CurrentCulture
         System.Threading.Thread.CurrentThread.CurrentCulture = New System.Globalization.CultureInfo(PortalCulture.GetCulture.ToString)
+
+
+        'obtener depositos cryptomoneda
+        Dim dsCrypto As New DataSet
+        Dim cryptoRows As IEnumerable(Of DataRow) = ds.Tables(0).AsEnumerable().Where(Function(row) row.Item("moneda") = "BTC")
+
+        Dim tableCrypto As New DataTable
+        If cryptoRows.Count > 0 Then
+            tableCrypto = cryptoRows.CopyToDataTable()
+        End If
+        dsCrypto.Tables.Add(tableCrypto)
+
+        Me.dgCryptoDeposits.DataSource = dsCrypto
+        Me.dgCryptoDeposits.DataBind()
+
+        Dim depositRows As IEnumerable(Of DataRow) = ds.Tables(0).AsEnumerable().Where(Function(row) row.Item("moneda") <> "BTC")
+        Dim tableDeposits As New DataTable
+        If depositRows.Count > 0 Then
+            tableDeposits = depositRows.CopyToDataTable()
+        End If
+        ds = New DataSet()
+        ds.Tables.Add(tableDeposits)
+
         Me.dgDepositos.DataSource = ds
         Me.dgDepositos.DataBind()
         'If Me.dgDepositos.Items.Count > 0 Then btnSave.Visible = True
@@ -829,6 +852,12 @@ Partial Class Welcome1
         End If
     End Sub
 
+    Private Sub dgCryptoDeposits_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles dgCryptoDeposits.ItemCommand
+        If e.CommandName = "DetalleReserva" Then
+            MyBase.redirectTo(PaginaBase.pages.ReservaDetailsV2, "?qs=" & e.Item.Cells(dgcolumns.ID).Text)
+        End If
+    End Sub
+
     Private Sub dgDepositos_ItemCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles dgDepositos.ItemCreated
         If e.Item.ItemType = ListItemType.Pager Then
             If dgDepositos.CurrentPageIndex > 0 Then
@@ -841,6 +870,30 @@ Partial Class Welcome1
                 CType(e.Item.Controls(0), TableCell).Controls.AddAt(0, prev)
             End If
             If dgDepositos.CurrentPageIndex < dgDepositos.PageCount - 1 Then
+                Dim _next As New System.Web.UI.WebControls.LinkButton
+                _next.CommandArgument = "Next"
+                _next.CommandName = "Page"
+                _next.Text = PortalCulture.GetString("00011") & "&nbsp;>"
+                _next.CausesValidation = False
+
+                CType(e.Item.Controls(0), TableCell).Controls.AddAt(CType(e.Item.Controls(0), TableCell).Controls.Count, New System.Web.UI.LiteralControl("&nbsp;"))
+                CType(e.Item.Controls(0), TableCell).Controls.AddAt(CType(e.Item.Controls(0), TableCell).Controls.Count, _next)
+            End If
+        End If
+    End Sub
+
+    Private Sub dgCryptoDeposits_ItemCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles dgCryptoDeposits.ItemCreated
+        If e.Item.ItemType = ListItemType.Pager Then
+            If dgCryptoDeposits.CurrentPageIndex > 0 Then
+                Dim prev As New System.Web.UI.WebControls.LinkButton
+                prev.CommandArgument = "Prev"
+                prev.CommandName = "Page"
+                prev.Text = "<&nbsp;" & PortalCulture.GetString("00010")
+                prev.CausesValidation = False
+                CType(e.Item.Controls(0), TableCell).Controls.AddAt(0, New System.Web.UI.LiteralControl("&nbsp;"))
+                CType(e.Item.Controls(0), TableCell).Controls.AddAt(0, prev)
+            End If
+            If dgCryptoDeposits.CurrentPageIndex < dgCryptoDeposits.PageCount - 1 Then
                 Dim _next As New System.Web.UI.WebControls.LinkButton
                 _next.CommandArgument = "Next"
                 _next.CommandName = "Page"
@@ -903,9 +956,65 @@ Partial Class Welcome1
         End If
     End Sub
 
+    Private Sub dgCryptoDeposits_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles dgCryptoDeposits.ItemDataBound
+        If e.Item.ItemType = ListItemType.Header Then
+            e.Item.Cells(dgcolumns.Cliente).Text = PortalCulture.GetString("M000121")
+            e.Item.Cells(dgcolumns.checkIn).Text = PortalCulture.GetString("M000122")
+            e.Item.Cells(dgcolumns.cantidad).Text = PortalCulture.GetString("00062")
+            e.Item.Cells(dgcolumns.NoReservacion).Text = PortalCulture.GetString("M000119")
+        ElseIf e.Item.ItemType = ListItemType.AlternatingItem Or e.Item.ItemType = ListItemType.Item Then
+            Dim permiso As Boolean = PermisionContentWelcome("welcome.aspx")
+            Dim lk As LinkButton = e.Item.FindControl("lnkItinerario")
+            If Not lk Is Nothing Then
+                lk.Text = PortalCulture.GetString("00510")
+            End If
+            If Not permiso Then
+                lk.Visible = False
+            End If
+            lk = e.Item.FindControl("lnkVerificar")
+            If Not lk Is Nothing Then
+                lk.Text = PortalCulture.GetString("01342")
+            End If
+            If Not permiso Then
+                lk.Visible = False
+            End If
+
+
+            If (e.Item.Cells(dgcolumns.IsNetRateUv).Text = "True") Or (e.Item.Cells(dgcolumns.deposittarget).Text = "UV") Then
+                If Not (MyBase.IsSupervisor Or (MyBase.IsUsuarioHotelAssociation And MyBase.IdAsociation = 1)) Then
+                    lk.Visible = False
+                End If
+            End If
+
+            Dim add As Integer
+            add = 1
+            If CDate(e.Item.Cells(dgcolumns.checkIn).Text).DayOfWeek = DayOfWeek.Saturday Then add = 2
+            If CDate(e.Item.Cells(dgcolumns.checkIn).Text).DayOfWeek = DayOfWeek.Friday Then add = 3
+            Dim fechar As Date
+            fechar = DateAdd("d", add, CDate(CDate(e.Item.Cells(dgcolumns.checkIn).Text).ToString("yyyy/MM/dd")))
+            If fechar < CDate(Now.ToString("yyyy/MM/dd")) Then
+                'e.Item.BackColor = Color.FromName("#F88158") 'dgReservas.BackColor.LightPink
+                e.Item.ForeColor = Color.FromKnownColor(KnownColor.Red)
+            Else
+                'ck.Visible = False
+            End If
+            e.Item.Cells(dgcolumns.checkIn).Text = CDate(e.Item.Cells(dgcolumns.checkIn).Text).ToString("MMM/dd/yyyy")
+
+            If Not IsNumeric(e.Item.Cells(dgcolumns.NoReservacion).Text) Then
+                e.Item.Cells(dgcolumns.NoReservacion).ToolTip = PortalCulture.GetString("01343")
+            End If
+        End If
+    End Sub
+
     Private Sub dgDepositos_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles dgDepositos.PageIndexChanged
         dgDepositos.CurrentPageIndex = e.NewPageIndex
         dgDepositos.SelectedIndex = -1
+        SearchByDates()
+    End Sub
+
+    Private Sub dgCryptoDeposits_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles dgCryptoDeposits.PageIndexChanged
+        dgCryptoDeposits.CurrentPageIndex = e.NewPageIndex
+        dgCryptoDeposits.SelectedIndex = -1
         SearchByDates()
     End Sub
 
@@ -921,4 +1030,15 @@ Partial Class Welcome1
         MyBase.redirectTo(PaginaBase.pages.Deposito)
     End Sub
 
+    Private Sub dgCryptoDeposits_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgCryptoDeposits.SelectedIndexChanged
+
+        Session("welcome_noReservacion") = String.Empty
+        'dgDepositos.CurrentPageIndex
+        Session("welcome_noReservacion") = dgCryptoDeposits.Items(dgCryptoDeposits.SelectedIndex).Cells(dgcolumns.NoReservacionDato).Text
+        Session("welcome_idhotel") = String.Empty
+        If MyBase.isUserChain AndAlso Session("idCorporativoUserChain") <> "-1" Then
+            'Session("welcome_idhotel") = dgReservations.Items(dgDepositos.SelectedIndex).Cells(dgcolumns.idHotel).Text
+        End If
+        MyBase.redirectTo(PaginaBase.pages.Deposito)
+    End Sub
 End Class

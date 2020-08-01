@@ -210,21 +210,34 @@
         $(document).ready(function() {
             var countDepositos = 0;
             var countReservations = 0;
+            var countCryptoDeposits = 0;
             countDepositos = $('#<%=dgDepositos.ClientID%> tr').length - 2;
             countReservations = $('#<%=dgReservations.ClientID%> tr').length - 2;
+            countCryptoDeposits = $('#<%=dgCryptoDeposits.ClientID%> tr').length - 2;
+
             $('#<%=lblLastResevations.ClientID%>').append("<strong> (" + countReservations + ")</strong>");
             $('#<%=lblLastResevationsDep.ClientID%>').append("<strong> (" + countDepositos + ")</strong>");
+            $('#<%=lblCryptoDeposits.ClientID%>').append("<strong> (" + countCryptoDeposits + ")</strong>");
 
             $("#tabs div").click(function() {
                 if ($(this).attr("id") == "reservaciones") {
                     $("#dvReservations").show();
+                    $('#dvCryptoDeposits').hide();
                     $("#dvDeposits").hide();
                     $("#activeTab").attr("value", "1");
                     $('#reservaciones').stop().css({ 'opacity': '1' });
                 }
+                else if ($(this).attr('id') == 'cryptoDeposits') {
+                    $('#dvCryptoDeposits').show();
+                    $('#dvReservations').hide();
+                    $('#dvDeposits').hide();
+                    $("#activeTab").attr("value", "3");
+                    $('#cryptoDeposits').stop().css({ 'opacity': '1' });
+                }
                 else {
                     $("#dvDeposits").show();
                     $("#dvReservations").hide();
+                    $('#dvCryptoDeposits').hide();
                     $("#activeTab").attr("value", "2");
                     $('#depositos').stop().css({ 'opacity': '1' });
                 }
@@ -497,15 +510,15 @@
                 <td style="height: 209px; width: 20%;" valign="top" align="center">
                     <div class="clear" style="text-align: center; margin: 10px;">
                         <%
-                    If (Me.IsSupervisor) Then
-                    
-                        If (Not Me.cInfoActual Is Nothing) Then
-                            Dim showCancel As Boolean = False
-                            Dim showWithDebit As Boolean = False
-                            Dim lenguaje As Integer = PortalCulture.GetIDCulture()
-                            LoadStatusHotelUniBilling(Me.cInfoActual.Empresa, showCancel, showWithDebit)
-                            If lenguaje = 1 Then
-                                If showCancel Then
+                            If (Me.IsSupervisor) Then
+
+                                If (Not Me.cInfoActual Is Nothing) Then
+                                    Dim showCancel As Boolean = False
+                                    Dim showWithDebit As Boolean = False
+                                    Dim lenguaje As Integer = PortalCulture.GetIDCulture()
+                                    LoadStatusHotelUniBilling(Me.cInfoActual.Empresa, showCancel, showWithDebit)
+                                    If lenguaje = 1 Then
+                                        If showCancel Then
                         %>
                         <br />
                         <span class="alertBox">HOTEL CANCELADO</span>
@@ -640,7 +653,12 @@
                                 <asp:Label ID="lblLastResevations" CssClass="clsDarkLabel" runat="server" EnableViewState="False">Últimas Reservaciones No Verificadas</asp:Label>
                             </div></td><td><div class="tab" id="depositos">
                                 <asp:Label ID="lblLastResevationsDep" CssClass="clsDarkLabel" runat="server" EnableViewState="False">Ultimas Reservaciones No Depositadas</asp:Label>
-                            </div></td></tr></table>
+                            </div></td>
+                                <td><div class="tab" id="cryptoDeposits">
+                                    <asp:Label ID="lblCryptoDeposits" CssClass="clsDarkLabel" runat="server" EnabledViewState="False">Reservaciones pendientes de confirmar dep&oacute;sito BTC</asp:Label>
+                                    </div></td>
+
+                                   </tr></table>
                            
                             
                         </div>
@@ -737,7 +755,57 @@
                                 <PagerStyle CssClass="dgPager" HorizontalAlign="Right" Mode="NumericPages" Position="Bottom"
                                     PrevPageText="<< Anterior" NextPageText="Siguiente >>"></PagerStyle>
                             </asp:DataGrid>
-                        </div>                   
+                        </div>       
+                    
+                    <div id="dvCryptoDeposits" style="display:none">
+                        <asp:DataGrid ID="dgCryptoDeposits" GridLines="None" runat="server" 
+                            EnableViewState="true" CssClass="DataGrid" Width="100%" ShowFooter="false" 
+                            AutoGenerateColumns="false" CellPadding="0" AllowPaging="true" PageSize="20">
+                            <SelectedItemStyle CssClass="dgSelected" />
+                            <AlternatingItemStyle CssClass="dgAlternate" />
+                            <ItemStyle CssClass="dgItem" />
+                            <HeaderStyle CssClass="dgHeader" />
+
+                            <Columns>
+                                    <asp:BoundColumn DataField="NoReservacion" HeaderText="NoReservacion"></asp:BoundColumn>
+                                    <asp:BoundColumn DataField="Nombre" HeaderText="Hotel"></asp:BoundColumn>
+                                    <asp:BoundColumn DataField="Cliente" HeaderText="Cliente"></asp:BoundColumn>
+                                    <asp:BoundColumn DataField="checkIn" HeaderText="Fecha"></asp:BoundColumn>
+                                    <asp:BoundColumn DataField="cantidad" HeaderText="Hab.">
+                                        <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                    </asp:BoundColumn>
+                                    <asp:BoundColumn Visible="False" DataField="ID"></asp:BoundColumn>
+                                    <asp:TemplateColumn>
+                                        <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
+                                        <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                        <ItemTemplate>
+                                            <asp:LinkButton ID="lnkItinerario" runat="server" CssClass="dgLink" CommandName="DetalleReserva"
+                                                CausesValidation="false">
+											<%# DataBinder.Eval(Container, "DataItem.NoReservacion") %>
+                                            </asp:LinkButton>
+                                        </ItemTemplate>
+                                    </asp:TemplateColumn>
+                                    <asp:BoundColumn HeaderText="pmsACT" Visible="false"></asp:BoundColumn>
+                                    <asp:TemplateColumn>
+                                        <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
+                                        <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                        <ItemTemplate>
+                                            <asp:LinkButton ID="lnkVerificar" runat="server" CssClass="dgLink" CommandName="Select"
+                                                CausesValidation="false">
+											<% Response.Write(PortalCulture.GetString("01342"))%>
+                                            </asp:LinkButton>
+                                        </ItemTemplate>
+                                    </asp:TemplateColumn>
+                                    <asp:BoundColumn Visible="False" DataField="noReservacion"></asp:BoundColumn>
+                                    <%--<asp:BoundColumn Visible="False" DataField="idHotel"></asp:BoundColumn>--%>
+                                    <asp:BoundColumn Visible="False" DataField="noReservacion"></asp:BoundColumn>
+                                    <asp:BoundColumn Visible="False" DataField="IsNetRateUv"></asp:BoundColumn>
+                                    <asp:BoundColumn Visible="False" DataField="deposittarget"></asp:BoundColumn>
+                                </Columns>
+                            <PagerStyle CssClass="dgPager" HorizontalAlign="Right" Mode="NumericPages" Position="Bottom"
+                                    PrevPageText="<< Anterior" NextPageText="Siguiente >>"></PagerStyle>
+                        </asp:DataGrid>
+                    </div>
                         </asp:Panel>
                 </td>                
             </tr>

@@ -1075,9 +1075,10 @@ Partial Class ctrlDeposits
             Me.txtHotel.Text = ds.Tables(0).Rows(0).Item("hotel")
             Me.txtCiudad.Text = ds.Tables(0).Rows(0).Item("ciudad")
             Me.lblEmailCli.Text = ds.Tables(0).Rows(0).Item("cli_email")
-                Me.txtAmount.Text = FCurrency(ds.Tables(0).Rows(0).Item("monto"), 2) & " " & ds.Tables(0).Rows(0).Item("moneda")
-            Me.txtReferencia.Text = ds.Tables(0).Rows(0).Item("Referencia")
-            viewstate("idReservacion") = ds.Tables(0).Rows(0).Item("idReservacion")
+                'Me.txtAmount.Text = FCurrency(ds.Tables(0).Rows(0).Item("monto"), 2) & " " & ds.Tables(0).Rows(0).Item("moneda")
+                Me.txtAmount.Text = ds.Tables(0).Rows(0).Item("monto") & " " & ds.Tables(0).Rows(0).Item("moneda")
+                Me.txtReferencia.Text = ds.Tables(0).Rows(0).Item("Referencia")
+                ViewState("idReservacion") = ds.Tables(0).Rows(0).Item("idReservacion")
         End If
         End If
 
