@@ -8865,4 +8865,7 @@
   <data name="01659" xml:space="preserve">
     <value>Unconfirmed cryptocurrency reservations</value>
   </data>
+  <data name="01660" xml:space="preserve">
+    <value>Cryptocurrency</value>
+  </data>
 </root>

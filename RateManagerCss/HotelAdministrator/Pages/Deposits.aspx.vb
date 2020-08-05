@@ -365,7 +365,10 @@ Partial Class Deposits
                 Me.guardalog("/HotelAdministrator/Pages/Deposits.aspx", PaginaBase.acciones.Crear, String.Format("Creación de depósito {0}, no.reservacion: {1}", spayment, inputReserva.Value), "", "", sDatos)
             Else
                 flag = ctrlDeposits1.Save(inputReserva.Value, sDatos)
-                If flag Then ctrlDeposits1.enviarcorreo_conf()
+                If flag Then
+                    ctrlDeposits1.ConfirmPaymentRequest(inputReserva.Value)
+                    ctrlDeposits1.enviarcorreo_conf()
+                End If
                 Me.guardalog("/HotelAdministrator/Pages/Deposits.aspx", PaginaBase.acciones.Crear, String.Format("Creación de depósito, no.reservacion: {0}", inputReserva.Value), "", "", sDatos)
             End If
 

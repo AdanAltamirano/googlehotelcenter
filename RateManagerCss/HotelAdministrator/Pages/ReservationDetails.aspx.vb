@@ -996,7 +996,15 @@ Partial Class ReservationDetails
             'IsDividedPay = Not String.IsNullOrEmpty(xml.Reservation(0).NoAutorizacionDos)
 
             If IsPaymentOnline AndAlso IsSupervisor AndAlso xml.Reservation(0).Status = 4 Then
-                btnResConfirm.Visible = True
+                Dim ds As DataSet
+                With New despositFacade
+                    ds = .GetReservationData(nores)
+                End With
+                If ds IsNot Nothing AndAlso ds.Tables.Count > 0 AndAlso ds.Tables(0).Rows.Count > 0 AndAlso ds.Tables(0).Rows(0)("moneda") = "BTC" Then
+                    btnResConfirm.Visible = False
+                Else : btnResConfirm.Visible = True
+                End If
+
             End If
 
 
@@ -1038,6 +1046,14 @@ Partial Class ReservationDetails
                 With New despositFacade
                     ds = .GetReservationData(nores)
                 End With
+
+                Dim isCrypto As Boolean = False
+                If ds.Tables(0).Rows.Count > 0 Then
+                    If ds.Tables(0).Rows(0)("moneda") = "BTC" Then
+                        isCrypto = True
+                    End If
+                End If
+
                 tc = 1
                 'If Not ds Is Nothing AndAlso ds.Tables(0).Rows.Count > 0 Then
                 '    If Not ds.Tables(0).Rows(0).IsNull("TipoDeCambio") Then
@@ -1094,7 +1110,13 @@ Partial Class ReservationDetails
                     'lstPayMode.Items.Add("Azuba Pay")
                     'lstPayMode.Items(0).Value = 0
                 Else
-                    Me.lblpay.Text = String.Format(PortalCulture.GetString("01388"), If(xml.Reservation(0).Status = 1 Or xml.Reservation(0).Status = 3, xml.Reservation(0).NoAutorizacion, "N/A"), xml.Reservation(0).PaymentReference, PaymentSource)
+
+                    If isCrypto Then
+                        lblpay.Text = String.Format(PortalCulture.GetString("01388"), "N/A", ds.Tables(0).Rows(0)("referencia"), PortalCulture.GetString("01660"))
+                    Else
+                        Me.lblpay.Text = String.Format(PortalCulture.GetString("01388"), If(xml.Reservation(0).Status = 1 Or xml.Reservation(0).Status = 3, xml.Reservation(0).NoAutorizacion, "N/A"), xml.Reservation(0).PaymentReference, PaymentSource)
+                    End If
+
                     'lstPayMode.Items.Add("Banamex")
                     'lstPayMode.Items(0).Value = 1
                     'lstPayMode.Items.Add("Bancomer")
@@ -1116,10 +1138,16 @@ Partial Class ReservationDetails
                     Me.lblpay.Text += String.Format(PortalCulture.GetString("01644"), xml.Reservation(0).MonthInterestBanorte.ToString())
                 End If
 
-                If hr Then
-                    Me.lblpay.Text &= String.Format("<br/>{0}: {1} {2}", PortalCulture.GetString("00037"), "$ " & deposit.ToString("#,###,##0.00"), "")
-                    'Me.lblpay.Text &= If(tc > 1, String.Format("<br/>{0}: {1}", PortalCulture.GetString("M0BT0000030"), tc.ToString("#####0.00")), "")
+                If isCrypto Then
+                    If xml.Reservation(0).IsAltDepositAmountNull Then xml.Reservation(0).AltDepositAmount = ""
+                    lblpay.Text &= String.Format("<br/>{0}: {1} {2}", PortalCulture.GetString("00037"), xml.Reservation(0).AltDepositAmount, "BTC")
+                Else
+                    If hr Then
+                        Me.lblpay.Text &= String.Format("<br/>{0}: {1} {2}", PortalCulture.GetString("00037"), "$ " & deposit.ToString("#,###,##0.00"), "")
+                        'Me.lblpay.Text &= If(tc > 1, String.Format("<br/>{0}: {1}", PortalCulture.GetString("M0BT0000030"), tc.ToString("#####0.00")), "")
+                    End If
                 End If
+
 
 
             ElseIf IsDineroMail Then

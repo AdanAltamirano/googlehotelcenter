@@ -186,7 +186,7 @@ Partial Class ctrlDeposits
 
                     Double.TryParse(txtAmountDep.Text, monto)
                     Date.TryParse(Fecha.selectedDate, dt)
-                    sDatos = CreaDsLog(noRseravacion, txtCuenta.Text, txtBanco.Text, monto.ToString("########0.00"), ddlMoneda.SelectedItem.Text, _
+                    sDatos = CreaDsLog(noRseravacion, txtCuenta.Text, txtBanco.Text, monto.ToString("########0.00"), ddlMoneda.SelectedItem.Text,
                               dt.ToString("yyyy-MM-dd hh:mm"), txtObservacion.Text, (New AuthUser).UserInfoName)
                 Else
                     trans.Rollback()
@@ -206,6 +206,47 @@ Partial Class ctrlDeposits
             End If
         End Try
     End Function
+
+    Public Sub ConfirmPaymentRequest(ByVal reference As String)
+        Dim connectionString As String = AppSettings("OzPayment")
+        If String.IsNullOrEmpty(connectionString) Then
+            Return
+        End If
+
+        Using connection As New SqlConnection(connectionString)
+
+            connection.Open()
+            'buscamos la reserva
+            Try
+                Dim dr As SqlDataReader
+                Dim q As String = "select * from paymentrequest where reference = @reference and method = 'crypto' and authorized = 0"
+
+                Dim f As Boolean = False
+                Using cmd As New SqlCommand(q, connection)
+                    cmd.Parameters.AddWithValue("@reference", reference)
+                    dr = cmd.ExecuteReader()
+                    f = dr.HasRows
+                End Using
+                dr.Close()
+
+                If f Then
+                    q = "update paymentrequest set authorized = 1, authorizationNumber = @authorizationNumber where reference = @reference and method = 'crypto'"
+
+                    Using cmd As New SqlCommand(q, connection)
+                        cmd.Parameters.AddWithValue("@reference", reference)
+                        cmd.Parameters.AddWithValue("@authorizationNumber", txtReferencia.Text)
+                        cmd.ExecuteNonQuery()
+                    End Using
+                End If
+            Catch ex As Exception
+                If connection.State = ConnectionState.Broken Or connection.State = ConnectionState.Open Then
+                    connection.Close()
+                End If
+            End Try
+
+            connection.Close()
+        End Using
+    End Sub
 
     Public Function enviarcorreo_conf() As Boolean
 
