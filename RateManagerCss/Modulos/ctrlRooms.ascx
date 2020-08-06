@@ -34,6 +34,11 @@
 							<asp:ListItem Value="13">13</asp:ListItem>
 							<asp:ListItem Value="14">14</asp:ListItem>
 							<asp:ListItem Value="15">15</asp:ListItem>
+							<asp:ListItem Value="15">16</asp:ListItem>
+							<asp:ListItem Value="15">17</asp:ListItem>
+							<asp:ListItem Value="15">18</asp:ListItem>
+							<asp:ListItem Value="15">19</asp:ListItem>
+							<asp:ListItem Value="15">20</asp:ListItem>
 						</asp:dropdownlist></td><td><asp:label id="lblMinNumberAdults" runat="server" CssClass="clslabel" EnableViewState="False">Min Adultos:</asp:label></td><td><asp:dropdownlist id="lstMinNumberAdults" runat="server">
 							<asp:ListItem Value="1">1</asp:ListItem>
 							<asp:ListItem Value="2">2</asp:ListItem>
@@ -50,6 +55,11 @@
 							<asp:ListItem Value="13">13</asp:ListItem>
 							<asp:ListItem Value="14">14</asp:ListItem>
 							<asp:ListItem Value="15">15</asp:ListItem>
+							<asp:ListItem Value="15">16</asp:ListItem>
+							<asp:ListItem Value="15">17</asp:ListItem>
+							<asp:ListItem Value="15">18</asp:ListItem>
+							<asp:ListItem Value="15">19</asp:ListItem>
+							<asp:ListItem Value="15">20</asp:ListItem>
 						</asp:dropdownlist></td><td><asp:label id="lblNumberAdults" runat="server" CssClass="clslabel" EnableViewState="False">Adultos:</asp:label></td><td><asp:dropdownlist id="lstNumberAdults" runat="server">
 							<asp:ListItem Value="1">1</asp:ListItem>
 							<asp:ListItem Value="2">2</asp:ListItem>
@@ -66,6 +76,11 @@
 							<asp:ListItem Value="13">13</asp:ListItem>
 							<asp:ListItem Value="14">14</asp:ListItem>
 							<asp:ListItem Value="15">15</asp:ListItem>
+							<asp:ListItem Value="15">16</asp:ListItem>
+							<asp:ListItem Value="15">17</asp:ListItem>
+							<asp:ListItem Value="15">18</asp:ListItem>
+							<asp:ListItem Value="15">19</asp:ListItem>
+							<asp:ListItem Value="15">20</asp:ListItem>
 						</asp:dropdownlist></td><td><asp:label id="lblNumberRooms" runat="server" CssClass="clsLabel" EnableViewState="False"> Habitaciones:</asp:label></td><td><asp:textbox id="txtNumberRooms" runat="server" CssClass="textbox" MaxLength="3" Columns="3"></asp:textbox><asp:regularexpressionvalidator id="RegularExpressionValidator1" runat="server" CssClass="validators" Display="Dynamic"
 							ForeColor=" " ControlToValidate="txtNumberRooms" ErrorMessage="1-999" ValidationExpression="^\d+$"></asp:regularexpressionvalidator><asp:requiredfieldvalidator id="Requiredfieldvalidator1" runat="server" CssClass="validators" Display="Dynamic"
 							ForeColor=" " ControlToValidate="txtNumberRooms" ErrorMessage="*"></asp:requiredfieldvalidator></td><td><asp:label id="lblNumberChildrens" runat="server" CssClass="clslabel" EnableViewState="False">Niños:</asp:label></td><td><asp:dropdownlist id="lstNumberChildrens" runat="server">
@@ -84,6 +99,11 @@
 							<asp:ListItem Value="12">12</asp:ListItem>
 							<asp:ListItem Value="13">13</asp:ListItem>
 							<asp:ListItem Value="14">14</asp:ListItem>
+							<asp:ListItem Value="15">15</asp:ListItem>
+							<asp:ListItem Value="16">16</asp:ListItem>
+							<asp:ListItem Value="17">17</asp:ListItem>
+							<asp:ListItem Value="18">18</asp:ListItem>
+							<asp:ListItem Value="19">19</asp:ListItem>
 						</asp:dropdownlist></td><td><asp:label id="lblPeoplesExtras" runat="server" CssClass="clslabel" EnableViewState="False"> Extras:</asp:label></td><td><asp:dropdownlist id="lstPeoplesExtras" runat="server">
 							<asp:ListItem Value="0">0</asp:ListItem>
 							<asp:ListItem Value="1">1</asp:ListItem>
@@ -101,6 +121,11 @@
 							<asp:ListItem Value="13">13</asp:ListItem>
 							<asp:ListItem Value="14">14</asp:ListItem>
 							<asp:ListItem Value="15">15</asp:ListItem>
+							<asp:ListItem Value="16">16</asp:ListItem>
+							<asp:ListItem Value="17">17</asp:ListItem>
+							<asp:ListItem Value="18">18</asp:ListItem>
+							<asp:ListItem Value="19">19</asp:ListItem>
+							<asp:ListItem Value="20">20</asp:ListItem>
 						</asp:dropdownlist></td></tr>		     
 		    </TABLE>			
 		</td>
@@ -258,106 +283,98 @@
 	        <span class="validators"><%=RateManager.PortalCulture.GetString(If(CType(Me.Page, RateManager.PaginaBase).IsSupervisor, "01365", "01392"))%></span>
 	    </td>
 	</tr>
-	<% end if %>
+	<% end If %>
 	<tr>
 		<td colSpan="4"></td>
 	</tr>
 </TABLE>
 <script>
- function ShowPrice(ddl,div,txt,txtV,label,divlabel)
-  {
-  
-   var d = document.getElementById(ddl);
-   var t = document.getElementById(div);      
-   var valor =document.getElementById(txt);
-   var t2 = document.getElementById(txtV);
-   var d1 =document.getElementById('txtDiv1');
-   var d2 =document.getElementById('txtDiv2');
-   var d3 =document.getElementById('txtDiv3');
-   
-   var l =document.getElementById(label);
-   var dl =document.getElementById(divlabel);
-   	if (d.selectedIndex == 0) 
-	 {
-	  t.style.display='none';
-	  valor.value="";
-	  t2.value=0;
-	 }
-	else
-	 {
-	  t.style.display='';
-	  t2.value=1;
-	 }
-	if(d1.value== 1 || d2.value == 1 || d3.value == 1)
-	 {
-		dl.style.display='';
-	 }
-	else
-	 {
-		dl.style.display='none';
-	 }
-  }
-  
-  function ShowName(val,en,es,iSp,iEn)
-   {
-  
-   var d =document.getElementById(val);
-   var t2 =document.getElementById(en);
-   var t3 =document.getElementById(es);
-   var texto = d.item(d.selectedIndex);
-   var iS= document.getElementById(iSp);   
-   var SplitIS = iS.value.split("*|*");         
-   var iE= document.getElementById(iEn);   
-   var SplitIE = iE.value.split("*|*");      
-  
-   texto=(texto.text).split("-");   
-   if(texto.length>=2)
-   {
-   t2.value = SplitIE[d.selectedIndex];//texto[1];
-   t3.value = SplitIS[d.selectedIndex];//texto[1];
-   }   
-   
-   }
+    function ShowPrice(ddl, div, txt, txtV, label, divlabel) {
 
-  //****  Function for FCK Editor.  ****
-  function ShowNameFck(val,en,es,iSp,iEn) {
-   var d =document.getElementById(val);
-   var t2 =document.getElementById(en);
-   var t3 =document.getElementById(es);
-   var texto = d.item(d.selectedIndex);
-   var iS= document.getElementById(iSp);   
-   var SplitIS = iS.value.split("*|*");         
-   var iE= document.getElementById(iEn);   
-   var SplitIE = iE.value.split("*|*");      
-   
-	 texto=(texto.text).split("-");      
-	 if(texto.length>=2)	{
-			// Get the editor instance.
-			var oEditorEn = FCKeditorAPI.GetInstance(en) ;
-			var oEditorEs = FCKeditorAPI.GetInstance(es) ;
-			var oDOMEn = oEditorEn.EditorDocument ;
-			var oDOMEs = oEditorEs.EditorDocument ;
-			
-			if ( document.all )      
-			{
-				// IE engine.
-				oDOMEn.body.innerText= SplitIE[d.selectedIndex];
-				oDOMEs.body.innerText= SplitIS[d.selectedIndex]; }
-			else {
-				// Gecko engine (FF, usw.)
-				oEditorEn.EditorDocument.body.innerHTML = SplitIE[d.selectedIndex];
-				oEditorEs.EditorDocument.body.innerHTML = SplitIS[d.selectedIndex]; 
-			}			
-	 }   
-   }
-   
-   function saveImg(lbl)
-   {   
-   	var imgFile = document.getElementById("ImgFileOpen");   	
-	imgFile.click();	
-	var RutaFile = document.getElementById(lbl);
-	RutaFile.value=imgFile.value;	
-   }
-   
-   
+        var d = document.getElementById(ddl);
+        var t = document.getElementById(div);
+        var valor = document.getElementById(txt);
+        var t2 = document.getElementById(txtV);
+        var d1 = document.getElementById('txtDiv1');
+        var d2 = document.getElementById('txtDiv2');
+        var d3 = document.getElementById('txtDiv3');
+
+        var l = document.getElementById(label);
+        var dl = document.getElementById(divlabel);
+        if (d.selectedIndex == 0) {
+            t.style.display = 'none';
+            valor.value = "";
+            t2.value = 0;
+        }
+        else {
+            t.style.display = '';
+            t2.value = 1;
+        }
+        if (d1.value == 1 || d2.value == 1 || d3.value == 1) {
+            dl.style.display = '';
+        }
+        else {
+            dl.style.display = 'none';
+        }
+    }
+
+    function ShowName(val, en, es, iSp, iEn) {
+
+        var d = document.getElementById(val);
+        var t2 = document.getElementById(en);
+        var t3 = document.getElementById(es);
+        var texto = d.item(d.selectedIndex);
+        var iS = document.getElementById(iSp);
+        var SplitIS = iS.value.split("*|*");
+        var iE = document.getElementById(iEn);
+        var SplitIE = iE.value.split("*|*");
+
+        texto = (texto.text).split("-");
+        if (texto.length >= 2) {
+            t2.value = SplitIE[d.selectedIndex];//texto[1];
+            t3.value = SplitIS[d.selectedIndex];//texto[1];
+        }
+
+    }
+
+    //****  Function for FCK Editor.  ****
+    function ShowNameFck(val, en, es, iSp, iEn) {
+        var d = document.getElementById(val);
+        var t2 = document.getElementById(en);
+        var t3 = document.getElementById(es);
+        var texto = d.item(d.selectedIndex);
+        var iS = document.getElementById(iSp);
+        var SplitIS = iS.value.split("*|*");
+        var iE = document.getElementById(iEn);
+        var SplitIE = iE.value.split("*|*");
+
+        texto = (texto.text).split("-");
+        if (texto.length >= 2) {
+            // Get the editor instance.
+            var oEditorEn = FCKeditorAPI.GetInstance(en);
+            var oEditorEs = FCKeditorAPI.GetInstance(es);
+            var oDOMEn = oEditorEn.EditorDocument;
+            var oDOMEs = oEditorEs.EditorDocument;
+
+            if (document.all) {
+                // IE engine.
+                oDOMEn.body.innerText = SplitIE[d.selectedIndex];
+                oDOMEs.body.innerText = SplitIS[d.selectedIndex];
+            }
+            else {
+                // Gecko engine (FF, usw.)
+                oEditorEn.EditorDocument.body.innerHTML = SplitIE[d.selectedIndex];
+                oEditorEs.EditorDocument.body.innerHTML = SplitIS[d.selectedIndex];
+            }
+        }
+    }
+
+    function saveImg(lbl) {
+        var imgFile = document.getElementById("ImgFileOpen");
+        imgFile.click();
+        var RutaFile = document.getElementById(lbl);
+        RutaFile.value = imgFile.value;
+    }
+
+
 </script>
