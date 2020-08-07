@@ -34,11 +34,11 @@
 							<asp:ListItem Value="13">13</asp:ListItem>
 							<asp:ListItem Value="14">14</asp:ListItem>
 							<asp:ListItem Value="15">15</asp:ListItem>
-							<asp:ListItem Value="15">16</asp:ListItem>
-							<asp:ListItem Value="15">17</asp:ListItem>
-							<asp:ListItem Value="15">18</asp:ListItem>
-							<asp:ListItem Value="15">19</asp:ListItem>
-							<asp:ListItem Value="15">20</asp:ListItem>
+							<asp:ListItem Value="16">16</asp:ListItem>
+							<asp:ListItem Value="17">17</asp:ListItem>
+							<asp:ListItem Value="18">18</asp:ListItem>
+							<asp:ListItem Value="19">19</asp:ListItem>
+							<asp:ListItem Value="20">20</asp:ListItem>
 						</asp:dropdownlist></td><td><asp:label id="lblMinNumberAdults" runat="server" CssClass="clslabel" EnableViewState="False">Min Adultos:</asp:label></td><td><asp:dropdownlist id="lstMinNumberAdults" runat="server">
 							<asp:ListItem Value="1">1</asp:ListItem>
 							<asp:ListItem Value="2">2</asp:ListItem>
@@ -55,11 +55,11 @@
 							<asp:ListItem Value="13">13</asp:ListItem>
 							<asp:ListItem Value="14">14</asp:ListItem>
 							<asp:ListItem Value="15">15</asp:ListItem>
-							<asp:ListItem Value="15">16</asp:ListItem>
-							<asp:ListItem Value="15">17</asp:ListItem>
-							<asp:ListItem Value="15">18</asp:ListItem>
-							<asp:ListItem Value="15">19</asp:ListItem>
-							<asp:ListItem Value="15">20</asp:ListItem>
+							<asp:ListItem Value="16">16</asp:ListItem>
+							<asp:ListItem Value="17">17</asp:ListItem>
+							<asp:ListItem Value="18">18</asp:ListItem>
+							<asp:ListItem Value="19">19</asp:ListItem>
+							<asp:ListItem Value="20">20</asp:ListItem>
 						</asp:dropdownlist></td><td><asp:label id="lblNumberAdults" runat="server" CssClass="clslabel" EnableViewState="False">Adultos:</asp:label></td><td><asp:dropdownlist id="lstNumberAdults" runat="server">
 							<asp:ListItem Value="1">1</asp:ListItem>
 							<asp:ListItem Value="2">2</asp:ListItem>
@@ -76,11 +76,11 @@
 							<asp:ListItem Value="13">13</asp:ListItem>
 							<asp:ListItem Value="14">14</asp:ListItem>
 							<asp:ListItem Value="15">15</asp:ListItem>
-							<asp:ListItem Value="15">16</asp:ListItem>
-							<asp:ListItem Value="15">17</asp:ListItem>
-							<asp:ListItem Value="15">18</asp:ListItem>
-							<asp:ListItem Value="15">19</asp:ListItem>
-							<asp:ListItem Value="15">20</asp:ListItem>
+							<asp:ListItem Value="16">16</asp:ListItem>
+							<asp:ListItem Value="17">17</asp:ListItem>
+							<asp:ListItem Value="18">18</asp:ListItem>
+							<asp:ListItem Value="19">19</asp:ListItem>
+							<asp:ListItem Value="20">20</asp:ListItem>
 						</asp:dropdownlist></td><td><asp:label id="lblNumberRooms" runat="server" CssClass="clsLabel" EnableViewState="False"> Habitaciones:</asp:label></td><td><asp:textbox id="txtNumberRooms" runat="server" CssClass="textbox" MaxLength="3" Columns="3"></asp:textbox><asp:regularexpressionvalidator id="RegularExpressionValidator1" runat="server" CssClass="validators" Display="Dynamic"
 							ForeColor=" " ControlToValidate="txtNumberRooms" ErrorMessage="1-999" ValidationExpression="^\d+$"></asp:regularexpressionvalidator><asp:requiredfieldvalidator id="Requiredfieldvalidator1" runat="server" CssClass="validators" Display="Dynamic"
 							ForeColor=" " ControlToValidate="txtNumberRooms" ErrorMessage="*"></asp:requiredfieldvalidator></td><td><asp:label id="lblNumberChildrens" runat="server" CssClass="clslabel" EnableViewState="False">Niños:</asp:label></td><td><asp:dropdownlist id="lstNumberChildrens" runat="server">
