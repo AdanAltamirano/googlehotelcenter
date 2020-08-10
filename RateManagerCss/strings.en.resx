@@ -8862,4 +8862,10 @@
   <data name="01658" xml:space="preserve">
     <value>This property is a house. Only quantity 1 as inventory is permited.</value>
   </data>
+  <data name="01659" xml:space="preserve">
+    <value>Unconfirmed cryptocurrency reservations</value>
+  </data>
+  <data name="01660" xml:space="preserve">
+    <value>Cryptocurrency</value>
+  </data>
 </root>
