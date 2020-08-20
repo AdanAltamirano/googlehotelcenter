@@ -8,9 +8,7 @@
                             <b-row>
                                 <b-col>
                                     <p>
-                                        <select
-                                        class="input-border-bottom"
-                                        v-model="model.typeFreeNight">
+                                        <select class="input-border-bottom" v-model="model.typeFreeNight">
                                             <option value="0">{{ $t('Every') }}</option>
                                             <option value="1">{{ $t('Only') }}</option>
                                         </select>
@@ -35,7 +33,7 @@
                                 <b-col md="5">
                                     <b-form-group :label="$t('Percentage')">
                                         <b-input-group append="%">
-                                            <b-form-input v-model="model.discount" />
+                                            <b-form-input @keypress="numberFormat" v-model="model.discount" />
                                         </b-input-group>
                                     </b-form-group>
                                 </b-col>
@@ -58,6 +56,7 @@
 
 <script>
 import help from '../helper/help.vue';
+import { onlyNumber } from '../helper/util';
 import Vue from 'vue';
 
 export default {
@@ -128,6 +127,9 @@ export default {
                     .append(instance.$el);
                 }
             });
+        },
+        numberFormat(evt) {
+            onlyNumber(evt);
         }
     }
 }

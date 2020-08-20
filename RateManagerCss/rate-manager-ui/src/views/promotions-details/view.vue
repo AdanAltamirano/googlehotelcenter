@@ -1,6 +1,5 @@
 <template>
     <div>
-        {{ req }}
         <b-container class="main-container" fluid>
             <h2 class="text-primary">{{ $t('Promotions') }}</h2>
             <b-row class="mb-4 mt-2">
@@ -68,7 +67,7 @@
             </b-row>
             <b-row class="mb-4">
                 <b-col class="text-right mr-4">
-                    <b-button variant="success">{{ $t('Save') }}</b-button>
+                    <b-button @click="save" variant="success">{{ $t('Save') }}</b-button>
                 </b-col>
             </b-row>
         </b-container>
@@ -148,6 +147,9 @@ export default {
     methods: {
         changeOffset() {
             this.offset = true;
+        },
+        save() {
+            
         }
     }
 }

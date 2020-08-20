@@ -41,7 +41,6 @@ import ratePlanService from '../../../api/ratePlans-service';
 import eventBus from '../../../core/event-bus';
 
 export default {
-    name: 'rate-plan-rooms',
     props: {
         dataModel: {
             type: Object,

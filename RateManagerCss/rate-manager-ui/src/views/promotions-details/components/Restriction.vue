@@ -5,12 +5,12 @@
                 <b-row>
                     <b-col>
                         <b-form-group :label="$t('Min. nights')">
-                            <b-form-input v-model="model.minNights" type="number"></b-form-input>
+                            <b-form-input v-model="model.minNights" min="0" type="number"></b-form-input>
                         </b-form-group>
                     </b-col>
                     <b-col>
                         <b-form-group :label="$t('Max. nights')">
-                            <b-form-input v-model="model.maxNights" type="number"></b-form-input>
+                            <b-form-input v-model="model.maxNights" min="0" type="number"></b-form-input>
                         </b-form-group>
                     </b-col>
                 </b-row>
@@ -73,10 +73,6 @@
 <script>
 export default {
     props: {
-        minNights: {
-            type: Number,
-            required: true
-        },
         dataModel: {
             type: Object,
             required: true

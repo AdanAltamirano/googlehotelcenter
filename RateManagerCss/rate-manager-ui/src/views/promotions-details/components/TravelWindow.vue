@@ -107,11 +107,6 @@
 
 <script>
 export default {
-    created() {
-        this.days.forEach(x => {
-            this.validDays.push(x.day);
-        });
-    },
     props: {
         dataModel: {
             type: Object,
