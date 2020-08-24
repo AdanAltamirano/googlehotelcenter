@@ -47,6 +47,7 @@ namespace APIServices.Models.DTO
         public bool AllowsConfirm { get; set; } = false;
 
         public string CancellationReason { get; set; }
+        public string Agency { get; set; }
     }
 
     public class CustomerDetails

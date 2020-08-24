@@ -87,6 +87,6 @@ export default {
     'Email Not Sent': 'Correo no enviado',
     'Commission Internet Power': 'Comisión Internet Power',
     'Payment Gateway': 'Pasarela',
-    'Total Hotel': 'Total Hotel'
-
+    'Total Hotel': 'Total Hotel',
+    'Agency': 'Agencia'
 };

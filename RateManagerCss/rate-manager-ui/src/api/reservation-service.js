@@ -11,6 +11,7 @@ const creditcard = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations/{re
 const sendNotification = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations/{reservationId}/sendnotification`);
 const excel = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations/excel{?filter,orderBy,pageSize,page}`);
 const corporate = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations/corporate`);
+const agencies = Vue.resource(`${process.env.VUE_APP_API_URL}/agencies`);
 
 export default {
     /**
@@ -73,5 +74,8 @@ export default {
     },
     GetCorporate() {
         return corporate.get();
+    },
+    GetAgencies() {
+        return agencies.get();
     }
 };

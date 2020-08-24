@@ -37,6 +37,10 @@
                             {{$t('Cancellation number')}}: <strong>{{result.cancellationNumber}}</strong>
                             <br>
                             <b-link @click="alertReason">{{$t('See reason for cancellation')}}</b-link>
+                            <br>
+                        </span>
+                        <span v-if="result.agency !== null && result.agency !== ''">
+                            {{$t('Agency')}}: <strong>{{result.agency}}</strong>
                         </span>
                     </address>
                 </b-col>
