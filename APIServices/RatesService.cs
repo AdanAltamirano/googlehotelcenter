@@ -11,7 +11,7 @@ namespace APIServices
     /// </summary>
     public class RatesService
     {
-        string strError;
+        string strError = "";
         /// <summary>
         /// Búsqueda de tarifas diarias
         /// </summary>
