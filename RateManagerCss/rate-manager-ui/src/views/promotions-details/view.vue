@@ -71,6 +71,7 @@
                 </b-col>
             </b-row>
         </b-container>
+        {{ req }}
     </div>
 </template>
 
