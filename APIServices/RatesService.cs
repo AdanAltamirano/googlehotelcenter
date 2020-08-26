@@ -241,7 +241,7 @@ namespace APIServices
         /// <returns></returns>
         public KeyValuePair<string, string> AddRate(RateUpdateRQ updateRQ)
         {
-            //string strError = "";
+            strError = "";
             OzHotelesEntities db = new OzHotelesEntities();
             using (System.Data.Entity.DbContextTransaction transaction = db.Database.BeginTransaction())
             {
@@ -399,7 +399,7 @@ namespace APIServices
             }
 
             if (rate.Prices?.Promotion != null)
-            {                
+            {
                 newDictionaryId = Dictionary.Insert(rate.Prices.Promotion.SpanishDescription, rate.Prices.Promotion.EnglishDescription);
                 promotionDiscount = rate.Prices.Promotion.Discount;
                 if (newDictionaryId == 0)
@@ -503,7 +503,7 @@ namespace APIServices
                             auxIni = rate.StartDate;
                             auxEnd = of.FechaInicia.AddDays(-1);
                             auxIni2 = of.FechaFinaliza.AddDays(1);
-                            auxEnd2 = rate.EndDate;                            
+                            auxEnd2 = rate.EndDate;
                             if (!IsOverlappedFares(rate, auxIni, auxEnd, ref contextDb))
                             {
                                 rate.StartDate = auxIni;
@@ -757,7 +757,7 @@ namespace APIServices
                 strError = "No se permite crear tarifas sin precio Adulto";
                 return false;
             }
-                
+
 
             bool isNetRate = false;
             int? newDictionaryId = 0;
