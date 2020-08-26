@@ -41,6 +41,8 @@
                         </span>
                         <span v-if="result.agency !== null && result.agency !== ''">
                             {{$t('Agency')}}: <strong>{{result.agency}}</strong>
+                            <br>
+                            {{ $t('User') }}: <strong>{{ result.agencyUser }}</strong>
                         </span>
                     </address>
                 </b-col>

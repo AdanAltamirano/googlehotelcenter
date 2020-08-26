@@ -48,6 +48,7 @@ namespace APIServices.Models.DTO
 
         public string CancellationReason { get; set; }
         public string Agency { get; set; }
+        public string AgencyUser { get; set; }
     }
 
     public class CustomerDetails

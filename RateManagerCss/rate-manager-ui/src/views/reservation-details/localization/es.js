@@ -88,5 +88,6 @@ export default {
     'Commission Internet Power': 'Comisión Internet Power',
     'Payment Gateway': 'Pasarela',
     'Total Hotel': 'Total Hotel',
-    'Agency': 'Agencia'
+    'Agency': 'Agencia',
+    'User': 'Usuario'
 };

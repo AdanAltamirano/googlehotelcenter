@@ -704,6 +704,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vReservationDetails' no tiene 
           <Property Name="companyId" Type="int" />
           <Property Name="agencyId" Type="int" />
           <Property Name="agency" Type="nvarchar" MaxLength="180" Nullable="false" />
+          <Property Name="agencyUser" Type="nvarchar" MaxLength="81" />
           <Property Name="corporateId" Type="int" />
           <Property Name="corporateName" Type="nvarchar" MaxLength="20" />
           <Property Name="hotelEmail" Type="nvarchar" MaxLength="240" />
@@ -1137,6 +1138,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
     [vReservationDetails].[companyId] AS [companyId], 
     [vReservationDetails].[agencyId] AS [agencyId], 
     [vReservationDetails].[agency] AS [agency], 
+    [vReservationDetails].[agencyUser] AS [agencyUser], 
     [vReservationDetails].[corporateId] AS [corporateId], 
     [vReservationDetails].[corporateName] AS [corporateName], 
     [vReservationDetails].[hotelEmail] AS [hotelEmail]
@@ -2127,6 +2129,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <Property Name="companyId" Type="Int32" />
           <Property Name="agencyId" Type="Int32" />
           <Property Name="agency" Type="String" Nullable="false" MaxLength="180" FixedLength="false" Unicode="true" />
+          <Property Name="agencyUser" Type="String" MaxLength="81" FixedLength="false" Unicode="true" />
           <Property Name="corporateId" Type="Int32" />
           <Property Name="corporateName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="hotelEmail" Type="String" MaxLength="240" FixedLength="false" Unicode="true" />
@@ -2807,6 +2810,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
                 <ScalarProperty Name="hotelEmail" ColumnName="hotelEmail" />
                 <ScalarProperty Name="corporateName" ColumnName="corporateName" />
                 <ScalarProperty Name="corporateId" ColumnName="corporateId" />
+                <ScalarProperty Name="agencyUser" ColumnName="agencyUser" />
                 <ScalarProperty Name="agency" ColumnName="agency" />
                 <ScalarProperty Name="agencyId" ColumnName="agencyId" />
                 <ScalarProperty Name="companyId" ColumnName="companyId" />
