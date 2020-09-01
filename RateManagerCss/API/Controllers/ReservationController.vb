@@ -36,7 +36,7 @@ Namespace API.Controller
                         Return ReservationService.GetAll().Where(Function(h) h.CorporateId = page.CorporateId)
                     End If
                 End If
-                Dim userCorpId = GetUserCorpId(GetUserId().Value)
+                Dim userCorpId As Integer = GetUserCorpId(GetUserId().Value)
                 Return ReservationService.GetAll().Where(Function(h) h.CompanyId = userCorpId)
 
             ElseIf roles.Contains("hotelcompany") Then
