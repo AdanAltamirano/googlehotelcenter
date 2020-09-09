@@ -493,7 +493,7 @@ Partial Public Class AgenciasModulo
     Private Function addAgency(ByVal idempresa As Integer, ByVal correo As String, ByRef status As Integer) As Boolean
         Dim ds As New AgencyData
         Dim daAgency As New AgenciaSistema
-        'status = daAgency.CreateAgency("", "", correo, idempresa, txtIATA.Text, 0, "", "", 0, "", "", 0, "", "", ds)
+        status = daAgency.CreateAgency("", "", correo, idempresa, 0, 0, 0, 0, 0, txtIATA.Text, 0, "", "", 0, "", "", 0, "", "", ds)
 
         Return status = 0
 

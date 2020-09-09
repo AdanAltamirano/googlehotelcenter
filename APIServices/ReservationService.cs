@@ -179,6 +179,8 @@ namespace APIServices
                 model.Portal = details.Portal;
                 model.IsNetRateUV = details.IsNetRateUV;
                 model.PaymentWay = details.paymentType;
+                model.Agency = details.agency;
+                model.AgencyUser = details.agencyUser;
                 model.BankDepositDetails = new BankDepositDetails();
                 if (details.paymentType == 0)
                 {

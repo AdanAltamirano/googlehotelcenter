@@ -634,33 +634,33 @@ Public Class Agentes
             End If
         End Try
 
-        If insertAgent Then
-            Dim dsc As New CustomerData
-            Dim cRow As DataRow = dsc.Tables(CustomerData.CUSTOMER_TABLE).NewRow()
-            With cRow
-                .Item(CustomerData.IDUSER_FIELD) = idUser
-                .Item(CustomerData.NAME_FIELD) = userName
-                .Item(CustomerData.LASTNAME_FIELD) = UserLastName
-                .Item(CustomerData.EMAIL_FIELD) = userEmail
-                .Item(CustomerData.PHONE_FIELD) = "*"
-                .Item(CustomerData.CITY_FIELD) = "*"
-                .Item(CustomerData.ADDRESS_FIELD) = "*"
-                .Item(CustomerData.STATE_FIELD) = "*"
-                .Item(CustomerData.IDPAIS_FIELD) = "MX"
-            End With
-            dsc.Tables(CustomerData.CUSTOMER_TABLE).Rows.Add(cRow)
-            Dim addCustomer As Boolean
+        'If insertAgent Then
+        '    Dim dsc As New CustomerData
+        '    Dim cRow As DataRow = dsc.Tables(CustomerData.CUSTOMER_TABLE).NewRow()
+        '    With cRow
+        '        .Item(CustomerData.IDUSER_FIELD) = idUser
+        '        .Item(CustomerData.NAME_FIELD) = userName
+        '        .Item(CustomerData.LASTNAME_FIELD) = UserLastName
+        '        .Item(CustomerData.EMAIL_FIELD) = userEmail
+        '        .Item(CustomerData.PHONE_FIELD) = "*"
+        '        .Item(CustomerData.CITY_FIELD) = "*"
+        '        .Item(CustomerData.ADDRESS_FIELD) = "*"
+        '        .Item(CustomerData.STATE_FIELD) = "*"
+        '        .Item(CustomerData.IDPAIS_FIELD) = "MX"
+        '    End With
+        '    dsc.Tables(CustomerData.CUSTOMER_TABLE).Rows.Add(cRow)
+        '    Dim addCustomer As Boolean
 
-            With New cCustomerSystem
-                addCustomer = .createCustomer(dsc)
-            End With
+        '    With New cCustomerSystem
+        '        addCustomer = .createCustomer(dsc)
+        '    End With
 
-            If dsc.HasErrors Then
-                strError = "Clientes: " & dsc.Tables(0).Rows(0).RowError
-                insertAgent = False
-            End If
-        End If
-        
+        '    If dsc.HasErrors Then
+        '        strError = "Clientes: " & dsc.Tables(0).Rows(0).RowError
+        '        insertAgent = False
+        '    End If
+        'End If
+
     End Function
 
     Public Function getAgentByUserId(ByVal idUser As Integer) As DataSet

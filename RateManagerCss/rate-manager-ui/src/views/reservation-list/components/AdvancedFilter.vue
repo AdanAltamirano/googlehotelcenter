@@ -88,7 +88,7 @@
                                     <b-form-input v-model="clientName"></b-form-input>
                                 </b-form-group>
                             </b-col>
-                            <b-col :md="source === 'IDS' ? '2' : '4'">
+                            <b-col :md="source === 'IDS' || source === 'AGENCY' ? '2' : '4'">
                                 <b-form-group :label="$t('Origin')">
                                     <b-form-select v-model="source" :options="sources"></b-form-select>
                                 </b-form-group>
@@ -96,6 +96,11 @@
                             <b-col md="2" v-if="source === 'IDS'">
                                 <b-form-group label="OTAS">
                                     <b-form-select v-model="ota" :options="otas"></b-form-select>
+                                </b-form-group>
+                            </b-col>
+                            <b-col md="2" v-if="source === 'AGENCY'">
+                                <b-form-group :label="$t('Agencies')">
+                                    <b-form-select v-model="agency" :options="agencies"></b-form-select>
                                 </b-form-group>
                             </b-col>
                             <b-col md="4">
@@ -163,6 +168,7 @@ export default {
     },
     mounted() {
         this.getHotels();
+        this.getAgencies();
         this.$root.$on('queryString', array => {
             this.filterQueryString = array[0];
             this.formatQueryString = array[1];
@@ -214,6 +220,8 @@ export default {
             hotel: [],
             hotels: [],
             ota: 'ALL',
+            agency: -1,
+            agencies: [],
             typeDates: [
                 { text: this.$t('Reservation date'), value: 'ReservationDate' },
                 { text: this.$t('Arrival date'), value: 'CheckOut' },
@@ -227,7 +235,8 @@ export default {
                 { text: this.$t('Front Desk'), value: 'HTL' },
                 { text: 'GDS', value: 'WIZ' },
                 { text: 'ADS', value: 'ADS' },
-                { text: 'OTAS', value: 'IDS' }
+                { text: 'OTAS', value: 'IDS' },
+                { text: this.$t('Agency'), value: 'AGENCY'}
             ],
             otas: [
                 { text: `-- ${this.$t('All')} --`, value: 'ALL' },
@@ -248,6 +257,24 @@ export default {
                 this.hotels = response.body;
                 console.log(this.hotels);
                 console.log(response.body);
+            });
+        },
+        getAgencies() {
+            ReservationService.GetAgencies().then(response => {
+                this.agencies.push({
+                    text: this.$t('All'),
+                    value: -1
+                });
+
+                response.body.forEach(x => {
+                    this.agencies.push({
+                        text: x.nombre,
+                        value: x.idAgencia
+                    })
+                });
+                if (this.agencies.length > 0) {
+                    this.agency = this.agencies[0].value;
+                }
             });
         },
         search() {
@@ -301,7 +328,11 @@ export default {
             if (this.clientName !== '')
                 filter += `${this.and(filter)}Client lk ${this.clientName}`;
             if (this.source !== 'ALL')
-                filter += `${this.and(filter)}Source eq ${this.source}`;
+            {
+                let _source = this.source;
+                if (this.source === 'AGENCY') _source = 'POR';
+                filter += `${this.and(filter)}Source eq ${_source}`;
+            }
             if (this.source === 'IDS' && this.ota !== 'ALL')
                 filter += `${this.and(filter)}Portal eq ${this.ota}`;
             if (this.hotel.length > 0 && !this.isCheckCorporate) {
@@ -317,6 +348,10 @@ export default {
                     if (index > 0) filter += ' or ';
                     filter += `CorporateId eq ${value.idCorporativo}`;
                 });
+            }
+
+            if (this.agency !== -1) {
+                filter += `${this.and(filter)}AgencyId eq ${this.agency}`;
             }
 
             /* eslint-enable max-len */
