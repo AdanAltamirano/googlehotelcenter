@@ -32,7 +32,7 @@ Namespace API.Controllers
                         'Return HotelService.GetAllGalileo(page.CorporateName.Split(New Char() {":"})(1))
                     End If
                 End If
-                Dim userCorpId = UserDataHelper.GetUserCorpId(GetUserId().Value)
+                Dim userCorpId As Integer = UserDataHelper.GetUserCorpId(GetUserId().Value)
                 Return HotelService.GetAll().Where(Function(h) (Not h.CorpId Is Nothing) AndAlso h.CorpId = userCorpId)
             ElseIf userRoles.Contains("hotelcompany") Then
                 Dim hotels() As Integer = UserDataHelper.GetUserHotels(GetUserId().Value).Select(Function(h) h.HotelId).ToArray()
