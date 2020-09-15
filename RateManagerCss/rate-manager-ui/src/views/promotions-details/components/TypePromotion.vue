@@ -8,21 +8,21 @@
                             <b-row>
                                 <b-col>
                                     <p>
-                                        <select class="input-border-bottom" v-model="model.typeFreeNight">
+                                        <select class="input-border-bottom" v-model="model.discountPattern">
                                             <option value="0">{{ $t('Every') }}</option>
                                             <option value="1">{{ $t('Only') }}</option>
                                         </select>
-                                        &nbsp;<span v-if="model.typeFreeNight === '1'">{{ $t('the') }}</span>
+                                        &nbsp;<span v-if="model.nightsDiscounted === '1'">{{ $t('the') }}</span>
                                         
                                         <input
                                         type="number"
-                                        v-model="model.freeNight"
+                                        v-model="model.nightsDiscounted"
                                         min="0"
                                         class="input-border-bottom" /> {{ getPrefix() }}
                                         &nbsp;{{ $t('will be free') }}
 
                                     </p>
-                                    <p v-if="model.freeNight > 0">
+                                    <p v-if="model.nightsDiscounted > 0">
                                         <cite class="font-weight-bold">"{{ freeNightTxt }}"</cite>
                                     </p>
                                 </b-col>
@@ -33,13 +33,13 @@
                                 <b-col md="5">
                                     <b-form-group :label="$t('Percentage')">
                                         <b-input-group append="%">
-                                            <b-form-input @keypress="numberFormat" v-model="model.discount" />
+                                            <b-form-input @keypress="numberFormat" v-model="model.percent" />
                                         </b-input-group>
                                     </b-form-group>
                                 </b-col>
                                 <b-col md="7">
                                     <b-form-group :label="$t('Application mode')">
-                                        <b-form-select v-model="model.typeDiscount" :options="options" />
+                                        <b-form-select v-model="model.applicationMode" :options="options" />
                                     </b-form-group>
                                 </b-col>
                                 <b-col class="text-right">
@@ -82,10 +82,10 @@ export default {
             let translate = '';
             let prefix = '';
 
-            if (this.model.typeFreeNight === '0')
+            if (this.model.discountPattern.toString() === '0')
                 translate = this.$t('Every {number}{prefix} night will be free');
             else translate = this.$t('Only the {number}{prefix} night will be free');
-            translate = translate.replace('{number}', this.model.freeNight);
+            translate = translate.replace('{number}', this.model.nightsDiscounted);
             translate = translate.replace('{prefix}', this.getPrefix());
 
             return translate;
@@ -94,7 +94,7 @@ export default {
     methods: {
         getPrefix() {
             let prefix = 'ª';
-            let number =  Number.parseInt(this.model.freeNight);
+            let number =  Number.parseInt(this.model.nightsDiscounted);
             if (this.language !== 'es') {
                 if (number > 20)
                     number =  Number.parseInt(number.toString().slice(-1));

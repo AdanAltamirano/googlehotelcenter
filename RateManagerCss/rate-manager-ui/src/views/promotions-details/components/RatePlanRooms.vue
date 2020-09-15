@@ -25,7 +25,7 @@
                 <hr>
                 <b-list-group class="mt-2 list-group-scroll">
                     <b-list-group-item v-for="rp in ratePlans" :key="rp.code">
-                        <b-form-checkbox @change="allRPlans = false" :value="rp.code" v-model="model.rateplans">
+                        <b-form-checkbox @change="allRPlans = false" :value="rp.code" v-model="model.ratesPlan">
                             {{rp.name}} - [{{ rp.code }}]
                         </b-form-checkbox>
                     </b-list-group-item>
@@ -68,6 +68,7 @@ export default {
         getRooms() {
             roomService.getList(this.hotelId).then(response => {
                 this.rooms = response.body;
+                this.allRooms = this.rooms.length === this.model.rooms.length;
             });
         },
         selectAllRooms(checked) {
@@ -82,13 +83,14 @@ export default {
         getRatePlans() {
             ratePlanService.getList(this.hotelId).then(response => {
                 this.ratePlans = response.body;
+                this.allRPlans = this.ratePlans.length === this.model.ratesPlan.length;
             });
         },
         selectAllRPlans(checked) {
-            this.model.rateplans = [];
+            this.model.ratesPlan = [];
             if (checked) {
                 this.ratePlans.forEach((value) => {
-                    this.model.rateplans.push(value.code);
+                    this.model.ratesPlan.push(value.code);
                 });
             }
         }

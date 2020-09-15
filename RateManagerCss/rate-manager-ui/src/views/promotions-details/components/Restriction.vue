@@ -29,12 +29,12 @@
                     <b-col>
                         <p class="mt-2 mr-3">
                             {{ $t('Cancel') }}&nbsp;
-                            <input type="number" min="1" class="input-border-bottom" v-model="byDay" v-if="model.cancellationType == 0" />
-                            <input type="number" min="1" class="input-border-bottom" v-model="byHour" v-else-if="model.cancellationType == 1" />
+                            <input type="number" min="1" class="input-border-bottom" v-model="model.byDay" v-if="model.cancellationType == 0" />
+                            <input type="number" min="1" class="input-border-bottom" v-model="model.byHour" v-else-if="model.cancellationType == 1" />
                             <span v-else>
                                 {{ $t('before')}}&nbsp;
-                                <input type="number" min="1" max="23" class="input-border-bottom" v-model="bySpecificTime.hour"/>&nbsp;:&nbsp;
-                                <input type="number" min="0" max="45" step="15" class="input-border-bottom" v-model="bySpecificTime.minuts"/>
+                                <input type="number" min="1" max="23" class="input-border-bottom" v-model="model.bySpecificTime.hour"/>&nbsp;:&nbsp;
+                                <input type="number" min="0" max="45" step="15" class="input-border-bottom" v-model="model.bySpecificTime.minuts"/>
                             </span>&nbsp;
                             <span v-if="cancellationType == 0">{{ perDayTxt }}</span>
                             <span v-else-if="cancellationType == 1">{{ perHourTxt }}</span>
@@ -48,20 +48,20 @@
                 <b-form-group :label="$t('Prior cancellation policy')">
                     <b-tabs>
                         <b-tab :title="$t('Spanish')">
-                            <b-form-input v-model="model.prevCancel_es" />
+                            <b-form-input v-model="model.shortDescription.esp" />
                         </b-tab>
                         <b-tab :title="$t('English')">
-                            <b-form-input v-model="model.prevCancel_en" />
+                            <b-form-input v-model="model.shortDescription.eng" />
                         </b-tab>
                     </b-tabs>
                 </b-form-group>
                 <b-form-group :label="$t('Detailed cancellation policy')">
                     <b-tabs>
                         <b-tab :title="$t('Spanish')">
-                            <b-form-textarea v-model="model.detsCancel_es" rows="5" max-rows="5" />
+                            <b-form-textarea v-model="model.detailedDescription.esp" rows="5" max-rows="5" />
                         </b-tab>
                         <b-tab :title="$t('English')">
-                            <b-form-textarea v-model="model.detsCancel_en" rows="5" max-rows="5" />
+                            <b-form-textarea v-model="model.detailedDescription.eng" rows="5" max-rows="5" />
                         </b-tab>
                     </b-tabs>
                 </b-form-group>
@@ -83,27 +83,22 @@ export default {
             model: this.dataModel,
             notCancelable: false,
             options: [
+                { value: -1, text: this.$t('Select') },
                 { value: 0, text: this.$t('For days') },
                 { value: 1, text: this.$t('For hours') },
                 { value: 2, text: this.$t('Per specific hour') }
-            ],
-            byDay: 1,
-            byHour: 1,
-            bySpecificTime: {
-                hour: 1,
-                minuts: 0
-            }
+            ]
         }
     },
     computed: {
         perDayTxt() {
             let translate = this.$t('day{s} before check in');
-            translate = translate.replace('{s}', this.byDay > 1 ? 's' : '');
+            translate = translate.replace('{s}', this.model.byDay > 1 ? 's' : '');
             return translate;
         },
         perHourTxt() {
             let translate = this.$t('hour{s} before check in');
-            translate = translate.replace('{s}', this.byHour > 1 ? 's' : '');
+            translate = translate.replace('{s}', this.model.byHour > 1 ? 's' : '');
             return translate;
         },
         cancellationTxt() {
@@ -111,17 +106,17 @@ export default {
 
             if (this.model.cancellationType === 0) {
                 translate = this.$t('Cancel {number} day{s} before check in');
-                translate = translate.replace('{number}', this.byDay);
-                translate = translate.replace('{s}', this.byDay > 1 ? 's' : '');
+                translate = translate.replace('{number}', this.model.byDay);
+                translate = translate.replace('{s}', this.model.byDay > 1 ? 's' : '');
             }
             else if (this.model.cancellationType == 1) {
                 translate = this.$t('Cancel {number} hour{s} before check in');
-                translate = translate.replace('{number}', this.byHour);
-                translate = translate.replace('{s}', this.byHour > 1 ? 's' : '');
+                translate = translate.replace('{number}', this.model.byHour);
+                translate = translate.replace('{s}', this.model.byHour > 1 ? 's' : '');
             }    
             else {
                 translate = this.$t('Cancel before {number} from check in day');
-                translate = translate.replace('{number}', `${this.bySpecificTime.hour}:${this.bySpecificTime.minuts}`)
+                translate = translate.replace('{number}', `${this.model.bySpecificTime.hour}:${this.model.bySpecificTime.minuts}`)
             }
          
             return translate;

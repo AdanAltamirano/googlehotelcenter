@@ -5,6 +5,7 @@ import moment from 'moment';
 import BootstrapVue from 'bootstrap-vue';
 import '../../core/app.settings';
 import VueMoment from 'vue-moment';
+import Loading from 'vue-loading-overlay';
 import VCalendar from 'v-calendar';
 import locale from '../../core/localization';
 import es from './localization/es';
@@ -18,6 +19,7 @@ locale([{ language: 'es', localeFile: es }], moment, false);
 Vue.use(VueMoment, {
     moment,
 });
+Vue.use(Loading);
 Vue.use(VCalendar);
 
 new Vue({

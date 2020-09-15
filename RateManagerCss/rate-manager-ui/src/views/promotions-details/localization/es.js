@@ -67,6 +67,15 @@ export default {
     'Add closure': 'Agregar cierre',
     'Combinable promotion': 'Promoción combinable',
     'Rate plans and rooms': 'Planes tarifarios y habitaciones',
+    'must not be empty': 'no debe ser vacío',
+    'Wrong form': 'Formulario incorrecto',
+    'The value in free or discount night must be greater than 0': 'El valor en noche gratis o descuento debe ser mayor a 0',
+    'You must select rate plan(s)': 'Debe seleccionar plan(es) tarifario(s)',
+    'You must select room(s)': 'Debe seleccionar habitacion(es)',
+    'Select': 'Seleccionar',
+    'You must select cancellation policies': 'Debe seleccionar políticas de cancelación',
+    'You must select start date of trip': 'Debe seleccionar fecha inicial de viaje',
+    'You must select end date of the trip': 'Debe seleccionar fecha final del viaje',
 
     //days
     'SU': 'D',

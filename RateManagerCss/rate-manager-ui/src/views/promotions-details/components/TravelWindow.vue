@@ -7,7 +7,7 @@
                         <b-form-group :label="$t('Start date of the trip')">
                             <b-input-group>
                                 <v-date-picker
-                                v-model="model.initialDate"
+                                v-model="model.startDate"
                                 class="form-control p-0"
                                 :min-date="new Date()"
                                 :popover="{ placement: 'bottom', visibility: 'click' }">
@@ -25,7 +25,7 @@
                         <b-form-group :label="$t('End date of the trip')">
                             <b-input-group>
                                 <v-date-picker
-                                v-model="model.finalDate"
+                                v-model="model.endDate"
                                 class="form-control p-0"
                                 :min-date="new Date()"
                                 :popover="{ placement: 'bottom', visibility: 'click' }">
@@ -49,8 +49,8 @@
                         v-for="d in days"
                         :key="d.day"
                         class="btn btn-secondary"
-                        :class="{'active-blue': model.validDays.includes(d.day)}">
-                            <input type="checkbox" :value="d.day" v-model="model.validDays" autocomplete="off" /> {{ getDayPrefix(d.day) }}
+                        :class="{'active-blue': model.rule._applyDays.includes(d.day)}">
+                            <input type="checkbox" :value="d.day" v-model="model.rule._applyDays" autocomplete="off" /> {{ getDayPrefix(d.day) }}
                         </label>
                     </div>
                 </b-form-group>
@@ -60,8 +60,8 @@
                         v-for="d in days"
                         :key="d.day"
                         class="btn btn-secondary"
-                        :class="{active: model.noArrivalDays.includes(d.day)}">
-                            <input type="checkbox" :value="d.day" v-model="model.noArrivalDays" autocomplete="off" /> {{ getDayPrefix(d.day) }}
+                        :class="{active: model.rule._noArrivals.includes(d.day)}">
+                            <input type="checkbox" :value="d.day" v-model="model.rule._noArrivals" autocomplete="off" /> {{ getDayPrefix(d.day) }}
                         </label>
                     </div>
                 </b-form-group>
@@ -107,6 +107,14 @@
 
 <script>
 export default {
+    created() {
+        this.setDays(this.model.rule.applyDays, 'applyDays');
+        this.setDays(this.model.rule.noArrivals, 'noArrivals');
+        if (this.model.startDate)
+            this.model.startDate = new Date(this.model.startDate);
+        if (this.model.endDate)
+            this.model.endDate = new Date(this.model.endDate);
+    },
     props: {
         dataModel: {
             type: Object,
@@ -129,6 +137,25 @@ export default {
         }
     },
     methods: {
+        setDays(days, applyTo) {
+            Object.keys(days).forEach(key => {
+                if (days[key]) {
+                    let i = 0;
+                    switch(key) {
+                        case 'fri': i = 5; break;
+                        case 'mon': i = 1; break;
+                        case 'sat': i = 6; break;
+                        case 'sun': i = 0; break;
+                        case 'thur': i = 4; break;
+                        case 'tue': i = 2; break;
+                        case 'weds': i= 3; break;
+                    }
+                    
+                    if (applyTo === 'applyDays') this.model.rule._applyDays.push(i);
+                    else this.model.rule._noArrivals.push(i);
+                }
+            });
+        },
         getDayPrefix(day) {
             let d = '';
             switch(day) {

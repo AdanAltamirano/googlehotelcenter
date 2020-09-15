@@ -12,6 +12,8 @@
     border-left: none;
     width: 80px;
     text-align: center;
+    border-bottom: 1px solid;
+    padding: 0;
     &:hover {
         outline: none;
     }
@@ -87,4 +89,8 @@
     .sm-margin {
       margin-top: 0px !important;
     }
+}
+
+._error {
+    border: 2px solid red !important;
 }

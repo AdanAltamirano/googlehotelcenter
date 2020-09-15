@@ -985,6 +985,7 @@ Public Class Promotions
             If e.Item.Cells(dgcolumns.principalSegmentRac).Text.ToUpper = "TRUE" Then
                 Me.loadPromo(grid.DataKeys(e.Item.ItemIndex), True)
             Else
+                Response.Redirect("~/rate-manager-ui/dist/promotions-details.aspx?code=" & IdRatePlan)
                 Me.loadPromo(grid.DataKeys(e.Item.ItemIndex), False)
             End If
             Me.btnSave.Enabled = True
