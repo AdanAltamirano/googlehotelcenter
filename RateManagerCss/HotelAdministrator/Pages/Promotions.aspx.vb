@@ -195,6 +195,7 @@ Public Class Promotions
     End Sub
 
     Private Sub btnNew_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btncancel.Click
+
         edicion = False
         'lblError.Visible = False
         'lblErrorSource.Visible = False
