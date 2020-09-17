@@ -485,7 +485,7 @@
                                
                                <br /><br />
                                  <asp:DataGrid ID="dgHomoClaves" runat="server" CssClass="DataGrid" AutoGenerateColumns="False"
-                                    AllowPaging="True" ShowFooter="True" PageSize="25">
+                                    AllowPaging="True" ShowFooter="True" PageSize="25" Visible="false">
                                     <FooterStyle HorizontalAlign="Right"></FooterStyle>
                                     <SelectedItemStyle CssClass="dgSelected"></SelectedItemStyle>
                                     <AlternatingItemStyle CssClass="dgAlternate"></AlternatingItemStyle>
@@ -657,7 +657,7 @@
                                                     <tr>
                                                         <th align="center">
                                                            <asp:Button ID="bnAgregarHomoClave" runat="server" Text="Agregar HomoClave" ValidationGroup="HAgreement"
-                                                                class="Button"  />
+                                                                class="Button" Visible="false"  />
                                                         </th>
                                                     </tr>
                                                 </tfoot>

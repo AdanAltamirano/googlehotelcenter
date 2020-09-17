@@ -29,6 +29,16 @@ Partial Public Class Convenios
         Contact
         Eliminar
     End Enum
+
+    Private Property CorpName() As String
+        Get
+            Return ViewState("_CorpName")
+        End Get
+        Set(ByVal Value As String)
+            ViewState("_CorpName") = Value
+        End Set
+    End Property
+
     Public ReadOnly Property idCorporate() As Integer
         Get
             Dim RES As Integer
@@ -104,6 +114,7 @@ Partial Public Class Convenios
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
+        If Not MyBase.IsHotelSelected Then MyBase.redirectTo(PaginaBase.pages.Home)
 
         If Not IsPostBack Then
             If Request.QueryString("a") IsNot Nothing Then
@@ -258,9 +269,9 @@ Partial Public Class Convenios
                     hdnIdAgreement.Value = Request.QueryString("cnv")
                     txtNoAgreement.Enabled = False
                 End If
+
             End If
             Call LoadSegments()
-
         End If
 
     End Sub
@@ -1911,6 +1922,7 @@ Partial Public Class Convenios
             If corporates.Length > 0 Then
                 Me.idSelectedCorpororate.Value = corporates(0)("idCorporativo")
                 Me.idSelectedCorpororateName.Value = corporates(0)("NombreCorp")
+                CorpName = corporates(0)("NombreCorp")
             Else
 
                 MyBase.redirectTo(PaginaBase.pages.Home)
@@ -1918,7 +1930,11 @@ Partial Public Class Convenios
             End If
             trCorporates.Visible = False
             btnSelectCorporate.Visible = False
-            If loadForm Then ResetForm()
+            If loadForm Then
+                ResetForm()
+            Else
+                LoadAgreements(idCorporate, ctrlAutoComplete1.GetFilter)
+            End If
         End If
 
     End Sub
@@ -1949,6 +1965,9 @@ Partial Public Class Convenios
         chkCC.Text = PortalCulture.GetString("01469")
         Title = PortalCulture.GetString("01211")
         lblTitle.Text = PortalCulture.GetString("01211")
+        If Not String.IsNullOrWhiteSpace(CorpName) Then
+            lblTitle.Text = lblTitle.Text & " Corporativo " & " " & CorpName
+        End If
         'lblAgreementWorking.Text = PortalCulture.GetString("01206", True)
         lblAgency.Text = PortalCulture.GetString("01220", True)
         lblContact.Text = PortalCulture.GetString("00162", True)
