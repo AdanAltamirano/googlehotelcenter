@@ -38,7 +38,7 @@ module.exports = {
             .test(/\.aspx$/)
             .use('raw-loader')
             .loader('raw-loader')
-            .end();
+            .end()
     },
     publicPath: './',
     pages: {

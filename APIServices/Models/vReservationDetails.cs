@@ -71,5 +71,6 @@ namespace APIServices.Models
         public Nullable<int> corporateId { get; set; }
         public string corporateName { get; set; }
         public string hotelEmail { get; set; }
+        public string modificationReason { get; set; }
     }
 }

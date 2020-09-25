@@ -58,6 +58,8 @@ namespace APIServices.Models
         public virtual DbSet<vAgencies> vAgencies { get; set; }
         public virtual DbSet<vReservation> vReservation { get; set; }
         public virtual DbSet<vReservationDetails> vReservationDetails { get; set; }
+        public virtual DbSet<Reservaciones> Reservaciones { get; set; }
+        public virtual DbSet<ReservationsDeposits> ReservationsDeposits { get; set; }
     
         public virtual int spReservationCancel(Nullable<int> idReservacion, string noConfCancelGalileo, string noCancelacion, string txCode, Nullable<bool> statusConf, string systemCode, string travelAgencyName, string voucher, string wizcomPassOn, string wizcomSequenceNumber, string motivoCancelacion, Nullable<bool> cancelWithError, string sessionId, Nullable<int> iduser)
         {
@@ -120,7 +122,7 @@ namespace APIServices.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spReservationCancel", idReservacionParameter, noConfCancelGalileoParameter, noCancelacionParameter, txCodeParameter, statusConfParameter, systemCodeParameter, travelAgencyNameParameter, voucherParameter, wizcomPassOnParameter, wizcomSequenceNumberParameter, motivoCancelacionParameter, cancelWithErrorParameter, sessionIdParameter, iduserParameter);
         }
     
-        public virtual int spModificarReservacionByid(Nullable<int> idReservacion, string nombreCL, string apellidoCL, Nullable<decimal> total, Nullable<decimal> totalNR, Nullable<System.DateTime> checkIn, Nullable<System.DateTime> checkOut)
+        public virtual int spModificarReservacionByid(Nullable<int> idReservacion, string nombreCL, string apellidoCL, Nullable<decimal> total, Nullable<decimal> totalNR, Nullable<System.DateTime> checkIn, Nullable<System.DateTime> checkOut, string detallesModificacion)
         {
             var idReservacionParameter = idReservacion.HasValue ?
                 new ObjectParameter("idReservacion", idReservacion) :
@@ -150,7 +152,11 @@ namespace APIServices.Models
                 new ObjectParameter("CheckOut", checkOut) :
                 new ObjectParameter("CheckOut", typeof(System.DateTime));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spModificarReservacionByid", idReservacionParameter, nombreCLParameter, apellidoCLParameter, totalParameter, totalNRParameter, checkInParameter, checkOutParameter);
+            var detallesModificacionParameter = detallesModificacion != null ?
+                new ObjectParameter("DetallesModificacion", detallesModificacion) :
+                new ObjectParameter("DetallesModificacion", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spModificarReservacionByid", idReservacionParameter, nombreCLParameter, apellidoCLParameter, totalParameter, totalNRParameter, checkInParameter, checkOutParameter, detallesModificacionParameter);
         }
     
         public virtual ObjectResult<GetMappedHotelsWithRatePlan_Result> GetMappedHotelsWithRatePlan(Nullable<int> corporateId, string ratePlanF2G, string promoCode)
@@ -202,6 +208,19 @@ namespace APIServices.Models
                 new ObjectParameter("action", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateF2GRatePlan", idRatePlanUvParameter, idHotelParameter, idRatePlanF2GParameter, promoCodeParameter, actionParameter);
+        }
+    
+        public virtual ObjectResult<spReservationReactive_Result> spReservationReactive(string noReservacion, Nullable<bool> rm)
+        {
+            var noReservacionParameter = noReservacion != null ?
+                new ObjectParameter("NoReservacion", noReservacion) :
+                new ObjectParameter("NoReservacion", typeof(string));
+    
+            var rmParameter = rm.HasValue ?
+                new ObjectParameter("rm", rm) :
+                new ObjectParameter("rm", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spReservationReactive_Result>("spReservationReactive", noReservacionParameter, rmParameter);
         }
     }
 }

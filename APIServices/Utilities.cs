@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.Serialization;
 using APIServices.Models.DTO;
-
+using APIServices.Models;
+using System.Reflection;
+using System.Collections;
+using System.IO;
 namespace APIServices
 {
     public class Utilities
@@ -74,5 +77,37 @@ namespace APIServices
 
             return strDays;
         }
+
+        /// <summary>
+        /// Get XML from data
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="data"></param>
+        /// <returns>string with xml format</returns>
+        public static string GetXML<T>(T data)
+        {
+            StringWriter stringWriter = new StringWriter();
+            XmlTextWriter xmlTextWriter = null;
+            try
+            {
+                XmlSerializer serializer = new XmlSerializer(data.GetType());
+                xmlTextWriter = new XmlTextWriter(stringWriter);
+                serializer.Serialize(xmlTextWriter, data);
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+                stringWriter.Close();
+                if (xmlTextWriter != null)
+                    xmlTextWriter.Close();
+            }
+
+            return stringWriter.ToString();
+
+        }
+
     }
 }

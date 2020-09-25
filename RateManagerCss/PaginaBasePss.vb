@@ -48,6 +48,7 @@ Public Class PaginaBase
         LogIn '3
         Publicar '4
         Ver '5
+        Reactivar '6
     End Enum
 
     Public Enum PerfilHotel
@@ -604,8 +605,9 @@ Public Class PaginaBase
         End Try
     End Sub
 
-    Public Sub guardalog(ByVal pagina As String, ByVal action As acciones, ByVal nota As String, _
-                         ByVal peticion As String, ByVal datos As String, ByVal datosDespues As String)
+    Public Sub guardalog(ByVal pagina As String, ByVal action As acciones, ByVal nota As String,
+                         ByVal peticion As String, ByVal datos As String, ByVal datosDespues As String,
+                         Optional ByVal hotelId As Integer = 0)
         Try
 
             If ReadUserCookie.GetValue(0) <> "" Then
@@ -616,6 +618,8 @@ Public Class PaginaBase
                 dr(LogData.FIELD_ACCION) = action
                 If cInfoActual.Hotel <> 0 Then
                     dr(LogData.FIELD_HOTEL) = cInfoActual.Hotel
+                ElseIf hotelId <> 0 Then
+                    dr(LogData.FIELD_HOTEL) = hotelId
                 End If
                 dr(LogData.FIELD_NOTA) = nota
                 If Not String.IsNullOrEmpty(datos) Then dr(LogData.FIELD_DATOS) = datos

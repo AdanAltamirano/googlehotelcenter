@@ -8,6 +8,7 @@ namespace APIServices.Models.DTO
         public string ReservationNumber { get; set; }
         public string CancellationNumber { get; set; }
         public string HotelName { get; set; }
+        public string HotelEmail { get; set; }
         public int? HotelId { get; set; }
         public int? CompanyId { get; set; }
         public Nullable<int> CorporateId { get; set; }
@@ -47,6 +48,7 @@ namespace APIServices.Models.DTO
         public bool AllowsConfirm { get; set; } = false;
 
         public string CancellationReason { get; set; }
+        public string ModificationReason { get; set; }
         public string Agency { get; set; }
         public string AgencyUser { get; set; }
     }

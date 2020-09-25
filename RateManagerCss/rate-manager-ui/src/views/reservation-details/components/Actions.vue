@@ -4,10 +4,11 @@
       <i class="fas fa-hotel fa-sm"></i>
       {{result.hotelName}} {{showCorporate}}
     </h4>
-    <b-button-toolbar v-if="showCancelButton || showModifyButton" class="ml-auto">
+    <b-button-toolbar v-if="showCancelButton || showModifyButton || showReactivateButton" class="ml-auto">
       <b-dropdown class="mx-1" right variant="primary" :text="$t('Options')">
         <b-dropdown-item v-if="showModifyButton" @click="modify">{{$t('Modify')}}</b-dropdown-item>
         <b-dropdown-item v-if="showCancelButton" @click="cancel">{{$t('Cancel')}}</b-dropdown-item>
+        <b-dropdown-item v-if="showReactivateButton" @click="reactivate">{{$t('Reactivate')}}</b-dropdown-item>
         <!--<b-dropdown-item
           v-if="showSendNotificationButton"
           @click="sendNotification"
@@ -20,6 +21,7 @@
 import ReservationService from "../../../api/reservation-service";
 import Vue from "vue";
 import Modify from "./Modify.vue";
+import ModificationTemplate from "./Email/ModificationTemplate.vue"
 export default {
   props: {
     result: {
@@ -34,6 +36,7 @@ export default {
   methods: {
     modify() {
       let component = Vue.extend(Modify);
+      console.log("TotalNR: " + this.result.totalDetails.totalNR)
       let instance = new component({
         propsData: {
           name: this.result.customer.name,
@@ -42,7 +45,8 @@ export default {
           checkOut: this.$moment(this.result.checkOut),
           total: this.result.totalDetails.total,
           totalNR: this.result.totalDetails.totalNR,
-          showTotalNR: this.result.paymentWay == 1
+          showTotalNR: this.result.paymentWay == 1,
+          details : ''
         }
       });
       instance.$mount();
@@ -72,9 +76,10 @@ export default {
               checkIn: self.dateFormat(self.getElement("checkin", true)),
               checkOut: self.dateFormat(self.getElement("checkout", true)),
               total: parseFloat(self.getElement("total")),
-              totalNR: parseFloat(self.getElement("totalnr"))
+              totalNR: parseFloat(self.getElement("totalnr")),
+              details: self.getElement("details")
             };
-
+          
             return ReservationService.ReservationUpdate(
               self.reservationId,
               "modify",
@@ -89,19 +94,48 @@ export default {
           allowOutsideClick: () => !this.$swal.isLoading()
         })
         .then(result => {
+          console.log(result)
           if (result.value) {
             let v = result.value.response;
             let t = result.value.modifyTags;
             if (v.isSuccess) {
-              self.result.customer.name = t.name;
-              self.result.customer.lastName = t.lastName;
-              self.result.checkIn = t.checkIn;
-              self.result.checkOut = t.checkOut;
-              self.result.totalDetails.total;
+              // self.result.customer.name = t.name;
+              // self.result.customer.lastName = t.lastName;
+              // self.result.checkIn = t.checkIn;
+              // self.result.checkOut = t.checkOut;
+              // self.result.totalDetails.total;
 
-              this.$swal.fire(
-                self.success(self.$t("Your reservation was modified"))
-              );
+              let component = Vue.extend(ModificationTemplate);
+              console.log(v.customerEmail)
+              console.log(v.hotelEmail)
+
+              let instance = new component({
+                propsData:{
+                  clientEmail: v.customerEmail,
+                  hotelEmail: v.hotelEmail,
+                }
+              });
+              instance.$mount();
+
+               this.$swal
+                  .fire({
+                    title: self.$t("Your reservation was modified"),
+                    type: "success",
+                    html: "<div></div>",
+                    showCancelButton: true,
+                    showConfirmButton:false,
+                    cancelButtonText: self.$t("Exit"),
+                    cancelButtonColor: "#d33",
+                    onBeforeOpen: () => {
+                      this.$swal
+                        .getContent()
+                        .querySelector("div")
+                        .append(instance.$el);
+                    },
+                    onClose:() => {
+                      window.location.reload();
+                    }
+                  })
             } else
               this.$swal.fire(
                 self.error(self.$t("Failed to modify the reservation"), v.error)
@@ -139,12 +173,43 @@ export default {
           if (result.value) {
             let v = result.value;
             if (v.isSuccess) {
-              self.result.status = 3;
-              self.result.cancellationNumber = v.cancelNumber;
+              // self.result.status = 3;
+              // self.result.cancellationNumber = v.cancelNumber;
 
-              this.$swal.fire(
-                self.success(self.$t("Your reservation was canceled"))
-              );
+              let component = Vue.extend(ModificationTemplate);
+              console.log(v.customerEmail)
+              console.log(v.hotelEmail)
+
+              let instance = new component({
+                propsData:{
+                  clientEmail: v.customerEmail,
+                  hotelEmail: v.hotelEmail,
+                }
+              });
+              instance.$mount();
+
+               this.$swal
+                  .fire({
+                    title: self.$t("Your reservation was canceled"),
+                    type: "success",
+                    html: "<div></div>",
+                    showCancelButton: true,
+                    showConfirmButton:false,
+                    cancelButtonText: self.$t("Exit"),
+                    cancelButtonColor: "#d33",
+                    onBeforeOpen: () => {
+                      this.$swal
+                        .getContent()
+                        .querySelector("div")
+                        .append(instance.$el);
+                    },
+                    onClose:() => {
+                      window.location.reload();
+                    }
+                  })
+              // this.$swal.fire(
+              //   self.success(self.$t("Your reservation was canceled"))
+              // );
             } else
               this.$swal.fire(
                 self.error(self.$t("Failed to cancel the reservation"), v.error)
@@ -152,12 +217,87 @@ export default {
           }
         });
     },
+    reactivate(){
+      let self = this;
+      this.$swal.fire({
+          title:self.$t('Reactivate Reservation ?'),
+          text:'',
+          icon: 'warning',
+          confirmButtonText:self.$t('Reactivate'),
+           cancelButtonText: self.$t("Cancel"),
+          showLoaderOnConfirm: true,
+          showCancelButton: true,
+          showConfirmButton: true,
+          cancelButtonColor: "#d33",
+          confirmButtonColor: "#3085d6",
+          preConfirm: () => {
+            let req = true;
+              return ReservationService.ReservationUpdate(
+                self.reservationId,
+                "reactivate",
+                req
+              ).then(response => {
+                return {
+                  response: response.body,
+                };
+              });
+            },
+            allowOutsideClick: () => !this.$swal.isLoading(),
+        })
+        .then(result => {
+          console.log(result)
+          if (result.value) {
+             let v = result.value.response;
+             if(v.isSuccess)
+             {
+                let component = Vue.extend(ModificationTemplate);
+                console.log(v.customerEmail)
+                console.log(v.hotelEmail)
+                let instance = new component({
+                  propsData:{
+                    clientEmail: v.customerEmail,
+                    hotelEmail: v.hotelEmail
+                  }
+                });
+                instance.$mount();
+                this.$swal
+                  .fire({
+                    title: self.$t("Your reservation was reactivated"),
+                    type: "success",
+                    html: "<div></div>",
+                    showCancelButton: true,
+                    showConfirmButton:false,
+                    cancelButtonText: self.$t("Exit"),
+                    cancelButtonColor: "#d33",
+                    onBeforeOpen: () => {
+                      this.$swal
+                        .getContent()
+                        .querySelector("div")
+                        .append(instance.$el);
+                    },
+                    onClose:() => {
+                      window.location.reload();
+                    }
+                  })
+             }
+             else
+             {
+               this.$swal.fire(
+                self.error(self.$t("Failed to reactivate the reservation"), v.error)
+              );
+             }
+          }
+        })
+    },
     success(title) {
       return {
         type: "success",
         title: title,
         showConfirmButton: false,
-        time: 2500
+        time: 2500,
+        onClose: () => {
+          location.reload();
+        }
       };
     },
     error(title, message) {
@@ -229,6 +369,17 @@ export default {
     },
     showSendNotificationButton() {
       return this.result.status === 1;
+    },
+    showReactivateButton(){
+      
+      if(this.result.allowsReactivate)
+      {
+        if((this.result.source !== 'ADS' 
+        || this.result.source !== 'IDS') && this.result.status === 3)
+          return true;
+      }
+
+      return false;
     },
     showCorporate() {
       if (this.result.corporateName) {

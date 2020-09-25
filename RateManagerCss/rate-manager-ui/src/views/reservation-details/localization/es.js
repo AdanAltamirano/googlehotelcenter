@@ -15,11 +15,13 @@ export default {
     'Reservation date': 'Fecha de reservación',
     'Client data': 'Datos del cliente',
     'Your reservation was modified': 'Su reserva fue modificada',
+    'Your reservation was canceled': 'Su reserva fue cancelada',
+    'Your reservation was reactivated': 'Su reserva fue reactivada',
     'Failed to modify the reservation': 'Error al modificar la reserva',
+    'Failed to cancel the reservation': 'Error al cancelar la reserva',
+    'Failed to reactivate the reservation': 'Error al reactivar la reserva',
     'Modify reservation': 'Modificar reserva',
     Modify: 'Modificar',
-    'Your reservation was canceled': 'Su reserva fue cancelada',
-    'Failed to cancel the reservation': 'Error al cancelar la reserva',
     Cancel: 'Cancelar',
     'Are you sure you want to cancel?': '¿Seguro que desea cancelar?',
     'Reason to cancel': 'Motivo para cancelar',
@@ -89,5 +91,11 @@ export default {
     'Payment Gateway': 'Pasarela',
     'Total Hotel': 'Total Hotel',
     'Agency': 'Agencia',
-    'User': 'Usuario'
+    'User': 'Usuario',
+    'An Email has been sent to the following users':'Se ha enviado un correo a los siguientes usuarios',
+    'Client' : 'Cliente',
+    'Hotel':'Hotel',
+    'There was an error sending e-mail':'Hubo un error al enviar el correo electrónico',
+    'Reactivate':'Reactivar',
+    'Reactivate Reservation ?' : '¿ Reactivar Reservación ?'
 };

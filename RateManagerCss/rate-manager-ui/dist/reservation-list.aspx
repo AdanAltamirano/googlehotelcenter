@@ -1,7 +1,7 @@
-<%@ Page Language="vb" AutoEventWireup="false" Inherits="RateManager.PaginaBase" %> <!DOCTYPE html><html lang=en><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="ie=edge"><title>Document</title><link href=css/commons.86958629.css rel=preload as=style><link href=css/reservation_list.b2798f14.css rel=preload as=style><link href=js/commons.18dc1c5d.js rel=preload as=script><link href=js/reservation_list.c31f7800.js rel=preload as=script><link href=css/commons.86958629.css rel=stylesheet><link href=css/reservation_list.b2798f14.css rel=stylesheet></head><body><script>window.app =
+<%@ Page Language="vb" AutoEventWireup="false" Inherits="RateManager.PaginaBase" %> <!DOCTYPE html><html lang=en><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="ie=edge"><title>Document</title><link href=css/commons.86958629.css rel=preload as=style><link href=css/reservation_list.b2798f14.css rel=preload as=style><link href=js/commons.d81a16c1.js rel=preload as=script><link href=js/reservation_list.f3f65387.js rel=preload as=script><link href=css/commons.86958629.css rel=stylesheet><link href=css/reservation_list.b2798f14.css rel=stylesheet></head><body><script>window.app =
             {
                 hotelId: <%= Me.cInfoActual.Hotel%>,
                 language: '<%= If(Me.IdIdiomaMenu = 1, "es", "en" )%>',
                 corporateId: <%= Me.cInfoActual.IdCorporate%>,
                 corporateName: '<%= Me.cInfoActual.CorporateName%>',
-            };</script><div id=app></div><script src=js/commons.18dc1c5d.js></script><script src=js/reservation_list.c31f7800.js></script></body></html>
+            };</script><div id=app></div><script src=js/commons.d81a16c1.js></script><script src=js/reservation_list.f3f65387.js></script></body></html>

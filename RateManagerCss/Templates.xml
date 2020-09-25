@@ -295,8 +295,8 @@
 	</T11>
 	<T12_HOTELCANCELLATION descripcion="Template la cancelacion de hotel">
 		<subject>
-			<es-MX valor="Reservacion de hotel cancelada {0} [Univisit.com]" />
-			<en-US valor="Hotel reservation cancelled {0} [Univisit.com]" />
+			<es-MX valor="Reservacion de hotel cancelada #{0}" />
+			<en-US valor="Hotel reservation cancelled #{0}" />
 		</subject>
 		<from  valor="custsrvc@internetpowerhotel.com" />
     <smtpServer valor="smtp.mandrillapp.com"/>
@@ -856,12 +856,18 @@
       <en-US valor="/Hotel/emails/texto/AvailabilityMail_EN.txt" />
     </text>
   </TH_AvailabilityMail>
-  <T16_HOTELMODIFICATION descripcion="Template la modifocación de hotel">
+  <T16_HOTELMODIFICATION descripcion="Template la modificación de hotel">
     <subject>
       <es-MX valor="Modificación de Reservación - {0}" />
       <en-US valor="Reservation Modification - {0}" />
     </subject>
     <from valor="javier@oz.com.mx" />
+    <!--<from  valor="victor@oz.com.mx" />-->
+    <smtpServer valor="smtp.mandrillapp.com"/>
+    <userName valor="javier@univisit.com"/>
+    <password valor="NCxlNTHApCDYtSZjtyRvvQ"/>
+    <port valor="587"/>
+    <ssl valor="true"/>
     <parametros>
       <LINKCSS/>
       <HEADER/>
@@ -901,13 +907,7 @@
       <URLACTIVITIES/>
       <FOOTER/>
     </parametros>
-    <from  valor="victor@oz.com.mx" />
-    <smtpServer valor="smtp.mandrillapp.com"/>
-    <userName valor="javier@univisit.com"/>
-    <password valor="NCxlNTHApCDYtSZjtyRvvQ"/>
-    <port valor="587"/>
-    <ssl valor="true"/>
-
+    
     <html>
       <es-MX valor="/correos/html/ReservationModifyHotel_ES.htm" />
       <en-US valor="/correos/html/ReservationModifyHotel_EN.htm" />
@@ -917,4 +917,93 @@
       <en-US valor="/correos/texto/ReservationModifyHotel_EN.txt" />
     </text>
   </T16_HOTELMODIFICATION>
+  <T17_HOTELRESERVATIONMODIFICATION descripcion="Template la modificación de hotel">
+    <subject>
+      <es-MX valor="Modificación de Reservación - #{0}" />
+      <en-US valor="Reservation Modification - #{0}" />
+    </subject>
+    <from  valor="custsrvc@internetpowerhotel.com" />
+    <smtpServer valor="smtp.mandrillapp.com"/>
+    <userName valor="javier@univisit.com"/>
+    <password valor="NCxlNTHApCDYtSZjtyRvvQ"/>
+    <port valor="587"/>
+    <ssl valor="true"/>
+    <parametros>
+      <NOMBREDELCLIENTE />
+      <NOMBREDELCLIENTEANTERIOR />
+      <FECHA />
+      <NOMBREDELHOTEL/>
+      <NUMERODERESERVACION/>
+      <!--<ESTATUS/>-->
+      <FECHADERESERVACION/>
+      <TELEFONODELCLIENTE/>
+      <CORRECOELECTRONICO/>
+      <DIRECCION/>
+      <CIUDAD/>
+      <CODIGO/>
+      <TELEFONO/>
+      <MESLLEGADADETALLES/>
+      <FECHALLEGADADETALLES/>
+      <ANOLLEGADADETALLES/>
+      <MESSALIDADETALLES/>
+      <FECHASALIDADETALLES/>
+      <ANOSALIDADETALLES/>
+      <MESLLEGADADETALLESANTERIOR/>
+      <FECHALLEGADADETALLESANTERIOR/>
+      <ANOLLEGADADETALLESANTERIOR/>
+      <MESSALIDADETALLESANTERIOR/>
+      <FECHASALIDADETALLESANTERIOR/>
+      <ANOSALIDADETALLESANTERIOR/>
+      <NOCHE/>
+      <ADULTO/>
+      <NINO/>
+      <HABITACIONES/>
+      <TIPODEPAGO/>
+      <REFERENCIAINFO/>
+      <REFERENCIA/>
+      <TOTAL/>
+      <TOTALANTERIOR/>
+      <MOTIVODEMODIFICACION/>
+      <POLITICASHOTELCANCELACION/>
+      <POLITICASHOTELGARANTIA/>
+      <POLITICASHOTELTARJETA/>
+      <POLITICASPLANCANCELACION/>
+      <POLITICASPLANGARANTIA/>
+      <POLITICASPLANTARJETA/>
+    </parametros>
+    <html>
+      <es-MX valor="/correos/html/HotelReservationModification-ES.html" />
+      <en-US valor="/correos/html/HotelReservationModification-EN.html" />
+    </html>
+  </T17_HOTELRESERVATIONMODIFICATION>
+  <T18_HOTELRESERVATIONREACTIVATION descripcion="Template de reactivacion de hotel">
+    <subject>
+      <es-MX valor="Reservacion de hotel reactivada #{0} " />
+      <en-US valor="Hotel reservation reactivated #{0}" />
+    </subject>
+    <from  valor="custsrvc@internetpowerhotel.com" />
+    <smtpServer valor="smtp.mandrillapp.com"/>
+    <userName valor="javier@univisit.com"/>
+    <password valor="NCxlNTHApCDYtSZjtyRvvQ"/>
+    <port valor="587"/>
+    <ssl valor="true"/>
+
+    <parametros>
+      <HOTELNAME/>
+      <RESERVATIONNUMBER />
+      <STARTDATE />
+      <ENDDATE />
+      <CUSTOMERNAME />
+      <REGDATE />
+      <!--<URL />-->
+      <!--<UNIVISITPORTAL />-->
+      <UVNRPOLICIES/>
+      <CITY/>
+      <DetCuartos/>
+    </parametros>
+    <html>
+      <es-MX valor="/correos/html/HotelReservationReactive-ES.html" />
+      <en-US valor="/correos/html/HotelReservationReactive-EN.html" />
+    </html>
+  </T18_HOTELRESERVATIONREACTIVATION>
 </Templates>

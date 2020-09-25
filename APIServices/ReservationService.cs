@@ -18,27 +18,11 @@ namespace APIServices
     public class ReservationService
     {
         public OzHotelesEntities dbContext = new OzHotelesEntities();
-        
-
 
         public IQueryable<vReservation> GetAll() => dbContext.vReservation.AsQueryable();
 
         //obtiene todos los corporativos
         public IQueryable<Corporativos> GetCorporate() => dbContext.Corporativos.AsQueryable();
-
-
-
-        //public IQueryable<vReservation> GetAllGalileo(string corporate)
-        //{
-
-        //    //var reservations = dbContext.vReservationGalileo.
-        //    //    Where(h => h.Hotel.Contains(corporate)).
-        //    //    ToDTO<vReservationGalileo, vReservationNew>();
-
-        //    var reservations = dbContext.vReservation.Where(h => h.Hotel.Contains(corporate) && h.Provider == "IDISO");
-
-        //    return reservations;
-        //}
 
         public IQueryable<vReservation> Get(int hotelId)
         {
@@ -133,20 +117,9 @@ namespace APIServices
 
         public vReservationDetails GetReservation(int reservationId)
         {
-            return dbContext.vReservationDetails
+            return dbContext.vReservationDetails.AsNoTracking()
                 .FirstOrDefault(x => x.reservationId == reservationId);
         }
-
-        //public vReservationDetails GetReservationGalileo(int reservationId)
-        //{
-        //    //var details = dbContext.vReservationDetailsGalileo.
-        //    //    FirstOrDefault(r => r.reservationId == reservationId).
-        //    //    ToDTO<vReservationDetailsGalileo, vReservationDetails>();
-
-        //    var details = dbContext.vReservationDetails.FirstOrDefault(r => r.reservationId == reservationId);
-
-        //    return details;
-        //}
 
         public ReservationDetailsModel GetDetails(int reservationId, bool isSupervisor, bool isHotelCompany,bool isUserChainIdiso,int userId)
         {
@@ -160,6 +133,7 @@ namespace APIServices
                 model.ReservationId = reservationId;
                 model.CancellationNumber = details.cancellationNumber;
                 model.HotelName = details.hotelName;
+                model.HotelEmail = details.hotelEmail;
                 model.HotelId = details.hotelId;
                 model.CompanyId = details.companyId;
                 model.CorporateId = details.corporateId;
@@ -176,6 +150,7 @@ namespace APIServices
                 model.RatePlan = details.ratePlan;
                 model.Source = details.source;
                 model.CancellationReason = details.cancellationReason;
+                model.ModificationReason = details.modificationReason;
                 model.Portal = details.Portal;
                 model.IsNetRateUV = details.IsNetRateUV;
                 model.PaymentWay = details.paymentType;
@@ -260,18 +235,6 @@ namespace APIServices
                 .Where(x => x.reservationId == reservationId)
                 .ToList();
         }
-
-        //public List<vReservationRoomDetails> GetRoomsReservationGalileo(int reservationId)
-        //{
-        //    //var roomsDetails = dbContext.vReservationRoomDetailsGalileo.
-        //    //    Where(x => x.reservationId == reservationId).
-        //    //    ToDTO<vReservationRoomDetailsGalileo, vReservationRoomDetails>().
-        //    //    ToList();
-
-        //    var roomsDetails = dbContext.vReservationRoomDetails.Where(r => r.reservationId == reservationId).ToList();
-
-        //    return roomsDetails;
-        //}
 
         public vReservationPayments GetPaymentsDetail(int reservationId)
         {
@@ -440,16 +403,23 @@ namespace APIServices
                     {
                         model.AllowsCancel = true;
                         model.AllowsModify = true;
+                       // model.AllowsReactivate = true;
                     }
                     break;
                 case 3:
-                    
+                    if(isSupervisor || allowUserChain)
+                    {
+                       // model.AllowsCancel = true;
+                        //model.AllowsModify = true;
+                        model.AllowsReactivate = true;
+                    }
                     break;
                 case 4:
                     if (isSupervisor || allowUserChain)
                     {
                         model.AllowsCancel = true;
                         model.AllowsModify = true;
+                        //model.AllowsReactivate = true;
                     }
                     break;
             }
@@ -529,8 +499,9 @@ namespace APIServices
                 try
                 {
                     dbContext.spModificarReservacionByid(reservationId, req.Name, req.LastName, (decimal)req.Total, 
-                        (decimal)req.TotalNR, req.CheckIn, req.CheckOut);
+                        (decimal)req.TotalNR, req.CheckIn, req.CheckOut,req.Details);
                     transaction.Commit();
+
                     res.IsSuccess = true;
                 }
                 catch (Exception ex)
@@ -541,6 +512,63 @@ namespace APIServices
             }
             return res;
         }
+        #endregion
+
+        #region reactivar reserva
+
+        public ModifyBookingRS Reactivate(int reservationId, bool rm)
+        {
+            var res = new ModifyBookingRS();
+
+            using (OzHotelesEntities ctx = new OzHotelesEntities())
+            {
+                try
+                {
+                    string noRes = reservationId.ToString();
+
+                    var reservation = ctx.Reservaciones.First(r => r.NoReservacion == noRes);
+                    reservation.Status = 1;
+                    reservation.NoCancelacion = "";
+                    reservation.pmsAct = "SS";
+                    reservation.pmsStatus = false;
+
+                    if(rm == true)
+                    {
+                        var result = (from r in ctx.Reservaciones
+                                    join rd in ctx.ReservationsDeposits on r.idReservacion equals rd.idreservacion into RRD
+                                    where r.NoReservacion == noRes
+                                    from rrd in RRD.DefaultIfEmpty()
+                                    select new ReactivationDTO
+                                    {
+                                        IdRes = r.idReservacion,
+                                        Dep = rrd.dep_monto
+                                    }).ToList();
+
+
+                        if (result[0].Dep == 0)
+                        {
+                            reservation.Status = 4;
+                        }
+                        else
+                        {
+                            reservation.Status = 1;
+                        }   
+                    }
+
+                    ctx.SaveChanges();
+                    res.IsSuccess = true;
+                }
+                catch (Exception ex)
+                {
+                    res.Error = $"failed to reactivate: {ex.InnerException.Message}";
+                }
+
+            }    
+
+            return res;
+
+        }
+
         #endregion
 
         #region obtener template del correo
@@ -656,6 +684,7 @@ namespace APIServices
                 rooms += " &nbsp;";
                 rooms += "</td></tr>";
             }
+
             template = template.Replace("[ADULTO]", adults.ToString());
             template = template.Replace("[NINO]", childrens.ToString());
             template = template.Replace("[HABITACIONES]",rooms);
@@ -672,6 +701,22 @@ namespace APIServices
             template = template.Replace("[POLITICASPLANTARJETA]", reservationDetails.PolicyDetails.RatePlanCreditCard);
             return template;
         }
+
+        #endregion
+
+        #region Dispose DB
+        public vReservationDetails GetReservationReleaseDB(int reservationId)
+        {
+            vReservationDetails details = null;
+
+            using (OzHotelesEntities context = new OzHotelesEntities())
+            {
+                details = context.vReservationDetails.FirstOrDefault(vRD => vRD.reservationId == reservationId);
+            }
+
+            return details;
+        }
+
         #endregion
 
     }

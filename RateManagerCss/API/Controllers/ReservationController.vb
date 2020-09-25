@@ -9,6 +9,9 @@ Imports RateManager.API.Helpers
 Imports RateManager.PaginaBase
 Imports System.IO
 Imports System.Linq
+Imports APIServices.Utilities
+Imports APIServices.Models.DTO
+Imports System.Threading
 
 Namespace API.Controller
     <RoutePrefix("api/reservations"), AuthorizeUser(Roles:="supervisor,userchain,hotelcompany")>
@@ -16,7 +19,6 @@ Namespace API.Controller
         Inherits ShurikenController
 
         Public ReservationService As New ReservationService
-
 
         'GET api/reservations
         <Route(""), HttpGet, Queryable>
@@ -109,10 +111,9 @@ Namespace API.Controller
 
             Dim isSupervisor As Boolean = GetRoles().Contains("supervisor")
             Dim rsv As vReservationDetails = ReservationService.GetReservation(reservationId)
-
             Dim result As DTO.CancelBookingRS = ReservationService.Cancel(rsv, GetUserId().Value, req.Reason)
             If result.IsSuccess Then
-                Log(reservationId, acciones.Eliminar)
+                Log(reservationId, acciones.Eliminar, rsv.hotelId)
 
                 'no enviar correo de cancelación si está en proceso
                 If rsv.status <> 4 Then
@@ -121,11 +122,15 @@ Namespace API.Controller
 
                     If Not String.IsNullOrEmpty(rsv.customerEmail) Then
                         'enviar correo al cliente
-                        SendCancellationEmail(rsv, roomRsv, rsv.customerEmail)
+                        If SendCancellationEmail(rsv, roomRsv, rsv.customerEmail) Then
+                            result.CustomerEmail = rsv.customerEmail
+                        End If
                     End If
                     If Not String.IsNullOrEmpty(rsv.hotelEmail) Then
                         'enviar correo al hotel
-                        SendCancellationEmail(rsv, roomRsv, rsv.hotelEmail)
+                        If SendCancellationEmail(rsv, roomRsv, rsv.hotelEmail) Then
+                            result.HotelEmail = rsv.hotelEmail
+                        End If
                     End If
                     If String.IsNullOrEmpty(rsv.customerEmail) AndAlso String.IsNullOrEmpty(rsv.hotelEmail) Then
                         'enviar correo a algun admin
@@ -140,13 +145,74 @@ Namespace API.Controller
         <Route("{reservationId:int}/modify"), HttpPost>
         Public Function Update(ByVal reservationId As Integer, <FromBody> req As DTO.ModifyBookingRQ) As DTO.ModifyBookingRS
 
+            Dim isSupervisor As Boolean = GetRoles().Contains("supervisor")
+            Dim isHotelCompany As Boolean = GetRoles().Contains("hotelcompany")
+            Dim isUserChainIdiso = False
+            Dim oldData_RDM As ReservationDetailsModel =
+                ReservationService.GetDetails(reservationId, isSupervisor, isHotelCompany, isUserChainIdiso, GetUserId().Value)
+
             Dim result As DTO.ModifyBookingRS = ReservationService.Modify(reservationId, req)
+
             If result.IsSuccess Then
-                Log(reservationId, acciones.Modificar)
+
+                Dim updatedData_RDM As ReservationDetailsModel =
+                    ReservationService.GetDetails(reservationId, isSupervisor, isHotelCompany, isUserChainIdiso, GetUserId().Value)
+                Dim xmlOld As String = Utilities.GetXML(oldData_RDM)
+                Dim xmlCurrent As String = Utilities.GetXML(updatedData_RDM)
+                Log(reservationId, acciones.Modificar, updatedData_RDM.HotelId, xmlOld, xmlCurrent)
+
+                If updatedData_RDM.Status <> 4 Then
+                    If Not String.IsNullOrEmpty(updatedData_RDM.Customer.Email) Then
+                        'enviar correo al cliente
+                        If SendModificationEmail(updatedData_RDM.Customer.Email, updatedData_RDM, oldData_RDM) Then
+                            result.CustomerEmail = updatedData_RDM.Customer.Email
+                        End If
+                    End If
+                    If Not String.IsNullOrEmpty(updatedData_RDM.HotelEmail) Then
+                        'enviar correo al hotel
+                        If SendModificationEmail(updatedData_RDM.HotelEmail, updatedData_RDM, oldData_RDM) Then
+                            result.HotelEmail = updatedData_RDM.HotelEmail
+                        End If
+                    End If
+                    If String.IsNullOrEmpty(updatedData_RDM.Customer.Email) AndAlso String.IsNullOrEmpty(updatedData_RDM.HotelEmail) Then
+                        'enviar correo a algun admin
+                        SendModificationEmail("soporte@internetpowerhotel.com", updatedData_RDM, oldData_RDM)
+                    End If
+                End If
             End If
             Return result
         End Function
 
+        'POST api/reservations/1978/reactivate
+        <Route("{reservationId:int}/reactivate"), HttpPost>
+        Public Function Update(ByVal reservationId As Integer, <FromBody> rm As Boolean) As DTO.ModifyBookingRS
+            Dim result As DTO.ModifyBookingRS = ReservationService.Reactivate(reservationId, rm)
+
+            If result.IsSuccess Then
+                Dim rsv As vReservationDetails = ReservationService.GetReservation(reservationId)
+                Dim roomRsv As List(Of vReservationRoomDetails) = ReservationService.GetRoomsReservation(reservationId)
+                Log(reservationId, acciones.Reactivar, rsv.hotelId)
+
+                If Not String.IsNullOrEmpty(rsv.customerEmail) Then
+                    'enviar correo al cliente
+                    If SendReactivationEmail(rsv, roomRsv, rsv.customerEmail) Then
+                        result.CustomerEmail = rsv.customerEmail
+                    End If
+                End If
+                If Not String.IsNullOrEmpty(rsv.hotelEmail) Then
+                    'enviar correo al hotel
+                    If SendReactivationEmail(rsv, roomRsv, rsv.hotelEmail) Then
+                        result.HotelEmail = rsv.hotelEmail
+                    End If
+                End If
+                If String.IsNullOrEmpty(rsv.customerEmail) AndAlso String.IsNullOrEmpty(rsv.hotelEmail) Then
+                    'enviar correo a algun admin
+                    SendCancellationEmail(rsv, roomRsv, "soporte@internetpowerhotel.com")
+                End If
+            End If
+
+            Return result
+        End Function
         'GET api/reservations/1978/creditcard
         <Route("{reservationId:int}/creditcard"), HttpGet>
         Public Function GetCode(ByVal reservationId As Integer)
@@ -204,16 +270,18 @@ Namespace API.Controller
             Return BadRequest(result)
         End Function
 
-        Sub Log(ByVal reservationId As Integer, ByVal action As acciones)
+        Sub Log(ByVal reservationId As Integer, ByVal action As acciones, Optional ByVal hotelId As Integer = 0, Optional ByVal oldData As String = "", Optional ByVal currentData As String = "")
             Dim pb As New PaginaBase
             Dim msg As String = ""
             Select Case action
                 Case acciones.Eliminar
-                    msg = "Canceló la reserva#" & reservationId
+                    msg = "Canceló la reserva #" & reservationId
                 Case acciones.Modificar
-                    msg = "Modifico la reserva#" & reservationId
+                    msg = "Modifico la reserva #" & reservationId
+                Case acciones.Reactivar
+                    msg = "Reactivo la reserva #" & reservationId
             End Select
-            pb.guardalog("/rate-manager-ui/dist/reservation-details.aspx?qs=" & reservationId, action, msg)
+            pb.guardalog("/rate-manager-ui/dist/reservation-details.aspx?qs=" & reservationId, action, msg, "", oldData, currentData, hotelId)
         End Sub
         Function GetQuery(request As HttpRequestMessage, actionContext As Http.Controllers.HttpActionContext) As IQueryable
             Dim parser = New QueryParser()
