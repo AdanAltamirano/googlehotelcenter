@@ -93,6 +93,7 @@ export default {
         if (this.$appConfig.session.code != null) {
             this.get();
         }
+       console.log(this.$appConfig)
     },
     components: {
         RatePlanRooms,
@@ -223,6 +224,7 @@ export default {
             offersService.getByCode(this.hotelId, this.promo.id)
             .then(response => {
                 if (response.body.length > 0) {
+                    console.log(response.body)
                     this.promo = Object.assign({}, response.body[0]);
                     this.$set(this.promo.rule, '_applyDays', []);
                     this.$set(this.promo.rule, '_noArrivals', []);
@@ -234,6 +236,7 @@ export default {
                 }
             })
         },
+        //TODO: Save Updated Promo
         save() {
             this.formValidation();
             if (!this.error) {

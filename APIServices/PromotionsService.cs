@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using APIServices.Models;
@@ -9,12 +10,50 @@ using APIServices.Models.DTO;
 namespace APIServices
 {
     public class OfferService
-    {
+    { 
+        private enum OfferEnum
+        {
+            ActiveAndInActive = -1,
+            Active = 1,
+            InActive = 0,
+        }
+
+        private Expression<Func<vPromotions,bool>> Filter(int hotelId, string offerCode,int active)
+        {
+
+
+            //Filtra por codigo
+            if(!String.IsNullOrEmpty(offerCode))
+                return promotion => promotion.HotelId == hotelId
+                                   && promotion.PromotionCode == offerCode;
+
+            //Filtra promociones que incluya activos y no activos
+            if (active == (int)OfferEnum.ActiveAndInActive
+                && String.IsNullOrEmpty(offerCode))
+                return promotion => promotion.HotelId == hotelId;
+
+            //Filtra promociones que incluya activo o no activo
+            else if ((active == (int)OfferEnum.InActive || active == (int) OfferEnum.Active) 
+                    && String.IsNullOrEmpty(offerCode))
+                return promotion => promotion.HotelId == hotelId 
+                                    && promotion.Active == active;
+
+            return promotion => promotion.HotelId == hotelId;
+        }
+        
         public IEnumerable<Offer> FindOffers(int hotelId, string offerCode = "")
         {
             IEnumerable<Offer> result = null;
-            using (OzHotelesEntities db = new OzHotelesEntities())
+
+            using (OzHotelesEntities db = new OzHotelesEntities( ))
             {
+                int activeOption = -1;
+
+                var filter = this.Filter(hotelId, offerCode, activeOption);
+
+                var filtered = db.vPromotions.Where(filter).ToList();
+
+
                 result = db.vPromotions.Where(p =>
                    p.HotelId == hotelId && (p.PromotionCode == offerCode || offerCode == "")).ToList().Select(o =>
                        new Offer()
