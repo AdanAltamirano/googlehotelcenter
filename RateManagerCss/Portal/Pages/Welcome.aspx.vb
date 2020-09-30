@@ -64,6 +64,8 @@ Partial Class Welcome1
                 'If Not IsPostBack Then
                 '    Session("urlCurrent") = Request.ApplicationPat & "/Portal/Pages/Welcome.aspx"
                 'End If
+            ElseIf IsAgencyCompany Then
+                redirectTo(pages.ReservationListUI)
             Else
                 loadHotels()
                 loadData()

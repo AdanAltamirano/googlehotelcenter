@@ -110,6 +110,7 @@ Public Class PaginaBase
         DisplayCarReservation
         ItineraryDetails
         WaitList
+        ReservationListUI
     End Enum
 
 #End Region
@@ -158,6 +159,12 @@ Public Class PaginaBase
     Public ReadOnly Property IsSupervisor() As Boolean
         Get
             Return (New AuthUser).IsSupervisor
+        End Get
+    End Property
+
+    Public ReadOnly Property IsAgencyCompany() As Boolean
+        Get
+            Return (New AuthUser).IsAgencyCompany
         End Get
     End Property
 
@@ -994,6 +1001,8 @@ Public Class PaginaBase
                 strpage = sRequestApplicationPath & "/HotelAdministrator/Pages/DisplayItinerary.aspx"
             Case page.WaitList
                 strpage = sRequestApplicationPath & "/HotelAdministrator/Pages/WaitList.aspx"
+            Case pages.ReservationListUI
+                strpage = sRequestApplicationPath & "/rate-manager-ui/dist/Reservation-List.aspx"
         End Select
         strpage = strpage.Replace("//", "/")
         Return strpage
@@ -1205,7 +1214,7 @@ Public Class PaginaBase
         If Me.IsAuthenticated Then
             If IsHotel Or IsSupervisor Or IsUsuarioHotel Or Me.cInfoActual.UserPerfil = PerfilHotel.Avanzado Or
             Me.cInfoActual.UserPerfil = PerfilHotel.Basico Or Me.cInfoActual.UserPerfil = PerfilHotel.Medio Or
-            Me.IsUnibilling Or Me.IsContent Or Me.cInfoActual.UserPerfil = PerfilHotel.NetRate Or IsUsuarioCallCenter Then
+            Me.IsUnibilling Or Me.IsContent Or Me.cInfoActual.UserPerfil = PerfilHotel.NetRate Or IsUsuarioCallCenter Or IsAgencyCompany Then
                 Usuario = ((New AuthUser).Usuario)
             End If
         End If
@@ -1530,6 +1539,7 @@ Public Class AuthUser
         CallCenter
         Casas
         HomeAgency
+        AgencyCompany
     End Enum
 
     Function GetRol(ByVal typRol As eTypRole) As Boolean
@@ -1655,6 +1665,12 @@ Public Class AuthUser
     Public ReadOnly Property IsSupervisor() As Boolean
         Get
             Return GetRol(eTypRole.Supervisor)
+        End Get
+    End Property
+
+    Public ReadOnly Property IsAgencyCompany() As Boolean
+        Get
+            Return GetRol(eTypRole.AgencyCompany)
         End Get
     End Property
 

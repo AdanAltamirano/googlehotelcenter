@@ -14,7 +14,7 @@ Imports APIServices.Models.DTO
 Imports System.Threading
 
 Namespace API.Controller
-    <RoutePrefix("api/reservations"), AuthorizeUser(Roles:="supervisor,userchain,hotelcompany")>
+    <RoutePrefix("api/reservations"), AuthorizeUser(Roles:="supervisor,userchain,hotelcompany,AgencyCompany")>
     Public Class ReservationController
         Inherits ShurikenController
 
