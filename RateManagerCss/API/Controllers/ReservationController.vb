@@ -116,27 +116,38 @@ Namespace API.Controller
                 Log(reservationId, acciones.Eliminar, rsv.hotelId)
 
                 'no enviar correo de cancelación si está en proceso
-                If rsv.status <> 4 Then
-                    rsv = ReservationService.GetReservation(reservationId)
-                    Dim roomRsv As List(Of vReservationRoomDetails) = ReservationService.GetRoomsReservation(reservationId)
+                'If rsv.status <> 4 Then
+                rsv = ReservationService.GetReservation(reservationId)
+                Dim roomRsv As List(Of vReservationRoomDetails) = ReservationService.GetRoomsReservation(reservationId)
 
-                    If Not String.IsNullOrEmpty(rsv.customerEmail) Then
-                        'enviar correo al cliente
-                        If SendCancellationEmail(rsv, roomRsv, rsv.customerEmail) Then
-                            result.CustomerEmail = rsv.customerEmail
-                        End If
+                If Not String.IsNullOrEmpty(rsv.customerEmail) Then
+                    'enviar correo al cliente
+                    Dim errorMail As String = String.Empty
+                    If SendCancellationEmail(rsv, roomRsv, rsv.customerEmail, errorMail) Then
+                        result.CustomerEmail = rsv.customerEmail
+                    Else
+
+                        Dim xmlError As String = Utilities.GetXML(errorMail)
+                        Log(reservationId, acciones.Eliminar, rsv.hotelId, xmlError, xmlError)
                     End If
-                    If Not String.IsNullOrEmpty(rsv.hotelEmail) Then
-                        'enviar correo al hotel
-                        If SendCancellationEmail(rsv, roomRsv, rsv.hotelEmail) Then
-                            result.HotelEmail = rsv.hotelEmail
-                        End If
-                    End If
-                    If String.IsNullOrEmpty(rsv.customerEmail) AndAlso String.IsNullOrEmpty(rsv.hotelEmail) Then
-                        'enviar correo a algun admin
-                        SendCancellationEmail(rsv, roomRsv, "soporte@internetpowerhotel.com")
+
+                End If
+                If Not String.IsNullOrEmpty(rsv.hotelEmail) Then
+                    'enviar correo al hotel
+                    Dim errorMail As String = String.Empty
+                    If SendCancellationEmail(rsv, roomRsv, rsv.hotelEmail, errorMail) Then
+                        result.HotelEmail = rsv.hotelEmail
+                    Else
+                        Dim xmlError As String = Utilities.GetXML(errorMail)
+                        Log(reservationId, acciones.Eliminar, rsv.hotelId, xmlError, xmlError)
                     End If
                 End If
+                If String.IsNullOrEmpty(rsv.customerEmail) AndAlso String.IsNullOrEmpty(rsv.hotelEmail) Then
+                    'enviar correo a algun admin
+                    Dim errorMail As String = String.Empty
+                    SendCancellationEmail(rsv, roomRsv, "soporte@internetpowerhotel.com", errorMail)
+                End If
+                'End If
             End If
             Return result
         End Function
@@ -161,24 +172,33 @@ Namespace API.Controller
                 Dim xmlCurrent As String = Utilities.GetXML(updatedData_RDM)
                 Log(reservationId, acciones.Modificar, updatedData_RDM.HotelId, xmlOld, xmlCurrent)
 
-                If updatedData_RDM.Status <> 4 Then
-                    If Not String.IsNullOrEmpty(updatedData_RDM.Customer.Email) Then
-                        'enviar correo al cliente
-                        If SendModificationEmail(updatedData_RDM.Customer.Email, updatedData_RDM, oldData_RDM) Then
-                            result.CustomerEmail = updatedData_RDM.Customer.Email
-                        End If
-                    End If
-                    If Not String.IsNullOrEmpty(updatedData_RDM.HotelEmail) Then
-                        'enviar correo al hotel
-                        If SendModificationEmail(updatedData_RDM.HotelEmail, updatedData_RDM, oldData_RDM) Then
-                            result.HotelEmail = updatedData_RDM.HotelEmail
-                        End If
-                    End If
-                    If String.IsNullOrEmpty(updatedData_RDM.Customer.Email) AndAlso String.IsNullOrEmpty(updatedData_RDM.HotelEmail) Then
-                        'enviar correo a algun admin
-                        SendModificationEmail("soporte@internetpowerhotel.com", updatedData_RDM, oldData_RDM)
+                'If updatedData_RDM.Status <> 4 Then
+                If Not String.IsNullOrEmpty(updatedData_RDM.Customer.Email) Then
+                    'enviar correo al cliente
+                    Dim errorMail As String = String.Empty
+                    If SendModificationEmail(updatedData_RDM.Customer.Email, updatedData_RDM, oldData_RDM, errorMail) Then
+                        result.CustomerEmail = updatedData_RDM.Customer.Email
+                    Else
+                        Dim xmlError As String = Utilities.GetXML(errorMail)
+                        Log(reservationId, acciones.Modificar, updatedData_RDM.HotelId, xmlError, xmlError)
                     End If
                 End If
+                If Not String.IsNullOrEmpty(updatedData_RDM.HotelEmail) Then
+                    'enviar correo al hotel
+                    Dim errorMail As String = String.Empty
+                    If SendModificationEmail(updatedData_RDM.HotelEmail, updatedData_RDM, oldData_RDM, errorMail) Then
+                        result.HotelEmail = updatedData_RDM.HotelEmail
+                    Else
+                        Dim xmlError As String = Utilities.GetXML(errorMail)
+                        Log(reservationId, acciones.Modificar, updatedData_RDM.HotelId, xmlError, xmlError)
+                    End If
+                End If
+                If String.IsNullOrEmpty(updatedData_RDM.Customer.Email) AndAlso String.IsNullOrEmpty(updatedData_RDM.HotelEmail) Then
+                    'enviar correo a algun admin
+                    Dim errorMail As String = String.Empty
+                    SendModificationEmail("soporte@internetpowerhotel.com", updatedData_RDM, oldData_RDM, errorMail)
+                End If
+                ' End If
             End If
             Return result
         End Function
@@ -195,19 +215,28 @@ Namespace API.Controller
 
                 If Not String.IsNullOrEmpty(rsv.customerEmail) Then
                     'enviar correo al cliente
-                    If SendReactivationEmail(rsv, roomRsv, rsv.customerEmail) Then
+                    Dim errorMail As String = String.Empty
+                    If SendReactivationEmail(rsv, roomRsv, rsv.customerEmail, errorMail) Then
                         result.CustomerEmail = rsv.customerEmail
+                    Else
+                        Dim xmlError As String = Utilities.GetXML(errorMail)
+                        Log(reservationId, acciones.Reactivar, rsv.hotelId, xmlError, xmlError)
                     End If
                 End If
                 If Not String.IsNullOrEmpty(rsv.hotelEmail) Then
                     'enviar correo al hotel
-                    If SendReactivationEmail(rsv, roomRsv, rsv.hotelEmail) Then
+                    Dim errorMail As String = String.Empty
+                    If SendReactivationEmail(rsv, roomRsv, rsv.hotelEmail, errorMail) Then
                         result.HotelEmail = rsv.hotelEmail
+                    Else
+                        Dim xmlError As String = Utilities.GetXML(errorMail)
+                        Log(reservationId, acciones.Reactivar, rsv.hotelId, xmlError, xmlError)
                     End If
                 End If
                 If String.IsNullOrEmpty(rsv.customerEmail) AndAlso String.IsNullOrEmpty(rsv.hotelEmail) Then
                     'enviar correo a algun admin
-                    SendCancellationEmail(rsv, roomRsv, "soporte@internetpowerhotel.com")
+                    Dim errorMail As String = String.Empty
+                    SendReactivationEmail(rsv, roomRsv, "soporte@internetpowerhotel.com", errorMail)
                 End If
             End If
 
@@ -270,8 +299,9 @@ Namespace API.Controller
             Return BadRequest(result)
         End Function
 
-        Sub Log(ByVal reservationId As Integer, ByVal action As acciones, Optional ByVal hotelId As Integer = 0, Optional ByVal oldData As String = "", Optional ByVal currentData As String = "")
-            Dim pb As New PaginaBase
+        Sub Log(ByVal reservationId As Integer, ByVal action As acciones, Optional ByVal hotelId As Integer = 0, Optional ByVal oldData As String = "",
+                Optional ByVal currentData As String = "")
+            'Dim pb As New PaginaBase()
             Dim msg As String = ""
             Select Case action
                 Case acciones.Eliminar
@@ -281,7 +311,10 @@ Namespace API.Controller
                 Case acciones.Reactivar
                     msg = "Reactivo la reserva #" & reservationId
             End Select
-            pb.guardalog("/rate-manager-ui/dist/reservation-details.aspx?qs=" & reservationId, action, msg, "", oldData, currentData, hotelId)
+            'pb.guardalog("/rate-manager-ui/dist/reservation-details.aspx?qs=" & reservationId, action, msg, "", oldData, currentData, hotelId)
+            With (New PaginaBase)
+                .guardalog("/rate-manager-ui/dist/reservation-details.aspx?qs=" & reservationId, action, msg, "", oldData, currentData, hotelId)
+            End With
         End Sub
         Function GetQuery(request As HttpRequestMessage, actionContext As Http.Controllers.HttpActionContext) As IQueryable
             Dim parser = New QueryParser()

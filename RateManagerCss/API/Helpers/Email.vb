@@ -36,12 +36,12 @@ Namespace API.Helpers
         End Function
 
         Public Function SendModificationEmail(ByVal toEmail As String, ByVal reservation As ReservationDetailsModel,
-                                              ByVal oldReservation As ReservationDetailsModel) As Boolean
+                                              ByVal oldReservation As ReservationDetailsModel, ByRef emailError As String) As Boolean
             Try
-                Thread.CurrentThread.CurrentCulture = New CultureInfo(PortalCulture.GetCulture.ToString)
-                PortalCulture.SetCulture(Thread.CurrentThread.CurrentCulture.Name)
+                'Thread.CurrentThread.CurrentCulture = New CultureInfo(PortalCulture.GetCulture.ToString)
+                'PortalCulture.SetCulture(Thread.CurrentThread.CurrentCulture.Name)
 
-                Dim lang As String = Thread.CurrentThread.CurrentCulture.Name
+                Dim lang As String = "es-MX"
 
                 Dim adults As Integer = 0
                 Dim childrens As Integer = 0
@@ -138,7 +138,7 @@ Namespace API.Helpers
                 mail.TemplateName = "T17_HOTELRESERVATIONMODIFICATION"
                 mail.Html = True
                 mail.SubjectParam = reservation.ReservationId
-                mail.Idioma = Thread.CurrentThread.CurrentCulture.Name
+                mail.Idioma = "es-MX" 'Thread.CurrentThread.CurrentCulture.Name
 
                 mail.AddParameter("NOMBREDELCLIENTE") = reservation.Customer.Name & " " & reservation.Customer.LastName
                 mail.AddParameter("NOMBREDELCLIENTEANTERIOR") = oldReservation.Customer.Name & " " & oldReservation.Customer.LastName
@@ -181,22 +181,27 @@ Namespace API.Helpers
 
                 mail.Send()
                 Return True
-            Catch
+            Catch ex As Exception
+                emailError = ex.Message
+                emailError &= " "
+                emailError &= ex.StackTrace
                 Return False
             End Try
+            Return False
         End Function
 
-        Public Function SendCancellationEmail(ByVal rsv As vReservationDetails, ByVal roomRsv As List(Of vReservationRoomDetails), ByVal toEmail As String) As Boolean
+        Public Function SendCancellationEmail(ByVal rsv As vReservationDetails, ByVal roomRsv As List(Of vReservationRoomDetails),
+                                              ByVal toEmail As String, ByRef emailError As String) As Boolean
 
-            Thread.CurrentThread.CurrentCulture = New CultureInfo(PortalCulture.GetCulture.ToString)
-            PortalCulture.SetCulture(Thread.CurrentThread.CurrentCulture.Name)
+            'Thread.CurrentThread.CurrentCulture = New CultureInfo(PortalCulture.GetCulture.ToString)
+            'PortalCulture.SetCulture(Thread.CurrentThread.CurrentCulture.Name)
             Try
                 Dim mail As New emailTemplates.Template
                 mail.To = toEmail
                 mail.TemplateName = "T12_HOTELCANCELLATION"
                 mail.Html = True
                 mail.SubjectParam = rsv.reservationId
-                mail.Idioma = Thread.CurrentThread.CurrentCulture.Name
+                mail.Idioma = "es-MX" 'Thread.CurrentThread.CurrentCulture.Name
 
                 'parametros
                 mail.AddParameter("HOTELNAME") = rsv.hotelName
@@ -214,24 +219,28 @@ Namespace API.Helpers
 
 
                 mail.Send()
+
                 Return True
             Catch ex As Exception
-
+                emailError = ex.Message
+                emailError &= " "
+                emailError &= ex.StackTrace
             End Try
             Return False
         End Function
 
-        Public Function SendReactivationEmail(ByVal rsv As vReservationDetails, ByVal roomRsv As List(Of vReservationRoomDetails), ByVal toEmail As String) As Boolean
+        Public Function SendReactivationEmail(ByVal rsv As vReservationDetails, ByVal roomRsv As List(Of vReservationRoomDetails),
+                                              ByVal toEmail As String, ByRef emailError As String) As Boolean
 
-            Thread.CurrentThread.CurrentCulture = New CultureInfo(PortalCulture.GetCulture.ToString)
-            PortalCulture.SetCulture(Thread.CurrentThread.CurrentCulture.Name)
+            'Thread.CurrentThread.CurrentCulture = New CultureInfo(PortalCulture.GetCulture.ToString)
+            'PortalCulture.SetCulture(Thread.CurrentThread.CurrentCulture.Name)
             Try
                 Dim mail As New emailTemplates.Template
                 mail.To = toEmail
                 mail.TemplateName = "T18_HOTELRESERVATIONREACTIVATION"
                 mail.Html = True
                 mail.SubjectParam = rsv.reservationId
-                mail.Idioma = Thread.CurrentThread.CurrentCulture.Name
+                mail.Idioma = "es-MX" 'Thread.CurrentThread.CurrentCulture.Name
 
                 'parametros
                 mail.AddParameter("HOTELNAME") = rsv.hotelName
@@ -248,7 +257,9 @@ Namespace API.Helpers
                 mail.Send()
                 Return True
             Catch ex As Exception
-
+                emailError = ex.Message
+                emailError &= " "
+                emailError &= ex.StackTrace
             End Try
             Return False
         End Function
