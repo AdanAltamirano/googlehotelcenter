@@ -6,7 +6,7 @@
     <div class="card-body">
       <address>
         {{$t('Client')}}:
-        <strong v-if="clienEmail">{{clientEmail}}</strong>
+        <strong v-if="clientEmail">{{clientEmail}}</strong>
         <strong v-else>{{$t('There was an error sending e-mail')}}</strong>
         <br>
         {{$t('Hotel')}}:

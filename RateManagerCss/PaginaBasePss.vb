@@ -632,9 +632,11 @@ Public Class PaginaBase
                 If Not String.IsNullOrEmpty(datos) Then dr(LogData.FIELD_DATOS) = datos
                 If Not String.IsNullOrEmpty(datosDespues) Then dr(LogData.FIELD_DATOSDESPUES) = datosDespues
 
+
+
                 Try
                     dr(LogData.FIELD_FECHA) = Now.ToString("MM/dd/yyyy") & " " & Now.ToLongTimeString
-                Catch
+                Catch ex As Exception
                     dr(LogData.FIELD_FECHA) = Now.ToString & " " & Now.ToLongTimeString
                 End Try
 
@@ -656,7 +658,7 @@ Public Class PaginaBase
                 '    End If
                 'End With
             End If
-        Catch
+        Catch ex As Exception
 
         End Try
     End Sub
