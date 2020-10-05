@@ -1,11 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace APIServices.Models.DTO
 {
+
+    public enum OfferStatus
+    {
+        //Filtro por Status de la Promoción
+        ActiveAndInActive = -1,
+        Active = 1,
+        InActive = 0,
+        //Filtro del tipo de Búsqueda
+        Name = 2,
+        Code = 3
+    }
     public enum OfferDiscountApplicationMode
     {
         RateDiscountPriority, //Si la tarifa NO tiene descuento, se aplica el descuento de la oferta. Si la tarifa tiene descuento, el descuento de la oferta se descarta.
@@ -63,6 +72,16 @@ namespace APIServices.Models.DTO
 
             return applicableFor;
         }
+    }
+
+    public class OfferPromotions
+    {
+        public string Code { get; set; }
+        public string Name { get; set; }
+        public string StartDate { get; set; }
+        public string EndDate { get; set; }
+        public Decimal? Discount { get; set; }
+        public int? Status { get; set; }
     }
 
     public class OfferDiscount

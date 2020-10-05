@@ -14,8 +14,8 @@ Namespace API.Controllers
         Public service As New OfferService
 
         <Route(""), HttpGet>
-        Public Function GetByHotelId(HotelId As Integer) As IEnumerable(Of DTO.Offer)
-            Return service.FindOffers(HotelId)
+        Public Function GetByHotelId(HotelId As Integer) As IEnumerable(Of DTO.OfferPromotions)
+            Return service.FindOffers(HotelId, 1, 0, "")
         End Function
 
         ' GET api/hotel/1978/PR01

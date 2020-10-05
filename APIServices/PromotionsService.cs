@@ -2,42 +2,61 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using APIServices.Models;
 using APIServices.Models.DTO;
 
 namespace APIServices
 {
-    public class OfferService
-    { 
-        private enum OfferEnum
-        {
-            ActiveAndInActive = -1,
-            Active = 1,
-            InActive = 0,
-        }
+    public class OfferService: IDisposable
+    {
+        private bool _disposed;
 
-        private Expression<Func<vPromotions,bool>> Filter(int hotelId, string offerCode,int active)
-        {
-
-
-            //Filtra por codigo
-            if(!String.IsNullOrEmpty(offerCode))
-                return promotion => promotion.HotelId == hotelId
-                                   && promotion.PromotionCode == offerCode;
-
+        OzHotelesEntities context = new OzHotelesEntities();
+      
+        private Expression<Func<vPromotions,bool>> Filter(int hotelId,int status,int searchBy,string searchValue)
+        { 
             //Filtra promociones que incluya activos y no activos
-            if (active == (int)OfferEnum.ActiveAndInActive
-                && String.IsNullOrEmpty(offerCode))
-                return promotion => promotion.HotelId == hotelId;
+            if (status == (int)OfferStatus.ActiveAndInActive)
+            { 
+                if(String.IsNullOrEmpty(searchValue))
+                {
+                    return promotion => promotion.HotelId == hotelId;
+                }
 
+                switch(searchBy)
+                {
+                    case (int)OfferStatus.Name:
+                        return promotion => promotion.HotelId == hotelId
+                                            && promotion.Description.Contains(searchValue);
+
+                    case (int) OfferStatus.Code:
+                         return promotion => promotion.HotelId == hotelId
+                                             && promotion.PromotionCode.Contains(searchValue);
+                }
+            }
             //Filtra promociones que incluya activo o no activo
-            else if ((active == (int)OfferEnum.InActive || active == (int) OfferEnum.Active) 
-                    && String.IsNullOrEmpty(offerCode))
-                return promotion => promotion.HotelId == hotelId 
-                                    && promotion.Active == active;
+            else if ((status == (int)OfferStatus.InActive || status == (int) OfferStatus.Active))
+            {
+                if(String.IsNullOrEmpty(searchValue))
+                {
+                    return promotion => promotion.HotelId == hotelId
+                                   && promotion.Active == status;
+                }
 
+                switch (searchBy)
+                {
+                    case (int)OfferStatus.Name:
+                        return promotion => promotion.HotelId == hotelId 
+                                            && promotion.Active == status
+                                            && promotion.Description.Contains(searchValue);
+
+                    case (int)OfferStatus.Code:
+                        return promotion => promotion.HotelId == hotelId 
+                                            && promotion.Active == status
+                                            && promotion.PromotionCode.Contains(searchValue);
+                }
+            }
+                 
             return promotion => promotion.HotelId == hotelId;
         }
         
@@ -47,12 +66,6 @@ namespace APIServices
 
             using (OzHotelesEntities db = new OzHotelesEntities( ))
             {
-                int activeOption = -1;
-
-                var filter = this.Filter(hotelId, offerCode, activeOption);
-
-                var filtered = db.vPromotions.Where(filter).ToList();
-
 
                 result = db.vPromotions.Where(p =>
                    p.HotelId == hotelId && (p.PromotionCode == offerCode || offerCode == "")).ToList().Select(o =>
@@ -105,6 +118,45 @@ namespace APIServices
 
             return result;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="hotelId">Id del Hotel</param>
+        /// <param name="filterStatus">Activo 1, InActivo 0, Inactivo y Activo -1</param>
+        /// <param name="searchBy">Buscar por codigo o por nombre, 0 es por nombre y 1 es por código</param>
+        /// <param name="searchValue">Valor para filtrar por nombre o por codigo</param>
+        /// <returns></returns>
+        public IEnumerable<OfferPromotions> FindOffers(int hotelId, int filterStatus = 1, int searchBy = 2, string searchValue = "")
+        {
+
+            IEnumerable<OfferPromotions> promotions = null;
+            var filter = this.Filter(hotelId,filterStatus,searchBy,searchValue);
+            promotions = context.vPromotions
+                .Where(filter)
+                // Linq To Objects with AsEnumerable To Apply Date Format 
+                // Use AsEnumerable() to force evaluation of that part with Linq to Objects
+                .AsEnumerable()
+                .Select(s => new OfferPromotions
+                {
+                    Code = s.PromotionCode,
+                    Name = s.Description,
+                    StartDate = s.StartDate.Value.ToString("dd/MM/yyyy"),
+                    EndDate = s.EndDate.Value.ToString("dd/MM/yyyy"),
+                    Discount = Decimal.Round((decimal)s.Discount),
+                    Status = s.Active
+                });
+
+            return promotions;
+        }
+
+        //TODO: Get An Offer By Hotel and Code
+        public Offer FindOfferByHotelAndCode(int hotelId, string offerCode)
+        {
+
+            return new Offer();
+        }
+
 
         public KeyValuePair<string, string> Add(Offer offer)
         {
@@ -357,5 +409,28 @@ namespace APIServices
             else
                 return 0;
         }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if(!_disposed)
+            {
+                if(disposing)
+                {
+                    context.Dispose();
+                }
+            }
+
+            _disposed = true;
+
+        }
+
+
+
     }
 }
