@@ -216,6 +216,9 @@
     <Compile Include="Models\vAgencies.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\vAgents.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\vDayRateDetail.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>

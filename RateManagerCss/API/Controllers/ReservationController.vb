@@ -14,7 +14,7 @@ Imports APIServices.Models.DTO
 Imports System.Threading
 
 Namespace API.Controller
-    <RoutePrefix("api/reservations"), AuthorizeUser(Roles:="supervisor,userchain,hotelcompany,AgencyCompany")>
+    <RoutePrefix("api/reservations"), AuthorizeUser(Roles:="supervisor,userchain,hotelcompany,agencycompany")>
     Public Class ReservationController
         Inherits ShurikenController
 
@@ -44,6 +44,12 @@ Namespace API.Controller
             ElseIf roles.Contains("hotelcompany") Then
                 Dim hotels() As Integer = GetUserHotels(GetUserId().Value).Select(Function(h) h.HotelId).ToArray()
                 Return ReservationService.GetAll().Where(Function(h) hotels.Contains(h.HotelId) And h.Provider = "INTERNET POWER")
+            ElseIf roles.Contains("agencycompany") Then
+                Dim page As New PaginaBase
+                If page.IsAgencyCompany Then
+                    Dim userId As Integer = page.UserIdentityName
+                    Return ReservationService.GetAll().Where(Function(h) h.AgencyUserId = userId)
+                End If
             End If
 
             Return New vReservation() {}.AsQueryable()

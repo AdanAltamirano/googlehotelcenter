@@ -685,7 +685,8 @@ Partial Class Welcome1
 
     Private Sub dgReservations_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles dgReservations.ItemCommand
         If e.CommandName = "DetalleReserva" Then
-            MyBase.redirectTo(PaginaBase.pages.ReservaDetailsV2, "?qs=" & e.Item.Cells(dgcolumns.ID).Text)
+            'MyBase.redirectTo(PaginaBase.pages.ReservaDetailsV2, "?qs=" & e.Item.Cells(dgcolumns.ID).Text)
+            MyBase.redirectTo(PaginaBase.pages.ReservationDetailsUI, "?qs=" & e.Item.Cells(dgcolumns.ID).Text)
         End If
     End Sub
     Private Sub loadHotels()

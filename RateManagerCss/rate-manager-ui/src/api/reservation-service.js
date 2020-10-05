@@ -12,6 +12,7 @@ const sendNotification = Vue.resource(`${process.env.VUE_APP_API_URL}/reservatio
 const excel = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations/excel{?filter,orderBy,pageSize,page}`);
 const corporate = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations/corporate`);
 const agencies = Vue.resource(`${process.env.VUE_APP_API_URL}/agencies`);
+const agents = Vue.resource(`${process.env.VUE_APP_API_URL}/agencies/agents`);
 
 export default {
     /**
@@ -77,5 +78,8 @@ export default {
     },
     GetAgencies() {
         return agencies.get();
+    },
+    GetAgents(){
+        return agents.get();
     }
 };

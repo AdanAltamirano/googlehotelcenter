@@ -20,5 +20,10 @@ namespace APIServices
         {
             return Context.vAgencies.AsQueryable();
         }
+
+        public IQueryable<vAgents> GetAgents()
+        {
+            return Context.vAgents.AsQueryable();
+        }
     }
 }

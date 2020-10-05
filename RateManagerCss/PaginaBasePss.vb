@@ -111,6 +111,7 @@ Public Class PaginaBase
         ItineraryDetails
         WaitList
         ReservationListUI
+        ReservationDetailsUI
     End Enum
 
 #End Region
@@ -1005,6 +1006,9 @@ Public Class PaginaBase
                 strpage = sRequestApplicationPath & "/HotelAdministrator/Pages/WaitList.aspx"
             Case pages.ReservationListUI
                 strpage = sRequestApplicationPath & "/rate-manager-ui/dist/Reservation-List.aspx"
+            Case pages.ReservationDetailsUI
+                strpage = sRequestApplicationPath & "/rate-manager-ui/dist/Reservation-Details.aspx"
+
         End Select
         strpage = strpage.Replace("//", "/")
         Return strpage

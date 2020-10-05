@@ -33,6 +33,11 @@ export default {
       type: String
     }
   },
+  data(){
+    return {
+      isAgencyCompany: (this.$appConfig.session.isAgencyCompany === 'True')? true : false,
+    }
+  },
   methods: {
     modify() {
       let component = Vue.extend(Modify);
@@ -54,6 +59,9 @@ export default {
       let self = this;
       this.$swal
         .fire({
+          customClass:{
+            actions:'swal3-actions'
+          },
           title: self.$t("Modify reservation"),
           type: "info",
           html: "<div></div>",
@@ -362,15 +370,40 @@ export default {
   },
   computed: {
     showCancelButton() {
+
+      if(this.isAgencyCompany && this.result.status != 3) {
+         return true;
+      }
+       
+      if(!this.isAgencyCompany && this.result.agency) { 
+        return false;
+      }
+
       return this.result.allowsCancel && this.result.status != 3;
     },
     showModifyButton() {
+      if(this.isAgencyCompany) { 
+        return false;
+      }
+
+      if(!this.isAgencyCompany && this.result.agency) {
+        return false;
+      }
+      
       return this.result.allowsModify;
     },
     showSendNotificationButton() {
       return this.result.status === 1;
     },
     showReactivateButton(){
+
+      if(this.isAgencyCompany && this.result.status === 3){
+        return true;
+      }
+
+      if(!this.isAgencyCompany && this.result.agency){
+        return false;
+      }
       
       if(this.result.allowsReactivate)
       {

@@ -19,6 +19,12 @@ Namespace API.Controllers
             Return AgencyService.Get()
         End Function
 
+        'GET api/agencies/agents
+        <Route("agents"), HttpGet>
+        Public Function GetAgents() As IQueryable(Of vAgents)
+            Return AgencyService.GetAgents()
+        End Function
+
 
     End Class
 End Namespace
