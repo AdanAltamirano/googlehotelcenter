@@ -156,6 +156,10 @@ namespace APIServices
                 model.PaymentWay = details.paymentType;
                 model.Agency = details.agency;
                 model.AgencyUser = details.agencyUser;
+                model.RatePlanPromotion = details.ratePlanPromotion;
+                model.NamePromotion = details.namePromotion;
+                model.IdCancellationUser = details.idCancellationUser;
+                model.UserCancellation = details.userCancellation;
                 model.BankDepositDetails = new BankDepositDetails();
                 if (details.paymentType == 0)
                 {
@@ -303,6 +307,8 @@ namespace APIServices
                     ImgDefault = ConfigurationManager.AppSettings["pathimgroomsdefault"],
                     CustomerName = room.customerName ?? "",
                     CustomerLastName = room.customerLastName ?? "",
+                    RatePlanPromotion = room.ratePlanPromotion,
+                    NamePromotion = room.namePromotion
                 });
 
                 model.RoomDetails[index].PriceDetails.AddRange(priceDetails);

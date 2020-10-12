@@ -64,6 +64,11 @@
               {{$t('Rate plan')}}:
               <strong>{{room.rateCode != '' ? room.rateCode : ratePlan}} - {{room.ratePlan}}</strong>
               <br />
+              <template v-if="room.ratePlanPromotion && room.namePromotion">
+                 {{$t('Promotion')}}:
+                <strong>{{room.ratePlanPromotion}} - {{room.namePromotion}}</strong>
+                <br />
+              </template>
               {{$t('Preferences')}}:
               <strong>{{room.preferences}}</strong>
             </address>

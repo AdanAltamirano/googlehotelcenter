@@ -97,5 +97,8 @@ export default {
     'Hotel':'Hotel',
     'There was an error sending e-mail':'Hubo un error al enviar el correo electrónico',
     'Reactivate':'Reactivar',
-    'Reactivate Reservation ?' : '¿ Reactivar Reservación ?'
+    'Reactivate Reservation ?' : '¿ Reactivar Reservación ?',
+    'Promotion' : 'Promoción',
+    'Cancelled By' : 'Cancelado por',
+    'Reason' : 'Motivo'
 };

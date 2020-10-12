@@ -1089,6 +1089,7 @@
                             <asp:ListItem Text="Solo no activos" Value="0"></asp:ListItem>
                             <asp:ListItem Text="Activos y no activos" Value="-1"></asp:ListItem>
                         </asp:DropDownList>
+                        <asp:CheckBox id="oldPromosCheckbox" runat="server" Text="Incluir promociones anteriores" TextAlign="Right" AutoPostBack="True"/>
                     </div>
                     <asp:DataGrid ID="grid" runat="server" Width="99%" AllowPaging="True" PageSize="20"
                         GridLines="None" AutoGenerateColumns="False" CssClass="datagrid" ShowFooter="True">

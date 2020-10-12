@@ -80,10 +80,24 @@ export default {
     },
     methods: {
         alertReason() {
+            //TODO:Hide when userCancellation is undefined
+
+            let by = '';
+
+            if(this.result.userCancellation)
+            {
+                by = `${this.$t('Cancelled By')}: ${this.result.userCancellation}`
+            }
+
+
+            let html = `${this.$t('Reason')}: ${this.result.cancellationReason} 
+            <br>${by}`;
+
             this.$swal
             .fire({
-                text: this.result.cancellationReason,
+                //text: this.result.cancellationReason,
                 title: this.$t('Reason for cancellation'),
+                html:html,
                 showConfirmButton: false,
             })
         }

@@ -51,6 +51,10 @@ namespace APIServices.Models.DTO
         public string ModificationReason { get; set; }
         public string Agency { get; set; }
         public string AgencyUser { get; set; }
+        public string RatePlanPromotion { get; set; }
+        public string NamePromotion { get; set; }
+        public Nullable<int> IdCancellationUser  { get; set; }
+        public string UserCancellation { get; set; }
     }
 
     public class CustomerDetails
@@ -136,6 +140,8 @@ namespace APIServices.Models.DTO
         public string Currency { get; set; }
         public string CustomerName { get; set; }
         public string CustomerLastName { get; set; }
+        public string RatePlanPromotion { get; set; }
+        public string NamePromotion { get; set; }
     }
 
     public class RoomPriceDetails

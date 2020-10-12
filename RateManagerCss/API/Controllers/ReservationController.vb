@@ -85,6 +85,18 @@ Namespace API.Controller
                         Return responseG
                     End If
                 End If
+            ElseIf roles.Contains("agencycompany") Then
+                Dim page As New PaginaBase
+                If page.IsAgencyCompany Then
+                    Dim userId As Integer = page.UserIdentityName
+                    Dim parserG = New QueryParser()
+                    Dim _queryG As QueryData = parserG.CreateAndValidateQuery(ActionContext, "reservationId", GetType(vReservation))
+                    Dim queryResultG As IQueryable(Of vReservation)
+                    queryResultG = _queryG.ApplyTo(ReservationService.GetAll().Where(Function(h) h.AgencyUserId = userId))
+                    Dim responseG As New HttpResponseMessage
+                    responseG = ReservationService.GetExcel(queryResultG)
+                    Return responseG
+                End If
             End If
             Dim parser = New QueryParser()
             Dim _query As QueryData = parser.CreateAndValidateQuery(ActionContext, "reservationId", GetType(vReservation))
@@ -116,6 +128,8 @@ Namespace API.Controller
         Public Function Update(ByVal reservationId As Integer, <FromBody> req As DTO.CancelBookingRQ) As DTO.CancelBookingRS
 
             Dim isSupervisor As Boolean = GetRoles().Contains("supervisor")
+            Dim isHotelCompany As Boolean = GetRoles().Contains("hotelcompany")
+            Dim isUserChainIdiso = False
             Dim rsv As vReservationDetails = ReservationService.GetReservation(reservationId)
             Dim result As DTO.CancelBookingRS = ReservationService.Cancel(rsv, GetUserId().Value, req.Reason)
             If result.IsSuccess Then
@@ -124,12 +138,16 @@ Namespace API.Controller
                 'no enviar correo de cancelación si está en proceso
                 'If rsv.status <> 4 Then
                 rsv = ReservationService.GetReservation(reservationId)
+
                 Dim roomRsv As List(Of vReservationRoomDetails) = ReservationService.GetRoomsReservation(reservationId)
+
+                Dim rdm As ReservationDetailsModel =
+                    ReservationService.GetDetails(reservationId, isSupervisor, isHotelCompany, isUserChainIdiso, GetUserId().Value)
 
                 If Not String.IsNullOrEmpty(rsv.customerEmail) Then
                     'enviar correo al cliente
                     Dim errorMail As String = String.Empty
-                    If SendCancellationEmail(rsv, roomRsv, rsv.customerEmail, errorMail) Then
+                    If SendCancellationEmail(rdm,rsv.customerEmail, errorMail) Then
                         result.CustomerEmail = rsv.customerEmail
                     Else
 
@@ -141,7 +159,7 @@ Namespace API.Controller
                 If Not String.IsNullOrEmpty(rsv.hotelEmail) Then
                     'enviar correo al hotel
                     Dim errorMail As String = String.Empty
-                    If SendCancellationEmail(rsv, roomRsv, rsv.hotelEmail, errorMail) Then
+                    If SendCancellationEmail(rdm, rsv.hotelEmail, errorMail) Then
                         result.HotelEmail = rsv.hotelEmail
                     Else
                         Dim xmlError As String = Utilities.GetXML(errorMail)
@@ -151,7 +169,7 @@ Namespace API.Controller
                 If String.IsNullOrEmpty(rsv.customerEmail) AndAlso String.IsNullOrEmpty(rsv.hotelEmail) Then
                     'enviar correo a algun admin
                     Dim errorMail As String = String.Empty
-                    SendCancellationEmail(rsv, roomRsv, "soporte@internetpowerhotel.com", errorMail)
+                    SendCancellationEmail(rdm, "soporte@internetpowerhotel.com", errorMail)
                 End If
                 'End If
             End If
@@ -212,37 +230,41 @@ Namespace API.Controller
         'POST api/reservations/1978/reactivate
         <Route("{reservationId:int}/reactivate"), HttpPost>
         Public Function Update(ByVal reservationId As Integer, <FromBody> rm As Boolean) As DTO.ModifyBookingRS
+            Dim isSupervisor As Boolean = GetRoles().Contains("supervisor")
+            Dim isHotelCompany As Boolean = GetRoles().Contains("hotelcompany")
+            Dim isUserChainIdiso = False
             Dim result As DTO.ModifyBookingRS = ReservationService.Reactivate(reservationId, rm)
 
             If result.IsSuccess Then
-                Dim rsv As vReservationDetails = ReservationService.GetReservation(reservationId)
-                Dim roomRsv As List(Of vReservationRoomDetails) = ReservationService.GetRoomsReservation(reservationId)
-                Log(reservationId, acciones.Reactivar, rsv.hotelId)
 
-                If Not String.IsNullOrEmpty(rsv.customerEmail) Then
+                Dim rdm As ReservationDetailsModel =
+                    ReservationService.GetDetails(reservationId, IsSupervisor, isHotelCompany, isUserChainIdiso, GetUserId().Value)
+                Log(reservationId, acciones.Reactivar, rdm.HotelId)
+
+                If Not String.IsNullOrEmpty(rdm.Customer.Email) Then
                     'enviar correo al cliente
                     Dim errorMail As String = String.Empty
-                    If SendReactivationEmail(rsv, roomRsv, rsv.customerEmail, errorMail) Then
-                        result.CustomerEmail = rsv.customerEmail
+                    If SendReactivationEmail(rdm, rdm.Customer.Email, errorMail) Then
+                        result.CustomerEmail = rdm.Customer.Email
                     Else
                         Dim xmlError As String = Utilities.GetXML(errorMail)
-                        Log(reservationId, acciones.Reactivar, rsv.hotelId, xmlError, xmlError)
+                        Log(reservationId, acciones.Reactivar, rdm.HotelId, xmlError, xmlError)
                     End If
                 End If
-                If Not String.IsNullOrEmpty(rsv.hotelEmail) Then
+                If Not String.IsNullOrEmpty(rdm.HotelEmail) Then
                     'enviar correo al hotel
                     Dim errorMail As String = String.Empty
-                    If SendReactivationEmail(rsv, roomRsv, rsv.hotelEmail, errorMail) Then
-                        result.HotelEmail = rsv.hotelEmail
+                    If SendReactivationEmail(rdm, rdm.HotelEmail, errorMail) Then
+                        result.HotelEmail = rdm.HotelEmail
                     Else
                         Dim xmlError As String = Utilities.GetXML(errorMail)
-                        Log(reservationId, acciones.Reactivar, rsv.hotelId, xmlError, xmlError)
+                        Log(reservationId, acciones.Reactivar, rdm.HotelId, xmlError, xmlError)
                     End If
                 End If
-                If String.IsNullOrEmpty(rsv.customerEmail) AndAlso String.IsNullOrEmpty(rsv.hotelEmail) Then
+                If String.IsNullOrEmpty(rdm.Customer.Email) AndAlso String.IsNullOrEmpty(rdm.HotelEmail) Then
                     'enviar correo a algun admin
                     Dim errorMail As String = String.Empty
-                    SendReactivationEmail(rsv, roomRsv, "soporte@internetpowerhotel.com", errorMail)
+                    SendReactivationEmail(rdm, "soporte@internetpowerhotel.com", errorMail)
                 End If
             End If
 

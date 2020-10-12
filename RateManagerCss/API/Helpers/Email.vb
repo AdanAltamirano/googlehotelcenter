@@ -81,6 +81,11 @@ Namespace API.Helpers
                         rooms += roomDetail.Preferences
                         rooms += "<br>"
                     End If
+                    If (Not String.IsNullOrEmpty(roomDetail.RatePlanPromotion) And Not String.IsNullOrEmpty(roomDetail.NamePromotion)) Then
+                        rooms += "<strong>" + IIf(lang = "es-MX", "Promoción: ", "Promotion: ") + " </strong>"
+                        rooms += roomDetail.RatePlanPromotion + " - " + roomDetail.NamePromotion
+                        rooms += "<br>"
+                    End If
                     rooms += "<strong>" + IIf(lang = "es-MX", "Fecha: ", "Date: ") + "</strong>"
                     rooms += arrivalRoom + " - " + departureRoom
                     rooms += "<br>"
@@ -114,23 +119,27 @@ Namespace API.Helpers
                 Dim oldTotal As Double = oldReservation.TotalDetails.Total
                 Dim referenceInfo As String = String.Empty
                 Dim reference As String = String.Empty
+                Dim pasarela As String = String.Empty
+
+                GetPaymentWayInfo(reservation, lang, paymentType, referenceInfo, reference, pasarela)
 
                 'TODO:// Add ENUM FOR PAYMENTTYPE
-                Select Case reservation.PaymentWay
-                    Case 0
-                        paymentType = IIf(lang = "es-MX", "Depósito Bancario", "Bank Deposit")
-                        referenceInfo = IIf(lang = "es-MX", "Referencia: ", "Reference: ")
-                        reference = reservation.BankDepositDetails.Reference
-                    Case 1
-                        paymentType = IIf(lang = "es-MX", "Pago en línea", "Online Payment")
-                        referenceInfo = IIf(lang = "es-MX", "Número de autorización: ", "Authorization Number: ")
-                        reference = reservation.PaymentDetails.AuthorizationNumber
-                    Case 2
-                        paymentType = IIf(lang = "es-MX", "Pago en hotel", "Payment at the Hotel")
-                        referenceInfo = IIf(lang = "es-MX", "Tarjeta de crédito <br>", "Credit Card <br>")
-                        referenceInfo = IIf(lang = "es-MX", "Número de tarjeta: ", "Card Number: ")
-                        reference = reservation.Customer.CardDetails.Number
-                End Select
+                'Select Case reservation.PaymentWay
+                '    Case 0
+                '        paymentType = IIf(lang = "es-MX", "Depósito Bancario", "Bank Deposit")
+                '        referenceInfo = IIf(lang = "es-MX", "Referencia: ", "Reference: ")
+                '        reference = reservation.BankDepositDetails.Reference
+                '    Case 1
+                '        paymentType = IIf(lang = "es-MX", "Pago en línea", "Online Payment")
+                '        referenceInfo = IIf(lang = "es-MX", "Número de autorización: ", "Authorization Number: ")
+                '        reference = reservation.PaymentDetails.AuthorizationNumber
+                '        pasarela = "<b>Pasarela: </b>" & IIf(Not String.IsNullOrEmpty(reservation.PaymentDetails.Pasarela), reservation.PaymentDetails.Pasarela, String.Empty)
+                '    Case 2
+                '        paymentType = IIf(lang = "es-MX", "Pago en hotel", "Payment at the Hotel")
+                '        referenceInfo = IIf(lang = "es-MX", "Tarjeta de crédito <br>", "Credit Card <br>")
+                '        referenceInfo = IIf(lang = "es-MX", "Número de tarjeta: ", "Card Number: ")
+                '        reference = reservation.Customer.CardDetails.Number
+                'End Select
 
 
                 Dim mail As New emailTemplates.Template
@@ -174,6 +183,11 @@ Namespace API.Helpers
                 mail.AddParameter("TIPODEPAGO") = paymentType
                 mail.AddParameter("REFERENCIAINFO") = referenceInfo
                 mail.AddParameter("REFERENCIA") = reference
+                If reservation.PaymentDetails IsNot Nothing Then
+                    If Not String.IsNullOrEmpty(reservation.PaymentDetails.Pasarela) Then
+                        mail.AddParameter("PASARELA") = pasarela
+                    End If
+                End If
                 mail.AddParameter("TOTAL") = total & " " + reservation.TotalDetails.Currency
                 mail.AddParameter("TOTALANTERIOR") = oldTotal & " " + oldReservation.TotalDetails.Currency
                 mail.AddParameter("HABITACIONES") = rooms
@@ -190,33 +204,50 @@ Namespace API.Helpers
             Return False
         End Function
 
-        Public Function SendCancellationEmail(ByVal rsv As vReservationDetails, ByVal roomRsv As List(Of vReservationRoomDetails),
+        Public Function SendCancellationEmail(ByVal rdm As ReservationDetailsModel,
                                               ByVal toEmail As String, ByRef emailError As String) As Boolean
 
             'Thread.CurrentThread.CurrentCulture = New CultureInfo(PortalCulture.GetCulture.ToString)
             'PortalCulture.SetCulture(Thread.CurrentThread.CurrentCulture.Name)
             Try
+                Dim lang As String = "es-MX"
+                Dim paymentType As String = String.Empty
+                Dim total As Double = rdm.TotalDetails.Total
+                Dim referenceInfo As String = String.Empty
+                Dim reference As String = String.Empty
+                Dim pasarela As String = String.Empty
+
+                GetPaymentWayInfo(rdm, lang, paymentType, referenceInfo, reference, pasarela)
+
                 Dim mail As New emailTemplates.Template
                 mail.To = toEmail
                 mail.TemplateName = "T12_HOTELCANCELLATION"
                 mail.Html = True
-                mail.SubjectParam = rsv.reservationId
+                mail.SubjectParam = rdm.ReservationId
                 mail.Idioma = "es-MX" 'Thread.CurrentThread.CurrentCulture.Name
 
                 'parametros
-                mail.AddParameter("HOTELNAME") = rsv.hotelName
-                mail.AddParameter("MOTIVO") = rsv.cancellationReason
-                mail.AddParameter("CITY") = rsv.city
-                mail.AddParameter("RESERVATIONNUMBER") = rsv.reservationId
-                mail.AddParameter("CANCELLATIONNUMBER") = rsv.cancellationNumber
-                mail.AddParameter("STARTDATE") = rsv.checkIn.ToString("dd/MMM/yyyy")
-                mail.AddParameter("ENDDATE") = rsv.checkOut.ToString("dd/MMM/yyyy")
-                mail.AddParameter("CUSTOMERNAME") = rsv.customerName & rsv.customerLastName
-                mail.AddParameter("REGDATE") = rsv.reservationDate.ToString("dd/MMM/yyyy")
+                mail.AddParameter("HOTELNAME") = rdm.HotelName 'rsv.hotelName 
+                mail.AddParameter("MOTIVO") = rdm.CancellationReason 'rsv.cancellationReason
+                mail.AddParameter("CITY") = rdm.City 'rsv.city
+                mail.AddParameter("RESERVATIONNUMBER") = rdm.ReservationId 'rsv.reservationId
+                mail.AddParameter("CANCELLATIONNUMBER") = rdm.CancellationNumber 'rsv.cancellationNumber
+                mail.AddParameter("STARTDATE") = rdm.CheckIn.Value.ToString("dd/MMM/yyy") 'rsv.checkIn.ToString("dd/MMM/yyyy")
+                mail.AddParameter("ENDDATE") = rdm.CheckOut.Value.ToString("dd/MMM/yyy") 'rsv.checkOut.ToString("dd/MMM/yyyy")
+                mail.AddParameter("CUSTOMERNAME") = rdm.Customer.Name & rdm.Customer.LastName 'rsv.customerName & rsv.customerLastName
+                mail.AddParameter("REGDATE") = rdm.ReservationDate.ToString("dd/MMM/yyyy") 'rsv.reservationDate.ToString("dd/MMM/yyyy")
                 mail.AddParameter("CANCELLEDDATE") = Now.Date.ToString("dd/MMM/yyyy")
                 mail.AddParameter("UVNRPOLICIES") = ""
-                mail.AddParameter("DetCuartos") = GetRooms(roomRsv)
-
+                mail.AddParameter("DetCuartos") = GetRooms(rdm.RoomDetails)
+                mail.AddParameter("TIPODEPAGO") = paymentType
+                mail.AddParameter("REFERENCIAINFO") = referenceInfo
+                mail.AddParameter("REFERENCIA") = reference
+                If rdm.PaymentDetails IsNot Nothing Then
+                    If Not String.IsNullOrEmpty(rdm.PaymentDetails.Pasarela) Then
+                        mail.AddParameter("PASARELA") = pasarela
+                    End If
+                End If
+                mail.AddParameter("TOTAL") = total & " " + rdm.TotalDetails.Currency
 
                 mail.Send()
 
@@ -229,29 +260,48 @@ Namespace API.Helpers
             Return False
         End Function
 
-        Public Function SendReactivationEmail(ByVal rsv As vReservationDetails, ByVal roomRsv As List(Of vReservationRoomDetails),
+        Public Function SendReactivationEmail(ByVal rdm As ReservationDetailsModel,
                                               ByVal toEmail As String, ByRef emailError As String) As Boolean
 
             'Thread.CurrentThread.CurrentCulture = New CultureInfo(PortalCulture.GetCulture.ToString)
             'PortalCulture.SetCulture(Thread.CurrentThread.CurrentCulture.Name)
             Try
+                Dim lang As String = "es-MX"
+                Dim paymentType As String = String.Empty
+                Dim total As Double = rdm.TotalDetails.Total
+                Dim referenceInfo As String = String.Empty
+                Dim reference As String = String.Empty
+                Dim pasarela As String = String.Empty
+
+                GetPaymentWayInfo(rdm, lang, paymentType, referenceInfo, reference, pasarela)
+
+
                 Dim mail As New emailTemplates.Template
                 mail.To = toEmail
                 mail.TemplateName = "T18_HOTELRESERVATIONREACTIVATION"
                 mail.Html = True
-                mail.SubjectParam = rsv.reservationId
+                mail.SubjectParam = rdm.ReservationId
                 mail.Idioma = "es-MX" 'Thread.CurrentThread.CurrentCulture.Name
 
                 'parametros
-                mail.AddParameter("HOTELNAME") = rsv.hotelName
-                mail.AddParameter("CITY") = rsv.city
-                mail.AddParameter("RESERVATIONNUMBER") = rsv.reservationId
-                mail.AddParameter("STARTDATE") = rsv.checkIn.ToString("dd/MMM/yyyy")
-                mail.AddParameter("ENDDATE") = rsv.checkOut.ToString("dd/MMM/yyyy")
-                mail.AddParameter("CUSTOMERNAME") = rsv.customerName & rsv.customerLastName
-                mail.AddParameter("REGDATE") = rsv.reservationDate.ToString("dd/MMM/yyyy")
+                mail.AddParameter("HOTELNAME") = rdm.HotelName
+                mail.AddParameter("CITY") = rdm.City
+                mail.AddParameter("RESERVATIONNUMBER") = rdm.ReservationId
+                mail.AddParameter("STARTDATE") = rdm.CheckIn.Value.ToString("dd/MMM/yyyy")
+                mail.AddParameter("ENDDATE") = rdm.CheckOut.Value.ToString("dd/MMM/yyyy")
+                mail.AddParameter("CUSTOMERNAME") = rdm.Customer.Name & rdm.Customer.LastName
+                mail.AddParameter("REGDATE") = rdm.ReservationDate.ToString("dd/MMM/yyyy")
                 mail.AddParameter("UVNRPOLICIES") = ""
-                mail.AddParameter("DetCuartos") = GetRooms(roomRsv)
+                mail.AddParameter("DetCuartos") = GetRooms(rdm.RoomDetails)
+                mail.AddParameter("TIPODEPAGO") = paymentType
+                mail.AddParameter("REFERENCIAINFO") = referenceInfo
+                mail.AddParameter("REFERENCIA") = reference
+                If rdm.PaymentDetails IsNot Nothing Then
+                    If Not String.IsNullOrEmpty(rdm.PaymentDetails.Pasarela) Then
+                        mail.AddParameter("PASARELA") = pasarela
+                    End If
+                End If
+                mail.AddParameter("TOTAL") = total & " " + rdm.TotalDetails.Currency
 
 
                 mail.Send()
@@ -317,11 +367,11 @@ Namespace API.Helpers
         End Function
 
 
-        Function GetRooms(ByVal rooms As List(Of vReservationRoomDetails)) As String
+        Function GetRooms(ByVal rooms As List(Of RoomDetails)) As String
             Dim html As New StringBuilder
 
             html.Append("<table class=""row"" style=""border-collapse:collapse;border-spacing:0;padding:0;text-align:left;vertical-align:top;width:100%"">")
-            For Each room As vReservationRoomDetails In rooms
+            For Each room As RoomDetails In rooms
                 html.Append("<tr style=""padding:0;text-align:left;vertical-align:top"">")
                 '---
                 html.Append("<th class=""small-12 large-6 columns first"" style=""Margin:0 auto;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0 auto;padding:0;padding-bottom:16px;padding-left:16px;padding-right:8px;text-align:left;width:274px"">")
@@ -330,7 +380,7 @@ Namespace API.Helpers
                 html.Append("<tr style=""padding:0;text-align:left;vertical-align:top"">")
                 html.Append("<th style=""Margin:0;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left"">")
                 html.Append("<p style=""Margin:0;Margin-bottom:10px;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0;text-align:left"">")
-                html.Append("<b>" & PortalCulture.GetString("M000066") & ":</b><br>" & room.roomName)
+                html.Append("<b>" & PortalCulture.GetString("M000066") & ":</b><br>" & room.Name)
                 html.Append("</p>")
                 html.Append("</th>")
                 html.Append("</tr>")
@@ -346,6 +396,11 @@ Namespace API.Helpers
                 'html.Append("<p style=""Margin:0;Margin-bottom:10px;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0;text-align:left"">")
                 'html.Append("<b>" & PortalCulture.GetString("M000585") & ":</b><br>" & room.customerName & " " & room.customerLastName)
                 'html.Append("</p>")
+                If (Not String.IsNullOrEmpty(room.ratePlanPromotion) And Not String.IsNullOrEmpty(room.namePromotion)) Then
+                    html.Append("<p style=""Margin:0;Margin-bottom:10px;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0;text-align:left"">")
+                    html.Append("<b>Promoción: </b></br>" & room.RatePlanPromotion & " - " & room.NamePromotion)
+                    html.Append("</p>")
+                End If
                 html.Append("</th>")
                 html.Append("</tr>")
                 html.Append("</table>")
@@ -357,6 +412,28 @@ Namespace API.Helpers
             html.Append("</table>")
             Return html.ToString
         End Function
+
+        Private Sub GetPaymentWayInfo(ByVal rdm As ReservationDetailsModel, ByVal lang As String, ByRef paymentType As String,
+                                      ByRef referenceInfo As String, ByRef reference As String, ByRef pasarela As String)
+
+            Select Case rdm.PaymentWay
+                Case 0
+                    paymentType = IIf(lang = "es-MX", "Depósito Bancario", "Bank Deposit")
+                    referenceInfo = IIf(lang = "es-MX", "Referencia: ", "Reference: ")
+                    reference = rdm.BankDepositDetails.Reference
+                Case 1
+                    paymentType = IIf(lang = "es-MX", "Pago en línea", "Online Payment")
+                    referenceInfo = IIf(lang = "es-MX", "Número de autorización: ", "Authorization Number: ")
+                    reference = IIf(Not String.IsNullOrEmpty(rdm.PaymentDetails.AuthorizationNumber), rdm.PaymentDetails.AuthorizationNumber, String.Empty)
+                    pasarela = "<b>Pasarela: </b>" & IIf(Not String.IsNullOrEmpty(rdm.PaymentDetails.Pasarela), rdm.PaymentDetails.Pasarela, String.Empty)
+                Case 2
+                    paymentType = IIf(lang = "es-MX", "Pago en hotel", "Payment at the Hotel")
+                    referenceInfo = IIf(lang = "es-MX", "Tarjeta de crédito <br>", "Credit Card <br>")
+                    referenceInfo = IIf(lang = "es-MX", "Número de tarjeta: ", "Card Number: ")
+                    reference = rdm.Customer.CardDetails.Number
+            End Select
+
+        End Sub
 
     End Module
 End Namespace

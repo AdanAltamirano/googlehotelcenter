@@ -72,5 +72,9 @@ namespace APIServices.Models
         public string corporateName { get; set; }
         public string hotelEmail { get; set; }
         public string modificationReason { get; set; }
+        public string ratePlanPromotion { get; set; }
+        public string namePromotion { get; set; }
+        public Nullable<int> idCancellationUser { get; set; }
+        public string userCancellation { get; set; }
     }
 }

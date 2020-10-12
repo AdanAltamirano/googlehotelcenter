@@ -316,6 +316,11 @@
 			<MOTIVO/>
 			<URL />
 			<UNIVISITPORTAL />
+      <TIPODEPAGO/>
+      <PASARELA/>
+      <REFERENCIAINFO/>
+      <REFERENCIA/>
+      <TOTAL/>
 			<UVNRPOLICIES/>
 			
 		</parametros>
@@ -959,6 +964,7 @@
       <NINO/>
       <HABITACIONES/>
       <TIPODEPAGO/>
+      <PASARELA/>
       <REFERENCIAINFO/>
       <REFERENCIA/>
       <TOTAL/>
@@ -997,6 +1003,11 @@
       <REGDATE />
       <!--<URL />-->
       <!--<UNIVISITPORTAL />-->
+      <TIPODEPAGO/>
+      <PASARELA/>
+      <REFERENCIAINFO/>
+      <REFERENCIA/>
+      <TOTAL/>
       <UVNRPOLICIES/>
       <CITY/>
       <DetCuartos/>
