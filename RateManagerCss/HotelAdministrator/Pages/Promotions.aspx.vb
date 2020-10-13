@@ -1051,7 +1051,7 @@ Public Class Promotions
             LK2 = e.Item.Cells(dgcolumns.eliminar).FindControl("lnkedit")
             LK2.Text = PortalCulture.GetString("00093")
 
-            If e.Item.Cells(dgcolumns.deleted).Text.ToUpper() = "True" Then 'DESACTIVAR
+            If e.Item.Cells(dgcolumns.deleted).Text.ToUpper() = "TRUE" Then 'ACTIVAR
                 e.Item.Cells(dgcolumns.eliminar).Text = ""
                 e.Item.Cells(dgcolumns.orden).Text = ""
 
@@ -1062,7 +1062,7 @@ Public Class Promotions
                 If ddlDeletedFilter.SelectedValue = "-1" Then
                     e.Item.Style("background-color") = "#FEE"
                 End If
-            Else 'ACTIVAR
+            Else 'DESACTIVAR
                 e.Item.Cells(dgcolumns.activar).Text = ""
                 LK2 = e.Item.Cells(dgcolumns.eliminar).FindControl("lnkEliminar2")
                 LK = e.Item.Cells(dgcolumns.eliminar).FindControl("lnkEliminar")

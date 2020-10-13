@@ -424,8 +424,15 @@ Namespace API.Helpers
                 Case 1
                     paymentType = IIf(lang = "es-MX", "Pago en línea", "Online Payment")
                     referenceInfo = IIf(lang = "es-MX", "Número de autorización: ", "Authorization Number: ")
-                    reference = IIf(Not String.IsNullOrEmpty(rdm.PaymentDetails.AuthorizationNumber), rdm.PaymentDetails.AuthorizationNumber, String.Empty)
-                    pasarela = "<b>Pasarela: </b>" & IIf(Not String.IsNullOrEmpty(rdm.PaymentDetails.Pasarela), rdm.PaymentDetails.Pasarela, String.Empty)
+
+                    If rdm.PaymentDetails IsNot Nothing Then
+                        If Not String.IsNullOrEmpty(rdm.PaymentDetails.AuthorizationNumber) Then
+                            reference = rdm.PaymentDetails.AuthorizationNumber
+                        End If
+                        If Not String.IsNullOrEmpty(rdm.PaymentDetails.Pasarela) Then
+                            pasarela = "<b>Pasarela: </b>" & rdm.PaymentDetails.Pasarela
+                        End If
+                    End If
                 Case 2
                     paymentType = IIf(lang = "es-MX", "Pago en hotel", "Payment at the Hotel")
                     referenceInfo = IIf(lang = "es-MX", "Tarjeta de crédito <br>", "Credit Card <br>")
