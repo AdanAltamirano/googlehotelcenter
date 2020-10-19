@@ -80,8 +80,10 @@ namespace APIServices.Models.DTO
         public string Name { get; set; }
         public string StartDate { get; set; }
         public string EndDate { get; set; }
+        public string BookingStartDate { get; set; }
+        public string BookingEndDate { get; set; }
         public Decimal? Discount { get; set; }
-        public int? Status { get; set; }
+        public int? Active { get; set; }
     }
 
     public class OfferDiscount

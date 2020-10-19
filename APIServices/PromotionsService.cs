@@ -12,52 +12,95 @@ namespace APIServices
         private bool _disposed;
 
         OzHotelesEntities context = new OzHotelesEntities();
-      
-        private Expression<Func<vPromotions,bool>> Filter(int hotelId,int status,int searchBy,string searchValue)
-        { 
-            //Filtra promociones que incluya activos y no activos
-            if (status == (int)OfferStatus.ActiveAndInActive)
-            { 
-                if(String.IsNullOrEmpty(searchValue))
-                {
-                    return promotion => promotion.HotelId == hotelId;
-                }
 
+        /// <summary>
+        ///  Devuelve una expresión para filtrar las promociones
+        /// </summary>
+        /// <param name="hotelId"></param>
+        /// <param name="includeOldPromos"></param>
+        /// <param name="status"></param>
+        /// <param name="searchBy"></param>
+        /// <param name="searchValue"></param>
+        /// <returns></returns>
+        private Expression<Func<vPromotions, bool>> Filter(int hotelId, bool includeOldPromos, int status, int searchBy, string searchValue)
+        {
+            //Filtro Base Hotel
+            ParameterExpression parameterExpression = Expression.Parameter(typeof(vPromotions), "promotion");
+            MemberExpression memberExpression = Expression.Property(parameterExpression, "HotelId");
+            ConstantExpression constantExpression = Expression.Constant(hotelId, typeof(int));
+            BinaryExpression equalhotel = Expression.Equal(memberExpression, constantExpression);
+            Expression filterHotel = equalhotel;
+  
+            //Filtro Fechas
+            //TODO: Validate BookingWindow Date
+            Nullable<DateTime> filterDate = DateTime.Now;
+            MemberExpression date = null;
+            ConstantExpression dateConstant = null;
+            BinaryExpression equalDate = null;
+
+            //No Incluye Promos Viejas
+            if (!includeOldPromos)
+            {
+                date = Expression.Property(parameterExpression, "EndDate");
+                dateConstant = Expression.Constant(filterDate, typeof(Nullable<DateTime>));
+                equalDate = Expression.GreaterThanOrEqual(date, dateConstant);
+            }
+            Expression filterHotelDate = filterHotel;
+            if (equalDate != null) filterHotelDate = Expression.AndAlso(filterHotel, equalDate);
+
+            //Filtro Status
+            // Active = 1, InActive = 0, Active and InActive = -1
+            MemberExpression active = null;
+            ConstantExpression activeConstant = null;
+            BinaryExpression equalActive = null;
+
+            //Selecciona Si la Promo esta Activa o InActiva
+            if(status == (int)OfferStatus.Active || status ==  (int) OfferStatus.InActive)
+            {
+                active = Expression.Property(parameterExpression, "Active");
+                activeConstant = Expression.Constant(status,typeof(int?));
+                equalActive = Expression.Equal(active, activeConstant);
+
+            }
+
+            Expression filterHotelDateActive = filterHotelDate;
+            if (equalActive != null) filterHotelDateActive = Expression.AndAlso(filterHotelDate,equalActive);
+
+            //Filtro de Busqueda
+            MemberExpression type = null;
+            ConstantExpression typeConstant = null;
+            System.Reflection.MethodInfo method = typeof(string).GetMethod("Contains", new[] { typeof(string) });
+            MethodCallExpression containsMethodExp = null;
+
+
+            //Contiene Nombre ó Codigo de Promo a Buscar
+            if (!String.IsNullOrEmpty(searchValue))
+            {
                 switch(searchBy)
                 {
                     case (int)OfferStatus.Name:
-                        return promotion => promotion.HotelId == hotelId
-                                            && promotion.Description.Contains(searchValue);
-
-                    case (int) OfferStatus.Code:
-                         return promotion => promotion.HotelId == hotelId
-                                             && promotion.PromotionCode.Contains(searchValue);
-                }
-            }
-            //Filtra promociones que incluya activo o no activo
-            else if ((status == (int)OfferStatus.InActive || status == (int) OfferStatus.Active))
-            {
-                if(String.IsNullOrEmpty(searchValue))
-                {
-                    return promotion => promotion.HotelId == hotelId
-                                   && promotion.Active == status;
-                }
-
-                switch (searchBy)
-                {
-                    case (int)OfferStatus.Name:
-                        return promotion => promotion.HotelId == hotelId 
-                                            && promotion.Active == status
-                                            && promotion.Description.Contains(searchValue);
+                        type = Expression.Property(parameterExpression, "Description");
+                        typeConstant = Expression.Constant(searchValue,typeof(string));
+                        containsMethodExp = Expression.Call(type,method,typeConstant);
+                        break;
 
                     case (int)OfferStatus.Code:
-                        return promotion => promotion.HotelId == hotelId 
-                                            && promotion.Active == status
-                                            && promotion.PromotionCode.Contains(searchValue);
+                        type = Expression.Property(parameterExpression,"PromotionCode");
+                        typeConstant = Expression.Constant(searchValue, typeof(string));
+                        containsMethodExp = Expression.Call(type, method, typeConstant);
+                        break;
                 }
+
             }
-                 
-            return promotion => promotion.HotelId == hotelId;
+
+            Expression filterHotelDateActiveSearchValue = filterHotelDateActive;
+
+            if (containsMethodExp != null) filterHotelDateActiveSearchValue = Expression.AndAlso(filterHotelDateActive,containsMethodExp);
+
+
+            var filter = Expression.Lambda<Func<vPromotions, bool>>(filterHotelDateActiveSearchValue, new[] { parameterExpression });
+
+            return filter;
         }
         
         public IEnumerable<Offer> FindOffers(int hotelId, string offerCode = "")
@@ -127,11 +170,10 @@ namespace APIServices
         /// <param name="searchBy">Buscar por codigo o por nombre, 0 es por nombre y 1 es por código</param>
         /// <param name="searchValue">Valor para filtrar por nombre o por codigo</param>
         /// <returns></returns>
-        public IEnumerable<OfferPromotions> FindOffers(int hotelId, int filterStatus = 1, int searchBy = 2, string searchValue = "")
+        public IEnumerable<OfferPromotions> FindOffers(int hotelId,bool includeOldPromos, int filterStatus = 1, int searchBy = 2, string searchValue = "")
         {
-
             IEnumerable<OfferPromotions> promotions = null;
-            var filter = this.Filter(hotelId,filterStatus,searchBy,searchValue);
+            Expression<Func<vPromotions,bool>> filter = this.Filter(hotelId,includeOldPromos,filterStatus,searchBy,searchValue);
             promotions = context.vPromotions
                 .Where(filter)
                 // Linq To Objects with AsEnumerable To Apply Date Format 
@@ -141,20 +183,76 @@ namespace APIServices
                 {
                     Code = s.PromotionCode,
                     Name = s.Description,
-                    StartDate = s.StartDate.Value.ToString("dd/MM/yyyy"),
-                    EndDate = s.EndDate.Value.ToString("dd/MM/yyyy"),
+                    StartDate = (s.StartDate.HasValue) ? s.StartDate.Value.ToString("dd/MM/yyyy") : "",
+                    EndDate = (s.EndDate.HasValue) ? s.EndDate.Value.ToString("dd/MM/yyyy") : "",
+                    BookingStartDate = (s.BookingWindowStartDate.HasValue) ? s.BookingWindowStartDate.Value.ToString("dd/MM/yyyy") : "",
+                    BookingEndDate = (s.BookingWindowEndDate.HasValue) ? s.BookingWindowEndDate.Value.ToString("dd/MM/yyyy") : "",
                     Discount = Decimal.Round((decimal)s.Discount),
-                    Status = s.Active
+                    Active = s.Active
                 });
 
             return promotions;
         }
 
-        //TODO: Get An Offer By Hotel and Code
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="hotelId"></param>
+        /// <param name="offerCode"></param>
+        /// <returns></returns>
         public Offer FindOfferByHotelAndCode(int hotelId, string offerCode)
         {
+            vPromotions o = context.vPromotions
+                .First(promotion => promotion.HotelId == hotelId
+                                   && promotion.PromotionCode == offerCode);
 
-            return new Offer();
+                Offer offer =  new Offer() 
+                {
+                    HotelId = o.HotelId,
+                    Id = o.PromotionCode,
+                    StartDate = o.StartDate,
+                    EndDate = o.EndDate,
+                    Active = o.Active == 1 ? true : false,
+                    Name = Dictionary.Get(o.DescriptionId),
+                    Description = Dictionary.Get(o.IdDiccShortDesc),
+                    Discount = new OfferDiscount()
+                    {
+                        NightsDiscounted = 1,
+                        NightsRequired = o.DaysFree,
+                        Amount = o.DiscountApplicationType == 2 ? o.Discount : 0,
+                        Percent = o.DiscountApplicationType == 1 ? o.Discount : 0,
+                        ApplicationMode = OfferDiscount.GetApplicationMode(o.DiscountApplicationMode)
+                    },
+                    ApplicableFor = Offer.GetApplicableFor(o.HotelId, o.PromotionCode),
+                    Rule = new OfferRule()
+                    {
+                        Id = o.idRule,
+                        ApplyDays = o.AppyDays != null ? Utilities.GetDaysOfWeek(o.AppyDays) : null,
+                        NoArrivals = o.NoArrivals != null ? Utilities.GetDaysOfWeek(o.NoArrivals) : null,
+                        BookingWindow = new OfferBookingWindow()
+                        {
+                            StartDate = o.BookingWindowStartDate,
+                            EndDate = o.BookingWindowEndDate,
+                            StartHour = o.BookingWindowStartHour,
+                            EndHour = o.BookingWindowEndHour
+                        },
+                        MaxAdvanceBookingOffset = o.MaxAdvanceBooking,
+                        MinAdvanceBookingOffset = o.MinAdvanceBookin,
+                        ExcludedDates = OfferRule.GetOfferExcludedDates(hotelId, o.PromotionCode),
+                        CancelPenalty = new OfferCancelPenalty()
+                        {
+                            OffsetDropTime = OfferCancelPenaltyOffsetDropTime.BeforeArrival,
+                            OffsetTimeUnit = OfferCancelPenalty.GetOffsetTimeUnit(o),
+                            OffsetTimeUnitMiltiplier = o.CancelPriorDays != null ? o.CancelPriorDays : o.CancelPriorHours, //Si OffsetTimeUnit = days y OffsetTimeUnitMiltiplier = 0, es no cancelable
+                            Name = o.CancelPenaltyName,
+                            ShortDescription = Dictionary.Get(o.CancelPenaltyReviewId),
+                            DetailedDescription = Dictionary.Get(o.CancelPenaltyDetailedId)
+                        }
+                    }
+
+                };
+
+            return offer;
         }
 
 

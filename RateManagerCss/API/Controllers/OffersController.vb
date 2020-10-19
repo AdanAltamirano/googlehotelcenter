@@ -13,16 +13,24 @@ Namespace API.Controllers
         Inherits ShurikenController
         Public service As New OfferService
 
+        'GET api/hotels/1978/offers
         <Route(""), HttpGet>
         Public Function GetByHotelId(HotelId As Integer) As IEnumerable(Of DTO.OfferPromotions)
-            Return service.FindOffers(HotelId, 1, 0, "")
+            'Param HotelId,
+            'Param IncludeOldPromos
+            'Param Active -> Active = 1,InActive = 0, ActiveAndInActive = -1
+            'Param SearcyBy -> Name = 2, Code = 3
+            'Param SearchValue
+            Return service.FindOffers(HotelId, False, 0, 2, "")
         End Function
 
-        ' GET api/hotel/1978/PR01
+        ' GET api/hotels/1978/offers/PR01
         <Route("{code}"), HttpGet>
-        Public Function GetByCode(HotelId As Integer, code As String) As IEnumerable(Of DTO.Offer)
-            Return service.FindOffers(HotelId, code)
+        Public Function GetByCode(HotelId As Integer, code As String) As DTO.Offer
+            Return service.FindOfferByHotelAndCode(HotelId, code)
         End Function
+
+        'TODO: Cambiar la ruta de la api en comentarios en las diferentes acciones 
 
         'POST api/hotels/1/offers
         <Route(""), HttpPost>
