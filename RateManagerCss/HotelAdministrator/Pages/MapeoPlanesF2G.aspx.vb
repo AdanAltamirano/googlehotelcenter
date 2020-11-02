@@ -104,11 +104,18 @@ Public Class MapeoPlanesF2G
             'Actualizamos los idratesplan del PMS
             For Each row As DataGridItem In dgRatesPlan.Items
                 Dim txtidRatePlanPMS As TextBox
+                Dim txtPromoCodePms As TextBox
+                'Buscar TextBox en la fila del datagrid
                 txtidRatePlanPMS = row.FindControl("txtidRatePlanF2G")
-                If Not txtidRatePlanPMS Is Nothing Then
-                    Dim idRatePlan As String = row.Cells(0).Text
+                txtPromoCodePms = row.FindControl("txtIdPromoCodePMS")
 
-                    UpdateRatesPlanF2G(Me.hotelId, idRatePlan, txtidRatePlanPMS.Text.Trim)
+                If Not txtidRatePlanPMS Is Nothing AndAlso Not txtPromoCodePms Is Nothing Then
+                    Dim idRatePlan As String = row.Cells(0).Text
+                    'Param HotelId
+                    'Param IdRatePlanUv
+                    'Param IdRatePlanF2g
+                    'Param PromoCode
+                    UpdateRatesPlanF2G(Me.hotelId, idRatePlan, txtidRatePlanPMS.Text.Trim, txtPromoCodePms.Text.Trim)
 
                 End If
             Next
@@ -119,10 +126,16 @@ Public Class MapeoPlanesF2G
     Private Sub dgRatesPlan_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles dgRatesPlan.ItemDataBound
         If e.Item.ItemType = ListItemType.AlternatingItem Or e.Item.ItemType = ListItemType.SelectedItem Or e.Item.ItemType = ListItemType.Item Then
             Dim txtidRatePlanPMS As TextBox
+            Dim txtPromoCodePMS As TextBox
             txtidRatePlanPMS = e.Item.Cells(3).FindControl("txtidRatePlanF2G")
+            txtPromoCodePMS = e.Item.Cells(5).FindControl("txtIdPromoCodePMS")
             If Not txtidRatePlanPMS Is Nothing Then
                 txtidRatePlanPMS.Text = String.Empty
                 txtidRatePlanPMS.Text = IIf(e.Item.Cells(2).Text = "&nbsp;", "", e.Item.Cells(2).Text)
+            End If
+            If Not txtPromoCodePMS Is Nothing Then
+                txtPromoCodePMS.Text = String.Empty
+                txtPromoCodePMS.Text = IIf(e.Item.Cells(4).Text = "&nbsp;", "", e.Item.Cells(4).Text)
             End If
         End If
         If e.Item.ItemType = ListItemType.Header Then
@@ -156,7 +169,7 @@ Public Class MapeoPlanesF2G
         'lblTitle.Text = PortalCulture.GetString("01152", False)
     End Sub
 
-    Private Function UpdateRatesPlanF2G(ByVal idHotel As Integer, ByVal idRatePlanUv As String, ByVal idRatePlanF2G As String) As Boolean
+    Private Function UpdateRatesPlanF2G(ByVal idHotel As Integer, ByVal idRatePlanUv As String, ByVal idRatePlanF2G As String, ByVal promoCodePms As String) As Boolean
         Dim conStr As String = ConfigurationSettings.AppSettings("HotelConnection")
         Dim sqlCon As SqlConnection = New SqlConnection(conStr)
         Dim sqlCommand As SqlCommand = New SqlCommand("spUpdF2GRatePlan", sqlCon)
@@ -164,6 +177,7 @@ Public Class MapeoPlanesF2G
         sqlCommand.Parameters.Add("@idRatePlanUv", SqlDbType.NVarChar).Value = idRatePlanUv
         sqlCommand.Parameters.Add("@idHotel", SqlDbType.Int).Value = idHotel
         sqlCommand.Parameters.Add("@idRatePlanF2G", SqlDbType.NVarChar).Value = idRatePlanF2G
+        sqlCommand.Parameters.Add("@promoCodePms", SqlDbType.NVarChar).Value = promoCodePms
         Try
             sqlCommand.Connection.Open()
             sqlCommand.ExecuteNonQuery()
@@ -181,6 +195,7 @@ Public Class MapeoPlanesF2G
         Return True
     End Function
 
+    'TODO: Move To Portal Facade dll
     Private Function LoadPlansF2G(ByVal idHotel As Integer, ByVal idioma As Integer, ByVal IncluirPaquetesSegmentoK As Integer, ByVal incluirRatePlanNR As Integer) As DataSet
 
         Dim data As New DataSet

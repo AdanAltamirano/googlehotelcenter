@@ -1,11 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace APIServices.Models.DTO
 {
+
+    public enum OfferStatus
+    {
+        //Filtro por Status de la Promoción
+        ActiveAndInActive = -1,
+        Active = 1,
+        InActive = 0,
+        //Filtro del tipo de Búsqueda
+        Name = 2,
+        Code = 3
+    }
     public enum OfferDiscountApplicationMode
     {
         RateDiscountPriority, //Si la tarifa NO tiene descuento, se aplica el descuento de la oferta. Si la tarifa tiene descuento, el descuento de la oferta se descarta.
@@ -39,6 +48,7 @@ namespace APIServices.Models.DTO
         public string Id { get; set; }
         public int HotelId { get; set; }
         public bool Active { get; set; }
+        public bool IsCombinablePromotion { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }        
         public OfferDiscount Discount { get; set; }
@@ -63,6 +73,18 @@ namespace APIServices.Models.DTO
 
             return applicableFor;
         }
+    }
+
+    public class OfferPromotions
+    {
+        public string Code { get; set; }
+        public string Name { get; set; }
+        public string StartDate { get; set; }
+        public string EndDate { get; set; }
+        public string BookingStartDate { get; set; }
+        public string BookingEndDate { get; set; }
+        public Decimal? Discount { get; set; }
+        public int? Active { get; set; }
     }
 
     public class OfferDiscount
@@ -98,6 +120,11 @@ namespace APIServices.Models.DTO
         public string Name { get; set; }
         public MultiLanguageTextType ShortDescription { get; set; }
         public MultiLanguageTextType DetailedDescription { get; set; }
+        public byte? MinNights { get; set; }
+        public byte? MaxNights { get; set; }
+        public byte? ByDay { get; set; }
+        public byte? ByHour { get; set; }
+
         public static OfferCancelPenaltyOffsetTimeUnit GetOffsetTimeUnit(vPromotions offer)
         {
             if (offer.CancelPriorDays != null)
@@ -118,8 +145,8 @@ namespace APIServices.Models.DTO
         public DaysOfWeekType ApplyDays { get; set; }
         public List<OfferExcludedDates> ExcludedDates { get; set; }
         public OfferBookingWindow BookingWindow { get; set; }
-        public byte? MinAdvanceBookingOffset { get; set; }
-        public int? MaxAdvanceBookingOffset { get; set; }
+        //public byte? MinAdvanceBookingOffset { get; set; }
+        //public int? MaxAdvanceBookingOffset { get; set; }
         public static List<OfferExcludedDates> GetOfferExcludedDates(int hotelId, string offerCode)
         {
             List<OfferExcludedDates> result = null;
@@ -148,6 +175,8 @@ namespace APIServices.Models.DTO
         public int Id { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
+        public byte? MinDays { get; set; }
+        public int? MaxDays { get; set; }
         public string StartHour { get; set; }
         public string EndHour { get; set; }
     }

@@ -712,6 +712,8 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vPromotions' no tiene definida
             <PropertyRef Name="PromotionCode" />
             <PropertyRef Name="HotelId" />
             <PropertyRef Name="Description" />
+            <PropertyRef Name="IsCombinablePromotion" />
+            <PropertyRef Name="IsOldPromotion" />
           </Key>
           <Property Name="PromotionCode" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="HotelId" Type="int" Nullable="false" />
@@ -745,6 +747,8 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vPromotions' no tiene definida
           <Property Name="IdDiccShortDesc" Type="int" />
           <Property Name="idDiccPromoDesc" Type="int" />
           <Property Name="idRule" Type="int" />
+          <Property Name="IsCombinablePromotion" Type="bit" Nullable="false" />
+          <Property Name="IsOldPromotion" Type="int" Nullable="false" />
         </EntityType>
         <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'OzHoteles.dbo.vReservation' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
@@ -1245,7 +1249,9 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
     [vPromotions].[Description] AS [Description], 
     [vPromotions].[IdDiccShortDesc] AS [IdDiccShortDesc], 
     [vPromotions].[idDiccPromoDesc] AS [idDiccPromoDesc], 
-    [vPromotions].[idRule] AS [idRule]
+    [vPromotions].[idRule] AS [idRule], 
+    [vPromotions].[IsCombinablePromotion] AS [IsCombinablePromotion], 
+    [vPromotions].[IsOldPromotion] AS [IsOldPromotion]
     FROM [dbo].[vPromotions] AS [vPromotions]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vReservation" EntityType="Self.vReservation" store:Type="Views" store:Schema="dbo">
@@ -2167,6 +2173,8 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
             <PropertyRef Name="PromotionCode" />
             <PropertyRef Name="HotelId" />
             <PropertyRef Name="Description" />
+            <PropertyRef Name="IsCombinablePromotion" />
+            <PropertyRef Name="IsOldPromotion" />
           </Key>
           <Property Name="PromotionCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="HotelId" Type="Int32" Nullable="false" />
@@ -2200,6 +2208,8 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <Property Name="IdDiccShortDesc" Type="Int32" />
           <Property Name="idDiccPromoDesc" Type="Int32" />
           <Property Name="idRule" Type="Int32" />
+          <Property Name="IsCombinablePromotion" Type="Boolean" Nullable="false" />
+          <Property Name="IsOldPromotion" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="vAgencies">
           <Key>
@@ -3216,6 +3226,8 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <EntitySetMapping Name="vPromotions">
             <EntityTypeMapping TypeName="Models.vPromotions">
               <MappingFragment StoreEntitySet="vPromotions">
+                <ScalarProperty Name="IsOldPromotion" ColumnName="IsOldPromotion" />
+                <ScalarProperty Name="IsCombinablePromotion" ColumnName="IsCombinablePromotion" />
                 <ScalarProperty Name="idRule" ColumnName="idRule" />
                 <ScalarProperty Name="idDiccPromoDesc" ColumnName="idDiccPromoDesc" />
                 <ScalarProperty Name="IdDiccShortDesc" ColumnName="IdDiccShortDesc" />

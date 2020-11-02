@@ -195,6 +195,7 @@ Public Class Promotions
     End Sub
 
     Private Sub btnNew_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btncancel.Click
+
         edicion = False
         'lblError.Visible = False
         'lblErrorSource.Visible = False
@@ -997,6 +998,7 @@ Public Class Promotions
             If e.Item.Cells(dgcolumns.principalSegmentRac).Text.ToUpper = "True" Then
                 Me.loadPromo(grid.DataKeys(e.Item.ItemIndex), True)
             Else
+                'Response.Redirect("~/rate-manager-ui/dist/promotions-details.aspx?code=" & IdRatePlan)
                 Me.loadPromo(grid.DataKeys(e.Item.ItemIndex), False)
             End If
             Me.btnSave.Enabled = True

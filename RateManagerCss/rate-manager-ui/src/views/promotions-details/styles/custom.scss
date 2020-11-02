@@ -3,24 +3,23 @@
 @import '../../../../node_modules/bootstrap-vue/dist/bootstrap-vue.css';
 /*@import '../../../../node_modules/vue-multiselect/dist/vue-multiselect.min.css';*/
 
+.main-container {
+    font-size: 15px;
+}
 .input-border-bottom {
     border-top: none;
     border-right: none;
     border-left: none;
     width: 80px;
     text-align: center;
+    border-bottom: 1px solid;
+    padding: 0;
     &:hover {
         outline: none;
     }
 }
-.list-group-scroll {
-    max-height: 247px;
-    overflow-y: scroll;
-}
-.btn-group-toggle .active { 
-    background-color: #dc3545 !important;
-    border-color: #dc3545 !important;
-}
+
+
 .vc-shadow {
     border-width: 0px !important;
     box-shadow: none !important;
@@ -30,9 +29,44 @@
 }
 
 .card-header {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 700;
 }
+/*>type promotion*/
+.nav-pills {
+    padding: .5rem!important
+}
+
+
+
+/*>booking window*/
+.b-form-spinbutton {
+    font-size: .7rem!important;
+}
+.b-time {
+    min-width: 130px !important;
+}
+
+
+
+/*>rooms - rateplans*/
+.list-group-scroll {
+    max-height: 221px;
+    overflow-y: scroll;
+}
+
+
+/*>travel window*/
+.btn-group-toggle .active { 
+    background-color: #dc3545 !important;
+    border-color: #dc3545 !important;
+}
+.btn-group-toggle .active-blue { 
+    background-color: #10467a !important;
+    border-color: #10467a !important;
+}
+
+
 .cite-date {
     white-space: nowrap;
     border: 0 !important;
@@ -55,4 +89,8 @@
     .sm-margin {
       margin-top: 0px !important;
     }
+}
+
+._error {
+    border: 2px solid red !important;
 }

@@ -81,6 +81,15 @@
                                                     <asp:TextBox ID="txtidRatePlanF2G" runat="server" Width="160px" MaxLength="100" Text=""></asp:TextBox>
                                                 </ItemTemplate>
                                             </asp:TemplateColumn>
+                                             <asp:BoundColumn Visible="False" DataField="PromoCode">
+                                                <ItemStyle Width="30%"></ItemStyle>
+                                            </asp:BoundColumn>
+                                            <asp:TemplateColumn HeaderText="Código Promoción">
+                                              <ItemStyle Width="10%"></ItemStyle>
+                                               <ItemTemplate>
+                                                <asp:TextBox ID="txtIdPromoCodePMS" runat="server" Width="160px" MaxLength="100" Text=""></asp:TextBox>
+                                               </ItemTemplate>
+                                            </asp:TemplateColumn>
                                         </Columns>
                                         <PagerStyle NextPageText="Siguiente &gt;&gt;" PrevPageText="&lt;&lt; Anterior" HorizontalAlign="Right"
                                             Position="Top" CssClass="dgPager" Mode="NumericPages"></PagerStyle>

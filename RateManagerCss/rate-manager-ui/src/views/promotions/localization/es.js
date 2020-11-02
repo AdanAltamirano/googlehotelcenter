@@ -1,0 +1,28 @@
+/* eslint-disable */
+export default {
+    'Promotions' : 'Promociones',
+    'Search By Name' : 'Buscar por Nombre',
+    'Search By Code' : 'Buscar por Código',
+    'Search': 'Buscar',
+    'Include Old Promotions': 'Incluir Promociones Anteriores',
+    'New' : 'Nuevo',
+    'Active' : 'Activos',
+    'InActive' : 'No Activos',
+    'Active and InActive' : 'Activos y No Activos',
+    'Name' : 'Nombre',
+    'Code' : 'Código',
+    'Search By' : 'Buscar por',
+    'Start' : 'Inicio',
+    'End' : 'Fin',
+    'items per page': 'elementos por página',
+    'Enable' : 'Activar',
+    'Disable' : 'Desactivar',
+    'Edit' : 'Editar',
+    'Enable Promotion ?' : '¿ Activar Promoción ?',
+    'Disable Promotion ?' : ' ¿ Desactivar Promoción ?',
+    'Cancel' : 'Salir',
+    'Promotion Enabled' : 'Promoción Activada',
+    'Promotion Disabled' : 'Promoción Desactivada',
+    'Cannot Enable Promotion' : 'No se pudo activar la promoción',
+    'Cannot Disable Promotion' : 'No se pudo desactivar la promoción'
+}

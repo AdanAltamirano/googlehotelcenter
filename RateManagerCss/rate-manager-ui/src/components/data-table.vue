@@ -3,7 +3,7 @@
   <div>
     <b-table
       v-bind="{ $scopedSlots }"
-      class="my-2"
+      :class="`my-2 ${customClass}`"
       show-empty
       striped
       bordered
@@ -19,7 +19,7 @@
       :small="small"
       :sort-by="sortBy"
       :sort-desc="sortDesc"
-    >
+      :tbody-tr-class="rowClass">
       <template slot="table-busy">
         <div class="vld-parent" style="height:200px">
           <loading :active="true" :is-full-page="false" color="#007bff"></loading>
@@ -30,7 +30,7 @@
       </template>
     </b-table>
     <div class="d-flex">
-      <span>Mostrando del {{currentPage}} al {{totalPages}} de {{totalRows}} reservas</span>
+      <span>Mostrando del {{currentPage}} al {{totalPages}} de {{totalRows}} {{tableTypeResults}}</span>
       <b-pagination
         align="right"
         style="margin-left:auto !important;"
@@ -85,7 +85,23 @@ export default {
     small: {
       type: Boolean,
       required: false
+    },
+    customClass:{
+      type: String,
+      required: false,
+      default:''
+    },
+    rowClass:{
+      type:String,
+      required: false,
+      default:''
+    },
+    tableTypeResults:{
+      type:String,
+      required: false,
+      default:'reservas'
     }
+
   },
   data() {
     return {
@@ -126,6 +142,7 @@ export default {
             ctx.currentPage
           ]);
           console.log(response);
+          console.log(response.body);
           // establecer el total de elementos
           this.totalRows = Number(response.headers.map["x-total-count"][0]);
           // prooveer el arreglo de elementos

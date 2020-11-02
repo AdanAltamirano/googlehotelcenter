@@ -46,5 +46,7 @@ namespace APIServices.Models
         public Nullable<int> IdDiccShortDesc { get; set; }
         public Nullable<int> idDiccPromoDesc { get; set; }
         public Nullable<int> idRule { get; set; }
+        public bool IsCombinablePromotion { get; set; }
+        public int IsOldPromotion { get; set; }
     }
 }

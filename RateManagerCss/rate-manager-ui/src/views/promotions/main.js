@@ -1,28 +1,35 @@
+// plugins
 import Vue from 'vue';
-import VueSweetalert2 from 'vue-sweetalert2';
 import 'bootstrap';
-import moment from 'moment';
 import BootstrapVue from 'bootstrap-vue';
+import moment from 'moment';
 import '../../core/app.settings';
 import VueMoment from 'vue-moment';
 import Loading from 'vue-loading-overlay';
-import VCalendar from 'v-calendar';
+import VTooltip from 'v-tooltip';
 import locale from '../../core/localization';
 import es from './localization/es';
-import store from './store';
-import View from './view.vue';
-import './styles/custom.scss';
 
+// app
+import View from './view.vue';
+
+// styles
+import './styles/app.scss';
+
+// agregar idiomas
+locale([{ language: 'es', localeFile: Object.assign(es) }], moment,false);
+
+// Init plugins
 Vue.use(BootstrapVue);
-Vue.use(VueSweetalert2);
-locale([{ language: 'es', localeFile: es }], moment, false);
 Vue.use(VueMoment, {
     moment,
 });
 Vue.use(Loading);
-Vue.use(VCalendar);
+Vue.use(VTooltip);
 
+Vue.config.productionTip = false;
+
+// creación de app
 new Vue({
-    store,
-    render: h => h(View)
+    render: h => h(View),
 }).$mount('#app');

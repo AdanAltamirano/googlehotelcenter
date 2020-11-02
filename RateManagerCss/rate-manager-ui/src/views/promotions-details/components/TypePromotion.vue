@@ -1,5 +1,5 @@
 <template>
-    <b-card no-body :header="$t('Promotion type')">
+    <b-card no-body class="w-100" :header="$t('Promotion type')">
         <b-row>
             <b-col>
                 <b-card no-body>
@@ -8,22 +8,21 @@
                             <b-row>
                                 <b-col>
                                     <p>
-                                        <select
-                                        class="input-border-bottom"
-                                        v-model="typeFreeNight"
-                                        v-on:input="typeFreeNight = $event.target.value">
+                                        <select class="input-border-bottom" v-model="model.discountPattern">
                                             <option value="0">{{ $t('Every') }}</option>
                                             <option value="1">{{ $t('Only') }}</option>
-                                        </select>&nbsp;
-                                        <span v-if="typeFreeNight === '1'">{{ $t('the') }}</span>
+                                        </select>
+                                        &nbsp;<span v-if="model.nightsDiscounted === '1'">{{ $t('the') }}</span>
+                                        
                                         <input
                                         type="number"
-                                        v-model="freeNight"
+                                        v-model="model.nightsDiscounted"
                                         min="0"
-                                        class="input-border-bottom" />
-                                        {{ getPrefix(freeNight) }}&nbsp;{{ $t('will be free') }}
+                                        class="input-border-bottom" /> {{ getPrefix() }}
+                                        &nbsp;{{ $t('will be free') }}
+
                                     </p>
-                                    <p>
+                                    <p v-if="model.nightsDiscounted > 0">
                                         <cite class="font-weight-bold">"{{ freeNightTxt }}"</cite>
                                     </p>
                                 </b-col>
@@ -31,16 +30,16 @@
                         </b-tab>
                         <b-tab :title="$t('Discount')">
                             <b-row>
-                                <b-col md="4">
+                                <b-col md="5">
                                     <b-form-group :label="$t('Percentage')">
                                         <b-input-group append="%">
-                                            <b-form-input v-model="discount"></b-form-input>
+                                            <b-form-input @keypress="numberFormat" v-model="model.percent" />
                                         </b-input-group>
                                     </b-form-group>
                                 </b-col>
-                                <b-col md="8">
+                                <b-col md="7">
                                     <b-form-group :label="$t('Application mode')">
-                                        <b-form-select v-model="typeDiscount" :options="options"></b-form-select>
+                                        <b-form-select v-model="model.applicationMode" :options="options" />
                                     </b-form-group>
                                 </b-col>
                                 <b-col class="text-right">
@@ -56,18 +55,20 @@
 </template>
 
 <script>
-import Help from '../helper/help.vue';
+import help from '../helper/help.vue';
+import { onlyNumber } from '../helper/util';
 import Vue from 'vue';
 
 export default {
     props: {
-        typeFreeNight: String,
-        freeNight: Number,
-        typeDiscount: String,
-        discount: Number
+        dataModel: {
+            type: Object,
+            required: true
+        }
     },
     data() {
         return {
+            model: this.dataModel,
             language: this.$appConfig.language,
             options: [
                 { value: 0, text: this.$t('Priority to discount rate') },
@@ -81,19 +82,19 @@ export default {
             let translate = '';
             let prefix = '';
 
-            if (this.typeFreeNight === '0')
+            if (this.model.discountPattern.toString() === '0')
                 translate = this.$t('Every {number}{prefix} night will be free');
             else translate = this.$t('Only the {number}{prefix} night will be free');
-            translate = translate.replace('{number}', this.freeNight);
-            translate = translate.replace('{prefix}', this.getPrefix(this.freeNight));
+            translate = translate.replace('{number}', this.model.nightsDiscounted);
+            translate = translate.replace('{prefix}', this.getPrefix());
 
             return translate;
         }
     },
     methods: {
-        getPrefix(number) {
+        getPrefix() {
             let prefix = 'ª';
-            number =  Number.parseInt(number);
+            let number =  Number.parseInt(this.model.nightsDiscounted);
             if (this.language !== 'es') {
                 if (number > 20)
                     number =  Number.parseInt(number.toString().slice(-1));
@@ -107,26 +108,41 @@ export default {
             return prefix;
         },
         help() {
-            const component = Vue.extend(Help);
-            const instance = new component({});
-            instance.$mount();
-
-            let self = this;
-            this.$swal
-            .fire({
-                title: self.$t('Discount application method'),
+            // const component = Vue.extend(help);
+            // const instance = new component();
+            // instance.$mount();
+            const html = this.helpText();
+            console.log(html);
+            // let self = this;
+            this.$appAlert({
+                title: this.$t('Discount application method'),
                 icon: 'info',
                 confirmButtonText: '<i class="fa fa-thumbs-up"></i>',
                 showCancelButton: false,
                 showCloseButton: true,
-                html: '<div></div>',
-                onBeforeOpen: () => {
-                    this.$swal
-                    .getContent()
-                    .querySelector('div')
-                    .append(instance.$el);
-                }
+                html:html,
+                // onBeforeOpen: () => {
+                //     this.$swal
+                //     .getContent()
+                //     .querySelector('div')
+                //     .append(instance.$el);
+                // }
             });
+        },
+        numberFormat(evt) {
+            onlyNumber(evt);
+        },
+        helpText()
+        {
+            let text = '<p>' + `${this.$t('The <b>application mode</b> will only affect when there is a discount at the tariff level. Otherwise, the discount percentage set here will be applied.')}` + '</p>';
+            text += '<p>' + `${this.$t('Assuming that in the promotion it was configured with a 40% discount and in the rate it was configured with a 20% discount, it would be as follows:')}`+ '</p>';
+            text += '<h4>' + `${this.$t('Priority to discount rate')}` + '</h4>';
+            text += '<p>' + `${this.$t('Only 20% discount will be applied.')}` + '</p>';
+            text += '<h4>' + `${this.$t('Sum discount percentage')}` + '</h4>';
+            text += '<p>' + `${this.$t('A 60% discount will be applied.')}` + '</p>';
+            text += '<h4>' +`${this.$t('Additional discount')}` + '</h4>';
+            text += '<p>' + `${this.$t('First the 40% discount will be applied and the result of that will be applied the 20% discount.')}` + '</p>';
+            return text;
         }
     }
 }
