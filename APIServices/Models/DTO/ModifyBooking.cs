@@ -10,11 +10,14 @@ namespace APIServices.Models.DTO
         public DateTime CheckOut { get; set; }
         public double TotalNR { get; set; }
         public double Total { get; set; }
+        public string Details { get; set; }
     }
 
     public class ModifyBookingRS
     {
         public bool IsSuccess { get; set; }
         public string Error { get; set; }
+        public string CustomerEmail { get; set; } = String.Empty;
+        public string HotelEmail { get; set; } = String.Empty;
     }
 }

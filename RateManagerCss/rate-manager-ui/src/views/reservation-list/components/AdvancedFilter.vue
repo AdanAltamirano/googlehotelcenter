@@ -88,7 +88,7 @@
                                     <b-form-input v-model="clientName"></b-form-input>
                                 </b-form-group>
                             </b-col>
-                            <b-col :md="source === 'IDS' || source === 'AGENCY' ? '2' : '4'">
+                            <b-col v-if="!isAgencyCompany" :md="source === 'IDS' || source === 'AGENCY' ? '2' : '4'">
                                 <b-form-group :label="$t('Origin')">
                                     <b-form-select v-model="source" :options="sources"></b-form-select>
                                 </b-form-group>
@@ -102,8 +102,11 @@
                                 <b-form-group :label="$t('Agencies')">
                                     <b-form-select v-model="agency" :options="agencies"></b-form-select>
                                 </b-form-group>
+                                 <b-form-group v-show="agency != -1" :label="$t('Agents')">
+                                    <b-form-select v-model="agent" :options="agents"></b-form-select>
+                                </b-form-group>
                             </b-col>
-                            <b-col md="4">
+                            <b-col md="4" v-if="!isAgencyCompany">
                                 <b-form-group v-if="hotels.length > 0">
                                     <template slot="label">
                                         <div class="d-flex">
@@ -169,6 +172,7 @@ export default {
     mounted() {
         this.getHotels();
         this.getAgencies();
+        this.getAgents();
         this.$root.$on('queryString', array => {
             this.filterQueryString = array[0];
             this.formatQueryString = array[1];
@@ -222,6 +226,10 @@ export default {
             ota: 'ALL',
             agency: -1,
             agencies: [],
+            agent: -1,
+            agents:[],
+            agentsToFilter:[],
+            isAgencyCompany:(this.$appConfig.session.isAgencyCompany === 'True')? true : false,
             typeDates: [
                 { text: this.$t('Reservation date'), value: 'ReservationDate' },
                 { text: this.$t('Arrival date'), value: 'CheckOut' },
@@ -251,6 +259,31 @@ export default {
             isCheckCorporate: false
         };
     },
+    watch:{
+        agency:function(value){
+            this.agents = [];
+            this.agent = -1;
+            // Si es != -1 Filtra los agentes por agencia
+            if(value != -1)
+            {
+                this.agents.push({
+                    text: this.$t('All'),
+                    value:-1
+                });
+
+                this.agentsToFilter.forEach(agentFilter => {
+                    if(agentFilter.agencyId === value){
+                        this.agents.push({
+                            text: `${agentFilter.name} ${agentFilter.lastName} - ${agentFilter.email}`,
+                            value: agentFilter.userId
+                        })
+                    }  
+                });
+
+                this.agent = this.agents[0].value;
+            }
+        },
+    },
     methods: {
         getHotels() {
             HotelService.getList().then(response => {
@@ -276,6 +309,13 @@ export default {
                     this.agency = this.agencies[0].value;
                 }
             });
+        },
+        getAgents()
+        {
+            ReservationService.GetAgents().then(response =>{
+                this.agentsToFilter = response.body;
+            });
+
         },
         search() {
             this.$emit('search', this.getFilter());
@@ -350,9 +390,32 @@ export default {
                 });
             }
 
-            if (this.agency !== -1) {
-                filter += `${this.and(filter)}AgencyId eq ${this.agency}`;
+            if(this.source === 'AGENCY')
+            {
+                // Si se escogio una agencia
+                if (this.agency !== -1) {
+                   
+                    //Si se escogio un agente
+                    if(this.agent !== -1)
+                    {
+                        filter += `${this.and(filter)}AgencyId eq ${this.agency} and AgencyUserId eq ${this.agent}`;
+                    }
+                    // No se escogio agente
+                    else{
+
+                        filter += `${this.and(filter)}AgencyId eq ${this.agency}`;
+                    }
+                }// No se escogio agencia 
+                else {
+                    filter += `${this.and(filter)}AgencyId gt 0`;
+                }
             }
+
+            // if (this.agency !== -1) {
+            //     filter += `${this.and(filter)}AgencyId eq ${this.agency}`;
+            // }
+
+            //filter += `${this.and(filter)}AgencyId gt 0`;
 
             /* eslint-enable max-len */
             return filter === '' ? null : filter;

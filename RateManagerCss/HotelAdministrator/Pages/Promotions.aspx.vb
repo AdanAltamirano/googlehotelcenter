@@ -960,8 +960,17 @@ Public Class Promotions
         ds.AcceptChanges()
 
         With grid
+            'FechaInicio -> BookingWindow
+            'FechaFin -> BookingWindow
+            'PromoStartDate -> TravelWindow
+            'PromoEndDate -> TravelWindow
+
+            '" and FechaFin IS NOT NULL and FechaFin >= " & dateFilter & " Or PromoEndDate >= " & dateFilter
+            '" and PromoEndDate >= " & dateFilter
+
+            Dim includeOldPromos As Boolean = oldPromosCheckbox.Checked
             dv = ds.Tables(0).DefaultView
-            dv.RowFilter = "isPromo = 1 " & IIf(sFiltro = "", "", " and " & sFiltro)
+            dv.RowFilter = FilterPromos(includeOldPromos, sFiltro)
             'dsegmentos se utilizará en el databound
             dsegmentos = New DataSet
             dsegmentos.ReadXml(Server.MapPath(Request.ApplicationPath & "/Data/Segmentos.xml"))
@@ -985,7 +994,7 @@ Public Class Promotions
             Me.ClearData()
             Me.edicion = True
             Me.IdRatePlan = grid.DataKeys(e.Item.ItemIndex)
-            If e.Item.Cells(dgcolumns.principalSegmentRac).Text.ToUpper = "TRUE" Then
+            If e.Item.Cells(dgcolumns.principalSegmentRac).Text.ToUpper = "True" Then
                 Me.loadPromo(grid.DataKeys(e.Item.ItemIndex), True)
             Else
                 Me.loadPromo(grid.DataKeys(e.Item.ItemIndex), False)
@@ -1042,7 +1051,7 @@ Public Class Promotions
             LK2 = e.Item.Cells(dgcolumns.eliminar).FindControl("lnkedit")
             LK2.Text = PortalCulture.GetString("00093")
 
-            If e.Item.Cells(dgcolumns.deleted).Text.ToUpper() = "TRUE" Then 'DESACTIVAR
+            If e.Item.Cells(dgcolumns.deleted).Text.ToUpper() = "TRUE" Then 'ACTIVAR
                 e.Item.Cells(dgcolumns.eliminar).Text = ""
                 e.Item.Cells(dgcolumns.orden).Text = ""
 
@@ -1053,7 +1062,7 @@ Public Class Promotions
                 If ddlDeletedFilter.SelectedValue = "-1" Then
                     e.Item.Style("background-color") = "#FEE"
                 End If
-            Else 'ACTIVAR
+            Else 'DESACTIVAR
                 e.Item.Cells(dgcolumns.activar).Text = ""
                 LK2 = e.Item.Cells(dgcolumns.eliminar).FindControl("lnkEliminar2")
                 LK = e.Item.Cells(dgcolumns.eliminar).FindControl("lnkEliminar")
@@ -1522,4 +1531,21 @@ Public Class Promotions
         'lblErrorSource.Visible = False
         MostrarCmdNew(True)
     End Sub
+
+    Private Sub oldPromosCheckbox_PostBack(ByVal sender As Object, ByVal e As EventArgs) Handles oldPromosCheckbox.CheckedChanged
+        Me.grid.CurrentPageIndex = 0
+        LoadGridRatePlans(ctrlAutoComplete1.GetFilter)
+    End Sub
+
+    Private Function FilterPromos(ByVal includeOldPromos As Boolean, sFiltro As String) As String
+        Dim filter As String
+        Dim dateFilter As String = "#" & DateTime.Now.ToString() & "#"
+        If (includeOldPromos) Then
+            filter = "isPromo = 1 " & IIf(sFiltro = "", "", " and " & sFiltro)
+        Else
+            filter = "isPromo = 1 " & IIf(sFiltro = "", "", " and " & sFiltro) & "and ((FechaFin IS NOT NULL and FechaFin >= " & dateFilter & ") Or (FechaFin IS NULL and PromoEndDate >= " & dateFilter & "))"
+        End If
+        Return filter
+    End Function
+
 End Class

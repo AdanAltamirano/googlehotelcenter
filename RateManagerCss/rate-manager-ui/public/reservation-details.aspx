@@ -13,7 +13,8 @@
             {
                 hotelId: <%= Me.cInfoActual.Hotel%>,
                 language: '<%= If(Me.IdIdiomaMenu = 1, "es", "en" )%>',
-                confirmNumber: <%=Request.QueryString("qs")%>
+                confirmNumber: <%=Request.QueryString("qs")%>,
+		isAgencyCompany: '<%= Me.IsAgencyCompany%>'
             };
     </script>
     <div id="app"></div>

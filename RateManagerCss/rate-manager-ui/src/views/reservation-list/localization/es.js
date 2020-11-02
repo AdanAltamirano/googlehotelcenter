@@ -36,5 +36,6 @@ export default {
     'Can not export page': 'No se puede exportar la página',
     'Corporate': 'Corporativo',
     'Agency': 'Agencia',
-    'Agencies': 'Agencias'
+    'Agencies': 'Agencias',
+    'Agents':'Agentes'
 };

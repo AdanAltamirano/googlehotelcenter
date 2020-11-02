@@ -644,6 +644,15 @@ Partial Public Class Promotions
     Protected WithEvents ddlDeletedFilter As Global.System.Web.UI.WebControls.DropDownList
 
     '''<summary>
+    '''Control oldPromosCheckbox.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents oldPromosCheckbox As Global.System.Web.UI.WebControls.CheckBox
+
+    '''<summary>
     '''Control grid.
     '''</summary>
     '''<remarks>

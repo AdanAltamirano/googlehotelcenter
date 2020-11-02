@@ -48,6 +48,7 @@ Public Class PaginaBase
         LogIn '3
         Publicar '4
         Ver '5
+        Reactivar '6
     End Enum
 
     Public Enum PerfilHotel
@@ -109,6 +110,8 @@ Public Class PaginaBase
         DisplayCarReservation
         ItineraryDetails
         WaitList
+        ReservationListUI
+        ReservationDetailsUI
     End Enum
 
 #End Region
@@ -157,6 +160,12 @@ Public Class PaginaBase
     Public ReadOnly Property IsSupervisor() As Boolean
         Get
             Return (New AuthUser).IsSupervisor
+        End Get
+    End Property
+
+    Public ReadOnly Property IsAgencyCompany() As Boolean
+        Get
+            Return (New AuthUser).IsAgencyCompany
         End Get
     End Property
 
@@ -604,8 +613,9 @@ Public Class PaginaBase
         End Try
     End Sub
 
-    Public Sub guardalog(ByVal pagina As String, ByVal action As acciones, ByVal nota As String, _
-                         ByVal peticion As String, ByVal datos As String, ByVal datosDespues As String)
+    Public Sub guardalog(ByVal pagina As String, ByVal action As acciones, ByVal nota As String,
+                         ByVal peticion As String, ByVal datos As String, ByVal datosDespues As String,
+                         Optional ByVal hotelId As Integer = 0)
         Try
 
             If ReadUserCookie.GetValue(0) <> "" Then
@@ -616,14 +626,18 @@ Public Class PaginaBase
                 dr(LogData.FIELD_ACCION) = action
                 If cInfoActual.Hotel <> 0 Then
                     dr(LogData.FIELD_HOTEL) = cInfoActual.Hotel
+                ElseIf hotelId <> 0 Then
+                    dr(LogData.FIELD_HOTEL) = hotelId
                 End If
                 dr(LogData.FIELD_NOTA) = nota
                 If Not String.IsNullOrEmpty(datos) Then dr(LogData.FIELD_DATOS) = datos
                 If Not String.IsNullOrEmpty(datosDespues) Then dr(LogData.FIELD_DATOSDESPUES) = datosDespues
 
+
+
                 Try
                     dr(LogData.FIELD_FECHA) = Now.ToString("MM/dd/yyyy") & " " & Now.ToLongTimeString
-                Catch
+                Catch ex As Exception
                     dr(LogData.FIELD_FECHA) = Now.ToString & " " & Now.ToLongTimeString
                 End Try
 
@@ -645,7 +659,7 @@ Public Class PaginaBase
                 '    End If
                 'End With
             End If
-        Catch
+        Catch ex As Exception
 
         End Try
     End Sub
@@ -990,6 +1004,11 @@ Public Class PaginaBase
                 strpage = sRequestApplicationPath & "/HotelAdministrator/Pages/DisplayItinerary.aspx"
             Case page.WaitList
                 strpage = sRequestApplicationPath & "/HotelAdministrator/Pages/WaitList.aspx"
+            Case pages.ReservationListUI
+                strpage = sRequestApplicationPath & "/rate-manager-ui/dist/Reservation-List.aspx"
+            Case pages.ReservationDetailsUI
+                strpage = sRequestApplicationPath & "/rate-manager-ui/dist/Reservation-Details.aspx"
+
         End Select
         strpage = strpage.Replace("//", "/")
         Return strpage
@@ -1201,7 +1220,7 @@ Public Class PaginaBase
         If Me.IsAuthenticated Then
             If IsHotel Or IsSupervisor Or IsUsuarioHotel Or Me.cInfoActual.UserPerfil = PerfilHotel.Avanzado Or
             Me.cInfoActual.UserPerfil = PerfilHotel.Basico Or Me.cInfoActual.UserPerfil = PerfilHotel.Medio Or
-            Me.IsUnibilling Or Me.IsContent Or Me.cInfoActual.UserPerfil = PerfilHotel.NetRate Or IsUsuarioCallCenter Then
+            Me.IsUnibilling Or Me.IsContent Or Me.cInfoActual.UserPerfil = PerfilHotel.NetRate Or IsUsuarioCallCenter Or IsAgencyCompany Then
                 Usuario = ((New AuthUser).Usuario)
             End If
         End If
@@ -1526,6 +1545,7 @@ Public Class AuthUser
         CallCenter
         Casas
         HomeAgency
+        AgencyCompany
     End Enum
 
     Function GetRol(ByVal typRol As eTypRole) As Boolean
@@ -1651,6 +1671,12 @@ Public Class AuthUser
     Public ReadOnly Property IsSupervisor() As Boolean
         Get
             Return GetRol(eTypRole.Supervisor)
+        End Get
+    End Property
+
+    Public ReadOnly Property IsAgencyCompany() As Boolean
+        Get
+            Return GetRol(eTypRole.AgencyCompany)
         End Get
     End Property
 

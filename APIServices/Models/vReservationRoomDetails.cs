@@ -33,5 +33,7 @@ namespace APIServices.Models
         public string ratePlan { get; set; }
         public string rateCode { get; set; }
         public string currency { get; set; }
+        public string ratePlanPromotion { get; set; }
+        public string namePromotion { get; set; }
     }
 }
