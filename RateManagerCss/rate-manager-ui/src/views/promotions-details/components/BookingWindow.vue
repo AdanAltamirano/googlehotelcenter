@@ -38,9 +38,9 @@
             </b-col>
             <b-col md="auto" class="mr-auto ml-auto pr-1 pl-1">
                 <b-form-checkbox class="mb-2" v-model="specifyTime">{{ $t('Specify time') }}</b-form-checkbox>
-                <b-time locale="en" :disabled="!specifyTime" v-model="model.timeFrom"></b-time>
+                <b-time locale="en" :disabled="!specifyTime" v-model="model.startHour"></b-time>
                 &nbsp;:&nbsp;
-                <b-time locale="en" :disabled="!specifyTime" v-model="model.timeTo"></b-time>
+                <b-time locale="en" :disabled="!specifyTime" v-model="model.endHour"></b-time>
             </b-col>
         </b-row>
         <hr class="mb-2 mt-2" />
@@ -71,6 +71,14 @@ export default {
             type: Object,
             required: true
         }
+    },
+    created(){
+        if (this.model.startDate)
+            this.model.startDate = new Date(this.model.startDate);
+        if (this.model.endDate)
+            this.model.endDate = new Date(this.model.endDate);
+        
+        console.log(this.model);
     },
     data() {
         return {

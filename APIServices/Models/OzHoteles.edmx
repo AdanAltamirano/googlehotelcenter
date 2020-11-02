@@ -242,6 +242,7 @@
           <Property Name="TipoDescuento" Type="smallint" />
           <Property Name="DaysFreeType" Type="bit" />
           <Property Name="DiscountLevel" Type="int" />
+          <Property Name="IsCombinablePromotion" Type="bit" />
         </EntityType>
         <EntityType Name="ratesPlanDeal">
           <Key>
@@ -363,8 +364,8 @@
           <Property Name="Code" Type="char" MaxLength="2" />
           <Property Name="idRepl6" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'OzHoteles.dbo.vAdministrator' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'OzHoteles.dbo.vAdministrator' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vAdministrator">
           <Key>
             <PropertyRef Name="UserId" />
@@ -376,8 +377,8 @@ warning 6002: The table/view 'OzHoteles.dbo.vAdministrator' does not have a prim
           <Property Name="Name" Type="nvarchar" MaxLength="80" Nullable="false" />
           <Property Name="CorpId" Type="int" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'OzHoteles.dbo.vDayRateDetail' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'OzHoteles.dbo.vDayRateDetail' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vDayRateDetail">
           <Key>
             <PropertyRef Name="Id" />
@@ -403,8 +404,8 @@ warning 6002: The table/view 'OzHoteles.dbo.vDayRateDetail' does not have a prim
           <Property Name="ExtraChildPrice" Type="money" Nullable="false" />
           <Property Name="ExtraJuniorPrice" Type="money" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'OzHoteles.dbo.vDayRates' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'OzHoteles.dbo.vDayRates' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vDayRates">
           <Key>
             
@@ -444,13 +445,13 @@ warning 6002: The table/view 'OzHoteles.dbo.vDayRates' does not have a primary k
           <Property Name="IsPromotion" Type="bit" Nullable="false" />
           <Property Name="Language" Type="int" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'OzHoteles.dbo.vHotelBasicInfo' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'OzHoteles.dbo.vHotelBasicInfo' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vHotelBasicInfo">
           <Key>
+            <PropertyRef Name="CompanyId" />
             <PropertyRef Name="Provider" />
             <PropertyRef Name="Id" />
-            <PropertyRef Name="CompanyId" />
             <PropertyRef Name="TaxIncluded" />
             <PropertyRef Name="Status" />
           </Key>
@@ -465,8 +466,8 @@ warning 6002: The table/view 'OzHoteles.dbo.vHotelBasicInfo' does not have a pri
           <Property Name="Status" Type="tinyint" Nullable="false" />
           <Property Name="Provider" Type="varchar" MaxLength="14" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'OzHoteles.dbo.vHotelByUser' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'OzHoteles.dbo.vHotelByUser' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vHotelByUser">
           <Key>
             <PropertyRef Name="UserId" />
@@ -478,8 +479,8 @@ warning 6002: The table/view 'OzHoteles.dbo.vHotelByUser' does not have a primar
           <Property Name="HotelId" Type="int" Nullable="false" />
           <Property Name="HotelName" Type="nvarchar" MaxLength="180" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'OzHoteles.dbo.vHotelPlan' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'OzHoteles.dbo.vHotelPlan' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vHotelPlan">
           <Key>
             <PropertyRef Name="Code" />
@@ -497,8 +498,8 @@ warning 6002: The table/view 'OzHoteles.dbo.vHotelPlan' does not have a primary 
           <Property Name="IsLinked" Type="bit" />
           <Property Name="Active" Type="bit" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'OzHoteles.dbo.vHotelRoom' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'OzHoteles.dbo.vHotelRoom' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vHotelRoom">
           <Key>
             <PropertyRef Name="Id" />
@@ -537,8 +538,8 @@ warning 6002: The table/view 'OzHoteles.dbo.vHotelRoom' does not have a primary 
           <Property Name="Active" Type="bit" Nullable="false" />
           <Property Name="Language" Type="int" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'OzHoteles.dbo.vPermissions' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'OzHoteles.dbo.vPermissions' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vPermissions">
           <Key>
             <PropertyRef Name="userId" />
@@ -546,13 +547,15 @@ warning 6002: The table/view 'OzHoteles.dbo.vPermissions' does not have a primar
           <Property Name="showCreditCard" Type="bit" />
           <Property Name="userId" Type="int" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'OzHoteles.dbo.vPromotions' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'OzHoteles.dbo.vPromotions' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vPromotions">
           <Key>
             <PropertyRef Name="PromotionCode" />
             <PropertyRef Name="HotelId" />
             <PropertyRef Name="Description" />
+            <PropertyRef Name="IsCombinablePromotion" />
+            <PropertyRef Name="IsOldPromotion" />
           </Key>
           <Property Name="PromotionCode" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="HotelId" Type="int" Nullable="false" />
@@ -586,20 +589,25 @@ warning 6002: The table/view 'OzHoteles.dbo.vPromotions' does not have a primary
           <Property Name="IdDiccShortDesc" Type="int" />
           <Property Name="idDiccPromoDesc" Type="int" />
           <Property Name="idRule" Type="int" />
+          <Property Name="IsCombinablePromotion" Type="bit" Nullable="false" />
+          <Property Name="IsOldPromotion" Type="int" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'OzHoteles.dbo.vReservation' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'OzHoteles.dbo.vReservation' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vReservation">
           <Key>
             <PropertyRef Name="Id" />
+            
             <PropertyRef Name="ReservationDate" />
             <PropertyRef Name="CheckIn" />
             <PropertyRef Name="CheckOut" />
             <PropertyRef Name="Status" />
-            
+            <PropertyRef Name="AgencyId" />
+            <PropertyRef Name="Agency" />
+            <PropertyRef Name="AgencyUserId" />
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
-          <Property Name="ConfirmNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="ConfirmNumber" Type="nvarchar" MaxLength="24" Nullable="false" />
           <Property Name="HotelId" Type="int" />
           <Property Name="Hotel" Type="nvarchar" MaxLength="180" />
           <Property Name="ReservationDate" Type="smalldatetime" Nullable="false" />
@@ -610,13 +618,16 @@ warning 6002: The table/view 'OzHoteles.dbo.vReservation' does not have a primar
           <Property Name="RoomCount" Type="int" />
           <Property Name="CompanyId" Type="int" />
           <Property Name="Source" Type="nvarchar" MaxLength="4" />
+          <Property Name="AgencyId" Type="int" Nullable="false" />
+          <Property Name="Agency" Type="nvarchar" MaxLength="180" Nullable="false" />
+          <Property Name="AgencyUserId" Type="int" Nullable="false" />
           <Property Name="Portal" Type="nvarchar" MaxLength="80" />
           <Property Name="Total" Type="nvarchar" MaxLength="44" />
           <Property Name="Provider" Type="varchar" MaxLength="14" />
-          <Property Name="CorporateId" Type="int" Nullable="false" />
+          <Property Name="CorporateId" Type="int" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'OzHoteles.dbo.vReservationDetails' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'OzHoteles.dbo.vReservationDetails' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vReservationDetails">
           <Key>
             <PropertyRef Name="status" />
@@ -624,6 +635,7 @@ warning 6002: The table/view 'OzHoteles.dbo.vReservationDetails' does not have a
             <PropertyRef Name="checkIn" />
             <PropertyRef Name="checkOut" />
             <PropertyRef Name="reservationId" />
+            
             <PropertyRef Name="tax" />
             <PropertyRef Name="IsNetRateUV" />
             <PropertyRef Name="depositAmount" />
@@ -634,6 +646,7 @@ warning 6002: The table/view 'OzHoteles.dbo.vReservationDetails' does not have a
             <PropertyRef Name="h_cancellationPolicies" />
             <PropertyRef Name="h_guaranteePolicies" />
             <PropertyRef Name="h_creditcardPolicies" />
+            <PropertyRef Name="agency" />
           </Key>
           <Property Name="hotelId" Type="int" />
           <Property Name="hotelName" Type="nvarchar" MaxLength="180" />
@@ -649,7 +662,7 @@ warning 6002: The table/view 'OzHoteles.dbo.vReservationDetails' does not have a
           <Property Name="Portal" Type="nvarchar" MaxLength="80" />
           <Property Name="Provisioner" Type="varchar" MaxLength="14" />
           <Property Name="reservationId" Type="int" Nullable="false" />
-          <Property Name="reservationNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="reservationNumber" Type="nvarchar" MaxLength="24" Nullable="false" />
           <Property Name="cancellationNumber" Type="nvarchar" MaxLength="50" />
           <Property Name="cancellationReason" Type="nvarchar" MaxLength="250" />
           <Property Name="reservationIdXProvider" Type="nvarchar" MaxLength="50" />
@@ -674,7 +687,7 @@ warning 6002: The table/view 'OzHoteles.dbo.vReservationDetails' does not have a
           <Property Name="cardCustomerName" Type="nvarchar" MaxLength="80" />
           <Property Name="depositAmount" Type="money" Nullable="false" />
           <Property Name="depositCurrency" Type="nvarchar" MaxLength="3" />
-          <Property Name="depositReference" Type="nvarchar" MaxLength="20" />
+          <Property Name="depositReference" Type="nvarchar" MaxLength="100" />
           <Property Name="provider" Type="int" Nullable="false" />
           <Property Name="rp_cancellationPolicies" Type="nvarchar" MaxLength="4000" Nullable="false" />
           <Property Name="rp_guaranteePolicies" Type="nvarchar" MaxLength="4000" Nullable="false" />
@@ -686,12 +699,20 @@ warning 6002: The table/view 'OzHoteles.dbo.vReservationDetails' does not have a
           <Property Name="pmsStatus" Type="bit" />
           <Property Name="pmsAction" Type="char" MaxLength="2" />
           <Property Name="companyId" Type="int" />
+          <Property Name="agencyId" Type="int" />
+          <Property Name="agency" Type="nvarchar" MaxLength="180" Nullable="false" />
+          <Property Name="agencyUser" Type="nvarchar" MaxLength="81" />
           <Property Name="corporateId" Type="int" />
           <Property Name="corporateName" Type="nvarchar" MaxLength="20" />
           <Property Name="hotelEmail" Type="nvarchar" MaxLength="240" />
+          <Property Name="modificationReason" Type="nvarchar(max)" />
+          <Property Name="ratePlanPromotion" Type="nvarchar" MaxLength="4" />
+          <Property Name="namePromotion" Type="nvarchar" MaxLength="4000" />
+          <Property Name="idCancellationUser" Type="int" />
+          <Property Name="userCancellation" Type="nvarchar" MaxLength="80" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'OzHoteles.dbo.vReservationPayments' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'OzHoteles.dbo.vReservationPayments' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vReservationPayments">
           <Key>
             <PropertyRef Name="reservationId" />
@@ -713,8 +734,8 @@ warning 6002: The table/view 'OzHoteles.dbo.vReservationPayments' does not have 
           <Property Name="totalPay" Type="money" />
           <Property Name="currencyPay" Type="nvarchar" MaxLength="6" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'OzHoteles.dbo.vReservationRoomDetails' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'OzHoteles.dbo.vReservationRoomDetails' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vReservationRoomDetails">
           <Key>
             <PropertyRef Name="reservationId" />
@@ -743,9 +764,11 @@ warning 6002: The table/view 'OzHoteles.dbo.vReservationRoomDetails' does not ha
           <Property Name="ratePlan" Type="nvarchar" MaxLength="80" />
           <Property Name="rateCode" Type="nvarchar" MaxLength="50" />
           <Property Name="currency" Type="nvarchar" MaxLength="3" />
+          <Property Name="ratePlanPromotion" Type="nvarchar" MaxLength="4" />
+          <Property Name="namePromotion" Type="nvarchar" MaxLength="4000" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'OzHoteles.dbo.VReservationRoomPriceDetails' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'OzHoteles.dbo.VReservationRoomPriceDetails' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="VReservationRoomPriceDetails">
           <Key>
             <PropertyRef Name="roomPriceId" />
@@ -761,8 +784,8 @@ warning 6002: The table/view 'OzHoteles.dbo.VReservationRoomPriceDetails' does n
           <Property Name="checkOut" Type="smalldatetime" Nullable="false" />
           <Property Name="currency" Type="nvarchar" MaxLength="3" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vRoomInventory">
           <Key>
             <PropertyRef Name="Date" />
@@ -845,6 +868,7 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           <Parameter Name="TotalNR" Type="money" Mode="In" />
           <Parameter Name="CheckIn" Type="smalldatetime" Mode="In" />
           <Parameter Name="CheckOut" Type="smalldatetime" Mode="In" />
+          <Parameter Name="DetallesModificacion" Type="nvarchar(max)" Mode="In" />
         </Function>
         <Function Name="spReservationCancel" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="idReservacion" Type="int" Mode="In" />
@@ -1033,7 +1057,9 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
     [vPromotions].[Description] AS [Description], 
     [vPromotions].[IdDiccShortDesc] AS [IdDiccShortDesc], 
     [vPromotions].[idDiccPromoDesc] AS [idDiccPromoDesc], 
-    [vPromotions].[idRule] AS [idRule]
+    [vPromotions].[idRule] AS [idRule], 
+    [vPromotions].[IsCombinablePromotion] AS [IsCombinablePromotion], 
+    [vPromotions].[IsOldPromotion] AS [IsOldPromotion]
     FROM [dbo].[vPromotions] AS [vPromotions]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vReservation" EntityType="Self.vReservation" store:Type="Views" store:Schema="dbo">
@@ -1050,6 +1076,9 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
     [vReservation].[RoomCount] AS [RoomCount], 
     [vReservation].[CompanyId] AS [CompanyId], 
     [vReservation].[Source] AS [Source], 
+    [vReservation].[AgencyId] AS [AgencyId], 
+    [vReservation].[Agency] AS [Agency], 
+    [vReservation].[AgencyUserId] AS [AgencyUserId], 
     [vReservation].[Portal] AS [Portal], 
     [vReservation].[Total] AS [Total], 
     [vReservation].[Provider] AS [Provider], 
@@ -1109,9 +1138,17 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
     [vReservationDetails].[pmsStatus] AS [pmsStatus], 
     [vReservationDetails].[pmsAction] AS [pmsAction], 
     [vReservationDetails].[companyId] AS [companyId], 
+    [vReservationDetails].[agencyId] AS [agencyId], 
+    [vReservationDetails].[agency] AS [agency], 
+    [vReservationDetails].[agencyUser] AS [agencyUser], 
     [vReservationDetails].[corporateId] AS [corporateId], 
     [vReservationDetails].[corporateName] AS [corporateName], 
-    [vReservationDetails].[hotelEmail] AS [hotelEmail]
+    [vReservationDetails].[hotelEmail] AS [hotelEmail], 
+    [vReservationDetails].[modificationReason] AS [modificationReason], 
+    [vReservationDetails].[ratePlanPromotion] AS [ratePlanPromotion], 
+    [vReservationDetails].[namePromotion] AS [namePromotion], 
+    [vReservationDetails].[idCancellationUser] AS [idCancellationUser], 
+    [vReservationDetails].[userCancellation] AS [userCancellation]
     FROM [dbo].[vReservationDetails] AS [vReservationDetails]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vReservationPayments" EntityType="Self.vReservationPayments" store:Type="Views" store:Schema="dbo">
@@ -1151,7 +1188,9 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
     [vReservationRoomDetails].[roomCheckOut] AS [roomCheckOut], 
     [vReservationRoomDetails].[ratePlan] AS [ratePlan], 
     [vReservationRoomDetails].[rateCode] AS [rateCode], 
-    [vReservationRoomDetails].[currency] AS [currency]
+    [vReservationRoomDetails].[currency] AS [currency], 
+    [vReservationRoomDetails].[ratePlanPromotion] AS [ratePlanPromotion], 
+    [vReservationRoomDetails].[namePromotion] AS [namePromotion]
     FROM [dbo].[vReservationRoomDetails] AS [vReservationRoomDetails]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="VReservationRoomPriceDetails" EntityType="Self.VReservationRoomPriceDetails" store:Type="Views" store:Schema="dbo">
@@ -1249,6 +1288,7 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
             <Parameter Name="TotalNR" Mode="In" Type="Decimal" />
             <Parameter Name="CheckIn" Mode="In" Type="DateTime" />
             <Parameter Name="CheckOut" Mode="In" Type="DateTime" />
+            <Parameter Name="DetallesModificacion" Mode="In" Type="String" />
           </FunctionImport>
           <EntitySet Name="Corporativos" EntityType="Models.Corporativos" />
           <EntitySet Name="TarjetasHotel" EntityType="Models.TarjetasHotel" />
@@ -1332,6 +1372,7 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           <Property Name="DiscountLevel" Type="Int32" />
           <NavigationProperty Name="Hoteles" Relationship="Models.FK_RatesPlan_Hoteles" FromRole="RatesPlan" ToRole="Hoteles" />
           <NavigationProperty Name="RatesPlanRules" Relationship="Models.FK_RatesPlan_RatesPlanRules" FromRole="RatesPlan" ToRole="RatesPlanRules" />
+          <Property Name="IsCombinablePromotion" Type="Boolean" />
         </EntityType>
         <EntityType Name="Tarifas">
           <Key>
@@ -1840,9 +1881,12 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
             <PropertyRef Name="CheckIn" />
             <PropertyRef Name="CheckOut" />
             <PropertyRef Name="Status" />
+            <PropertyRef Name="AgencyId" />
+            <PropertyRef Name="Agency" />
+            <PropertyRef Name="AgencyUserId" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="ConfirmNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ConfirmNumber" Type="String" MaxLength="24" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="HotelId" Type="Int32" />
           <Property Name="Hotel" Type="String" MaxLength="180" FixedLength="false" Unicode="true" />
           <Property Name="ReservationDate" Type="DateTime" Nullable="false" Precision="0" />
@@ -1856,7 +1900,10 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           <Property Name="Portal" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
           <Property Name="Total" Type="String" MaxLength="44" FixedLength="false" Unicode="true" />
           <Property Name="Provider" Type="String" MaxLength="14" FixedLength="false" Unicode="false" />
-          <Property Name="CorporateId" Type="Int32" Nullable="false" />
+          <Property Name="CorporateId" Type="Int32" />
+          <Property Name="AgencyId" Type="Int32" Nullable="false" />
+          <Property Name="Agency" Type="String" Nullable="false" MaxLength="180" FixedLength="false" Unicode="true" />
+          <Property Name="AgencyUserId" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="vReservationDetails">
           <Key>
@@ -1875,6 +1922,7 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
             <PropertyRef Name="h_cancellationPolicies" />
             <PropertyRef Name="h_guaranteePolicies" />
             <PropertyRef Name="h_creditcardPolicies" />
+            <PropertyRef Name="agency" />
           </Key>
           <Property Name="hotelId" Type="Int32" />
           <Property Name="hotelName" Type="String" MaxLength="180" FixedLength="false" Unicode="true" />
@@ -1890,7 +1938,7 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           <Property Name="Portal" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
           <Property Name="Provisioner" Type="String" MaxLength="14" FixedLength="false" Unicode="false" />
           <Property Name="reservationId" Type="Int32" Nullable="false" />
-          <Property Name="reservationNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="reservationNumber" Type="String" MaxLength="24" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="cancellationNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="cancellationReason" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="reservationIdXProvider" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -1915,7 +1963,7 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           <Property Name="cardCustomerName" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
           <Property Name="depositAmount" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
           <Property Name="depositCurrency" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
-          <Property Name="depositReference" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="depositReference" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="provider" Type="Int32" Nullable="false" />
           <Property Name="rp_cancellationPolicies" Type="String" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
           <Property Name="rp_guaranteePolicies" Type="String" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
@@ -1930,6 +1978,14 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           <Property Name="corporateId" Type="Int32" />
           <Property Name="corporateName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="hotelEmail" Type="String" MaxLength="240" FixedLength="false" Unicode="true" />
+          <Property Name="agencyId" Type="Int32" />
+          <Property Name="agency" Type="String" Nullable="false" MaxLength="180" FixedLength="false" Unicode="true" />
+          <Property Name="agencyUser" Type="String" MaxLength="81" FixedLength="false" Unicode="true" />
+          <Property Name="modificationReason" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ratePlanPromotion" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="namePromotion" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="idCancellationUser" Type="Int32" />
+          <Property Name="userCancellation" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="vReservationRoomDetails">
           <Key>
@@ -1959,6 +2015,8 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           <Property Name="ratePlan" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
           <Property Name="rateCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="currency" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="ratePlanPromotion" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="namePromotion" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="LockRoomTypes">
           <Key>
@@ -2051,6 +2109,8 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
             <PropertyRef Name="PromotionCode" />
             <PropertyRef Name="HotelId" />
             <PropertyRef Name="Description" />
+            <PropertyRef Name="IsCombinablePromotion" />
+            <PropertyRef Name="IsOldPromotion" />
           </Key>
           <Property Name="PromotionCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="HotelId" Type="Int32" Nullable="false" />
@@ -2084,6 +2144,8 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           <Property Name="IdDiccShortDesc" Type="Int32" />
           <Property Name="idDiccPromoDesc" Type="Int32" />
           <Property Name="idRule" Type="Int32" />
+          <Property Name="IsCombinablePromotion" Type="Boolean" Nullable="false" />
+          <Property Name="IsOldPromotion" Type="Int32" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -2094,6 +2156,7 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           <EntitySetMapping Name="RatesPlan">
             <EntityTypeMapping TypeName="Models.RatesPlan">
               <MappingFragment StoreEntitySet="RatesPlan">
+                <ScalarProperty Name="IsCombinablePromotion" ColumnName="IsCombinablePromotion" />
                 <ScalarProperty Name="DiscountLevel" ColumnName="DiscountLevel" />
                 <ScalarProperty Name="DaysFreeType" ColumnName="DaysFreeType" />
                 <ScalarProperty Name="TipoDescuento" ColumnName="TipoDescuento" />
@@ -2585,6 +2648,9 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           <EntitySetMapping Name="vReservation">
             <EntityTypeMapping TypeName="Models.vReservation">
               <MappingFragment StoreEntitySet="vReservation">
+                <ScalarProperty Name="AgencyUserId" ColumnName="AgencyUserId" />
+                <ScalarProperty Name="Agency" ColumnName="Agency" />
+                <ScalarProperty Name="AgencyId" ColumnName="AgencyId" />
                 <ScalarProperty Name="CorporateId" ColumnName="CorporateId" />
                 <ScalarProperty Name="Provider" ColumnName="Provider" />
                 <ScalarProperty Name="Total" ColumnName="Total" />
@@ -2607,6 +2673,14 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           <EntitySetMapping Name="vReservationDetails">
             <EntityTypeMapping TypeName="Models.vReservationDetails">
               <MappingFragment StoreEntitySet="vReservationDetails">
+                <ScalarProperty Name="userCancellation" ColumnName="userCancellation" />
+                <ScalarProperty Name="idCancellationUser" ColumnName="idCancellationUser" />
+                <ScalarProperty Name="namePromotion" ColumnName="namePromotion" />
+                <ScalarProperty Name="ratePlanPromotion" ColumnName="ratePlanPromotion" />
+                <ScalarProperty Name="modificationReason" ColumnName="modificationReason" />
+                <ScalarProperty Name="agencyUser" ColumnName="agencyUser" />
+                <ScalarProperty Name="agency" ColumnName="agency" />
+                <ScalarProperty Name="agencyId" ColumnName="agencyId" />
                 <ScalarProperty Name="hotelEmail" ColumnName="hotelEmail" />
                 <ScalarProperty Name="corporateName" ColumnName="corporateName" />
                 <ScalarProperty Name="corporateId" ColumnName="corporateId" />
@@ -2667,6 +2741,8 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           <EntitySetMapping Name="vReservationRoomDetails">
             <EntityTypeMapping TypeName="Models.vReservationRoomDetails">
               <MappingFragment StoreEntitySet="vReservationRoomDetails">
+                <ScalarProperty Name="namePromotion" ColumnName="namePromotion" />
+                <ScalarProperty Name="ratePlanPromotion" ColumnName="ratePlanPromotion" />
                 <ScalarProperty Name="currency" ColumnName="currency" />
                 <ScalarProperty Name="rateCode" ColumnName="rateCode" />
                 <ScalarProperty Name="ratePlan" ColumnName="ratePlan" />
@@ -2769,6 +2845,8 @@ warning 6002: The table/view 'OzHoteles.dbo.vRoomInventory' does not have a prim
           <EntitySetMapping Name="vPromotions">
             <EntityTypeMapping TypeName="Models.vPromotions">
               <MappingFragment StoreEntitySet="vPromotions">
+                <ScalarProperty Name="IsOldPromotion" ColumnName="IsOldPromotion" />
+                <ScalarProperty Name="IsCombinablePromotion" ColumnName="IsCombinablePromotion" />
                 <ScalarProperty Name="idRule" ColumnName="idRule" />
                 <ScalarProperty Name="idDiccPromoDesc" ColumnName="idDiccPromoDesc" />
                 <ScalarProperty Name="IdDiccShortDesc" ColumnName="IdDiccShortDesc" />

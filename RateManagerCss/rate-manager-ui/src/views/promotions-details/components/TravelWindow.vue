@@ -18,7 +18,7 @@
                                         <i class="fa fa-calendar"></i>
                                     </b-input-group-text>
                                 </template>
-                            </b-input-group>
+                            </b-input-group>                      
                         </b-form-group>
                     </b-col>
                     <b-col>
@@ -72,7 +72,7 @@
                 <h6>{{ $t('Exclude promotion in the following days') }}</h6>
                 <b-input-group class="mb-3">
                     <v-date-picker
-                    v-model="excludeDates"
+                    v-model="model.rule.excludedDates[0]"
                     class="form-control p-0"
                     :min-date="new Date()"
                     mode="range"
@@ -86,14 +86,14 @@
                         </b-input-group-text>
                     </template>
                     <b-input-group-append>
-                        <b-button :disabled="excludeDates == null" @click="addClosure()" variant="primary">
+                        <b-button :disabled="model.rule.excludedDates[0] == null" @click="addClosure()" variant="primary">
                             {{ $t('Add closure') }}
                         </b-button>
                     </b-input-group-append>
                 </b-input-group>
 
                 <b-list-group>
-                    <b-list-group-item class="cite-date" v-for="(c, index) in model.closures" :key="index">
+                    <b-list-group-item class="cite-date" v-for="(c, index) in model.rule.closures" :key="index">
                         {{ getDateFormat(c) }}
                         <span @click="removeClosure(index)" class="ml-4 mt-2 text-danger">
                             ( <i class="fa fa-times"></i> ) {{ $t('Remove') }}
@@ -102,6 +102,7 @@
                 </b-list-group>
             </b-col>
         </b-row>
+        <!-- {{model.rule.excludedDates[0]}} -->
     </b-card>
 </template>
 
@@ -114,6 +115,12 @@ export default {
             this.model.startDate = new Date(this.model.startDate);
         if (this.model.endDate)
             this.model.endDate = new Date(this.model.endDate);
+        if(this.model.rule.excludedDates.length > 0)
+        {
+            this.model.rule.excludedDates[0].start = new Date(this.model.rule.excludedDates[0].start);
+            this.model.rule.excludedDates[0].end = new Date(this.model.rule.excludedDates[0].end);
+            this.addClosure();
+        }
     },
     props: {
         dataModel: {
@@ -133,7 +140,33 @@ export default {
                 { day: 5},
                 { day: 6}, //sabado
             ],
-            excludeDates: null
+            excludeDates: {
+                start: new Date(),
+                end:new Date()
+            },
+            code:this.$appConfig.session.code
+        }
+    },
+    watch:{
+        model:{
+            handler(val){
+                if(val.startDate === null){
+                    val.startDate = new Date();
+                }
+
+                if(val.endDate === null){
+                    var tomorrow = new Date();
+                    tomorrow.setDate(tomorrow.getDate() + 1);
+                    val.endDate = tomorrow;
+                }
+            },
+            deep:true
+        }
+    },
+    computed:{
+        showClosure(){
+            if(!this.code) return false;
+            return true;
         }
     },
     methods: {
@@ -179,21 +212,22 @@ export default {
         },
         addClosure() {
             let add = false;
-            if (this.model.closures.length > 0)
+            if (this.model.rule.closures && this.model.rule.closures.length > 0)
                 add =
-                (this.model.closures.findIndex(x => 
-                    x.start.toString() === this.excludeDates.start.toString() 
-                    && x.end.toString() === this.excludeDates.end.toString()
+                (this.model.rule.closures.findIndex(x => 
+                    x.start.toString() === this.model.rule.excludedDates[0].start.toString() 
+                    && x.end.toString() === this.model.rule.excludedDates[0].end.toString()
                 ) === -1)
             else add = true;
 
             if (add) {
-                this.model.closures.push(this.excludeDates);
-                this.excludeDates = null;
+                
+                this.model.rule.closures.push(this.model.rule.excludedDates[0]);
+                this.model.rule.excludedDates[0] = null;
             }
         },
         removeClosure(index) {
-            this.model.closures.splice(index, 1);
+            this.model.rule.closures.splice(index, 1);
         }
     }
 }

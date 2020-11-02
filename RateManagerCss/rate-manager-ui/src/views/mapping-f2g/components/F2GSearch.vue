@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="!apiGetCorporates" class="vld-parent" style="height:200px">
-      <loading :active="true" :is-full-page="false" color="#007bff"></loading>
+      <loading :active="true" :is-full-page="true" color="#007bff"></loading>
     </div>
     <div v-else>
       <h2 style="color:#10467a;">{{$t('Front2Go Rates Configuration')}}</h2>

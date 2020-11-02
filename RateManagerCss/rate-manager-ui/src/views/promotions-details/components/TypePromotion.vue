@@ -108,28 +108,41 @@ export default {
             return prefix;
         },
         help() {
-            const component = Vue.extend(help);
-            const instance = new component();
-            instance.$mount();
-
-            let self = this;
-            this.$swal.fire({
-                title: self.$t('Discount application method'),
+            // const component = Vue.extend(help);
+            // const instance = new component();
+            // instance.$mount();
+            const html = this.helpText();
+            console.log(html);
+            // let self = this;
+            this.$appAlert({
+                title: this.$t('Discount application method'),
                 icon: 'info',
                 confirmButtonText: '<i class="fa fa-thumbs-up"></i>',
                 showCancelButton: false,
                 showCloseButton: true,
-                html: '<div></div>',
-                onBeforeOpen: () => {
-                    this.$swal
-                    .getContent()
-                    .querySelector('div')
-                    .append(instance.$el);
-                }
+                html:html,
+                // onBeforeOpen: () => {
+                //     this.$swal
+                //     .getContent()
+                //     .querySelector('div')
+                //     .append(instance.$el);
+                // }
             });
         },
         numberFormat(evt) {
             onlyNumber(evt);
+        },
+        helpText()
+        {
+            let text = '<p>' + `${this.$t('The <b>application mode</b> will only affect when there is a discount at the tariff level. Otherwise, the discount percentage set here will be applied.')}` + '</p>';
+            text += '<p>' + `${this.$t('Assuming that in the promotion it was configured with a 40% discount and in the rate it was configured with a 20% discount, it would be as follows:')}`+ '</p>';
+            text += '<h4>' + `${this.$t('Priority to discount rate')}` + '</h4>';
+            text += '<p>' + `${this.$t('Only 20% discount will be applied.')}` + '</p>';
+            text += '<h4>' + `${this.$t('Sum discount percentage')}` + '</h4>';
+            text += '<p>' + `${this.$t('A 60% discount will be applied.')}` + '</p>';
+            text += '<h4>' +`${this.$t('Additional discount')}` + '</h4>';
+            text += '<p>' + `${this.$t('First the 40% discount will be applied and the result of that will be applied the 20% discount.')}` + '</p>';
+            return text;
         }
     }
 }

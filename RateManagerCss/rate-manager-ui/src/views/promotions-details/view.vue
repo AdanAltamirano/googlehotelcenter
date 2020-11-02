@@ -1,5 +1,6 @@
 <template>
-    <b-container v-if="load" class="main-container" fluid>
+    <b-container v-if="!load" style="height:400px"></b-container>
+    <b-container v-else-if="load" class="main-container" fluid>
         <h2 class="text-primary">{{ $t('Promotions') }}</h2>
         <b-row class="mb-4 mt-2">
             <b-col lg="6">
@@ -7,15 +8,16 @@
                     <b-row>
                         <b-col md="6">
                             <b-form-group :label="$t('Promotion code')">
-                                <b-form-input v-model="promo.id" :placeholder="$t('Code')" />
+                                <!-- <b-form-input :max="4" v-model="promo.id" :placeholder="$t('Code')" trim/> -->
+                                <input type="text" class="form-control" id="promo" name="promoName" maxlength="4" v-model="promo.id">
                             </b-form-group>
                             <b-form-group class="pt-2" :label="$t('Promotion name')">
                                 <b-tabs active-nav-item-class="font-weight-bold text-info">
                                     <b-tab :title="$t('Spanish')">
-                                        <b-form-input v-model="promo.name.esp" />
+                                        <b-form-input v-model="promo.name.esp" trim/>
                                     </b-tab>
                                     <b-tab :title="$t('English')">
-                                        <b-form-input v-model="promo.name.eng" />
+                                        <b-form-input v-model="promo.name.eng" trim/>
                                     </b-tab>
                                 </b-tabs>
                             </b-form-group>
@@ -24,10 +26,10 @@
                             <b-form-group :label="$t('Promotion description')">
                                 <b-tabs active-nav-item-class="font-weight-bold text-info">
                                     <b-tab :title="$t('Spanish')">
-                                        <b-form-textarea v-model="promo.description.esp" rows="5" max-rows="5" />
+                                        <b-form-textarea v-model="promo.description.esp" rows="5" max-rows="5" trim/>
                                     </b-tab>
                                     <b-tab :title="$t('English')">
-                                        <b-form-textarea v-model="promo.description.eng" rows="5" max-rows="5" />
+                                        <b-form-textarea v-model="promo.description.eng" rows="5" max-rows="5" trim/>
                                     </b-tab>
                                 </b-tabs>
                             </b-form-group>
@@ -36,7 +38,7 @@
                     <b-row>
                         <b-col>
                             <b-form-checkbox
-                            v-model="req.main.combinablePromotion"
+                            v-model="promo.isCombinablePromotion"
                             switch>
                                 {{ $t('Combinable promotion') }}
                             </b-form-checkbox>
@@ -50,7 +52,7 @@
         </b-row>
         <b-row class="mb-4">
             <b-col lg="6">
-                <booking-window :dataModel="req.bookingWindow"></booking-window>
+                <booking-window :dataModel="promo.rule.bookingWindow"></booking-window>
             </b-col>
             <b-col class="sm-margin">
                 <rate-plan-rooms :dataModel="promo.applicableFor"></rate-plan-rooms>
@@ -66,10 +68,9 @@
         </b-row>
         <b-row class="mb-4">
             <b-col class="text-right mr-4">
-                <b-button @click="save" variant="success">{{ $t('Save') }}</b-button>
+                <b-button @click="save" variant="primary">{{ $t('Save') }}</b-button>
             </b-col>
         </b-row>
-        {{ promo }}
     </b-container>
 </template>
 
@@ -90,8 +91,12 @@ export default {
     name: 'app',
     created() {
         EventBus.$on('changeOffset', () => this.offset = true);
-        if (this.$appConfig.session.code != null) {
+        if (this.$appConfig.session.code) {
             this.get();
+        }
+        else
+        {
+            this.load = true;
         }
        console.log(this.$appConfig)
     },
@@ -107,37 +112,70 @@ export default {
             hotelId: this.$appConfig.session.hotelId,
             offset: false,
             load: false,
+            //view Promo Model
             promo: {
+                //Promotion Code
+                id: this.$appConfig.session.code,
+                //Promotion Active
                 active: false,
-                applicableFor: {
-                    ratesPlan: [],
-                    rooms: []
-                },
-                description: {
-                    eng: '',
-                    esp: '',
-                    id: null
-                },
+                //Promotion Combinable
+                isCombinablePromotion:false,
+                //Promotion Travel Window Dates
+                startDate: null,
+                endDate: null,
+                //Promotion Type
                 discount: {
                     amount: 0,
                     applicationMode: 0,
                     discountPattern: 0,
                     nightsDiscounted: 1,
-                    percent: 25
+                    percent: 0
                 },
-                endDate: null,
-                id: this.$appConfig.session.code,
+                 //Promotion Name
                 name: {
                     eng: '',
                     esp: '',
                     id: null
                 },
+                 //Promotion Description
+                description: {
+                    eng: '',
+                    esp: '',
+                    id: null
+                },
+                //Promotion Rooms & Rate Plans
+                applicableFor: {
+                    ratesPlan: [],
+                    rooms: []
+                },
+                //Promotion Rules
                 rule: {
+                    id: null,
+                    //API
+                    noArrivals: {},
+                    //View
+                    _noArrivals:[],
+                    //API
                     applyDays: {},
+                    //View
+                    _applyDays:[0,1,2,3,4,5,6],
+                     //Booking Window
                     bookingWindow: {
-                        id: null
+                        id: null,
+                        startDate:null,
+                        endDate:null,
+                        minDays:null,
+                        maxDays:null,
+                        startHour:null,
+                        endHour:null
                     },
+                    //Closure
+                    excludedDates: [],
+                    _excludeDates:null,
+                    closures:[],
+                    //Cancel Penalty
                     cancelPenalty: {
+                        //Detailed Description
                         detailedDescription: {
                             eng: '',
                             esp: '',
@@ -145,72 +183,28 @@ export default {
                         },
                         name: '',
                         offsetDropTime: null,
-                        offsetTimeUnit: null,
-                        offsetTimeUnitMultipler: null,
+                        offsetTimeUnit: 1,
+                        offsetTimeUnitMiltiplier: 1,
+                        //Previous Description
                         shortDescription: {
                             eng: '',
                             esp: '',
                             id: null
-                        }
+                        },
+                        //Nights
+                        minNights:null,
+                        maxNights:null,
+                        //Cancellation Type
+                        cancellationType: -1,
+                        byDay:null,
+                        byHour:null
                     },
-                    excludedDates: [],
-                    id: null,
-                    noArrivals: {}
-                },
-                startDate: null
-            },
-            req: {
-                main: {
-                    code: null,
-                    nameEs: null,
-                    nameEn: null,
-                    descEs: null,
-                    descEn: null,
-                    combinablePromotion: true
-                },
-                typePromotion: {
-                    freeNight: 0,
-                    typeFreeNight: 0,
-                    discount: 0,
-                    typeDiscount: 0
-                },
-                roomsAndRateplans: {
-                    rooms: [],
-                    rateplans: []
-                },
-                bookingWindow: {
-                    startDate: null,
-                    endDate: null,
-                    timeFrom: null,
-                    timeTo: null,
-                    minDays: 1,
-                    maxDays: 1
-                },
-                travelWindow: {
-                    initialDate: null,
-                    finalDate: null,
-                    validDays: [],
-                    noArrivalDays: [],
-                    closures: []
-                },
-                restriction: {
-                    minNights: 0,
-                    maxNights: 0,
-                    cancellationType: -1,
-                    byDay: 1,
-                    byHour: 1,
-                    bySpecificTime: {
-                        hour: 1,
-                        minuts: 0
-                    },
-                    prevCancel_es: null,
-                    prevCancel_en: null,
-                    detsCancel_es: null,
-                    detsCancel_en: null
+                    // minNights: 0,
+                    // maxNights: 0,
                 }
             },
             error: false,
-            post: null
+            post: null,
         }
     },
     methods: {
@@ -223,29 +217,129 @@ export default {
 
             offersService.getByCode(this.hotelId, this.promo.id)
             .then(response => {
-                if (response.body.length > 0) {
+                //if (response.body.length > 0) {
                     console.log(response.body)
-                    this.promo = Object.assign({}, response.body[0]);
+                    this.promo = Object.assign({}, response.body);
+                    console.log('Promo Object');
+                    console.log(this.promo);
                     this.$set(this.promo.rule, '_applyDays', []);
                     this.$set(this.promo.rule, '_noArrivals', []);
                     this.$set(this.promo.rule, 'closures', []);
                     this.load = true;
                     loader.hide();
-                } else {
+                //} else {
                     //do something
-                }
+                //}
             })
         },
         //TODO: Save Updated Promo
         save() {
             this.formValidation();
             if (!this.error) {
-
+                //Update Promotion
+                if(this.$appConfig.session.code)
+                {
+                    this.$appAlert({
+                        type: "question",
+                        title: this.$t('Save Promotion ?'),
+                        cancelButtonColor: "#d33",
+                        showLoaderOnConfirm: true,
+                        showCancelButton: true,
+                        confirmButtonText: this.$t('Save'),
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonText:this.$t('Cancel'),
+                        //Request Api
+                        preConfirm: () => {
+                            return offersService.updatePromotion(this.hotelId,this.promo.id,this.post)
+                            .then(response => {
+                                //CallBack Response Api
+                                return response;
+                            })
+                            .catch(error => {
+                                //CallBack Response Api
+                                return error;
+                            })
+                        }
+                    })
+                    //Result of CallBack
+                    .then(response => {
+                        console.log(response);
+                        //Response Api Object
+                        if(response.value.ok)
+                        {
+                            this.$appAlert({
+                                type:"success",
+                                title:this.$t('Promotion Saved'),
+                                onClose: () => {
+                                    const url = `${this.$appConfig.basePath}` + '/rate-manager-ui/dist/promotions.aspx';
+                                    console.log(url)
+                                    location.href = url;
+                                }
+                            })
+                        }
+                        else if(!response.value.ok){
+                            this.$appAlert({
+                                type:"error",
+                                title:this.$t('Could Not Save Promotion')
+                            })
+                        }
+                    })
+                }
+                //Save New Promotion
+                else
+                {
+                    
+                    this.$appAlert({
+                        type: "question",
+                        title: this.$t('Save Promotion ?'),
+                        cancelButtonColor: "#d33",
+                        showLoaderOnConfirm: true,
+                        showCancelButton: true,
+                        confirmButtonText: this.$t('Save'),
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonText:this.$t('Cancel'),
+                        //Request Api
+                        preConfirm: () => {
+                            return offersService.savePromotion(this.hotelId,this.post)
+                            .then(response => {
+                                //CallBack Response Api
+                                return response;
+                            })
+                            .catch(error => {
+                                //CallBack Response Api
+                                return error;
+                            })
+                        }
+                    })
+                    //Result of CallBack
+                    .then(response => {
+                        console.log(response);
+                        //Response Api Object
+                        if(response.value.ok)
+                        {
+                            this.$appAlert({
+                                type:"success",
+                                title:this.$t('Promotion Saved'),
+                                onClose: () => {
+                                    const url = `${this.$appConfig.basePath}` + '/rate-manager-ui/dist/promotions.aspx';
+                                    location.href = url;
+                                }
+                            })
+                        }
+                        else if(!response.value.ok){
+                            this.$appAlert({
+                                type:"error",
+                                title:this.$t('Could Not Save Promotion')
+                            })
+                        }
+                       
+                    })
+                }
+                //End Else
             }
         },
         formValidation() {
-            const form = new model(this.hotelId, this.req);
-
+            const form = new model(this.hotelId, this.promo);
             form.validate();
             if (form.errors.length > 0) {
                 this.error = true;
@@ -255,7 +349,7 @@ export default {
                     list += `<div class="list-group-item border-0 p-1">- ${x}</div>`;
                 });
 
-                this.$swal({
+                this.$appAlert({
                     icon: 'warning',
                     title: this.$t('Wrong form'),
                     html: `

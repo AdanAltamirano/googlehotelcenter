@@ -5,73 +5,82 @@ class formValidation {
 
         this.errors = [];
 
+        //Api Model
         this.__$ = {
-            Id: req.code,
-            HotelId: hotelId,
-            Active: null,
-            StartDate: req.travelWindow.initialDate,
-            EndDate: req.travelWindow.finalDate,
+            Id: req.id,
+            HotelId: hotelId,//Paramenter
+            Active: req.active,
+            IsCombinablePromotion:req.isCombinablePromotion,
+            StartDate: req.startDate,
+            EndDate: req.endDate,
             Discount: {
-                DiscountPattern: req.typePromotion.typeFreeNight,
-                NightsDiscounted: req.typePromotion.freeNight,
+                DiscountPattern: req.discount.discountPattern,
+                NightsDiscounted: req.discount.nightsDiscounted,
                 NightsRequired: null,
-                Percent: null,
-                Amount: req.typePromotion.discount,
-                ApplicationMode: req.typePromotion.typeDiscount
+                Percent: req.discount.percent,
+                Amount: req.discount.amount,
+                ApplicationMode: req.discount.applicationMode
             },
             Name: {
-                Eng: req.main.nameEn,
-                Esp: req.main.nameEs,
-                Id: null
+                Eng: req.name.eng,
+                Esp: req.name.esp,
+                Id: req.name.id
             },
             Description: {
-                Eng: req.main.descEn,
-                Esp: req.main.descEs,
-                Id: null
+                Eng: req.description.eng,
+                Esp: req.description.esp,
+                Id: req.description.id
             },
             ApplicableFor: {
-                RatesPlan: req.roomsAndRateplans.rooms,
-                Rooms: req.roomsAndRateplans.rateplans
+                RatesPlan: req.applicableFor.ratesPlan,
+                Rooms: req.applicableFor.rooms
             },
             Rule: {
-                Id: null,
-                NoArrivals: this.getDays(req.travelWindow.noArrivalDays),
-                ApplyDays: this.getDays(req.travelWindow.validDays),
-                ExcludedDates: this.getExcludeDates(req.travelWindow.closures),
+                Id: req.rule.id,
+                NoArrivals: this.getDays(req.rule.noArrivals,req.rule._noArrivals),
+                ApplyDays: this.getDays(req.rule.applyDays,req.rule._applyDays),
+                ExcludedDates: this.getExcludeDates(req.rule.closures),
                 BookingWindow: {
-                    Id: null,
-                    StartDate: req.bookingWindow.startDate,
-                    EndDate: req.bookingWindow.endDate,
-                    StartHour: req.bookingWindow.timeFrom,
-                    EndHour: req.bookingWindow.timeTo
+                    Id: req.rule.bookingWindow.id,
+                    StartDate: req.rule.bookingWindow.startDate,
+                    EndDate: req.rule.bookingWindow.endDate,
+                    MinDays:req.rule.bookingWindow.minDays,
+                    MaxDays: req.rule.bookingWindow.maxDays,
+                    StartHour: req.rule.bookingWindow.startHour,
+                    EndHour: req.rule.bookingWindow.endHour
                 },
-                MinAdvanceBookingOffset: req.bookingWindow.minDays,
-                MaxAdvanceBookingOffset: req.bookingWindow.maxDays,
-                GetOfferExludedDates: [
-                    {
-                        Start: null,
-                        End: null
-                    }
-                ],
+                // MinAdvanceBookingOffset: req.rule.minAdvanceBookingOffset,
+                // MaxAdvanceBookingOffset: req.rule.maxAdvanceBookingOffset,
+                // GetOfferExludedDates: [
+                //     {
+                //         Start: null,
+                //         End: null
+                //     }
+                // ],
+                GetOfferExludedDates:req.rule.closures,
                 CancelPenalty: {
-                    OffsetDroptime: null,
-                    OffsetTimeUnit: req.restriction.cancellationType,
-                    OffsetTimeUnitMiltiplier: this.getUnitMultipler(req),
+                    OffsetDroptime: req.rule.cancelPenalty.offsetDroptime,
+                    OffsetTimeUnit: req.rule.cancelPenalty.offsetTimeUnit,
+                    OffsetTimeUnitMiltiplier: req.rule.cancelPenalty.offsetTimeUnitMiltiplier, //this.getUnitMultipler(req),
                     SpeceficOffsetTime: null,
-                    Name: null,
+                    Name: req.rule.cancelPenalty.name,
                     ShortDescription: {
-                        Eng: req.restriction.prevCancel_en,
-                        Esp: req.restriction.prevCancel_es,
-                        Id: null
+                        Eng: req.rule.cancelPenalty.shortDescription.eng,
+                        Esp: req.rule.cancelPenalty.shortDescription.esp,
+                        Id: req.rule.cancelPenalty.shortDescription.id
                     },
                     DetailedDescription: {
-                        Eng: req.restriction.detsCancel_en,
-                        Esp: req.restriction.detsCancel_es,
-                        Id: null
-                    }
+                        Eng: req.rule.cancelPenalty.detailedDescription.eng,
+                        Esp: req.rule.cancelPenalty.detailedDescription.esp,
+                        Id: req.rule.cancelPenalty.detailedDescription.id
+                    },
+                    MinNights:req.rule.cancelPenalty.minNights,
+                    MaxNights:req.rule.cancelPenalty.maxNights,
+                    ByDay: req.rule.cancelPenalty.byDay,
+                    ByHour: req.rule.cancelPenalty.byHour
                 },
-                MinLOS: req.restriction.minNights,
-                MaxLOS: req.restriction.maxNights
+                // MinLOS: req.rule.minNights,
+                // MaxLOS: req.rule.maxNights
             }
         };
     }
@@ -92,20 +101,36 @@ class formValidation {
         return result;
     }
 
-    getDays(array) {
+    getDays(array,_array) {
         let result = {
-            Sun: false,
-            Mon: false,
-            Tue: false,
-            Weds: false,
-            Thur: false,
-            Fri: false,
-            Sat: false
+            sun: false, //0
+            mon: false, // 1
+            tue: false, // 2
+            weds: false, // 3
+            thur: false, // 4
+            fri: false, // 5
+            sat: false // 6
         };
 
-        Object.keys(result).forEach((key, index) => {
-            result[key] = array.includes(index);
-        });
+        if(_array.length > 0)
+        {
+            if(_array.includes(0)) array.sun = true;
+            if(_array.includes(1)) array.mon = true;
+            if(_array.includes(2)) array.tue = true;
+            if(_array.includes(3)) array.weds = true;
+            if(_array.includes(4)) array.thur = true;
+            if(_array.includes(5)) array.fri = true;
+            if(_array.includes(6)) array.sat = true;
+        }
+
+        result.sun = array.sun;
+        result.mon = array.mon; 
+        result.tue = array.tue; 
+        result.weds = array.weds; 
+        result.thur = array.thur; 
+        result.fri = array.fri; 
+        result.sat = array.sat;
+
         return result;
     }
 
@@ -119,6 +144,12 @@ class formValidation {
     }
 
     validate() {
+
+        if(!this.__$.Id)
+        {
+            this.errors.push(this.empty(this.$t('Promotion code')));
+        }
+
         if (!this.__$.Name.Eng || !this.__$.Name.Esp) {
             this.errors.push(this.empty(this.$t('Promotion name')));
         }

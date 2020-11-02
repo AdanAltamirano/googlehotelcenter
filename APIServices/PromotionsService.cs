@@ -139,11 +139,13 @@ namespace APIServices
                                {
                                    StartDate = o.BookingWindowStartDate,
                                    EndDate = o.BookingWindowEndDate,
+                                   MinDays = o.MinAdvanceBookin,
+                                   MaxDays = o.MaxAdvanceBooking,
                                    StartHour = o.BookingWindowStartHour,
                                    EndHour = o.BookingWindowEndHour
                                },
-                               MaxAdvanceBookingOffset = o.MaxAdvanceBooking,
-                               MinAdvanceBookingOffset = o.MinAdvanceBookin,
+                               //MaxAdvanceBookingOffset = o.MaxAdvanceBooking,
+                               //MinAdvanceBookingOffset = o.MinAdvanceBookin,
                                ExcludedDates = OfferRule.GetOfferExcludedDates(hotelId, o.PromotionCode),
                                CancelPenalty = new OfferCancelPenalty()
                                {
@@ -170,28 +172,30 @@ namespace APIServices
         /// <param name="searchBy">Buscar por codigo o por nombre, 0 es por nombre y 1 es por código</param>
         /// <param name="searchValue">Valor para filtrar por nombre o por codigo</param>
         /// <returns></returns>
-        public IEnumerable<OfferPromotions> FindOffers(int hotelId,bool includeOldPromos, int filterStatus = 1, int searchBy = 2, string searchValue = "")
+        public IQueryable<vPromotions> OffersList()
         {
-            IEnumerable<OfferPromotions> promotions = null;
-            Expression<Func<vPromotions,bool>> filter = this.Filter(hotelId,includeOldPromos,filterStatus,searchBy,searchValue);
-            promotions = context.vPromotions
-                .Where(filter)
-                // Linq To Objects with AsEnumerable To Apply Date Format 
-                // Use AsEnumerable() to force evaluation of that part with Linq to Objects
-                .AsEnumerable()
-                .Select(s => new OfferPromotions
-                {
-                    Code = s.PromotionCode,
-                    Name = s.Description,
-                    StartDate = (s.StartDate.HasValue) ? s.StartDate.Value.ToString("dd/MM/yyyy") : "",
-                    EndDate = (s.EndDate.HasValue) ? s.EndDate.Value.ToString("dd/MM/yyyy") : "",
-                    BookingStartDate = (s.BookingWindowStartDate.HasValue) ? s.BookingWindowStartDate.Value.ToString("dd/MM/yyyy") : "",
-                    BookingEndDate = (s.BookingWindowEndDate.HasValue) ? s.BookingWindowEndDate.Value.ToString("dd/MM/yyyy") : "",
-                    Discount = Decimal.Round((decimal)s.Discount),
-                    Active = s.Active
-                });
+            //IEnumerable<OfferPromotions> promotions = null;
+            //Expression<Func<vPromotions,bool>> filter = this.Filter(hotelId,includeOldPromos,filterStatus,searchBy,searchValue);
+            //promotions = context.vPromotions
+            //    .Where(filter)
+            //    // Linq To Objects with AsEnumerable To Apply Date Format 
+            //    // Use AsEnumerable() to force evaluation of that part with Linq to Objects
+            //    .AsEnumerable()
+            //    .Select(s => new OfferPromotions
+            //    {
+            //        Code = s.PromotionCode,
+            //        Name = s.Description,
+            //        StartDate = (s.StartDate.HasValue) ? s.StartDate.Value.ToString("dd/MM/yyyy") : "",
+            //        EndDate = (s.EndDate.HasValue) ? s.EndDate.Value.ToString("dd/MM/yyyy") : "",
+            //        BookingStartDate = (s.BookingWindowStartDate.HasValue) ? s.BookingWindowStartDate.Value.ToString("dd/MM/yyyy") : "",
+            //        BookingEndDate = (s.BookingWindowEndDate.HasValue) ? s.BookingWindowEndDate.Value.ToString("dd/MM/yyyy") : "",
+            //        Discount = Decimal.Round((decimal)s.Discount),
+            //        Active = s.Active
+            //    });
 
-            return promotions;
+            //return promotions;
+
+            return context.vPromotions.AsQueryable();
         }
 
         /// <summary>
@@ -213,11 +217,14 @@ namespace APIServices
                     StartDate = o.StartDate,
                     EndDate = o.EndDate,
                     Active = o.Active == 1 ? true : false,
+                    IsCombinablePromotion = o.IsCombinablePromotion,
                     Name = Dictionary.Get(o.DescriptionId),
                     Description = Dictionary.Get(o.IdDiccShortDesc),
                     Discount = new OfferDiscount()
                     {
-                        NightsDiscounted = 1,
+                        //NightsDiscounted = 1,
+                        DiscountPattern = ((bool)o.DaysFreeType) ? OfferDiscountDiscountPattern.Only : OfferDiscountDiscountPattern.ForEach,
+                        NightsDiscounted = (int)o.DaysFree,
                         NightsRequired = o.DaysFree,
                         Amount = o.DiscountApplicationType == 2 ? o.Discount : 0,
                         Percent = o.DiscountApplicationType == 1 ? o.Discount : 0,
@@ -233,11 +240,13 @@ namespace APIServices
                         {
                             StartDate = o.BookingWindowStartDate,
                             EndDate = o.BookingWindowEndDate,
+                            MinDays = o.MinAdvanceBookin,
+                            MaxDays = o.MaxAdvanceBooking,
                             StartHour = o.BookingWindowStartHour,
                             EndHour = o.BookingWindowEndHour
                         },
-                        MaxAdvanceBookingOffset = o.MaxAdvanceBooking,
-                        MinAdvanceBookingOffset = o.MinAdvanceBookin,
+                        //MaxAdvanceBookingOffset = o.MaxAdvanceBooking,
+                        //MinAdvanceBookingOffset = o.MinAdvanceBookin,
                         ExcludedDates = OfferRule.GetOfferExcludedDates(hotelId, o.PromotionCode),
                         CancelPenalty = new OfferCancelPenalty()
                         {
@@ -246,7 +255,11 @@ namespace APIServices
                             OffsetTimeUnitMiltiplier = o.CancelPriorDays != null ? o.CancelPriorDays : o.CancelPriorHours, //Si OffsetTimeUnit = days y OffsetTimeUnitMiltiplier = 0, es no cancelable
                             Name = o.CancelPenaltyName,
                             ShortDescription = Dictionary.Get(o.CancelPenaltyReviewId),
-                            DetailedDescription = Dictionary.Get(o.CancelPenaltyDetailedId)
+                            DetailedDescription = Dictionary.Get(o.CancelPenaltyDetailedId),
+                            MinNights = o.MinLOS,
+                            MaxNights = o.MaxLOS,
+                            ByDay = o.CancelPriorDays,
+                            ByHour = o.CancelPriorHours
                         }
                     }
 
@@ -279,10 +292,14 @@ namespace APIServices
                             CancelPriorHours = offer.Rule.CancelPenalty.OffsetTimeUnit == OfferCancelPenaltyOffsetTimeUnit.Hours ? offer.Rule.CancelPenalty.OffsetTimeUnitMiltiplier : null,
                             CancelPriorDays = offer.Rule.CancelPenalty.OffsetTimeUnit == OfferCancelPenaltyOffsetTimeUnit.Days ? offer.Rule.CancelPenalty.OffsetTimeUnitMiltiplier : null,
                             CancelPriorSpecificT = offer.Rule.CancelPenalty.OffsetTimeUnit == OfferCancelPenaltyOffsetTimeUnit.SpecificTimeOfDay ? offer.Rule.CancelPenalty.SpecificOffsetTime : null,
-                            AdvBooking = offer.Rule.MinAdvanceBookingOffset != 0 ? offer.Rule.MinAdvanceBookingOffset : null,
-                            MaxAdvBooking = offer.Rule.MaxAdvanceBookingOffset != 0 ? offer.Rule.MaxAdvanceBookingOffset : null,
-                            MaxDias = offer.Rule.MaxLOS != 0 ? offer.Rule.MaxLOS : null,
-                            MinDias = offer.Rule.MinLOS != 0 ? offer.Rule.MinLOS : null,
+                            //CancelPriorHours = offer.Rule.CancelPenalty.ByHour,
+                            //CancelPriorDays = offer.Rule.CancelPenalty.ByDay,
+                            AdvBooking = offer.Rule.BookingWindow.MinDays != 0 ? offer.Rule.BookingWindow.MinDays : null,
+                            MaxAdvBooking = offer.Rule.BookingWindow.MaxDays != 0 ? offer.Rule.BookingWindow.MaxDays : null,
+                            //MaxDias = offer.Rule.MaxLOS != 0 ? offer.Rule.MaxLOS : null,
+                            //MinDias = offer.Rule.MinLOS != 0 ? offer.Rule.MinLOS : null,
+                            MaxDias = offer.Rule.CancelPenalty.MaxNights,
+                            MinDias = offer.Rule.CancelPenalty.MaxNights,
                             NoArrivos = Utilities.GetDaysOfWeekString(offer.Rule.NoArrivals),
                             PromoSpecificDays = Utilities.GetDaysOfWeekString(offer.Rule.ApplyDays),
                             PromoStartDate = offer.StartDate,
@@ -295,7 +312,7 @@ namespace APIServices
                         //RatePlan
                         var rp = new RatesPlan()
                         {
-                            idRatePlan = offer.Id,
+                            idRatePlan = offer.Id.ToUpper(),
                             Description = offer.Name.Esp,
                             IdHotel = offer.HotelId,
                             Segment = "R",
@@ -303,10 +320,13 @@ namespace APIServices
                             RateGDS = false,
                             RatePortal = true,
                             RateUnip = false,
-                            codigotarifa = offer.Id,
+                            codigotarifa = offer.Id.ToUpper(),
                             DescPromotion = offer.Discount.Percent != 0 ? offer.Discount.Percent : offer.Discount.Amount != 0 ? offer.Discount.Amount : null,
                             DaysFree = (short)offer.Discount.NightsDiscounted,
-                            DaysFreeType = false,
+                            //CAda  y solo de noche gratis
+                            //DaysFreeType = false,
+                            DaysFreeType = offer.Discount.DiscountPattern == OfferDiscountDiscountPattern.Only ? true : false,
+                            //
                             RateADS = false,
                             gdsApply = "NNNN",
                             ComADS = 0,
@@ -322,9 +342,14 @@ namespace APIServices
                             IdDiccShortDesc = Dictionary.Insert(offer.Description.Esp, offer.Description.Eng),
                             idDiccPromoDesc = Dictionary.Insert("", ""), //Valor Agregado
                             Deleted = false,
-                            idRule = rule.idRule
+                            idRule = rule.idRule,
+                            IsCombinablePromotion = offer.IsCombinablePromotion
+                            
                         };
                         db.RatesPlan.Add(rp);
+
+                        string horaInicio = (offer.Rule.BookingWindow.StartHour == null) ? "" : offer.Rule.BookingWindow.StartHour.Substring(0, 5);
+                        string horaFin = (offer.Rule.BookingWindow.EndHour == null) ? "" : offer.Rule.BookingWindow.EndHour.Substring(0, 5);
 
                         var deal = new ratesPlanDeal()
                         {
@@ -332,8 +357,8 @@ namespace APIServices
                             idHotel = offer.HotelId,
                             FechaInicio = offer.Rule.BookingWindow.StartDate,
                             FechaFin = offer.Rule.BookingWindow.EndDate,
-                            HoraInicio = offer.Rule.BookingWindow.StartHour,
-                            HoraFin = offer.Rule.BookingWindow.EndHour,
+                            HoraInicio = horaInicio,
+                            HoraFin = horaFin,
                         };
                         db.ratesPlanDeal.Add(deal);
 
@@ -357,6 +382,29 @@ namespace APIServices
                             }
                         ).ToList();
                         db.Promociones_RatePlan.AddRange(ratesplan);
+
+
+                        //Tiene Fecha para el Cierre
+                        if (offer.Rule.ExcludedDates.Count > 0)
+                        {
+                            //ADD
+                            DateTime? start = offer.Rule.ExcludedDates[0].Start;
+                            DateTime? end = offer.Rule.ExcludedDates.ElementAt(0).End;
+
+                            var lockRoomTypesList = offer.ApplicableFor.Rooms.Select(r =>
+                            new LockRoomTypes()
+                            {
+                                idhotel = offer.HotelId,
+                                IdRatePlan = offer.Id.Trim().ToUpper(),
+                                idTipoHabitacion_Hotel = r,
+                                StatusAvail = "C",
+                                StartDate = start,
+                                EndDate = end
+                            }
+                            ).ToList();
+
+                            db.LockRoomTypes.AddRange(lockRoomTypesList);
+                        }
 
                         db.SaveChanges();
                         transaction.Commit();
@@ -383,8 +431,8 @@ namespace APIServices
             {
                 try
                 {
-                    var exist = db.RatesPlan.FirstOrDefault(x => x.idRatePlan == offer.Id && x.IdHotel == offer.HotelId);
-                    if (exist != null)
+                    var rp = db.RatesPlan.FirstOrDefault(x => x.idRatePlan == offer.Id && x.IdHotel == offer.HotelId);
+                    if (rp != null)
                     {
 
                         //Reglas
@@ -396,10 +444,12 @@ namespace APIServices
                                 rule.CancelPriorHours = offer.Rule.CancelPenalty.OffsetTimeUnit == OfferCancelPenaltyOffsetTimeUnit.Hours ? offer.Rule.CancelPenalty.OffsetTimeUnitMiltiplier : null;
                                 rule.CancelPriorDays = offer.Rule.CancelPenalty.OffsetTimeUnit == OfferCancelPenaltyOffsetTimeUnit.Days ? offer.Rule.CancelPenalty.OffsetTimeUnitMiltiplier : null;
                                 rule.CancelPriorSpecificT = offer.Rule.CancelPenalty.OffsetTimeUnit == OfferCancelPenaltyOffsetTimeUnit.SpecificTimeOfDay ? offer.Rule.CancelPenalty.SpecificOffsetTime : null;
-                                rule.AdvBooking = offer.Rule.MinAdvanceBookingOffset != 0 ? offer.Rule.MinAdvanceBookingOffset : null;
-                                rule.MaxAdvBooking = offer.Rule.MaxAdvanceBookingOffset != 0 ? offer.Rule.MaxAdvanceBookingOffset : null;
-                                rule.MaxDias = offer.Rule.MaxLOS != 0 ? offer.Rule.MaxLOS : null;
-                                rule.MinDias = offer.Rule.MinLOS != 0 ? offer.Rule.MinLOS : null;
+                                rule.AdvBooking = offer.Rule.BookingWindow.MinDays != 0 ? offer.Rule.BookingWindow.MinDays : null;
+                                rule.MaxAdvBooking = offer.Rule.BookingWindow.MaxDays != 0 ? offer.Rule.BookingWindow.MaxDays : null;
+                                //rule.MaxDias = offer.Rule.MaxLOS != 0 ? offer.Rule.MaxLOS : null;
+                                //rule.MinDias = offer.Rule.MinLOS != 0 ? offer.Rule.MinLOS : null;
+                                rule.MaxDias = offer.Rule.CancelPenalty.MaxNights;
+                                rule.MinDias = offer.Rule.CancelPenalty.MinNights;
                                 rule.NoArrivos = Utilities.GetDaysOfWeekString(offer.Rule.NoArrivals);
                                 rule.PromoSpecificDays = Utilities.GetDaysOfWeekString(offer.Rule.ApplyDays);
                                 rule.PromoStartDate = offer.StartDate;
@@ -412,17 +462,19 @@ namespace APIServices
                         }
 
                         //RatePlan
-                        var rp = db.RatesPlan.FirstOrDefault(x => x.idRatePlan == offer.Id && x.IdHotel == offer.HotelId);
+                        //var rp = db.RatesPlan.FirstOrDefault(x => x.idRatePlan == offer.Id && x.IdHotel == offer.HotelId);
                         if (rp != null)
                         {
                             rp.Description = offer.Name.Esp;
                             rp.Name = offer.Name.Esp;
-                            rp.codigotarifa = offer.Id;
+                            rp.codigotarifa = offer.Id.ToUpper();
                             rp.DescPromotion = offer.Discount.Percent != 0 ? offer.Discount.Percent : offer.Discount.Amount != 0 ? offer.Discount.Amount : null;
                             rp.DaysFree = (short)offer.Discount.NightsDiscounted;
-                            rp.DaysFreeType = false;
+                            //rp.DaysFreeType = false;
+                            rp.DaysFreeType = offer.Discount.DiscountPattern == OfferDiscountDiscountPattern.Only ? true : false;
                             rp.DiscountLevel = GetDiscountApplicationMode(offer.Discount.ApplicationMode);
                             rp.TipoDescuento = 1; //Porcentaje. TODO: Monto
+                            rp.IsCombinablePromotion = offer.IsCombinablePromotion;
 
                             //Diccionario
                             Dictionary.Update(offer.Name);
@@ -431,13 +483,15 @@ namespace APIServices
 
                         if (offer.Rule.BookingWindow != null)
                         {
+                            string horaInicio = (offer.Rule.BookingWindow.StartHour == null || offer.Rule.BookingWindow.StartHour == "") ? "" : offer.Rule.BookingWindow.StartHour.Substring(0, 5);
+                            string horaFin = (offer.Rule.BookingWindow.EndHour == null || offer.Rule.BookingWindow.StartHour == "") ? "" : offer.Rule.BookingWindow.EndHour.Substring(0, 5);
                             var deal = db.ratesPlanDeal.FirstOrDefault(x => x.idRatePlan == offer.Id && x.idHotel == offer.HotelId);
                             if (deal != null)
                             {
                                 deal.FechaInicio = offer.Rule.BookingWindow.StartDate;
                                 deal.FechaFin = offer.Rule.BookingWindow.EndDate;
-                                deal.HoraInicio = offer.Rule.BookingWindow.StartHour;
-                                deal.HoraFin = offer.Rule.BookingWindow.EndHour;
+                                deal.HoraInicio = horaInicio;
+                                deal.HoraFin = horaFin;
                             }
                         }
 
@@ -479,7 +533,41 @@ namespace APIServices
                             ).ToList();
                             db.Promociones_RatePlan.AddRange(ratesplan);
                         }
-                            
+
+                        
+                        //Tiene Fecha para el Cierre
+                        if (offer.Rule.ExcludedDates.Count > 0)
+                        {
+                            //DELETE
+                            db.Database.ExecuteSqlCommand("DELETE OzHoteles.dbo.LockRoomTypes WHERE IdRatePlan = {0}  and idHotel = {1}",
+                                offer.Id.Trim().ToUpper(), offer.HotelId);
+                            //ADD
+                            DateTime? start = offer.Rule.ExcludedDates[0].Start;
+                            DateTime? end = offer.Rule.ExcludedDates.ElementAt(0).End;
+
+                            var lockRoomTypesList = offer.ApplicableFor.Rooms.Select(r =>
+                            new LockRoomTypes()
+                            {
+                                idhotel = offer.HotelId,
+                                IdRatePlan = offer.Id.Trim().ToUpper(),
+                                idTipoHabitacion_Hotel = r,
+                                StatusAvail = "C",
+                                StartDate = start,
+                                EndDate = end
+                            }
+                            ).ToList();
+
+                            db.LockRoomTypes.AddRange(lockRoomTypesList);
+                        }
+                        else
+                        {
+                            var idRateClosure = offer.Id.Trim().ToUpper();
+                            var hasClosure = db.LockRoomTypes.Any(l => l.idhotel == offer.HotelId && l.IdRatePlan == idRateClosure);
+
+                            if (hasClosure) db.Database.ExecuteSqlCommand("DELETE OzHoteles.dbo.LockRoomTypes WHERE IdRatePlan = {0}  and idHotel = {1}",
+                                offer.Id.Trim().ToUpper(), offer.HotelId);
+
+                        }
 
                         db.SaveChanges();
                         transaction.Commit();

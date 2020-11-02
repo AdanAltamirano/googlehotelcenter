@@ -40,6 +40,9 @@ export default {
     'Exclude promotion in the following days': 'Excluir promoción en los siguientes días',
     'Promotion type': 'Tipo de la promoción',
     'Save': 'Guardar',
+    'Save Promotion ?' : '¿ Guardar Promoción ?',
+    'Promotion Saved' : 'Promoción Guardada',
+    'Could Not Save Promotion': 'No se pudo guardar la promoción',
     'Free night': 'Noche gratis',
     'Discount': 'Descuento',
     'Every {number}{prefix} night will be free': 'Cada {number}{prefix} noche será gratis',
@@ -57,7 +60,7 @@ export default {
     'Sum discount percentage': 'Suma porcentajes de descuento',
     'Additional discount': 'Descuento adicional',
     'Help': 'Ayuda',
-    'The {appmode} will only affect when there is a discount at the tariff level. Otherwise, the discount percentage set here will be applied.': 'El {appmode} solo afectará cuando haya un descuento a nivel de tarifa. En caso contrario se aplicará el porcetaje de descuento que aquí se configure.',
+    'The <b>application mode</b> will only affect when there is a discount at the tariff level. Otherwise, the discount percentage set here will be applied.': 'El <b>Modo de aplicación</b> solo afectará cuando haya un descuento a nivel de tarifa. En caso contrario se aplicará el porcetaje de descuento que aquí se configure.',
     'Assuming that in the promotion it was configured with a 40% discount and in the rate it was configured with a 20% discount, it would be as follows:': 'Suponiendo que en la promoción se configuré con un 40% de descuento y en la tarifa se configure con un 20% de descuento, quedaría de la siguiente forma:',
     'Only 20% discount will be applied.': 'Solo se aplicará el 20% de descuento.',
     'A 60% discount will be applied.': 'Se aplicará un 60% de descuento.',
@@ -76,7 +79,7 @@ export default {
     'You must select cancellation policies': 'Debe seleccionar políticas de cancelación',
     'You must select start date of trip': 'Debe seleccionar fecha inicial de viaje',
     'You must select end date of the trip': 'Debe seleccionar fecha final del viaje',
-
+    '' : '',
     //days
     'SU': 'D',
     'M': 'L',

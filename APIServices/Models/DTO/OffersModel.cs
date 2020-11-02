@@ -48,6 +48,7 @@ namespace APIServices.Models.DTO
         public string Id { get; set; }
         public int HotelId { get; set; }
         public bool Active { get; set; }
+        public bool IsCombinablePromotion { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }        
         public OfferDiscount Discount { get; set; }
@@ -119,6 +120,11 @@ namespace APIServices.Models.DTO
         public string Name { get; set; }
         public MultiLanguageTextType ShortDescription { get; set; }
         public MultiLanguageTextType DetailedDescription { get; set; }
+        public byte? MinNights { get; set; }
+        public byte? MaxNights { get; set; }
+        public byte? ByDay { get; set; }
+        public byte? ByHour { get; set; }
+
         public static OfferCancelPenaltyOffsetTimeUnit GetOffsetTimeUnit(vPromotions offer)
         {
             if (offer.CancelPriorDays != null)
@@ -139,8 +145,8 @@ namespace APIServices.Models.DTO
         public DaysOfWeekType ApplyDays { get; set; }
         public List<OfferExcludedDates> ExcludedDates { get; set; }
         public OfferBookingWindow BookingWindow { get; set; }
-        public byte? MinAdvanceBookingOffset { get; set; }
-        public int? MaxAdvanceBookingOffset { get; set; }
+        //public byte? MinAdvanceBookingOffset { get; set; }
+        //public int? MaxAdvanceBookingOffset { get; set; }
         public static List<OfferExcludedDates> GetOfferExcludedDates(int hotelId, string offerCode)
         {
             List<OfferExcludedDates> result = null;
@@ -169,6 +175,8 @@ namespace APIServices.Models.DTO
         public int Id { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
+        public byte? MinDays { get; set; }
+        public int? MaxDays { get; set; }
         public string StartHour { get; set; }
         public string EndHour { get; set; }
     }

@@ -1219,15 +1219,15 @@
     }
 
         function FireShow(ID, IDcmd, show) {
-            parent.document.getElementById(window.name).src = "rate-manager-ui/dist/promotions-details.aspx";
-        //var e = document.getElementById(ID);
-        //var c = document.getElementById(IDcmd);
-        //if (e) {
-        //    e.style.display = show ? 'block' : 'none';
-        //}
-        //if (c) {
-        //    c.style.display = !show ? 'block' : 'none';
-        //}
+            //parent.document.getElementById(window.name).src = "rate-manager-ui/dist/promotions-details.aspx";
+        var e = document.getElementById(ID);
+        var c = document.getElementById(IDcmd);
+        if (e) {
+            e.style.display = show ? 'block' : 'none';
+        }
+        if (c) {
+            c.style.display = !show ? 'block' : 'none';
+        }
         onResizeIframe();
     }
 

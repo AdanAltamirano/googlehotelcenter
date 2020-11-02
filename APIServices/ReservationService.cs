@@ -527,7 +527,7 @@ namespace APIServices
                 try
                 {
                     dbContext.spModificarReservacionByid(reservationId, req.Name, req.LastName, (decimal)req.Total, 
-                        (decimal)req.TotalNR, req.CheckIn, req.CheckOut);
+                        (decimal)req.TotalNR, req.CheckIn, req.CheckOut,"");
                     transaction.Commit();
                     res.IsSuccess = true;
                 }
