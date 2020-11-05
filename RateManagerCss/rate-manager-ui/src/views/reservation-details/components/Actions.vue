@@ -50,7 +50,7 @@ export default {
           checkOut: this.$moment(this.result.checkOut),
           total: this.result.totalDetails.total,
           totalNR: this.result.totalDetails.totalNR,
-          showTotalNR: this.result.paymentWay == 1,
+          showTotalNR: true,
           details : ''
         }
       });

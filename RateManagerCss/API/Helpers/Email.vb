@@ -6,6 +6,12 @@ Imports System.Configuration
 Imports APIServices.Models.DTO
 
 Namespace API.Helpers
+
+    Public Enum TypeClient
+        Customer
+        Hotel
+        Support
+    End Enum
     Public Module Email
         Private username As String = ConfigurationManager.AppSettings("usernameNotification")
         Private password As String = ConfigurationManager.AppSettings("passwordNotification")
@@ -36,7 +42,7 @@ Namespace API.Helpers
         End Function
 
         Public Function SendModificationEmail(ByVal toEmail As String, ByVal reservation As ReservationDetailsModel,
-                                              ByVal oldReservation As ReservationDetailsModel, ByRef emailError As String) As Boolean
+                                              ByVal oldReservation As ReservationDetailsModel, ByRef emailError As String, ByVal typeClient As TypeClient) As Boolean
             Try
                 'Thread.CurrentThread.CurrentCulture = New CultureInfo(PortalCulture.GetCulture.ToString)
                 'PortalCulture.SetCulture(Thread.CurrentThread.CurrentCulture.Name)
@@ -120,26 +126,11 @@ Namespace API.Helpers
                 Dim referenceInfo As String = String.Empty
                 Dim reference As String = String.Empty
                 Dim pasarela As String = String.Empty
+                Dim oldTotalNetRate As Double = oldReservation.TotalDetails.TotalNR
+                Dim totalNetRate As Double = reservation.TotalDetails.TotalNR
+                Dim totalInfo As String = String.Empty
 
                 GetPaymentWayInfo(reservation, lang, paymentType, referenceInfo, reference, pasarela)
-
-                'TODO:// Add ENUM FOR PAYMENTTYPE
-                'Select Case reservation.PaymentWay
-                '    Case 0
-                '        paymentType = IIf(lang = "es-MX", "Depósito Bancario", "Bank Deposit")
-                '        referenceInfo = IIf(lang = "es-MX", "Referencia: ", "Reference: ")
-                '        reference = reservation.BankDepositDetails.Reference
-                '    Case 1
-                '        paymentType = IIf(lang = "es-MX", "Pago en línea", "Online Payment")
-                '        referenceInfo = IIf(lang = "es-MX", "Número de autorización: ", "Authorization Number: ")
-                '        reference = reservation.PaymentDetails.AuthorizationNumber
-                '        pasarela = "<b>Pasarela: </b>" & IIf(Not String.IsNullOrEmpty(reservation.PaymentDetails.Pasarela), reservation.PaymentDetails.Pasarela, String.Empty)
-                '    Case 2
-                '        paymentType = IIf(lang = "es-MX", "Pago en hotel", "Payment at the Hotel")
-                '        referenceInfo = IIf(lang = "es-MX", "Tarjeta de crédito <br>", "Credit Card <br>")
-                '        referenceInfo = IIf(lang = "es-MX", "Número de tarjeta: ", "Card Number: ")
-                '        reference = reservation.Customer.CardDetails.Number
-                'End Select
 
 
                 Dim mail As New emailTemplates.Template
@@ -188,8 +179,22 @@ Namespace API.Helpers
                         mail.AddParameter("PASARELA") = pasarela
                     End If
                 End If
-                mail.AddParameter("TOTAL") = total & " " + reservation.TotalDetails.Currency
-                mail.AddParameter("TOTALANTERIOR") = oldTotal & " " + oldReservation.TotalDetails.Currency
+
+                GetTotalInfo(typeClient, totalInfo, reservation, oldReservation)
+
+                mail.AddParameter("TOTAL") = totalInfo
+
+                'Select Case typeClient
+                '    Case TypeClient.Customer
+                '        'mail.AddParameter("TOTAL") = total & " " + reservation.TotalDetails.Currency
+                '        'mail.AddParameter("TOTALANTERIOR") = oldTotal & " " + oldReservation.TotalDetails.Currency
+                '    Case TypeClient.Hotel
+                '        'mail.AddParameter("TOTALNR") = totalNetRate
+                '        'TODO: Add TOTALNR IN TEMPLATES XML,Correos HTML in REservation FUnction And Cancel Function
+                'End Select
+
+
+
                 mail.AddParameter("HABITACIONES") = rooms
 
 
@@ -396,7 +401,7 @@ Namespace API.Helpers
                 'html.Append("<p style=""Margin:0;Margin-bottom:10px;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0;text-align:left"">")
                 'html.Append("<b>" & PortalCulture.GetString("M000585") & ":</b><br>" & room.customerName & " " & room.customerLastName)
                 'html.Append("</p>")
-                If (Not String.IsNullOrEmpty(room.ratePlanPromotion) And Not String.IsNullOrEmpty(room.namePromotion)) Then
+                If (Not String.IsNullOrEmpty(room.RatePlanPromotion) And Not String.IsNullOrEmpty(room.NamePromotion)) Then
                     html.Append("<p style=""Margin:0;Margin-bottom:10px;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0;text-align:left"">")
                     html.Append("<b>Promoción: </b></br>" & room.RatePlanPromotion & " - " & room.NamePromotion)
                     html.Append("</p>")
@@ -442,5 +447,18 @@ Namespace API.Helpers
 
         End Sub
 
+        Private Sub GetTotalInfo(ByVal typeClient As TypeClient, ByRef totalInfo As String, ByVal reservation As ReservationDetailsModel,
+                                 ByVal oldReservation As ReservationDetailsModel)
+            Select Case typeClient
+                Case TypeClient.Customer
+                    totalInfo = "<b>Total Actualizado: </b> " & reservation.TotalDetails.Total & " " & reservation.TotalDetails.Currency
+                    totalInfo &= "<br>"
+                    totalInfo &= "<b>Total Anterior: </b> " & oldReservation.TotalDetails.Total & " " & oldReservation.TotalDetails.Currency
+                Case TypeClient.Hotel
+                    totalInfo = "<b>Total Tarifa Neta Actualizado: </b> " & reservation.TotalDetails.TotalNR & " " & reservation.TotalDetails.Currency
+                    totalInfo &= "<br>"
+                    totalInfo &= "<b>Total Tarifa Neta Anterior: </b> " & oldReservation.TotalDetails.TotalNR & " " & oldReservation.TotalDetails.Currency
+            End Select
+        End Sub
     End Module
 End Namespace

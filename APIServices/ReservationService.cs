@@ -201,7 +201,7 @@ namespace APIServices
                 {
                     string cc = crypto.DecryptString128Bit(details.cardNumber, crypto.PublicKey);
                     model.Customer.CardDetails.CardType = model.Customer.CardDetails.GetCardType(cc);
-                    cc = $"XXXXXXXXXXXX{cc.Substring(cc.Length - 4)}";
+                    cc = (cc.Length > 0) ? $"XXXXXXXXXXXX{cc.Substring(cc.Length - 4)}" : "" ;
                     model.Customer.CardDetails.Number = cc;
                     model.Customer.CardDetails.IsSuccess = true;
                 }

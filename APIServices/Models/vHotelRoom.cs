@@ -32,7 +32,7 @@ namespace APIServices.Models
         public string ParenteRoomCode { get; set; }
         public Nullable<decimal> Factor { get; set; }
         public Nullable<decimal> Offset { get; set; }
-        public bool Active { get; set; }
-        public int Language { get; set; }
+        public Nullable<bool> Active { get; set; }
+        public Nullable<int> Language { get; set; }
     }
 }

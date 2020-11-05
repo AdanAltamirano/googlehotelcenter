@@ -90,7 +90,7 @@ namespace APIServices.Models.DTO
     public class OfferDiscount
     {
         public OfferDiscountDiscountPattern DiscountPattern { get; set; } // Define el comportamiento de las noches gratis
-        public int NightsDiscounted { get; set; } //Número de noches que se descontarán
+        public int? NightsDiscounted { get; set; } //Número de noches que se descontarán
         public int? NightsRequired { get; set; } //Número de noches requeridas para aplicar el descuento
         public decimal? Percent { get; set; } //Porcentaje de descuento
         public decimal? Amount { get; set; } //Monto de descuento

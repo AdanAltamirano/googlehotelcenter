@@ -100,5 +100,6 @@ export default {
     'Reactivate Reservation ?' : '¿ Reactivar Reservación ?',
     'Promotion' : 'Promoción',
     'Cancelled By' : 'Cancelado por',
-    'Reason' : 'Motivo'
+    'Reason' : 'Motivo',
+    'PMS Status' : 'Estatus en PMS'
 };

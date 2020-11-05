@@ -16,10 +16,8 @@
         <EntityTypeShape EntityType="Models.ContratosNR" Width="1.5" PointX="10.375" PointY="0.75" />
         <EntityTypeShape EntityType="Models.vHotelByUser" Width="1.5" PointX="12.375" PointY="0.75" />
         <EntityTypeShape EntityType="Models.vAdministrator" Width="1.5" PointX="3.375" PointY="0.75" />
-        <EntityTypeShape EntityType="Models.vHotelPlan" Width="1.5" PointX="10.375" PointY="6.75" />
         <EntityTypeShape EntityType="Models.vHotelBasicInfo" Width="1.5" PointX="12.375" PointY="6.75" />
         <EntityTypeShape EntityType="Models.vDayRateDetail" Width="1.5" PointX="0.75" PointY="0.75" />
-        <EntityTypeShape EntityType="Models.vHotelRoom" Width="1.5" PointX="15.375" PointY="11.375" />
         <EntityTypeShape EntityType="Models.vDayRates" Width="1.5" PointX="7.375" PointY="0.75" />
         <EntityTypeShape EntityType="Models.vPermissions" Width="1.5" PointX="14.375" PointY="0.75" />
         <EntityTypeShape EntityType="Models.VReservationRoomPriceDetails" Width="1.5" PointX="14.75" PointY="6.75" />
@@ -44,6 +42,8 @@
         <EntityTypeShape EntityType="Models.vAgents" Width="1.5" PointX="19.375" PointY="16.75" />
         <EntityTypeShape EntityType="Models.vReservationRoomDetails" Width="1.5" PointX="9.375" PointY="18.75" />
         <EntityTypeShape EntityType="Models.vReservationDetails" Width="1.5" PointX="3.375" PointY="14.75" />
+        <EntityTypeShape EntityType="Models.vHotelPlan" Width="1.5" PointX="17.375" PointY="19.75" />
+        <EntityTypeShape EntityType="Models.vHotelRoom" Width="1.5" PointX="14.375" PointY="9.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -71,7 +71,7 @@
             <b-col>
               <h6 style="cursor:pointer" v-b-toggle.pms>
                 <i class="fa fa-plus-circle"></i>
-                {{$t('Hotel confirmation')}}
+                {{$t('PMS Status')}}
               </h6>
               <b-collapse visible id="pms">
                 <b-alert show variant="secondary">

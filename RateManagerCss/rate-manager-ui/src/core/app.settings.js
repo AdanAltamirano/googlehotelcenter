@@ -8,7 +8,7 @@ const appConfig = {
         hotelName: window.app.hotelName,
         corporateId: window.app.corporateId,
         corporateName: window.app.corporateName,
-        isAgencyCompany: window.app.isAgencyCompany
+        isAgencyCompany: window.app.isAgencyCompany,
         code: window.app.code
     },
     themeColors: {

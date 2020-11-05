@@ -28,7 +28,7 @@ namespace APIServices
             {
                 var query = db.vHotelPlan.Where(r =>
                    r.HotelId == hotelId
-                   && r.Language == language);
+                   && (r.Language == language || r.Language == null) && r.IsPromo != true);
 
                 if (!showInactive)
                     query = query.Where(r => r.Active == true);

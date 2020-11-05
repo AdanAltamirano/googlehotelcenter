@@ -23,5 +23,6 @@ namespace APIServices.Models
         public string Segment { get; set; }
         public Nullable<bool> IsLinked { get; set; }
         public Nullable<bool> Active { get; set; }
+        public Nullable<bool> IsPromo { get; set; }
     }
 }

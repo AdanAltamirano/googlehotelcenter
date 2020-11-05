@@ -37,7 +37,7 @@ namespace APIServices
                     Id = r.Id,
                     Name = r.Name,
                     Code = r.Code,
-                    Active = r.Active,
+                    Active = (bool)r.Active,
                     ExtraOccupancyAllowed = r.ExtraOccupancyAllowed,
                     MinAdultsOccupancy = r.MinAdultsOccupancy,
                     MaxAdultsOccupancy = r.MaxAdultsOccupancy,

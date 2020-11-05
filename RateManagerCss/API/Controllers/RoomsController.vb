@@ -16,7 +16,7 @@ Public Class RoomsController
     <Route(""), HttpGet, Queryable(MappingDelegate:="MapRooms")>
     Public Function GetAll(HotelId As Integer) As IQueryable(Of vHotelRoom)
         Dim language As Integer = Request.GetLanguageUV()
-        Return Service.GetAll().Where(Function(x) x.HotelId = HotelId AndAlso x.Language = language)
+        Return Service.GetAll().Where(Function(x) x.HotelId = HotelId AndAlso (x.Language = language Or x.Language Is Nothing))
     End Function
 
 

@@ -81,14 +81,17 @@ namespace APIServices.Models.DTO
         public string GetCardType(string card)
         {
             string type = string.Empty;
-            switch (card.Substring(0, 1))
+            if (card.Length > 0)
             {
-                case "3":
-                    type = "AMERICAN EXPRESS"; break;
-                case "4":
-                    type = "VISA"; break;
-                case "5":
-                    type = "MASTER CARD"; break;
+                switch (card.Substring(0, 1))
+                {
+                    case "3":
+                        type = "AMERICAN EXPRESS"; break;
+                    case "4":
+                        type = "VISA"; break;
+                    case "5":
+                        type = "MASTER CARD"; break;
+                }
             }
             return type;
         }

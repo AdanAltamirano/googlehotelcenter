@@ -655,6 +655,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vHotelPlan' no tiene definida 
           <Property Name="Segment" Type="char" MaxLength="1" Nullable="false" />
           <Property Name="IsLinked" Type="bit" />
           <Property Name="Active" Type="bit" />
+          <Property Name="IsPromo" Type="bit" />
         </EntityType>
         <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'OzHoteles.dbo.vHotelRoom' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
@@ -664,19 +665,16 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vHotelRoom' no tiene definida 
             <PropertyRef Name="Name" />
             <PropertyRef Name="Type" />
             <PropertyRef Name="HotelId" />
-            
-            
-            
-            
-            
-            
-            
-            <PropertyRef Name="Code" />
-            <PropertyRef Name="Active" />
-            <PropertyRef Name="Language" />
+            <PropertyRef Name="TotalRooms" />
+            <PropertyRef Name="MaxOccupancy" />
+            <PropertyRef Name="ExtraOccupancyAllowed" />
+            <PropertyRef Name="MaxAdultsOccupancy" />
+            <PropertyRef Name="MinAdultsOccupancy" />
+            <PropertyRef Name="MaxChildrenOccupancy" />
+            <PropertyRef Name="Order" />
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
-          <Property Name="Code" Type="nvarchar" MaxLength="4" Nullable="false" />
+          <Property Name="Code" Type="nvarchar" MaxLength="4" />
           <Property Name="Name" Type="nvarchar" MaxLength="80" Nullable="false" />
           <Property Name="Type" Type="int" Nullable="false" />
           <Property Name="HotelId" Type="int" Nullable="false" />
@@ -693,8 +691,8 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vHotelRoom' no tiene definida 
           <Property Name="ParenteRoomCode" Type="nvarchar" MaxLength="4" />
           <Property Name="Factor" Type="smallmoney" />
           <Property Name="Offset" Type="smallmoney" />
-          <Property Name="Active" Type="bit" Nullable="false" />
-          <Property Name="Language" Type="int" Nullable="false" />
+          <Property Name="Active" Type="bit" />
+          <Property Name="Language" Type="int" />
         </EntityType>
         <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'OzHoteles.dbo.vPermissions' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
@@ -1183,7 +1181,8 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
     [vHotelPlan].[CommissionPercentage] AS [CommissionPercentage], 
     [vHotelPlan].[Segment] AS [Segment], 
     [vHotelPlan].[IsLinked] AS [IsLinked], 
-    [vHotelPlan].[Active] AS [Active]
+    [vHotelPlan].[Active] AS [Active], 
+    [vHotelPlan].[IsPromo] AS [IsPromo]
     FROM [dbo].[vHotelPlan] AS [vHotelPlan]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vHotelRoom" EntityType="Self.vHotelRoom" store:Type="Views" store:Schema="dbo">
@@ -1448,10 +1447,8 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <EntitySet Name="ContratosNR" EntityType="Models.ContratosNR" />
           <EntitySet Name="vHotelByUser" EntityType="Models.vHotelByUser" />
           <EntitySet Name="vAdministrator" EntityType="Models.vAdministrator" />
-          <EntitySet Name="vHotelPlan" EntityType="Models.vHotelPlan" />
           <EntitySet Name="vHotelBasicInfo" EntityType="Models.vHotelBasicInfo" />
           <EntitySet Name="vDayRateDetail" EntityType="Models.vDayRateDetail" />
-          <EntitySet Name="vHotelRoom" EntityType="Models.vHotelRoom" />
           <EntitySet Name="vDayRates" EntityType="Models.vDayRates" />
           <EntitySet Name="vPermissions" EntityType="Models.vPermissions" />
           <EntitySet Name="VReservationRoomPriceDetails" EntityType="Models.VReservationRoomPriceDetails" />
@@ -1530,6 +1527,8 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <EntitySet Name="vAgents" EntityType="Models.vAgents" />
           <EntitySet Name="vReservationRoomDetails" EntityType="Models.vReservationRoomDetails" />
           <EntitySet Name="vReservationDetails" EntityType="Models.vReservationDetails" />
+          <EntitySet Name="vHotelPlan" EntityType="Models.vHotelPlan" />
+          <EntitySet Name="vHotelRoom" EntityType="Models.vHotelRoom" />
         </EntityContainer>
         <EntityType Name="RatesPlan">
           <Key>
@@ -1745,23 +1744,6 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <Property Name="Name" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="true" />
           <Property Name="CorpId" Type="Int32" />
         </EntityType>
-        <EntityType Name="vHotelPlan">
-          <Key>
-            <PropertyRef Name="Code" />
-            <PropertyRef Name="HotelId" />
-            <PropertyRef Name="CommissionPercentage" />
-            <PropertyRef Name="Segment" />
-          </Key>
-          <Property Name="Code" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Name" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
-          <Property Name="HotelId" Type="Int32" Nullable="false" />
-          <Property Name="Currency" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
-          <Property Name="Language" Type="Int32" />
-          <Property Name="CommissionPercentage" Type="Int32" Nullable="false" />
-          <Property Name="Segment" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Name="IsLinked" Type="Boolean" />
-          <Property Name="Active" Type="Boolean" />
-        </EntityType>
         <EntityType Name="vHotelBasicInfo">
           <Key>
             <PropertyRef Name="Id" />
@@ -1805,37 +1787,6 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <Property Name="ExtraAdultPrice" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
           <Property Name="ExtraChildPrice" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
           <Property Name="ExtraJuniorPrice" Type="Decimal" Precision="19" Scale="4" />
-        </EntityType>
-        <EntityType Name="vHotelRoom">
-          <Key>
-            <PropertyRef Name="Id" />
-            <PropertyRef Name="Name" />
-            <PropertyRef Name="Type" />
-            <PropertyRef Name="HotelId" />
-            <PropertyRef Name="Code" />
-            <PropertyRef Name="Language" />
-            <PropertyRef Name="Active" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="Code" Type="String" MaxLength="4" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="true" />
-          <Property Name="Type" Type="Int32" Nullable="false" />
-          <Property Name="HotelId" Type="Int32" Nullable="false" />
-          <Property Name="TotalRooms" Type="Int32" Nullable="false" />
-          <Property Name="MaxOccupancy" Type="Byte" Nullable="false" />
-          <Property Name="ExtraOccupancyAllowed" Type="Byte" Nullable="false" />
-          <Property Name="MaxAdultsOccupancy" Type="Byte" Nullable="false" />
-          <Property Name="MinAdultsOccupancy" Type="Byte" Nullable="false" />
-          <Property Name="MaxChildrenOccupancy" Type="Byte" Nullable="false" />
-          <Property Name="JuniorsAllowed" Type="Boolean" />
-          <Property Name="Order" Type="Int16" Nullable="false" />
-          <Property Name="IsLinked" Type="Boolean" />
-          <Property Name="ParentRoomId" Type="Int32" />
-          <Property Name="ParenteRoomCode" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
-          <Property Name="Factor" Type="Decimal" Precision="10" Scale="4" />
-          <Property Name="Offset" Type="Decimal" Precision="10" Scale="4" />
-          <Property Name="Active" Type="Boolean" Nullable="false" />
-          <Property Name="Language" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="vDayRates">
           <Key>
@@ -2648,6 +2599,59 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <Property Name="idCancellationUser" Type="Int32" />
           <Property Name="userCancellation" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="vHotelPlan">
+          <Key>
+            <PropertyRef Name="Code" />
+            <PropertyRef Name="HotelId" />
+            <PropertyRef Name="CommissionPercentage" />
+            <PropertyRef Name="Segment" />
+          </Key>
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="HotelId" Type="Int32" Nullable="false" />
+          <Property Name="Currency" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="Language" Type="Int32" />
+          <Property Name="CommissionPercentage" Type="Int32" Nullable="false" />
+          <Property Name="Segment" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="IsLinked" Type="Boolean" />
+          <Property Name="Active" Type="Boolean" />
+          <Property Name="IsPromo" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="vHotelRoom">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="Type" />
+            <PropertyRef Name="HotelId" />
+            <PropertyRef Name="TotalRooms" />
+            <PropertyRef Name="MaxOccupancy" />
+            <PropertyRef Name="ExtraOccupancyAllowed" />
+            <PropertyRef Name="MaxAdultsOccupancy" />
+            <PropertyRef Name="MinAdultsOccupancy" />
+            <PropertyRef Name="MaxChildrenOccupancy" />
+            <PropertyRef Name="Order" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Code" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="Int32" Nullable="false" />
+          <Property Name="HotelId" Type="Int32" Nullable="false" />
+          <Property Name="TotalRooms" Type="Int32" Nullable="false" />
+          <Property Name="MaxOccupancy" Type="Byte" Nullable="false" />
+          <Property Name="ExtraOccupancyAllowed" Type="Byte" Nullable="false" />
+          <Property Name="MaxAdultsOccupancy" Type="Byte" Nullable="false" />
+          <Property Name="MinAdultsOccupancy" Type="Byte" Nullable="false" />
+          <Property Name="MaxChildrenOccupancy" Type="Byte" Nullable="false" />
+          <Property Name="JuniorsAllowed" Type="Boolean" />
+          <Property Name="Order" Type="Int16" Nullable="false" />
+          <Property Name="IsLinked" Type="Boolean" />
+          <Property Name="ParentRoomId" Type="Int32" />
+          <Property Name="ParenteRoomCode" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="Factor" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="Offset" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="Active" Type="Boolean" />
+          <Property Name="Language" Type="Int32" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2835,21 +2839,6 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="vHotelPlan">
-            <EntityTypeMapping TypeName="Models.vHotelPlan">
-              <MappingFragment StoreEntitySet="vHotelPlan">
-                <ScalarProperty Name="Active" ColumnName="Active" />
-                <ScalarProperty Name="IsLinked" ColumnName="IsLinked" />
-                <ScalarProperty Name="Segment" ColumnName="Segment" />
-                <ScalarProperty Name="CommissionPercentage" ColumnName="CommissionPercentage" />
-                <ScalarProperty Name="Language" ColumnName="Language" />
-                <ScalarProperty Name="Currency" ColumnName="Currency" />
-                <ScalarProperty Name="HotelId" ColumnName="HotelId" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Code" ColumnName="Code" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="vHotelBasicInfo">
             <EntityTypeMapping TypeName="Models.vHotelBasicInfo">
               <MappingFragment StoreEntitySet="vHotelBasicInfo">
@@ -2881,32 +2870,6 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
                 <ScalarProperty Name="Children" ColumnName="Children" />
                 <ScalarProperty Name="Adults" ColumnName="Adults" />
                 <ScalarProperty Name="RateId" ColumnName="RateId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="vHotelRoom">
-            <EntityTypeMapping TypeName="Models.vHotelRoom">
-              <MappingFragment StoreEntitySet="vHotelRoom">
-                <ScalarProperty Name="Language" ColumnName="Language" />
-                <ScalarProperty Name="Active" ColumnName="Active" />
-                <ScalarProperty Name="Offset" ColumnName="Offset" />
-                <ScalarProperty Name="Factor" ColumnName="Factor" />
-                <ScalarProperty Name="ParenteRoomCode" ColumnName="ParenteRoomCode" />
-                <ScalarProperty Name="ParentRoomId" ColumnName="ParentRoomId" />
-                <ScalarProperty Name="IsLinked" ColumnName="IsLinked" />
-                <ScalarProperty Name="Order" ColumnName="Order" />
-                <ScalarProperty Name="JuniorsAllowed" ColumnName="JuniorsAllowed" />
-                <ScalarProperty Name="MaxChildrenOccupancy" ColumnName="MaxChildrenOccupancy" />
-                <ScalarProperty Name="MinAdultsOccupancy" ColumnName="MinAdultsOccupancy" />
-                <ScalarProperty Name="MaxAdultsOccupancy" ColumnName="MaxAdultsOccupancy" />
-                <ScalarProperty Name="ExtraOccupancyAllowed" ColumnName="ExtraOccupancyAllowed" />
-                <ScalarProperty Name="MaxOccupancy" ColumnName="MaxOccupancy" />
-                <ScalarProperty Name="TotalRooms" ColumnName="TotalRooms" />
-                <ScalarProperty Name="HotelId" ColumnName="HotelId" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Code" ColumnName="Code" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -3660,6 +3623,48 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
                 <ScalarProperty Name="address" ColumnName="address" />
                 <ScalarProperty Name="hotelName" ColumnName="hotelName" />
                 <ScalarProperty Name="hotelId" ColumnName="hotelId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vHotelPlan">
+            <EntityTypeMapping TypeName="Models.vHotelPlan">
+              <MappingFragment StoreEntitySet="vHotelPlan">
+                <ScalarProperty Name="IsPromo" ColumnName="IsPromo" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="IsLinked" ColumnName="IsLinked" />
+                <ScalarProperty Name="Segment" ColumnName="Segment" />
+                <ScalarProperty Name="CommissionPercentage" ColumnName="CommissionPercentage" />
+                <ScalarProperty Name="Language" ColumnName="Language" />
+                <ScalarProperty Name="Currency" ColumnName="Currency" />
+                <ScalarProperty Name="HotelId" ColumnName="HotelId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vHotelRoom">
+            <EntityTypeMapping TypeName="Models.vHotelRoom">
+              <MappingFragment StoreEntitySet="vHotelRoom">
+                <ScalarProperty Name="Language" ColumnName="Language" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Offset" ColumnName="Offset" />
+                <ScalarProperty Name="Factor" ColumnName="Factor" />
+                <ScalarProperty Name="ParenteRoomCode" ColumnName="ParenteRoomCode" />
+                <ScalarProperty Name="ParentRoomId" ColumnName="ParentRoomId" />
+                <ScalarProperty Name="IsLinked" ColumnName="IsLinked" />
+                <ScalarProperty Name="Order" ColumnName="Order" />
+                <ScalarProperty Name="JuniorsAllowed" ColumnName="JuniorsAllowed" />
+                <ScalarProperty Name="MaxChildrenOccupancy" ColumnName="MaxChildrenOccupancy" />
+                <ScalarProperty Name="MinAdultsOccupancy" ColumnName="MinAdultsOccupancy" />
+                <ScalarProperty Name="MaxAdultsOccupancy" ColumnName="MaxAdultsOccupancy" />
+                <ScalarProperty Name="ExtraOccupancyAllowed" ColumnName="ExtraOccupancyAllowed" />
+                <ScalarProperty Name="MaxOccupancy" ColumnName="MaxOccupancy" />
+                <ScalarProperty Name="TotalRooms" ColumnName="TotalRooms" />
+                <ScalarProperty Name="HotelId" ColumnName="HotelId" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
