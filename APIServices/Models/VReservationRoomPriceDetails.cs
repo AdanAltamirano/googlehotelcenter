@@ -17,6 +17,8 @@ namespace APIServices.Models
         public int roomPriceId { get; set; }
         public decimal price { get; set; }
         public decimal extraPrice { get; set; }
+        public Nullable<decimal> priceNR { get; set; }
+        public Nullable<decimal> extraPriceNR { get; set; }
         public System.DateTime checkIn { get; set; }
         public System.DateTime checkOut { get; set; }
         public string currency { get; set; }

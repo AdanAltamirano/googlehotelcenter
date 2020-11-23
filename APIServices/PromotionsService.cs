@@ -483,17 +483,43 @@ namespace APIServices
 
                         if (offer.Rule.BookingWindow != null)
                         {
-                            string horaInicio = (offer.Rule.BookingWindow.StartHour == null || offer.Rule.BookingWindow.StartHour == "") ? "" : offer.Rule.BookingWindow.StartHour.Substring(0, 5);
-                            string horaFin = (offer.Rule.BookingWindow.EndHour == null || offer.Rule.BookingWindow.StartHour == "") ? "" : offer.Rule.BookingWindow.EndHour.Substring(0, 5);
+                            string horaInicio = (offer.Rule.BookingWindow.StartHour == null || offer.Rule.BookingWindow.StartHour == "") ? null : offer.Rule.BookingWindow.StartHour.Substring(0, 5);
+                            string horaFin = (offer.Rule.BookingWindow.EndHour == null || offer.Rule.BookingWindow.StartHour == "") ? null : offer.Rule.BookingWindow.EndHour.Substring(0, 5);
                             var deal = db.ratesPlanDeal.FirstOrDefault(x => x.idRatePlan == offer.Id && x.idHotel == offer.HotelId);
-                            if (deal != null)
+
+                            if (deal != null && (offer.Rule.BookingWindow.StartDate != null && offer.Rule.BookingWindow.EndDate != null))
                             {
                                 deal.FechaInicio = offer.Rule.BookingWindow.StartDate;
                                 deal.FechaFin = offer.Rule.BookingWindow.EndDate;
                                 deal.HoraInicio = horaInicio;
                                 deal.HoraFin = horaFin;
                             }
+                            else if(deal == null && (offer.Rule.BookingWindow.StartDate != null && offer.Rule.BookingWindow.EndDate != null))
+                            {
+                                var newDeal = new ratesPlanDeal()
+                                {
+                                    idRatePlan = offer.Id,
+                                    idHotel = offer.HotelId,
+                                    FechaInicio = offer.Rule.BookingWindow.StartDate,
+                                    FechaFin = offer.Rule.BookingWindow.EndDate,
+                                    HoraInicio = horaInicio,
+                                    HoraFin = horaFin,
+                                };
+                                db.ratesPlanDeal.Add(newDeal);
+                            }
+                            else
+                            {
+                                var deleteDeal = db.ratesPlanDeal.FirstOrDefault(x => x.idRatePlan == offer.Id && x.idHotel == offer.HotelId);
+                                if(deleteDeal != null)
+                                    db.ratesPlanDeal.Remove(deleteDeal);
+                            }
                         }
+                        //else
+                        //{
+                        //    var deal = db.ratesPlanDeal.FirstOrDefault(x => x.idRatePlan == offer.Id && x.idHotel == offer.HotelId);
+                        //    db.ratesPlanDeal.Remove(deal);
+
+                        //}
 
                         //Aplicable para
                         if (offer.ApplicableFor.Rooms != null)

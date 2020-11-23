@@ -14,10 +14,10 @@
                             <b-form-group class="pt-2" :label="$t('Promotion name')">
                                 <b-tabs active-nav-item-class="font-weight-bold text-info">
                                     <b-tab :title="$t('Spanish')">
-                                        <b-form-input v-model="promo.name.esp" trim/>
+                                        <b-form-input v-model="promo.description.esp" trim/>
                                     </b-tab>
                                     <b-tab :title="$t('English')">
-                                        <b-form-input v-model="promo.name.eng" trim/>
+                                        <b-form-input v-model="promo.description.eng" trim/>
                                     </b-tab>
                                 </b-tabs>
                             </b-form-group>
@@ -26,10 +26,10 @@
                             <b-form-group :label="$t('Promotion description')">
                                 <b-tabs active-nav-item-class="font-weight-bold text-info">
                                     <b-tab :title="$t('Spanish')">
-                                        <b-form-textarea v-model="promo.description.esp" rows="5" max-rows="5" trim/>
+                                        <b-form-textarea v-model="promo.name.esp" rows="5" max-rows="5" trim/>
                                     </b-tab>
                                     <b-tab :title="$t('English')">
-                                        <b-form-textarea v-model="promo.description.eng" rows="5" max-rows="5" trim/>
+                                        <b-form-textarea v-model="promo.name.eng" rows="5" max-rows="5" trim/>
                                     </b-tab>
                                 </b-tabs>
                             </b-form-group>
@@ -37,7 +37,7 @@
                     </b-row>
                     <b-row>
                         <b-col>
-                            <b-form-checkbox
+                            <b-form-checkbox v-if="false"
                             v-model="promo.isCombinablePromotion"
                             switch>
                                 {{ $t('Combinable promotion') }}
@@ -52,7 +52,8 @@
         </b-row>
         <b-row class="mb-4">
             <b-col lg="6">
-                <booking-window :dataModel="promo.rule.bookingWindow"></booking-window>
+                <travel-window :dataModel="promo"></travel-window>
+                <!-- <booking-window :dataModel="promo.rule.bookingWindow"></booking-window> -->
             </b-col>
             <b-col class="sm-margin">
                 <rate-plan-rooms :dataModel="promo.applicableFor"></rate-plan-rooms>
@@ -60,10 +61,12 @@
         </b-row>
         <b-row class="mb-4">
             <b-col lg="6">
-                <restriction :dataModel="promo.rule.cancelPenalty"></restriction>
+                <!-- <restriction :dataModel="promo.rule.cancelPenalty"></restriction> -->
+                <booking-window :dataModel="promo.rule.bookingWindow"></booking-window>
             </b-col>
             <b-col class="sm-margin" :class="offset ? '' : 'offset-row-250'">
-                <travel-window :dataModel="promo"></travel-window>
+                <!-- <travel-window :dataModel="promo"></travel-window> -->
+                 <restriction :dataModel="promo.rule.cancelPenalty"></restriction>
             </b-col>
         </b-row>
         <b-row class="mb-4">

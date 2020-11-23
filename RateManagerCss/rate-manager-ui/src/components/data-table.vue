@@ -30,7 +30,8 @@
       </template>
     </b-table>
     <div class="d-flex">
-      <span>Mostrando del {{currentPage}} al {{totalPages}} de {{totalRows}} {{tableTypeResults}}</span>
+      <!-- <span>Mostrando del {{currentPage}} al {{totalPages}} de {{totalRows}} {{tableTypeResults}}</span> -->
+      <span>Mostrando del {{start}} al {{end}} de {{totalRows}} {{tableTypeResults}} </span>
       <b-pagination
         align="right"
         style="margin-left:auto !important;"
@@ -109,7 +110,9 @@ export default {
       currentPage: 1,
       totalRows: 0,
       isBusy: false,
-      emptyText: this.$t("There are no records that match your request")
+      emptyText: this.$t("There are no records that match your request"),
+      start:0,
+      end:0
     };
   },
   methods: {
@@ -145,6 +148,19 @@ export default {
           console.log(response.body);
           // establecer el total de elementos
           this.totalRows = Number(response.headers.map["x-total-count"][0]);
+          console.log(this.totalRows);
+          if(this.totalRows > 0){
+            this.start = 1 + (ctx.perPage * ctx.currentPage) - ctx.perPage;
+            this.end = ctx.perPage + (ctx.perPage * ctx.currentPage) - ctx.perPage;
+            if(ctx.currentPage === Math.ceil(this.totalRows/this.itemsPerPage))
+            {
+              this.end -= Math.abs((ctx.perPage * ctx.currentPage) - this.totalRows);
+            }
+          }
+          else{
+            this.start = 0;
+            this.end = 0;
+          }
           // prooveer el arreglo de elementos
           callback(response.body);
           this.result = response.body;

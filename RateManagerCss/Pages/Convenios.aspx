@@ -721,6 +721,9 @@
                                     
                                     </asp:DataList>
                                     <asp:Label ID="lblMsgNumHoteles" runat="server"></asp:Label>
+                                    <br />
+                                    <br />
+                                    <asp:Label ID="lblMsgErrorNumHoteles" runat="server"></asp:Label>
                                 </td>
                             </tr>
                            

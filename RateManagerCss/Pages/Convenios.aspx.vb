@@ -2209,6 +2209,12 @@ Partial Public Class Convenios
         dlHoteles.Enabled = Not String.IsNullOrEmpty(rateplan)
         lblMsgNumHoteles.Visible = dlHoteles.Enabled
         txtTarifaConvenio.Text = rateplan
+
+        lblMsgErrorNumHoteles.Visible = Not String.IsNullOrEmpty(rateplan) And ds.Tables(0).Rows.Count = 0
+        lblMsgErrorNumHoteles.Text = "El plan tarifario tiene que ser de tipo contrato."
+        lblMsgErrorNumHoteles.ForeColor = System.Drawing.Color.Red
+        lblMsgErrorNumHoteles.Font.Bold = True
+
     End Sub
 
     Private Sub bnAgregarHomoClave_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles bnAgregarHomoClave.Click

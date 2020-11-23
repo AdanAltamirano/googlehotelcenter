@@ -40,7 +40,6 @@ namespace APIServices.Models
         public virtual DbSet<vDayRateDetail> vDayRateDetail { get; set; }
         public virtual DbSet<vDayRates> vDayRates { get; set; }
         public virtual DbSet<vPermissions> vPermissions { get; set; }
-        public virtual DbSet<VReservationRoomPriceDetails> VReservationRoomPriceDetails { get; set; }
         public virtual DbSet<Hoteles> Hoteles { get; set; }
         public virtual DbSet<Corporativos> Corporativos { get; set; }
         public virtual DbSet<TarjetasHotel> TarjetasHotel { get; set; }
@@ -51,7 +50,6 @@ namespace APIServices.Models
         public virtual DbSet<Promociones_TipoHabitacionHotel> Promociones_TipoHabitacionHotel { get; set; }
         public virtual DbSet<ratesPlanDeal> ratesPlanDeal { get; set; }
         public virtual DbSet<RatesPlanRules> RatesPlanRules { get; set; }
-        public virtual DbSet<vPromotions> vPromotions { get; set; }
         public virtual DbSet<vAgencies> vAgencies { get; set; }
         public virtual DbSet<Reservaciones> Reservaciones { get; set; }
         public virtual DbSet<ReservationsDeposits> ReservationsDeposits { get; set; }
@@ -61,6 +59,8 @@ namespace APIServices.Models
         public virtual DbSet<vReservationDetails> vReservationDetails { get; set; }
         public virtual DbSet<vHotelPlan> vHotelPlan { get; set; }
         public virtual DbSet<vHotelRoom> vHotelRoom { get; set; }
+        public virtual DbSet<vPromotions> vPromotions { get; set; }
+        public virtual DbSet<VReservationRoomPriceDetails> VReservationRoomPriceDetails { get; set; }
     
         public virtual int spReservationCancel(Nullable<int> idReservacion, string noConfCancelGalileo, string noCancelacion, string txCode, Nullable<bool> statusConf, string systemCode, string travelAgencyName, string voucher, string wizcomPassOn, string wizcomSequenceNumber, string motivoCancelacion, Nullable<bool> cancelWithError, string sessionId, Nullable<int> iduser)
         {

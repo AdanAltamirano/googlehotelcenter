@@ -1193,6 +1193,15 @@ Partial Public Class Convenios
     Protected WithEvents lblMsgNumHoteles As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
+    '''Control lblMsgErrorNumHoteles.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblMsgErrorNumHoteles As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
     '''Control trEspecificRestrictions.
     '''</summary>
     '''<remarks>

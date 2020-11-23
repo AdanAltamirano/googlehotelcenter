@@ -266,7 +266,8 @@
         .resumeCode {
             padding: 20px;
             border: 1px solid #CCC;
-            width: 650px;
+            /*width: 650px;*/
+            width:750px;
             height: 270px;
             margin-bottom: 15px;
         }
@@ -278,7 +279,8 @@
         .sectionWindow {
             padding: 20px;
             border: 1px solid #CCC;
-            width: 650px;
+            /*width: 650px;*/
+            width:750px;
             margin-bottom: 15px;
             margin-left: 2px;
         }
@@ -539,12 +541,12 @@
                                     <asp:TextBox runat="server" ID="txtPromotionCode" Width="100px" MaxLength="4"></asp:TextBox>
                                 </div>
                                 <div style="display:inline;">
-                                    <asp:Label Style="margin-right: 20px;" runat="server" CssClass="" ID="lblIsCombinable">Promoción combinable: </asp:Label>
-                                    <asp:CheckBox ID="chkIscombinable" runat="server" />
+                                    <asp:Label Style="margin-right: 20px;" runat="server" CssClass="" ID="lblIsCombinable" Visible="False">Promoción combinable: </asp:Label>
+                                    <asp:CheckBox ID="chkIscombinable" runat="server"  Visible="False"/>
                                 </div>
                             </div>
                             <div>
-                                <div style="float: left; margin-right: 5px; height: 30px; width: 150px; padding-top: 48px">
+                                <div style="float: left; margin-right: 45px; /*height: 30px;*/ width: 200px; padding-top: 48px">
                                     <asp:Label runat="server" CssClass="lblName" ID="lblPromotionName">Nombre de la promoción: </asp:Label>
                                 </div>
                                 <div class="promoName">
@@ -552,7 +554,7 @@
                                 </div>
                             </div>
                             <div>
-                                <div style="float: left; margin-right: 5px; height: 30px; width: 150px; padding-top: 48px">
+                                <div style="float: left; margin-right: 45px; /*height: 30px;*/ width: 200px; padding-top: 48px">
                                     <asp:Label runat="server" CssClass="lblName" ID="lblPromoDescription">Descripcion de la promoción: </asp:Label>
                                 </div>
                                 <div class="promoDescription">
@@ -1342,7 +1344,7 @@
                 from = $("#travelWindowFrom")
                     .datepicker({
                         showOn: "button",
-                        buttonImage: "/RateManager/Calendar/calbtn.gif",
+                        buttonImage: "/Calendar/calbtn.gif", ///RateManager/Calendar/calbtn.gif Aplicacion de Ratemanager
                         buttonImageOnly: true,
                         buttonText: "Select date",
                         defaultDate: "+1w",
@@ -1355,7 +1357,7 @@
                     }),
                 to = $("#travelWindowTo").datepicker({
                     showOn: "button",
-                    buttonImage: "/RateManager/Calendar/calbtn.gif",
+                    buttonImage: "/Calendar/calbtn.gif",
                     buttonImageOnly: true,
                     buttonText: "Select date",
                     defaultDate: "+1w",
@@ -1384,7 +1386,7 @@
                 from = $("#bookingWindowFrom")
                     .datepicker({
                         showOn: "button",
-                        buttonImage: "/RateManager/Calendar/calbtn.gif",
+                        buttonImage: "/Calendar/calbtn.gif",
                         buttonImageOnly: true,
                         buttonText: "Select date",
                         defaultDate: "+1w",
@@ -1397,7 +1399,7 @@
                     }),
                 to = $("#bookingWindowTo").datepicker({
                     showOn: "button",
-                    buttonImage: "/RateManager/Calendar/calbtn.gif",
+                    buttonImage: "/Calendar/calbtn.gif",
                     buttonImageOnly: true,
                     buttonText: "Select date",
                     defaultDate: "+1w",
@@ -1426,7 +1428,7 @@
                 from = $("#blackoutFrom")
                     .datepicker({
                         showOn: "button",
-                        buttonImage: "/RateManager/Calendar/calbtn.gif",
+                        buttonImage: "/Calendar/calbtn.gif",
                         buttonImageOnly: true,
                         buttonText: "Select date",
                         defaultDate: "+1w",
@@ -1439,7 +1441,7 @@
                     }),
                 to = $("#blackoutTo").datepicker({
                     showOn: "button",
-                    buttonImage: "/RateManager/Calendar/calbtn.gif",
+                    buttonImage: "/Calendar/calbtn.gif",
                     buttonImageOnly: true,
                     buttonText: "Select date",
                     defaultDate: "+1w",

@@ -43,6 +43,8 @@ namespace APIServices.Models
         public string AppyDays { get; set; }
         public Nullable<int> DescriptionId { get; set; }
         public string Description { get; set; }
+        public string DescriptionEs { get; set; }
+        public string DescriptionEn { get; set; }
         public Nullable<int> IdDiccShortDesc { get; set; }
         public Nullable<int> idDiccPromoDesc { get; set; }
         public Nullable<int> idRule { get; set; }

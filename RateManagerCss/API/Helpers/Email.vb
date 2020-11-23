@@ -59,11 +59,9 @@ Namespace API.Helpers
                     Dim occupyChildren As Integer = roomDetail.Childrens
                     Dim occupyExtraAdults As Integer = roomDetail.ExtraAdults
                     Dim occupyExtraChildren As Integer = roomDetail.ExtraChildrens
-                    Dim roomPrice As Double = roomDetail.PriceDetails.ElementAt(0).Price
-                    Dim roomCurrency As String = roomDetail.PriceDetails.ElementAt(0).Currency
                     Dim arrivalRoom As String = roomDetail.PriceDetails.ElementAt(0).CheckIn.ToString("dd MMMM yyyy")
                     Dim departureRoom As String = roomDetail.PriceDetails.ElementAt(0).CheckOut.ToString("dd MMMM yyyy")
-                    Dim roomTotalPrice As Double = roomDetail.Total
+
                     If (occupyChildren <> 0) Then occupy += ", " + occupyChildren.ToString() + IIf(lang = "es-MX", " Niño", " Children") + "(s)"
                     If (occupyExtraAdults <> 0) Then occupy += ", " + occupyExtraAdults.ToString() + IIf(lang = "es-MX", " Adulto", " Adult") & "(s) Extra"
                     If (occupyExtraChildren <> 0) Then occupy += ", " + occupyExtraChildren.ToString() + IIf(lang = "es-MX", " Niño", " Children") + "(s) Extra"
@@ -95,18 +93,9 @@ Namespace API.Helpers
                     rooms += "<strong>" + IIf(lang = "es-MX", "Fecha: ", "Date: ") + "</strong>"
                     rooms += arrivalRoom + " - " + departureRoom
                     rooms += "<br>"
-                    rooms += "<strong>" + IIf(lang = "es-MX", "Precio por noche: ", "Price Per Night: ") + "</strong>"
-                    rooms += roomPrice.ToString("C") + " " + roomCurrency
-                    rooms += "<br>"
-                    If (roomDetail.PriceDetails.ElementAt(0).ExtraPrice <> 0) Then
-
-                        rooms += "<strong>" + IIf(lang = "es-MX", "Precio extra: ", "Extra Price: ") + "</strong>"
-                        Dim extraPrice As String = roomDetail.PriceDetails.ElementAt(0).ExtraPrice.ToString("C") + " " + roomDetail.PriceDetails.ElementAt(0).Currency
-                        rooms += extraPrice
-                        rooms += "<br>"
-                    End If
-                    rooms += "<strong>Total: </strong>"
-                    rooms += roomTotalPrice.ToString("C") + " " + roomDetail.Currency
+                    'Precios
+                    GetPriceRoom(typeClient, rooms, lang, roomDetail)
+                    'Termina Precios
                     rooms += "<br>"
                     rooms += "</address>"
                     rooms += "</div>"
@@ -451,14 +440,47 @@ Namespace API.Helpers
                                  ByVal oldReservation As ReservationDetailsModel)
             Select Case typeClient
                 Case TypeClient.Customer
-                    totalInfo = "<b>Total Actualizado: </b> " & reservation.TotalDetails.Total & " " & reservation.TotalDetails.Currency
+                    totalInfo = "<b>Total Actualizado: </b> " & reservation.TotalDetails.Total.ToString("C") & " " & reservation.TotalDetails.Currency
                     totalInfo &= "<br>"
-                    totalInfo &= "<b>Total Anterior: </b> " & oldReservation.TotalDetails.Total & " " & oldReservation.TotalDetails.Currency
+                    totalInfo &= "<b>Total Anterior: </b> " & oldReservation.TotalDetails.Total.ToString("C") & " " & oldReservation.TotalDetails.Currency
                 Case TypeClient.Hotel
-                    totalInfo = "<b>Total Tarifa Neta Actualizado: </b> " & reservation.TotalDetails.TotalNR & " " & reservation.TotalDetails.Currency
+                    totalInfo = "<b>Total Actualizado: </b> " & reservation.TotalDetails.TotalNR.ToString("C") & " " & reservation.TotalDetails.Currency
                     totalInfo &= "<br>"
-                    totalInfo &= "<b>Total Tarifa Neta Anterior: </b> " & oldReservation.TotalDetails.TotalNR & " " & oldReservation.TotalDetails.Currency
+                    totalInfo &= "<b>Total Anterior: </b> " & oldReservation.TotalDetails.TotalNR.ToString("C") & " " & oldReservation.TotalDetails.Currency
             End Select
         End Sub
+
+        Private Sub GetPriceRoom(ByVal typeClient As TypeClient, ByRef rooms As String, ByVal lang As String, ByVal roomDetail As RoomDetails)
+            Select Case typeClient
+                Case TypeClient.Customer
+                    rooms += "<strong>" + IIf(lang = "es-MX", "Precio por noche: ", "Price Per Night: ") + "</strong>"
+                    rooms += roomDetail.PriceDetails.ElementAt(0).Price.ToString("C") & " " & roomDetail.PriceDetails.ElementAt(0).Currency
+                    rooms += "<br>"
+                    If (roomDetail.PriceDetails.ElementAt(0).ExtraPrice <> 0) Then
+
+                        rooms += "<strong>" + IIf(lang = "es-MX", "Precio extra: ", "Extra Price: ") + "</strong>"
+                        Dim extraPrice As String = roomDetail.PriceDetails.ElementAt(0).ExtraPrice.ToString("C") + " " + roomDetail.PriceDetails.ElementAt(0).Currency
+                        rooms += extraPrice
+                        rooms += "<br>"
+                    End If
+                    rooms += "<strong>Total: </strong>"
+                    rooms += roomDetail.Total.ToString("C") + " " + roomDetail.Currency
+                Case TypeClient.Hotel
+                    rooms += "<strong>" + IIf(lang = "es-MX", "Precio por noche: ", "Price Per Night: ") + "</strong>"
+                    rooms += roomDetail.PriceDetails.ElementAt(0).PriceNR.ToString("C") & " " & roomDetail.PriceDetails.ElementAt(0).Currency
+                    rooms += "<br>"
+                    If (roomDetail.PriceDetails.ElementAt(0).ExtraPriceNR <> 0) Then
+
+                        rooms += "<strong>" + IIf(lang = "es-MX", "Precio extra: ", "Extra Price: ") + "</strong>"
+                        Dim extraPrice As String = roomDetail.PriceDetails.ElementAt(0).ExtraPriceNR.ToString("C") + " " + roomDetail.PriceDetails.ElementAt(0).Currency
+                        rooms += extraPrice
+                        rooms += "<br>"
+                    End If
+                    rooms += "<strong>Total: </strong>"
+                    rooms += roomDetail.TotalNR.ToString("C") + " " + roomDetail.Currency
+            End Select
+
+        End Sub
+
     End Module
 End Namespace

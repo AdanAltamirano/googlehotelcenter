@@ -46,6 +46,10 @@
           :customClass="`mt-3`"
           :rowClass="setColor"
           :tableTypeResults="`promociones`">
+            <!--Custom Description -->
+            <template v-slot:cell(description)="data">
+                {{setDescription(data.item)}}
+            </template>
             <!--Custom Edit -->
             <template v-slot:cell(edit)="data">
                  <b-link
@@ -124,6 +128,7 @@ export default {
     },
     created(){
         this.filter_url = this.defaultSearch();
+        console.log(this.$appConfig);
     },
     watch:{
         //Works as OnChange
@@ -153,6 +158,14 @@ export default {
         }
     },
     methods:{
+        //Set Description
+        setDescription(data){
+            console.log(data)
+            if(this.$appConfig.language === 'es')
+                return data.descriptionEs;
+            
+            return data.descriptionEn;
+        },
         // Api Request
         get(filter, orderBy, pageSize, page){
             return PromotionService.getByHotelId(filter, orderBy, pageSize, page);

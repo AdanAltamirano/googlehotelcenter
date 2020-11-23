@@ -263,6 +263,7 @@ namespace APIServices
 
                 var priceDetails = new List<RoomPriceDetails>();
                 double totalPerRoom = 0;
+                double totalPerRoomNetRate = 0;
                 foreach(var price in prices)
                 {
                     var checkOutReservation = (DateTime)model.CheckOut;
@@ -273,10 +274,13 @@ namespace APIServices
                     //int nights = (price.checkOut - price.checkIn).Days + 1;
                     //int nights = (price.checkOut - price.checkIn).Days;
                     totalPerRoom += (double)price.price * nights;
+                    totalPerRoomNetRate += (price.priceNR == null)? 0 : (double)price.priceNR * nights;
                     priceDetails.Add(new RoomPriceDetails
                     {
                         Price = (double)price.price,
                         ExtraPrice = (double)price.extraPrice,
+                        PriceNR = (price.priceNR == null)? 0 : (double)price.priceNR,
+                        ExtraPriceNR =(price.extraPriceNR == null)? 0 :  (double)price.extraPriceNR,
                         Currency = price.currency,
                         CheckIn = price.checkIn,
                         CheckOut = price.checkOut,
@@ -294,12 +298,13 @@ namespace APIServices
                     CheckIn = room.roomCheckIn,
                     CheckOut = room.roomCheckOut,
                     Adults = room.adults,
-                    ExtraAdults = (int)room.extraAdults,
+                    ExtraAdults = (room.extraAdults == null)? 0 : (int)room.extraAdults,
                     Childrens = room.childrens,
-                    ExtraChildrens = (int)room.extraChildrens,
+                    ExtraChildrens = (room.extraChildrens == null)? 0 : (int)room.extraChildrens,
                     AgeChildren = room.ageChildren,
                     PriceDetails = new List<RoomPriceDetails>(),
                     Total = totalPerRoom,
+                    TotalNR = totalPerRoomNetRate,
                     Currency = room.currency,
                     RatePlan = room.ratePlan,
                     RateCode = room.rateCode,

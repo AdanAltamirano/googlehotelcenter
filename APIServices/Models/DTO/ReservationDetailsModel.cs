@@ -138,6 +138,7 @@ namespace APIServices.Models.DTO
         public string RateCode { get; set; }
         public List<RoomPriceDetails> PriceDetails { get; set; }
         public double Total { get; set; }
+        public double TotalNR { get; set; }
         public string Img { get; set; }
         public string ImgDefault { get; set; }
         public string Currency { get; set; }
@@ -151,6 +152,8 @@ namespace APIServices.Models.DTO
     {
         public double Price { get; set; }
         public double ExtraPrice { get; set; }
+        public double PriceNR { get; set; }
+        public double ExtraPriceNR { get; set; }
         public DateTime CheckIn { get; set; }
         public DateTime CheckOut { get; set; }
         public string Currency { get; set; }

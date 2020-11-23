@@ -86,6 +86,14 @@ Namespace API.Controller
                         Return responseG
                     End If
                 End If
+                Dim userCorpId As Integer = GetUserCorpId(GetUserId().Value)
+                Dim parserCorporate = New QueryParser()
+                Dim _queryCorporate As QueryData = parserCorporate.CreateAndValidateQuery(ActionContext, "reservationId", GetType(vReservation))
+                Dim queryResultCorporate As IQueryable(Of vReservation)
+                queryResultCorporate = _queryCorporate.ApplyTo(ReservationService.GetAll().Where(Function(h) h.CorporateId = userCorpId))
+                Dim responseCorporate As New HttpResponseMessage
+                responseCorporate = ReservationService.GetExcel(queryResultCorporate)
+                Return responseCorporate
             ElseIf roles.Contains("agencycompany") Then
                 Dim page As New PaginaBase
                 If page.IsAgencyCompany Then
