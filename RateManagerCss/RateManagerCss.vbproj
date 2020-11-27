@@ -1495,6 +1495,7 @@
     <Compile Include="API\Controllers\RatesController.vb" />
     <Compile Include="API\Controllers\RatesPlanController.vb" />
     <Compile Include="API\Controllers\ReservationController.vb" />
+    <Compile Include="API\Controllers\RoomsClosureController.vb" />
     <Compile Include="API\Controllers\RoomsController.vb" />
     <Compile Include="API\Helpers\Date+Extensions.vb" />
     <Compile Include="API\Helpers\Email.vb" />
