@@ -232,7 +232,7 @@ Partial Class RoomClosure
             For Each drroom As DataRow In roomTest.Tables(dsrooms.TBL_ROOM_HOTEL).Rows
                 dsLockRoomTypes = GetLockRoomTypes(MyBase.cInfoActual.Hotel, ddlRatePlanFilter.SelectedValue, dateStart, dateEnd, drroom(dsrooms.FLD_ID_ROOM_HOTEL))
 
-                Dim dtLock As DataTable = dsLockRoomTypes.Tables(1)
+                Dim dtLock As DataTable = IIf(dsLockRoomTypes.Tables(0).Rows.Count <> 0, dsLockRoomTypes.Tables(0), dsLockRoomTypes.Tables(1))
                 If Not hotelData.Tables(0).Rows(0)("AvailOnPortal") Then
 
                     'IF HOTEL IS NOT AVAILABLE ON PORTAL IS CLOSED'

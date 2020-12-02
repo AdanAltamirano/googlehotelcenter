@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace APIServices.Models.DTO
 {
@@ -8,6 +9,20 @@ namespace APIServices.Models.DTO
         public string ColorStatusHotel { get; set; } = "";
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-
+        public List<RateRoomsClosureModel> RateRoomsClosureModelList { get; set; }
     }
+
+    public class RateRoomsClosureModel
+    {
+        public string RatePlan { get; set; }
+        public List<CodeRoomModel> CodeRoomModelsList { get; set; }
+    }
+
+    public class CodeRoomModel
+    {
+        public string Code { get; set; }
+        public string RoomName { get; set; }
+        public string[] Status { get; set; }
+    }
+
 }

@@ -71,7 +71,15 @@ Namespace API.Controller
         <Route("excel"), HttpGet>
         Public Function GetExcel() As HttpResponseMessage
             Dim roles() As String = GetRoles()
-            If roles.Contains("userchain") Then
+            If roles.Contains("supervisor") Then
+                Dim parserS = New QueryParser()
+                Dim _queryS As QueryData = parserS.CreateAndValidateQuery(ActionContext, "reservationId", GetType(vReservation))
+                Dim queryResultS As IQueryable(Of vReservation)
+                queryResultS = _queryS.ApplyTo(ReservationService.GetAll())
+                Dim responseS As New HttpResponseMessage
+                responseS = ReservationService.GetExcel(queryResultS)
+                Return responseS
+            ElseIf roles.Contains("userchain") Then
                 Dim page As New PaginaBase
                 If page.CorporateId <> 0 And IsNothing(page.CorporateName) <> True Then
                     If page.CorporateName.Contains(":") Then
