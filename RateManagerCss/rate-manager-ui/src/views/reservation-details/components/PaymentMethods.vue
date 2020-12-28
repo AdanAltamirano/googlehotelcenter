@@ -25,7 +25,7 @@
         <!--FIN DEPOSITO BANCARIO-->
         <!--PAGO EN LINEA-->
         <div v-if="result.paymentWay == 1">
-          <b-alert show v-if="result.status != 1" variant="warning">
+          <b-alert show v-if="result.paymentDetails.authorizationNumber.length <= 0 && result.paymentDetails.reference.length <= 0" variant="warning">
             <small>{{$t('Pending payment')}}</small>
           </b-alert>
           <address class="mt-1">

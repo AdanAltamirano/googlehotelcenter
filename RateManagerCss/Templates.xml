@@ -810,7 +810,13 @@
       <es-MX valor="Nuevo hotel asociado a su cuenta" />
       <en-US valor="New hotel associated to your account" />
     </subject>
-    <from valor="javier@oz.com.mx" />
+    <!--<from valor="javier@oz.com.mx" />-->
+    <from  valor="custsrvc@internetpowerhotel.com" />
+    <smtpServer valor="smtp.mandrillapp.com"/>
+    <userName valor="javier@univisit.com"/>
+    <password valor="NCxlNTHApCDYtSZjtyRvvQ"/>
+    <port valor="587"/>
+    <ssl valor="true"/>
     <parametros>
       <HOTELNAME/>
       <USEREMAIL/>
@@ -845,10 +851,16 @@
       <CURRENCY />
       <COMMENT />
     </parametros>
-    <from valor="univisitreviews@gmail.com" />
+    <!--<from valor="univisitreviews@gmail.com" />
     <smtpServer valor="smtp.live.com"/>
     <userName valor="xxxx@hotmail.com"/>
     <password valor="xxxxxx"/>
+    <port valor="587"/>
+    <ssl valor="true"/>-->
+    <from  valor="custsrvc@internetpowerhotel.com" />
+    <smtpServer valor="smtp.mandrillapp.com"/>
+    <userName valor="javier@univisit.com"/>
+    <password valor="NCxlNTHApCDYtSZjtyRvvQ"/>
     <port valor="587"/>
     <ssl valor="true"/>
 

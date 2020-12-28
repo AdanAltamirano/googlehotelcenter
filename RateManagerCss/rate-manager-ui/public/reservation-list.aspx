@@ -15,7 +15,8 @@
                 language: '<%= If(Me.IdIdiomaMenu = 1, "es", "en" )%>',
                 corporateId: <%= Me.cInfoActual.IdCorporate%>,
                 corporateName: '<%= Me.cInfoActual.CorporateName%>',
-		isAgencyCompany: '<%= Me.IsAgencyCompany%>'
+		isAgencyCompany: '<%= Me.IsAgencyCompany%>',
+		isSupervisor : '<%= Me.IsSupervisor%>'
             };
     </script>
     <div id="app"></div>

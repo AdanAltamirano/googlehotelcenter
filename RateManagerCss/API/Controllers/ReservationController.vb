@@ -35,16 +35,16 @@ Namespace API.Controller
                         'Return ReservationService.GetAllGalileo(page.CorporateName.Split(New Char() {":"})(1))
                         'Dim corporate As String = page.CorporateName.Split(New Char() {":"})(1)
                         'Return ReservationService.GetAll().Where(Function(h) h.Hotel.Contains(corporate) And h.Provider = "IDISO")
-                        Return ReservationService.GetAll().Where(Function(h) h.CorporateId = page.CorporateId)
+                        Return ReservationService.GetAll().Where(Function(h) h.CorporateId = page.CorporateId And h.Status <> 4)
                     End If
                 End If
                 Dim userCorpId As Integer = GetUserCorpId(GetUserId().Value)
 
-                Return ReservationService.GetAll().Where(Function(h) h.CorporateId = userCorpId)
+                Return ReservationService.GetAll().Where(Function(h) h.CorporateId = userCorpId And h.Status <> 4)
 
             ElseIf roles.Contains("hotelcompany") Then
                 Dim hotels() As Integer = GetUserHotels(GetUserId().Value).Select(Function(h) h.HotelId).ToArray()
-                Return ReservationService.GetAll().Where(Function(h) hotels.Contains(h.HotelId) And h.Provider = "INTERNET POWER")
+                Return ReservationService.GetAll().Where(Function(h) hotels.Contains(h.HotelId) And h.Provider = "INTERNET POWER" And h.Status <> 4)
             ElseIf roles.Contains("agencycompany") Then
                 Dim page As New PaginaBase
                 If page.IsAgencyCompany Then
@@ -71,7 +71,15 @@ Namespace API.Controller
         <Route("excel"), HttpGet>
         Public Function GetExcel() As HttpResponseMessage
             Dim roles() As String = GetRoles()
-            If roles.Contains("userchain") Then
+            If roles.Contains("supervisor") Then
+                Dim parserS = New QueryParser()
+                Dim _queryS As QueryData = parserS.CreateAndValidateQuery(ActionContext, "reservationId", GetType(vReservation))
+                Dim queryResultS As IQueryable(Of vReservation)
+                queryResultS = _queryS.ApplyTo(ReservationService.GetAll())
+                Dim responseS As New HttpResponseMessage
+                responseS = ReservationService.GetExcel(queryResultS)
+                Return responseS
+            ElseIf roles.Contains("userchain") Then
                 Dim page As New PaginaBase
                 If page.CorporateId <> 0 And IsNothing(page.CorporateName) <> True Then
                     If page.CorporateName.Contains(":") Then

@@ -9,6 +9,7 @@ const appConfig = {
         corporateId: window.app.corporateId,
         corporateName: window.app.corporateName,
         isAgencyCompany: window.app.isAgencyCompany,
+        isSupervisor:window.app.isSupervisor,
         code: window.app.code
     },
     themeColors: {

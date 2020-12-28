@@ -120,9 +120,9 @@ Partial Class UserAsociate
         If txtEmail.Text.Trim <> "" Then
             If (New cUserCompanySystem).createUserCompany(PortalCulture.GetCulture.ToString, txtEmail.Text.Trim, MyBase.cInfoActual.Empresa) Then
                 CType(Me.Page, PaginaBase).guardalog("/Registro/UserAsociate.aspx", PaginaBase.acciones.Crear, String.Format("Asociar usuario a hotel {0}", txtEmail.Text), "", "", "")
-                If ConfigurationManager.AppSettings("idSegmento") = 4 Then
-                    Fillcorreo(txtEmail.Text, MyBase.cInfoActual.Empresa)
-                End If
+                'If ConfigurationManager.AppSettings("idSegmento") = 0 Then
+                Fillcorreo(txtEmail.Text, MyBase.cInfoActual.Empresa)
+                'End If
                 txtEmail.Text = ""
                 GetUsuarios()
             Else

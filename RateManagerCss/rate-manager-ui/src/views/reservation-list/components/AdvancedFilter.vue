@@ -76,7 +76,7 @@
                                 <b-form-group :label="$t('Status')">
                                     <b-form-checkbox-group v-model="checkStatus">
                                         <b-form-checkbox value="1">{{ $t('Reserved') }}</b-form-checkbox>
-                                        <b-form-checkbox value="4">{{ $t('In process') }}</b-form-checkbox>
+                                        <b-form-checkbox value="4" v-if="isSupervisor">{{ $t('In process') }}</b-form-checkbox>
                                         <b-form-checkbox value="3">{{ $t('Cancelled') }}</b-form-checkbox>
                                     </b-form-checkbox-group>
                                 </b-form-group>
@@ -230,10 +230,11 @@ export default {
             agents:[],
             agentsToFilter:[],
             isAgencyCompany:(this.$appConfig.session.isAgencyCompany === 'True')? true : false,
+            isSupervisor:(this.$appConfig.session.isSupervisor === 'True')? true : false,
             typeDates: [
                 { text: this.$t('Reservation date'), value: 'ReservationDate' },
-                { text: this.$t('Arrival date'), value: 'CheckOut' },
-                { text: this.$t('Departure date'), value: 'CheckIn' }
+                { text: this.$t('Arrival date'), value: 'CheckIn' },
+                { text: this.$t('Departure date'), value: 'CheckOut' }
             ],
             sources: [
                 { text: `-- ${this.$t('All')} --`, value: 'ALL' },
@@ -356,7 +357,7 @@ export default {
             if (this.dates != null){
                 let dateEnd = new Date(this.dates.end);
                 dateEnd.setDate(dateEnd.getDate() + 1);
-                filter = `${this.typeDate} gt ${this.dateFormat(this.dates.start)} and ${this.typeDate} lt ${this.dateFormat(dateEnd)}`;
+                filter = `${this.typeDate} ge ${this.dateFormat(this.dates.start)} and ${this.typeDate} lt ${this.dateFormat(dateEnd)}`;
                 }
             if (this.checkStatus.length > 0) {
                 filter += this.and(filter);
