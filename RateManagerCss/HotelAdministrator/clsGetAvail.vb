@@ -83,33 +83,34 @@ Public Class clsGetAvail
         '        End With
 
         For i As Integer = 0 To Nights
-            If Not ds Is Nothing AndAlso ds.Tables(0).Rows.Count > 0 Then
-                drhotel = ds.Tables(0).Rows(0)
+            If Not ds Is Nothing AndAlso ds.Tables.Count > 0 Then
+                If ds.Tables(0).Rows.Count > 0 Then
+                    drhotel = ds.Tables(0).Rows(0)
 
-                et = "O"
-                MinStay = 1
-                Maxstay = 99
-                AdvBook = 0
-                StatusAvail = "O"
-                NoArrivos = "NNNNNNN"
+                    et = "O"
+                    MinStay = 1
+                    Maxstay = 99
+                    AdvBook = 0
+                    StatusAvail = "O"
+                    NoArrivos = "NNNNNNN"
 
-                drsGral = ds.Tables(2).Select("fecha=#" & checkin.AddDays(i).ToString("M/dd/yy") & "#")
-                GetRestricted(drhotel, MinStay, Maxstay, AdvBook, StatusAvail, NoArrivos, checkin.AddDays(i))
-                If NoArrivos <> "" AndAlso ApplyWeek(checkin.AddDays(i), NoArrivos, "Y") Then
-                    StatusAvail = "N"
-                End If
-
-                If drsGral.Length > 0 Then
-                    If StatusAvail <> "C" AndAlso StatusAvail <> "N" Then
-                        GetRestricted(drsGral(0), MinStay, Maxstay, AdvBook, StatusAvail, NoArrivos, checkin.AddDays(i), "LG")
-                    Else
-                        GetRestricted(drsGral(0), MinStay, Maxstay, AdvBook, "", NoArrivos, checkin.AddDays(i), "LG")
+                    drsGral = ds.Tables(2).Select("fecha=#" & checkin.AddDays(i).ToString("M/dd/yy") & "#")
+                    GetRestricted(drhotel, MinStay, Maxstay, AdvBook, StatusAvail, NoArrivos, checkin.AddDays(i))
+                    If NoArrivos <> "" AndAlso ApplyWeek(checkin.AddDays(i), NoArrivos, "Y") Then
+                        StatusAvail = "N"
                     End If
+
+                    If drsGral.Length > 0 Then
+                        If StatusAvail <> "C" AndAlso StatusAvail <> "N" Then
+                            GetRestricted(drsGral(0), MinStay, Maxstay, AdvBook, StatusAvail, NoArrivos, checkin.AddDays(i), "LG")
+                        Else
+                            GetRestricted(drsGral(0), MinStay, Maxstay, AdvBook, "", NoArrivos, checkin.AddDays(i), "LG")
+                        End If
+                    End If
+
+                    Call ValidateRestricted(StatusAvail, checkin.AddDays(i), "NNNNNNN", et) 'Then
+                    ApplyRulesRatesRoom(ds, dt, drsGral, MinStay, Maxstay, AdvBook, StatusAvail, checkin.AddDays(i), et, ratecode)
                 End If
-
-                Call ValidateRestricted(StatusAvail, checkin.AddDays(i), "NNNNNNN", et) 'Then
-                ApplyRulesRatesRoom(ds, dt, drsGral, MinStay, Maxstay, AdvBook, StatusAvail, checkin.AddDays(i), et, ratecode)
-
             End If
         Next
 
