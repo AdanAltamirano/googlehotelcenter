@@ -245,10 +245,10 @@ Namespace API.Controller
                 End If
                 If String.IsNullOrEmpty(updatedData_RDM.Customer.Email) AndAlso String.IsNullOrEmpty(updatedData_RDM.HotelEmail) Then
                     'enviar correo a algun admin
-                    Dim errorMail As String = String.Empty
-                    SendModificationEmail("soporte@internetpowerhotel.com", updatedData_RDM, oldData_RDM, errorMail, TypeClient.Support)
+                    'Dim errorMail As String = String.Empty
+                    'SendModificationEmail("soporte@internetpowerhotel.com", updatedData_RDM, oldData_RDM, errorMail, TypeClient.Support)
                 End If
-                ' End If
+                'End If
             End If
             Return result
         End Function

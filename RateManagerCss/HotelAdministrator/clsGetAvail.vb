@@ -28,7 +28,7 @@ Public Class clsGetAvail
             "','" & checkout.ToString("yyyy/MM/dd") & "'" & str, conn)
         Dim ds As New DataSet
         Try
-            da.SelectCommand.CommandTimeout = 30
+            da.SelectCommand.CommandTimeout = 60
             da.Fill(ds)
         Catch ex As Exception
 
@@ -84,6 +84,7 @@ Public Class clsGetAvail
 
         For i As Integer = 0 To Nights
             If Not ds Is Nothing AndAlso ds.Tables(0).Rows.Count > 0 Then
+
                 drhotel = ds.Tables(0).Rows(0)
 
                 et = "O"

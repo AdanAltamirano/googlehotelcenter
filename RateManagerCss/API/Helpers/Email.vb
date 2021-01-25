@@ -444,9 +444,9 @@ Namespace API.Helpers
                     totalInfo &= "<br>"
                     totalInfo &= "<b>Total Anterior: </b> " & oldReservation.TotalDetails.Total.ToString("C") & " " & oldReservation.TotalDetails.Currency
                 Case TypeClient.Hotel
-                    totalInfo = "<b>Total Actualizado: </b> " & reservation.TotalDetails.TotalNR.ToString("C") & " " & reservation.TotalDetails.Currency
+                    totalInfo = "<b>Total Actualizado: </b> " & reservation.TotalDetails.Total.ToString("C") & " " & reservation.TotalDetails.Currency
                     totalInfo &= "<br>"
-                    totalInfo &= "<b>Total Anterior: </b> " & oldReservation.TotalDetails.TotalNR.ToString("C") & " " & oldReservation.TotalDetails.Currency
+                    totalInfo &= "<b>Total Anterior: </b> " & oldReservation.TotalDetails.Total.ToString("C") & " " & oldReservation.TotalDetails.Currency
             End Select
         End Sub
 
@@ -467,17 +467,17 @@ Namespace API.Helpers
                     rooms += roomDetail.Total.ToString("C") + " " + roomDetail.Currency
                 Case TypeClient.Hotel
                     rooms += "<strong>" + IIf(lang = "es-MX", "Precio por noche: ", "Price Per Night: ") + "</strong>"
-                    rooms += roomDetail.PriceDetails.ElementAt(0).PriceNR.ToString("C") & " " & roomDetail.PriceDetails.ElementAt(0).Currency
+                    rooms += roomDetail.PriceDetails.ElementAt(0).Price.ToString("C") & " " & roomDetail.PriceDetails.ElementAt(0).Currency
                     rooms += "<br>"
-                    If (roomDetail.PriceDetails.ElementAt(0).ExtraPriceNR <> 0) Then
+                    If (roomDetail.PriceDetails.ElementAt(0).ExtraPrice <> 0) Then
 
                         rooms += "<strong>" + IIf(lang = "es-MX", "Precio extra: ", "Extra Price: ") + "</strong>"
-                        Dim extraPrice As String = roomDetail.PriceDetails.ElementAt(0).ExtraPriceNR.ToString("C") + " " + roomDetail.PriceDetails.ElementAt(0).Currency
+                        Dim extraPrice As String = roomDetail.PriceDetails.ElementAt(0).ExtraPrice.ToString("C") + " " + roomDetail.PriceDetails.ElementAt(0).Currency
                         rooms += extraPrice
                         rooms += "<br>"
                     End If
                     rooms += "<strong>Total: </strong>"
-                    rooms += roomDetail.TotalNR.ToString("C") + " " + roomDetail.Currency
+                    rooms += roomDetail.Total.ToString("C") + " " + roomDetail.Currency
             End Select
 
         End Sub
