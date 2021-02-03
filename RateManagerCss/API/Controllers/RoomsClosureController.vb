@@ -2,6 +2,11 @@
 Imports NinjAPI
 Imports APIServices
 Imports APIServices.Models
+Imports RateManager.API.Models
+Imports Portal.General.Facade
+Imports Portal.Hotel.Facade
+Imports Portal.Hotel.Common.Data
+Imports Portal.General.Common.Data
 
 Namespace API.Controllers
     <RoutePrefix("api/closure")>
@@ -21,11 +26,57 @@ Namespace API.Controllers
             Return service.LoadData(idHotel, startDate, endDate, idAsoc, ratePlan, PortalCulture.GetIDCulture)
         End Function
 
-        <Route("save/{idHotel:Int}/{startDate:datetime}/{endDate:datetime}"), HttpGet>
-        Public Function SaveClosureByHotelId(ByVal idHotel As Integer, ByVal startDate As Date, ByVal endDate As Date) As String
+        'Post api/closure/1978/2020-12-28/2020-12-29
+        <Route("save/{idHotel:Int}/{startDate:datetime}/{endDate:datetime}"), HttpPost>
+        Public Function SaveClosureByHotelId(ByVal idHotel As Integer, ByVal startDate As Date, ByVal endDate As Date,
+                                             <FromBody> roomClosureRQ As RoomClosureRQ) As String
 
+            Dim allRatePlans As Boolean = (roomClosureRQ.RatePlanOption = "0")
+            Dim allRooms As Boolean = (roomClosureRQ.RoomOption = "0")
+            Dim dsrateplans As RatePlanData, dsrooms As RoomsHotelData
 
-            service.SaveData(idHotel, startDate, endDate)
+            If allRatePlans Then
+                With New RatePlanFacade
+                    dsrateplans = .GetRatePlanByIdHotel(paginaBase.cInfoActual.Hotel, PortalCulture.GetIDCulture, 0, 1, idAsociacion:=paginaBase.GetIdAsociation, DeleteFilter:=1)
+                End With
+                If allRooms Then
+                    With New RoomFacade
+                        dsrooms = .getRooms(paginaBase.cInfoActual.Hotel)
+                    End With
+                    'Se guarda por todos los rateplans y todas las habitaciones
+                    For Each drrateplan As DataRow In dsrateplans.Tables(0).Rows
+                        For Each drroom As DataRow In dsrooms.Tables(0).Rows
+                            service.SaveData(roomClosureRQ.IdHotel, roomClosureRQ.StartDate, roomClosureRQ.EndDate,
+                                             drrateplan(dsrateplans.FIELD_CODIGOTARIFA), drroom(dsrooms.FLD_ID_ROOM_HOTEL),
+                                             roomClosureRQ.Status)
+                        Next
+                    Next
+                Else
+                    'Se guarda por todos los rateplans y la habitacion que se eligio
+                    For Each drrateplan As DataRow In dsrateplans.Tables(0).Rows
+                        service.SaveData(roomClosureRQ.IdHotel, roomClosureRQ.StartDate, roomClosureRQ.EndDate,
+                                            drrateplan(dsrateplans.FIELD_CODIGOTARIFA), roomClosureRQ.RoomOption,
+                                            roomClosureRQ.Status)
+                    Next
+                End If
+            Else
+                If allRooms Then
+                    With New RoomFacade
+                        dsrooms = .getRooms(paginaBase.cInfoActual.Hotel)
+                    End With
+                    'Se guarda por el rateplan que se eligio y todas las habitaciones
+                    For Each drroom As DataRow In dsrooms.Tables(0).Rows
+                        service.SaveData(roomClosureRQ.IdHotel, roomClosureRQ.StartDate, roomClosureRQ.EndDate,
+                                           roomClosureRQ.RatePlanOption, drroom(dsrooms.FLD_ID_ROOM_HOTEL),
+                                           roomClosureRQ.Status)
+                    Next
+                Else
+                    'Se guarda por el rateplan que se eligio y la habitacion que se eligio
+                    service.SaveData(roomClosureRQ.IdHotel, roomClosureRQ.StartDate, roomClosureRQ.EndDate,
+                                           roomClosureRQ.RatePlanOption, roomClosureRQ.RoomOption,
+                                           roomClosureRQ.Status)
+                End If
+            End If
 
             Return "Succesfull"
 

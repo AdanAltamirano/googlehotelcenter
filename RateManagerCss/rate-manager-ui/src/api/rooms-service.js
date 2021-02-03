@@ -12,7 +12,27 @@ const inventory = Vue.resource(
     `${process.env.VUE_APP_API_URL}/hotels/{hotelid}/rooms/{roomid}/inventory{?startdate,enddate}`,
 );
 
+//http://test.com/ratemanager/api/closure/1978/2020-12-29/2021-01-03/EPB
+const roomClosureGet = Vue.resource(`${process.env.VUE_APP_API_URL}/closure/{hotelid}/{startdate}/{enddate}/{rateplan}`)
+
 export default {
+
+    /**
+     * 
+     * @param {Number} hotelid 
+     * @param {Date} startdate 
+     * @param {Date} enddate 
+     * @param {String} rateplan 
+     */
+    getRoomsClosure(hotelid,startdate,enddate,rateplan){
+        return roomClosureGet.get({
+            hotelid : hotelid,
+            startdate : startdate,
+            enddate : enddate,
+            rateplan : rateplan
+        });
+    },
+
     /**
      * @param {Number} hotelId
      * @param {String} filter
