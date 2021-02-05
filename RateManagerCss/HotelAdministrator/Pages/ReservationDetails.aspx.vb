@@ -1246,7 +1246,7 @@ Partial Class ReservationDetails
             If data IsNot Nothing AndAlso data.Tables.Count > 0 AndAlso data.Tables(0).Rows.Count > 0 Then
                 canSeeCArds = True
             Else
-                canSeeCArds = False
+                'canSeeCArds = False
                 'data = New DataSet
                 'loadCommand = New SqlCommand("spUsuarioHotelGetByIdUser", New SqlConnection(ConfigurationSettings.AppSettings("HotelConnection")))
                 'loadCommand.Parameters.Clear()
@@ -1260,6 +1260,20 @@ Partial Class ReservationDetails
                 'Else
                 '    canSeeCArds = False
                 'End If
+
+                loadCommand = New SqlCommand("GetUserHotelsAllowSeeCCByIds", New SqlConnection(ConfigurationSettings.AppSettings("hotelconnectionstring")))
+                loadCommand.CommandType = CommandType.StoredProcedure
+                loadCommand.Parameters.Add(New SqlParameter("@UserId", SqlDbType.Int))
+                loadCommand.Parameters.Add(New SqlParameter("@HotelId", SqlDbType.Int))
+                dsCommand.SelectCommand = loadCommand
+                dsCommand.SelectCommand.Parameters("@UserId").Value = UserId
+                dsCommand.SelectCommand.Parameters("@HotelId").Value = cInfoActual.Hotel
+                dsCommand.Fill(data)
+
+                If data IsNot Nothing AndAlso data.Tables.Count > 0 AndAlso data.Tables(0).Rows.Count > 0 Then
+                    canSeeCArds = True
+                End If
+
             End If
         Catch
         Finally
