@@ -13,5 +13,11 @@ export default {
     'O' : 'A',
     'C' : 'C',
     'N' : 'N',
-    'Save' : 'Guardar'    
+    'Save' : 'Guardar',
+    'Dates For Closure' : 'Fechas para Cierre',
+    'Rooms' : 'Habitaciones',
+    'All' : 'Todos',
+    'Show Configurations' : 'Mostrar Configuraciones',
+    'Exit' : 'Salir',
+    'Couldn\'t Save The Closure' : 'No se pudo guardar el cierre'  
 }

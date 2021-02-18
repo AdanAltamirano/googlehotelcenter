@@ -79,6 +79,14 @@ h4, .h4 {
     font-size: 12px
 }
 
+.fs-15{
+    font-size: 15px;
+}
+
+.fs-17{
+    font-size: 17px;
+}
+
 .border-5 {
     border-width: 5px !important;
 }
@@ -126,4 +134,12 @@ body {
 
 .no-arrivals-color{
     background-color:rgba(128,128,128,0.7)
+}
+
+.mt-6{
+    margin-top: 2rem !important;
+}
+
+.color-primary{
+    color: #10467a;
 }

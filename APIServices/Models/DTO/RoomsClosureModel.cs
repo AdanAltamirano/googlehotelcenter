@@ -25,4 +25,18 @@ namespace APIServices.Models.DTO
         public string[] Status { get; set; }
     }
 
+    public class RatePlansClosureModel
+    {
+        public string Value { get; set; }
+
+        public string Text { get; set; }
+    }
+
+    public class RoomsModel
+    {
+        public string Value { get; set; }
+
+        public string Text { get; set; }
+    }
+
 }

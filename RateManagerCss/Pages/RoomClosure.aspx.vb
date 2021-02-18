@@ -259,7 +259,6 @@ Partial Class RoomClosure
                             Dim startDay = drLock("StartDate").ToString()
                             Dim endDay = drLock("EndDate").ToString()
 
-
                             ' FOR EACH DAY...
                             For i As Integer = 0 To DateDiff(DateInterval.Day, CDate(txtDateFrom.Text), CDate(txtDateTo.Text))
 
@@ -343,7 +342,6 @@ Partial Class RoomClosure
                                 'AVAILABILITY STATUS AVAILABLE ON NEW TABLE
                                 Dim startDay = drLock("StartDate").ToString()
                                 Dim endDay = drLock("EndDate").ToString()
-
 
                                 ' FOR EACH DAY...
                                 For i As Integer = 0 To DateDiff(DateInterval.Day, CDate(txtDateFrom.Text), CDate(txtDateTo.Text))

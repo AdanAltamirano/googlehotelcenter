@@ -25,7 +25,7 @@
           </div>
           <!-- Status de la Habitacion -->
           <div class="d-flex w-70">
-            <div v-for="(status,id) in room.status" :key="id" class="border p-1 flex-fill text-center">                 
+            <div v-for="(status,id) in RoomsStatus(room.status,startIndex,endIndex)" :key="id" class="border p-1 flex-fill text-center">                 
                 <h5 class="m-0 text-truncate text-muted fs-12" 
                 :class="{'open-color': status === 'O','close-color' : status === 'C', 'no-arrivals-color' : status === 'N'}">                    
                   <span v-tooltip="{content : SetStatusToolTip(status)}" style="color:white;">{{SetStatus(status)}}</span>           
@@ -44,7 +44,18 @@ export default {
     rateRooms:{
       type : Object,
       required: true
+    },
+    startIndex:{
+      type:Number,
+      required:true
+    },
+    endIndex:{
+      type:Number,
+      required:true,
     }
+  },
+  computed:{
+
   },
   methods:{
     //ToolTip
@@ -78,6 +89,15 @@ export default {
           return this.$t('N');
           break;
       }
+    },
+    RoomsStatus(roomsList,Start,End){
+      console.log(roomsList)
+
+      const array = roomsList.slice(Start,End);
+
+      console.log(array);
+
+      return array;
     }
   }
 }

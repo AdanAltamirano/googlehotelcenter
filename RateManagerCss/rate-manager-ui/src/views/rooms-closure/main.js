@@ -21,11 +21,11 @@ import './styles/app.scss';
 locale([{ language: 'es', localeFile: Object.assign(es) }], moment,false);
 
 // Init plugins
-Vue.use(BootstrapVue);
-Vue.use(VCalendar);
 Vue.use(VueMoment, {
     moment,
 });
+Vue.use(BootstrapVue);
+Vue.use(VCalendar);
 Vue.use(Loading);
 Vue.use(VTooltip);
 

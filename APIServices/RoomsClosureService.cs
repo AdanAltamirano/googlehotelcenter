@@ -140,7 +140,7 @@ namespace APIServices
 
                         //Checar los Closure Status parte izquierda
                         int countLeft = 0;
-                        string statusClosureLeft = closureStatus.ElementAt(indexStartDate);
+                        string statusClosureLeft = (indexStartDate < 0) ? "O" : closureStatus.ElementAt(indexStartDate);
                         string statusForNewClosureLock = String.Empty;
                         //Apartir de la fecha se cuenta que el status sea el mismo que la fecha
                         //Solamente va afectar la fecha que tenga el mismo status
@@ -187,12 +187,12 @@ namespace APIServices
 
                         //Checar los Closure Status parte derecha
                         int countRight = 0;
-                        string statusClosureRight = closureStatus.ElementAt(indexEndDate);
+                        string statusClosureRight = (indexEndDate < 0)? "O" : closureStatus.ElementAt(indexEndDate);
 
                         //Left
                         int iR = indexEndDate + 1;
 
-                        while (iR < closureStatus.Count && closureStatus.ElementAt(iR) == statusClosureRight)
+                        while (iR >= 0 && iR < closureStatus.Count && closureStatus.ElementAt(iR) == statusClosureRight)
                         {
                             countRight++;
                             iR++;
@@ -283,6 +283,87 @@ namespace APIServices
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="idHotel"></param>
+        /// <param name="idAsoc"></param>
+        /// <param name="idCorporativoUserChain"></param>
+        /// <param name="isHotel"></param>
+        /// <param name="isUsuarioHotel"></param>
+        /// <param name="lang"></param>
+        /// <returns></returns>
+        public List<RatePlansClosureModel> LoadRatePlanByIdHotel(int idHotel,int idAsoc,int idCorporativoUserChain,bool isHotel,bool isUsuarioHotel, int lang = 1)
+        {
+            RatePlanData ds = new RatePlanFacade()
+             .GetRatePlanByIdHotel(idHotel.ToString(), lang, 0, 1, idAsociacion: idAsoc, DeleteFilter: 1);
+
+            if(idCorporativoUserChain == 4 && (isHotel || isUsuarioHotel))
+            {
+                ds = RatePlanFilter("C", ds);
+            }
+
+            List<RatePlansClosureModel> list = new List<RatePlansClosureModel>();
+            var ratePlanTable = ds.Tables[RatePlanData.RATEPLAN_TABLE];
+
+            foreach(DataRow row in ratePlanTable.Rows)
+            {
+                //Indices para el codigo 0 u 8
+                string code = row.ItemArray[0].ToString();              
+                string name = row.ItemArray[11].ToString();
+
+                string text = code + " - " + name;
+
+                RatePlansClosureModel model = new RatePlansClosureModel()
+                {
+                    Value = code,
+                    Text = text
+                };
+
+                list.Add(model);
+
+            }
+
+            return list;
+
+        }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="idHotel"></param>
+        /// <param name="lang"></param>
+        /// <returns></returns>
+        public List<RoomsModel> LoadRoomsByIdHotel(int idHotel, int lang = 1)
+        {
+            List<RoomsModel> list = new List<RoomsModel>();
+            RoomsHotelData ds = new RoomFacade().getRooms(idHotel,lang);
+
+            var roomsTable = ds.Tables[RoomsHotelData.TBL_ROOM_HOTEL];
+
+            foreach(DataRow row in roomsTable.Rows)
+            {
+                //Indices para el codigo 0
+                //Indices para la habitacion 2 u 9
+
+                string code = row.ItemArray[0].ToString();
+                string name = row.ItemArray[9].ToString();
+                string shortName = row.ItemArray[22].ToString();
+
+                string text = shortName + " - " + name;
+
+                RoomsModel model = new RoomsModel()
+                {
+                    Value = code,
+                    Text = text
+                };
+
+                list.Add(model);
+
+            }
+
+            return list;
+        }
 
         #endregion
 
@@ -367,14 +448,17 @@ namespace APIServices
         /// <param name="indexEndDate"></param>
         /// <param name="closureStatus"></param>
         /// <param name=""></param>
-        private void UpdateCloseAndNoArrivals(in int idHotel,in int indexStartDate,in int indexEndDate,
-            DateTime startDate,DateTime endDate,in List<string> closureStatus,in List<DateTime> closureDates,
-            ref List<DataRow> lockRowList,in string statusAvail,in string idRatePlan, in string idTipoHabitacionHotel)
+        private void UpdateCloseAndNoArrivals(in int idHotel, in int indexStartDate, in int indexEndDate,
+            DateTime startDate, DateTime endDate, in List<string> closureStatus, in List<DateTime> closureDates,
+            ref List<DataRow> lockRowList, in string statusAvail, in string idRatePlan, in string idTipoHabitacionHotel)
         {
             int countLeftClose = 0;
 
             int iLClose = indexStartDate - 1;
             string statusClosureLeftClose = (indexStartDate < 0) ? "O" : closureStatus.ElementAt(indexStartDate);
+            string statusForNewClosureLock = String.Empty;
+            DateTime? startDateLock = null;
+            DateTime? endDateLock = null;
 
             while (iLClose >= 0 && closureStatus.ElementAt(iLClose) == statusClosureLeftClose)
             {
@@ -404,46 +488,21 @@ namespace APIServices
 
                 if (rowIndex > -1)
                 {
-                    UpdateLock(idHotel,idRatePlan, newStartClosureDate.ToString(), newEndClosureDate.ToString(),
+                    UpdateLock(idHotel, idRatePlan, newStartClosureDate.ToString(), newEndClosureDate.ToString(),
                       lockRowList[rowIndex]["StartDate"].ToString(), lockRowList[rowIndex]["EndDate"].ToString(),
                       idTipoHabitacionHotel, statusAvail);
-
-                    //lockRowList[rowIndex]["StatusAvail"].ToString()
-
+                   
+                    statusForNewClosureLock = lockRowList[rowIndex]["StatusAvail"].ToString();
+                    startDateLock = Convert.ToDateTime(lockRowList[rowIndex]["StartDate"].ToString());
+                    endDateLock = Convert.ToDateTime(lockRowList[rowIndex]["EndDate"].ToString());
                     lockRowList.RemoveAt(rowIndex);
                 }
                 //Si esta abierto para esa fecha se agrega un nuevo cierre
                 else
                 {
                     //Insert
-                    InsertLock(idHotel,idRatePlan, newStartClosureDate.ToString(), newEndClosureDate.ToString(),idTipoHabitacionHotel,statusAvail);
+                    InsertLock(idHotel, idRatePlan, newStartClosureDate.ToString(), newEndClosureDate.ToString(), idTipoHabitacionHotel, statusAvail);
                 }
-            }
-
-
-            //Ya se actualizo izquierda y se va actualizar derecha
-            if (countLeftClose == 0 && countRightClose != 0)
-            {
-                int addDaysForNewClosureDate = (indexEndDate < closureDates.Count - 1) ? 1 : 0;
-                DateTime newStartClosureDate = closureDates.ElementAt(indexEndDate + addDaysForNewClosureDate);
-                DateTime newEndClosureDate = closureDates.ElementAt(indexEndDate).AddDays(countRightClose);
-                //Ver si hay un registro con el status para actualizar o para  insertar
-
-                //Si es right se busca con el endDate de entrada en lockRowList
-                int rowIndex = FindIndexLock(lockRowList, endDate);
-
-                //Si hay un registro
-                if (rowIndex > -1)
-                {
-                    //Update
-                    UpdateLock(idHotel,idRatePlan, newStartClosureDate.ToString(), newEndClosureDate.ToString(),
-                       lockRowList[rowIndex]["StartDate"].ToString(), lockRowList[rowIndex]["EndDate"].ToString(),
-                       idTipoHabitacionHotel, lockRowList[rowIndex]["StatusAvail"].ToString());
-
-                    lockRowList.RemoveAt(rowIndex);
-                }
-                //TODO: Checar si se agrega un registro
-
             }
 
             //El Rango de fechas es de inicio a una del array, se borran todos los registros
@@ -454,6 +513,140 @@ namespace APIServices
                 if (lockRowList.Count > 0)
                     Delete(ref lockRowList, idHotel, idRatePlan, idTipoHabitacionHotel);
             }
+
+            //Se va actualizar izquierda 
+            if (countLeftClose != 0 && countRightClose == 0)
+            {
+                DateTime newStartClosureDate = startDate.Date;
+                DateTime newEndClosureDate = endDate.Date;
+
+                int rowIndex = FindIndexLock(lockRowList, startDate);
+
+                if (rowIndex > -1)
+                {
+                    UpdateLock(idHotel, idRatePlan, newStartClosureDate.ToString(), newEndClosureDate.ToString(),
+                      lockRowList[rowIndex]["StartDate"].ToString(), lockRowList[rowIndex]["EndDate"].ToString(),
+                      idTipoHabitacionHotel, statusAvail);
+
+                   
+                    statusForNewClosureLock = lockRowList[rowIndex]["StatusAvail"].ToString();
+                    startDateLock = Convert.ToDateTime(lockRowList[rowIndex]["StartDate"].ToString());
+                    endDateLock = Convert.ToDateTime(lockRowList[rowIndex]["EndDate"].ToString());
+                    lockRowList.RemoveAt(rowIndex);
+                }
+                //Si esta abierto para esa fecha se agrega un nuevo cierre
+                else
+                {
+                    //Insert
+                    InsertLock(idHotel, idRatePlan, newStartClosureDate.ToString(), newEndClosureDate.ToString(), idTipoHabitacionHotel, statusAvail);
+                }
+
+            }
+
+            //Actualiza izquierda
+            if (countLeftClose > 0)
+            {
+                int substractDaysForNewClosureDate = (indexStartDate > 0) ? 1 : 0;
+                DateTime newEndClosureDate = closureDates.ElementAt(indexStartDate - substractDaysForNewClosureDate);
+                DateTime newStartClosureDate = closureDates.ElementAt(indexStartDate).Subtract(TimeSpan.FromDays(countLeftClose));
+             
+
+                int rowIndex = FindIndexLock(lockRowList, startDate);
+
+                //Si hay registro
+                if (rowIndex > -1)
+                {
+                    //Update
+                    UpdateLock(idHotel, idRatePlan, newStartClosureDate.ToString(), newEndClosureDate.ToString(),
+                        lockRowList[rowIndex]["StartDate"].ToString(), lockRowList[rowIndex]["EndDate"].ToString(),
+                        idTipoHabitacionHotel, lockRowList[rowIndex]["StatusAvail"].ToString());
+
+                    statusForNewClosureLock = lockRowList[rowIndex]["StatusAvail"].ToString();
+                    startDateLock = Convert.ToDateTime(lockRowList[rowIndex]["StartDate"].ToString());
+                    endDateLock = Convert.ToDateTime(lockRowList[rowIndex]["EndDate"].ToString());
+                    lockRowList.RemoveAt(rowIndex);
+                }
+                //Ver si se necesita agregar un nuevo registro
+                else
+                {
+                    //Insert
+                }
+
+                //Si las nuevas fechas estan dentro del rango guardado se agrega uno nuevo
+                if(startDate.Date > startDateLock.Value.Date && endDate.Date < endDateLock.Value.Date)
+                {
+                    InsertLock(idHotel, idRatePlan, startDate.ToString(), endDate.ToString(),
+                       idTipoHabitacionHotel, statusAvail);
+                }
+                //Si las fechas estan fuera del rango
+                else if(newStartClosureDate.Date < startDate.Date && newEndClosureDate.Date < endDate.Date)
+                {
+                    InsertLock(idHotel, idRatePlan, newStartClosureDate.ToString(),newEndClosureDate.ToString(),
+                     idTipoHabitacionHotel, statusForNewClosureLock);
+                }
+
+
+            }
+
+            //Actualiza derecha
+            if (countRightClose > 0)
+            {
+                int addDaysForNewClosureDate = (indexEndDate < closureDates.Count - 1) ? 1 : 0;
+                DateTime newStartClosureDate = closureDates.ElementAt(indexEndDate + addDaysForNewClosureDate);
+                DateTime newEndClosureDate = closureDates.ElementAt(indexEndDate).AddDays(countRightClose);
+
+                //Si es right se busca con el endDate de entrada en lockRowList
+                int rowIndex = FindIndexLock(lockRowList, endDate);
+
+                //Si hay un registro
+                if (rowIndex > -1)
+                {
+                    //Update
+                    UpdateLock(idHotel, idRatePlan, newStartClosureDate.ToString(), newEndClosureDate.ToString(),
+                       lockRowList[rowIndex]["StartDate"].ToString(), lockRowList[rowIndex]["EndDate"].ToString(),
+                       idTipoHabitacionHotel, lockRowList[rowIndex]["StatusAvail"].ToString());
+
+                    lockRowList.RemoveAt(rowIndex);
+                }
+                else
+                {
+                    //Insert
+                    InsertLock(idHotel, idRatePlan, newStartClosureDate.ToString(), newEndClosureDate.ToString(),
+                       idTipoHabitacionHotel, statusForNewClosureLock);
+
+                }
+
+            }
+
+
+
+        }
+
+        /// <summary>
+        /// Filter RatePlans By Segment
+        /// </summary>
+        /// <param name="segmentType"></param>
+        /// <param name="ds"></param>
+        /// <returns></returns>
+        private RatePlanData RatePlanFilter(string segmentType,RatePlanData ds)
+        {
+            DataView dv2 = null;
+
+            foreach(DataRow row in ds.Tables["RatePlans"].Rows)
+            {
+                dv2 = ds.Tables["RatePlans"].DefaultView;
+                dv2.RowFilter = "Segment" + "=" + "'" + segmentType + "'";
+
+                if(dv2.Count > 0 && row["Segment"].ToString().Equals(segmentType))
+                {
+                    row.Delete();
+                }
+
+            }
+
+            ds.AcceptChanges();
+
+            return ds;
         }
 
 
@@ -543,7 +736,7 @@ namespace APIServices
         /// <param name="roomsTest"></param>
         /// <param name="hotelData"></param>
         /// <param name="rateRoomsClosureModel"></param>
-        private void GetAvailability(in int idHotel,in string idRatePlan,in DateTime startDate, 
+        private void GetAvailability(in int idHotel,in string idRatePlan,DateTime startDate, 
             in DateTime endDate,in DataSet roomsTest,in HotelDatos hotelData,
             ref RateRoomsClosureModel rateRoomsClosureModel)
         {
@@ -602,22 +795,36 @@ namespace APIServices
                         {
                             DateTime startDay = Convert.ToDateTime(drLock["StartDate"].ToString()).Date;
                             DateTime endDay = Convert.ToDateTime(drLock["EndDate"].ToString()).Date;
-                            int diffDatesLock = (endDay.Date - startDay.Date).Days + 1;
+                            //int diffDatesLock = (endDay.Date - startDay.Date).Days + 1;
+                            int diffDatesLock = (endDate.Date - startDate.Date).Days;
                             
-                            for(int j = 0;  j < diffDatesLock; j++)
+                            for(int j = 0;  j <= diffDatesLock; j++)
                             {
-                                rangeDays[i] = (rangeDays[i] == null) ? "" + startDate.ToString("yyyy/MM//dd") + "," : rangeDays[i];
+                                rangeDays[j] = (rangeDays[j] == null) ? "" + startDate.AddDays(j).ToString("MM/dd/yyyy") + "," : rangeDays[j];
 
                                 //TODO: Revisar la condicion
-                                string statusStrings = ((startDate.AddDays(i).Date <= endDay && startDate.AddDays(i).Date >= startDay))
+                                string statusStrings = ((startDate.AddDays(j).Date <= endDay && startDate.AddDays(j).Date >= startDay))
                                     ? drLock["StatusAvail"].ToString() : "";
 
-                                rangeDays[i] += (!string.IsNullOrEmpty(statusStrings)) ? statusStrings : " ";
+                                if(rangeDays[j].Length == 12)
+                                {
+                                    //rangeDays[j] = rangeDays[j];
 
-                                string rangeDaysSplit = rangeDays[i].Split(new string[] { "," }, System.StringSplitOptions.RemoveEmptyEntries)[1];
+                                    if(!String.IsNullOrEmpty(statusStrings))
+                                    {
+                                        rangeDays[j] = rangeDays[j].Replace("*", statusStrings);
+                                    }
 
+                                }
+                                else
+                                {
+                                    rangeDays[j] += (!string.IsNullOrEmpty(statusStrings)) ? statusStrings : "*";
+                                }
+                               // rangeDays[j] += (!string.IsNullOrEmpty(statusStrings)) ? statusStrings : "*";
 
-                                codeRoomModel.Status[i] = (rangeDaysSplit == " ") ? "O" : rangeDaysSplit;
+                                string rangeDaysSplit = rangeDays[j].Split(new string[] { "," }, System.StringSplitOptions.RemoveEmptyEntries)[1];
+
+                                codeRoomModel.Status[j] = (rangeDaysSplit == "*") ? "O" : rangeDaysSplit;
 
                                 i++;
                             }

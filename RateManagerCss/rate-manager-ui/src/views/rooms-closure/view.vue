@@ -1,6 +1,7 @@
 <template>
 	<div id="app">
-		<b-container fluid>
+    <b-container  v-if="!load" style="height:400px"></b-container>
+		<b-container v-else-if="load" fluid>
 			<h3 class="text-primary">{{$t("Room and Rateplan Closure")}}</h3>
 			<b-row class="mt-3">
 				<!-- Dates -->
@@ -28,17 +29,14 @@
 				<b-col md="4">					
 					<b-form-group :label='$t("Rate Plans")' :description='$t("Search by rateplan")'>
 						<div class="d-flex">
-							<b-form-select v-model="selected" :options="options"></b-form-select>
+							<b-form-select v-model="selectedAvailability" :options="options"></b-form-select>
 							<b-button class="ml-4" variant="primary" @click="loadClosure">{{ $t("Load") }}</b-button>
 						</div>
 					</b-form-group>				
 				</b-col>
-				<!-- Status -->
-				<b-col md="4">
+				<!-- Status And Button -->
+				<b-col md="4">         
 					<b-form-group :label='$t("Status")' class="text-end">
-            <button data-toggle="collapse" class="btn btn-link mr-4" data-target="">
-              <span>{{$t('Save')}} <i class="fa fa-save mr-2"></i></span>
-            </button>
 						<div class="status-box">
               <div style="background-color:green;"></div>
               <div>{{$t("Open")}}</div>
@@ -48,17 +46,85 @@
               <div>{{$t("No Arrivals")}}</div>              
             </div>			
 					</b-form-group>
+          <button class="btn btn-link" data-toggle="collapse" data-target="#save-closure" style="position:absolute; right:0;">
+            <span>{{$t('Show Configurations')}} <i class="fas fa-cog mr-2"></i></span>
+          </button>
 				</b-col>
 			</b-row>
+      <!-- Save Closure Collapse -->
+      <b-row>
+        <b-col md="12">
+          <div id="save-closure" class="collapse">
+            <b-card class="mt-3 bg-light">
+              <!-- 1 Row -->
+              <b-row>
+                <!-- Dates -->
+                <b-col md="4">
+                  <b-form-group :label="$t('Dates For Closure')">
+                    <b-input-group>
+                      <v-date-picker
+                        v-model="datesSave"
+                        class="form-control p-0"
+                        mode="range"
+                        :min-date="minDate"
+                        :popover="{placement:'',visibility: 'click' }"
+                        :columns="2">
+                      </v-date-picker>
+
+                      <b-input-group-append>
+                        <b-button :disabled="dates == null" variant="danger" @click="dates = null">
+                          <i class="fa fa-times"></i>
+                        </b-button>
+                      </b-input-group-append>
+                    </b-input-group>
+                  </b-form-group>
+                </b-col>
+                <!-- Rateplan -->
+                <b-col md="4">
+                  <b-form-group :label="$t('Rate Plans')">
+                    <b-form-select v-model="selectedClosure" :options="options"></b-form-select>
+                  </b-form-group>
+                </b-col>
+                <!-- Status -->
+                <b-col md="4">
+                  <b-form-group :label="$t('Status')">                                 
+                    <b-form-checkbox value="O" v-model="checkStatus" class="custom-control-inline">{{ $t('Open') }}</b-form-checkbox>
+                    <b-form-checkbox value="C" v-model="checkStatus" class="custom-control-inline">{{ $t('Close') }}</b-form-checkbox>
+                    <b-form-checkbox value="N" v-model="checkStatus" class="custom-control-inline">{{ $t('No Arrivals') }}</b-form-checkbox>                                     
+                  </b-form-group>                  
+                </b-col>
+              </b-row>
+              <!-- 2 Row -->
+              <b-row>
+                <!-- Rooms -->
+                <b-col md="4">
+                  <b-form-group :label="$t('Rooms')">
+                    <b-form-select v-model="selectedRoom" :options="optionsRooms"></b-form-select>
+                  </b-form-group>
+                </b-col>
+                <b-col md="4">
+                  <b-form-group>
+                    <b-button variant="primary" class="mt-6" @click="saveClosure">{{$t('Save')}}</b-button>
+                  </b-form-group>
+                </b-col>
+              </b-row>
+            </b-card>
+          </div>
+        </b-col>
+      </b-row>
       <!--Calendar Ribbon -->
-      <b-row class="mt-3">
+      <div v-show="loadingClosure" class="vld-parent" style="height:200px">
+        <loading :active="true" :is-full-page="false" color="#007bff"></loading>
+      </div>
+      <b-row v-show="showClosure" class="mt-3">
         <b-col md="12">
           <div class="ml-3 mr-3">
             <div class="d-flex bg-white border-top border-bottom border-5 pl-0 pr-0">
+              <!-- User Controls Ribbon -->
               <div class="d-flex justify-content-end align-items-center border-right w-30 pr-5">
-                <button class="btn btn-link btn-sm"><i class="fa fa-angle-double-left"></i></button>
-                <button class="btn btn-link btn-sm"><i class="fa fa-angle-left"></i></button>
-                <v-date-picker
+                <button @click="addDays(-7)" :disabled="disableRightButton" class="btn btn-link btn-sm"><i class="fa fa-angle-double-left"></i></button>
+               
+                <!-- <v-date-picker
                 v-model="dates"
                 class=""
                 mode="range"
@@ -66,76 +132,30 @@
                 :popover="{placement:'',visibility: 'click' }"
                 :columns="2">
                   <a href="javascript:;" class="text-decoration-none h3">{{ dates | moment('MMM D, YYYY')}}</a>
-                </v-date-picker>
-                <button class="btn btn-link btn-sm"><i class="fa fa-angle-right"></i></button>
-                <button class="btn btn-link btn-sm"><i class="fa fa-angle-double-right"></i></button>
+                </v-date-picker> -->
+                <span class="font-weight-bold text-uppercase color-primary">{{ datesRibbon}}</span>
+                <button @click="addDays(7)" :disabled="disableLeftButton" class="btn btn-link btn-sm"><i class="fa fa-angle-double-right"></i></button>
               </div>
-              <div class="d-flex w-70 two-weeks">
+              <!-- Dates Ribbon -->
+              <!-- <div class="d-flex w-70 two-weeks">
                 <div class="border p-1 flex-fill text-center">
                   <span>mie.</span>
                   <h3 class="font-weight-bold mt-0 mb-0">02</h3>
                   <span class="text-uppercase">Feb</span>
                 </div>
-                <div class="border p-1 flex-fill text-center">
-                  <span>mie.</span>
-                  <h3 class="font-weight-bold mt-0 mb-0">02</h3>
-                  <span class="text-uppercase">Feb</span>
-                </div>
-                <div class="border p-1 flex-fill text-center">
-                  <span>mie.</span>
-                  <h3 class="font-weight-bold mt-0 mb-0">02</h3>
-                  <span class="text-uppercase">Feb</span>
-                </div>
-                <div class="border p-1 flex-fill text-center">
-                  <span>mie.</span>
-                  <h3 class="font-weight-bold mt-0 mb-0">02</h3>
-                  <span class="text-uppercase">Feb</span>
-                </div>
-                <div class="border p-1 flex-fill text-center">
-                  <span>mie.</span>
-                  <h3 class="font-weight-bold mt-0 mb-0">02</h3>
-                  <span class="text-uppercase">Feb</span>
-                </div>
-                <div class="border p-1 flex-fill text-center">
-                  <span>mie.</span>
-                  <h3 class="font-weight-bold mt-0 mb-0">02</h3>
-                  <span class="text-uppercase">Feb</span>
-                </div>
-                <div class="border p-1 flex-fill text-center">
-                  <span>mie.</span>
-                  <h3 class="font-weight-bold mt-0 mb-0">02</h3>
-                  <span class="text-uppercase">Feb</span>
-                </div>
-                <div class="border p-1 flex-fill text-center">
-                  <span>mie.</span>
-                  <h3 class="font-weight-bold mt-0 mb-0">02</h3>
-                  <span class="text-uppercase">Feb</span>
-                </div>
-                <div class="border p-1 flex-fill text-center">
-                  <span>mie.</span>
-                  <h3 class="font-weight-bold mt-0 mb-0">02</h3>
-                  <span class="text-uppercase">Feb</span>
-                </div>
-                <div class="border p-1 flex-fill text-center">
-                  <span>mie.</span>
-                  <h3 class="font-weight-bold mt-0 mb-0">02</h3>
-                  <span class="text-uppercase">Feb</span>
-                </div>
-                <div class="border p-1 flex-fill text-center">
-                  <span>mie.</span>
-                  <h3 class="font-weight-bold mt-0 mb-0">02</h3>
-                  <span class="text-uppercase">Feb</span>
-                </div>
-              </div>
+              </div> -->
+              <ribbon :startDate="this.startDateRibbon" :endDate="this.endDateRibbon"></ribbon>
             </div>
           </div>
         </b-col>
       </b-row>
       <!-- Rooms And Rate Plans -->
-      <b-row class="mt-3">
+      <b-row v-show="showClosure" class="mt-3">
         <b-col md="12">
           <!-- Main -->
-          <closure v-for="(rateRooms,index) in this.closure.rateRoomsClosureModelList" :key="index" :rateRooms="rateRooms"></closure>
+          <closure v-for="(rateRooms,index) in this.closure.rateRoomsClosureModelList" :key="index" 
+          :rateRooms="rateRooms" :startIndex="startIndex" :endIndex="endIndex">
+          </closure>
         </b-col>
       </b-row>
 		</b-container>
@@ -144,36 +164,79 @@
 <script>
 import RoomsClosureService from '../../api/rooms-service';
 import Closure from './components/Closure.vue';
+import Ribbon from './components/Ribbon.vue';
+import Loading from "vue-loading-overlay";
+let loader = null;
+
 export default {
   name: "rooms_closure",
   components: {
-    Closure
+    Closure,
+    Ribbon,
+    Loading
   },
   data() {
     return {
       //Dates For DatePicker
 			dates:null,
+      datesSave:null,
 			//Selected Rateplan
-			selected:"0",
+			selectedAvailability:"0",
+      selectedClosure: "0",
 			//Options Rateplan
-			options:[
-				{value:"0",text:"Todos"},
-				{value:"RAC",text:"Convenio A"},
-				{value:"EPB",text:"Tarifa Convenio"},
-				{value:"BASE",text:"Base Name"},
-				{value:"RACE",text:"Convenio B"},
-				{value:"CNVA",text:"Acuerdo Corporativo"},
-      ],
+      options:[],    
       //Response api when load closure
-      closure : []
+      closure : [],
+      //Status to Save
+      checkStatus:'O',
+      //Selected Room to Save
+      selectedRoom:'0',
+      //Options for Rooms
+      optionsRooms:[],
+      //Start Date Ribbon
+      startDateRibbon:null,
+      //End Date Ribbon
+      endDateRibbon:null,
+      //Start Date Availability
+      startDateAvailability:null,
+      //End Date Availability
+      endDateAvailability:null,
+      //Right Disable Dates Button
+      disableRightButton : false,
+      //Left Disable Dates Button
+      disableLeftButton : false,
+      //Start Index Array Status
+      startIndex:0,
+      //End Index Array Status
+      endIndex:0,
+      datesRibbon:null,
+      //Main Load
+      load:false,
+      loadRates:false,
+      loadRoomsByHotel:false,
+      loadingClosure: false,
+      showClosure:false
 
     };
   },
   created() {
+    loader = this.$loading.show({
+      color: this.$appConfig.themeColors.info,
+      height: 128,
+      width: 128
+    });
+
     //Initialize Dates For DatePicker
     this.dates = this.defaultDates();
+    this.datesSave = this.defaultDates();
+    //Get RatePlans By HotelId
+    const hotelId =  this.$appConfig.session.hotelId;
+    this.loadRatePlans(hotelId);
+    this.loadRooms(hotelId);
+
   },
-  mounted() {},
+  mounted() {
+  },
   computed: {
     //Set Minimun Date For DatePicker
     minDate() {
@@ -187,29 +250,246 @@ export default {
     //Set Default Dates For DatePicker
     defaultDates() {
       const start = new Date();
-      start.setMonth(start.getMonth() - 1);
+      const end = new Date();
+      end.setDate(end.getDate() + 1);
       return {
         start: start,
-        end: new Date(),
+        end: end
       };
     },
     //Get Closure
     loadClosure(){
-      const startDate = this.$moment(this.dates.start).format('YYYY-MM-DD'); 
-      const endDate = this.$moment(this.dates.end).format('YYYY-MM-DD');;
+
+      this.loadingClosure = true;
+      this.showClosure = false;
+
+      let startDate = this.$moment(this.dates.start).format('YYYY-MM-DD'); 
+      let endDate = this.$moment(this.dates.end).format('YYYY-MM-DD');
+
+      let diff = (this.$moment(this.dates.end).diff(this.$moment(this.dates.start),'days')) + 1;
+
+      //console.log(diff);
+
+      let totalDaysToAdd = 0;
+
+      while((diff % 7) != 0){
+        totalDaysToAdd++;     
+        diff++;
+      }
+
+      endDate =  this.$moment(this.dates.end).add(totalDaysToAdd,'days').format('YYYY-MM-DD');
+
+      //console.log(endDate);
+      //console.log(totalDaysToAdd);
+     // console.log(diff);
+
       const hotelId =  this.$appConfig.session.hotelId;
-      const ratePlan = (this.selected === '0')? '' : this.selected;
+      const ratePlan = (this.selectedAvailability === '0')? '' : this.selectedAvailability;
+
+      console.log(startDate);
+      console.log(endDate);
+      //console.log(hotelId);
+      //console.log(ratePlan);
+
+      RoomsClosureService.getRoomsClosure(hotelId,startDate,endDate,ratePlan)
+      .then(response => {
+        this.closure = response.body;
+        //console.log(this.closure);
+
+        this.startDateAvailability = new Date(response.body.startDate);
+        this.endDateAvailability = new Date(response.body.endDate);
+
+        console.log('Fechas availability')
+        console.log(this.startDateAvailability);
+        console.log(this.endDateAvailability);
+
+        //Calculate 14 days for ribbon
+        this.startDateRibbon = new Date(this.$moment(this.startDateAvailability));
+        this.endDateRibbon = new Date(this.$moment(this.startDateRibbon).add(6,'days'));
+        //this.endDateRibbon.setDate(this.startDateRibbon.getDate() + 6);
+        //this.endDateRibbon.setHours(0,0,0,0);
+
+        console.log('Fechas ribbon')
+        console.log(this.startDateRibbon);
+        console.log(this.endDateRibbon);
+
+
+        this.startIndex = 0;
+        this.endIndex = 7;
+
+        this.datesRibbon = this.$moment(this.startDateRibbon).format('DD MMM') + ' - ' + this.$moment(this.endDateRibbon).format('DD MMM');
+        
+        console.log("Ribbon")
+        console.log(this.endDateAvailability.getDate());
+        console.log(this.endDateRibbon.getDate());
+
+        if(this.$moment(this.endDateAvailability).isSame(this.endDateRibbon)){
+          this.disableLeftButton = true;
+        }
+        else{
+          this.disableLeftButton = false;
+        }
+
+        if(this.$moment(this.startDateAvailability).isSame(this.startDateRibbon)){
+          this.disableRightButton = true;
+        }
+        else{
+          this.disableRightButton = false;
+        }
+
+        this.loadingClosure = false;
+        this.showClosure = true;
+
+        //console.log(this.startDateAvailability);
+        //console.log(this.endDateAvailability);
+        //console.log(this.startDateRibbon);
+        //console.log(this.endDateRibbon)
+        //console.log(this.startDateRibbon.getDate() + 6);
+      });
+    },
+    //Save Closure
+    saveClosure(){
+      const startDate = this.$moment(this.datesSave.start).format('YYYY-MM-DD'); 
+      const endDate = this.$moment(this.datesSave.end).format('YYYY-MM-DD');;
+      const hotelId =  this.$appConfig.session.hotelId;
+      const ratePlan = (this.selectedClosure === '0')? '0' : this.selectedClosure;
+      const room = (this.selectedRoom === '0')? '0' : this.selectedRoom;
+      const status = this.checkStatus;
 
       console.log(startDate);
       console.log(endDate);
       console.log(hotelId);
       console.log(ratePlan);
+      console.log(room);
+      console.log(status);
 
-      RoomsClosureService.getRoomsClosure(hotelId,startDate,endDate,ratePlan)
-      .then(response => {
-        this.closure = response.body;
-        console.log(this.closure);
+      let request = {
+        IdHotel : hotelId,
+        StartDate : startDate,
+        EndDate : endDate,
+        RatePlanOption : ratePlan,
+        RoomOption : room,
+        Status : status
+      }
+
+      this.loadingClosure = true;
+      this.showClosure = false;
+
+      RoomsClosureService.saveRoomsClosure(hotelId,startDate,endDate,request)
+      .then(response =>{
+        console.log(response);
+
+        this.loadClosure();
+
+      },error =>{
+        this.loadingClosure = false;
+        this.showClosure = true;
+        this.$appAlert({
+        type: "warning",
+        title: this.$t('Couldn\'t Save The Closure'),
+        confirmButtonText: this.$t("Exit"),
+        confirmButtonColor: "#d33"
+        });
       });
+    },
+    //Get Rateplans By Hotel Id
+    loadRatePlans(hotelId){
+      RoomsClosureService.getRatePlansByHotelId(hotelId)
+      .then(response => {
+        console.log(response.body);
+
+        this.options.push({
+          value : "0",
+          text : this.$t('All')
+        });
+
+        response.body.forEach(rateplan => {
+          this.options.push(rateplan);
+        
+        });
+
+        this.loadRates = true;
+
+        console.log(this.loadRates);
+        console.log(this.loadRoomsByHotel)
+        if(this.loadRates && this.loadRoomsByHotel){
+          this.load = true;
+          loader.hide();
+        }
+      });
+    },
+    //Get Rooms By Hotel Id
+    loadRooms(hotelId){
+      RoomsClosureService.getRoomsByHotelId(hotelId)
+      .then(response => {
+        console.log(response.body);
+
+        this.optionsRooms.push({
+          value : "0",
+          text : this.$t('All')
+        });
+
+        response.body.forEach(room => {
+          this.optionsRooms.push(room);
+        
+        });
+
+        this.loadRoomsByHotel = true;
+        console.log(this.loadRates);
+        console.log(this.loadRoomsByHotel)
+        if(this.loadRates && this.loadRoomsByHotel){
+          this.load = true;
+          loader.hide();
+        }
+
+      })
+    },
+    addDays(days){
+      const copyStart = new Date(this.$moment(this.startDateRibbon));
+      const copyEnd = new Date(this.$moment(this.endDateRibbon));
+      // copyStart.setHours(0,0,0,0);
+      // copyEnd.setHours(0,0,0,0);
+
+      this.startDateRibbon = new Date();
+      this.endDateRibbon = new Date();
+
+      const newDateStart = this.$moment(copyStart).add(days,'days').toString();
+      const newDateEnd = this.$moment(copyEnd).add(days,'days').toString();
+      
+      this.startDateRibbon = new Date(newDateStart);
+      this.endDateRibbon = new Date(newDateEnd);
+
+      // this.startDateRibbon.setDate(copyStart.getDate() + days);
+      // this.endDateRibbon.setDate(copyEnd.getDate() + days);
+      // this.startDateRibbon.setHours(0,0,0,0);
+      // this.endDateRibbon.setHours(0,0,0,0);
+
+      if(this.$moment(this.endDateAvailability).isSame(this.endDateRibbon)){
+        this.disableLeftButton = true;
+      }
+      else{
+        this.disableLeftButton = false;
+      }
+
+      if(this.$moment(this.startDateAvailability).isSame(this.startDateRibbon)){
+        this.disableRightButton = true;
+      }
+      else{
+        this.disableRightButton = false;
+      }
+
+      this.startIndex += days;
+      this.endIndex += days;
+
+      this.datesRibbon = this.$moment(this.startDateRibbon).format('DD MMM') + ' - ' + this.$moment(this.endDateRibbon).format('DD MMM')
+
+      // console.log(copyStart);
+      // console.log(copyEnd);
+      // console.log(this.startDateRibbon);
+      // console.log(this.endDateRibbon);
+      // console.log(this.startDateAvailability);
+      // console.log(this.endDateAvailability);
+
     }
   },
 };
