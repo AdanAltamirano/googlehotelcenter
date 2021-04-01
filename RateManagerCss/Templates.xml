@@ -27,10 +27,16 @@
   
 	<T01 descripcion="Template de Usuario Nuevo">
 		<subject>
-			<es-MX valor="[Univisit] Creación de Cuenta." />
-			<en-US valor="[Univisit] Account Created." />
+			<es-MX valor="Creación de Cuenta." />
+			<en-US valor="Account Created." />
 		</subject>
-		<from valor="custsrvc@univisit.com" />
+		<!--<from valor="custsrvc@univisit.com" />-->
+    <from  valor="custsrvc@internetpowerhotel.com" />
+    <smtpServer valor="smtp.mandrillapp.com"/>
+    <userName valor="javier@univisit.com"/>
+    <password valor="NCxlNTHApCDYtSZjtyRvvQ"/>
+    <port valor="587"/>
+    <ssl valor="true"/>
 		<parametros>
 			<USEREMAIL />
 			<USERPASSWORD />
