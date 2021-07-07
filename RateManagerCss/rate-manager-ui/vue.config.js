@@ -85,6 +85,12 @@ module.exports = {
             filename: 'promotions-details.aspx',
             chunks: ['commons', 'promotions_details']
         },
+        rooms_closure:{
+            entry:'src/views/rooms-closure/main.js',
+            template:'public/rooms-closure.aspx',
+            filename:'rooms-closure.aspx',
+            chunks:['commons','rooms_closure']
+        }
         /* hotel_list: {
             entry: 'src/views/hotel-list/main.js',
             template: 'public/hotel-list.aspx',

@@ -1479,11 +1479,13 @@
     <Compile Include="API\Controllers\RatesController.vb" />
     <Compile Include="API\Controllers\RatesPlanController.vb" />
     <Compile Include="API\Controllers\ReservationController.vb" />
+    <Compile Include="API\Controllers\RoomsClosureController.vb" />
     <Compile Include="API\Controllers\RoomsController.vb" />
     <Compile Include="API\Helpers\Date+Extensions.vb" />
     <Compile Include="API\Helpers\Email.vb" />
     <Compile Include="API\Helpers\HttpRequestMessage+Extensions.vb" />
     <Compile Include="API\Helpers\AuthorizeUserAttribute.vb" />
+    <Compile Include="API\Helpers\Models\RoomClosureRQ.vb" />
     <Compile Include="API\Helpers\UserDataHelper.vb" />
     <Compile Include="API\Helpers\Models\DateRangeRQ.vb" />
     <Compile Include="API\Helpers\Models\HotelConfig.vb" />

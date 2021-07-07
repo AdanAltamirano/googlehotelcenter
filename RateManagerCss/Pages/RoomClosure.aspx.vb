@@ -201,7 +201,7 @@ Partial Class RoomClosure
             dsrateplans = .GetRatePlanByIdHotel(MyBase.cInfoActual.Hotel, PortalCulture.GetIDCulture, 0, 1, idAsociacion:=idAsoc, DeleteFilter:=1)
         End With
 
-        '/////////////////////////////////////////////////////////
+        '///////////////////////////////////////////////////////// Quitar, estas columnas son del datatable para la vista
         dt.Columns.Add(New DataColumn("RATEPLAN", GetType(String)))
         dt.Columns.Add(New DataColumn("ROOMCODE", GetType(String)))
         dt.Columns.Add(New DataColumn("ROOMNAME", GetType(String)))
@@ -232,7 +232,7 @@ Partial Class RoomClosure
             For Each drroom As DataRow In roomTest.Tables(dsrooms.TBL_ROOM_HOTEL).Rows
                 dsLockRoomTypes = GetLockRoomTypes(MyBase.cInfoActual.Hotel, ddlRatePlanFilter.SelectedValue, dateStart, dateEnd, drroom(dsrooms.FLD_ID_ROOM_HOTEL))
 
-                Dim dtLock As DataTable = dsLockRoomTypes.Tables(1)
+                Dim dtLock As DataTable = IIf(dsLockRoomTypes.Tables(0).Rows.Count <> 0, dsLockRoomTypes.Tables(0), dsLockRoomTypes.Tables(1))
                 If Not hotelData.Tables(0).Rows(0)("AvailOnPortal") Then
 
                     'IF HOTEL IS NOT AVAILABLE ON PORTAL IS CLOSED'
@@ -258,7 +258,6 @@ Partial Class RoomClosure
                             'AVAILABILITY STATUS AVAILABLE ON NEW TABLE
                             Dim startDay = drLock("StartDate").ToString()
                             Dim endDay = drLock("EndDate").ToString()
-
 
                             ' FOR EACH DAY...
                             For i As Integer = 0 To DateDiff(DateInterval.Day, CDate(txtDateFrom.Text), CDate(txtDateTo.Text))
@@ -318,6 +317,7 @@ Partial Class RoomClosure
                     dsLockRoomTypes = GetLockRoomTypes(MyBase.cInfoActual.Hotel, drrateplan(dsrateplans.FIELD_CODIGOTARIFA), dateStart, dateEnd, drroom(dsrooms.FLD_ID_ROOM_HOTEL))
 
                     Dim dtLock As DataTable = IIf(dsLockRoomTypes.Tables(0).Rows.Count <> 0, dsLockRoomTypes.Tables(0), dsLockRoomTypes.Tables(1))
+                    'Not Available Portal
                     If Not hotelData.Tables(0).Rows(0)("AvailOnPortal") Then
 
                         'IF HOTEL IS NOT AVAILABLE ON PORTAL IS CLOSED'
@@ -342,7 +342,6 @@ Partial Class RoomClosure
                                 'AVAILABILITY STATUS AVAILABLE ON NEW TABLE
                                 Dim startDay = drLock("StartDate").ToString()
                                 Dim endDay = drLock("EndDate").ToString()
-
 
                                 ' FOR EACH DAY...
                                 For i As Integer = 0 To DateDiff(DateInterval.Day, CDate(txtDateFrom.Text), CDate(txtDateTo.Text))

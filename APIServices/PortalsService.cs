@@ -17,27 +17,27 @@ namespace APIServices
         /// </summary>
         /// <param name="id"></param>
         /// <returns>All portals by Coorporative</returns>
-        public List<Portal> GetPortals(int id) 
-        {
-            List<Portal> portals = new List<Portal>();
+        //public List<Portal> GetPortals(int id) 
+        //{
+        //    List<Portal> portals = new List<Portal>();
 
-           int? idCorp = DbContextHoteles.Hoteles.
-                FirstOrDefault(h => h.idHotel == id).idCorporativo;
+        //   int? idCorp = DbContextHoteles.Hoteles.
+        //        FirstOrDefault(h => h.idHotel == id).idCorporativo;
 
-            if(idCorp != null)
-            {
-                string corp = DbContextHoteles.Corporativos.
-                    FirstOrDefault(c => c.idCorporativo == idCorp).NombreCorp;
+        //    if(idCorp != null)
+        //    {
+        //        string corp = DbContextHoteles.Corporativos.
+        //            FirstOrDefault(c => c.idCorporativo == idCorp).NombreCorp;
 
-                portals = DbContextUnivist.Portales.
-                Where(p => p.idCorporativo == idCorp).
-                Select(s => new Portal { Id = s.IdPortal, Name = s.Nombre, Corp = corp, WebPage = s.PaginaWeb }).
-                OrderBy(o => o.Id).
-                ToList();
-            }
+        //        portals = DbContextUnivist.Portales.
+        //        Where(p => p.idCorporativo == idCorp).
+        //        Select(s => new Portal { Id = s.IdPortal, Name = s.Nombre, Corp = corp, WebPage = s.PaginaWeb }).
+        //        OrderBy(o => o.Id).
+        //        ToList();
+        //    }
 
-            return portals;
-        }
+        //    return portals;
+        //}
 
         /// <summary>
         /// Search all coorporatives

@@ -83,34 +83,34 @@ Public Class clsGetAvail
         '        End With
 
         For i As Integer = 0 To Nights
-            If Not ds Is Nothing AndAlso ds.Tables(0).Rows.Count > 0 Then
+            If Not ds Is Nothing AndAlso ds.Tables.Count > 0 Then
+                If ds.Tables(0).Rows.Count > 0 Then
+                    drhotel = ds.Tables(0).Rows(0)
 
-                drhotel = ds.Tables(0).Rows(0)
+                    et = "O"
+                    MinStay = 1
+                    Maxstay = 99
+                    AdvBook = 0
+                    StatusAvail = "O"
+                    NoArrivos = "NNNNNNN"
 
-                et = "O"
-                MinStay = 1
-                Maxstay = 99
-                AdvBook = 0
-                StatusAvail = "O"
-                NoArrivos = "NNNNNNN"
-
-                drsGral = ds.Tables(2).Select("fecha=#" & checkin.AddDays(i).ToString("M/dd/yy") & "#")
-                GetRestricted(drhotel, MinStay, Maxstay, AdvBook, StatusAvail, NoArrivos, checkin.AddDays(i))
-                If NoArrivos <> "" AndAlso ApplyWeek(checkin.AddDays(i), NoArrivos, "Y") Then
-                    StatusAvail = "N"
-                End If
-
-                If drsGral.Length > 0 Then
-                    If StatusAvail <> "C" AndAlso StatusAvail <> "N" Then
-                        GetRestricted(drsGral(0), MinStay, Maxstay, AdvBook, StatusAvail, NoArrivos, checkin.AddDays(i), "LG")
-                    Else
-                        GetRestricted(drsGral(0), MinStay, Maxstay, AdvBook, "", NoArrivos, checkin.AddDays(i), "LG")
+                    drsGral = ds.Tables(2).Select("fecha=#" & checkin.AddDays(i).ToString("M/dd/yy") & "#")
+                    GetRestricted(drhotel, MinStay, Maxstay, AdvBook, StatusAvail, NoArrivos, checkin.AddDays(i))
+                    If NoArrivos <> "" AndAlso ApplyWeek(checkin.AddDays(i), NoArrivos, "Y") Then
+                        StatusAvail = "N"
                     End If
+
+                    If drsGral.Length > 0 Then
+                        If StatusAvail <> "C" AndAlso StatusAvail <> "N" Then
+                            GetRestricted(drsGral(0), MinStay, Maxstay, AdvBook, StatusAvail, NoArrivos, checkin.AddDays(i), "LG")
+                        Else
+                            GetRestricted(drsGral(0), MinStay, Maxstay, AdvBook, "", NoArrivos, checkin.AddDays(i), "LG")
+                        End If
+                    End If
+
+                    Call ValidateRestricted(StatusAvail, checkin.AddDays(i), "NNNNNNN", et) 'Then
+                    ApplyRulesRatesRoom(ds, dt, drsGral, MinStay, Maxstay, AdvBook, StatusAvail, checkin.AddDays(i), et, ratecode)
                 End If
-
-                Call ValidateRestricted(StatusAvail, checkin.AddDays(i), "NNNNNNN", et) 'Then
-                ApplyRulesRatesRoom(ds, dt, drsGral, MinStay, Maxstay, AdvBook, StatusAvail, checkin.AddDays(i), et, ratecode)
-
             End If
         Next
 
@@ -145,7 +145,7 @@ Public Class clsGetAvail
 
     End Function
 
-    '' Autor: Javier Adrián Ramírez Ayala
+    '' Autor: Javier Adriï¿½n Ramï¿½rez Ayala
     '' aplica las reglas de las habitacion Rate Plan
     Private Sub ApplyRulesRatesRoom(ByRef ds As DataSet, ByRef dt As DataTable, ByVal drsGral As DataRow(), ByRef minStay As Byte, ByVal MaxStay As Byte, ByVal AdvBook As Byte, _
         ByVal StatusAvail As String, ByVal checkin As Date, ByRef et As String, ByVal rateCode As String)
@@ -266,7 +266,7 @@ Public Class clsGetAvail
 
     End Sub
 
-    '' Autor: Javier Adrián Ramírez Ayala
+    '' Autor: Javier Adriï¿½n Ramï¿½rez Ayala
     '' aplica las reglas de las habitacion plans
     Private Sub ApplyRulesRatesSeasson(ByRef ds As DataSet, ByVal RateCode As String, _
         ByRef minStay As Byte, ByRef MaxStay As Byte, ByRef AdvBook As Byte, ByRef StatusAvail As String, ByVal checkin As Date _
@@ -680,7 +680,7 @@ Public Class clsGetAvail
         End If
     End Sub
 
-    '' Autor: Adrián Ramírez Ayala ...
+    '' Autor: Adriï¿½n Ramï¿½rez Ayala ...
     '' se va grabar el mensaje de los renglones que se quiere indicar no disponibilidad ...
     Private Sub setMessage(ByRef drows() As DataRow, ByVal msg As String)
         For Each dr As DataRow In drows
@@ -688,7 +688,7 @@ Public Class clsGetAvail
             dr("Availability") = "N"
         Next
     End Sub
-    '' Autor: Adrián Ramírez Ayala ...
+    '' Autor: Adriï¿½n Ramï¿½rez Ayala ...
     '' funcion que regresa la ocupacion de la reservacion y si no exede el numero de personas y extras ...
     Private Function CheckOccupation(ByVal Rooms As Byte, ByVal Adults As String, ByVal Children As String, ByVal MaxAdults As Byte, ByVal MaxChildren As Byte, ByVal Extras As Byte) As Boolean
         Dim i As Integer

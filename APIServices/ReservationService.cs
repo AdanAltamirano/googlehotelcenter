@@ -163,6 +163,7 @@ namespace APIServices
                 model.BankDepositDetails = new BankDepositDetails();
                 if (details.paymentType == 0)
                 {
+                    
                     model.BankDepositDetails.Total = (double)details.depositAmount;
                     model.BankDepositDetails.Currency = details.depositCurrency;
                     model.BankDepositDetails.Reference = details.depositReference;
@@ -216,7 +217,7 @@ namespace APIServices
 
                 model.TotalDetails = new TotalDetails();
                 model.TotalDetails.SubTotal = totalRooms;
-                model.TotalDetails.TotalNR = (double)details.totalNetRate;
+                model.TotalDetails.TotalNR = (double)details.totalNetRate; //TODO: Validar si esta en null
                 model.TotalDetails.Total = (double)details.total;
                 model.TotalDetails.IncludesTax = details.includesTax.Value;
 

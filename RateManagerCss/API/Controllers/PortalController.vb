@@ -15,10 +15,10 @@ Namespace API.Controllers
         Public Service As New PortalsService
 
         'Get api/portal/hotel/1978
-        <Route("hotel/{id:int}"), HttpGet>
-        Public Function GetPortals(id As Integer) As List(Of DTO.Portal)
-            Return Service.GetPortals(id)
-        End Function
+        '<Route("hotel/{id:int}"), HttpGet>
+        'Public Function GetPortals(id As Integer) As List(Of DTO.Portal)
+        '    Return Service.GetPortals(id)
+        'End Function
 
         'Get api/portal/coorp
         <Route("coorp"), HttpGet>
