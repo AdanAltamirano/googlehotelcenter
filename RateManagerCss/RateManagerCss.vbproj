@@ -78,14 +78,6 @@
       <HintPath>..\packages\RateManager.AnotherDependencies.1.0.0\lib\net45\Anthem.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Autorentas.Common">
-      <HintPath>..\packages\RateManager.IvSolution.1.0.0\lib\net45\Autorentas.Common.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Autorentas.Facade">
-      <HintPath>..\packages\RateManager.IvSolution.1.0.0\lib\net45\Autorentas.Facade.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="bkHotelesGWS">
       <HintPath>..\packages\RateManager.AnotherDependencies.1.0.0\lib\net45\bkHotelesGWS.dll</HintPath>
       <Private>True</Private>
@@ -121,13 +113,6 @@
       <HintPath>..\packages\RateManager.IvSolution.1.0.0\lib\net45\Contenido.Presentacion.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=10.5.3700.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
-    <Reference Include="CrystalDecisions.Enterprise.InfoStore, Version=10.5.3700.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
-    <Reference Include="CrystalDecisions.ReportSource, Version=10.5.3700.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
-    <Reference Include="CrystalDecisions.Shared, Version=10.5.3700.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
-    <Reference Include="CrystalDecisions.VSDesigner, Version=10.5.3700.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
-    <Reference Include="CrystalDecisions.Web, Version=10.5.3700.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
-    <Reference Include="CrystalDecisions.Windows.Forms, Version=10.5.3700.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
     <Reference Include="DataAccess">
       <HintPath>..\packages\RateManager.IvSolution.1.0.0\lib\net45\DataAccess.dll</HintPath>
       <Private>True</Private>
@@ -1431,7 +1416,6 @@
     <Content Include="Registro\SearchCompany.aspx" />
     <Content Include="Registro\TravelsInformation.aspx" />
     <Content Include="Registro\UserAsociate.aspx" />
-    <Content Include="Reports\CRstyle.css" />
     <Content Include="Security\ctrlLogon.ascx" />
     <Content Include="Security\ctrlPasswordReminder.ascx" />
     <Content Include="Security\logon.aspx" />
@@ -2357,18 +2341,6 @@
     <Compile Include="Registro\MapLocationInformationCCT.aspx.vb">
       <DependentUpon>MapLocationInformationCCT.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
-    </Compile>
-    <Compile Include="Reports\Agreements\16\agreement_EN.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>agreement_EN.rpt</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Reports\Agreements\43\agreement_ES.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>agreement_ES.rpt</DependentUpon>
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Servicios\WaitList.ashx.vb">
       <DependentUpon>WaitList.ashx</DependentUpon>
@@ -3526,27 +3498,6 @@
       <DependentUpon>UserAsociate.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Reports\CReportset.vb" />
-    <Compile Include="Reports\CrystalInfo.vb">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Reports\Crystal_1_0.Designer.vb">
-      <DependentUpon>Crystal_1_0.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Reports\Crystal_1_0.vb">
-      <DependentUpon>Crystal_1_0.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="Reports\dsAgreements.Designer.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>dsAgreements.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="Reports\ReportAgreement.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ReportAgreement.rpt</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Security\cSecurity.vb" />
     <Compile Include="Security\cSessionTracking.vb" />
     <Compile Include="Security\ctrlLogon.ascx.designer.vb">
@@ -4380,54 +4331,6 @@
     </Content>
     <Content Include="HotelAdministrator\Data\HdrRetentionsConfig.ashx" />
     <None Include="My Project\PublishProfiles\RateManager.pubxml" />
-    <None Include="Reports\Agreements\1\agreement_ES.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>agreement_ES.vb</LastGenOutput>
-    </None>
-    <None Include="Reports\Agreements\1\agreement_EN.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>agreement_EN.vb</LastGenOutput>
-    </None>
-    <None Include="Reports\Agreements\_default\agreement_ES.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>agreement_ES.vb</LastGenOutput>
-    </None>
-    <None Include="Reports\Agreements\_default\agreement_EN.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>agreement_EN.vb</LastGenOutput>
-    </None>
-    <None Include="Reports\Agreements\16\agreement_ES.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>agreement_ES.vb</LastGenOutput>
-    </None>
-    <None Include="Reports\Agreements\16\agreement_EN.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>agreement_EN.vb</LastGenOutput>
-    </None>
-    <None Include="Reports\Agreements\11\agreement_ES.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>agreement_ES.vb</LastGenOutput>
-    </None>
-    <None Include="Reports\Agreements\43\agreement_EN.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>agreement_EN.vb</LastGenOutput>
-    </None>
-    <None Include="Reports\Agreements\43\agreement_ES.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>agreement_ES.vb</LastGenOutput>
-    </None>
-    <None Include="Reports\ReportAgreement.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>ReportAgreement.vb</LastGenOutput>
-    </None>
-    <None Include="Reports\Agreements\28\agreement_ES.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>agreement_ES.vb</LastGenOutput>
-    </None>
-    <None Include="Reports\Agreements\11\agreement_EN.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>agreement_EN.vb</LastGenOutput>
-    </None>
     <EmbeddedResource Include="Security\ctrlLogon.ascx.resx">
       <DependentUpon>ctrlLogon.ascx.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -4746,20 +4649,6 @@
     <Content Include="Registro\DistancesCCT.aspx" />
     <Content Include="Registro\InformacionPropiedadCCT.aspx" />
     <Content Include="Registro\MapLocationInformationCCT.aspx" />
-    <Content Include="Reports\Agreements\11\bookDemo_ES.jpg" />
-    <Content Include="Reports\Agreements\11\bookingDemo_ES.JPG" />
-    <Content Include="Reports\Agreements\16\bookDemo_EN.jpg" />
-    <Content Include="Reports\Agreements\16\bookDemo_ES.jpg" />
-    <Content Include="Reports\Agreements\16\logo-costa-de-oro.jpg" />
-    <Content Include="Reports\Agreements\1\bookingDemo_EN.JPG" />
-    <Content Include="Reports\Agreements\1\bookingDemo_ES.JPG" />
-    <Content Include="Reports\Agreements\1\Logo.jpg" />
-    <Content Include="Reports\Agreements\28\bookDemo_EN.jpg" />
-    <Content Include="Reports\Agreements\28\bookDemo_ES.jpg" />
-    <Content Include="Reports\Agreements\43\bookDemo_EN.jpg" />
-    <Content Include="Reports\Agreements\43\bookDemo_ES.jpg" />
-    <Content Include="Reports\Agreements\43\Logo.jpg" />
-    <Content Include="Reports\Agreements\43\logo.png" />
     <Content Include="services\MoneyExchange\CurrenciesCodes.xml" />
     <Content Include="services\MoneyExchange\Galileo\GLMoneyExchangeRQ.xsl" />
     <Content Include="services\MoneyExchange\Galileo\GLMoneyExchangeRS.xsl" />
@@ -4809,26 +4698,6 @@
       <DependentUpon>PortalPartners.xsd</DependentUpon>
     </None>
     <Content Include="Principal.Master" />
-    <None Include="Reports\Crystal_1_0.xsc">
-      <DependentUpon>Crystal_1_0.xsd</DependentUpon>
-    </None>
-    <None Include="Reports\Crystal_1_0.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Reports\Crystal_1_0.xss">
-      <DependentUpon>Crystal_1_0.xsd</DependentUpon>
-    </None>
-    <None Include="Reports\dsAgreements.xsc">
-      <DependentUpon>dsAgreements.xsd</DependentUpon>
-    </None>
-    <None Include="Reports\dsAgreements.xsd">
-      <SubType>Designer</SubType>
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>dsAgreements.Designer.vb</LastGenOutput>
-    </None>
-    <None Include="Reports\dsAgreements.xss">
-      <DependentUpon>dsAgreements.xsd</DependentUpon>
-    </None>
     <Content Include="bin\Club100.dll" />
     <Content Include="CallCenter\PassiveBooking.aspx" />
     <Content Include="HotelAdministrator\Modules\ctrlPayments.ascx" />

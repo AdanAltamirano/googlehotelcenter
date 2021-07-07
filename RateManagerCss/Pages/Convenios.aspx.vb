@@ -108,7 +108,7 @@ Partial Public Class Convenios
 
     Private Sub Convenios_Init(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Init
         If Not Session("AgreementData") Is Nothing Then
-            ReportProcessDS()
+            'ReportProcessDS()
         End If
     End Sub
 
@@ -1097,54 +1097,54 @@ Partial Public Class Convenios
         Return result
     End Function
 
-    Private Sub ReportProcessDS(Optional ByVal init As Boolean = False)
+    'Private Sub ReportProcessDS(Optional ByVal init As Boolean = False)
 
-        If init Then Me.Session.Remove("Agreement_Report")
+    '    If init Then Me.Session.Remove("Agreement_Report")
 
-        Dim report As ReportDocument = Me.Session("Agreement_Report")
+    '    Dim report As ReportDocument = Me.Session("Agreement_Report")
 
-        If report Is Nothing Then
-            'Dim CrRptDocument As New ReportDocument
-            Dim CSession As New CrystalSession
-            Dim CReport As New CReportset()
+    '    If report Is Nothing Then
+    '        'Dim CrRptDocument As New ReportDocument
+    '        Dim CSession As New CrystalSession
+    '        Dim CReport As New CReportset()
 
-            If AppSettings("RutaReport") IsNot Nothing Then
-                Dim path As String = AppSettings("RutaReport")
-                If path.EndsWith("\") Then path = path.Substring(0, path.Length - 1)
-                path += "\Agreements"
+    '        If AppSettings("RutaReport") IsNot Nothing Then
+    '            Dim path As String = AppSettings("RutaReport")
+    '            If path.EndsWith("\") Then path = path.Substring(0, path.Length - 1)
+    '            path += "\Agreements"
 
-                If IO.Directory.Exists(path) Then
-                    If IO.Directory.Exists(path + "\" + Me.idCorporate.ToString()) Then
-                        path += "\" + Me.idSelectedCorpororate.Value.ToString()
-                    Else
-                        path += "\_default"
-                    End If
-                    path += "\agreement_" + If(PortalCulture.GetIDCulture() = 2, "EN", "ES") + ".rpt"
+    '            If IO.Directory.Exists(path) Then
+    '                If IO.Directory.Exists(path + "\" + Me.idCorporate.ToString()) Then
+    '                    path += "\" + Me.idSelectedCorpororate.Value.ToString()
+    '                Else
+    '                    path += "\_default"
+    '                End If
+    '                path += "\agreement_" + If(PortalCulture.GetIDCulture() = 2, "EN", "ES") + ".rpt"
 
-                    If IO.File.Exists(path) Then
-                        Dim data As Agreement = Me.Session("AgreementData")
-                        If data IsNot Nothing Then
+    '                If IO.File.Exists(path) Then
+    '                    Dim data As Agreement = Me.Session("AgreementData")
+    '                    If data IsNot Nothing Then
 
-                            Dim current As System.Globalization.CultureInfo
-                            current = System.Threading.Thread.CurrentThread.CurrentCulture
-                            System.Threading.Thread.CurrentThread.CurrentCulture = New System.Globalization.CultureInfo(PortalCulture.GetCulture.ToString)
+    '                        Dim current As System.Globalization.CultureInfo
+    '                        current = System.Threading.Thread.CurrentThread.CurrentCulture
+    '                        System.Threading.Thread.CurrentThread.CurrentCulture = New System.Globalization.CultureInfo(PortalCulture.GetCulture.ToString)
 
-                            Me.Session("Agreement_Report") = CReport.Report(CType(CSession.CCrystalInfo.dsCrystal, Crystal_1_0), data, path)
-                            report = Me.Session("Agreement_Report")
+    '                        Me.Session("Agreement_Report") = CReport.Report(CType(CSession.CCrystalInfo.dsCrystal, Crystal_1_0), data, path)
+    '                        report = Me.Session("Agreement_Report")
 
-                            System.Threading.Thread.CurrentThread.CurrentCulture = current
+    '                        System.Threading.Thread.CurrentThread.CurrentCulture = current
 
-                        End If
-                    End If
-                End If
+    '                    End If
+    '                End If
+    '            End If
 
-            End If
+    '        End If
 
-        End If
+    '    End If
 
-        If report IsNot Nothing Then Me.CrystalReportViewer1.ReportSource = report
+    '    If report IsNot Nothing Then Me.CrystalReportViewer1.ReportSource = report
 
-    End Sub
+    'End Sub
 
     Private Function GetImage(ByVal urlImage As String) As Byte()
         Dim rawData() As Byte = Nothing

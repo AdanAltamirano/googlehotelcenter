@@ -958,11 +958,11 @@
                     <div id="ReportAgreement" runat="server" visible="false" class="cntReport">
                         <asp:Button ID="cmdBack" runat="server" CssClass="lnkButton" Text="Back" EnableViewState="False" />
                         <div class="crReport">
-                            <CR:CrystalReportViewer ID="CrystalReportViewer1" runat="server" AutoDataBind="true"
+                            <!--<CR:CrystalReportViewer ID="CrystalReportViewer1" runat="server" AutoDataBind="true"
                                 EnableDrillDown="False" EnableParameterPrompt="False" EnableDatabaseLogonPrompt="False"
                                 HasCrystalLogo="False" HasViewList="False" DisplayGroupTree="False" HasDrillUpButton="False"
                                 ReuseParameterValuesOnRefresh="True" EnableToolTips="False" HasToggleGroupTreeButton="False"
-                                Height="50px" Width="350px" />
+                                Height="50px" Width="350px" />-->
                         </div>
                     </div>
                 </td>

@@ -1343,7 +1343,7 @@ Partial Public Class Convenios
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents CrystalReportViewer1 As Global.CrystalDecisions.Web.CrystalReportViewer
+    'Protected WithEvents CrystalReportViewer1 As Global.CrystalDecisions.Web.CrystalReportViewer
 
     '''<summary>
     '''Control dgRatesPlan.
