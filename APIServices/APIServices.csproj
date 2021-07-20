@@ -58,35 +58,35 @@
     </Reference>
     <Reference Include="Portal.General.Common, Version=1.0.7248.22227, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\Portal.General.Common.dll</HintPath>
+      <HintPath>bin\Portal.General.Common.dll</HintPath>
     </Reference>
     <Reference Include="Portal.General.DataAccess, Version=1.0.7248.22229, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\Portal.General.DataAccess.dll</HintPath>
+      <HintPath>bin\Portal.General.DataAccess.dll</HintPath>
     </Reference>
     <Reference Include="Portal.General.Facade, Version=1.0.7248.22231, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\Portal.General.Facade.dll</HintPath>
+      <HintPath>bin\Portal.General.Facade.dll</HintPath>
     </Reference>
     <Reference Include="Portal.General.Rules, Version=1.0.7248.22231, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\Portal.General.Rules.dll</HintPath>
+      <HintPath>bin\Portal.General.Rules.dll</HintPath>
     </Reference>
     <Reference Include="Portal.Hotel.Common, Version=1.0.7590.14520, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\Portal.Hotel.Common.dll</HintPath>
+      <HintPath>bin\Portal.Hotel.Common.dll</HintPath>
     </Reference>
     <Reference Include="Portal.Hotel.DataAccess, Version=1.0.7590.14521, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\Portal.Hotel.DataAccess.dll</HintPath>
+      <HintPath>bin\Portal.Hotel.DataAccess.dll</HintPath>
     </Reference>
     <Reference Include="Portal.Hotel.Facade, Version=1.0.7590.14522, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\Portal.Hotel.Facade.dll</HintPath>
+      <HintPath>bin\Portal.Hotel.Facade.dll</HintPath>
     </Reference>
     <Reference Include="Portal.Hotel.Rules, Version=1.0.7590.14521, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\Portal.Hotel.Rules.dll</HintPath>
+      <HintPath>bin\Portal.Hotel.Rules.dll</HintPath>
     </Reference>
     <Reference Include="PortalLibraries, Version=5.0.2.9, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\PortalLibraries.1.0.0\lib\net45\PortalLibraries.dll</HintPath>

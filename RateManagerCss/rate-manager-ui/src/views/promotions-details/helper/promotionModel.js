@@ -114,13 +114,13 @@ class formValidation {
 
         if(_array.length > 0)
         {
-            if(_array.includes(0)) array.sun = true;
-            if(_array.includes(1)) array.mon = true;
-            if(_array.includes(2)) array.tue = true;
-            if(_array.includes(3)) array.weds = true;
-            if(_array.includes(4)) array.thur = true;
-            if(_array.includes(5)) array.fri = true;
-            if(_array.includes(6)) array.sat = true;
+            if(_array.includes(0)) array.sun = true; else array.sun = false;
+            if(_array.includes(1)) array.mon = true; else array.mon = false;
+            if(_array.includes(2)) array.tue = true; else array.tue = false;
+            if(_array.includes(3)) array.weds = true; else array.weds = false;
+            if(_array.includes(4)) array.thur = true; else array.thur = false;
+            if(_array.includes(5)) array.fri = true; else array.fri = false;
+            if(_array.includes(6)) array.sat = true; else array.sat = false;
         }
 
         result.sun = array.sun;
