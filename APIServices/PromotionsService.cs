@@ -210,6 +210,11 @@ namespace APIServices
                 .First(promotion => promotion.HotelId == hotelId
                                    && promotion.PromotionCode == offerCode);
 
+
+            OfferDiscountDiscountPattern? _offerDiscountDiscountPattern = null;
+            OfferDiscountApplicationMode? _offerDiscountApplicationMode = null;
+
+
             Offer offer = new Offer()
             {
                 HotelId = o.HotelId,
@@ -222,13 +227,13 @@ namespace APIServices
                 Description = Dictionary.Get(o.IdDiccShortDesc),
                 Discount = new OfferDiscount()
                 {
-                    //NightsDiscounted = 1,
-                    DiscountPattern = (o.DaysFreeType == null) ? OfferDiscountDiscountPattern.ForEach : ((bool)o.DaysFreeType) ? OfferDiscountDiscountPattern.Only : OfferDiscountDiscountPattern.ForEach,
-                    NightsDiscounted =(o.DaysFree == null)? 0 : o.DaysFree,
-                    NightsRequired = (o.DaysFree == null)? 0 : o.DaysFree,
-                    Amount = o.DiscountApplicationType == 2 ? o.Discount : 0,
-                    Percent = o.DiscountApplicationType == 1 ? o.Discount : 0,
-                    ApplicationMode = OfferDiscount.GetApplicationMode(o.DiscountApplicationMode)
+                    //NightsDiscounted = 1,              
+                    DiscountPattern = (o.DaysFreeType == null) ? _offerDiscountDiscountPattern :((bool)o.DaysFreeType) ? OfferDiscountDiscountPattern.Only : OfferDiscountDiscountPattern.ForEach,
+                    NightsDiscounted =(o.DaysFree == null)? null : o.DaysFree,
+                    NightsRequired = (o.DaysFree == null)? null : o.DaysFree,
+                    Amount = o.DiscountApplicationType == 2 ? o.Discount : null,
+                    Percent = o.Discount,  //o.DiscountApplicationType == 1 ? o.Discount : 0,
+                    ApplicationMode = (o.DiscountApplicationMode == null)? _offerDiscountApplicationMode : OfferDiscount.GetApplicationMode(o.DiscountApplicationMode) 
                 },
                 ApplicableFor = Offer.GetApplicableFor(o.HotelId, o.PromotionCode),
                 Rule = new OfferRule()
@@ -309,6 +314,30 @@ namespace APIServices
                         };
                         db.RatesPlanRules.Add(rule);
 
+                        short? daysFree = null;
+                        
+                        if(offer.Discount.NightsDiscounted != null)
+                        {
+                            daysFree = (short)offer.Discount.NightsDiscounted;
+                        }
+
+                        bool? daysFreeType = null;
+
+                        if (offer.Discount.DiscountPattern != null)
+                        {
+                            daysFreeType = offer.Discount.DiscountPattern == OfferDiscountDiscountPattern.Only ? true : false;
+                        }
+
+                        int? discountLevel = null;
+                        short? tipoDescuento = null;
+
+                        if(offer.Discount.ApplicationMode != null)
+                        {
+                            discountLevel = GetDiscountApplicationMode(offer.Discount.ApplicationMode);
+                            tipoDescuento = 1;
+                        }
+                      
+
                         //RatePlan
                         var rp = new RatesPlan()
                         {
@@ -321,11 +350,11 @@ namespace APIServices
                             RatePortal = true,
                             RateUnip = false,
                             codigotarifa = offer.Id.ToUpper(),
-                            DescPromotion = offer.Discount.Percent != 0 ? offer.Discount.Percent : offer.Discount.Amount != 0 ? offer.Discount.Amount : null,
-                            DaysFree = (short)offer.Discount.NightsDiscounted,
+                            DescPromotion = offer.Discount.Percent != null && offer.Discount.Percent != 0 ? offer.Discount.Percent : null, //offer.Discount.Amount != 0 ? offer.Discount.Amount : null,
+                            DaysFree = daysFree,
                             //CAda  y solo de noche gratis
                             //DaysFreeType = false,
-                            DaysFreeType = offer.Discount.DiscountPattern == OfferDiscountDiscountPattern.Only ? true : false,
+                            DaysFreeType = daysFreeType,
                             //
                             RateADS = false,
                             gdsApply = "NNNN",
@@ -336,8 +365,8 @@ namespace APIServices
                             WaitListAvailable = false,
                             hotelPayment = false,
                             IsPromo = true,
-                            DiscountLevel = GetDiscountApplicationMode(offer.Discount.ApplicationMode),
-                            TipoDescuento = 1, //Porcentaje. TODO: Monto
+                            DiscountLevel = discountLevel,
+                            TipoDescuento = tipoDescuento, //Porcentaje. TODO: Monto, Default Value 1
                             IdDictionaryDescription = Dictionary.Insert(offer.Name.Esp, offer.Name.Eng),
                             IdDiccShortDesc = Dictionary.Insert(offer.Description.Esp, offer.Description.Eng),
                             idDiccPromoDesc = Dictionary.Insert("", ""), //Valor Agregado
@@ -463,17 +492,42 @@ namespace APIServices
 
                         //RatePlan
                         //var rp = db.RatesPlan.FirstOrDefault(x => x.idRatePlan == offer.Id && x.IdHotel == offer.HotelId);
+
+                        short? daysFree = null;
+
+                        if (offer.Discount.NightsDiscounted != null)
+                        {
+                            daysFree = (short)offer.Discount.NightsDiscounted;
+                        }
+
+                        bool? daysFreeType = null;
+
+                        if (offer.Discount.DiscountPattern != null)
+                        {
+                            daysFreeType = offer.Discount.DiscountPattern == OfferDiscountDiscountPattern.Only ? true : false;
+                        }
+
+                        int? discountLevel = null;
+                        short? tipoDescuento = null;
+
+                        if (offer.Discount.ApplicationMode != null)
+                        {
+                            discountLevel = GetDiscountApplicationMode(offer.Discount.ApplicationMode);
+                            tipoDescuento = 1;
+                        }
+
+
                         if (rp != null)
                         {
                             rp.Description = offer.Name.Esp;
                             rp.Name = offer.Name.Esp;
                             rp.codigotarifa = offer.Id.ToUpper();
-                            rp.DescPromotion = offer.Discount.Percent != 0 ? offer.Discount.Percent : offer.Discount.Amount != 0 ? offer.Discount.Amount : null;
-                            rp.DaysFree = (short)offer.Discount.NightsDiscounted;
+                            rp.DescPromotion = offer.Discount.Percent != null && offer.Discount.Percent != 0 ? offer.Discount.Percent : null; //offer.Discount.Amount != 0 ? offer.Discount.Amount : null;
+                            rp.DaysFree = daysFree;
                             //rp.DaysFreeType = false;
-                            rp.DaysFreeType = offer.Discount.DiscountPattern == OfferDiscountDiscountPattern.Only ? true : false;
-                            rp.DiscountLevel = GetDiscountApplicationMode(offer.Discount.ApplicationMode);
-                            rp.TipoDescuento = 1; //Porcentaje. TODO: Monto
+                            rp.DaysFreeType = daysFreeType;
+                            rp.DiscountLevel = discountLevel;
+                            rp.TipoDescuento = tipoDescuento; //Porcentaje. TODO: Monto
                             rp.IsCombinablePromotion = offer.IsCombinablePromotion;
 
                             //Diccionario
@@ -612,7 +666,7 @@ namespace APIServices
             return new KeyValuePair<string, string>("1", "success");
         }
 
-        private short GetDiscountApplicationMode(OfferDiscountApplicationMode mode)
+        private short GetDiscountApplicationMode(OfferDiscountApplicationMode? mode)
         {
             if (mode == OfferDiscountApplicationMode.AdditionalDiscount)
                 return 2;

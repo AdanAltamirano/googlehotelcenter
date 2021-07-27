@@ -128,11 +128,11 @@ export default {
                 endDate: null,
                 //Promotion Type
                 discount: {
-                    amount: 0,
-                    applicationMode: 0,
-                    discountPattern: 0,
-                    nightsDiscounted: 1,
-                    percent: 0
+                    amount: null,
+                    applicationMode: null,
+                    discountPattern: null,
+                    nightsDiscounted: null,
+                    percent: null
                 },
                  //Promotion Name
                 name: {
@@ -343,6 +343,7 @@ export default {
         },
         formValidation() {
             const form = new model(this.hotelId, this.promo);
+            console.log(this.promo);
             form.validate();
             if (form.errors.length > 0) {
                 this.error = true;
@@ -362,6 +363,8 @@ export default {
             } else {
                 this.error = false;
                 this.post = form.__$;
+                console.log("Post");
+                console.log(this.post);
             }
         }
     }

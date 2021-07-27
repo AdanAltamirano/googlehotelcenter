@@ -26,7 +26,12 @@
                 <b-list-group class="mt-2 list-group-scroll">
                     <b-list-group-item v-for="rp in ratePlans" :key="rp.code">
                         <b-form-checkbox @change="allRPlans = false" :value="rp.code" v-model="model.ratesPlan">
-                            {{rp.name}} - [{{ rp.code }}]
+                               <template v-if="rp.contractId === -1">
+                                   {{rp.name}} - [{{ rp.code }}] ({{$t('Comisionable')}})
+                               </template>
+                               <template v-else>
+                                   {{rp.name}} - [{{ rp.code }}]
+                               </template>
                         </b-form-checkbox>
                     </b-list-group-item>
                 </b-list-group>

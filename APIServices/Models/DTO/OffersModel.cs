@@ -16,7 +16,7 @@ namespace APIServices.Models.DTO
         Code = 3
     }
     public enum OfferDiscountApplicationMode
-    {
+    {   
         RateDiscountPriority, //Si la tarifa NO tiene descuento, se aplica el descuento de la oferta. Si la tarifa tiene descuento, el descuento de la oferta se descarta.
         PlusDiscount, //Si la tarifa tiene descuento, el descuento de la offerta se suma.
         AdditionalDiscount //Primero se aplica el descuento de la tarifa y al resultado se le aplica el descuento de la oferta.
@@ -39,7 +39,7 @@ namespace APIServices.Models.DTO
     }
 
     public enum OfferDiscountDiscountPattern
-    {
+    {  
         ForEach, //Por cada vez que se cumpla NightsRequired en el rago de estancia
         Only // Descuento único cuando se cummpla NightsRequired en el rango de la estancia
     }
@@ -89,12 +89,12 @@ namespace APIServices.Models.DTO
 
     public class OfferDiscount
     {
-        public OfferDiscountDiscountPattern DiscountPattern { get; set; } // Define el comportamiento de las noches gratis
+        public Nullable<OfferDiscountDiscountPattern> DiscountPattern { get; set; } // Define el comportamiento de las noches gratis
         public int? NightsDiscounted { get; set; } //Número de noches que se descontarán
         public int? NightsRequired { get; set; } //Número de noches requeridas para aplicar el descuento
         public decimal? Percent { get; set; } //Porcentaje de descuento
         public decimal? Amount { get; set; } //Monto de descuento
-        public OfferDiscountApplicationMode ApplicationMode { get; set; } //Define el comportamiento de la promoción en caso de haber un descuento a nivel tarifa
+        public Nullable<OfferDiscountApplicationMode> ApplicationMode { get; set; } //Define el comportamiento de la promoción en caso de haber un descuento a nivel tarifa
         public static OfferDiscountApplicationMode GetApplicationMode(int? mode)
         {
             switch (mode)

@@ -656,6 +656,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vHotelPlan' no tiene definida 
           <Property Name="IsLinked" Type="bit" />
           <Property Name="Active" Type="bit" />
           <Property Name="IsPromo" Type="bit" />
+          <Property Name="ContractId" Type="int" />
         </EntityType>
         <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'OzHoteles.dbo.vHotelRoom' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
@@ -1186,7 +1187,8 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
     [vHotelPlan].[Segment] AS [Segment], 
     [vHotelPlan].[IsLinked] AS [IsLinked], 
     [vHotelPlan].[Active] AS [Active], 
-    [vHotelPlan].[IsPromo] AS [IsPromo]
+    [vHotelPlan].[IsPromo] AS [IsPromo], 
+    [vHotelPlan].[ContractId] AS [ContractId]
     FROM [dbo].[vHotelPlan] AS [vHotelPlan]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vHotelRoom" EntityType="Self.vHotelRoom" store:Type="Views" store:Schema="dbo">
@@ -1533,10 +1535,10 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <EntitySet Name="vAgents" EntityType="Models.vAgents" />
           <EntitySet Name="vReservationRoomDetails" EntityType="Models.vReservationRoomDetails" />
           <EntitySet Name="vReservationDetails" EntityType="Models.vReservationDetails" />
-          <EntitySet Name="vHotelPlan" EntityType="Models.vHotelPlan" />
           <EntitySet Name="vHotelRoom" EntityType="Models.vHotelRoom" />
           <EntitySet Name="vPromotions" EntityType="Models.vPromotions" />
           <EntitySet Name="VReservationRoomPriceDetails" EntityType="Models.VReservationRoomPriceDetails" />
+          <EntitySet Name="vHotelPlan" EntityType="Models.vHotelPlan" />
         </EntityContainer>
         <EntityType Name="RatesPlan">
           <Key>
@@ -2549,24 +2551,6 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <Property Name="idCancellationUser" Type="Int32" />
           <Property Name="userCancellation" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="vHotelPlan">
-          <Key>
-            <PropertyRef Name="Code" />
-            <PropertyRef Name="HotelId" />
-            <PropertyRef Name="CommissionPercentage" />
-            <PropertyRef Name="Segment" />
-          </Key>
-          <Property Name="Code" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Name" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
-          <Property Name="HotelId" Type="Int32" Nullable="false" />
-          <Property Name="Currency" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
-          <Property Name="Language" Type="Int32" />
-          <Property Name="CommissionPercentage" Type="Int32" Nullable="false" />
-          <Property Name="Segment" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Name="IsLinked" Type="Boolean" />
-          <Property Name="Active" Type="Boolean" />
-          <Property Name="IsPromo" Type="Boolean" />
-        </EntityType>
         <EntityType Name="vHotelRoom">
           <Key>
             <PropertyRef Name="Id" />
@@ -2663,6 +2647,25 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <Property Name="checkIn" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="checkOut" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="currency" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="vHotelPlan">
+          <Key>
+            <PropertyRef Name="Code" />
+            <PropertyRef Name="HotelId" />
+            <PropertyRef Name="CommissionPercentage" />
+            <PropertyRef Name="Segment" />
+          </Key>
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="HotelId" Type="Int32" Nullable="false" />
+          <Property Name="Currency" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="Language" Type="Int32" />
+          <Property Name="CommissionPercentage" Type="Int32" Nullable="false" />
+          <Property Name="Segment" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="IsLinked" Type="Boolean" />
+          <Property Name="Active" Type="Boolean" />
+          <Property Name="IsPromo" Type="Boolean" />
+          <Property Name="ContractId" Type="Int32" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -3586,22 +3589,6 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="vHotelPlan">
-            <EntityTypeMapping TypeName="Models.vHotelPlan">
-              <MappingFragment StoreEntitySet="vHotelPlan">
-                <ScalarProperty Name="IsPromo" ColumnName="IsPromo" />
-                <ScalarProperty Name="Active" ColumnName="Active" />
-                <ScalarProperty Name="IsLinked" ColumnName="IsLinked" />
-                <ScalarProperty Name="Segment" ColumnName="Segment" />
-                <ScalarProperty Name="CommissionPercentage" ColumnName="CommissionPercentage" />
-                <ScalarProperty Name="Language" ColumnName="Language" />
-                <ScalarProperty Name="Currency" ColumnName="Currency" />
-                <ScalarProperty Name="HotelId" ColumnName="HotelId" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Code" ColumnName="Code" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="vHotelRoom">
             <EntityTypeMapping TypeName="Models.vHotelRoom">
               <MappingFragment StoreEntitySet="vHotelRoom">
@@ -3681,6 +3668,23 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
                 <ScalarProperty Name="extraPrice" ColumnName="extraPrice" />
                 <ScalarProperty Name="price" ColumnName="price" />
                 <ScalarProperty Name="roomPriceId" ColumnName="roomPriceId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vHotelPlan">
+            <EntityTypeMapping TypeName="Models.vHotelPlan">
+              <MappingFragment StoreEntitySet="vHotelPlan">
+                <ScalarProperty Name="ContractId" ColumnName="ContractId" />
+                <ScalarProperty Name="IsPromo" ColumnName="IsPromo" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="IsLinked" ColumnName="IsLinked" />
+                <ScalarProperty Name="Segment" ColumnName="Segment" />
+                <ScalarProperty Name="CommissionPercentage" ColumnName="CommissionPercentage" />
+                <ScalarProperty Name="Language" ColumnName="Language" />
+                <ScalarProperty Name="Currency" ColumnName="Currency" />
+                <ScalarProperty Name="HotelId" ColumnName="HotelId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

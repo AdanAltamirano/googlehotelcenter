@@ -685,6 +685,9 @@ Public Class Promotions
                     Me.txtFreeNight.Text = .Item(dsRatePlan.FIELD_DAYSFREE).ToString
                     Me.ddlFreeNight.SelectedValue = .Item(dsRatePlan.FIELD_DAYSFREETYPE)
                     chkPromoNights.Checked = True
+                Else
+                    Me.txtFreeNight.Text = ""
+                    Me.ddlFreeNight.SelectedValue = "0"
                 End If
                 If Not .IsNull(dsRatePlan.FIELD_DESCPROMOTION) Then
                     Me.txtPromoDiscount.Text = .Item(dsRatePlan.FIELD_DESCPROMOTION).ToString

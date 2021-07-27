@@ -24,5 +24,6 @@ namespace APIServices.Models
         public Nullable<bool> IsLinked { get; set; }
         public Nullable<bool> Active { get; set; }
         public Nullable<bool> IsPromo { get; set; }
+        public Nullable<int> ContractId { get; set; }
     }
 }

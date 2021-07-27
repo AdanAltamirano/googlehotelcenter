@@ -1,5 +1,26 @@
 <template>
-    <b-card no-body class="w-100" :header="$t('Promotion type')">
+    <b-card no-body class="w-100">
+        <template slot="header">
+            {{$t('Promotion type')}}
+            <b-checkbox 
+            id="free-night-checkbox" 
+            name="free-night-checkbox"
+            v-model="isCheckedFreeNight"
+            :value="true"
+            :unchecked-value="false"
+            class="d-inline ml-2">
+                {{$t('Free night')}}
+            </b-checkbox>
+             <b-checkbox 
+             id="discoutn-checkbox" 
+             name="discount-checkbox"
+             v-model="isCheckedDiscount"
+             :value="true"
+             :unchecked-value="false"
+             class="d-inline ml-2">
+                {{$t('Discount')}}
+            </b-checkbox>
+        </template>
         <b-row>
             <b-col>
                 <b-card no-body>
@@ -74,7 +95,46 @@ export default {
                 { value: 0, text: this.$t('Priority to discount rate') },
                 { value: 1, text: this.$t('Sum discount percentage') },
                 { value: 2, text: this.$t('Additional discount') }
-            ]
+            ],
+            isCheckedFreeNight:false,
+            isCheckedDiscount:false
+        }
+    },
+    watch:{
+        isCheckedFreeNight:function(value){
+            console.log("Is Checked Free Night Value: " + value);
+            console.log(typeof(value));
+            if(value){
+                console.log(this.model);
+            }
+            else{
+                this.model.discountPattern = null;
+                this.model.nightsDiscounted = null;
+                console.log(this.model);
+            }
+        },
+        isCheckedDiscount:function(value){
+            console.log("Is Checked Discount Value: " + value);
+            if(value){
+                console.log(this.model);
+                
+            }
+            else{
+                this.model.applicationMode = null;
+                this.model.percent = null;
+                console.log(this.model);
+            }
+        }
+    },
+    created(){
+        if(this.model.discountPattern != null)
+        {
+            this.isCheckedFreeNight = true;
+        }
+
+        if(this.model.applicationMode != null)
+        {
+            this.isCheckedDiscount = true;
         }
     },
     computed: {

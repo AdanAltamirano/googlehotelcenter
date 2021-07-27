@@ -9,17 +9,18 @@ class formValidation {
         this.__$ = {
             Id: req.id,
             HotelId: hotelId,//Paramenter
+            AccessCode:req.accessCode,
             Active: req.active,
             IsCombinablePromotion:req.isCombinablePromotion,
             StartDate: req.startDate,
             EndDate: req.endDate,
             Discount: {
-                DiscountPattern: req.discount.discountPattern,
-                NightsDiscounted: req.discount.nightsDiscounted,
+                DiscountPattern: req.discount.discountPattern, //DaysFreeType
+                NightsDiscounted: req.discount.nightsDiscounted,//DaysFree
                 NightsRequired: null,
-                Percent: req.discount.percent,
+                Percent: req.discount.percent,//Desc Promotion
                 Amount: req.discount.amount,
-                ApplicationMode: req.discount.applicationMode
+                ApplicationMode: req.discount.applicationMode//Discount Level
             },
             Name: {
                 Eng: req.name.eng,
@@ -159,10 +160,10 @@ class formValidation {
         }
 
         //tipo de la promocion
-        if ((this.__$.Discount.Amount <= 0 || !this.__$.Discount.Amount) && this.__$.Discount.NightsDiscounted <= 0) {
-            this.errors.push(`<h6>${this.$t('Promotion type')}</h6>`);
-            this.errors.push(this.msg('The value in free or discount night must be greater than 0'));
-        }
+        // if ((this.__$.Discount.Amount <= 0 || !this.__$.Discount.Amount) && this.__$.Discount.NightsDiscounted <= 0) {
+        //     this.errors.push(`<h6>${this.$t('Promotion type')}</h6>`);
+        //     this.errors.push(this.msg('The value in free or discount night must be greater than 0'));
+        // }
 
         //habitaciones y planes tarifarios
         if (this.__$.ApplicableFor.RatesPlan.length === 0 || this.__$.ApplicableFor.Rooms.length === 0) {

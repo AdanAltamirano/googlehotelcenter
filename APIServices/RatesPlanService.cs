@@ -32,12 +32,14 @@ namespace APIServices
 
                 if (!showInactive)
                     query = query.Where(r => r.Active == true);
-
+                
                 result = query.OrderBy(r => r.Name).Select(r => new RatePlan
                 {
                     Name = r.Name,
                     Code = r.Code,
-                    CommisionPercentage = r.CommissionPercentage
+                    CommisionPercentage = r.CommissionPercentage,
+                    ContractId = r.ContractId == null ? -1 : r.ContractId
+
                 }).ToArray();
             }
 

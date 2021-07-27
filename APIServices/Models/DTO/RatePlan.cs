@@ -13,5 +13,7 @@ namespace APIServices.Models.DTO
         public int? HotelId { get; set; }
         public string Currency { get; set; }
         public int? CommisionPercentage { get; set; }
+        public int? ContractId { get; set; }
+
     }
 }

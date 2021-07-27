@@ -7,6 +7,7 @@ export default {
     'English': 'Ingles',
     'Code': 'Código',
     'Restrictions': 'Restricciones',
+    'Comisionable' : 'Comisionable',
     'Min. nights': 'Noches mín.',
     'Max. nights': 'Noches máx.',
     'Not cancelable': 'No cancelable',
