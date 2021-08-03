@@ -758,7 +758,7 @@ Public Class Promotions
                     bookingWindowFrom.Text = IIf(Date.TryParse(ds.Tables(0).Rows(0)("fechaInicio"), startDate), startDate.ToString("dd/MM/yyyy"), "")
                     bookingWindowTo.Text = IIf(Date.TryParse(ds.Tables(0).Rows(0)("fechaFin"), endDate), endDate.ToString("dd/MM/yyyy"), "")
 
-                    If ds.Tables(0).Rows(0)("horaInicio") Is DBNull.Value Then
+                    If ds.Tables(0).Rows(0)("horaInicio") Is DBNull.Value Or ds.Tables(0).Rows(0)("horaInicio").ToString().Length = 0 Then
                         CheckBoxDefHora.Checked = False
                         HoraInicio.Enabled = False
                         MinutoInicio.Enabled = False
