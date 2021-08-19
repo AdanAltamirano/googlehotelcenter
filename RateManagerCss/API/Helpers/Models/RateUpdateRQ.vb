@@ -4,7 +4,7 @@ Imports RateManager.API.Helpers
 
 Namespace API.Models
 
-    <Validator(GetType(RateUpdateRQValidator))>
+    '<Validator(GetType(RateUpdateRQValidator))>
     Public Class RateUpdateRQ
         Public Property StartDate As Date
         Public Property EndDate As Date
@@ -15,6 +15,11 @@ Namespace API.Models
         Public Property IsOccupancyRate As Boolean?
         Public Property Rules As RateUpdateRQRules
         Public Property Prices As RateUpdateRQPrices
+        Public Property Dates As List(Of RateUpdateRQDate)
+    End Class
+    Public Class RateUpdateRQDate
+        Public Property StartDate As Date
+        Public Property EndDate As Date
     End Class
 
     Public Class RateUpdateRQPrices

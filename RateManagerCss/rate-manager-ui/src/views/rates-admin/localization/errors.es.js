@@ -26,5 +26,6 @@ export default {
     'min advance booking cannot be greater than max advance booking': 'min días previos no puede ser mayor a max días previos',
     'min nights cannot be greater than max nights': 'min de noches no puede ser mayor a max de noches',
     'invalid request, please contact support': 'solicitud invalida, por favor contacte a soporte',
+    'Dates Overlap': 'Las fechas se traslapan'
 }
 /* eslint-enable */

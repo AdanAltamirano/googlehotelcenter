@@ -55,6 +55,8 @@ export default {
     'the form will be set to its initial state': 'el formulario se establecerá en su estado inicial',
     'yes': 'sí',
     'close': 'cerrar',
+    'dates for the rate': 'fechas para la tarifa',
+    'Add Dates': 'Agregar Fechas'
 
 };
 /* eslint-enable */

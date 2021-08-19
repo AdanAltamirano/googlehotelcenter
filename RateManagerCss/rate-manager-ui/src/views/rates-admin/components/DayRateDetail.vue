@@ -181,6 +181,7 @@ export default {
                 this.prices,
                 false,
                 null,
+                []
             );
             // validación;
             rqHelper.validate();

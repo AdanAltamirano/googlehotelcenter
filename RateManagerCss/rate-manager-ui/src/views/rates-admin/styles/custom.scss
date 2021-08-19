@@ -8,6 +8,9 @@ h4, .h4 {
 a, h5, .h5, .btn, span:not(.swal2-x-mark, .swal2-x-mark-line-left, .swal2-x-mark-line-right, .swal2-success-line-tip, .swal2-success-line-long), .form-control {
     font-size: 12px;
 }
+.w-10 {
+    width: 10% !important;
+}
 .w-15 {
     width: 15% !important;
 }
@@ -37,6 +40,12 @@ a, h5, .h5, .btn, span:not(.swal2-x-mark, .swal2-x-mark-line-left, .swal2-x-mark
 }
 .fs-12{
     font-size: 12px
+}
+.h-90-px{
+    height: 90px !important;
+}
+.scroll-y{
+    overflow-y: auto;
 }
 body {
     height: 100vh;
@@ -197,4 +206,15 @@ body {
 }
 .popover-inner hr{
     margin: initial!important;
+}
+.btn:focus{
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.alert{
+    margin-bottom: 0rem !important;
+    border: none !important;
+    border-radius: none !important;
+    padding: 0.15rem 0.25rem !important;
 }
