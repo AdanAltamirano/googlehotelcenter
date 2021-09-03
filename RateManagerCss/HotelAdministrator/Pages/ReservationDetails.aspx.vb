@@ -415,6 +415,8 @@ Partial Class ReservationDetails
         Me.lblESource.Text = PortalCulture.GetString("M000324") & "  "
         Me.lblEIdBooking.Text = PortalCulture.GetString("01418") & ":  "
         Me.lblEID.Text = PortalCulture.GetString("M000325") & " "
+        'Pms Label
+        Me.Label4.Text = PortalCulture.GetString("M000669") & ": "
         Me.lblEContacto.Text = PortalCulture.GetString("M000326") & " "
         Me.lblEmail.Text = PortalCulture.GetString("M000327") & " "
 
@@ -1480,9 +1482,12 @@ Partial Class ReservationDetails
                 Me.lblNNoches.Text = ((DateDiff(DateInterval.Day, Cin, Cout)).ToString) & "  "
 
                 Me.lblID.Text = .Item(dsReservaciones.FIELD_NORESERVACION)
-                If .Table.Columns.Contains("NoConfirmPMS") AndAlso .Item("NoConfirmPMS").ToString <> "0" Then
-                    Me.lblPMSConfirm.Text = .Item("NoConfirmPMS")
-                    'Me.lblPMSConfirm.Visible = True
+                If .Table.Columns.Contains("NoConfirmPMS") Then
+                    Dim _noConfirmPms As Integer = CType(.Item("NoConfirmPMS"), Integer)
+                    If _noConfirmPms <> 0 Then
+                        Me.lblPMSConfirm.Text = _noConfirmPms.ToString()
+                        Me.lblPMSConfirm.Visible = True
+                    End If
                 End If
                 NoReserv = .Item(dsReservaciones.FIELD_NORESERVACION)
                 'Dim nom, ap As String
