@@ -64,7 +64,19 @@ Namespace API.Controllers
                 .StartDate = RQ.StartDate,
                 .EndDate = RQ.EndDate,
                 .IsOccupancyRate = RQ.IsOccupancyRate
-                }
+            }
+
+            Dim ServiceRQDates As New List(Of DTO.RateUpdateRQDate)
+            For Each itemDate As RateUpdateRQDate In RQ.Dates
+                Dim tempDate As New DTO.RateUpdateRQDate With {
+                    .StartDate = itemDate.StartDate,
+                    .EndDate = itemDate.EndDate
+                    }
+                ServiceRQDates.Add(tempDate)
+            Next
+
+            ServiceRQ.Dates = ServiceRQDates
+
 
             Dim ServiceRQPricesBase As New List(Of DTO.DailyRateDetailPrice)
             For Each PriceBase As DailyRateDetailPrice In RQ.Prices.Base

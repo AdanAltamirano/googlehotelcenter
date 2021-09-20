@@ -17,7 +17,14 @@ namespace APIServices.Models.DTO
         public string RateCode { get; set; }
         public bool IsOccupancyRate { get; set; }
         public RateUpdatePrices Prices { get; set; }
-        public RateUpdateRQRules Rules { get; set; }        
+        public RateUpdateRQRules Rules { get; set; }
+        public List<RateUpdateRQDate> Dates { get; set; }
+    }
+
+    public class RateUpdateRQDate
+    {
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
     }
 
     public class RateUpdatePrices

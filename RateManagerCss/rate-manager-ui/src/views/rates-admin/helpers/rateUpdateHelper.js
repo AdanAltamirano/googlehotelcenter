@@ -7,7 +7,7 @@ const toNumber = (source) => {
 
 class RateUpdatHelper {
     constructor(room, ratePlan, dateRange, promotion,
-        areOccupancyPrices, prices, overrideRules, rules) {
+        areOccupancyPrices, prices, overrideRules, rules,datesList) {
         this.errors = [];
         this.warnings = [];
 
@@ -20,6 +20,7 @@ class RateUpdatHelper {
             prices,
             overrideRules,
             rules,
+            datesList
         };
     }
 
@@ -262,7 +263,19 @@ class RateUpdatHelper {
         }
 
         if (this.__$.promotion) prices.promotion = this.__$.promotion;
+        
+       
+        let dates = []
 
+        for(let i = 0; i <  this.__$.datesList.length; i++){
+            let date = {
+                startDate: moment(this.__$.datesList[i]?.start).format('YYYY-MM-DD'),
+                endDate:  moment(this.__$.datesList[i]?.end).format('YYYY-MM-DD')
+            };
+
+            dates.push(date);
+        }
+        
         const RQ = {
             roomId: this.__$.room?.id,
             ratePlanCode: this.__$.ratePlan?.code,
@@ -270,7 +283,11 @@ class RateUpdatHelper {
             endDate: moment(this.__$.dateRange?.end).format('YYYY-MM-DD'),
             isOccupancyRate: this.__$.areOccupancyPrices,
             prices,
+            dates
         };
+        
+        console.log("RQ")
+        console.log(RQ);
 
         if (this.__$.overrideRules) {
             const { rules } = this.__$;

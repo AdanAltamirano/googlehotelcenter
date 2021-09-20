@@ -4,7 +4,7 @@
         <div class="formulario-page overflow-auto pb-5">
             <div class="bg-light">
                 <div class="rate-plan d-flex justify-content-between border-top mt-2 pl-3 pt-3 pr-3">
-                    <div class="w-25 pr-3">
+                    <div class="w-20 pr-3">
                         <label>{{'room' | translate}}:</label>
                         <div class="form-group">
                             <select v-model="room" class="form-control text-dark" id="room" name="room">
@@ -12,7 +12,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="w-25 pr-3">
+                    <div class="w-20 pr-3">
                         <label>{{'rate plan' | translate}}:</label>
                         <div class="form-group">
                             <select v-model="ratePlan" class="form-control text-dark" id="ratePlan" name="rateplan">
@@ -21,23 +21,38 @@
                         </div>
                     </div>
                     <div class="w-25 pr-3">
-                        <label>{{ 'dates' | translate }}:</label>
-                        <v-date-picker
-                        mode="range"
-                        class="w-100"
-                        title-position="left"
-                        v-model="dateRange"
-                        :popover="{ placement: 'bottom', visibility: 'click' }"
-                        :min-date="new Date()"
-                        :is-required="true"
-                        :locale="$appConfig.language"
-                        :columns="2"
-                        :masks="{input: 'DD/MMM/YYYY'}"
-                        :input-props='{
-                            class: "border rounded-left p-1 form-control",
-                            readonly: true
-                        }'>
-                        </v-date-picker>
+                        <label class="d-block">{{ 'dates' | translate }}:</label>
+                        <div class="d-flex">
+                            <v-date-picker
+                            mode="range"
+                            class="w-70"
+                            title-position="left"
+                            v-model="dateRange"
+                            :popover="{ placement: 'bottom', visibility: 'click' }"
+                            :min-date="new Date()"
+                            :is-required="true"
+                            :locale="$appConfig.language"
+                            :columns="2"
+                            :masks="{input: 'DD/MMM/YYYY'}"
+                            :input-props='{
+                                class: "border rounded-left p-1 form-control",
+                                readonly: true
+                            }'>
+                            </v-date-picker>
+                            <div class="d-flex ml-2">                          
+                                <button type="button" class="btn" @click="addDateToList(dateRange)"><i class="fas fa-calendar-plus fa-lg" style="color:#15cc3f;"></i></button>
+                                <button type="button" class="btn" @click="removeDateFromList()"><i class="fas fa-calendar-minus fa-lg" style="color:#f55050;"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-20 pr-3">
+                        <label class="d-block">{{'dates for the rate' | translate}}:</label>
+                        <div v-if="datesList.length > 0" class="list-group w-100 h-90-px scroll-y">                           
+                            <span v-for="(date,index) in datesList" :value="date" :key="index" class="list-group-item">{{getDateFormat(date)}}</span>                        
+                        </div>
+                        <div v-else class="alert alert-warning" role="alert">
+                            {{'Add Dates' | translate}} 
+                        </div>
                     </div>
                     <div class="w-25 pr-3">
                         <label>{{'show rates by' | translate}}:</label>
@@ -48,7 +63,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="border heading-divider dark-gray-created pl-3 pr-3 pt-2 pb-2">
+                <div class="border heading-divider dark-gray-created pl-3 pr-3 pt-2 pb-2 mt-2">
                     <p class="font-weight-bold mb-0">{{'room prices' | translate}} - <b>{{ hotel.taxIncluded ? 'tax included': 'tax not included' | translate}}</b></p>
                 </div>
                 <div class="d-flex pt-3 pb-3">
@@ -444,7 +459,7 @@
                 <div class="gds-container border-top">
                     <div class="p-3">
                         <button type="button" @click="reset" class="btn text-primary m-2"><i class="fa fa-undo mr-2"></i>{{'reset' | translate}}</button>
-                        <button type="button" @click="verifyRequest" class="btn btn-success m-2"><i class="fa fa-save mr-2"></i> {{'save' | translate}}</button>
+                        <button type="button" :disabled="datesList.length == 0" @click="verifyRequest" class="btn btn-success m-2"><i class="fa fa-save mr-2"></i> {{'save' | translate}}</button>
                     </div>
                 </div>
             </div>
@@ -526,6 +541,7 @@ const initalState = (room, ratePlan, start, end) => ({
         minLOS: null,
         maxLOS: null,
     },
+    datesList:[]
 });
 
 
@@ -562,6 +578,79 @@ export default {
         },
     },
     methods: {
+        addDateToList(date){
+            //Pendiente que no traslapen las fechas
+            //Ver que las fechas no traslapen asi solo se puede agregar a la lista
+            this.datesList.push(this.dateRange);
+
+            const overlap = this.overlapDates(this.datesList);
+            
+            if(overlap.overlap)
+            {
+                this.$appAlert({
+                     type: 'error',
+                    title: this.$t('Dates Overlap'),
+                    showCloseButton: true,
+                    showConfirmButton:false,
+                    showCancelButton:false
+                });
+
+                this.datesList = [];
+            }
+        },
+        overlapDates(dates){
+            var sortedRanges = dates.sort((previous, current) => {  
+                // get the start date from previous and current
+                var previousTime = previous.start.getTime();
+                var currentTime = current.start.getTime();
+
+                // if the previous is earlier than the current
+                if (previousTime < currentTime) {
+                return -1;
+                }
+
+                // if the previous time is the same as the current time
+                if (previousTime === currentTime) {
+                return 0;
+                }
+
+                // if the previous time is later than the current time
+                return 1;
+            });
+
+            var result = sortedRanges.reduce((result, current, idx, arr) => {
+                // get the previous range
+                if (idx === 0) { return result; }
+                var previous = arr[idx-1];
+            
+                // check for any overlap
+                var previousEnd = previous.end.getTime();
+                var currentStart = current.start.getTime();
+                var overlap = (previousEnd >= currentStart);
+            
+                // store the result
+                if (overlap) {
+                    // yes, there is overlap
+                    result.overlap = true;
+                    // store the specific ranges that overlap
+                    result.ranges.push({
+                        previous: previous,
+                        current: current
+                    })
+                }
+            
+                return result;
+            
+                // seed the reduce  
+            }, {overlap: false, ranges: []});
+            return result;
+        },
+        getDateFormat(date) {
+            return `${this.$moment(date.start).format('DD/MMM/YYYY')} - ${this.$moment(date.end).format('DD/MMM/YYYY')}`;
+        },
+        removeDateFromList(){
+            this.datesList.pop();
+        },
         updateOccupancyPrices() {
             this.prices.byOccupancy.adult = [];
             this.prices.exceptions.adult = [];
@@ -594,6 +683,7 @@ export default {
                 this.prices,
                 this.overrideRules,
                 this.rules,
+                this.datesList
             );
             // validación;
             rqHelper.validate();
@@ -640,6 +730,8 @@ export default {
             });
         },
         sendRequest(RQ) {
+            console.log("Send Request");
+            console.log(RQ);
             ratesService.bulkUpdate(this.$appConfig.session.hotelId, RQ)
                 .then(() => {
                     this.$appAlert({
@@ -680,8 +772,9 @@ export default {
                 this.hotel.rooms[0],
                 this.hotel.ratePlans[0],
                 this.$store.getters.dateRange.start.toDate(),
-                this.$store.getters.dateRange.end.toDate(),
+                this.$store.getters.dateRange.end.toDate(),          
             );
+            console.log(this.$data);
             Object.assign(this.$data, initialData);
             this.updateOccupancyPrices();
         },
@@ -703,6 +796,10 @@ export default {
                 };
             }
         },
+        datesList(value){
+            console.log(this.datesList);
+            console.log(value);
+        }
     },
 };
 </script>
