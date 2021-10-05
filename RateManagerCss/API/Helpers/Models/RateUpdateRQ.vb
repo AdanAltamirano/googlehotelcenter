@@ -4,7 +4,7 @@ Imports RateManager.API.Helpers
 
 Namespace API.Models
 
-    '<Validator(GetType(RateUpdateRQValidator))>
+    <Validator(GetType(RateUpdateRQValidator))>
     Public Class RateUpdateRQ
         Public Property StartDate As Date
         Public Property EndDate As Date

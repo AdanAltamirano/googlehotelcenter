@@ -631,7 +631,12 @@
             <es-MX valor="Hotel ha cambiado sus tarifas netas" />
             <en-US valor="Hotel ha cambiado sus tarifas netas" />
         </subject>
-        <from valor="javier@oz.com.mx" />
+        <from  valor="custsrvc@internetpowerhotel.com" />
+        <smtpServer valor="smtp.mandrillapp.com"/>
+        <userName valor="javier@univisit.com"/>
+        <password valor="NCxlNTHApCDYtSZjtyRvvQ"/>
+        <port valor="587"/>
+        <ssl valor="true"/>
         <html>
             <es-MX valor="/Hotel/emails/html/HotelNetRatesModified_Es.htm" />
             <en-US valor="/Hotel/emails/html/HotelNetRatesModified_Es.htm" />
