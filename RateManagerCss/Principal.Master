@@ -173,7 +173,7 @@
             })
 
             //session warning
-            var minutes_session = 10;
+            var minutes_session = 15;
             var minutes_session_user = 2;
             window.session_counter = 0;
             window.wait_user_counter = 0;

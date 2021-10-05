@@ -1314,7 +1314,39 @@ Public Class PaginaBase
                 Me.cInfoActual.CorporateName = corporated.Tables(0).Rows(0).Item("NombreCorp")
             End With
         End If
+
+        KeepAlive()
+
     End Sub
+
+    Private Sub KeepAlive()
+        Try
+            If Not Session("ticketId") Is Nothing Then
+                With New SqlCommand("spTicket_KeepAlive", New SqlConnection(ConfigurationManager.AppSettings("HotelConnection")))
+                    .CommandType = System.Data.CommandType.StoredProcedure
+
+                    .Parameters.Add("@TicketID", SqlDbType.NVarChar, 36).Value = Session("ticketId")
+
+                    Try
+                        .Connection.Open()
+                        .ExecuteNonQuery()
+                    Catch ex As Exception
+                        Throw New Exception("Error", ex)
+                    Finally
+                        .Connection.Close()
+                    End Try
+                End With
+            End If
+
+        Catch ex As Exception
+            While ex IsNot Nothing
+                ex = ex.InnerException
+            End While
+
+        End Try
+    End Sub
+
+
 
     Private Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.PreRender
         If Not Form1 Is Nothing Then Form1.Attributes.Add("onsubmit", "if (typeof(isValidSubmit) == 'function' && isValidSubmit ) { isValidSubmit(); }")
