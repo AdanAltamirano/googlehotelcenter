@@ -1544,7 +1544,7 @@ Public Class Promotions
 
     Private Function FilterPromos(ByVal includeOldPromos As Boolean, sFiltro As String) As String
         Dim filter As String
-        Dim dateFilter As String = "#" & DateTime.Now.ToString() & "#"
+        Dim dateFilter As String = "#" & DateTime.Now.Date.ToString() & "#"
         If (includeOldPromos) Then
             filter = "isPromo = 1 " & IIf(sFiltro = "", "", " and " & sFiltro)
         Else
