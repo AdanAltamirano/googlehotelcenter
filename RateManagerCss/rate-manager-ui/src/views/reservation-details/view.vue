@@ -39,7 +39,7 @@
               <h5 class="text-info">{{$t('Cost summary')}}</h5>
               <table class="table table-sm">
                 <tbody>
-                  <tr>
+                  <tr v-if="isSupervisor">
                     <td>SubTotal</td>
                     <td>{{result.totalDetails.subTotal | currency}} {{result.totalDetails.currency}}</td>
                   </tr>
@@ -47,7 +47,7 @@
                     <td>{{$t('Taxes')}}</td>
                     <td>{{result.totalDetails.taxes | currency}} {{result.totalDetails.currency}}</td>
                   </tr>
-                  <tr>
+                  <tr v-if="isSupervisor">
                     <td>
                       <strong>Total</strong>
                     </td>
@@ -55,7 +55,7 @@
                       <strong>{{result.totalDetails.total | currency}} {{result.totalDetails.currency}}</strong>
                     </td>
                   </tr>
-                  <tr v-if="result.isNetRateUV" style="font-size:smaller;">
+                  <tr v-if="isSupervisor && result.isNetRateUV" style="font-size:smaller;">
                     <td>{{$t('Commission Internet Power')}}</td>
                     <td>{{result.totalDetails.commission | currency}} {{result.totalDetails.currency}}</td>
                   </tr>
@@ -129,7 +129,8 @@ export default {
       showInfo: false,
       loader: null,
       image: image,
-      domain: document.location.origin
+      domain: document.location.origin,
+      isSupervisor: (this.$appConfig.session.isSupervisor === 'True')? true : false,
     };
   },
   computed: {
