@@ -15,7 +15,9 @@
                 language: '<%= If(Me.IdIdiomaMenu = 1, "es", "en" )%>',
                 confirmNumber: <%=Request.QueryString("qs")%>,
                 isAgencyCompany: '<%= Me.IsAgencyCompany%>',
-                isSupervisor : '<%= Me.IsSupervisor%>'
+                isSupervisor : '<%= Me.IsSupervisor%>',
+                isHotelUser : '<%= Me.IsUsuarioHotel%>',
+                isHotelCompany : '<%= Me.IsHotel%>'
             };
     </script>
     <div id="app"></div>

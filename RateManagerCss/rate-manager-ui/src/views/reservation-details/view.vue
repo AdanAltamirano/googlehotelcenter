@@ -47,7 +47,7 @@
                     <td>{{$t('Taxes')}}</td>
                     <td>{{result.totalDetails.taxes | currency}} {{result.totalDetails.currency}}</td>
                   </tr>
-                  <tr v-if="isSupervisor">
+                  <tr v-if="isSupervisor ||(isHotelUser && !result.isNetRateUV) || (isHotelCompany && !result.isNetRateUV)">
                     <td>
                       <strong>Total</strong>
                     </td>
@@ -59,7 +59,7 @@
                     <td>{{$t('Commission Internet Power')}}</td>
                     <td>{{result.totalDetails.commission | currency}} {{result.totalDetails.currency}}</td>
                   </tr>
-                  <tr v-if="result.isNetRateUV" style="font-size:smaller;">
+                  <tr v-if="isSupervisor ||(isHotelUser && result.isNetRateUV) ||(isHotelCompany && result.isNetRateUV)" style="font-size:smaller;">
                     <td>{{$t('Total Hotel')}}</td>
                     <td>{{result.totalDetails.totalNR | currency}} {{result.totalDetails.currency}}</td>
                   </tr>
@@ -121,6 +121,9 @@ export default {
       console.log(response.body);
       this.hideLoader();
     });
+    console.log(this.isHotelUser);
+    console.log(this.isHotelCompany);
+
   },
   data() {
     return {
@@ -131,6 +134,9 @@ export default {
       image: image,
       domain: document.location.origin,
       isSupervisor: (this.$appConfig.session.isSupervisor === 'True')? true : false,
+      isHotelUser: (this.$appConfig.session.isHotelUser === 'True')? true : false,
+      isHotelCompany:(this.$appConfig.session.isHotelCompany === 'True')? true : false,
+
     };
   },
   computed: {

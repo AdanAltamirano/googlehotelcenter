@@ -10,6 +10,8 @@ const appConfig = {
         corporateName: window.app.corporateName,
         isAgencyCompany: window.app.isAgencyCompany,
         isSupervisor:window.app.isSupervisor,
+        isHotelUser:window.app.isHotelUser,
+        isHotelCompany:window.app.isHotelCompany,
         code: window.app.code
     },
     themeColors: {
