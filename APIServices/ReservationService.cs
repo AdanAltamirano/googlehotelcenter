@@ -447,20 +447,24 @@ namespace APIServices
 
         #region cancelar reserva
 
-        public CancelBookingRS Cancel(vReservationDetails rsv, int userId, string reasonToCancel)
+        public CancelBookingRS Cancel(vReservationDetails rsv, int userId, string reasonToCancel,bool isSupervisor)
         {
             if (rsv != null)
             {
-                var minimumDays = dbContext.Hoteles
-                    .FirstOrDefault(x => x.idHotel == rsv.hotelId)?.DiasMinCancelar ?? 0;
-
-                if (MinimumDaysToCancel(rsv.checkIn, minimumDays))
+                if (!isSupervisor)
                 {
-                    return new CancelBookingRS
+                    var minimumDays = dbContext.Hoteles
+                        .FirstOrDefault(x => x.idHotel == rsv.hotelId)?.DiasMinCancelar ?? 0;
+
+                    if (MinimumDaysToCancel(rsv.checkIn, minimumDays))
                     {
-                        Error = $"No se cumple con el mínimo de días para cancelar. La reserva debe ser cancelada {minimumDays} días antes de la llegada",
-                    };
+                        return new CancelBookingRS
+                        {
+                            Error = $"No se cumple con el mínimo de días para cancelar. La reserva debe ser cancelada {minimumDays} días antes de la llegada",
+                        };
+                    }
                 }
+
                 return LocalCancel(rsv.reservationId, userId, reasonToCancel);
             }
 

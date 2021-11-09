@@ -101,5 +101,6 @@ export default {
     'Promotion' : 'Promoción',
     'Cancelled By' : 'Cancelado por',
     'Reason' : 'Motivo',
-    'PMS Status' : 'Estatus en PMS'
+    'PMS Status' : 'Estatus en PMS',
+    'Print' : 'Imprimir'
 };

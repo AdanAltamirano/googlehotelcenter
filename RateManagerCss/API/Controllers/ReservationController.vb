@@ -157,7 +157,7 @@ Namespace API.Controller
             Dim isHotelCompany As Boolean = GetRoles().Contains("hotelcompany")
             Dim isUserChainIdiso = False
             Dim rsv As vReservationDetails = ReservationService.GetReservation(reservationId)
-            Dim result As DTO.CancelBookingRS = ReservationService.Cancel(rsv, GetUserId().Value, req.Reason)
+            Dim result As DTO.CancelBookingRS = ReservationService.Cancel(rsv, GetUserId().Value, req.Reason, isSupervisor)
             If result.IsSuccess Then
                 Log(reservationId, acciones.Eliminar, rsv.hotelId)
 
