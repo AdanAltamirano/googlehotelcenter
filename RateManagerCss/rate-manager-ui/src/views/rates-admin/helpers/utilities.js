@@ -48,7 +48,8 @@ export default {
         for (i = 0; i < array.length; i += 1) {
             node = array[i];
             if (node.parentRatePlanId && node.isPromotion) {
-                array[map[node.parentRatePlanId + node.roomId]].children.push(node);
+                if(map[node.parentRatePlanId + node.roomId] != undefined)
+                    array[map[node.parentRatePlanId + node.roomId]].children.push(node);
             } else {
                 roots.push(node);
             }
