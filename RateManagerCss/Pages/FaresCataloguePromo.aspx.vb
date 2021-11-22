@@ -199,6 +199,36 @@ Partial Public Class FaresCataloguePromo
                 CType(Me.Page, PaginaBase).Habilitaboton(permisos.Tarifas, hpl, "D")
             End If
         Next
+        hpEliminate.NavigateUrl = Me.CtlMensajes1.getShow(lnkEliminate.ClientID, PortalCulture.GetString("00133"), PortalCulture.GetString("01661"))
+    End Sub
+
+    Public Sub CommandDelete(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.CommandEventArgs)
+        If e.CommandName = "Delete" Then
+            For Each room As DataGridItem In dgRooms.Items
+                Dim checkBoxTemp As CheckBox = room.FindControl("deleteCheckbox")
+                Dim labelTemp As Label = room.FindControl("glblRatePlanName")
+                If checkBoxTemp.Checked Then
+                    Dim iFareIdTemp As Integer = Integer.Parse(room.Cells(dgcolumns.idTarifa).Text)
+                    With New FaresExcFacade
+                        If .DeleteFares(iFareIdTemp) Then
+                            Me.guardalog("/Pages/FaresCataloguePromo.aspx", PaginaBase.acciones.Eliminar, "Se eliminó la tarifa de la habitación " & room.Cells(dgcolumns.codigohabitacion).Text & " de la fecha " & room.Cells(dgcolumns.FechaInicia).Text & " a la fecha " & room.Cells(dgcolumns.FechaFinaliza).Text & " con el rateplan " & labelTemp.Text)
+                        End If
+                    End With
+                End If
+            Next
+
+            If dgRooms.CurrentPageIndex > 0 And dgRooms.Items.Count = 1 Then
+                dgRooms.CurrentPageIndex = ((dgRooms.CurrentPageIndex * dgRooms.PageSize) \ dgRooms.PageSize) - 1
+            End If
+            dgRooms.SelectedIndex = -1
+            Dim ci As System.Globalization.CultureInfo
+            ci = System.Threading.Thread.CurrentThread.CurrentCulture
+            System.Threading.Thread.CurrentThread.CurrentCulture = New System.Globalization.CultureInfo(PortalCulture.GetCulture.ToString)
+            Me.dgRooms.DataSource = GetRoomFares()
+            Me.dgRooms.DataBind()
+            System.Threading.Thread.CurrentThread.CurrentCulture = ci
+            newFare()
+        End If
     End Sub
 
     Private Sub loadCulture()

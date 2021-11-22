@@ -8877,4 +8877,7 @@
   <data name="M000669" xml:space="preserve">
     <value>Id Reservación Hotel (PMS)</value>
   </data>
+  <data name="01661" xml:space="preserve">
+    <value>¿Realmente Desea Eliminar las Tarifas Seleccionadas?</value>
+  </data>
 </root>

@@ -322,6 +322,11 @@
                     </asp:Button><asp:CheckBox ID="chkOldDates" runat="server" Text="Incluye Fechas Pasadas"
                         CssClass="clsLabel"></asp:CheckBox>
                 </td>
+                <td>
+                    <asp:LinkButton ID="lnkEliminate" Style="display: none" runat="server" CssClass="dgLink"
+                            CausesValidation="False" CommandName="Delete" OnCommand="CommandDelete"></asp:LinkButton>
+                    <asp:HyperLink ID="hpEliminate" runat="server" CssClass="hpButton">Eliminar Planes Tarifarios</asp:HyperLink>
+                </td>
             </tr>
         </table>
         <asp:DataGrid ID="dgRooms" GridLines="None" runat="server" CssClass="datagrid" Width="99%"
@@ -362,7 +367,7 @@
                             CommandName="Edit"></asp:LinkButton>
                     </ItemTemplate>
                 </asp:TemplateColumn>
-                <asp:TemplateColumn>
+                <asp:TemplateColumn Visible="False">
                     <ItemTemplate>
                         <asp:LinkButton ID="lnkDelete2" Style="display: none" runat="server" CssClass="dgLink"
                             CausesValidation="False" CommandName="Delete"></asp:LinkButton>
@@ -374,6 +379,11 @@
                 <asp:BoundColumn Visible="False" DataField="rateportal"></asp:BoundColumn>
                 <asp:BoundColumn Visible="False" DataField="rateUnip"></asp:BoundColumn>
                 <asp:BoundColumn Visible="False" DataField="rateADS"></asp:BoundColumn>
+                <asp:TemplateColumn>
+                    <ItemTemplate>
+                        <asp:CheckBox ID="deleteCheckbox" AutoPostBack="False" runat="server" />
+                    </ItemTemplate>
+                </asp:TemplateColumn>
             </Columns>
             <PagerStyle NextPageText="Siguiente &gt;&gt;" PrevPageText="&lt;&lt; Anterior" HorizontalAlign="Right"
                 Position="Bottom" CssClass="dgPager" Mode="NumericPages"></PagerStyle>

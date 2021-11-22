@@ -8871,4 +8871,7 @@
   <data name="M000669" xml:space="preserve">
     <value>Hotel Reservation Id (PMS)</value>
   </data>
+  <data name="01661" xml:space="preserve">
+    <value>Delete Selected Rates?</value>
+  </data>
 </root>
