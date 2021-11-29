@@ -130,6 +130,36 @@
             <% end if %>
         }
 
+        function ShowDeleteButtonRates() {
+
+            var isSelected = false;
+
+            var dgItemCollection = document.getElementById('dgRooms').getElementsByClassName('dgItem');
+            var dgAlternateCollection = document.getElementById('dgRooms').getElementsByClassName('dgAlternate');
+
+            for (var i = 0; i < dgItemCollection.length; i++) {
+
+                var inputRow = dgItemCollection[i].children[9].children[0];
+
+                if (inputRow.checked) isSelected = true;
+
+            };
+
+            for (var i = 0; i < dgAlternateCollection.length; i++) {
+
+                var inputRow = dgAlternateCollection[i].children[9].children[0];
+
+                if (inputRow.checked) isSelected = true;
+
+            };
+
+
+
+            if (isSelected) document.getElementById('hpEliminate').style.display = 'block';
+            else document.getElementById('hpEliminate').style.display = 'none';
+
+        }
+
 //-->
     </script>
 
@@ -394,7 +424,7 @@
                  <td>
                     <asp:LinkButton ID="lnkEliminate" Style="display: none" runat="server" CssClass="dgLink"
                             CausesValidation="False" CommandName="Delete" OnCommand="CommandDelete"></asp:LinkButton>
-                    <asp:HyperLink ID="hpEliminate" runat="server" CssClass="hpButton">Eliminar Planes Tarifarios</asp:HyperLink>
+                    <asp:HyperLink ID="hpEliminate" runat="server" CssClass="hpButton" Style="display:none;"></asp:HyperLink>
                 </td>
             </tr>
         </table>
@@ -448,9 +478,9 @@
                 <asp:BoundColumn DataField="rateportal" Visible="False"></asp:BoundColumn>
                 <asp:BoundColumn DataField="rateUnip" Visible="False"></asp:BoundColumn>
                 <asp:BoundColumn DataField="rateADS" Visible="False"></asp:BoundColumn>
-                <asp:TemplateColumn>
+                <asp:TemplateColumn HeaderText="Eliminar">
                     <ItemTemplate>
-                        <asp:CheckBox ID="deleteCheckbox" AutoPostBack="False" runat="server" />
+                        <asp:CheckBox ID="deleteCheckbox" AutoPostBack="False" runat="server" OnClick="ShowDeleteButtonRates()"/>
                     </ItemTemplate>
                 </asp:TemplateColumn>
             </Columns>

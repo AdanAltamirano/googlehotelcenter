@@ -275,6 +275,7 @@ Partial Class FaresCatalogue
         Me.chkOldDates.Text = PortalCulture.GetString("01050")
         lblPricingNE.Text = PortalCulture.GetString("M000391")
         lblPricingExc.Text = PortalCulture.GetString("M000402")
+        Me.hpEliminate.Text = PortalCulture.GetString("01662")
     End Sub
 
     Private Function RatePlanFilter(ByVal filter As String, ByVal RatesPlan As Portal.General.Common.Data.RatePlanData) As Portal.General.Common.Data.RatePlanData

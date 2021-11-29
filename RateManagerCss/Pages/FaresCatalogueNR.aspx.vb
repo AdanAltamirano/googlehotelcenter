@@ -291,6 +291,7 @@ Partial Class FaresCatalogueNR
         Me.chkOldDates.Text = PortalCulture.GetString("01050")
         lblPricingNE.Text = PortalCulture.GetString("M000391")
         lblPricingExc.Text = PortalCulture.GetString("M000402")
+        Me.hpEliminate.Text = PortalCulture.GetString("01662")
     End Sub
 
     Public Sub loadDatos()

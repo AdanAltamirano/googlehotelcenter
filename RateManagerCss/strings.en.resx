@@ -8874,4 +8874,7 @@
   <data name="01661" xml:space="preserve">
     <value>Delete Selected Rates?</value>
   </data>
+  <data name="01662" xml:space="preserve">
+    <value>Delete Selected Rates</value>
+  </data>
 </root>

@@ -8880,4 +8880,7 @@
   <data name="01661" xml:space="preserve">
     <value>¿Realmente Desea Eliminar las Tarifas Seleccionadas?</value>
   </data>
+  <data name="01662" xml:space="preserve">
+    <value>Eliminar Tarifas Seleccionadas</value>
+  </data>
 </root>
