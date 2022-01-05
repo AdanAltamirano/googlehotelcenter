@@ -86,19 +86,19 @@ Public Class [Global]
             Dim FileName As String = PathFile & Now.Day.ToString("00") & Now.Month.ToString("00") & Now.Year.ToString("0000") & ".log"
             Dim FileError As New System.IO.FileInfo(FileName)
 
-            If Not IO.Directory.Exists(PathFile) Then
-                IO.Directory.CreateDirectory(PathFile)
-            End If
-            If Not FileError.Exists Then
-                Dim fs As FileStream = File.Create(FileName)
-                fs.Close()
-            End If
-            FileError = New System.IO.FileInfo(FileName)
-            If FileError.Exists Then
-                FileOpen(1, FileName, OpenMode.Append)
-                Print(1, Now.Hour & ":" & Now.Minute & ":" & Now.Second & ": " & ErrMessage)
-                FileClose(1)
-            End If
+            'If Not IO.Directory.Exists(PathFile) Then
+            '    IO.Directory.CreateDirectory(PathFile)
+            'End If
+            'If Not FileError.Exists Then
+            '    Dim fs As FileStream = File.Create(FileName)
+            '    fs.Close()
+            'End If
+            'FileError = New System.IO.FileInfo(FileName)
+            'If FileError.Exists Then
+            '    FileOpen(1, FileName, OpenMode.Append)
+            '    Print(1, Now.Hour & ":" & Now.Minute & ":" & Now.Second & ": " & ErrMessage)
+            '    FileClose(1)
+            'End If
         End If
 
     End Sub

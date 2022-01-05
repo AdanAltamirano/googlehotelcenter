@@ -274,8 +274,9 @@ namespace APIServices
                         : (price.checkOut - price.checkIn).Days + 1;
                     //int nights = (price.checkOut - price.checkIn).Days + 1;
                     //int nights = (price.checkOut - price.checkIn).Days;
-                    totalPerRoom += (double)price.price * nights;
-                    totalPerRoomNetRate += (price.priceNR == null)? 0 : (double)price.priceNR * nights;
+                    totalPerRoom += (double)((price.price * nights) + (price.extraPrice));
+                    double extraPriceNR = price.extraPriceNR == null ? 0 : (double)price.extraPriceNR;
+                    totalPerRoomNetRate += (price.priceNR == null)? 0 :(double)(price.priceNR * nights) + (extraPriceNR);
                     priceDetails.Add(new RoomPriceDetails
                     {
                         Price = (double)price.price,

@@ -102,5 +102,6 @@ export default {
     'Cancelled By' : 'Cancelado por',
     'Reason' : 'Motivo',
     'PMS Status' : 'Estatus en PMS',
-    'Print' : 'Imprimir'
+    'Print' : 'Imprimir',
+    'Extra Occupation': 'Ocupacion Extra'
 };

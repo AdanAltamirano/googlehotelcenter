@@ -40,7 +40,7 @@
 	</TR>
 	<TR>
 		<TD align="right"><asp:label id="lbl_Ratio" runat="server" CssClass="clsLabel" EnableViewState="False">Ratio</asp:label></TD>
-		<TD><div runat="server" id="divratio"><asp:textbox id="txtRatio" runat="server" CssClass="textbox" Width="64px" MaxLength="4"></asp:textbox><asp:rangevalidator id="RvRatio" runat="server" CssClass="validators" Display="Dynamic" ErrorMessage="0-10"
+		<TD><div runat="server" id="divratio"><asp:textbox id="txtRatio" runat="server" CssClass="textbox" Width="64px" MaxLength="5"></asp:textbox><asp:rangevalidator id="RvRatio" runat="server" CssClass="validators" Display="Dynamic" ErrorMessage="0-10"
 					Type="Double" MinimumValue="0" MaximumValue="10" ControlToValidate="txtRatio"></asp:rangevalidator></div>
 		</TD>
 		<TD align="right"><asp:label id="lbl_Offset" runat="server" CssClass="clsLabel" EnableViewState="False">Offset</asp:label></TD>

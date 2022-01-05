@@ -35,7 +35,7 @@
                       v-if="price.checkOut != price.checkIn"
                     >- {{$moment(price.checkOut).format('D MMM')}}</span>
                   </td>
-                  <td>{{price.price | currency}} {{price.currency}}</td>
+                  <td>{{(price.price + price.extraPrice) | currency}} {{price.currency}}</td>
                 </tr>
                 <tr>
                   <td>Total</td>
@@ -60,7 +60,12 @@
                   v-if="room.childrens > 0"
                 >, {{room.childrens}} {{$t('Children')}}</span>
               </strong>
-              <br />
+              <br>
+              <span v-if="room.extraAdults > 0">
+                {{$t('Extra Occupation')}}:
+                <strong>{{room.extraAdults}}  {{$t('Adult(s)')}}</strong>
+                <br />
+              </span>
               {{$t('Rate plan')}}:
               <strong>{{room.rateCode != '' ? room.rateCode : ratePlan}} - {{room.ratePlan}}</strong>
               <br />

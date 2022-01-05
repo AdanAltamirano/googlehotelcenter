@@ -202,9 +202,15 @@ Partial Class RatesPlans
         For Each i As DataGridItem In Me.grid.Items
             If i.ItemType = ListItemType.AlternatingItem Or i.ItemType = ListItemType.Item Then
                 LK = i.Cells(dgcolumns.eliminar).FindControl("lnkEliminar")
-                CType(Me.Page, PaginaBase).Habilitaboton(permisos.RatePlan, LK, "D")
+                If LK IsNot Nothing Then
+                    CType(Me.Page, PaginaBase).Habilitaboton(permisos.RatePlan, LK, "D")
+                End If
+                'CType(Me.Page, PaginaBase).Habilitaboton(permisos.RatePlan, LK, "D")
                 lk2 = i.Cells(dgcolumns.code).FindControl("lnkedit")
-                CType(Me.Page, PaginaBase).Habilitaboton(permisos.RatePlan, lk2, "M")
+                If lk2 IsNot Nothing Then
+                    CType(Me.Page, PaginaBase).Habilitaboton(permisos.RatePlan, lk2, "M")
+                End If
+                'CType(Me.Page, PaginaBase).Habilitaboton(permisos.RatePlan, lk2, "M")
             End If
         Next
         loadResources()
