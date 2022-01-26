@@ -42,6 +42,7 @@
     </asp:ContentPlaceHolder>
 
     <script type="text/javascript">
+        var interact = false;
         function remove_leftMenu() {
             //David Bustamante
             //Se quita el menu izquierdo para mostrar completo el iframe
@@ -104,6 +105,14 @@
                 this.contentWindow.document.body.offsetHeight + 'px';
                 if (window.ratemanager_ui.isUi)
                     functionSetOptionMenu(window.ratemanager_ui.url);
+
+
+                var iframe = jQuery('iframe');
+
+                iframe[0].contentWindow.addEventListener("mousemove", function () {
+                    interact = true;                   
+                });
+
             });
             jQuery(".submenuprin li").click(function() {
                 jQuery(this).parent("ul").toggleClass("hovered");
@@ -172,6 +181,10 @@
             	jQuery('.overlay').removeClass('active');
             })
 
+            document.addEventListener("mousemove", function () {
+                interact = true;
+            });
+
             //session warning
             var minutes_session = 15;
             var minutes_session_user = 2;
@@ -180,30 +193,36 @@
 
             setInterval(sessionWarning, 60000);
             function sessionWarning() {
-                window.session_counter++;
-                if (window.session_counter >= minutes_session) {
-                    if (!Swal.isVisible()) {
-                        Swal.fire({
-                            title: '<%=GetLabel("01655") %>',
-                            text: '<%=GetLabel("01656") %>',
-                            type: 'warning',
-                            confirmButtonText: '<%=GetLabel("01657") %>',
-                            cancelButtonText: '<%=GetLabel("00159") %>',
-                            showCloseButton: false,
-                            showCancelButton: true,
-                            allowOutsideClick: false,
-                            allowEscapeKey: false
-                        }).then(function (result) {
-                            if (result.value)
-                            {
-                                window.session_counter = 0;
-                                window.wait_user_counter = 0;
-                            }
-                            else logOut();
-                        })
 
-                        setInterval(sessionWarningTime, 60000);
-                    } 
+                window.session_counter++;
+                if (interact === false) {
+                    if (window.session_counter >= minutes_session) {
+                        if (!Swal.isVisible()) {
+                            Swal.fire({
+                                title: '<%=GetLabel("01655") %>',
+                                text: '<%=GetLabel("01656") %>',
+                                type: 'warning',
+                                confirmButtonText: '<%=GetLabel("01657") %>',
+                                cancelButtonText: '<%=GetLabel("00159") %>',
+                                showCloseButton: false,
+                                showCancelButton: true,
+                                allowOutsideClick: false,
+                                allowEscapeKey: false
+                            }).then(function (result) {
+                                if (result.value) {
+                                    window.session_counter = 0;
+                                    window.wait_user_counter = 0;
+                                    interact = false;
+                                }
+                                else logOut();
+                            })
+
+                            setInterval(sessionWarningTime, 60000);
+                        }
+                    }
+                }
+                else {               
+                    interact = false;
                 }
             }
 

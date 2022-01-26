@@ -594,8 +594,9 @@ export default {
                     showConfirmButton:false,
                     showCancelButton:false
                 });
-
-                this.datesList = [];
+               
+                this.removeDateFromList();
+                
             }
         },
         overlapDates(dates){
