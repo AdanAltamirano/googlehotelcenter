@@ -98,7 +98,7 @@
                 //document.getElementById(uv).value = document.getElementById(uv).value = (parseFloat(valNR) / ((100 - valMin) / 100)).toFixed(2); //Math.ceil(parseFloat(NR).toFixed(2) * 100) / 100;
 
                 var NR = parseFloat(valNR) * (1 + (parseFloat(valMin) / 100));
-                document.getElementById(uv).value = Math.ceil((parseFloat(valNR) / ((100 - valMin) / 100)).toFixed(2));
+                document.getElementById(uv).value = Math.ceil((parseFloat(valNR) / ((100 - valMin) / 100)).toFixed(2));               
             }
             valUV = parseFloat(document.getElementById(uv).value);
             /*if ((isNaN(valMin) == false) && (isNaN(valMax) == false)) {
@@ -129,6 +129,30 @@
                 
             <% end if %>
         }
+
+
+        function CheckValContractUv(min, max, nr, uv, msgMax, msgMin) {
+            valMin = parseFloat(document.getElementById(min).value);
+            valMax = parseFloat(document.getElementById(max).value);
+            valUV = parseFloat(document.getElementById(uv).value);
+
+            if (document.getElementById(nr)) {
+
+                var UV = parseFloat(valUV) * (1 + (parseFloat(valMin) / 100));
+                document.getElementById(nr).value = Math.floor((parseFloat(valUV) * ((100 - valMin) / 100)).toFixed(2));           
+            }
+
+            valNR = parseFloat(document.getElementById(nr).value);
+
+            if (valUV > valNR) {
+                document.getElementById(msgMax).style.display = "none";
+                document.getElementById(msgMin).style.display = "none";
+            }
+
+
+        }
+
+
 
         function ShowDeleteButtonRates() {
 
