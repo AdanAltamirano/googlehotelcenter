@@ -580,14 +580,14 @@ Partial Class ReservationDetails
                         Else
                             sDias = DateTime.Parse(drRate._Date).ToString("dd-MMM-yyy")
                         End If
-                        If (dPrecio <> dImporte) Then
-                            sHtmlRate &= String.Format("<tr><td>{0}</td> <td style='padding-left:6px;'>{1} {2}</td></tr> ",
+                        'If (dPrecio <> dImporte) Then
+                        sHtmlRate &= String.Format("<tr><td>{0}</td> <td style='padding-left:6px;'>{1} {2}</td></tr> ",
                                                         sDias, FCurrency(dImporte, 2), IIf(dImporte > 0, money, ""))
                             dPrecio = dImporte
                             sDias = ""
                             sHab = ""
                             sComa = ""
-                        End If
+                        'End If
                     End If
                 Next
             Next

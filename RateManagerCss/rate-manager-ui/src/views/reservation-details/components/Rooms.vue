@@ -25,6 +25,7 @@
                 <tr>
                   <th>{{$t('Date')}}</th>
                   <th>{{$t('Price per night')}}</th>
+                  <th>{{$t('Price per night extre person(s)')}}</th>
                 </tr>
               </thead>
               <tbody>
@@ -36,10 +37,12 @@
                     >- {{$moment(price.checkOut).format('D MMM')}}</span>
                   </td>
                   <td>{{(price.price + price.extraPrice) | currency}} {{price.currency}}</td>
+                  <td>{{(price.extraPrice) | currency}} {{price.currency}}</td>
                 </tr>
                 <tr>
                   <td>Total</td>
                   <td>{{room.total | currency}} {{room.currency}}</td>
+                  <td></td>
                 </tr>
               </tbody>
             </table>

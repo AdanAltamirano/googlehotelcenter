@@ -103,5 +103,6 @@ export default {
     'Reason' : 'Motivo',
     'PMS Status' : 'Estatus en PMS',
     'Print' : 'Imprimir',
-    'Extra Occupation': 'Ocupacion Extra'
+    'Extra Occupation': 'Ocupacion Extra',
+    'Price per night extre person(s)' : 'Precio por noche persona(s) extra'
 };
