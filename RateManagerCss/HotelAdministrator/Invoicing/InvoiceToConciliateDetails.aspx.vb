@@ -588,7 +588,7 @@ Partial Class InvoiceToConciliateDetails
                             lbl = e.Item.FindControl("lblCheckInDg")
                             lbl.Text = rows(0).CheckIn.ToString("dd/ MMM/ yy", PortalCulture.GetCulture)
                             lbl = e.Item.FindControl("lblNightsDg")
-                            lbl.Text = IIf(CType(rows(0).Nights, Byte) > 1, rows(0).Nights & " " & PortalCulture.GetString("M0BT0000070"), rows(0).Nights & " " & PortalCulture.GetString("M0BT0000330"))
+                            lbl.Text = IIf(CType(rows(0).Nights, Integer) > 1, rows(0).Nights & " " & PortalCulture.GetString("M0BT0000070"), rows(0).Nights & " " & PortalCulture.GetString("M0BT0000330"))
                             lbl = e.Item.FindControl("lblRvaTotalDg")
                             '*lbl.Text = FCurrency(CDec(rows(0).Total), , 2)
                             lbl.Text = FCurrency((CDec(rows(0).ReservationFare) * moneyExchangeMxn), 2)
