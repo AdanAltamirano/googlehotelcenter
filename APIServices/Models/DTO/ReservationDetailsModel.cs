@@ -164,6 +164,7 @@ namespace APIServices.Models.DTO
         public double SubTotal { get; set; }
         public double Total { get; set; }
         public double Taxes { get; set; }
+        public double  TaxesHotel { get; set; }
         public double Commission { get; set; }
         public bool IncludesTax { get; set; }
         public double TotalNR { get; set; }

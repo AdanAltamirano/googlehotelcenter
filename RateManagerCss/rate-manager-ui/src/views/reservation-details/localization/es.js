@@ -104,5 +104,6 @@ export default {
     'PMS Status' : 'Estatus en PMS',
     'Print' : 'Imprimir',
     'Extra Occupation': 'Ocupacion Extra',
-    'Price per night extre person(s)' : 'Precio por noche persona(s) extra'
+    'Price per night extre person(s)' : 'Precio por noche persona(s) extra',
+    'Taxes Hotel' : 'Impuestos Hotel'
 };

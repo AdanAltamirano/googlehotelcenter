@@ -39,11 +39,11 @@
               <h5 class="text-info">{{$t('Cost summary')}}</h5>
               <table class="table table-sm">
                 <tbody>
-                  <tr v-if="isSupervisor">
+                  <tr>
                     <td>SubTotal</td>
                     <td>{{result.totalDetails.subTotal | currency}} {{result.totalDetails.currency}}</td>
                   </tr>
-                  <tr v-if="!result.totalDetails.includesTax">
+                  <tr v-if="!result.totalDetails.includesTax && isSupervisor">
                     <td>{{$t('Taxes')}}</td>
                     <td>{{result.totalDetails.taxes | currency}} {{result.totalDetails.currency}}</td>
                   </tr>
@@ -59,13 +59,18 @@
                     <td>{{$t('Commission Internet Power')}}</td>
                     <td>{{result.totalDetails.commission | currency}} {{result.totalDetails.currency}}</td>
                   </tr>
-                  <tr v-if="isSupervisor ||(isHotelUser && result.isNetRateUV) ||(isHotelCompany && result.isNetRateUV)" style="font-size:smaller;">
+                  <tr v-if="result.isNetRateUV" style="font-size:smaller;">
+                    <td>{{$t('Taxes Hotel')}}</td>
+                    <td>{{result.totalDetails.taxesHotel | currency}} {{result.totalDetails.currency}}</td>
+                  </tr>
+                  <tr v-if="result.isNetRateUV" style="font-size:smaller;">
                     <td>{{$t('Total Hotel')}}</td>
                     <td>{{result.totalDetails.totalNR | currency}} {{result.totalDetails.currency}}</td>
                   </tr>
                 </tbody>
               </table>
             </b-col>
+            {{this.isHotelCompany}} {{this.isHotelUser}} {{this.isSupervisor}}
           </b-row>
           <b-row v-if="result.pms">
             <b-col>

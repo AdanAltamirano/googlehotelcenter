@@ -222,9 +222,15 @@ namespace APIServices
                 model.TotalDetails.IncludesTax = details.includesTax.Value;
 
                 double tax = (double)details.tax;
-                double totalTax = (double)(details.IsNetRateUV ? details.totalNetRate : details.total);
 
+                double totalTax = (double)(details.total);
+
+                double totalTaxHotel = (double)(details.IsNetRateUV ? details.totalNetRate : 0);
+
+
+                model.TotalDetails.TaxesHotel = Math.Round(totalTaxHotel - (totalTaxHotel / ((tax / 100) + 1)), 2);
                 model.TotalDetails.Taxes = Math.Round(totalTax - (totalTax / ((tax / 100) + 1)), 2);
+                
                 model.TotalDetails.Currency = details.currency;
                 model.TotalDetails.Commission = (double)(details.IsNetRateUV ? details.total - details.totalNetRate : 0);
 
