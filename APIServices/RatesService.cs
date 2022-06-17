@@ -721,38 +721,110 @@ namespace APIServices
                         of.MinAdultos = rate.Rules?.GuestsRestrictions?.MinAdults ?? of.MinAdultos;
                         of.MaxNinios = rate.Rules?.GuestsRestrictions?.Children ?? of.MaxNinios;
 
+                        //Actualiza Tarifa Restricciones Precios Excepcion Solo Cuando sea por Habitacion
+
                         if (rate.Prices != null)
                         {
+                                
                             foreach (var price in rate.Prices.Base)
                             {
                                 List<TarifasRestricciones> tarifasRestricciones = new List<TarifasRestricciones>();
                                 if (price.Type == PaxType.Child || price.Type == PaxType.Junior)
                                 {
                                     overlappedFaresRestrictions = rate.IsOccupancyRate ? contextDb.TarifasRestricciones.Where(tr => tr.idTarifa == of.idTarifa && tr.Ninios == price.Occupation) : contextDb.TarifasRestricciones.Where(tr => tr.idTarifa == of.idTarifa);
-                                    foreach (var ofRes in overlappedFaresRestrictions)
-                                    {
-                                        if (price.Type == PaxType.Child)
+
+                                    //Actualiza Precio Excepcion
+                                    if (rate.IsOccupancyRate)
+                                    {                                   
+                                        foreach (var ofRes in overlappedFaresRestrictions)
                                         {
-                                            ofRes.TarifaNinio = price.Price;
-                                            ofRes.TarifaNinioNR = isNetRate ? SetPrice(isNetRate, price.Price, (decimal)hotelPlan.CommissionPercentage) : 0;
+                                            if (price.Type == PaxType.Child)
+                                            {
+                                                  
+                                                ofRes.TarifaNinio = price.Price;
+                                                ofRes.TarifaNinioNR = isNetRate ? SetPrice(isNetRate, price.Price, (decimal)hotelPlan.CommissionPercentage) : 0;
+
+                                                if(rate.Prices.Exceptions.Count() > 0)
+                                                {
+                                                    var priceException = rate.Prices.Exceptions.FirstOrDefault(ex => ex.Type == PaxType.Child && ex.Occupation == price.Occupation);
+                                                    ofRes.TarifaNinioExc = priceException.Price;
+                                                    ofRes.TarifaNinioExcNR = isNetRate ? SetPrice(isNetRate, priceException.Price, (decimal)hotelPlan.CommissionPercentage) : 0;
+                                                }
+
+                                            }
+                                            else
+                                            {                                         
+
+                                                ofRes.TarifaAdolescente = price.Price;
+                                                ofRes.TarifaAdolescenteNR = isNetRate ? SetPrice(isNetRate, price.Price, (decimal)hotelPlan.CommissionPercentage) : 0;
+
+                                                if (rate.Prices.Exceptions.Count() > 0)
+                                                {
+                                                    var priceException = rate.Prices.Exceptions.FirstOrDefault(ex => ex.Type == PaxType.Junior && ex.Occupation == price.Occupation);
+
+                                                    ofRes.TarifaAdolescenteExc = priceException.Price;
+                                                    ofRes.TarifaAdolescenteExcNR = isNetRate ? SetPrice(isNetRate, priceException.Price, (decimal)hotelPlan.CommissionPercentage) : 0;
+                                                }
+                                            }
                                         }
-                                        else
-                                        {
-                                            ofRes.TarifaAdolescente = price.Price;
-                                            ofRes.TarifaAdolescenteNR = isNetRate ? SetPrice(isNetRate, price.Price, (decimal)hotelPlan.CommissionPercentage) : 0;
-                                        }
+                                        
                                     }
+                                    else
+                                    {
+                                        foreach (var ofRes in overlappedFaresRestrictions)
+                                        {
+                                            if (price.Type == PaxType.Child)
+                                            {
+                                                ofRes.TarifaNinio = price.Price;
+                                                ofRes.TarifaNinioNR = isNetRate ? SetPrice(isNetRate, price.Price, (decimal)hotelPlan.CommissionPercentage) : 0;
+                                            }
+                                            else
+                                            {
+                                                ofRes.TarifaAdolescente = price.Price;
+                                                ofRes.TarifaAdolescenteNR = isNetRate ? SetPrice(isNetRate, price.Price, (decimal)hotelPlan.CommissionPercentage) : 0;
+                                            }
+                                        }
+
+                                    }                                  
                                 }
                                 else if (price.Type == PaxType.Adult)
                                 {
                                     overlappedFaresRestrictions = rate.IsOccupancyRate ? contextDb.TarifasRestricciones.Where(tr => tr.idTarifa == of.idTarifa && tr.Adultos == price.Occupation) : contextDb.TarifasRestricciones.Where(tr => tr.idTarifa == of.idTarifa);
-                                    foreach (var ofRes in overlappedFaresRestrictions)
+                                    
+                                    //Actualiza Precio Excepcion
+                                    if(rate.IsOccupancyRate)
                                     {
-                                        ofRes.TarifaAdulto = price.Price;
-                                        ofRes.TarifaAdultoNR = isNetRate ? SetPrice(isNetRate, price.Price, (decimal)hotelPlan.CommissionPercentage) : 0;
+                                        foreach (var ofRes in overlappedFaresRestrictions)
+                                        {
+                                            ofRes.TarifaAdulto = price.Price;
+                                            ofRes.TarifaAdultoNR = isNetRate ? SetPrice(isNetRate, price.Price, (decimal)hotelPlan.CommissionPercentage) : 0;
+
+                                            if (rate.Prices.Exceptions.Count() > 0)
+                                            {
+                                                var priceException = rate.Prices.Exceptions.FirstOrDefault(ex => ex.Type == PaxType.Adult && ex.Occupation == price.Occupation);
+
+                                                ofRes.TarifaAdultoExc = priceException.Price;
+                                                ofRes.TarifaAdultoExcNR = isNetRate ? SetPrice(isNetRate, priceException.Price, (decimal)hotelPlan.CommissionPercentage) : 0;
+                                            }
+                                        }
+                                        
                                     }
+                                    else
+                                    {
+
+                                        foreach (var ofRes in overlappedFaresRestrictions)
+                                        {
+                                            ofRes.TarifaAdulto = price.Price;
+                                            ofRes.TarifaAdultoNR = isNetRate ? SetPrice(isNetRate, price.Price, (decimal)hotelPlan.CommissionPercentage) : 0;
+
+                                        }
+
+                                    }
+                                       
                                 }
                             }
+
+                            
                         }
                         if (startD >= of.FechaInicia && endD > of.FechaFinaliza)
                         {
