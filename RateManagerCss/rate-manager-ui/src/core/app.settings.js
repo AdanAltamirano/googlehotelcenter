@@ -12,6 +12,7 @@ const appConfig = {
         isSupervisor:window.app.isSupervisor,
         isHotelUser:window.app.isHotelUser,
         isHotelCompany:window.app.isHotelCompany,
+        isUsuarioHotelAssociation: window.app.isUsuarioHotelAssociation,
         code: window.app.code
     },
     themeColors: {

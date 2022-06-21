@@ -4,7 +4,7 @@
       <i class="fas fa-hotel fa-sm"></i>
       {{result.hotelName}} {{showCorporate}}
     </h4>
-    <b-button-toolbar v-if="showCancelButton || showModifyButton || showReactivateButton" class="ml-auto">
+    <b-button-toolbar v-if="showCancelButton || showModifyButton || showReactivateButton || showPrintButton" class="ml-auto">
       <b-dropdown class="mx-1" right variant="primary" :text="$t('Options')">
         <b-dropdown-item v-if="showModifyButton" @click="modify">{{$t('Modify')}}</b-dropdown-item>
         <b-dropdown-item v-if="showCancelButton" @click="cancel">{{$t('Cancel')}}</b-dropdown-item>
@@ -37,6 +37,7 @@ export default {
   data(){
     return {
       isAgencyCompany: (this.$appConfig.session.isAgencyCompany === 'True')? true : false,
+      showPrintButton:true
     }
   },
   methods: {
@@ -378,13 +379,13 @@ export default {
   computed: {
     showCancelButton() {
 
-      if(this.isAgencyCompany && this.result.status != 3) {
-         return true;
-      }
+      // if(this.isAgencyCompany && this.result.status != 3) {
+      //    return true;
+      // }
        
-      if(!this.isAgencyCompany && this.result.agency) { 
-        return false;
-      }
+      // if(!this.isAgencyCompany && this.result.agency) { 
+      //   return false;
+      // }
 
       return this.result.allowsCancel && this.result.status != 3;
     },
@@ -404,22 +405,22 @@ export default {
     },
     showReactivateButton(){
 
-      if(this.isAgencyCompany && this.result.status === 3){
-        return true;
-      }
+      // if(this.isAgencyCompany && this.result.status === 3){
+      //   return true;
+      // }
 
-      if(!this.isAgencyCompany && this.result.agency){
-        return false;
-      }
+      // if(!this.isAgencyCompany && this.result.agency){
+      //   return false;
+      // }
       
-      if(this.result.allowsReactivate)
-      {
-        if((this.result.source !== 'ADS' 
-        || this.result.source !== 'IDS') && this.result.status === 3)
-          return true;
-      }
+      // if(this.result.allowsReactivate)
+      // {
+      //   if((this.result.source !== 'ADS' 
+      //   || this.result.source !== 'IDS') && this.result.status === 3)
+      //     return true;
+      // }
 
-      return false;
+      return this.result.allowsReactivate;
     },
     showCorporate() {
       if (this.result.corporateName) {

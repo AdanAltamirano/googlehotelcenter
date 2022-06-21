@@ -17,7 +17,8 @@
                 isAgencyCompany: '<%= Me.IsAgencyCompany%>',
                 isSupervisor : '<%= Me.IsSupervisor%>',
                 isHotelUser : '<%= Me.IsUsuarioHotel%>',
-                isHotelCompany : '<%= Me.IsHotel%>'
+                isHotelCompany : '<%= Me.IsHotel%>',
+                isUsuarioHotelAssociation : '<%= Me.IsUsuarioHotelAssociation %>'
             };
     </script>
     <div id="app"></div>

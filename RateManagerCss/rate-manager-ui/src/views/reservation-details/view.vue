@@ -37,40 +37,63 @@
           <b-row v-if="result.totalDetails" class="pt-3">
             <b-col>
               <h5 class="text-info">{{$t('Cost summary')}}</h5>
-              <table class="table table-sm">
-                <tbody>
-                  <tr>
-                    <td>SubTotal</td>
-                    <td>{{result.totalDetails.subTotal | currency}} {{result.totalDetails.currency}}</td>
-                  </tr>
-                  <tr v-if="!result.totalDetails.includesTax && isSupervisor">
-                    <td>{{$t('Taxes')}}</td>
-                    <td>{{result.totalDetails.taxes | currency}} {{result.totalDetails.currency}}</td>
-                  </tr>
-                  <tr v-if="isSupervisor ||(isHotelUser && !result.isNetRateUV) || (isHotelCompany && !result.isNetRateUV)">
-                    <td>
-                      <strong>Total</strong>
-                    </td>
-                    <td>
-                      <strong>{{result.totalDetails.total | currency}} {{result.totalDetails.currency}}</strong>
-                    </td>
-                  </tr>
-                  <tr v-if="isSupervisor && result.isNetRateUV" style="font-size:smaller;">
-                    <td>{{$t('Commission Internet Power')}}</td>
-                    <td>{{result.totalDetails.commission | currency}} {{result.totalDetails.currency}}</td>
-                  </tr>
-                  <tr v-if="result.isNetRateUV" style="font-size:smaller;">
-                    <td>{{$t('Taxes Hotel')}}</td>
-                    <td>{{result.totalDetails.taxesHotel | currency}} {{result.totalDetails.currency}}</td>
-                  </tr>
-                  <tr v-if="result.isNetRateUV" style="font-size:smaller;">
-                    <td>{{$t('Total Hotel')}}</td>
-                    <td>{{result.totalDetails.totalNR | currency}} {{result.totalDetails.currency}}</td>
-                  </tr>
-                </tbody>
-              </table>
+              <template v-if="result.isNetRateUV">
+                <table class="table table-sm">
+                  <tbody>
+                    <tr>
+                      <td>SubTotal</td>
+                      <td>{{result.totalDetails.subTotal | currency}} {{result.totalDetails.currency}}</td>
+                    </tr>
+                    <tr v-if="isSupervisor || isUsuarioHotelAssociation">
+                      <td>{{$t('Taxes')}}</td>
+                      <td>{{result.totalDetails.taxes | currency}} {{result.totalDetails.currency}}</td>
+                    </tr>
+                    <tr v-if="isSupervisor || isUsuarioHotelAssociation">
+                      <td>
+                        <strong>Total</strong>
+                      </td>
+                      <td>
+                        <strong>{{result.totalDetails.total | currency}} {{result.totalDetails.currency}}</strong>
+                      </td>
+                    </tr>
+                    <tr v-if="isSupervisor || isUsuarioHotelAssociation" style="font-size:smaller;">
+                      <td>{{$t('Commission Internet Power')}}</td>
+                      <td>{{result.totalDetails.commission | currency}} {{result.totalDetails.currency}}</td>
+                    </tr>
+                    <tr style="font-size:smaller;">
+                      <td>{{$t('Taxes Hotel')}}</td>
+                      <td>{{result.totalDetails.taxesHotel | currency}} {{result.totalDetails.currency}}</td>
+                    </tr>
+                    <tr style="font-size:smaller;">
+                      <td>{{$t('Total Hotel')}}</td>
+                      <td>{{result.totalDetails.totalNR | currency}} {{result.totalDetails.currency}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </template>
+              <template v-else>
+                <table class="table table-sm">
+                  <tbody>
+                    <tr>
+                      <td>SubTotal</td>
+                      <td>{{result.totalDetails.subTotal | currency}} {{result.totalDetails.currency}}</td>
+                    </tr>
+                    <tr>
+                      <td>{{$t('Taxes')}}</td>
+                      <td>{{result.totalDetails.taxes | currency}} {{result.totalDetails.currency}}</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <strong>Total</strong>
+                      </td>
+                      <td>
+                        <strong>{{result.totalDetails.total | currency}} {{result.totalDetails.currency}}</strong>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </template>
             </b-col>
-            {{this.isHotelCompany}} {{this.isHotelUser}} {{this.isSupervisor}}
           </b-row>
           <b-row v-if="result.pms">
             <b-col>
@@ -141,7 +164,7 @@ export default {
       isSupervisor: (this.$appConfig.session.isSupervisor === 'True')? true : false,
       isHotelUser: (this.$appConfig.session.isHotelUser === 'True')? true : false,
       isHotelCompany:(this.$appConfig.session.isHotelCompany === 'True')? true : false,
-
+      isUsuarioHotelAssociation: (this.$appConfig.session.isUsuarioHotelAssociation === 'True')? true : false,
     };
   },
   computed: {

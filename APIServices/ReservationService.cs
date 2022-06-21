@@ -418,7 +418,7 @@ namespace APIServices
             switch (model.Status)
             {
                 case 1:
-                    if (isSupervisor || allowUserChain)
+                    if (!source.Equals("IDS") && (isSupervisor || allowUserChain))
                     {
                         model.AllowsCancel = true;
                         model.AllowsModify = true;
@@ -426,7 +426,7 @@ namespace APIServices
                     }
                     break;
                 case 3:
-                    if(isSupervisor || allowUserChain)
+                    if(!source.Equals("IDS") && (isSupervisor || allowUserChain))
                     {
                        // model.AllowsCancel = true;
                         //model.AllowsModify = true;
@@ -434,7 +434,7 @@ namespace APIServices
                     }
                     break;
                 case 4:
-                    if (isSupervisor || allowUserChain)
+                    if (!source.Equals("IDS") && (isSupervisor || allowUserChain))
                     {
                         model.AllowsCancel = true;
                         model.AllowsModify = true;
