@@ -744,7 +744,7 @@ export default {
                         const end = start.clone().add(13, 'days');
                         utilities.setLastWorkDay(start);
                         this.$store.commit('update', { start, end });
-                        this.resetData();
+                        //this.resetData();
                     });
                 }).catch(() => {
                     this.$appAlert({
