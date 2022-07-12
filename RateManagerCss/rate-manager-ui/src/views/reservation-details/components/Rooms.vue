@@ -36,7 +36,7 @@
                       v-if="price.checkOut != price.checkIn"
                     >- {{$moment(price.checkOut).format('D MMM')}}</span>
                   </td>
-                  <td>{{(price.price + price.extraPrice) | currency}} {{price.currency}}</td>
+                  <td>{{(price.price) | currency}} {{price.currency}}</td>
                   <td>{{(price.extraPrice) | currency}} {{price.currency}}</td>
                 </tr>
                 <tr>
