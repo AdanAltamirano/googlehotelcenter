@@ -1040,16 +1040,16 @@ Partial Class AvailabilityRestrictions
                     If txtStartDate > rowStartDate Then
                         copyrowRP(.Rows(i), .Rows(i), rowStartDate, txtStartDate.AddDays(-1), dstrans, False)
                         If txtEndDate >= rowEndDate Then
-                            copyrowRP(.Rows(i), modrow, txtStartDate, rowEndDate, dstrans, False)
+                            copyrowRP(.Rows(i), modrow, txtStartDate, rowEndDate, dstrans, False, applyModRowWeek:=True)
                         Else
-                            copyrowRP(.Rows(i), modrow, txtStartDate, txtEndDate, dstrans, False)
+                            copyrowRP(.Rows(i), modrow, txtStartDate, txtEndDate, dstrans, False, applyModRowWeek:=True)
                             copyrowRP(.Rows(i), .Rows(i), txtEndDate.AddDays(1), rowEndDate, dstrans, False)
                         End If
                     Else
                         If txtEndDate >= rowEndDate Then
-                            copyrowRP(.Rows(i), modrow, rowStartDate, rowEndDate, dstrans, False)
+                            copyrowRP(.Rows(i), modrow, rowStartDate, rowEndDate, dstrans, False, applyModRowWeek:=True)
                         Else
-                            copyrowRP(.Rows(i), modrow, rowStartDate, txtEndDate, dstrans, False)
+                            copyrowRP(.Rows(i), modrow, rowStartDate, txtEndDate, dstrans, False, applyModRowWeek:=True)
                             copyrowRP(.Rows(i), .Rows(i), txtEndDate.AddDays(1), rowEndDate, dstrans, False)
                         End If
                     End If
@@ -1073,14 +1073,14 @@ Partial Class AvailabilityRestrictions
                 rowEndDate = CDate(rows(i).Item(ds.FIELD_EndDate))
 
                 If progresDate < rowStartDate AndAlso rows(i).RowState <> DataRowState.Deleted Then
-                    copyrowRP(modrow, modrow, progresDate, rowStartDate.AddDays(-1), dstrans, False)
+                    copyrowRP(modrow, modrow, progresDate, rowStartDate.AddDays(-1), dstrans, False, applyModRowWeek:=True)
                 End If
 
                 progresDate = rowEndDate.AddDays(1)
             Next
 
             If progresDate <= txtEndDate Then
-                copyrowRP(modrow, modrow, progresDate, txtEndDate, dstrans, False)
+                copyrowRP(modrow, modrow, progresDate, txtEndDate, dstrans, False, applyModRowWeek:=True)
             End If
 
             rows = dstrans.Tables(ds.TABLE_LockRatePlan).Select("", ds.FIELD_StartDate & " asc")
@@ -1095,7 +1095,7 @@ Partial Class AvailabilityRestrictions
 
             Next
         Else
-            copyrowRP(modrow, modrow, CDate(Me.txtInicio.Text), CDate(Me.txtFinal.Text), dstrans, False)
+            copyrowRP(modrow, modrow, CDate(Me.txtInicio.Text), CDate(Me.txtFinal.Text), dstrans, False, applyModRowWeek:=True)
 
         End If
       
@@ -1539,7 +1539,7 @@ Partial Class AvailabilityRestrictions
             And row1(clsCommonAvailibilityGral.FIELD_CancelPriorSpecificT).Equals(row2(clsCommonAvailibilityGral.FIELD_CancelPriorSpecificT))
 
     End Function
-    Private Function copyrowRP(ByVal row As DataRow, ByVal modrow As DataRow, ByVal fechainicio As DateTime, ByVal fechafinal As DateTime, ByVal cAva As lockRatePlanData, ByVal borrado As Boolean)
+    Private Function copyrowRP(ByVal row As DataRow, ByVal modrow As DataRow, ByVal fechainicio As DateTime, ByVal fechafinal As DateTime, ByVal cAva As lockRatePlanData, ByVal borrado As Boolean, Optional ByVal applyModRowWeek As Boolean = False)
         Dim newrow As DataRow
         newrow = cAva.Tables(cAva.TABLE_LockRatePlan).NewRow
         With newrow
@@ -1548,7 +1548,7 @@ Partial Class AvailabilityRestrictions
             .Item(cAva.FIELD_EndDate) = fechafinal
             .Item(cAva.FIELD_StatusAvailability) = IIf(chkEstatus.Checked, modrow.Item(cAva.FIELD_StatusAvailability), row.Item(cAva.FIELD_StatusAvailability))
             .Item(cAva.FIELD_RatePlan) = row.Item(cAva.FIELD_RatePlan)
-            .Item(cAva.FIELD_AplyWeek) = row.Item(cAva.FIELD_AplyWeek)
+            .Item(cAva.FIELD_AplyWeek) = IIf(applyModRowWeek, modrow.Item(cAva.FIELD_AplyWeek), row.Item(cAva.FIELD_AplyWeek))
             .Item(cAva.FIELD_MinDias) = IIf(chkMindays.Checked, modrow.Item(cAva.FIELD_MinDias), row.Item(cAva.FIELD_MinDias))
             .Item(cAva.FIELD_MaxDias) = IIf(chkMaxDays.Checked, modrow.Item(cAva.FIELD_MaxDias), row.Item(cAva.FIELD_MaxDias))
 
