@@ -7990,7 +7990,7 @@
     <value>Reserved by dinero mail</value>
   </data>
   <data name="01391" xml:space="preserve">
-    <value>Reserved by bank deposit ({0}) &lt;br&gt; Refence: {1} &lt;br&gt; Amount: {2}</value>
+    <value>Reserved by bank deposit ({0}) &lt;br&gt; Refence: {1} &lt;br&gt; Total debt to pay: {2}</value>
   </data>
   <data name="01392" xml:space="preserve">
     <value>The content shown in this section has been recently modified; these modifications will be shown in the booking engines when the Univisit supervisor publishes them.</value>
@@ -8876,5 +8876,14 @@
   </data>
   <data name="01662" xml:space="preserve">
     <value>Delete Selected Rates</value>
+  </data>
+  <data name="01529" xml:space="preserve">
+    <value>not guaranteed</value>
+  </data>
+  <data name="01663" xml:space="preserve">
+    <value>Total debt to pay</value>
+  </data>
+  <data name="01664" xml:space="preserve">
+    <value>Reserved by bank deposit ({0}) &lt;br&gt; Refence: {1} &lt;br&gt; Total deposited:{2} &lt;br&gt; Total debt to pay: {3}</value>
   </data>
 </root>

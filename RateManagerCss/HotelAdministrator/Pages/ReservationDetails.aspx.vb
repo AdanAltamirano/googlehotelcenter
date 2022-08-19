@@ -51,6 +51,8 @@ Partial Class ReservationDetails
     Private isNR As Boolean = False
     Private canSeeCArds As Boolean = False
     Dim CancelNumber As String
+    Private amountDebt As Double = 0
+    Private totalDeposit As Double = 0
 
     Public Enum Columns As Integer
         Cuartos
@@ -120,6 +122,26 @@ Partial Class ReservationDetails
             ViewState("idSegmento") = value
         End Set
     End Property
+
+    Private Property AmountDebtByBankDeposit() As Double
+        Get
+            Return amountDebt
+        End Get
+        Set(ByVal value As Double)
+            amountDebt = value
+        End Set
+    End Property
+
+    Private Property TotalDepositByBankDeposit() As Double
+        Get
+            Return totalDeposit
+        End Get
+        Set(ByVal value As Double)
+            totalDeposit = value
+        End Set
+    End Property
+
+
 
     Private Function decodeCards(ByVal card As tTarjeta) As String
         Select Case card
@@ -954,6 +976,11 @@ Partial Class ReservationDetails
                 'fue reservaci�n por dep�sito 
 
                 If Not dsrs Is Nothing AndAlso dsrs.Tables(0).Rows.Count > 0 Then
+
+                    For Each item As DataRow In dsrs.Tables(0).Rows
+                        TotalDepositByBankDeposit += Convert.ToDouble(item("dep_Monto"))
+                    Next
+
                     lblDeposito.Text = String.Format(PortalCulture.GetString("00811"), FCurrency(dsrs.Tables(0).Rows(0).Item("dep_monto"), 2), Format(dsrs.Tables(0).Rows(0).Item("dep_moneda")))
                     lblDeposito.Visible = True
                 End If
@@ -1029,9 +1056,22 @@ Partial Class ReservationDetails
 
                 'Me.lblpay.Text = String.Format(PortalCulture.GetString("HOTEL000360"), xml.Reservation(0).DepositReference, deposit & " " & xml.Reservation(0).Money) & "<div>" & depositinfo & "</div>"
                 If deposit > 0 Then
-                    Me.lblpay.Text = String.Format(PortalCulture.GetString("01391"),
-                    If(xml.Reservation(0)("DepositTarget").ToString.ToUpper() = "UV", PortalCulture.GetString("01410"), PortalCulture.GetString("01411")),
-                    xml.Reservation(0).DepositReference, "$ " & deposit.ToString("#,###,##0.00") & " ") ' & xml.Reservation(0).Money)
+
+                    AmountDebtByBankDeposit = (deposit - TotalDepositByBankDeposit)
+
+                    Dim _depositTargetResource As String = If(xml.Reservation(0)("DepositTarget").ToString.ToUpper() = "UV", PortalCulture.GetString("01410"), PortalCulture.GetString("01411"))
+                    Dim _depositReference As String = xml.Reservation(0).DepositReference
+                    Dim _totalDepositByBankDeposit As String = "$ " & TotalDepositByBankDeposit.ToString("#,###,##0.00") & " "
+                    Dim _amountDebtByBankDeposit As String = "$ " & AmountDebtByBankDeposit.ToString("#,###,##0.00") & " "
+
+                    Dim arrayResources() As String = {_depositTargetResource, _depositReference, _totalDepositByBankDeposit, _amountDebtByBankDeposit}
+
+                    Me.lblpay.Text = String.Format(PortalCulture.GetString("01664"), arrayResources)
+
+                    'Me.lblpay.Text = String.Format(PortalCulture.GetString("01391"),
+                    'If(xml.Reservation(0)("DepositTarget").ToString.ToUpper() = "UV", PortalCulture.GetString("01410"), PortalCulture.GetString("01411")),
+                    'xml.Reservation(0).DepositReference, "$ " & AmountDebtByBankDeposit.ToString("#,###,##0.00") & " ")
+                    ' & xml.Reservation(0).Money)
                     'Me.lblStatus.Text = PortalCulture.GetString("01393")
                 End If
 

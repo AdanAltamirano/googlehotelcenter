@@ -90,7 +90,7 @@ Partial Class Reservations
             lb.Text = status(CType(e.Item.Cells(Columns.Status).Text, Integer))
 
             If e.Item.Cells(Columns.Status).Text = "1" AndAlso e.Item.Cells(Columns.Guaranteed).Text = "0" AndAlso Not e.Item.Cells(Columns.OnlinePayment).Text = "1" Then
-                lb.Text = lb.Text & " " & PortalCulture.GetString("1529")
+                lb.Text = lb.Text & " " & PortalCulture.GetString("01529")
             End If
 
             If e.Item.Cells(Columns.WizcomPassOn).Text <> "&nbsp;" AndAlso e.Item.Cells(Columns.Status).Text = "1" Then

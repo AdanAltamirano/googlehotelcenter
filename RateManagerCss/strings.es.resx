@@ -7999,7 +7999,7 @@
     <value>Reservado por Dinero Mail</value>
   </data>
   <data name="01391" xml:space="preserve">
-    <value>Reservado por depósito bancario ({0}) &lt;br&gt; Referencia: {1} &lt;br&gt; Monto: {2}</value>
+    <value>Reservado por depósito bancario ({0}) &lt;br&gt; Referencia: {1} &lt;br&gt; Monto pendiente por pagar: {2}</value>
   </data>
   <data name="01392" xml:space="preserve">
     <value>El contenido que aparece en esta sección tiene modificaciones recientes, éstas serán mostradas en los motores de reservación una vez que un supervisor de univisit las publique.</value>
@@ -8882,5 +8882,11 @@
   </data>
   <data name="01662" xml:space="preserve">
     <value>Eliminar Tarifas Seleccionadas</value>
+  </data>
+  <data name="01663" xml:space="preserve">
+    <value>Monto pendiente por pagar</value>
+  </data>
+  <data name="01664" xml:space="preserve">
+    <value>Reservado por depósito bancario ({0}) &lt;br&gt; Referencia: {1} &lt;br&gt; Monto depositado: {2} &lt;br&gt; Monto pendiente por pagar: {3}</value>
   </data>
 </root>

@@ -235,6 +235,7 @@
                             <td></td>
                             <td></td>
                             <td>
+                                <!--  -->
                                 <asp:Literal ID="lblpay" runat="server"></asp:Literal>
                                 <a id="detailObserv" runat="server" href="javascript:;" class="dglink" visible="FALSE">Observaciones</a>
                                 <div id="divObservaciones" style="padding-right: 3px; display: none; padding-left: 3px; padding-bottom: 3px; padding-top: 3px; position: absolute"
@@ -1162,6 +1163,7 @@
                             <td colspan="3"></td>
                         </tr>
                         <tr>
+                            <!-- label deposito -->
                             <td colspan="3">
                                 <asp:Label ID="lblDeposito" runat="server" CssClass="dgpager">Label</asp:Label>
                             </td>
