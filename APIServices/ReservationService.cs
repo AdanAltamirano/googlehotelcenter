@@ -163,10 +163,18 @@ namespace APIServices
                 model.BankDepositDetails = new BankDepositDetails();
                 if (details.paymentType == 0)
                 {
-                    
-                    model.BankDepositDetails.Total = (double)details.depositAmount;
+                    decimal? totalDeposited = details.depositAmount;
+                    double debt = 0;
+                    bool hasDebt = false;
+
+                    debt = Convert.ToDouble((details.total -totalDeposited));
+                    hasDebt = (debt > 0);
+
+                    model.BankDepositDetails.Total = Convert.ToDouble(totalDeposited); //(double)details.depositAmount;
                     model.BankDepositDetails.Currency = details.depositCurrency;
                     model.BankDepositDetails.Reference = details.depositReference;
+                    model.BankDepositDetails.Debt = debt;
+                    model.BankDepositDetails.HasDebt = hasDebt;
                 }
                 model.PolicyDetails = new PolicyDetails()
                 {

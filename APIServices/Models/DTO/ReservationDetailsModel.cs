@@ -119,6 +119,9 @@ namespace APIServices.Models.DTO
         public double Total { get; set; }
         public string Currency { get; set; }
         public string Reference { get; set; }
+        public bool HasDebt { get; set; }
+        public double Debt { get; set; }
+
     }
 
     public class RoomDetails
@@ -187,4 +190,6 @@ namespace APIServices.Models.DTO
         public string Action { get; set; }
         public string ReservationNumber { get; set; }
     }
+
+
 }

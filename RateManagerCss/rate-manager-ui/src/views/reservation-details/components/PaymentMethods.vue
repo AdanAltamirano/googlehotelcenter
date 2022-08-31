@@ -9,8 +9,8 @@
         <!--DEPOSITO BANCARIO-->
         <div v-if="result.paymentWay == 0">
           <address v-if="result.bankDepositDetails">
-            Total:
-            <strong>{{result.bankDepositDetails.total}}&nbsp;{{result.bankDepositDetails.currency}}</strong>
+            {{$t('Total deposited')}}:
+            <strong>{{result.bankDepositDetails.total | currency}}&nbsp;{{result.bankDepositDetails.currency}}</strong>
             <br />
             {{$t('Reference')}}:
             <strong>{{result.bankDepositDetails.reference}}</strong>

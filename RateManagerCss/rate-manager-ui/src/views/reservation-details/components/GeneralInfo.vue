@@ -32,6 +32,9 @@
                         {{$t('Reservation number')}}: <strong>{{result.reservationNumber}}</strong>
                         <br>
                         {{$t('Source')}}: <strong>{{result.portal}}</strong>
+                        <div v-if="result.paymentWay === 0 && result.bankDepositDetails.hasDebt" class="alert alert-warning">
+                            <span>{{$t('Total debt')}}: <strong>{{result.bankDepositDetails.debt | currency}} {{result.bankDepositDetails.currency}}</strong></span>
+                        </div>
                         <span v-if="result.status == 3 && result.cancellationReason != ''">
                             <br>
                             {{$t('Cancellation number')}}: <strong>{{result.cancellationNumber}}</strong>

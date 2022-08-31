@@ -105,5 +105,7 @@ export default {
     'Print' : 'Imprimir',
     'Extra Occupation': 'Ocupacion Extra',
     'Price per night extre person(s)' : 'Precio por noche persona(s) extra',
-    'Taxes Hotel' : 'Impuestos Hotel'
-};
+    'Taxes Hotel' : 'Impuestos Hotel',
+    'Total debt' : 'Monto pendiente por pagar',
+    'Total deposited' : 'Total depositado'
+}
