@@ -47,7 +47,11 @@ export default {
     'Price per night': 'Precio por noche',
     Occupation: 'Ocupación',
     'Adult(s)': 'Adulto(s)',
+    'Extra Adult(s)': 'Adulto(s) Extra',
     Children: 'Niño(s)',
+    'Extra Children': 'Niño(s) Extra',
+    'Children Age' : 'Edades Niño(s)',
+    'The ages are separated by comma (s)' : 'Las edades van separadas por coma(s)',
     'Rate plan': 'Plan tarifario',
     Preferences: 'Preferencias',
     'Waiting to be confirmed': 'En espera por confirmar',
@@ -107,5 +111,18 @@ export default {
     'Price per night extre person(s)' : 'Precio por noche persona(s) extra',
     'Taxes Hotel' : 'Impuestos Hotel',
     'Total debt' : 'Monto pendiente por pagar',
-    'Total deposited' : 'Total depositado'
+    'Total deposited' : 'Total depositado',
+    'Rates per day summary' : 'Resumen de tarifa por noche',
+    'Rates dates can not overlap' : 'Las fechas de tarifas por noche no deben traslaparse',
+    'Add New Rate': 'Agregar Nueva Tarifa',
+    'Price' : 'Precio',
+    'Extra Price' : 'Precio Extra',
+    'Price NR' : 'Precio NR',
+    'Extra Price NR' : 'Precio Extra NR',
+    'Add Rate' : 'Agregar Tarifa',
+    'Remove Rate' : 'Remover Tarifa',
+    'Reservation dates and rooms rates dates does not match' : 'La fecha de reservación y la fecha de las tarifas de las habitaciones no coinciden',
+    'All rooms must has rates' : 'Todas las habitaciones deben de tener tarifas',
+    'Until two decimal places' : 'Hasta dos decimales'
+
 }

@@ -126,6 +126,8 @@ namespace APIServices.Models.DTO
 
     public class RoomDetails
     {
+        public int ReservationId { get; set; }
+        public int RoomPriceId { get; set; }
         public string RoomCode { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
@@ -144,6 +146,7 @@ namespace APIServices.Models.DTO
         public double TotalNR { get; set; }
         public string Img { get; set; }
         public string ImgDefault { get; set; }
+        public int NetRateContract { get; set; }
         public string Currency { get; set; }
         public string CustomerName { get; set; }
         public string CustomerLastName { get; set; }
@@ -153,6 +156,7 @@ namespace APIServices.Models.DTO
 
     public class RoomPriceDetails
     {
+        public int RoomPriceId { get; set; }
         public double Price { get; set; }
         public double ExtraPrice { get; set; }
         public double PriceNR { get; set; }

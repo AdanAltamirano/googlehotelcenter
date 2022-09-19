@@ -22,6 +22,7 @@
 import ReservationService from "../../../api/reservation-service";
 import Vue from "vue";
 import Modify from "./Modify.vue";
+import ModificationForm from "../helper/modificationForm";
 import ModificationTemplate from "./Email/ModificationTemplate.vue"
 export default {
   props: {
@@ -52,7 +53,8 @@ export default {
           checkOut: this.$moment(this.result.checkOut),
           total: this.result.totalDetails.total,
           totalNR: this.result.totalDetails.totalNR,
-          showTotalNR: true,
+          showTotalNR: this.result.isNetRateUV,
+          roomDetails:this.result.roomDetails,
           details : ''
         }
       });
@@ -62,6 +64,8 @@ export default {
       this.$swal
         .fire({
           customClass:{
+            container: 'swal2-container-custom',
+            popup:'swal2-custom-popup',
             actions:'swal3-actions'
           },
           title: self.$t("Modify reservation"),
@@ -80,6 +84,35 @@ export default {
               .append(instance.$el);
           },
           preConfirm: () => {
+
+            const _checkIn = self.getElement("checkin", true).split('/').map(number => { return parseInt(number); }); 
+            const _checkOut = self.getElement("checkout", true).split('/').map(number => { return parseInt(number); });
+
+            let [dayCheckIn, monthCheckIn, yearCheckIn] = _checkIn;
+            let [dayCheckOut, monthCheckOut, yearCheckOut] = _checkOut;
+
+            const form = new ModificationForm( new Date(yearCheckIn, monthCheckIn - 1, dayCheckIn),
+                                               new Date(yearCheckOut, monthCheckOut - 1, dayCheckOut), 
+                                               instance.roomsDetails, instance.statesChangesRoomsRates);
+            
+            const error = form.validate();
+            console.log(error);
+
+            if(error.hasErrors)
+            {
+              return {
+                value:true,
+                response:{
+                  isSuccess:false,
+                  modifyTags:req,
+                  error:error
+                }
+              }
+            }
+
+            const roomsDetails = form.getRoomsDetails();
+
+
             let req = {
               name: self.getElement("name"),
               lastName: self.getElement("lastname"),
@@ -87,7 +120,9 @@ export default {
               checkOut: self.dateFormat(self.getElement("checkout", true)),
               total: parseFloat(self.getElement("total")),
               totalNR: parseFloat(self.getElement("totalnr")),
-              details: self.getElement("details")
+              roomsDetails: roomsDetails,
+              details: self.getElement("details"),
+
             };
           
             return ReservationService.ReservationUpdate(
@@ -146,10 +181,21 @@ export default {
                       window.location.reload();
                     }
                   })
-            } else
+            } else {
+
+              let list = '';
+
+              if(v.error.hasErrors) {
+                  v.error.errors.forEach(x => {
+                      list += `<div class="list-group-item border-0 p-1">- ${x}</div>`;
+                  });
+              }
+
               this.$swal.fire(
-                self.error(self.$t("Failed to modify the reservation"), v.error)
+                self.errorList(self.$t("Failed to modify the reservation"),list)
               );
+            }
+
           }
         });
     },
@@ -292,9 +338,19 @@ export default {
              }
              else
              {
-               this.$swal.fire(
-                self.error(self.$t("Failed to reactivate the reservation"), v.error)
-              );
+
+                let list = '';
+
+                if(v.error.hasErrors) {
+                    v.error.errors.forEach(x => {
+                        list += `<div class="list-group-item border-0 p-1">- ${x}</div>`;
+                    });
+                }
+
+                this.$swal.fire(
+                  self.errorList(self.$t("Failed to modify the reservation"),list)
+                );
+
              }
           }
         })
@@ -317,6 +373,17 @@ export default {
         text: message,
         showConfirmButton: false
       };
+    },
+    errorList(title,list) {
+      return {
+        type: "error",
+        title: title,
+        html: `
+          <div class="list-group">${list}</div>
+        `,
+        showCloseButton: true,
+        showConfirmButton: false
+      }
     },
     dateFormat(date) {
       date = date.split("/");

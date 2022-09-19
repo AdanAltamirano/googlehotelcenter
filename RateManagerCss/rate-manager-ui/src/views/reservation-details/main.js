@@ -6,6 +6,7 @@ import Loading from 'vue-loading-overlay';
 import BootstrapVue from 'bootstrap-vue';
 import '../../core/app.settings';
 import VueMoment from 'vue-moment';
+import VTooltip from 'v-tooltip'
 import VCalendar from 'v-calendar';
 import VueCurrencyFilter from 'vue-currency-filter';
 import locale from '../../core/localization';
@@ -17,7 +18,9 @@ import './styles/custom.scss';
 
 Vue.use(BootstrapVue);
 Vue.use(VueSweetalert2);
-locale([{ language: 'es', localeFile: es }], moment, false);
+Vue.use(Loading);
+Vue.use(VCalendar);
+Vue.use(VTooltip);
 Vue.use(VueMoment, {
     moment,
 });
@@ -29,8 +32,8 @@ Vue.use(VueCurrencyFilter, {
     symbolPosition: 'front',
     symbolSpacing: false,
 });
-Vue.use(Loading);
-Vue.use(VCalendar);
+
+locale([{ language: 'es', localeFile: es }], moment, false);
 
 new Vue({
     render: h => h(View)

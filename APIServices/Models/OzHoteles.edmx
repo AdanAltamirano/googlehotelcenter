@@ -786,8 +786,6 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vReservation' no tiene definid
           <Property Name="CorporateId" Type="int" />
         </EntityType>
         <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'OzHoteles.dbo.vReservationDeposits' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
-        <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'OzHoteles.dbo.vReservationDetails' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vReservationDetails">
           <Key>
@@ -905,6 +903,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vReservationRoomDetails' no ti
             <PropertyRef Name="adults" />
             <PropertyRef Name="childrens" />
             <PropertyRef Name="ageChildren" />
+            <PropertyRef Name="netRateContract" />
           </Key>
           <Property Name="roomTypeId" Type="int" />
           <Property Name="reservationId" Type="int" Nullable="false" />
@@ -924,6 +923,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vReservationRoomDetails' no ti
           <Property Name="roomCheckOut" Type="smalldatetime" />
           <Property Name="ratePlan" Type="nvarchar" MaxLength="80" />
           <Property Name="rateCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="netRateContract" Type="int" Nullable="false" />
           <Property Name="currency" Type="nvarchar" MaxLength="3" />
           <Property Name="ratePlanPromotion" Type="nvarchar" MaxLength="4" />
           <Property Name="namePromotion" Type="nvarchar" MaxLength="4000" />
@@ -1034,6 +1034,29 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <Parameter Name="corporateId" Type="int" Mode="In" />
           <Parameter Name="ratePlanF2G" Type="nchar" Mode="In" />
           <Parameter Name="promoCode" Type="nchar" Mode="In" />
+        </Function>
+        <Function Name="spAgregarDetalleTarifasReservaciones" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idDetalleReservacion" Type="int" Mode="In" />
+          <Parameter Name="idTarifa" Type="int" Mode="In" />
+          <Parameter Name="Precio" Type="smallmoney" Mode="In" />
+          <Parameter Name="PrecioExtra" Type="smallmoney" Mode="In" />
+          <Parameter Name="PrecioNR" Type="smallmoney" Mode="In" />
+          <Parameter Name="PrecioExtraNR" Type="smallmoney" Mode="In" />
+          <Parameter Name="Moneda" Type="nvarchar" Mode="In" />
+          <Parameter Name="Inicio" Type="smalldatetime" Mode="In" />
+          <Parameter Name="Fin" Type="smalldatetime" Mode="In" />
+        </Function>
+        <Function Name="spEliminarDetalleTarifasReservaciones" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idDetalleReservacion" Type="int" Mode="In" />
+        </Function>
+        <Function Name="spModificarDetalleReservaciones" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idDetalleReservacion" Type="int" Mode="In" />
+          <Parameter Name="idReservacion" Type="int" Mode="In" />
+          <Parameter Name="Adultos" Type="tinyint" Mode="In" />
+          <Parameter Name="Ninios" Type="tinyint" Mode="In" />
+          <Parameter Name="AdultosExtras" Type="tinyint" Mode="In" />
+          <Parameter Name="NiniosExtras" Type="tinyint" Mode="In" />
+          <Parameter Name="EdadesNinios" Type="nvarchar" Mode="In" />
         </Function>
         <Function Name="spModificarReservacionByid" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="idReservacion" Type="int" Mode="In" />
@@ -1389,6 +1412,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
     [vReservationRoomDetails].[roomCheckOut] AS [roomCheckOut], 
     [vReservationRoomDetails].[ratePlan] AS [ratePlan], 
     [vReservationRoomDetails].[rateCode] AS [rateCode], 
+    [vReservationRoomDetails].[netRateContract] AS [netRateContract], 
     [vReservationRoomDetails].[currency] AS [currency], 
     [vReservationRoomDetails].[ratePlanPromotion] AS [ratePlanPromotion], 
     [vReservationRoomDetails].[namePromotion] AS [namePromotion]
@@ -1541,6 +1565,29 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <EntitySet Name="vPromotions" EntityType="Models.vPromotions" />
           <EntitySet Name="VReservationRoomPriceDetails" EntityType="Models.VReservationRoomPriceDetails" />
           <EntitySet Name="vHotelPlan" EntityType="Models.vHotelPlan" />
+          <FunctionImport Name="spAgregarDetalleTarifasReservaciones">
+            <Parameter Name="idDetalleReservacion" Mode="In" Type="Int32" />
+            <Parameter Name="idTarifa" Mode="In" Type="Int32" />
+            <Parameter Name="Precio" Mode="In" Type="Decimal" />
+            <Parameter Name="PrecioExtra" Mode="In" Type="Decimal" />
+            <Parameter Name="PrecioNR" Mode="In" Type="Decimal" />
+            <Parameter Name="PrecioExtraNR" Mode="In" Type="Decimal" />
+            <Parameter Name="Moneda" Mode="In" Type="String" />
+            <Parameter Name="Inicio" Mode="In" Type="DateTime" />
+            <Parameter Name="Fin" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="spEliminarDetalleTarifasReservaciones">
+          <Parameter Name="idDetalleReservacion" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="spModificarDetalleReservaciones">
+            <Parameter Name="idDetalleReservacion" Mode="In" Type="Int32" />
+            <Parameter Name="idReservacion" Mode="In" Type="Int32" />
+            <Parameter Name="Adultos" Mode="In" Type="Byte" />
+            <Parameter Name="Ninios" Mode="In" Type="Byte" />
+            <Parameter Name="AdultosExtras" Mode="In" Type="Byte" />
+            <Parameter Name="NiniosExtras" Mode="In" Type="Byte" />
+            <Parameter Name="EdadesNinios" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="RatesPlan">
           <Key>
@@ -2447,6 +2494,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
             <PropertyRef Name="adults" />
             <PropertyRef Name="childrens" />
             <PropertyRef Name="ageChildren" />
+            <PropertyRef Name="netRateContract" />
           </Key>
           <Property Name="roomTypeId" Type="Int32" />
           <Property Name="reservationId" Type="Int32" Nullable="false" />
@@ -2469,6 +2517,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <Property Name="currency" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
           <Property Name="ratePlanPromotion" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
           <Property Name="namePromotion" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="netRateContract" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="vReservationDetails">
           <Key>
@@ -3499,6 +3548,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <EntitySetMapping Name="vReservationRoomDetails">
             <EntityTypeMapping TypeName="Models.vReservationRoomDetails">
               <MappingFragment StoreEntitySet="vReservationRoomDetails">
+                <ScalarProperty Name="netRateContract" ColumnName="netRateContract" />
                 <ScalarProperty Name="namePromotion" ColumnName="namePromotion" />
                 <ScalarProperty Name="ratePlanPromotion" ColumnName="ratePlanPromotion" />
                 <ScalarProperty Name="currency" ColumnName="currency" />
@@ -3690,6 +3740,9 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spAgregarDetalleTarifasReservaciones" FunctionName="Models.Store.spAgregarDetalleTarifasReservaciones" />
+          <FunctionImportMapping FunctionImportName="spEliminarDetalleTarifasReservaciones" FunctionName="Models.Store.spEliminarDetalleTarifasReservaciones" />
+          <FunctionImportMapping FunctionImportName="spModificarDetalleReservaciones" FunctionName="Models.Store.spModificarDetalleReservaciones" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

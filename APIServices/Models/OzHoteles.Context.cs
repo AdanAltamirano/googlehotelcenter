@@ -223,5 +223,88 @@ namespace APIServices.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spReservationReactive_Result>("spReservationReactive", noReservacionParameter, rmParameter);
         }
+    
+        public virtual int spAgregarDetalleTarifasReservaciones(Nullable<int> idDetalleReservacion, Nullable<int> idTarifa, Nullable<decimal> precio, Nullable<decimal> precioExtra, Nullable<decimal> precioNR, Nullable<decimal> precioExtraNR, string moneda, Nullable<System.DateTime> inicio, Nullable<System.DateTime> fin)
+        {
+            var idDetalleReservacionParameter = idDetalleReservacion.HasValue ?
+                new ObjectParameter("idDetalleReservacion", idDetalleReservacion) :
+                new ObjectParameter("idDetalleReservacion", typeof(int));
+    
+            var idTarifaParameter = idTarifa.HasValue ?
+                new ObjectParameter("idTarifa", idTarifa) :
+                new ObjectParameter("idTarifa", typeof(int));
+    
+            var precioParameter = precio.HasValue ?
+                new ObjectParameter("Precio", precio) :
+                new ObjectParameter("Precio", typeof(decimal));
+    
+            var precioExtraParameter = precioExtra.HasValue ?
+                new ObjectParameter("PrecioExtra", precioExtra) :
+                new ObjectParameter("PrecioExtra", typeof(decimal));
+    
+            var precioNRParameter = precioNR.HasValue ?
+                new ObjectParameter("PrecioNR", precioNR) :
+                new ObjectParameter("PrecioNR", typeof(decimal));
+    
+            var precioExtraNRParameter = precioExtraNR.HasValue ?
+                new ObjectParameter("PrecioExtraNR", precioExtraNR) :
+                new ObjectParameter("PrecioExtraNR", typeof(decimal));
+    
+            var monedaParameter = moneda != null ?
+                new ObjectParameter("Moneda", moneda) :
+                new ObjectParameter("Moneda", typeof(string));
+    
+            var inicioParameter = inicio.HasValue ?
+                new ObjectParameter("Inicio", inicio) :
+                new ObjectParameter("Inicio", typeof(System.DateTime));
+    
+            var finParameter = fin.HasValue ?
+                new ObjectParameter("Fin", fin) :
+                new ObjectParameter("Fin", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spAgregarDetalleTarifasReservaciones", idDetalleReservacionParameter, idTarifaParameter, precioParameter, precioExtraParameter, precioNRParameter, precioExtraNRParameter, monedaParameter, inicioParameter, finParameter);
+        }
+    
+        public virtual int spEliminarDetalleTarifasReservaciones(Nullable<int> idDetalleReservacion)
+        {
+            var idDetalleReservacionParameter = idDetalleReservacion.HasValue ?
+                new ObjectParameter("idDetalleReservacion", idDetalleReservacion) :
+                new ObjectParameter("idDetalleReservacion", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spEliminarDetalleTarifasReservaciones", idDetalleReservacionParameter);
+        }
+    
+        public virtual int spModificarDetalleReservaciones(Nullable<int> idDetalleReservacion, Nullable<int> idReservacion, Nullable<byte> adultos, Nullable<byte> ninios, Nullable<byte> adultosExtras, Nullable<byte> niniosExtras, string edadesNinios)
+        {
+            var idDetalleReservacionParameter = idDetalleReservacion.HasValue ?
+                new ObjectParameter("idDetalleReservacion", idDetalleReservacion) :
+                new ObjectParameter("idDetalleReservacion", typeof(int));
+    
+            var idReservacionParameter = idReservacion.HasValue ?
+                new ObjectParameter("idReservacion", idReservacion) :
+                new ObjectParameter("idReservacion", typeof(int));
+    
+            var adultosParameter = adultos.HasValue ?
+                new ObjectParameter("Adultos", adultos) :
+                new ObjectParameter("Adultos", typeof(byte));
+    
+            var niniosParameter = ninios.HasValue ?
+                new ObjectParameter("Ninios", ninios) :
+                new ObjectParameter("Ninios", typeof(byte));
+    
+            var adultosExtrasParameter = adultosExtras.HasValue ?
+                new ObjectParameter("AdultosExtras", adultosExtras) :
+                new ObjectParameter("AdultosExtras", typeof(byte));
+    
+            var niniosExtrasParameter = niniosExtras.HasValue ?
+                new ObjectParameter("NiniosExtras", niniosExtras) :
+                new ObjectParameter("NiniosExtras", typeof(byte));
+    
+            var edadesNiniosParameter = edadesNinios != null ?
+                new ObjectParameter("EdadesNinios", edadesNinios) :
+                new ObjectParameter("EdadesNinios", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spModificarDetalleReservaciones", idDetalleReservacionParameter, idReservacionParameter, adultosParameter, niniosParameter, adultosExtrasParameter, niniosExtrasParameter, edadesNiniosParameter);
+        }
     }
 }
