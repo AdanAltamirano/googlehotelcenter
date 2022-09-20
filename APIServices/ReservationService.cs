@@ -567,10 +567,10 @@ namespace APIServices
                                 decimal priceNR = Convert.ToDecimal(priceDetail.PriceNR.ToString("0.00"));
                                 decimal extraPriceNR = Convert.ToDecimal(priceDetail.ExtraPriceNR.ToString("0.00"));
 
-                                decimal priceRateDetail = plusTax ? PriceWithoutTax(price, tax) : price;
-                                decimal extraPriceRateDetail = plusTax ? PriceWithoutTax(extraPrice, tax) : extraPrice;
-                                decimal priceNRRateDetail = plusTax ? PriceWithoutTax(priceNR, tax) : priceNR;
-                                decimal extraPriceNRRateDetail = plusTax ? PriceWithoutTax(extraPriceNR, tax) : extraPriceNR;
+                                decimal priceRateDetail = !plusTax ? PriceWithoutTax(price, tax) : price;
+                                decimal extraPriceRateDetail = !plusTax ? PriceWithoutTax(extraPrice, tax) : extraPrice;
+                                decimal priceNRRateDetail = !plusTax ? PriceWithoutTax(priceNR, tax) : priceNR;
+                                decimal extraPriceNRRateDetail = !plusTax ? PriceWithoutTax(extraPriceNR, tax) : extraPriceNR;
                                 string currencyPriceRateDetail = priceDetail.Currency ?? "MXN";
 
                                 dbContext.spAgregarDetalleTarifasReservaciones(priceDetail.RoomPriceId, 0, priceRateDetail, extraPriceRateDetail, priceNRRateDetail, extraPriceNRRateDetail, currencyPriceRateDetail, priceDetail.CheckIn.Date, priceDetail.CheckOut.Date);
