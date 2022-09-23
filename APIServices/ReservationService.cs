@@ -167,7 +167,7 @@ namespace APIServices
                     double debt = 0;
                     bool hasDebt = false;
 
-                    debt = Convert.ToDouble((details.total -totalDeposited));
+                    debt = Convert.ToDouble((details.amountTotal -totalDeposited));
                     hasDebt = (debt > 0);
 
                     model.BankDepositDetails.Total = Convert.ToDouble(totalDeposited); //(double)details.depositAmount;

@@ -51,6 +51,7 @@ namespace APIServices.Models
         public string cardExpYear { get; set; }
         public string cardCvv { get; set; }
         public string cardCustomerName { get; set; }
+        public decimal amountTotal { get; set; }
         public decimal depositAmount { get; set; }
         public string depositCurrency { get; set; }
         public string depositReference { get; set; }
