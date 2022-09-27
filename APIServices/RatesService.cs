@@ -121,7 +121,8 @@ namespace APIServices
                    r.HotelId == hotelId
                    && r.StartDate <= endDate
                    && r.EndDate >= startDate
-                   && r.Language == language);
+                   && r.Language == language
+                   && r.EndDate >= r.StartDate);
 
                 if (roomId != null)
                     query = query.Where(r => r.RoomId == roomId);
