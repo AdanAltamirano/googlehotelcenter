@@ -1,5 +1,7 @@
 ﻿using APIServices.Models;
 using APIServices.Models.DTO;
+using APIServices.Models.DTO.Reservation.Deposit.Request;
+using APIServices.Models.DTO.Reservation.Deposit.Response;
 using PortalLibraries;
 using System;
 using System.Collections.Generic;
@@ -601,6 +603,45 @@ namespace APIServices
         }
 
         #endregion
+
+
+        #region deposito
+            
+        public ReservationDepositResponse DepositUpdate(ReservationDepositDTO depositDTO)
+        {
+            ReservationDepositResponse response = new ReservationDepositResponse();
+            
+            using (DbContextTransaction transaction = dbContext.Database.BeginTransaction())
+            {
+                try
+                {
+
+                    dbContext.spReservationsByDeposit_Update(depositDTO.ReservationId, depositDTO.NumberAccount, depositDTO.Bank,
+                        Convert.ToDecimal(depositDTO.Amount), depositDTO.Currency, depositDTO.DepositDate.Date, depositDTO.Details, depositDTO.UserId);
+
+                    dbContext.spReservationUpdateStatus(depositDTO.ReservationId, 1);
+
+                    dbContext.spReservationConfirmPaymentRequest(depositDTO.ReservationId.ToString(), depositDTO.Reference, depositDTO.AuthorizationNumber);
+
+                    transaction.Commit();
+
+                    response.IsSuccess = true;
+
+                }
+                catch(Exception ex)
+                {
+                    transaction.Rollback();
+
+                    response.IsSuccess = false;
+                } 
+            }
+
+            return response;
+        }
+
+
+        #endregion
+
 
         #region obtener template del correo
         public string GetTemplate(ReservationDetailsModel reservationDetails,string logoUrl)

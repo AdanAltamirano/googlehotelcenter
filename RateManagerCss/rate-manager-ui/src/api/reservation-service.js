@@ -7,6 +7,7 @@ Vue.http.interceptors.push(Interceptor);
 
 const reservationList = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations{?filter,orderBy,pageSize,page}`);
 const reservationDetails = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations/{reservationId}/{patch}`);
+const reservationDeposit = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations/{reservationId}/deposit`);
 const creditcard = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations/{reservationId}/creditcard/{code}`);
 const sendNotification = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations/{reservationId}/sendnotification`);
 const excel = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations/excel{?filter,orderBy,pageSize,page}`);
@@ -57,6 +58,11 @@ export default {
             },
             request
         );
+    },
+    ReservationDeposit(reservationId, request) {
+        return reservationDeposit.save({
+            reservationId
+        }, request);
     },
     SendNotification(reservationId) {
         return sendNotification.get({

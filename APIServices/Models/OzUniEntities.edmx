@@ -31,6 +31,19 @@
           <Property Name="Distancia" Type="decimal" Precision="18" Scale="2" />
           <Property Name="RatioSearch" Type="int" />
         </EntityType>
+        <EntityType Name="Monedas">
+          <Key>
+            <PropertyRef Name="idMoneda" />
+          </Key>
+          <Property Name="idMoneda" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="Signo" Type="nvarchar" MaxLength="2" />
+          <Property Name="Abreviatura" Type="nvarchar" MaxLength="6" />
+          <Property Name="Codigo" Type="nvarchar" MaxLength="3" />
+          <Property Name="TipoCambio" Type="money" />
+          <Property Name="IdDiccionario" Type="int" />
+          <Property Name="FechaActualizacion" Type="datetime" />
+        </EntityType>
         <EntityType Name="Portales">
           <Key>
             <PropertyRef Name="IdPortal" />
@@ -52,6 +65,7 @@
         <EntityContainer Name="OzUniModelStoreContainer">
           <EntitySet Name="AplicacionPortal" EntityType="Self.AplicacionPortal" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Ciudades" EntityType="Self.Ciudades" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Monedas" EntityType="Self.Monedas" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Portales" EntityType="Self.Portales" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -78,8 +92,9 @@
           <EntitySet Name="AplicacionPortal" EntityType="OzUniModel.AplicacionPortal" />
           <EntitySet Name="Ciudades" EntityType="OzUniModel.Ciudades" />
           <FunctionImport Name="GetHotelsByCorporateId" ReturnType="Collection(OzUniModel.GetHotelsByCorporateId_Result)">
-            <Parameter Name="corporateId" Mode="In" Type="Int32" />
+          <Parameter Name="corporateId" Mode="In" Type="Int32" />
           </FunctionImport>
+          <EntitySet Name="Monedas" EntityType="OzUniModel.Moneda" />
         </EntityContainer>
         <EntityType Name="AplicacionPortal">
           <Key>
@@ -113,6 +128,19 @@
           <Property Type="Int32" Name="idHotel" Nullable="false" />
           <Property Type="Int32" Name="idCorporativo" Nullable="true" />
         </ComplexType>
+        <EntityType Name="Moneda">
+          <Key>
+            <PropertyRef Name="idMoneda" />
+          </Key>
+          <Property Name="idMoneda" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="Signo" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="Abreviatura" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
+          <Property Name="Codigo" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="TipoCambio" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="IdDiccionario" Type="Int32" />
+          <Property Name="FechaActualizacion" Type="DateTime" Precision="3" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -173,6 +201,20 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="Monedas">
+            <EntityTypeMapping TypeName="OzUniModel.Moneda">
+              <MappingFragment StoreEntitySet="Monedas">
+                <ScalarProperty Name="FechaActualizacion" ColumnName="FechaActualizacion" />
+                <ScalarProperty Name="IdDiccionario" ColumnName="IdDiccionario" />
+                <ScalarProperty Name="TipoCambio" ColumnName="TipoCambio" />
+                <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+                <ScalarProperty Name="Abreviatura" ColumnName="Abreviatura" />
+                <ScalarProperty Name="Signo" ColumnName="Signo" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="idMoneda" ColumnName="idMoneda" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

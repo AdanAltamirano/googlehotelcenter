@@ -12,8 +12,16 @@ const rates = Vue.resource(`${process.env.VUE_APP_API_URL}/config/rates/{id}`);
 const corporates = Vue.resource(`${process.env.VUE_APP_API_URL}/portal/coorp`)
 const createCorporate = Vue.resource(`${process.env.VUE_APP_API_URL}/portal/coorp`);
 const createPortals = Vue.resource(`${process.env.VUE_APP_API_URL}/portal/portals`);
+const currencies = Vue.resource(`${process.env.VUE_APP_API_URL}/currencies`);
 
 export default {
+    /**
+     * 
+     * @returns  A list of currencies
+     */
+    GetCurrencies() {
+        return currencies.get();
+    },
     /**
      *
      * @param {Number} hotelId

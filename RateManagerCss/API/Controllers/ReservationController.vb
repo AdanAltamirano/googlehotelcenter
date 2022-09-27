@@ -11,6 +11,9 @@ Imports System.IO
 Imports System.Linq
 Imports APIServices.Utilities
 Imports APIServices.Models.DTO
+Imports APIServices.Models.DTO.Reservation.Deposit.Request
+Imports APIServices.Models.DTO.Reservation.Deposit.Response
+Imports RateManager.Utitlities.Email
 Imports System.Threading
 
 Namespace API.Controller
@@ -296,6 +299,24 @@ Namespace API.Controller
 
             Return result
         End Function
+
+        'POST api/reservations/1978/deposit
+        <Route("{reservationId:int}/deposit"), HttpPost>
+        Public Function Deposit(ByVal reservationId As Integer, <FromBody> request As ReservationDepositDTO) As ReservationDepositResponse
+
+            request.UserId = GetUserId()
+
+            Dim result As ReservationDepositResponse = ReservationService.DepositUpdate(request)
+
+            If result.IsSuccess Then
+                Dim xml As String = Utilities.GetXML(request)
+                Log(reservationId, acciones.CrearDeposito, currentData:=xml)
+                'EmailDeposit(reservationId.ToString())
+            End If
+
+            Return result
+        End Function
+
         'GET api/reservations/1978/creditcard
         <Route("{reservationId:int}/creditcard"), HttpGet>
         Public Function GetCode(ByVal reservationId As Integer)
@@ -359,11 +380,13 @@ Namespace API.Controller
             Dim msg As String = ""
             Select Case action
                 Case acciones.Eliminar
-                    msg = "Canceló la reserva #" & reservationId
+                    msg = String.Format("Canceló la reserva #{0}", reservationId)
                 Case acciones.Modificar
-                    msg = "Modifico la reserva #" & reservationId
+                    msg = String.Format("Modifico la reserva #{0}", reservationId)
                 Case acciones.Reactivar
-                    msg = "Reactivo la reserva #" & reservationId
+                    msg = String.Format("Reactivo la reserva #{0}", reservationId)
+                Case acciones.CrearDeposito
+                    msg = String.Format("Creación de depósito para la reserva #{0}", reservationId)
             End Select
             'pb.guardalog("/rate-manager-ui/dist/reservation-details.aspx?qs=" & reservationId, action, msg, "", oldData, currentData, hotelId)
             With (New PaginaBase)

@@ -223,5 +223,72 @@ namespace APIServices.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spReservationReactive_Result>("spReservationReactive", noReservacionParameter, rmParameter);
         }
+    
+        public virtual int spReservationsByDeposit_Update(Nullable<int> idReservacion, string nocuenta, string banco, Nullable<decimal> dep_monto, string dep_moneda, Nullable<System.DateTime> fecha, string observacion, Nullable<int> idUsuario)
+        {
+            var idReservacionParameter = idReservacion.HasValue ?
+                new ObjectParameter("idReservacion", idReservacion) :
+                new ObjectParameter("idReservacion", typeof(int));
+    
+            var nocuentaParameter = nocuenta != null ?
+                new ObjectParameter("nocuenta", nocuenta) :
+                new ObjectParameter("nocuenta", typeof(string));
+    
+            var bancoParameter = banco != null ?
+                new ObjectParameter("banco", banco) :
+                new ObjectParameter("banco", typeof(string));
+    
+            var dep_montoParameter = dep_monto.HasValue ?
+                new ObjectParameter("dep_monto", dep_monto) :
+                new ObjectParameter("dep_monto", typeof(decimal));
+    
+            var dep_monedaParameter = dep_moneda != null ?
+                new ObjectParameter("dep_moneda", dep_moneda) :
+                new ObjectParameter("dep_moneda", typeof(string));
+    
+            var fechaParameter = fecha.HasValue ?
+                new ObjectParameter("fecha", fecha) :
+                new ObjectParameter("fecha", typeof(System.DateTime));
+    
+            var observacionParameter = observacion != null ?
+                new ObjectParameter("observacion", observacion) :
+                new ObjectParameter("observacion", typeof(string));
+    
+            var idUsuarioParameter = idUsuario.HasValue ?
+                new ObjectParameter("idUsuario", idUsuario) :
+                new ObjectParameter("idUsuario", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spReservationsByDeposit_Update", idReservacionParameter, nocuentaParameter, bancoParameter, dep_montoParameter, dep_monedaParameter, fechaParameter, observacionParameter, idUsuarioParameter);
+        }
+    
+        public virtual int spReservationUpdateStatus(Nullable<int> idReservacion, Nullable<byte> status)
+        {
+            var idReservacionParameter = idReservacion.HasValue ?
+                new ObjectParameter("idReservacion", idReservacion) :
+                new ObjectParameter("idReservacion", typeof(int));
+    
+            var statusParameter = status.HasValue ?
+                new ObjectParameter("status", status) :
+                new ObjectParameter("status", typeof(byte));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spReservationUpdateStatus", idReservacionParameter, statusParameter);
+        }
+    
+        public virtual int spReservationConfirmPaymentRequest(string reservationId, string reference, string authorizationNumber)
+        {
+            var reservationIdParameter = reservationId != null ?
+                new ObjectParameter("reservationId", reservationId) :
+                new ObjectParameter("reservationId", typeof(string));
+    
+            var referenceParameter = reference != null ?
+                new ObjectParameter("reference", reference) :
+                new ObjectParameter("reference", typeof(string));
+    
+            var authorizationNumberParameter = authorizationNumber != null ?
+                new ObjectParameter("authorizationNumber", authorizationNumber) :
+                new ObjectParameter("authorizationNumber", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spReservationConfirmPaymentRequest", reservationIdParameter, referenceParameter, authorizationNumberParameter);
+        }
     }
 }

@@ -109,6 +109,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AgencyService.cs" />
+    <Compile Include="Currency\CurrencyService.cs" />
     <Compile Include="Dictionary.cs" />
     <Compile Include="Extension\ConfigurationExtensions.cs" />
     <Compile Include="F2GService.cs" />
@@ -130,6 +131,7 @@
     <Compile Include="Models\Diccionario.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\DTO\Currency\CurrencyDTO.cs" />
     <Compile Include="Models\DTO\DailyRate.cs" />
     <Compile Include="Models\DTO\DailyRateDetail.cs" />
     <Compile Include="Models\DTO\Excel.cs" />
@@ -143,6 +145,8 @@
     <Compile Include="Models\DTO\RatePlanHeader.cs" />
     <Compile Include="Models\DTO\ReactivationDTO.cs" />
     <Compile Include="Models\DTO\ReservationDetailsModel.cs" />
+    <Compile Include="Models\DTO\Reservation\Deposit\Request\ReservationDepositDTO.cs" />
+    <Compile Include="Models\DTO\Reservation\Deposit\Response\ReservationDepositResponse.cs" />
     <Compile Include="Models\DTO\Room.cs" />
     <Compile Include="Models\DTO\RoomInventoryInfo.cs" />
     <Compile Include="Models\DTO\RoomsClosureModel.cs" />
@@ -164,6 +168,9 @@
     </Compile>
     <Compile Include="Models\LockRoomTypes.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Moneda.cs">
+      <DependentUpon>OzUniEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\OzHoteles.Context.cs">
       <AutoGen>True</AutoGen>

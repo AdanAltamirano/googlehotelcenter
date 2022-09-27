@@ -1,4 +1,5 @@
 @import '../../../styles/base.scss';
+@import '../../../styles/v-tooltip.scss';
 @import '../../../../node_modules/bootstrap-vue/dist/bootstrap-vue.css';
 
 /*span { font-weight: bold;}
@@ -7,6 +8,14 @@
         margin-bottom: 0;
     }
 }*/
+
+.col-gap-2 {
+    column-gap: 0.5rem;
+}
+
+.font-size-1 {
+    font-size: small !important;
+}
 
 .card-body, .card-header { padding: .5rem;}
 address { 

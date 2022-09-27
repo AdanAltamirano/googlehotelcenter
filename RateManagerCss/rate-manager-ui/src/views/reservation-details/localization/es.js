@@ -107,5 +107,18 @@ export default {
     'Price per night extre person(s)' : 'Precio por noche persona(s) extra',
     'Taxes Hotel' : 'Impuestos Hotel',
     'Total debt' : 'Monto pendiente por pagar',
-    'Total deposited' : 'Total depositado'
+    'Total deposited' : 'Total depositado',
+    'Confirm Deposit' : 'Confimar Depósito',
+    'Confirmation Deposit' : 'Confirmación de depósito',
+    'Bank Account' : 'Cuenta Bancaria',
+    'Bank' : 'Banco',
+    'Amount to Deposit' : 'Monto a Depositar',
+    'Details' : 'Detalles',
+    'Only numbers' : 'Solo números',
+    'Only letters' : 'Solo letras',
+    'Only two decimals' : 'Hasta dos decimales',
+    'Save' : 'Guardar',
+    'Save Deposit?' : '¿ Guardar Depósito ?',
+    'Deposit has been confirmed' : 'El depósito se ha confirmado',
+    'Deposit has not been confirmed' : 'El depósito no se ha confirmado'
 }

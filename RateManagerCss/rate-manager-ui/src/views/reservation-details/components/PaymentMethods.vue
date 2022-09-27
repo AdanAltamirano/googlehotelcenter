@@ -9,11 +9,19 @@
         <!--DEPOSITO BANCARIO-->
         <div v-if="result.paymentWay == 0">
           <address v-if="result.bankDepositDetails">
-            {{$t('Total deposited')}}:
-            <strong>{{result.bankDepositDetails.total | currency}}&nbsp;{{result.bankDepositDetails.currency}}</strong>
-            <br />
-            {{$t('Reference')}}:
-            <strong>{{result.bankDepositDetails.reference}}</strong>
+            <div class="d-flex col-gap-2">
+              <span>
+                {{$t('Total deposited')}}:
+                <strong>{{result.bankDepositDetails.total | currency}}&nbsp;{{result.bankDepositDetails.currency}}</strong>
+              </span>
+              <confirm-deposit v-if="result.bankDepositDetails.hasDebt" :reservationId="result.reservationId" 
+               :reservationNumber="result.reservationNumber" :reference="result.bankDepositDetails.reference">
+              </confirm-deposit>
+            </div>
+            <div>
+              {{$t('Reference')}}:
+              <strong>{{result.bankDepositDetails.reference}}</strong>
+            </div>
           </address>
           <b-alert show v-if="result.status == 4" variant="danger">
             {{$t('Please confirm by email once payment is made to')}}
@@ -115,7 +123,11 @@
 </template>
 <script>
 import ReservationService from "../../../api/reservation-service";
+import ConfirmDeposit from "../components/Deposit/Deposit.vue";
 export default {
+  components: { 
+    ConfirmDeposit
+  },
   data() {
     return {
       dismiss_sec: 300,

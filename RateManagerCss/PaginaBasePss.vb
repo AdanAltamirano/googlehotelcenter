@@ -49,6 +49,7 @@ Public Class PaginaBase
         Publicar '4
         Ver '5
         Reactivar '6
+        CrearDeposito '7
     End Enum
 
     Public Enum PerfilHotel

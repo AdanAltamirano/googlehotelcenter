@@ -6,6 +6,7 @@ import Loading from 'vue-loading-overlay';
 import BootstrapVue from 'bootstrap-vue';
 import '../../core/app.settings';
 import VueMoment from 'vue-moment';
+import VTooltip from 'v-tooltip';
 import VCalendar from 'v-calendar';
 import VueCurrencyFilter from 'vue-currency-filter';
 import locale from '../../core/localization';
@@ -31,6 +32,8 @@ Vue.use(VueCurrencyFilter, {
 });
 Vue.use(Loading);
 Vue.use(VCalendar);
+Vue.use(VTooltip);
+
 
 new Vue({
     render: h => h(View)

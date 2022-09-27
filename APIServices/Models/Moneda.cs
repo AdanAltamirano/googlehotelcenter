@@ -10,12 +10,17 @@
 namespace APIServices.Models
 {
     using System;
+    using System.Collections.Generic;
     
-    public partial class GetHotelsByCorporateId_Result
+    public partial class Moneda
     {
-        public int IdEmpresa { get; set; }
+        public int idMoneda { get; set; }
         public string Nombre { get; set; }
-        public int idHotel { get; set; }
-        public Nullable<int> idCorporativo { get; set; }
+        public string Signo { get; set; }
+        public string Abreviatura { get; set; }
+        public string Codigo { get; set; }
+        public Nullable<decimal> TipoCambio { get; set; }
+        public Nullable<int> IdDiccionario { get; set; }
+        public Nullable<System.DateTime> FechaActualizacion { get; set; }
     }
 }

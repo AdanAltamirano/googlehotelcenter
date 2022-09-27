@@ -1063,9 +1063,28 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <Parameter Name="SessionId" Type="nvarchar" Mode="In" />
           <Parameter Name="iduser" Type="int" Mode="In" />
         </Function>
+        <Function Name="spReservationConfirmPaymentRequest" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="reservationId" Type="nvarchar" Mode="In" />
+          <Parameter Name="reference" Type="nvarchar" Mode="In" />
+          <Parameter Name="authorizationNumber" Type="nvarchar" Mode="In" />
+        </Function>
         <Function Name="spReservationReactive" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="NoReservacion" Type="nvarchar" Mode="In" />
           <Parameter Name="rm" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="spReservationsByDeposit_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idReservacion" Type="int" Mode="In" />
+          <Parameter Name="nocuenta" Type="nvarchar" Mode="In" />
+          <Parameter Name="banco" Type="nvarchar" Mode="In" />
+          <Parameter Name="dep_monto" Type="money" Mode="In" />
+          <Parameter Name="dep_moneda" Type="nvarchar" Mode="In" />
+          <Parameter Name="fecha" Type="smalldatetime" Mode="In" />
+          <Parameter Name="observacion" Type="nvarchar" Mode="In" />
+          <Parameter Name="idUsuario" Type="int" Mode="In" />
+        </Function>
+        <Function Name="spReservationUpdateStatus" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idReservacion" Type="int" Mode="In" />
+          <Parameter Name="status" Type="tinyint" Mode="In" />
         </Function>
         <Function Name="UpdateF2GRatePlan" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="idRatePlanUv" Type="nvarchar" Mode="In" />
@@ -1545,6 +1564,25 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <EntitySet Name="VReservationRoomPriceDetails" EntityType="Models.VReservationRoomPriceDetails" />
           <EntitySet Name="vHotelPlan" EntityType="Models.vHotelPlan" />
           <EntitySet Name="vReservationDetails" EntityType="Models.vReservationDetails" />
+          <FunctionImport Name="spReservationsByDeposit_Update">
+            <Parameter Name="idReservacion" Mode="In" Type="Int32" />
+            <Parameter Name="nocuenta" Mode="In" Type="String" />
+            <Parameter Name="banco" Mode="In" Type="String" />
+            <Parameter Name="dep_monto" Mode="In" Type="Decimal" />
+            <Parameter Name="dep_moneda" Mode="In" Type="String" />
+            <Parameter Name="fecha" Mode="In" Type="DateTime" />
+            <Parameter Name="observacion" Mode="In" Type="String" />
+            <Parameter Name="idUsuario" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="spReservationUpdateStatus">
+            <Parameter Name="idReservacion" Mode="In" Type="Int32" />
+            <Parameter Name="status" Mode="In" Type="Byte" />
+          </FunctionImport>
+          <FunctionImport Name="spReservationConfirmPaymentRequest">
+            <Parameter Name="reservationId" Mode="In" Type="String" />
+            <Parameter Name="reference" Mode="In" Type="String" />
+            <Parameter Name="authorizationNumber" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="RatesPlan">
           <Key>
@@ -3700,6 +3738,9 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spReservationsByDeposit_Update" FunctionName="Models.Store.spReservationsByDeposit_Update" />
+          <FunctionImportMapping FunctionImportName="spReservationUpdateStatus" FunctionName="Models.Store.spReservationUpdateStatus" />
+          <FunctionImportMapping FunctionImportName="spReservationConfirmPaymentRequest" FunctionName="Models.Store.spReservationConfirmPaymentRequest" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
