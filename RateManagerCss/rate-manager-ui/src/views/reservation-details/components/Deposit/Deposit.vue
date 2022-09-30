@@ -70,6 +70,7 @@
 
 <script>
 import ConfigService from '../../../../api/config-service';
+import reservationService from '../../../../api/reservation-service';
 import ReservationService from '../../../../api/reservation-service';
 
 export default {
@@ -89,16 +90,22 @@ export default {
        this.currencies();
     },
     methods: {
-        currencies() {
-            ConfigService.GetCurrencies().then(response => {
-                response.body.forEach(currency => {
-                    
-                    const { name , code} = currency;
-                    const text =  [name,'-',code].join(' ');
+        async currencies() {
+            const response = await ConfigService.GetCurrencies();
+            const currenciesData = await response.json();
 
-                    this.options.push({ value: currency.code, text: text});
-                });
+            this.options = currenciesData.map(currency => {
+
+                const { name , code} = currency;
+                const text =  [name,'-',code].join(' ');
+
+                return {
+                    value: currency.code, 
+                    text: text
+                }
+
             });
+
         },
         deposit() {
             const request = {
@@ -122,22 +129,19 @@ export default {
                 cancelButtonColor: "#d33",
                 confirmButtonColor: "#3085d6",
                 confirmButtonText: this.$t("Save"),
+                showLoaderOnConfirm: true,
+                preConfirm: async () => {                   
+                    const response = await ReservationService.ReservationDeposit(this.reservationId, request);
+                    return await response.json();
+                },
                 allowOutsideClick: () => !this.$swal.isLoading(),
 
             }).then(result => {
-                // si acepa enviar request
-                if (result.value) this.sendRequest(this.reservationId, request);
+                if(result.value.isSuccess) this.$swal.fire(this.success());
+                else this.$swal.fire(this.error());
+                
             });
 
-        },
-        sendRequest(reservationId,request) {
-            ReservationService.ReservationDeposit(reservationId, request)
-            .then(() => {
-               this.$swal.fire(this.success());
-            })
-            .catch(error => {
-                this.$swal.fire(this.error());
-            });
         },
         success() {
             return {

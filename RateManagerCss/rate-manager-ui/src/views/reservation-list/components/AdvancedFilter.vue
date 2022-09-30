@@ -88,7 +88,7 @@
                                     <b-form-input v-model="clientName"></b-form-input>
                                 </b-form-group>
                             </b-col>
-                            <b-col v-if="isSupervisor" :md="source === 'IDS' || source === 'AGENCY' ? '2' : '4'">
+                            <b-col :md="source === 'IDS' || source === 'AGENCY' ? '2' : '4'">
                                 <b-form-group :label="$t('Origin')">
                                     <b-form-select v-model="source" :options="sources"></b-form-select>
                                 </b-form-group>
