@@ -8895,4 +8895,7 @@
   <data name="01666" xml:space="preserve">
     <value>Ecotasa es numérico</value>
   </data>
+  <data name="01667" xml:space="preserve">
+    <value>Ecotasa</value>
+  </data>
 </root>

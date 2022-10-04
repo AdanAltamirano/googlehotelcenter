@@ -8890,6 +8890,9 @@
     <value>Per room per night</value>
   </data>
   <data name="01666" xml:space="preserve">
-    <value>Ecotasa is numeric</value>
+    <value>Ecotax is numeric</value>
+  </data>
+  <data name="01667" xml:space="preserve">
+    <value>Ecotax</value>
   </data>
 </root>

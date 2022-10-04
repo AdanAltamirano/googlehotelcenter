@@ -122,6 +122,7 @@ namespace APIServices.Models
         public string RatePlanPromotion { get; set; }
         public string Itinerary { get; set; }
         public string DetallesModificacion { get; set; }
+        public Nullable<decimal> Ecotasa { get; set; }
     
         public virtual ReservationsDeposits ReservationsDeposits { get; set; }
     }

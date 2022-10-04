@@ -48,6 +48,10 @@
                       <td>{{$t('Taxes')}}</td>
                       <td>{{result.totalDetails.taxes | currency}} {{result.totalDetails.currency}}</td>
                     </tr>
+                     <tr>
+                      <td>{{$t('Ecotax')}}</td>
+                      <td>{{result.totalDetails.ecotasa | currency}} {{result.totalDetails.currency}}</td>
+                    </tr>
                     <tr v-if="isSupervisor || isUsuarioHotelAssociation">
                       <td>
                         <strong>Total</strong>
@@ -81,6 +85,10 @@
                     <tr>
                       <td>{{$t('Taxes')}}</td>
                       <td>{{result.totalDetails.taxes | currency}} {{result.totalDetails.currency}}</td>
+                    </tr>
+                    <tr>
+                      <td>{{$t('Ecotax')}}</td>
+                      <td>{{result.totalDetails.ecotasa | currency}} {{result.totalDetails.currency}}</td>
                     </tr>
                     <tr>
                       <td>

@@ -120,5 +120,6 @@ export default {
     'Save' : 'Guardar',
     'Save Deposit?' : '¿ Guardar Depósito ?',
     'Deposit has been confirmed' : 'El depósito se ha confirmado',
-    'Deposit has not been confirmed' : 'El depósito no se ha confirmado'
+    'Deposit has not been confirmed' : 'El depósito no se ha confirmado',
+    'Ecotax' : 'Ecotasa'
 }
