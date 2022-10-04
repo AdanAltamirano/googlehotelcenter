@@ -258,6 +258,21 @@
                         </td>
                     </tr>
                     <tr>
+                       <td style="height:16px" align="right"></td>
+                       <td style="height:16px" align="left"></td>
+                       <td style="height:16px" align="right">
+                            <asp:Label ID="lblEcotasa" runat="server" CssClass="clsLabel" Visible="true">ECOTASA $:</asp:Label>
+                       </td>
+                        <td>
+                            <asp:TextBox ID="txtEcotasa" runat="server" CssClass="textbox" Width="58px" MaxLength="5"></asp:TextBox>
+                            <asp:Label ID="lblEcotasaMessage" runat="server" CssClass="clsLabel" Visible="true">Per room per night</asp:Label>
+                            <asp:RangeValidator
+                                    ID="RangeValidatorTxtEcotasa" runat="server" CssClass="Validators" ControlToValidate="txtEcotasa"
+                                    ErrorMessage="Ecotasa es numerico (1-99)" Display="Dynamic" Type="Double" MaximumValue="99"
+                                    MinimumValue="0">(0-99)</asp:RangeValidator>
+                        </td>
+                    </tr>
+                    <tr>
                         <td class="dgitem" align="center" colspan="4">
                             <asp:Label ID="lblConfirmationEmail" runat="server" EnableViewState="False">Confirmation Email</asp:Label>
                         </td>
