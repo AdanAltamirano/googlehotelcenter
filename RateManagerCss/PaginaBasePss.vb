@@ -1598,6 +1598,38 @@ Public Class PaginaBase
             Dim s As String = ex.Message
         End Try
     End Sub
+
+    Public Function GetIdCorporativoUserChain(ByVal idHotel As Integer) As Integer
+
+        Dim dsHotel As New Portal.General.Common.Data.HotelDatos
+        Dim idCorporative As Integer = -1
+        With New HotelSistema
+            dsHotel = .GetHotelById(idHotel)
+            If Not dsEmpty(dsHotel) Then
+                If Not dsHotel.Tables(0).Rows(0).IsNull("idcorporativo") Then
+                    idCorporative = dsHotel.Tables(0).Rows(0)("idcorporativo")
+                End If
+            End If
+        End With
+        Return idCorporative
+    End Function
+
+    Public Function GetIdAsociation(ByVal userId As Integer) As Integer
+        Dim idAsociation As Integer = 0
+        Dim data As Portal.General.Common.Data.AdministratorData
+
+        If Me.IsUsuarioHotelAssociation Then
+            With New Portal.General.Facade.cAdministratorSystem()
+                data = .GetAdminById(userId)
+            End With
+            If data IsNot Nothing AndAlso data.Tables.Contains(data.ADMINISTRATOR_TABLE) AndAlso data.Tables(data.ADMINISTRATOR_TABLE).Rows.Count > 0 Then
+                idAsociation = data.Tables(data.ADMINISTRATOR_TABLE).Rows(0)("idAsociacion")
+            End If
+        End If
+
+        Return idAsociation
+    End Function
+
 End Class
 
 Public Class AuthUser

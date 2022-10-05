@@ -123,7 +123,8 @@ namespace APIServices
                 .FirstOrDefault(x => x.reservationId == reservationId);
         }
 
-        public ReservationDetailsModel GetDetails(int reservationId, bool isSupervisor, bool isHotelCompany,bool isUserChainIdiso,int userId)
+        public ReservationDetailsModel GetDetails(int reservationId, bool isSupervisor, bool isHotelCompany,int userId, bool isUserChain = false, 
+            bool isUsuarioHotelAssociation = false,int idCorporateUserChain = 0, int idCorporatePortal = -1, int idAsociationPb = 0, int idAsociation = -1)
         {
             var details = 
                  GetReservation(reservationId);
@@ -223,7 +224,7 @@ namespace APIServices
                 GetPayments(ref model, reservationId);
 
                 double totalRooms = 0;
-                GetRooms(ref model, reservationId, details.companyId,isUserChainIdiso, out totalRooms);
+                GetRooms(ref model, reservationId, details.companyId, out totalRooms);
 
                 model.TotalDetails = new TotalDetails();
                 model.TotalDetails.SubTotal = totalRooms;
@@ -244,7 +245,7 @@ namespace APIServices
                 model.TotalDetails.Currency = details.currency;
                 model.TotalDetails.Commission = (double)(details.IsNetRateUV ? details.total - details.totalNetRate : 0);
 
-                Permissions(ref model, isSupervisor);
+                Permissions(ref model, isSupervisor, isUserChain, isUsuarioHotelAssociation, idCorporateUserChain, idCorporatePortal, idAsociationPb, idAsociation);
             }
 
             return model;
@@ -264,7 +265,7 @@ namespace APIServices
                 && r.paymentType == 1);
         }
 
-        void GetRooms(ref ReservationDetailsModel model, int reservationId, int? companyId,bool isUserChainIdiso,out double totalRooms)
+        void GetRooms(ref ReservationDetailsModel model, int reservationId, int? companyId,out double totalRooms)
         {
             var rooms = 
                  GetRoomsReservation(reservationId);
@@ -421,35 +422,86 @@ namespace APIServices
 
 
         #region permisos para editar la reserva
-        void Permissions(ref ReservationDetailsModel model, bool isSupervisor)
+        void Permissions(ref ReservationDetailsModel model, bool isSupervisor, bool isUserChain, bool isUsuarioHotelAssociation,
+            int idCorporateUserChain, int idCorporatePortal, int idAsociationPb, int idAsociation)
         {
             string source = model.Source;
-            bool.TryParse(ConfigurationManager.AppSettings["allowsUserchainToModifyReservation"], out bool allowUserChain);
+            bool isNetRateUV = model.IsNetRateUV;
+ 
             switch (model.Status)
             {
                 case 1:
-                    if (!source.Equals("IDS") && (isSupervisor || allowUserChain))
+
+                    if(!source.Equals("IDS"))
                     {
-                        model.AllowsCancel = true;
-                        model.AllowsModify = true;
-                       // model.AllowsReactivate = true;
+                        if (source.Equals("UNI"))
+                        {
+                            if (!isNetRateUV || isSupervisor) model.AllowsCancel = true;
+                        }
+                        else if (source.Equals("HTL") || isSupervisor) model.AllowsCancel = true;
+                        else if (isUserChain && source.Equals("POR") && idCorporatePortal != -1 && idCorporateUserChain == idCorporatePortal) model.AllowsCancel = true;
+
+                        if (source.Equals("POR") && isNetRateUV && isSupervisor) model.AllowsCancel = true;
+
+                        if (source.Equals("POR") && isUsuarioHotelAssociation) if (idAsociation == idAsociationPb) model.AllowsCancel = true;
+
+
+                        model.AllowsModify = isSupervisor ? true : false;
+
                     }
+
                     break;
                 case 3:
-                    if(!source.Equals("IDS") && (isSupervisor || allowUserChain))
+
+                    if (!source.Equals("IDS"))
                     {
-                       // model.AllowsCancel = true;
-                        //model.AllowsModify = true;
-                        model.AllowsReactivate = true;
+                        if (source.Equals("UNI"))
+                        {
+                            if (!isNetRateUV || isSupervisor) model.AllowsReactivate = true;
+                        }
+                        else if (source.Equals("HTL") || isSupervisor) model.AllowsReactivate = true;
+                        else if (isUserChain && source.Equals("POR") && idCorporatePortal != -1 && idCorporateUserChain == idCorporatePortal) model.AllowsReactivate = true;
+
+                        if (source.Equals("POR") && isNetRateUV && isSupervisor) model.AllowsReactivate = true;
+
+                        if (source.Equals("POR") && isUsuarioHotelAssociation) if (idAsociation == idAsociationPb) model.AllowsReactivate = true;
+
                     }
+
                     break;
                 case 4:
-                    if (!source.Equals("IDS") && (isSupervisor || allowUserChain))
+
+                    if(!source.Equals("IDS"))
                     {
-                        model.AllowsCancel = true;
-                        model.AllowsModify = true;
-                        //model.AllowsReactivate = true;
+                        if (isSupervisor || source.Equals("HTL"))
+                        {
+                            model.AllowsCancel = true;
+                            model.AllowsReactivate = true;
+                        }
+                        else if (isUserChain && source.Equals("POR") && idCorporatePortal != -1 && idCorporateUserChain == idCorporatePortal)
+                        {
+                            if (!isNetRateUV)
+                            {
+                                model.AllowsCancel = true;
+                                model.AllowsReactivate = true;
+                            }
+                        }
+
+                        if (source.Equals("POR") && isNetRateUV && isSupervisor)
+                        {
+                            model.AllowsCancel = true;
+                            model.AllowsReactivate = true;
+                        }
+
+                        if (source.Equals("POR") && isUsuarioHotelAssociation) 
+                            if (idAsociation == idAsociationPb)
+                            {
+                                model.AllowsCancel = true;
+                                model.AllowsReactivate = true;
+                            }
+
                     }
+
                     break;
             }
         }

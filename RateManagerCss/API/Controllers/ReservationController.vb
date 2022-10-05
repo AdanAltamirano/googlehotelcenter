@@ -15,6 +15,8 @@ Imports APIServices.Models.DTO.Reservation.Deposit.Request
 Imports APIServices.Models.DTO.Reservation.Deposit.Response
 Imports RateManager.Utitlities.Email
 Imports System.Threading
+Imports Portal.General.Common.Data
+Imports Portal.General.Facade
 
 Namespace API.Controller
     <RoutePrefix("api/reservations"), AuthorizeUser(Roles:="supervisor,userchain,hotelcompany,agencycompany")>
@@ -140,16 +142,37 @@ Namespace API.Controller
         <Route("{reservationId:Int}"), HttpGet>
         Public Function GetDetails(ByVal reservationId As Integer) As DTO.ReservationDetailsModel
             Dim isSupervisor As Boolean = GetRoles().Contains("supervisor")
+            Dim isUserChain As Boolean = GetRoles().Contains("userchain")
+            Dim isUsuarioHotelAssociation = GetRoles().Contains("userassociation")
             Dim isHotelCompany As Boolean = GetRoles().Contains("hotelcompany")
-            Dim page As New PaginaBase
-            Dim isUserChainIdiso = False
-            If page.CorporateId <> 0 And IsNothing(page.CorporateName) <> True Then
-                If page.CorporateName.Contains(":") Then
-                    isUserChainIdiso = True
-                    Return ReservationService.GetDetails(reservationId, isSupervisor, isHotelCompany, isUserChainIdiso, GetUserId().Value)
-                End If
+
+            Dim paginaBase As New PaginaBase
+            Dim idCorporateUserChain As Integer = -1
+            Dim idAsociationPb As Integer = 0
+
+
+            Dim dsReservaciones As ReservaDatos
+            Dim idHotel As Integer = 0
+            Dim idCorporatePortal As Integer = -1
+            Dim idAsociation As Integer = -1
+
+            With New ReservaFacade
+                dsReservaciones = .GetDataReserva(reservationId, PortalCulture.GetIDCulture())
+            End With
+
+            If Not dsReservaciones Is Nothing Then
+
+                With dsReservaciones.Tables(dsReservaciones.RESERVA_TABLE).Rows(0)
+                    idCorporatePortal = CType(.Item("IdCorporativoPortal"), Integer)
+                    idAsociation = If(Not .IsNull("idAsociacion"), .Item("idAsociacion"), 0)
+                    idHotel = CType(.Item("idHotel"), Integer)
+                End With
             End If
-            Return ReservationService.GetDetails(reservationId, isSupervisor, isHotelCompany, isUserChainIdiso, GetUserId().Value)
+
+            idCorporateUserChain = paginaBase.GetIdCorporativoUserChain(idHotel)
+            idAsociationPb = paginaBase.GetIdAsociation(GetUserId().Value)
+
+            Return ReservationService.GetDetails(reservationId, isSupervisor, isHotelCompany, GetUserId().Value, isUserChain, isUsuarioHotelAssociation, idCorporateUserChain, idCorporatePortal, idAsociationPb, idAsociation)
         End Function
 
         'POST api/reservations/1978/cancel
@@ -158,9 +181,10 @@ Namespace API.Controller
 
             Dim isSupervisor As Boolean = GetRoles().Contains("supervisor")
             Dim isHotelCompany As Boolean = GetRoles().Contains("hotelcompany")
-            Dim isUserChainIdiso = False
+
             Dim rsv As vReservationDetails = ReservationService.GetReservation(reservationId)
             Dim result As DTO.CancelBookingRS = ReservationService.Cancel(rsv, GetUserId().Value, req.Reason, isSupervisor)
+
             If result.IsSuccess Then
                 Log(reservationId, acciones.Eliminar, rsv.hotelId)
 
@@ -171,12 +195,12 @@ Namespace API.Controller
                 Dim roomRsv As List(Of vReservationRoomDetails) = ReservationService.GetRoomsReservation(reservationId)
 
                 Dim rdm As ReservationDetailsModel =
-                    ReservationService.GetDetails(reservationId, isSupervisor, isHotelCompany, isUserChainIdiso, GetUserId().Value)
+                    ReservationService.GetDetails(reservationId, isSupervisor, isHotelCompany, GetUserId().Value)
 
                 If Not String.IsNullOrEmpty(rsv.customerEmail) Then
                     'enviar correo al cliente
                     Dim errorMail As String = String.Empty
-                    If SendCancellationEmail(rdm,rsv.customerEmail, errorMail) Then
+                    If SendCancellationEmail(rdm, rsv.customerEmail, errorMail) Then
                         result.CustomerEmail = rsv.customerEmail
                     Else
 
@@ -211,16 +235,16 @@ Namespace API.Controller
 
             Dim isSupervisor As Boolean = GetRoles().Contains("supervisor")
             Dim isHotelCompany As Boolean = GetRoles().Contains("hotelcompany")
-            Dim isUserChainIdiso = False
+
             Dim oldData_RDM As ReservationDetailsModel =
-                ReservationService.GetDetails(reservationId, isSupervisor, isHotelCompany, isUserChainIdiso, GetUserId().Value)
+                ReservationService.GetDetails(reservationId, isSupervisor, isHotelCompany, GetUserId().Value)
 
             Dim result As DTO.ModifyBookingRS = ReservationService.Modify(reservationId, req)
 
             If result.IsSuccess Then
 
                 Dim updatedData_RDM As ReservationDetailsModel =
-                    ReservationService.GetDetails(reservationId, isSupervisor, isHotelCompany, isUserChainIdiso, GetUserId().Value)
+                    ReservationService.GetDetails(reservationId, isSupervisor, isHotelCompany, GetUserId().Value)
                 Dim xmlOld As String = Utilities.GetXML(oldData_RDM)
                 Dim xmlCurrent As String = Utilities.GetXML(updatedData_RDM)
                 Log(reservationId, acciones.Modificar, updatedData_RDM.HotelId, xmlOld, xmlCurrent)
@@ -261,13 +285,13 @@ Namespace API.Controller
         Public Function Update(ByVal reservationId As Integer, <FromBody> rm As Boolean) As DTO.ModifyBookingRS
             Dim isSupervisor As Boolean = GetRoles().Contains("supervisor")
             Dim isHotelCompany As Boolean = GetRoles().Contains("hotelcompany")
-            Dim isUserChainIdiso = False
+
             Dim result As DTO.ModifyBookingRS = ReservationService.Reactivate(reservationId, rm)
 
             If result.IsSuccess Then
 
                 Dim rdm As ReservationDetailsModel =
-                    ReservationService.GetDetails(reservationId, IsSupervisor, isHotelCompany, isUserChainIdiso, GetUserId().Value)
+                    ReservationService.GetDetails(reservationId, isSupervisor, isHotelCompany, GetUserId().Value)
                 Log(reservationId, acciones.Reactivar, rdm.HotelId)
 
                 If Not String.IsNullOrEmpty(rdm.Customer.Email) Then
@@ -347,14 +371,8 @@ Namespace API.Controller
         Public Function SendNotification(ByVal reservationId As Integer) As HttpResponseMessage
             Dim isSupervisor As Boolean = GetRoles().Contains("supervisor")
             Dim isHotelCompany As Boolean = GetRoles().Contains("hotelcompany")
-            Dim isUserChainIdiso = False
-            Dim page As New PaginaBase
-            If page.CorporateId <> 0 And IsNothing(page.CorporateName) <> True Then
-                If page.CorporateName.Contains(":") Then
-                    isUserChainIdiso = True
-                End If
-            End If
-            Dim detailsReservation As DTO.ReservationDetailsModel = ReservationService.GetDetails(reservationId, isSupervisor, isHotelCompany, isUserChainIdiso, GetUserId().Value)
+
+            Dim detailsReservation As DTO.ReservationDetailsModel = ReservationService.GetDetails(reservationId, isSupervisor, isHotelCompany, GetUserId().Value)
             'Enviar Correo
             'Dim logoUrl As String = "https://crs.univisit.com/Images/global/ImagesSystem/Logos/LogoCompany_"
             Dim logoUrl As String = System.Configuration.ConfigurationManager.AppSettings("logoUrl")
