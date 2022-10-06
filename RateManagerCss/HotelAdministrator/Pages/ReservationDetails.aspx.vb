@@ -53,7 +53,6 @@ Partial Class ReservationDetails
     Dim CancelNumber As String
     Private amountDebt As Double = 0
     Private totalDeposit As Double = 0
-    Private ecotasa As Decimal = 0
 
     Public Enum Columns As Integer
         Cuartos
@@ -139,15 +138,6 @@ Partial Class ReservationDetails
         End Get
         Set(ByVal value As Double)
             totalDeposit = value
-        End Set
-    End Property
-
-    Private Property EcotasaAmount() As Decimal
-        Get
-            Return ecotasa
-        End Get
-        Set(ByVal value As Decimal)
-            ecotasa = value
         End Set
     End Property
 
@@ -466,8 +456,8 @@ Partial Class ReservationDetails
         Me.lblConfirm.Text = PortalCulture.GetString("M000348")
         Me.lblEFees.Text = PortalCulture.GetString("01348")
         Me.lblEFeesUV.Text = PortalCulture.GetString("01348")
-        Me.lblEEcotasa.Text = PortalCulture.GetString("01667")
-        Me.lblEEcotasaUV.Text = PortalCulture.GetString("01667")
+        Me.lblEEcotasa.Text = PortalCulture.GetString("01667", True)
+        Me.lblEEcotasaUV.Text = PortalCulture.GetString("01667", True)
 
         If Me.lblTotalUV.Text.Trim().Length > 0 Then
             tdTextUnivisit.InnerText = PortalCulture.GetString("01125").ToUpper
@@ -676,7 +666,7 @@ Partial Class ReservationDetails
         Return sHtmlRate
     End Function
 
-    Private Sub GetDataWS(ByVal nores As String)
+    Private Sub GetDataWS(ByVal nores As String, ByVal ecotasa As Double)
         Try
             Dim xdoc As New XmlDataDocument(New reqHotelDisplay)
             Dim dsreq As reqHotelDisplay = CType(xdoc.DataSet, reqHotelDisplay)
@@ -779,7 +769,7 @@ Partial Class ReservationDetails
 
                     Me.lblTotal.Text = FCurrency(dr.Total, 2) & " " & If(dr.IsMoneyNull, "", dr.Money)
                     Me.lblImpuestos.Text = FCurrency(dr.Taxes, 2) & " " & If(dr.IsMoneyNull, "", dr.Money)
-                    Me.lblEcotasa.Text = FCurrency(Convert.ToDouble(Me.EcotasaAmount), 2) & " " & If(dr.IsMoneyNull, "", dr.Money)
+                    Me.lblEcotasa.Text = FCurrency(ecotasa, 2) & " " & If(dr.IsMoneyNull, "", dr.Money)
                     Me.lblFees.Text = FCurrency(dr.ServiceFee, 2) & " " & If(dr.IsMoneyNull, "", dr.Money)
 
                     If Me.IsSupervisor Or IsUsuarioHotelAssociation Then
@@ -805,7 +795,7 @@ Partial Class ReservationDetails
                     'HOTEL
                     Me.lblTotal.Text = FCurrency(totalNR, 2) & " " & If(dr.IsMoneyNull, "", dr.Money)
                     Me.lblImpuestos.Text = FCurrency(taxesNR, 2) & " " & If(dr.IsMoneyNull, "", dr.Money)
-                    Me.lblEcotasa.Text = FCurrency(Convert.ToDouble(Me.EcotasaAmount), 2) & " " & If(dr.IsMoneyNull, "", dr.Money)
+                    Me.lblEcotasa.Text = FCurrency(ecotasa, 2) & " " & If(dr.IsMoneyNull, "", dr.Money)
                     Me.lblTotalH.Text = FCurrency(totalNR, 2) & " " & If(dr.IsMoneyNull, "", dr.Money)
                     Me.lblCosto.Text = FCurrency(((totalNR - taxesNR) / (DateDiff(DateInterval.Day, CDate(dr.CheckInDate), CDate(dr.CheckOutDate)))), 2) & " " & dr.Money
                     Me.lblFees.Text = FCurrency(dr.ServiceFee, 2) & " " & If(dr.IsMoneyNull, "", dr.Money)
@@ -818,7 +808,7 @@ Partial Class ReservationDetails
                     'UNIVISIT
                     Me.lblTotalUV.Text = FCurrency(dr.Total, 2) & " " & If(dr.IsMoneyNull, "", dr.Money)
                     Me.lblImpuestosUV.Text = FCurrency(dr.Taxes, 2) & " " & If(dr.IsMoneyNull, "", dr.Money)
-                    Me.lblEcotasaUV.Text = FCurrency(Convert.ToDouble(Me.EcotasaAmount), 2) & " " & If(dr.IsMoneyNull, "", dr.Money)
+                    Me.lblEcotasaUV.Text = FCurrency(ecotasa, 2) & " " & If(dr.IsMoneyNull, "", dr.Money)
                     Me.lblTotalHUV.Text = FCurrency(dr.Total, 2) & " " & If(dr.IsMoneyNull, "", dr.Money)
                     Me.lblCostoUV.Text = FCurrency(((dr.Total - dr.Taxes) / (DateDiff(DateInterval.Day, CDate(dr.CheckInDate), CDate(dr.CheckOutDate)))), 2) & " " & dr.Money
                     Me.lblFeesUV.Text = FCurrency(dr.ServiceFee, 2) & " " & If(dr.IsMoneyNull, "", dr.Money)
@@ -1557,7 +1547,7 @@ Partial Class ReservationDetails
 
 
                 If Not dsReservaciones.Tables(dsReservaciones.RESERVA_TABLE).Rows(0).IsNull("source") Then
-                    GetDataWS(dsReservaciones.Tables(dsReservaciones.RESERVA_TABLE).Rows(0).Item(dsReservaciones.FIELD_NORESERVACION))
+                    GetDataWS(dsReservaciones.Tables(dsReservaciones.RESERVA_TABLE).Rows(0).Item(dsReservaciones.FIELD_NORESERVACION), CType(.Item(dsReservaciones.FIELD_ECOTASA), Double))
                 End If
 
                 LoadUserSeeCards(MyBase.Usuario)
@@ -1738,9 +1728,6 @@ Partial Class ReservationDetails
                 '    Me.lblTotal.Text = FormatCurrency(totaltotal + ComissionFee, 2) & " " & moneda
                 '    Me.lblImpuestos.Text = FormatCurrency(impuesto + ComissionFee, 2) & " " & moneda
                 'End If
-
-                Me.EcotasaAmount = CType(.Item(dsReservaciones.FIELD_ECOTASA), Decimal)
-
 
                 Me.lblConfirmationNumber.Text = .Item(dsReservaciones.FIELD_NoConfGal).ToString
                 Me.lblNoConf.Text = PortalCulture.GetString("M000650", True)
