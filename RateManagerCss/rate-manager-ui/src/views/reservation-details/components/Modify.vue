@@ -71,6 +71,15 @@
         <label>Detalles</label>
         <b-textarea id="details" v-model="details" :trim="true"></b-textarea>
       </div>
+      <div>
+        <b-form-checkbox
+          id="chkNotification"
+          v-model="status"
+          value="1"
+          unchecked-value="0">
+          {{$t('Send notification email')}}
+        </b-form-checkbox>
+      </div>
     </div>
   </form>
 </template>
@@ -117,7 +126,9 @@ export default {
       isModifiedDate:false,
       statesChangesRoomsRates:[],
       //Reload
-      reload:0
+      reload:0,
+      //
+      status: "1"
     }
   },
   created() {

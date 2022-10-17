@@ -206,6 +206,8 @@ Namespace API.Controller
         <Route("{reservationId:int}/modify"), HttpPost>
         Public Function Update(ByVal reservationId As Integer, <FromBody> req As DTO.ModifyBookingRQ) As DTO.ModifyBookingRS
 
+            Dim sendNotification As Boolean = IIf(Me.Request.Headers.GetValues("Notification")(0).Equals("1"), True, False)
+
             Dim isSupervisor As Boolean = GetRoles().Contains("supervisor")
             Dim isHotelCompany As Boolean = GetRoles().Contains("hotelcompany")
             Dim isUserChainIdiso = False
@@ -222,34 +224,40 @@ Namespace API.Controller
                 Dim xmlCurrent As String = Utilities.GetXML(updatedData_RDM)
                 Log(reservationId, acciones.Modificar, updatedData_RDM.HotelId, xmlOld, xmlCurrent)
 
-                'If updatedData_RDM.Status <> 4 Then
-                If Not String.IsNullOrEmpty(updatedData_RDM.Customer.Email) Then
-                    'enviar correo al cliente
-                    Dim errorMail As String = String.Empty
-                    If SendModificationEmail(updatedData_RDM.Customer.Email, updatedData_RDM, oldData_RDM, errorMail, TypeClient.Customer) Then
-                        result.CustomerEmail = updatedData_RDM.Customer.Email
-                    Else
-                        Dim xmlError As String = Utilities.GetXML(errorMail)
-                        Log(reservationId, acciones.Modificar, updatedData_RDM.HotelId, xmlError, xmlError)
+                result.SendNotification = sendNotification
+
+                If sendNotification Then
+
+                    'If updatedData_RDM.Status <> 4 Then
+                    If Not String.IsNullOrEmpty(updatedData_RDM.Customer.Email) Then
+                        'enviar correo al cliente
+                        Dim errorMail As String = String.Empty
+                        If SendModificationEmail(updatedData_RDM.Customer.Email, updatedData_RDM, oldData_RDM, errorMail, TypeClient.Customer) Then
+                            result.CustomerEmail = updatedData_RDM.Customer.Email
+                        Else
+                            Dim xmlError As String = Utilities.GetXML(errorMail)
+                            Log(reservationId, acciones.Modificar, updatedData_RDM.HotelId, xmlError, xmlError)
+                        End If
                     End If
-                End If
-                If Not String.IsNullOrEmpty(updatedData_RDM.HotelEmail) Then
-                    'enviar correo al hotel
-                    Dim errorMail As String = String.Empty
-                    If SendModificationEmail(updatedData_RDM.HotelEmail, updatedData_RDM, oldData_RDM, errorMail, TypeClient.Hotel) Then
-                        result.HotelEmail = updatedData_RDM.HotelEmail
-                    Else
-                        Dim xmlError As String = Utilities.GetXML(errorMail)
-                        Log(reservationId, acciones.Modificar, updatedData_RDM.HotelId, xmlError, xmlError)
+                    If Not String.IsNullOrEmpty(updatedData_RDM.HotelEmail) Then
+                        'enviar correo al hotel
+                        Dim errorMail As String = String.Empty
+                        If SendModificationEmail(updatedData_RDM.HotelEmail, updatedData_RDM, oldData_RDM, errorMail, TypeClient.Hotel) Then
+                            result.HotelEmail = updatedData_RDM.HotelEmail
+                        Else
+                            Dim xmlError As String = Utilities.GetXML(errorMail)
+                            Log(reservationId, acciones.Modificar, updatedData_RDM.HotelId, xmlError, xmlError)
+                        End If
                     End If
+                    If String.IsNullOrEmpty(updatedData_RDM.Customer.Email) AndAlso String.IsNullOrEmpty(updatedData_RDM.HotelEmail) Then
+                        'enviar correo a algun admin
+                        'Dim errorMail As String = String.Empty
+                        'SendModificationEmail("soporte@internetpowerhotel.com", updatedData_RDM, oldData_RDM, errorMail, TypeClient.Support)
+                    End If
+                    'End If
                 End If
-                If String.IsNullOrEmpty(updatedData_RDM.Customer.Email) AndAlso String.IsNullOrEmpty(updatedData_RDM.HotelEmail) Then
-                    'enviar correo a algun admin
-                    'Dim errorMail As String = String.Empty
-                    'SendModificationEmail("soporte@internetpowerhotel.com", updatedData_RDM, oldData_RDM, errorMail, TypeClient.Support)
-                End If
-                'End If
             End If
+
             Return result
         End Function
 

@@ -124,11 +124,12 @@ export default {
               details: self.getElement("details"),
 
             };
-          
+
             return ReservationService.ReservationUpdate(
               self.reservationId,
               "modify",
-              req
+              req,
+              instance.status
             ).then(response => {
               return {
                 response: response.body,
@@ -142,45 +143,33 @@ export default {
           console.log(result)
           if (result.value) {
             let v = result.value.response;
-            let t = result.value.modifyTags;
+
             if (v.isSuccess) {
-              // self.result.customer.name = t.name;
-              // self.result.customer.lastName = t.lastName;
-              // self.result.checkIn = t.checkIn;
-              // self.result.checkOut = t.checkOut;
-              // self.result.totalDetails.total;
+             
+              if(!v.sendNotification)
+              {
+                this.$swal.fire(this.success(self.$t("Your reservation was modified")));
+              }
+              else 
+              {
 
-              let component = Vue.extend(ModificationTemplate);
-              console.log(v.customerEmail)
-              console.log(v.hotelEmail)
+                let component = Vue.extend(ModificationTemplate);
+                console.log(v.customerEmail)
+                console.log(v.hotelEmail)
 
-              let instance = new component({
-                propsData:{
-                  clientEmail: v.customerEmail,
-                  hotelEmail: v.hotelEmail,
-                }
-              });
-              instance.$mount();
+                let instance = new component({
+                  propsData:{
+                    clientEmail: v.customerEmail,
+                    hotelEmail: v.hotelEmail,
+                  }
+                });
+                
+                instance.$mount();
 
-               this.$swal
-                  .fire({
-                    title: self.$t("Your reservation was modified"),
-                    type: "success",
-                    html: "<div></div>",
-                    showCancelButton: true,
-                    showConfirmButton:false,
-                    cancelButtonText: self.$t("Exit"),
-                    cancelButtonColor: "#d33",
-                    onBeforeOpen: () => {
-                      this.$swal
-                        .getContent()
-                        .querySelector("div")
-                        .append(instance.$el);
-                    },
-                    onClose:() => {
-                      window.location.reload();
-                    }
-                  })
+                this.$swal.fire(this.successEmails(self.$t("Your reservation was modified"), instance));
+
+              }
+
             } else {
 
               let list = '';
@@ -228,13 +217,10 @@ export default {
         .then(result => {
           if (result.value) {
             let v = result.value;
+            
             if (v.isSuccess) {
-              // self.result.status = 3;
-              // self.result.cancellationNumber = v.cancelNumber;
 
               let component = Vue.extend(ModificationTemplate);
-              console.log(v.customerEmail)
-              console.log(v.hotelEmail)
 
               let instance = new component({
                 propsData:{
@@ -242,38 +228,20 @@ export default {
                   hotelEmail: v.hotelEmail,
                 }
               });
+
               instance.$mount();
 
-               this.$swal
-                  .fire({
-                    title: self.$t("Your reservation was canceled"),
-                    type: "success",
-                    html: "<div></div>",
-                    showCancelButton: true,
-                    showConfirmButton:false,
-                    cancelButtonText: self.$t("Exit"),
-                    cancelButtonColor: "#d33",
-                    onBeforeOpen: () => {
-                      this.$swal
-                        .getContent()
-                        .querySelector("div")
-                        .append(instance.$el);
-                    },
-                    onClose:() => {
-                      window.location.reload();
-                    }
-                  })
-              // this.$swal.fire(
-              //   self.success(self.$t("Your reservation was canceled"))
-              // );
-            } else
+              this.$swal.fire(this.successEmails(self.$t("Your reservation was canceled"), instance));
+
+            } else {
               this.$swal.fire(
                 self.error(self.$t("Failed to cancel the reservation"), v.error)
               );
+            }
           }
         });
     },
-    reactivate(){
+    reactivate() {
       let self = this;
       this.$swal.fire({
           title:self.$t('Reactivate Reservation ?'),
@@ -301,40 +269,24 @@ export default {
             allowOutsideClick: () => !this.$swal.isLoading(),
         })
         .then(result => {
-          console.log(result)
+
           if (result.value) {
              let v = result.value.response;
+
              if(v.isSuccess)
              {
                 let component = Vue.extend(ModificationTemplate);
-                console.log(v.customerEmail)
-                console.log(v.hotelEmail)
+
                 let instance = new component({
                   propsData:{
                     clientEmail: v.customerEmail,
                     hotelEmail: v.hotelEmail
                   }
                 });
+
                 instance.$mount();
-                this.$swal
-                  .fire({
-                    title: self.$t("Your reservation was reactivated"),
-                    type: "success",
-                    html: "<div></div>",
-                    showCancelButton: true,
-                    showConfirmButton:false,
-                    cancelButtonText: self.$t("Exit"),
-                    cancelButtonColor: "#d33",
-                    onBeforeOpen: () => {
-                      this.$swal
-                        .getContent()
-                        .querySelector("div")
-                        .append(instance.$el);
-                    },
-                    onClose:() => {
-                      window.location.reload();
-                    }
-                  })
+
+                this.$swal.fire(this.successEmails(self.$t("Your reservation was reactivated"), instance));
              }
              else
              {
@@ -359,12 +311,36 @@ export default {
       return {
         type: "success",
         title: title,
+        showCancelButton: true,
+        showConfirmButton:false,
+        cancelButtonText: this.$t("Exit"),
+        cancelButtonColor: "#d33",
         showConfirmButton: false,
         time: 2500,
         onClose: () => {
-          location.reload();
+          window.location.reload();
         }
       };
+    },
+    successEmails(title, instance) {
+      return {
+          title: title,
+          type: "success",
+          html: "<div></div>",
+          showCancelButton: true,
+          showConfirmButton:false,
+          cancelButtonText: this.$t("Exit"),
+          cancelButtonColor: "#d33",
+          onBeforeOpen: () => {
+            this.$swal
+              .getContent()
+              .querySelector("div")
+              .append(instance.$el);
+          },
+          onClose:() => {
+            window.location.reload();
+          }
+      }
     },
     error(title, message) {
       return {

@@ -18,6 +18,7 @@ namespace APIServices.Models.DTO
     public class ModifyBookingRS
     {
         public bool IsSuccess { get; set; }
+        public bool SendNotification { get; set; }
         public ErrorRS Error { get; set; }
         public string CustomerEmail { get; set; } = String.Empty;
         public string HotelEmail { get; set; } = String.Empty;

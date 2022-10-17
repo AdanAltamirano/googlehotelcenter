@@ -50,13 +50,32 @@ export default {
         });
     },
 
-    ReservationUpdate(reservationId, patch, request) {
-        return reservationDetails.save({
+    ReservationUpdate(reservationId, patch, request, sendNotification) {
+
+        let headersParams = {
+            'Notification' : sendNotification
+        };
+
+
+        const reservationUpdate = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations/{reservationId}/{patch}`,
+                                    {},
+                                    {},
+                                    { headers: headersParams });
+
+        return reservationUpdate.save({
                 reservationId,
                 patch
             },
             request
         );
+
+
+        // return reservationDetails.save({
+        //         reservationId,
+        //         patch
+        //     },
+        //     request
+        // );
     },
     SendNotification(reservationId) {
         return sendNotification.get({
