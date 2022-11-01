@@ -235,6 +235,7 @@ Partial Class ctrRatePlan
         txtAccessCode.Attributes.Add("onkeypress", "return validarkeyCode(event);")
         'ddlContratosNR.Attributes.Add("onChange", String.Format("javascript:FireNoneNetRate('{0}','{1}','{2}');", _
         '                                Me.lblTitleDinero.ClientID, pnlDinero.ClientID, ddlContratosNR.ClientID))
+
     End Sub
 
     Private Sub FillRatePlans()

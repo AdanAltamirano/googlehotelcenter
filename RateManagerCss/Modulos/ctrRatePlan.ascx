@@ -242,6 +242,36 @@
         }
     }
 
+    function HideHotelPayment(spanHotelPaymentId) {
+
+        var spanHotelPayment = $('#' + spanHotelPaymentId);
+
+        var contractList = $('#<%= Me.ddlContratosNR.ClientId %>');
+
+        var value = contractList.val();
+
+       <%-- console.log(spanHotelPayment);
+        console.log(value);
+
+        if (value == '0') {
+
+            spanHotelPayment.attr("style", "display:block");
+
+            //$('#<%= Me.hotelPayment.ClientId %>').attr('checked', false);
+
+            }
+            else {
+
+            spanHotelPayment.attr("style", "display:none");
+
+            $('#<%= Me.hotelPayment.ClientId %>').attr('checked', false);
+
+        } --%>
+    }
+
+
+
+
     <%--$(document).ready(function() {
         $('#<%= Me.txtDescripcion.ClientId %> textarea').change(function() {
             descriptionWasChanged = true;
@@ -254,6 +284,8 @@
         var options = new Array();
         var list = $('#<%= Me.lstRatePlans.ClientId %>');
         var contractList = $('#<%= Me.ddlContratosNR.ClientId %>');
+        var counterHotelPayment = 0;
+        var isEdit = false;
         
         list.find('option:gt(0)').each(function() {
             var current = $(this);
@@ -290,10 +322,78 @@
         });   
         
         contractList.change(function() {
-            list.trigger('filter',[(this.selectedIndex > 0)]);
+            list.trigger('filter', [(this.selectedIndex > 0)]);
+
+            console.log('Primer Evento')
+
+            console.log(counterHotelPayment);
+
+
+            if (counterHotelPayment == 0) {
+
+                var isChecked = $('#<%= Me.hotelPayment.ClientId %>').is(':checked');
+                var value = $(this).val();
+
+                //Saber si es Nuevo o se esta Editando
+                if (value != '0' && isChecked) {
+
+                    $('#spanHotelPayment').attr("style", "display:block");
+                    isEdit = true;
+                }
+                else if (value != '0' && !isChecked) {
+                    $('#spanHotelPayment').attr("style", "display:none");
+                    isEdit = true;
+                }
+
+                counterHotelPayment++;
+
+                console.log(counterHotelPayment);
+
+
+            }
+            else {
+
+                console.log('despues')
+
+                var value = $(this).val();
+
+                var spanHotelPayment = $('#spanHotelPayment');
+
+                if (value == '0') {
+
+                    spanHotelPayment.attr("style", "display:block");
+
+                    //$('#<%= Me.hotelPayment.ClientId %>').attr('checked', false);
+
+                }
+                else {
+
+                    spanHotelPayment.attr("style", "display:none");
+
+                    $('#<%= Me.hotelPayment.ClientId %>').attr('checked', false);
+
+                }
+
+                counterHotelPayment++;
+
+            }
+
+                
         });
         
         contractList.change();
+
+        $('#<%= Me.hotelPayment.ClientId %>').change(function () {
+
+            console.log(counterHotelPayment);
+
+            if (isEdit && counterHotelPayment == 1) {
+
+                $('#spanHotelPayment').attr("style", "display:none");
+            }
+            
+        });
+
     });
     
     
@@ -363,7 +463,10 @@
             <td>
             </td>
             <td>
-                <asp:CheckBox ID="hotelPayment" CssClass="clslabel" runat="server" Text="Hotel Payment"></asp:CheckBox>
+
+                <span id="spanHotelPayment">
+                    <asp:CheckBox ID="hotelPayment" CssClass="clslabel" runat="server" Text="Hotel Payment"></asp:CheckBox>
+                </span>
             </td>
         </tr>
         <%If Me.HasData AndAlso (Not Me.txtDescripcion.Published OrElse Not Me.txtShortDescription.Published OrElse Not Me.txtPromoDescription.Published) Then%>
