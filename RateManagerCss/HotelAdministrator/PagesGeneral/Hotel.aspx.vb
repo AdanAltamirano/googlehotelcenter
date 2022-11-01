@@ -262,6 +262,13 @@ Partial Class Hotel
                     chkPushNotif.Checked = .Item(dsHotel.FIELD_IsPMSPushNotifActive)
                 End If
 
+                If .IsNull(dsHotel.FIELD_ECOTASA) Then
+                    Me.txtEcotasa.Text = 0
+                Else
+                    Me.txtEcotasa.Text = Format(.Item(dsHotel.FIELD_ECOTASA), "###0.00")
+                End If
+
+
                 Dim sFecha As String
                 sFecha = IIf(.IsNull(dsHotel.FIELD_FECHAAPERTURA), "", .Item(dsHotel.FIELD_FECHAAPERTURA))
                 If sFecha <> "" Then sFecha = CDate(sFecha).ToString("MM/dd/yyyy")
@@ -708,6 +715,7 @@ Partial Class Hotel
                 .Item(dsHotel.FIELD_AllowBankDeposit) = Me.chkAllowDeposit.Checked
                 .Item(dsHotel.FIELD_isSingleImgInv) = Me.chkSingleImgInv.Checked
 
+
                 If Not ddlCorporativos.SelectedValue = "" AndAlso ddlCorporativos.SelectedValue <> 0 Then
                     .Item(HotelDatos.fld_idcorporativo) = ddlCorporativos.SelectedValue
                 Else
@@ -744,6 +752,13 @@ Partial Class Hotel
                 End If
 
                 .Item(HotelDatos.FIELD_IsPMSPushNotifActive) = chkPushNotif.Checked
+
+                If Me.txtEcotasa.Text.Trim <> "" Then
+                    .Item(dsHotel.FIELD_ECOTASA) = Me.txtEcotasa.Text.Trim
+                Else
+                    .Item(dsHotel.FIELD_ECOTASA) = System.DBNull.Value
+                End If
+
             End With
 
             LoadDsImpuesto(ds)
@@ -918,6 +933,9 @@ Partial Class Hotel
 
         lblServiceCharge.Text = PortalCulture.GetString("M0UT02696", True)
         lblCommision.Text = PortalCulture.GetString("M0UT02697") & " %:"
+
+        Me.lblEcotasaMessage.Text = PortalCulture.GetString("01665")
+        Me.RangeValidatorTxtEcotasa.Text = PortalCulture.GetString("01666")
 
         lblNoArrivals.Text = PortalCulture.GetString("M000449")
         'RequiredFieldValidator11.Text = PortalCulture.GetString("M0UT02696") & " " & PortalCulture.GetString("M0UT02715")

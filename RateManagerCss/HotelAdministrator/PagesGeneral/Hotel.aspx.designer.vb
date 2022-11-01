@@ -473,6 +473,42 @@ Partial Public Class Hotel
     Protected WithEvents chkPushNotif As Global.System.Web.UI.WebControls.CheckBox
 
     '''<summary>
+    '''Control lblEcotasa.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblEcotasa As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control txtEcotasa.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents txtEcotasa As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
+    '''Control lblEcotasaMessage.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblEcotasaMessage As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control RangeValidatorTxtEcotasa.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents RangeValidatorTxtEcotasa As Global.System.Web.UI.WebControls.RangeValidator
+
+    '''<summary>
     '''Control lblConfirmationEmail.
     '''</summary>
     '''<remarks>

@@ -1400,6 +1400,24 @@ Partial Public Class ReservationDetails
     Protected WithEvents lbl2 As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
+    '''Control lblEEcotasa.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblEEcotasa As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control lblEcotasa.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblEcotasa As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
     '''Control lblETotalH.
     '''</summary>
     '''<remarks>
@@ -1551,6 +1569,24 @@ Partial Public Class ReservationDetails
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
     Protected WithEvents lbl2UV As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control lblEEcotasaUV.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblEEcotasaUV As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control lblEcotasaUV.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblEcotasaUV As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
     '''Control lblETotalHUV.

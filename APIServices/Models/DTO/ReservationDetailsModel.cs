@@ -170,6 +170,7 @@ namespace APIServices.Models.DTO
         public double  TaxesHotel { get; set; }
         public double Commission { get; set; }
         public bool IncludesTax { get; set; }
+        public double Ecotasa { get; set; }
         public double TotalNR { get; set; }
         public string Currency { get; set; }
     }

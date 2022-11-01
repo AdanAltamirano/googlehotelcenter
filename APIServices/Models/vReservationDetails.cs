@@ -36,6 +36,7 @@ namespace APIServices.Models
         public Nullable<decimal> totalNetRate { get; set; }
         public Nullable<bool> includesTax { get; set; }
         public decimal tax { get; set; }
+        public decimal ecotasa { get; set; }
         public string currency { get; set; }
         public string ratePlan { get; set; }
         public bool IsNetRateUV { get; set; }

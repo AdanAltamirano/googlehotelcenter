@@ -8889,4 +8889,13 @@
   <data name="01664" xml:space="preserve">
     <value>Reservado por depósito bancario ({0}) &lt;br&gt; Referencia: {1} &lt;br&gt; Monto depositado: {2} &lt;br&gt; Monto pendiente por pagar: {3}</value>
   </data>
+  <data name="01665" xml:space="preserve">
+    <value>Por habitación por noche</value>
+  </data>
+  <data name="01666" xml:space="preserve">
+    <value>Ecotasa es numérico</value>
+  </data>
+  <data name="01667" xml:space="preserve">
+    <value>Ecotasa</value>
+  </data>
 </root>

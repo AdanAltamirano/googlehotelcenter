@@ -228,22 +228,23 @@ namespace APIServices
 
                 model.TotalDetails = new TotalDetails();
                 model.TotalDetails.SubTotal = totalRooms;
-                model.TotalDetails.TotalNR = (double)details.totalNetRate; //TODO: Validar si esta en null
-                model.TotalDetails.Total = (double)details.total;
+                model.TotalDetails.TotalNR = Convert.ToDouble(details.totalNetRate); //TODO: Validar si esta en null
+                model.TotalDetails.Total = Convert.ToDouble(details.total);
+                model.TotalDetails.Ecotasa = Convert.ToDouble(details.ecotasa);
                 model.TotalDetails.IncludesTax = details.includesTax.Value;
 
-                double tax = (double)details.tax;
+                double tax = Convert.ToDouble(details.tax);
 
-                double totalTax = (double)(details.total);
+                double totalTax = Convert.ToDouble(details.total);
 
-                double totalTaxHotel = (double)(details.IsNetRateUV ? details.totalNetRate : 0);
+                double totalTaxHotel = Convert.ToDouble((details.IsNetRateUV ? details.totalNetRate : 0));
 
 
                 model.TotalDetails.TaxesHotel = Math.Round(totalTaxHotel - (totalTaxHotel / ((tax / 100) + 1)), 2);
                 model.TotalDetails.Taxes = Math.Round(totalTax - (totalTax / ((tax / 100) + 1)), 2);
                 
                 model.TotalDetails.Currency = details.currency;
-                model.TotalDetails.Commission = (double)(details.IsNetRateUV ? details.total - details.totalNetRate : 0);
+                model.TotalDetails.Commission = Convert.ToDouble((details.IsNetRateUV ? details.total - details.totalNetRate : 0));
 
                 Permissions(ref model, isSupervisor, isUserChain, isUsuarioHotelAssociation, idCorporateUserChain, idCorporatePortal, idAsociationPb, idAsociation);
             }

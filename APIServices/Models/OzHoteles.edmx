@@ -146,6 +146,7 @@
           <Property Name="ApiKey" Type="nvarchar" MaxLength="60" />
           <Property Name="isSingleImgInv" Type="bit" />
           <Property Name="IsPMSPushNotifActive" Type="bit" />
+          <Property Name="Ecotasa" Type="smallmoney" />
         </EntityType>
         <EntityType Name="Indice">
           <Key>
@@ -399,6 +400,7 @@
           <Property Name="RatePlanPromotion" Type="nvarchar" MaxLength="4" />
           <Property Name="Itinerary" Type="nvarchar" MaxLength="22" />
           <Property Name="DetallesModificacion" Type="nvarchar(max)" />
+          <Property Name="Ecotasa" Type="smallmoney" />
         </EntityType>
         <EntityType Name="ReservationsDeposits">
           <Key>
@@ -796,6 +798,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vReservationDetails' no tiene 
             <PropertyRef Name="reservationId" />
             <PropertyRef Name="reservationNumber" />
             <PropertyRef Name="tax" />
+            <PropertyRef Name="ecotasa" />
             <PropertyRef Name="IsNetRateUV" />
             <PropertyRef Name="amountTotal" />
             <PropertyRef Name="depositAmount" />
@@ -830,6 +833,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vReservationDetails' no tiene 
           <Property Name="totalNetRate" Type="money" />
           <Property Name="includesTax" Type="bit" />
           <Property Name="tax" Type="smallmoney" Nullable="false" />
+          <Property Name="ecotasa" Type="smallmoney" Nullable="false" />
           <Property Name="currency" Type="nvarchar" MaxLength="3" />
           <Property Name="ratePlan" Type="nvarchar" MaxLength="4" />
           <Property Name="IsNetRateUV" Type="bit" Nullable="false" />
@@ -1331,6 +1335,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
     [vReservationDetails].[totalNetRate] AS [totalNetRate], 
     [vReservationDetails].[includesTax] AS [includesTax], 
     [vReservationDetails].[tax] AS [tax], 
+    [vReservationDetails].[ecotasa] AS [ecotasa], 
     [vReservationDetails].[currency] AS [currency], 
     [vReservationDetails].[ratePlan] AS [ratePlan], 
     [vReservationDetails].[IsNetRateUV] AS [IsNetRateUV], 
@@ -1563,7 +1568,6 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <EntitySet Name="vPromotions" EntityType="Models.vPromotions" />
           <EntitySet Name="VReservationRoomPriceDetails" EntityType="Models.VReservationRoomPriceDetails" />
           <EntitySet Name="vHotelPlan" EntityType="Models.vHotelPlan" />
-          <EntitySet Name="vReservationDetails" EntityType="Models.vReservationDetails" />
           <FunctionImport Name="spReservationsByDeposit_Update">
             <Parameter Name="idReservacion" Mode="In" Type="Int32" />
             <Parameter Name="nocuenta" Mode="In" Type="String" />
@@ -1583,6 +1587,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
             <Parameter Name="reference" Mode="In" Type="String" />
             <Parameter Name="authorizationNumber" Mode="In" Type="String" />
           </FunctionImport>
+          <EntitySet Name="vReservationDetails" EntityType="Models.vReservationDetails" />
         </EntityContainer>
         <EntityType Name="RatesPlan">
           <Key>
@@ -1995,6 +2000,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <Property Name="isSingleImgInv" Type="Boolean" />
           <Property Name="IsPMSPushNotifActive" Type="Boolean" />
           <NavigationProperty Name="RatesPlan" Relationship="Models.FK_RatesPlan_Hoteles" FromRole="Hoteles" ToRole="RatesPlan" />
+          <Property Name="Ecotasa" Type="Decimal" Precision="10" Scale="4" />
         </EntityType>
         <Association Name="FK_RatesPlan_Hoteles">
           <End Type="Models.Hoteles" Role="Hoteles" Multiplicity="1" />
@@ -2401,6 +2407,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <Property Name="Itinerary" Type="String" MaxLength="22" FixedLength="false" Unicode="true" />
           <Property Name="DetallesModificacion" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="ReservationsDeposits" Relationship="Models.FK_ReservationsDeposits_Reservaciones" FromRole="Reservaciones" ToRole="ReservationsDeposits" />
+          <Property Name="Ecotasa" Type="Decimal" Precision="10" Scale="4" />
         </EntityType>
         <EntityType Name="ReservationsDeposits">
           <Key>
@@ -2639,6 +2646,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
             <PropertyRef Name="reservationId" />
             <PropertyRef Name="reservationNumber" />
             <PropertyRef Name="tax" />
+            <PropertyRef Name="ecotasa" />
             <PropertyRef Name="IsNetRateUV" />
             <PropertyRef Name="amountTotal" />
             <PropertyRef Name="depositAmount" />
@@ -2673,6 +2681,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <Property Name="totalNetRate" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="includesTax" Type="Boolean" />
           <Property Name="tax" Type="Decimal" Nullable="false" Precision="10" Scale="4" />
+          <Property Name="ecotasa" Type="Decimal" Nullable="false" Precision="10" Scale="4" />
           <Property Name="currency" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
           <Property Name="ratePlan" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
           <Property Name="IsNetRateUV" Type="Boolean" Nullable="false" />
@@ -2976,6 +2985,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <EntitySetMapping Name="Hoteles">
             <EntityTypeMapping TypeName="Models.Hoteles">
               <MappingFragment StoreEntitySet="Hoteles">
+                <ScalarProperty Name="Ecotasa" ColumnName="Ecotasa" />
                 <ScalarProperty Name="IsPMSPushNotifActive" ColumnName="IsPMSPushNotifActive" />
                 <ScalarProperty Name="isSingleImgInv" ColumnName="isSingleImgInv" />
                 <ScalarProperty Name="ApiKey" ColumnName="ApiKey" />
@@ -3375,6 +3385,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <EntitySetMapping Name="Reservaciones">
             <EntityTypeMapping TypeName="Models.Reservaciones">
               <MappingFragment StoreEntitySet="Reservaciones">
+                <ScalarProperty Name="Ecotasa" ColumnName="Ecotasa" />
                 <ScalarProperty Name="DetallesModificacion" ColumnName="DetallesModificacion" />
                 <ScalarProperty Name="Itinerary" ColumnName="Itinerary" />
                 <ScalarProperty Name="RatePlanPromotion" ColumnName="RatePlanPromotion" />
@@ -3669,6 +3680,9 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spReservationsByDeposit_Update" FunctionName="Models.Store.spReservationsByDeposit_Update" />
+          <FunctionImportMapping FunctionImportName="spReservationUpdateStatus" FunctionName="Models.Store.spReservationUpdateStatus" />
+          <FunctionImportMapping FunctionImportName="spReservationConfirmPaymentRequest" FunctionName="Models.Store.spReservationConfirmPaymentRequest" />
           <EntitySetMapping Name="vReservationDetails">
             <EntityTypeMapping TypeName="Models.vReservationDetails">
               <MappingFragment StoreEntitySet="vReservationDetails">
@@ -3713,6 +3727,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
                 <ScalarProperty Name="IsNetRateUV" ColumnName="IsNetRateUV" />
                 <ScalarProperty Name="ratePlan" ColumnName="ratePlan" />
                 <ScalarProperty Name="currency" ColumnName="currency" />
+                <ScalarProperty Name="ecotasa" ColumnName="ecotasa" />
                 <ScalarProperty Name="tax" ColumnName="tax" />
                 <ScalarProperty Name="includesTax" ColumnName="includesTax" />
                 <ScalarProperty Name="totalNetRate" ColumnName="totalNetRate" />
@@ -3738,9 +3753,6 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="spReservationsByDeposit_Update" FunctionName="Models.Store.spReservationsByDeposit_Update" />
-          <FunctionImportMapping FunctionImportName="spReservationUpdateStatus" FunctionName="Models.Store.spReservationUpdateStatus" />
-          <FunctionImportMapping FunctionImportName="spReservationConfirmPaymentRequest" FunctionName="Models.Store.spReservationConfirmPaymentRequest" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

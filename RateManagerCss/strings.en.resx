@@ -8886,4 +8886,13 @@
   <data name="01664" xml:space="preserve">
     <value>Reserved by bank deposit ({0}) &lt;br&gt; Refence: {1} &lt;br&gt; Total deposited:{2} &lt;br&gt; Total debt to pay: {3}</value>
   </data>
+  <data name="01665" xml:space="preserve">
+    <value>Per room per night</value>
+  </data>
+  <data name="01666" xml:space="preserve">
+    <value>Ecotax is numeric</value>
+  </data>
+  <data name="01667" xml:space="preserve">
+    <value>Ecotax</value>
+  </data>
 </root>
