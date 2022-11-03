@@ -8,6 +8,10 @@ Vue.http.interceptors.push(Interceptor);
 const reservationList = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations{?filter,orderBy,pageSize,page}`);
 const reservationDetails = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations/{reservationId}/{patch}`);
 const reservationDeposit = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations/{reservationId}/deposit`);
+
+const reservationPmsUpdate = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations/{reservationId}/pms/update`);
+const reservationPmsReactivate = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations/{reservationId}/pms/reactivate`);
+
 const creditcard = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations/{reservationId}/creditcard/{code}`);
 const sendNotification = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations/{reservationId}/sendnotification`);
 const excel = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations/excel{?filter,orderBy,pageSize,page}`);
@@ -63,6 +67,14 @@ export default {
         return reservationDeposit.save({
             reservationId
         }, request);
+    },
+    ReservationPmsUpdate(reservationId, request) {
+        return reservationPmsUpdate.save({
+            reservationId
+        }, request);
+    },
+    ReservationPmsReactivate(reservationId) {
+        return reservationPmsReactivate.get({ reservationId });
     },
     SendNotification(reservationId) {
         return sendNotification.get({

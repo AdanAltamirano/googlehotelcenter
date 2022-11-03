@@ -202,6 +202,7 @@ namespace APIServices
                 {
                     Status = details.pmsStatus.Value,
                     Action = details.pmsAction,
+                    FailedAttempts = details.pmsFailedAttempts,
                     ReservationNumber = details.pmsReservationNumber
                 };
 
@@ -694,6 +695,43 @@ namespace APIServices
 
 
         #endregion
+
+        #region PMS
+
+        public bool PmsReactivate (int reservationId)
+        {
+            bool isReactivated = false;
+
+            try
+            {
+                var reservation = dbContext.Reservaciones.FirstOrDefault(r => r.idReservacion == reservationId);
+
+                if(reservation != null)
+                {
+
+                    reservation.pmsStatus = false;
+                    reservation.PmsFailedAttempts = 0;
+
+                    dbContext.SaveChanges();
+
+                    isReactivated = true;
+
+                }
+
+            }
+            catch(Exception ex)
+            {
+
+            }
+
+            return isReactivated;
+
+        }
+
+
+        #endregion
+
+
 
 
         #region obtener template del correo

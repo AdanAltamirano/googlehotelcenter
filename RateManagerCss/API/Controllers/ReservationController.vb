@@ -13,6 +13,7 @@ Imports APIServices.Utilities
 Imports APIServices.Models.DTO
 Imports APIServices.Models.DTO.Reservation.Deposit.Request
 Imports APIServices.Models.DTO.Reservation.Deposit.Response
+Imports APIServices.Models.DTO.Reservation.Pms.Response
 Imports RateManager.Utitlities.Email
 Imports System.Threading
 Imports Portal.General.Common.Data
@@ -323,6 +324,35 @@ Namespace API.Controller
 
             Return result
         End Function
+
+        'GET api/reservations/1978/pms/reactivate
+        <Route("{reservationId:int}/pms/reactivate"), HttpGet>
+        Public Function PmsReactivate(ByVal reservationId As Integer) As HttpResponseMessage
+
+            Dim isReactivated As Boolean = ReservationService.PmsReactivate(reservationId)
+
+            'return empty message
+            If Not isReactivated Then
+                Dim result As KeyValuePair(Of String, String) = New KeyValuePair(Of String, String)("0", "Error")
+                Return BadRequest(result)
+            End If
+
+            'return empty object
+            Return Ok(Nothing)
+
+        End Function
+
+        'POST api/reservations/1978/pms/update
+        <Route("{reservationId:int}/pms/update"), HttpPost>
+        Public Function PmsUpdate(ByVal reservationId As Integer, <FromBody> request As Pms) As ReservationPmsResponse
+
+
+            Dim asdf As Boolean = False
+
+
+            Return New ReservationPmsResponse
+        End Function
+
 
         'POST api/reservations/1978/deposit
         <Route("{reservationId:int}/deposit"), HttpPost>

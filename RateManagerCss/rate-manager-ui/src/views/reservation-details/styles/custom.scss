@@ -9,6 +9,10 @@
     }
 }*/
 
+$point-eight-em: 0.8em;
+
+
+
 .col-gap-2 {
     column-gap: 0.5rem;
 }
@@ -46,4 +50,9 @@ address {
 }
 .swal3-actions{
     z-index: auto !important;
+}
+
+//c -> custom
+.fa-1x-c {
+    font-size: $point-eight-em;
 }

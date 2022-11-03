@@ -189,6 +189,7 @@ namespace APIServices.Models.DTO
     {
         public bool Status { get; set; }
         public string Action { get; set; }
+        public int? FailedAttempts { get; set; }
         public string ReservationNumber { get; set; }
     }
 

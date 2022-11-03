@@ -863,6 +863,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vReservationDetails' no tiene 
           <Property Name="pmsReservationNumber" Type="nvarchar" MaxLength="30" />
           <Property Name="pmsStatus" Type="bit" />
           <Property Name="pmsAction" Type="char" MaxLength="2" />
+          <Property Name="pmsFailedAttempts" Type="int" />
           <Property Name="companyId" Type="int" />
           <Property Name="agencyId" Type="int" />
           <Property Name="agency" Type="nvarchar" MaxLength="180" Nullable="false" />
@@ -1365,6 +1366,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
     [vReservationDetails].[pmsReservationNumber] AS [pmsReservationNumber], 
     [vReservationDetails].[pmsStatus] AS [pmsStatus], 
     [vReservationDetails].[pmsAction] AS [pmsAction], 
+    [vReservationDetails].[pmsFailedAttempts] AS [pmsFailedAttempts], 
     [vReservationDetails].[companyId] AS [companyId], 
     [vReservationDetails].[agencyId] AS [agencyId], 
     [vReservationDetails].[agency] AS [agency], 
@@ -2711,6 +2713,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <Property Name="pmsReservationNumber" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
           <Property Name="pmsStatus" Type="Boolean" />
           <Property Name="pmsAction" Type="String" MaxLength="2" FixedLength="true" Unicode="false" />
+          <Property Name="pmsFailedAttempts" Type="Int32" />
           <Property Name="companyId" Type="Int32" />
           <Property Name="agencyId" Type="Int32" />
           <Property Name="agency" Type="String" Nullable="false" MaxLength="180" FixedLength="false" Unicode="true" />
@@ -3698,6 +3701,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
                 <ScalarProperty Name="agency" ColumnName="agency" />
                 <ScalarProperty Name="agencyId" ColumnName="agencyId" />
                 <ScalarProperty Name="companyId" ColumnName="companyId" />
+                <ScalarProperty Name="pmsFailedAttempts" ColumnName="pmsFailedAttempts" />
                 <ScalarProperty Name="pmsAction" ColumnName="pmsAction" />
                 <ScalarProperty Name="pmsStatus" ColumnName="pmsStatus" />
                 <ScalarProperty Name="pmsReservationNumber" ColumnName="pmsReservationNumber" />
