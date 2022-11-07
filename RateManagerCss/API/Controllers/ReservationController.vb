@@ -344,13 +344,19 @@ Namespace API.Controller
 
         'POST api/reservations/1978/pms/update
         <Route("{reservationId:int}/pms/update"), HttpPost>
-        Public Function PmsUpdate(ByVal reservationId As Integer, <FromBody> request As Pms) As ReservationPmsResponse
+        Public Function PmsUpdate(ByVal reservationId As Integer, <FromBody> request As Pms) As HttpResponseMessage
 
 
-            Dim asdf As Boolean = False
+            Dim result As Object = ReservationService.PmsUpdate(reservationId, request)
 
+            If Not result.IsSuccess Then
 
-            Return New ReservationPmsResponse
+                Dim [error] As KeyValuePair(Of String, String) = New KeyValuePair(Of String, String)("0", "Error")
+                Return BadRequest([error])
+
+            End If
+
+            Return Ok(result)
         End Function
 
 

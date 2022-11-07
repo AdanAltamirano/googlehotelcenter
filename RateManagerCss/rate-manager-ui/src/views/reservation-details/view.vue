@@ -105,25 +105,6 @@
           </b-row>
           <b-row v-if="result.pms">
             <b-col>
-              <!-- <h6 style="cursor:pointer" v-b-toggle.pms>
-                <i class="fa fa-plus-circle"></i>
-                {{$t('PMS Status')}}
-              </h6>
-              <b-collapse visible id="pms">
-                <b-alert show variant="secondary">
-                  <address>
-                    <strong>{{(!result.pms.status ? $t('Waiting to be confirmed') : $t('Reservation confirmed'))}}</strong>
-                    <br />
-                    <strong>{{$t('Status')}}:</strong>
-                    {{PmsStatus}}
-                    <br />
-                    <span v-if="result.pms.status">
-                      <strong>{{$t('Reservation number')}}:</strong>
-                      {{result.pms.reservationNumber}}
-                    </span>
-                  </address>
-                </b-alert>
-              </b-collapse> -->
               <pms :id="result.reservationId"  :pms="result.pms" :supervisor="isSupervisor"></pms>
             </b-col>
           </b-row>
@@ -160,9 +141,6 @@ export default {
       console.log(response.body);
       this.hideLoader();
     });
-    console.log(this.isHotelUser);
-    console.log(this.isHotelCompany);
-
   },
   data() {
     return {
@@ -179,21 +157,6 @@ export default {
     };
   },
   computed: {
-    // PmsStatus() {
-    //   let r;
-    //   switch (this.result.pms.action) {
-    //     case "SS":
-    //       r = this.$t("New");
-    //       break;
-    //     case "CC":
-    //       r = this.$t("Modified");
-    //       break;
-    //     case "XX":
-    //       r = this.$t("Canceled");
-    //       break;
-    //   }
-    //   return r;
-    // },
     DefaultImage() {
       return this.image;
     }

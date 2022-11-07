@@ -56,14 +56,25 @@ export default {
                 confirmButtonColor: "#3085d6",
                 confirmButtonText: this.$t("Save"),
                 showLoaderOnConfirm: true,
-                preConfirm: async () => {                   
-                    const response = await ReservationService.ReservationPmsUpdate(this.reservationId, request);
-                    return await response.json();
+                preConfirm: async () => {         
+                    
+                    return ReservationService.ReservationPmsUpdate(this.reservationId, request)
+                    .then(response => {
+                        return {
+                            response : response
+                        }
+                    })
+                    .catch(error => {
+                        return {
+                            response: error
+                        }
+                    });
                 },
                 allowOutsideClick: () => !this.$swal.isLoading(),
 
             }).then(result => {
-                if(result.value.isSuccess) this.$swal.fire(this.success(this.$t('Pms updated')));
+                
+                if(result.value.response.status === 200 && result.value.response.body.isSuccess) this.$swal.fire(this.success(this.$t('Pms updated')));
                 else this.$swal.fire(this.error(this.$t('Pms did not update')));
                 
             });            

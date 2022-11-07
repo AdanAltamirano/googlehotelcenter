@@ -2,5 +2,6 @@
 {
     public class ReservationPmsResponse
     {
+        public bool IsSuccess { get; set; }
     }
 }

@@ -6,8 +6,7 @@
     </h6>
     <b-collapse visible id="pms">
         <b-alert show variant="secondary">
-            <address>
-                
+            <address>               
                 <div v-if="supervisor">
                     <template v-if="!pms.status && pms.failedAttempts === 3">
                         <strong>{{ $t('Maximun attempts reached') }}</strong>
@@ -23,18 +22,13 @@
                 <div v-else>
                     <strong>{{(!pms.status ? $t('Waiting to be confirmed') : $t('Reservation confirmed'))}}</strong>
                 </div>
-
                 <div>
                     <strong>{{$t('Status')}}:</strong>
                     {{PmsStatus}}
                     <div style="display:inline-block !important;">                   
                         <pms-status v-if="supervisor" :reservationId="id"></pms-status>
                     </div>                   
-                </div>
-                
-                <!-- <strong>{{$t('Status')}}:</strong>
-                {{PmsStatus}}
-                <br /> -->
+                </div>                
                 <span v-if="pms.status">
                     <strong>{{$t('Reservation number')}}:</strong>
                     {{pms.reservationNumber}}
@@ -65,7 +59,6 @@ export default {
         PmsStatus
     },
     created() {
-        console.log(this.supervisor);
     },
     computed: {
         PmsStatus() {
