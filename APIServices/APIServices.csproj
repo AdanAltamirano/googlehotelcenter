@@ -147,6 +147,7 @@
     <Compile Include="Models\DTO\ReservationDetailsModel.cs" />
     <Compile Include="Models\DTO\Reservation\Deposit\Request\ReservationDepositDTO.cs" />
     <Compile Include="Models\DTO\Reservation\Deposit\Response\ReservationDepositResponse.cs" />
+    <Compile Include="Models\DTO\Reservation\Pms\Response\ReservationPmsResponse.cs" />
     <Compile Include="Models\DTO\Room.cs" />
     <Compile Include="Models\DTO\RoomInventoryInfo.cs" />
     <Compile Include="Models\DTO\RoomsClosureModel.cs" />
@@ -359,6 +360,7 @@
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

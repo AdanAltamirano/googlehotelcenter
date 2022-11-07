@@ -1,18 +1,19 @@
-﻿using APIServices.Models;
+﻿using System;
+using System.Configuration;
+using System.Linq;
+using System.IO;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Text.RegularExpressions;
+using System.Net.Http;
+using APIServices.Extension;
+using APIServices.Models;
 using APIServices.Models.DTO;
 using APIServices.Models.DTO.Reservation.Deposit.Request;
 using APIServices.Models.DTO.Reservation.Deposit.Response;
-using PortalLibraries;
-using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.IO;
-using System.Configuration;
-using APIServices.Extension;
-using System.Net.Http;
+using APIServices.Models.DTO.Reservation.Pms.Response;
 using OfficeOpenXml;
+using PortalLibraries;
 
 
 namespace APIServices
@@ -202,6 +203,7 @@ namespace APIServices
                 {
                     Status = details.pmsStatus.Value,
                     Action = details.pmsAction,
+                    FailedAttempts = details.pmsFailedAttempts,
                     ReservationNumber = details.pmsReservationNumber
                 };
 
@@ -694,6 +696,76 @@ namespace APIServices
 
 
         #endregion
+
+        #region PMS
+
+        public ReservationPmsResponse PmsUpdate(int reservationId, Pms request)
+        {
+            ReservationPmsResponse response = new ReservationPmsResponse() { IsSuccess = false };
+
+            try
+            {
+                var reservation = dbContext.Reservaciones.FirstOrDefault(r => r.idReservacion == reservationId);
+
+                if (reservation != null)
+                {
+
+                    reservation.pmsStatus = false;
+                    reservation.pmsAct = request.Action;
+                    reservation.PmsFailedAttempts = 0;
+
+                    dbContext.SaveChanges();
+
+                    response.IsSuccess = true;
+
+                }
+
+
+            }
+            catch(Exception ex)
+            {
+
+            }
+
+            return response;
+
+        }
+
+
+        public bool PmsReactivate (int reservationId)
+        {
+            bool isReactivated = false;
+
+            try
+            {
+                var reservation = dbContext.Reservaciones.FirstOrDefault(r => r.idReservacion == reservationId);
+
+                if(reservation != null)
+                {
+
+                    reservation.pmsStatus = false;
+                    reservation.PmsFailedAttempts = 0;
+
+                    dbContext.SaveChanges();
+
+                    isReactivated = true;
+
+                }
+
+            }
+            catch(Exception ex)
+            {
+
+            }
+
+            return isReactivated;
+
+        }
+
+
+        #endregion
+
+
 
 
         #region obtener template del correo

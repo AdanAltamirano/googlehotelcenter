@@ -118,8 +118,17 @@ export default {
     'Only letters' : 'Solo letras',
     'Only two decimals' : 'Hasta dos decimales',
     'Save' : 'Guardar',
+    'Save ?' : '¿ Guardar ?',
     'Save Deposit?' : '¿ Guardar Depósito ?',
     'Deposit has been confirmed' : 'El depósito se ha confirmado',
     'Deposit has not been confirmed' : 'El depósito no se ha confirmado',
-    'Ecotax' : 'Ecotasa'
+    'Ecotax' : 'Ecotasa',
+    'Reactivate PMS ?' : '¿ Reactivar PMS ?',
+    'Maximun attempts reached' : 'Número de intentos arrebasados',
+    'Pms updated' : 'Se ha actualizado el pms',
+    'Pms did not update' : 'No se pudo actualizar el pms',
+    'Pms has been reactivated' : 'Se ha reactivado pms',
+    'Pms has not been reactivated' : 'No se pudo reactivar pms',
+    'Change PMS Status' : 'Cambiar Status del PMS'
+
 }

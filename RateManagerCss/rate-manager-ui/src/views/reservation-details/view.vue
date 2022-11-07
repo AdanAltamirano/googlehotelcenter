@@ -105,25 +105,7 @@
           </b-row>
           <b-row v-if="result.pms">
             <b-col>
-              <h6 style="cursor:pointer" v-b-toggle.pms>
-                <i class="fa fa-plus-circle"></i>
-                {{$t('PMS Status')}}
-              </h6>
-              <b-collapse visible id="pms">
-                <b-alert show variant="secondary">
-                  <address>
-                    <strong>{{(!result.pms.status ? $t('Waiting to be confirmed') : $t('Reservation confirmed'))}}</strong>
-                    <br />
-                    <strong>{{$t('Status')}}:</strong>
-                    {{PmsStatus}}
-                    <br />
-                    <span v-if="result.pms.status">
-                      <strong>{{$t('Reservation number')}}:</strong>
-                      {{result.pms.reservationNumber}}
-                    </span>
-                  </address>
-                </b-alert>
-              </b-collapse>
+              <pms :id="result.reservationId"  :pms="result.pms" :supervisor="isSupervisor"></pms>
             </b-col>
           </b-row>
         </b-col>
@@ -139,6 +121,7 @@ import GeneralInfo from "./components/GeneralInfo.vue";
 import Rooms from "./components/Rooms.vue";
 import Policies from "./components/Policies.vue";
 import PaymentMethods from "./components/PaymentMethods.vue";
+import Pms from "./components/Pms/Pms.vue";
 import image from "./assets/internetpower.png";
 export default {
   name: "app",
@@ -147,7 +130,8 @@ export default {
     GeneralInfo,
     Rooms,
     Policies,
-    PaymentMethods
+    PaymentMethods,
+    Pms
   },
   created() {
     this.session();
@@ -157,9 +141,6 @@ export default {
       console.log(response.body);
       this.hideLoader();
     });
-    console.log(this.isHotelUser);
-    console.log(this.isHotelCompany);
-
   },
   data() {
     return {
@@ -176,42 +157,9 @@ export default {
     };
   },
   computed: {
-    PmsStatus() {
-      let r;
-      switch (this.result.pms.action) {
-        case "SS":
-          r = this.$t("New");
-          break;
-        case "CC":
-          r = this.$t("Modified");
-          break;
-        case "XX":
-          r = this.$t("Canceled");
-          break;
-      }
-      return r;
-    },
     DefaultImage() {
       return this.image;
     }
-    // TestOriginImage() {
-    //   return (
-    //     this.domain +
-    //     "/Ratemanager/Includes/imagenes/istotipo-internetpowerhotel-normal.png"
-    //   );
-    // },
-    // ProductionOriginImage() {
-    //   return (
-    //     this.domain +
-    //     "/Includes/imagenes/istotipo-internetpowerhotel-normal.png"
-    //   );
-    // },
-    // CubaOriginImage() {
-    //   return (
-    //     this.domain +
-    //     "/Ratemanager/Includes/imagenes/istotipo-internetpowerhotel-normal.png"
-    //   );
-    // }
   },
   methods: {
     showLoader() {
