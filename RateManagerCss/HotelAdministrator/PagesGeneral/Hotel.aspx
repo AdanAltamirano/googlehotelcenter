@@ -265,6 +265,7 @@
                        </td>
                         <td>
                             <asp:TextBox ID="txtEcotasa" runat="server" CssClass="textbox" Width="58px" MaxLength="5"></asp:TextBox>
+                            <input ID="txtEcotasaSrc" type=hidden runat=server />
                             <asp:Label ID="lblEcotasaMessage" runat="server" CssClass="clsLabel" Visible="true">Per room per night</asp:Label>
                             <asp:RangeValidator
                                     ID="RangeValidatorTxtEcotasa" runat="server" CssClass="Validators" ControlToValidate="txtEcotasa"
@@ -789,8 +790,10 @@
                 var echks = $('#<%= Me.chkPlusTaxSrc.ClientId %>');
                 var e = $('#<%= Me.txtImpuesto.ClientId %>');
                 var es = $('#<%= Me.txtImpuestoSrc.ClientId %>');
-                if (echk.length > 0 && echks.length > 0 && e.length > 0 && es.length > 0) {
-                    if ((echk[0].checked != echks[0].checked) || (e.val() != es.val())) {
+                var ecotasa = $('#<%= Me.txtEcotasa.ClientId %>');
+                var ecotasaSrc = $('#<%= Me.txtEcotasaSrc.ClientId %>');
+                if (echk.length > 0 && echks.length > 0 && e.length > 0 && es.length > 0 && ecotasa.length > 0 && ecotasaSrc.length > 0) {
+                    if ((echk[0].checked != echks[0].checked) || (e.val() != es.val()) || (ecotasa.val() != ecotasaSrc.val())) {
                         e = $('#hiddenPostBack');
                         if (e.length > 0) { e.val(confirm('<%=RateManager.PortalCulture.GetString("01366")%>')); }
                         return true;

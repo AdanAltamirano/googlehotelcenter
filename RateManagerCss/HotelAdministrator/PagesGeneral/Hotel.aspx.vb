@@ -268,6 +268,8 @@ Partial Class Hotel
                     Me.txtEcotasa.Text = Format(.Item(dsHotel.FIELD_ECOTASA), "###0.00")
                 End If
 
+                Me.txtEcotasaSrc.Value = Me.txtEcotasa.Text
+
 
                 Dim sFecha As String
                 sFecha = IIf(.IsNull(dsHotel.FIELD_FECHAAPERTURA), "", .Item(dsHotel.FIELD_FECHAAPERTURA))
@@ -514,20 +516,32 @@ Partial Class Hotel
         Dim dr As DataRow
         Dim impuesto As Double
         Dim impuestoNuevo As Double
+        Dim ecotasa As Double = 0, ecotasaNuevo As Double = 0
 
         impuesto = 0
         impuestoNuevo = 0
+
+
+
         If Not Me.chkPlusTaxSrc.Checked And Me.chkPlusTax.Checked Then '// Se va incluir impuesto a la tarifa.
             impuesto = 0
+            ecotasa = 0
             If txtImpuesto.Text <> "" Then
                 Double.TryParse(txtImpuesto.Text, impuestoNuevo)
+            End If
+            If txtEcotasa.Text <> "" Then
+                Double.TryParse(txtEcotasa.Text, ecotasaNuevo)
             End If
         ElseIf (Me.chkPlusTaxSrc.Checked And Not Me.chkPlusTax.Checked) Then '// Ya tenia impuestos incluidos y se quitan
             If txtImpuestoSrc.Value <> "" Then
                 Double.TryParse(txtImpuestoSrc.Value, impuesto)
             End If
-            impuestoNuevo = 0            
-        ElseIf (Me.chkPlusTaxSrc.Checked And Me.chkPlusTax.Checked) Then '// Ya tenia impuestos incluidos y se quito
+            If txtEcotasaSrc.Value <> "" Then
+                Double.TryParse(txtEcotasaSrc.Value, ecotasa)
+            End If
+            impuestoNuevo = 0
+            ecotasaNuevo = 0
+        ElseIf (Me.chkPlusTaxSrc.Checked And Me.chkPlusTax.Checked) Then '// Ya tenia impuestos incluidos y se quito para que tenga un nuevo impuesto
             If (Me.txtImpuesto.Text <> Me.txtImpuestoSrc.Value) Then
                 If txtImpuestoSrc.Value <> "" Then
                     Double.TryParse(txtImpuestoSrc.Value, impuesto)
@@ -536,12 +550,24 @@ Partial Class Hotel
                     Double.TryParse(txtImpuesto.Text, impuestoNuevo)
                 End If
             End If
+
+            If (Me.txtEcotasa.Text <> Me.txtEcotasaSrc.Value) Then
+                If txtEcotasa.Text <> "" Then
+                    Double.TryParse(txtEcotasa.Text, ecotasaNuevo)
+                End If
+                If txtEcotasaSrc.Value <> "" Then
+                    Double.TryParse(txtEcotasaSrc.Value, ecotasa)
+                End If
+            End If
+
         End If
 
         dr = ds.Tables(0).NewRow()
         dr("idHotel") = MyBase.cInfoActual.Hotel
         dr("impuesto") = impuesto
         dr("impuestoNuevo") = impuestoNuevo
+        dr("ecotasa") = ecotasa
+        dr("ecotasaNuevo") = ecotasaNuevo
         ds.Tables(0).Rows.Add(dr)
         Trace.Write("salio", "Load Impuestos")
     End Sub
@@ -1143,6 +1169,8 @@ Partial Class Hotel
             .Add("idHotel", GetType(System.Int32))
             .Add("impuesto", GetType(System.Decimal))
             .Add("impuestoNuevo", GetType(System.Decimal))
+            .Add("ecotasa", GetType(System.Decimal))
+            .Add("ecotasaNuevo", GetType(System.Decimal))
         End With
         ds.Tables.Add(table)
         Return ds
