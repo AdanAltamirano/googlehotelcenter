@@ -509,6 +509,15 @@ Partial Public Class Hotel
     Protected WithEvents lblEcotasaMessage As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
+    '''Control RequiredFieldValidatorEcotasa.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents RequiredFieldValidatorEcotasa As Global.System.Web.UI.WebControls.RequiredFieldValidator
+
+    '''<summary>
     '''Control RangeValidatorTxtEcotasa.
     '''</summary>
     '''<remarks>

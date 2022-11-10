@@ -551,13 +551,9 @@ Partial Class Hotel
                 End If
             End If
 
-            If (Me.txtEcotasa.Text <> Me.txtEcotasaSrc.Value) Then
-                If txtEcotasa.Text <> "" Then
-                    Double.TryParse(txtEcotasa.Text, ecotasaNuevo)
-                End If
-                If txtEcotasaSrc.Value <> "" Then
-                    Double.TryParse(txtEcotasaSrc.Value, ecotasa)
-                End If
+            If (txtEcotasa.Text <> "" And txtEcotasaSrc.Value <> "") Then
+                Double.TryParse(txtEcotasa.Text, ecotasaNuevo)
+                Double.TryParse(txtEcotasaSrc.Value, ecotasa)
             End If
 
         End If
@@ -782,7 +778,7 @@ Partial Class Hotel
                 If Me.txtEcotasa.Text.Trim <> "" Then
                     .Item(dsHotel.FIELD_ECOTASA) = Me.txtEcotasa.Text.Trim
                 Else
-                    .Item(dsHotel.FIELD_ECOTASA) = System.DBNull.Value
+                    .Item(dsHotel.FIELD_ECOTASA) = 0
                 End If
 
             End With
@@ -971,6 +967,7 @@ Partial Class Hotel
         RangeValidator7.Text = PortalCulture.GetString("01168")    '"Edad Max. de Niño es numerico (1-99)"
         RequiredFieldValidator8.Text = PortalCulture.GetString("M0UT00502")    '"Impuesto es requerido"
         RangeValidator9.Text = PortalCulture.GetString("M0UT00503")    '"Impuesto es numerico (1-99)"
+        RequiredFieldValidatorEcotasa.Text = PortalCulture.GetString("01668")
         Me.lblConfigGDS.Text = PortalCulture.GetString("M000288")
         Me.lblPropertyNumber.Text = PortalCulture.GetString("M000289", True)
         Me.lblChainCode.Text = PortalCulture.GetString("M000290", True)

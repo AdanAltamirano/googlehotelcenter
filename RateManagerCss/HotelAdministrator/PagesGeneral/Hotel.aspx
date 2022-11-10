@@ -267,6 +267,9 @@
                             <asp:TextBox ID="txtEcotasa" runat="server" CssClass="textbox" Width="58px" MaxLength="5"></asp:TextBox>
                             <input ID="txtEcotasaSrc" type=hidden runat=server />
                             <asp:Label ID="lblEcotasaMessage" runat="server" CssClass="clsLabel" Visible="true">Per room per night</asp:Label>
+                            <asp:RequiredFieldValidator
+                                ID="RequiredFieldValidatorEcotasa" runat="server" CssClass="Validators" ControlToValidate="txtEcotasa"
+                                ErrorMessage="Ecotasa es requerido" Display="Dynamic">*</asp:RequiredFieldValidator>
                             <asp:RangeValidator
                                     ID="RangeValidatorTxtEcotasa" runat="server" CssClass="Validators" ControlToValidate="txtEcotasa"
                                     ErrorMessage="Ecotasa es numerico (1-99)" Display="Dynamic" Type="Double" MaximumValue="99"

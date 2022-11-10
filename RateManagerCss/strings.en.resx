@@ -8895,4 +8895,7 @@
   <data name="01667" xml:space="preserve">
     <value>Ecotax</value>
   </data>
+  <data name="01668" xml:space="preserve">
+    <value>Ecotax is required</value>
+  </data>
 </root>

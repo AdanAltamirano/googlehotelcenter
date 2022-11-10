@@ -8898,4 +8898,7 @@
   <data name="01667" xml:space="preserve">
     <value>Ecotasa</value>
   </data>
+  <data name="01668" xml:space="preserve">
+    <value>Ecotasa es requerido</value>
+  </data>
 </root>
