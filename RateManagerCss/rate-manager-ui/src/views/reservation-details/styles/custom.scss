@@ -2,6 +2,8 @@
 @import '../../../styles/v-tooltip.scss';
 @import '../../../../node_modules/bootstrap-vue/dist/bootstrap-vue.css';
 
+$color-light-gray: rgba(0,0,0,.1);
+
 /*span { font-weight: bold;}
 .ccdata {
     p {
@@ -21,6 +23,12 @@ $point-eight-em: 0.8em;
     font-size: small !important;
 }
 
+.w-60 {
+    width: 60% !important;
+}
+.w-70 {
+    width: 70% !important;
+}
 .card-body, .card-header { padding: .5rem;}
 address { 
     margin-bottom: 0;
@@ -48,6 +56,17 @@ address {
     border-width: 0px !important;
     box-shadow: none !important;
 }
+.vdp-vc-input {
+    > input:first-child {
+        text-align: center !important;
+    }
+}
+.swal2-container-custom {
+    z-index: 1 !important;
+}
+.swal2-max-width{
+    width: auto !important;
+}
 .swal3-actions{
     z-index: auto !important;
 }
@@ -56,3 +75,34 @@ address {
 .fa-1x-c {
     font-size: $point-eight-em;
 }
+.cite-date {
+    border: none;
+    border-bottom: 1px solid $color-light-gray !important;
+    background-color: transparent !important;
+    & span.remove-item {
+        cursor: pointer;
+    }
+}
+
+.container-flex-column {
+    display: flex;
+    flex-direction: column;
+    //max-width: calc(); TODO: de todos los hijos obtener el de mayor tamano y agregarle mas tamano
+    &.row-gap-1 {
+        row-gap: 0.5rem;
+    }    
+}
+
+.divider {
+    margin-top: 0px;
+    margin-bottom: 6px;
+    border-top: 1px solid $color-light-gray;
+}
+
+@media only screen and (min-width: 1280px) {
+    .swal2-custom-popup {
+        width: 40rem !important;
+    }
+}
+
+

@@ -1042,6 +1042,29 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <Parameter Name="ratePlanF2G" Type="nchar" Mode="In" />
           <Parameter Name="promoCode" Type="nchar" Mode="In" />
         </Function>
+        <Function Name="spAgregarDetalleTarifasReservaciones" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idDetalleReservacion" Type="int" Mode="In" />
+          <Parameter Name="idTarifa" Type="int" Mode="In" />
+          <Parameter Name="Precio" Type="smallmoney" Mode="In" />
+          <Parameter Name="PrecioExtra" Type="smallmoney" Mode="In" />
+          <Parameter Name="PrecioNR" Type="smallmoney" Mode="In" />
+          <Parameter Name="PrecioExtraNR" Type="smallmoney" Mode="In" />
+          <Parameter Name="Moneda" Type="nvarchar" Mode="In" />
+          <Parameter Name="Inicio" Type="smalldatetime" Mode="In" />
+          <Parameter Name="Fin" Type="smalldatetime" Mode="In" />
+        </Function>
+        <Function Name="spEliminarDetalleTarifasReservaciones" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idDetalleReservacion" Type="int" Mode="In" />
+        </Function>
+        <Function Name="spModificarDetalleReservaciones" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idDetalleReservacion" Type="int" Mode="In" />
+          <Parameter Name="idReservacion" Type="int" Mode="In" />
+          <Parameter Name="Adultos" Type="tinyint" Mode="In" />
+          <Parameter Name="Ninios" Type="tinyint" Mode="In" />
+          <Parameter Name="AdultosExtras" Type="tinyint" Mode="In" />
+          <Parameter Name="NiniosExtras" Type="tinyint" Mode="In" />
+          <Parameter Name="EdadesNinios" Type="nvarchar" Mode="In" />
+        </Function>
         <Function Name="spModificarReservacionByid" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="idReservacion" Type="int" Mode="In" />
           <Parameter Name="NombreCL" Type="nvarchar" Mode="In" />
@@ -1590,6 +1613,29 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
             <Parameter Name="authorizationNumber" Mode="In" Type="String" />
           </FunctionImport>
           <EntitySet Name="vReservationDetails" EntityType="Models.vReservationDetails" />
+          <FunctionImport Name="spAgregarDetalleTarifasReservaciones">
+            <Parameter Name="idDetalleReservacion" Mode="In" Type="Int32" />
+            <Parameter Name="idTarifa" Mode="In" Type="Int32" />
+            <Parameter Name="Precio" Mode="In" Type="Decimal" />
+            <Parameter Name="PrecioExtra" Mode="In" Type="Decimal" />
+            <Parameter Name="PrecioNR" Mode="In" Type="Decimal" />
+            <Parameter Name="PrecioExtraNR" Mode="In" Type="Decimal" />
+            <Parameter Name="Moneda" Mode="In" Type="String" />
+            <Parameter Name="Inicio" Mode="In" Type="DateTime" />
+            <Parameter Name="Fin" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="spEliminarDetalleTarifasReservaciones">
+          <Parameter Name="idDetalleReservacion" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="spModificarDetalleReservaciones">
+            <Parameter Name="idDetalleReservacion" Mode="In" Type="Int32" />
+            <Parameter Name="idReservacion" Mode="In" Type="Int32" />
+            <Parameter Name="Adultos" Mode="In" Type="Byte" />
+            <Parameter Name="Ninios" Mode="In" Type="Byte" />
+            <Parameter Name="AdultosExtras" Mode="In" Type="Byte" />
+            <Parameter Name="NiniosExtras" Mode="In" Type="Byte" />
+            <Parameter Name="EdadesNinios" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="RatesPlan">
           <Key>
@@ -2522,6 +2568,89 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <Property Name="ratePlanPromotion" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
           <Property Name="namePromotion" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
           <Property Name="netRateContract" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="vReservationDetails">
+          <Key>
+            <PropertyRef Name="status" />
+            <PropertyRef Name="reservationDate" />
+            <PropertyRef Name="checkIn" />
+            <PropertyRef Name="checkOut" />
+            <PropertyRef Name="reservationId" />
+            <PropertyRef Name="reservationNumber" />
+            <PropertyRef Name="tax" />
+            <PropertyRef Name="IsNetRateUV" />
+            <PropertyRef Name="depositAmount" />
+            <PropertyRef Name="provider" />
+            <PropertyRef Name="rp_cancellationPolicies" />
+            <PropertyRef Name="rp_guaranteePolicies" />
+            <PropertyRef Name="rp_creditcardPolicies" />
+            <PropertyRef Name="h_cancellationPolicies" />
+            <PropertyRef Name="h_guaranteePolicies" />
+            <PropertyRef Name="h_creditcardPolicies" />
+            <PropertyRef Name="agency" />
+          </Key>
+          <Property Name="hotelId" Type="Int32" />
+          <Property Name="hotelName" Type="String" MaxLength="180" FixedLength="false" Unicode="true" />
+          <Property Name="address" Type="String" MaxLength="120" FixedLength="false" Unicode="true" />
+          <Property Name="city" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="country" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="status" Type="Byte" Nullable="false" />
+          <Property Name="accessCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="reservationDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="checkIn" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="checkOut" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="source" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="Portal" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="Provisioner" Type="String" MaxLength="14" FixedLength="false" Unicode="false" />
+          <Property Name="reservationId" Type="Int32" Nullable="false" />
+          <Property Name="reservationNumber" Type="String" Nullable="false" MaxLength="24" FixedLength="false" Unicode="true" />
+          <Property Name="cancellationNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cancellationReason" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="reservationIdXProvider" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="total" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="totalNetRate" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="includesTax" Type="Boolean" />
+          <Property Name="tax" Type="Decimal" Nullable="false" Precision="10" Scale="4" />
+          <Property Name="currency" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="ratePlan" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="IsNetRateUV" Type="Boolean" Nullable="false" />
+          <Property Name="customerName" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="customerLastName" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="customerEmail" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="customerPhone" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
+          <Property Name="paymentType" Type="Int32" />
+          <Property Name="onlinePaymentMethod" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="authorizationNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cardNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="cardExpMonth" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="cardExpYear" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="cardCvv" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="cardCustomerName" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="depositAmount" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="depositCurrency" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="depositReference" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="provider" Type="Int32" Nullable="false" />
+          <Property Name="rp_cancellationPolicies" Type="String" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="rp_guaranteePolicies" Type="String" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="rp_creditcardPolicies" Type="String" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="h_cancellationPolicies" Type="String" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="h_guaranteePolicies" Type="String" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="h_creditcardPolicies" Type="String" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="pmsReservationNumber" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="pmsStatus" Type="Boolean" />
+          <Property Name="pmsAction" Type="String" MaxLength="2" FixedLength="true" Unicode="false" />
+          <Property Name="companyId" Type="Int32" />
+          <Property Name="agencyId" Type="Int32" />
+          <Property Name="agency" Type="String" Nullable="false" MaxLength="180" FixedLength="false" Unicode="true" />
+          <Property Name="agencyUser" Type="String" MaxLength="81" FixedLength="false" Unicode="true" />
+          <Property Name="corporateId" Type="Int32" />
+          <Property Name="corporateName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="hotelEmail" Type="String" MaxLength="240" FixedLength="false" Unicode="true" />
+          <Property Name="modificationReason" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ratePlanPromotion" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="namePromotion" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="idCancellationUser" Type="Int32" />
+          <Property Name="userCancellation" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="vHotelRoom">
           <Key>
@@ -3757,6 +3886,9 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spAgregarDetalleTarifasReservaciones" FunctionName="Models.Store.spAgregarDetalleTarifasReservaciones" />
+          <FunctionImportMapping FunctionImportName="spEliminarDetalleTarifasReservaciones" FunctionName="Models.Store.spEliminarDetalleTarifasReservaciones" />
+          <FunctionImportMapping FunctionImportName="spModificarDetalleReservaciones" FunctionName="Models.Store.spModificarDetalleReservaciones" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

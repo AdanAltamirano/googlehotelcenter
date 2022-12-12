@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace APIServices.Models.DTO
 {
@@ -11,13 +12,22 @@ namespace APIServices.Models.DTO
         public double TotalNR { get; set; }
         public double Total { get; set; }
         public string Details { get; set; }
+        public List<RoomDetails> RoomsDetails { get; set; }
     }
 
     public class ModifyBookingRS
     {
         public bool IsSuccess { get; set; }
-        public string Error { get; set; }
+        public bool SendNotification { get; set; }
+        public ErrorRS Error { get; set; }
         public string CustomerEmail { get; set; } = String.Empty;
         public string HotelEmail { get; set; } = String.Empty;
     }
+
+    public class ErrorRS
+    {
+        public bool HasErrors { get; set; } = false;
+        public List<string> Errors { get; set; }
+    }
+
 }

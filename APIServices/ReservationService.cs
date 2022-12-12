@@ -299,6 +299,7 @@ namespace APIServices
                     totalPerRoomNetRate += (price.priceNR == null)? 0 :(double)(price.priceNR * nights) + (extraPriceNR);
                     priceDetails.Add(new RoomPriceDetails
                     {
+                        RoomPriceId = price.roomPriceId,
                         Price = (double)price.price,
                         ExtraPrice = (double)price.extraPrice,
                         PriceNR = (price.priceNR == null)? 0 : (double)price.priceNR,
@@ -313,6 +314,8 @@ namespace APIServices
 
                 model.RoomDetails.Add(new RoomDetails
                 {
+                    ReservationId = room.reservationId,
+                    RoomPriceId = room.roomPriceId,
                     RoomCode = room.roomCode,
                     Name = room.roomName,
                     //Description = room.roomDescription,
@@ -327,6 +330,7 @@ namespace APIServices
                     PriceDetails = new List<RoomPriceDetails>(),
                     Total = totalPerRoom,
                     TotalNR = totalPerRoomNetRate,
+                    NetRateContract = room.netRateContract,
                     Currency = room.currency,
                     RatePlan = room.ratePlan,
                     RateCode = room.rateCode,
@@ -582,24 +586,88 @@ namespace APIServices
         public ModifyBookingRS Modify(int reservationId, ModifyBookingRQ req)
         {
             var res = new ModifyBookingRS();
+
+
             using(DbContextTransaction transaction = dbContext.Database.BeginTransaction())
             {
                 try
                 {
+                    var reservation = dbContext.Reservaciones.FirstOrDefault(r => r.idReservacion == reservationId);
+
+                    bool plusTax = reservation.PlusTax ?? false;
+                    int tax = Decimal.ToInt32(reservation.Impuesto);
+
+
                     dbContext.spModificarReservacionByid(reservationId, req.Name, req.LastName, (decimal)req.Total, 
                         (decimal)req.TotalNR, req.CheckIn, req.CheckOut,req.Details);
+
+                    foreach (var room in req.RoomsDetails)
+                    {
+                        int? idDetalleReservacion = room.RoomPriceId;
+                        int? idReservacion = room.ReservationId;
+                        byte? adultos = (byte?)room.Adults;
+                        byte? ninios = (byte?)room.Childrens;
+                        byte? adultosExtra = (byte?)room.ExtraAdults;
+                        byte? niniosExtra = (byte?)room.ExtraChildrens;
+                        string edadesNinios = room.AgeChildren;
+
+                        dbContext.spModificarDetalleReservaciones(idDetalleReservacion, idReservacion, adultos, ninios, adultosExtra, niniosExtra, edadesNinios);
+
+                        if (room.PriceDetails.Count > 0)
+                        {
+                            dbContext.spEliminarDetalleTarifasReservaciones(room.RoomPriceId);
+
+                            foreach (var priceDetail in room.PriceDetails)
+                            {
+                                decimal price = Convert.ToDecimal(priceDetail.Price.ToString("0.00"));
+                                decimal extraPrice = Convert.ToDecimal(priceDetail.ExtraPrice.ToString("0.00"));
+                                decimal priceNR = Convert.ToDecimal(priceDetail.PriceNR.ToString("0.00"));
+                                decimal extraPriceNR = Convert.ToDecimal(priceDetail.ExtraPriceNR.ToString("0.00"));
+
+                                decimal priceRateDetail = !plusTax ? PriceWithoutTax(price, tax) : price;
+                                decimal extraPriceRateDetail = !plusTax ? PriceWithoutTax(extraPrice, tax) : extraPrice;
+                                decimal priceNRRateDetail = !plusTax ? PriceWithoutTax(priceNR, tax) : priceNR;
+                                decimal extraPriceNRRateDetail = !plusTax ? PriceWithoutTax(extraPriceNR, tax) : extraPriceNR;
+                                string currencyPriceRateDetail = priceDetail.Currency ?? "MXN";
+
+                                dbContext.spAgregarDetalleTarifasReservaciones(priceDetail.RoomPriceId, 0, priceRateDetail, extraPriceRateDetail, priceNRRateDetail, extraPriceNRRateDetail, currencyPriceRateDetail, priceDetail.CheckIn.Date, priceDetail.CheckOut.Date);
+
+                            }
+
+                        }
+
+                    }
+
+
+
+
                     transaction.Commit();
 
                     res.IsSuccess = true;
                 }
                 catch (Exception ex)
                 {
-                    res.Error = $"failed to modify: {ex.InnerException.Message}";
+                    res.Error = new ErrorRS();
+                    res.Error.Errors = new List<string>();
+                    //
+                    res.IsSuccess = false;
+                    res.Error.HasErrors = true;
+                    res.Error.Errors.Add($"failed to modify: {ex.InnerException.Message}");
                     transaction.Rollback();
                 }
             }
             return res;
         }
+
+        private decimal PriceWithoutTax(decimal total, int tax)
+        {
+            var amount = (total * tax) / 100;
+
+            var price = Convert.ToDecimal((total - amount).ToString("0.00"));
+
+            return price;
+        }
+
         #endregion
 
         #region reactivar reserva
@@ -648,7 +716,13 @@ namespace APIServices
                 }
                 catch (Exception ex)
                 {
-                    res.Error = $"failed to reactivate: {ex.InnerException.Message}";
+
+                    res.Error = new ErrorRS();
+                    res.Error.Errors = new List<string>();
+                    //
+                    res.IsSuccess = false;
+                    res.Error.HasErrors = true;
+                    res.Error.Errors.Add($"failed to reactivate: {ex.InnerException.Message}");
                 }
 
             }    

@@ -18,7 +18,9 @@ import './styles/custom.scss';
 
 Vue.use(BootstrapVue);
 Vue.use(VueSweetalert2);
-locale([{ language: 'es', localeFile: es }], moment, false);
+Vue.use(Loading);
+Vue.use(VCalendar);
+Vue.use(VTooltip);
 Vue.use(VueMoment, {
     moment,
 });
@@ -34,6 +36,8 @@ Vue.use(Loading);
 Vue.use(VCalendar);
 Vue.use(VTooltip);
 
+
+locale([{ language: 'es', localeFile: es }], moment, false);
 
 new Vue({
     render: h => h(View)
