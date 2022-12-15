@@ -80,18 +80,34 @@
                        mnt + '0' : mnt);
         }
     
-        function CheckValContract(min, max, nr, uv, msgMax, msgMin) {
+        function CheckValContract(min, max, nr, uv, msgMax, msgMin, plusTax, ecotasa) {
             <% if me.issupervisor then %>
             valMin = parseFloat(document.getElementById(min).value);
             valMax = parseFloat(document.getElementById(max).value);
             valNR = parseFloat(document.getElementById(nr).value);
             valUV = parseFloat(document.getElementById(uv).value);
+            var isPlusTax = plusTax === "True" ? true : false;
+            var ecotasaTax = parseFloat(ecotasa);
 
             if (document.getElementById(uv)) {
                 //valUV = parseFloat(document.getElementById(uv).value);
-                var NR = parseFloat(valNR) * (1 + (parseFloat(valMin)/100));
-                document.getElementById(uv).value = document.getElementById(uv).value = (parseFloat(valNR) / ((100 - valMin) / 100)).toFixed(2);//Math.round(NR);
+                var NR = parseFloat(valNR) * (1 + (parseFloat(valMin) / 100));
+
+                if (isPlusTax) {
+                   
+                    document.getElementById(uv).value = parseFloat(valNR) > 0 ? ((parseFloat(valNR - ecotasaTax) / ((100 - valMin) / 100)) + ecotasaTax).toFixed(2) : 0;
+                   
+                }
+                else {
+                    document.getElementById(uv).value = (parseFloat(valNR) / ((100 - valMin) / 100)).toFixed(2);
+                }
+
+
+                //document.getElementById(uv).value = document.getElementById(uv).value = (parseFloat(valNR) / ((100 - valMin) / 100)).toFixed(2);//Math.round(NR);
             }
+
+            valUV = parseFloat(document.getElementById(uv).value);
+
             /*if ((isNaN(valMin) == false) && (isNaN(valMax) == false)) {
                 if ((isNaN(valMin) == false) && (isNaN(valMax) == false)) {
                     if ((valNR != 0) & (valUV != 0)) {

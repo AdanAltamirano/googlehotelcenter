@@ -86,11 +86,13 @@
                        mnt + '0' : mnt);
         }
     
-        function CheckValContract(min, max, nr, uv, msgMax, msgMin) {
-            <% if me.issupervisor then %>
+        function CheckValContract(min, max, nr, uv, msgMax, msgMin, plusTax, ecotasa) {
+            <% if Me.issupervisor Then %>
             valMin = parseFloat(document.getElementById(min).value);
             valMax = parseFloat(document.getElementById(max).value);
             valNR = parseFloat(document.getElementById(nr).value);
+            var isPlusTax = plusTax === "True" ? true : false;
+            var ecotasaTax = parseFloat(ecotasa);
 
             if (document.getElementById(uv)) {
                 //valUV = parseFloat(document.getElementById(uv).value);
@@ -98,7 +100,16 @@
                 //document.getElementById(uv).value = document.getElementById(uv).value = (parseFloat(valNR) / ((100 - valMin) / 100)).toFixed(2); //Math.ceil(parseFloat(NR).toFixed(2) * 100) / 100;
 
                 var NR = parseFloat(valNR) * (1 + (parseFloat(valMin) / 100));
-                document.getElementById(uv).value = Math.ceil((parseFloat(valNR) / ((100 - valMin) / 100)).toFixed(2));               
+
+                if (isPlusTax) {
+                    //Validar cuando sea cero valNR
+                    document.getElementById(uv).value = parseFloat(valNR) > 0 ? ((parseFloat(valNR - ecotasaTax) / ((100 - valMin) / 100)) + ecotasaTax).toFixed(2) : 0;
+                }
+                else {                    
+                    document.getElementById(uv).value = (parseFloat(valNR) / ((100 - valMin) / 100)).toFixed(2);
+                }
+
+                //document.getElementById(uv).value = (parseFloat(valNR) / ((100 - valMin) / 100)).toFixed(2);
             }
             valUV = parseFloat(document.getElementById(uv).value);
             /*if ((isNaN(valMin) == false) && (isNaN(valMax) == false)) {
@@ -139,7 +150,7 @@
             if (document.getElementById(nr)) {
 
                 var UV = parseFloat(valUV) * (1 + (parseFloat(valMin) / 100));
-                document.getElementById(nr).value = Math.floor((parseFloat(valUV) * ((100 - valMin) / 100)).toFixed(2));           
+                document.getElementById(nr).value = (parseFloat(valUV) * ((100 - valMin) / 100)).toFixed(2);           
             }
 
             valNR = parseFloat(document.getElementById(nr).value);

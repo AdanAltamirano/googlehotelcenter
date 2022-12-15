@@ -59,6 +59,9 @@
                 :room="room" 
                 :index="index"
                 :isNetRate="isNetRate"
+                :totalNights="nights"
+                :totalRooms="roomsDetails.length"
+                :ecotasa="ecotasa"
                 @updateRoom="updateRoom"
                 @updatePriceRoom="updatePriceRoom"
                 :key="reload"/>
@@ -94,8 +97,10 @@ export default {
     "lastName",
     "total",
     "totalNR",
+    "ecotasa",
     "checkIn",
     "checkOut",
+    "nights",
     "showTotalNR",
     "roomDetails",
     "details"
@@ -144,6 +149,8 @@ export default {
       })
 
       this.statesChangesRoomsRates.push(false);
+
+      console.log(`Modify Total de noches: ${this.nights}`);
     });
   },
   watch: {

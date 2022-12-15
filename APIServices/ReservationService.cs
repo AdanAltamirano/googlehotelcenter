@@ -226,7 +226,7 @@ namespace APIServices
                 GetPayments(ref model, reservationId);
 
                 double totalRooms = 0;
-                GetRooms(ref model, reservationId, details.companyId, out totalRooms);
+                GetRooms(ref model, reservationId, details , out totalRooms);
 
                 model.TotalDetails = new TotalDetails();
                 model.TotalDetails.SubTotal = totalRooms;
@@ -237,9 +237,9 @@ namespace APIServices
 
                 double tax = Convert.ToDouble(details.tax);
 
-                double totalTax = Convert.ToDouble(details.total);
+                double totalTax = Convert.ToDouble(details.total - details.ecotasa);
 
-                double totalTaxHotel = Convert.ToDouble((details.IsNetRateUV ? details.totalNetRate : 0));
+                double totalTaxHotel = Convert.ToDouble((details.IsNetRateUV ? (details.totalNetRate - details.ecotasa) : 0));
 
 
                 model.TotalDetails.TaxesHotel = Math.Round(totalTaxHotel - (totalTaxHotel / ((tax / 100) + 1)), 2);
@@ -268,14 +268,22 @@ namespace APIServices
                 && r.paymentType == 1);
         }
 
-        void GetRooms(ref ReservationDetailsModel model, int reservationId, int? companyId,out double totalRooms)
+        void GetRooms(ref ReservationDetailsModel model, int reservationId, vReservationDetails details, out double totalRooms)
         {
             var rooms = 
                  GetRoomsReservation(reservationId);
 
-            model.RoomDetails = new List<RoomDetails>();
             int index = 0;
             double totalRoom = 0;
+
+            bool includexTaxes = (bool)details.includesTax;
+            decimal tax = details.tax;
+            decimal ecotasa = details.ecotasa;
+            int totalNights = (details.checkOut - details.checkIn).Days;
+            int totalOfRooms = rooms.Count;
+
+            model.RoomDetails = new List<RoomDetails>();
+           
             foreach(var room in rooms)
             {
                 var prices = dbContext.VReservationRoomPriceDetails
@@ -294,9 +302,26 @@ namespace APIServices
                         : (price.checkOut - price.checkIn).Days + 1;
                     //int nights = (price.checkOut - price.checkIn).Days + 1;
                     //int nights = (price.checkOut - price.checkIn).Days;
+
+                    //Sino es OTA y Si no incluye taxes se le agregan los taxes para que quede estandarizado con la vista
+                    if (!model.Source.Equals("IDS"))
+                    {
+                        if (!includexTaxes)
+                        {
+                            price.price = AddTaxToPrice(price.price, tax, ecotasa, totalNights, totalOfRooms);
+                            price.extraPrice = AddTaxToPrice(price.extraPrice, tax, ecotasa, totalNights, totalOfRooms);
+                            price.priceNR = AddTaxToPrice(price.priceNR, tax, ecotasa, totalNights, totalOfRooms);
+                            price.extraPriceNR = AddTaxToPrice(price.extraPriceNR, tax, ecotasa, totalNights, totalOfRooms);
+                        }
+                    }
+
+
                     totalPerRoom += (double)((price.price * nights) + (price.extraPrice * nights));
+
                     double extraPriceNR = price.extraPriceNR == null ? 0 : (double)price.extraPriceNR;
+
                     totalPerRoomNetRate += (price.priceNR == null)? 0 :(double)(price.priceNR * nights) + (extraPriceNR);
+
                     priceDetails.Add(new RoomPriceDetails
                     {
                         RoomPriceId = price.roomPriceId,
@@ -334,7 +359,7 @@ namespace APIServices
                     Currency = room.currency,
                     RatePlan = room.ratePlan,
                     RateCode = room.rateCode,
-                    Img = $"{ConfigurationManager.AppSettings["pathimgrooms"] ?? ""}/{companyId}/{room.roomTypeId}",
+                    Img = $"{ConfigurationManager.AppSettings["pathimgrooms"] ?? ""}/{details.companyId}/{room.roomTypeId}",
                     ImgDefault = ConfigurationManager.AppSettings["pathimgroomsdefault"],
                     CustomerName = room.customerName ?? "",
                     CustomerLastName = room.customerLastName ?? "",
@@ -346,7 +371,7 @@ namespace APIServices
                 index++;
             }
 
-            totalRooms = totalRoom;
+            totalRooms = !model.Source.Equals("IDS") ? SubtotalWithoutTax(totalRoom, (double)tax, (double)ecotasa) : totalRoom;
         }
 
         void GetPayments(ref ReservationDetailsModel model, int reservationId)
@@ -594,12 +619,15 @@ namespace APIServices
                 {
                     var reservation = dbContext.Reservaciones.FirstOrDefault(r => r.idReservacion == reservationId);
 
+                    bool isNetRateUV = (bool)reservation.IsNetRateUV;
                     bool plusTax = reservation.PlusTax ?? false;
-                    int tax = Decimal.ToInt32(reservation.Impuesto);
+                    decimal tax = reservation.Impuesto;
+                    decimal ecotasa = (decimal) reservation.Ecotasa;
+                    int nights = (req.CheckOut - req.CheckIn).Days;
+                    int totalRooms = req.RoomsDetails.Count;
 
-
-                    dbContext.spModificarReservacionByid(reservationId, req.Name, req.LastName, (decimal)req.Total, 
-                        (decimal)req.TotalNR, req.CheckIn, req.CheckOut,req.Details);
+                    dbContext.spModificarReservacionByid(reservationId, req.Name, req.LastName, (decimal) req.Total, 
+                        (decimal) req.TotalNR, req.CheckIn, req.CheckOut,req.Details);
 
                     foreach (var room in req.RoomsDetails)
                     {
@@ -624,10 +652,17 @@ namespace APIServices
                                 decimal priceNR = Convert.ToDecimal(priceDetail.PriceNR.ToString("0.00"));
                                 decimal extraPriceNR = Convert.ToDecimal(priceDetail.ExtraPriceNR.ToString("0.00"));
 
-                                decimal priceRateDetail = !plusTax ? PriceWithoutTax(price, tax) : price;
-                                decimal extraPriceRateDetail = !plusTax ? PriceWithoutTax(extraPrice, tax) : extraPrice;
-                                decimal priceNRRateDetail = !plusTax ? PriceWithoutTax(priceNR, tax) : priceNR;
-                                decimal extraPriceNRRateDetail = !plusTax ? PriceWithoutTax(extraPriceNR, tax) : extraPriceNR;
+                                decimal priceRateDetail = !plusTax ? PriceWithoutTax(price, tax, ecotasa, nights, totalRooms) : price;
+                                decimal extraPriceRateDetail = !plusTax ? PriceWithoutTax(extraPrice, tax, ecotasa, nights, totalRooms) : extraPrice;
+                                decimal priceNRRateDetail = priceNR;
+                                decimal extraPriceNRRateDetail = extraPriceNR;
+
+                                if (isNetRateUV)
+                                {
+                                    priceNRRateDetail = !plusTax ? PriceWithoutTax(priceNR, tax, ecotasa, nights, totalRooms) : priceNRRateDetail;
+                                    extraPriceNRRateDetail = !plusTax ? PriceWithoutTax(extraPriceNR, tax, ecotasa, nights, totalRooms) : extraPriceNR;
+                                }
+
                                 string currencyPriceRateDetail = priceDetail.Currency ?? "MXN";
 
                                 dbContext.spAgregarDetalleTarifasReservaciones(priceDetail.RoomPriceId, 0, priceRateDetail, extraPriceRateDetail, priceNRRateDetail, extraPriceNRRateDetail, currencyPriceRateDetail, priceDetail.CheckIn.Date, priceDetail.CheckOut.Date);
@@ -658,14 +693,42 @@ namespace APIServices
             }
             return res;
         }
+        #endregion
 
-        private decimal PriceWithoutTax(decimal total, int tax)
+        #region calculo de precios
+        private decimal AddTaxToPrice(decimal? price, decimal tax, decimal ecotasa, int nights, int totalRooms)
         {
-            var amount = (total * tax) / 100;
+            if (price == 0) return 0;
+            
+            decimal ecotasaPerRoomRate = (ecotasa / nights) / totalRooms;
 
-            var price = Convert.ToDecimal((total - amount).ToString("0.00"));
+            decimal total = (decimal)((price * ((tax / 100) + 1)) + ecotasaPerRoomRate);
+
+            return Convert.ToDecimal(total.ToString("0.00"));
+
+        }
+        private decimal PriceWithoutTax(decimal total, decimal tax, decimal ecotasa, int nights, int totalRooms)
+        {
+            if (total == 0) return 0;
+
+            decimal ecotasaPerRoomRate = (ecotasa / nights) / totalRooms;
+
+            var totalNoEcotasa = total - ecotasaPerRoomRate;  //ecotasa / noches totales de la reserva = resultado / totaldehabitaciones  65 / 2
+
+            var price = Convert.ToDecimal(((totalNoEcotasa) / ((tax / 100) + 1)).ToString("0.00"));
 
             return price;
+        }
+
+        private double SubtotalWithoutTax(double total, double tax, double ecotasa)
+        {
+            double totalNoEcotasa = Convert.ToDouble(total - ecotasa);
+
+            double taxes = Math.Round(totalNoEcotasa - (totalNoEcotasa / ((tax / 100) + 1)), 2);
+
+            string subtotal = (totalNoEcotasa - taxes).ToString("0.00");
+
+            return Convert.ToDouble(subtotal);
         }
 
         #endregion

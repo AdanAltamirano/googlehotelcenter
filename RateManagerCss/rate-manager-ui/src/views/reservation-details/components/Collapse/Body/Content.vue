@@ -203,6 +203,15 @@ export default {
         },
         isNetRate: {
 
+        },
+        totalNights: {
+
+        },
+        totalRooms: {
+
+        },
+        ecotasa: {
+
         }
     },
     components: {
@@ -221,6 +230,7 @@ export default {
             total:0,
             totalNR:0,
             netRateContract:0,
+            ecotasaPerRoomRate:0,
             currency: null,
             //New Rate Data
             price:0,
@@ -258,6 +268,10 @@ export default {
          this.datesRatesRanges = this.priceDetails.map(priceDetail => {
             return { start: priceDetail.checkIn, end: priceDetail.checkOut };
         });
+
+        this.ecotasaPerRoomRate = (this.ecotasa / this.totalNights) / this.totalRooms;
+
+        console.log(`Total de noches: ${this.totalNights} Total de habitaciones: ${this.totalRooms} Ecotasa ${this.ecotasa}`);
 
     },
     watch: {
@@ -343,10 +357,12 @@ export default {
             this.totalNR = numberTwoDecimal(this.totalNR);
         },
         calculatePriceNR(price) {
-            this.priceNR = Math.floor((parseFloat(price) * ((100 - this.netRateContract) / 100)).toFixed(2));
+            
+            //quitarlse ecotasa, quitarle margen y poner la ecotasa 
+            this.priceNR = ((parseFloat(price - this.ecotasaPerRoomRate) * ((100 - this.netRateContract) / 100)) + this.ecotasaPerRoomRate).toFixed(2);
         },
         calculateExtraPriceNR(extraPrice) {
-            this.extraPriceNR = Math.floor((parseFloat(extraPrice) * ((100 - this.netRateContract) / 100)).toFixed(2));
+            this.extraPriceNR = ((parseFloat(extraPrice - this.ecotasaPerRoomRate) * ((100 - this.netRateContract) / 100)) + this.ecotasaPerRoomRate).toFixed(2);
         },
         emitEventUpdateRoom() {
             this.$emit('updateRoom', this.roomIndex, 

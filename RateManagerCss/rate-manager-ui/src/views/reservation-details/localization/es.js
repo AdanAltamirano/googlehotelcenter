@@ -146,5 +146,6 @@ export default {
     'Reservation dates and rooms rates dates does not match' : 'La fecha de reservación y la fecha de las tarifas de las habitaciones no coinciden',
     'All rooms must has rates' : 'Todas las habitaciones deben de tener tarifas',
     'Until two decimal places' : 'Hasta dos decimales',
-    'Send notification email' : 'Enviar correo de notificación'
+    'Send notification email' : 'Enviar correo de notificación',
+    'Taxes Included' : 'Incluye Impuestos'
 }

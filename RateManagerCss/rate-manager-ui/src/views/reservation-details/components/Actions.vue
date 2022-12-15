@@ -51,8 +51,10 @@ export default {
           lastName: this.result.customer.lastName,
           checkIn: this.$moment(this.result.checkIn),
           checkOut: this.$moment(this.result.checkOut),
+          nights: this.result.nights,
           total: this.result.totalDetails.total,
           totalNR: this.result.totalDetails.totalNR,
+          ecotasa: this.result.totalDetails.ecotasa,
           showTotalNR: this.result.isNetRateUV,
           roomDetails:this.result.roomDetails,
           details : ''

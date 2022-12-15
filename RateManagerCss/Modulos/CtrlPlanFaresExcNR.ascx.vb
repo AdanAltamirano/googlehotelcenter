@@ -57,6 +57,26 @@ Partial Class CtrlPlanFaresExcNR
         End Set
     End Property
 
+    Public Property PlusTaxProperty() As Boolean
+        Get
+            Return ViewState("PlusTaxProperty")
+        End Get
+        Set(value As Boolean)
+            ViewState("PlusTaxProperty") = value
+        End Set
+    End Property
+
+    Public Property EcotasaProperty() As Double
+        Get
+            Return ViewState("EcotasaProperty")
+        End Get
+        Set(value As Double)
+            ViewState("EcotasaProperty") = value
+        End Set
+    End Property
+
+
+
     Enum RestrictionsDtgCols As Integer
         AdultNumber = 0
         AdultFare
@@ -596,7 +616,7 @@ Partial Class CtrlPlanFaresExcNR
         End If
 
         If Not txtAdultFareNR Is Nothing AndAlso Not txtAdultFare Is Nothing Then
-            txtAdultFareNR.Attributes.Add("onChange", "javascript:CheckValContract('" & m_TextBoxPorcMin & "','" & m_TextBoxPorcMax & "','" & txtAdultFareNR.ClientID & "','" & txtAdultFare.ClientID & "','" & lblAdultValMax.ClientID & "','" & lblAdultValMin.ClientID & "')")
+            txtAdultFareNR.Attributes.Add("onChange", "javascript:CheckValContract('" & m_TextBoxPorcMin & "','" & m_TextBoxPorcMax & "','" & txtAdultFareNR.ClientID & "','" & txtAdultFare.ClientID & "','" & lblAdultValMax.ClientID & "','" & lblAdultValMin.ClientID & "' ,'" & PlusTaxProperty & "', '" & EcotasaProperty & "')")
             'txtAdultFare.Attributes.Add("onChange", "javascript:CheckValContract('" & m_TextBoxPorcMin & "','" & m_TextBoxPorcMax & "','" & txtAdultFareNR.ClientID & "','" & txtAdultFare.ClientID & "','" & lblAdultValMax.ClientID & "','" & lblAdultValMin.ClientID & "')")
         End If
 
@@ -675,7 +695,7 @@ Partial Class CtrlPlanFaresExcNR
 
         'Validacion del porcentaje maximo y minimo de ganancia UV
         If Not txtChildFareNR Is Nothing AndAlso Not txtChildFare Is Nothing Then
-            txtChildFareNR.Attributes.Add("onChange", "javascript:CheckValContract('" & m_TextBoxPorcMin & "','" & m_TextBoxPorcMax & "','" & txtChildFareNR.ClientID & "','" & txtChildFare.ClientID & "','" & lblChildValMax.ClientID & "','" & lblChildValMin.ClientID & "')")
+            txtChildFareNR.Attributes.Add("onChange", "javascript:CheckValContract('" & m_TextBoxPorcMin & "','" & m_TextBoxPorcMax & "','" & txtChildFareNR.ClientID & "','" & txtChildFare.ClientID & "','" & lblChildValMax.ClientID & "','" & lblChildValMin.ClientID & "','" & PlusTaxProperty & "', '" & EcotasaProperty & "')")
             'txtChildFare.Attributes.Add("onChange", "javascript:CheckValContract('" & m_TextBoxPorcMin & "','" & m_TextBoxPorcMax & "','" & txtChildFareNR.ClientID & "','" & txtChildFare.ClientID & "','" & lblChildValMax.ClientID & "','" & lblChildValMin.ClientID & "')")
         End If
 
@@ -753,7 +773,7 @@ Partial Class CtrlPlanFaresExcNR
         End If
 
         If Not txtChildFareNR Is Nothing AndAlso Not txtChildFare Is Nothing Then
-            txtChildFareNR.Attributes.Add("onChange", "javascript:CheckValContract('" & m_TextBoxPorcMin & "','" & m_TextBoxPorcMax & "','" & txtChildFareNR.ClientID & "','" & txtChildFare.ClientID & "','" & lblChildValMax.ClientID & "','" & lblChildValMin.ClientID & "')")
+            txtChildFareNR.Attributes.Add("onChange", "javascript:CheckValContract('" & m_TextBoxPorcMin & "','" & m_TextBoxPorcMax & "','" & txtChildFareNR.ClientID & "','" & txtChildFare.ClientID & "','" & lblChildValMax.ClientID & "','" & lblChildValMin.ClientID & "','" & PlusTaxProperty & "', '" & EcotasaProperty & "')")
             'txtChildFare.Attributes.Add("onChange", "javascript:CheckValContract('" & m_TextBoxPorcMin & "','" & m_TextBoxPorcMax & "','" & txtChildFareNR.ClientID & "','" & txtChildFare.ClientID & "','" & lblChildValMax.ClientID & "','" & lblChildValMin.ClientID & "')")
         End If
 

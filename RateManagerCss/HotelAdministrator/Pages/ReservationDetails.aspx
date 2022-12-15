@@ -1035,10 +1035,10 @@
                                                 </tr>
                                                 <tr>
                                                     <td align="right">
-                                                         <asp:Label ID="lblEEcotasa" runat="server" EnableViewState="False" CssClass="clsLabel">Ecotasa :</asp:Label>
+                                                         <asp:Label ID="lblEEcotasa" runat="server" EnableViewState="False" CssClass="clsLabel" Visible="false">Ecotasa :</asp:Label>
                                                     </td>
                                                     <td align="right">
-                                                        <asp:Label ID="lblEcotasa" runat="server" EnableViewState="False" CssClass="clslabel">$ X.00</asp:Label>
+                                                        <asp:Label ID="lblEcotasa" runat="server" EnableViewState="False" CssClass="clslabel" Visible="false">$ X.00</asp:Label>
                                                     </td>
                                                     <td></td>
                                                 </tr>
@@ -1141,10 +1141,10 @@
                                                 </tr>
                                                 <tr>
                                                     <td align="right">
-                                                         <asp:Label ID="lblEEcotasaUV" runat="server" EnableViewState="False" CssClass="clsLabel">Ecotasa :</asp:Label>
+                                                         <asp:Label ID="lblEEcotasaUV" runat="server" EnableViewState="False" CssClass="clsLabel" Visible="false">Ecotasa :</asp:Label>
                                                     </td>
                                                     <td align="right">
-                                                        <asp:Label ID="lblEcotasaUV" runat="server" EnableViewState="False" CssClass="clslabel">$ X.00</asp:Label>
+                                                        <asp:Label ID="lblEcotasaUV" runat="server" EnableViewState="False" CssClass="clslabel" Visible="false">$ X.00</asp:Label>
                                                     </td>
                                                     <td></td>
                                                 </tr>

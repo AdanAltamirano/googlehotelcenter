@@ -97,6 +97,24 @@ Partial Public Class ctrRateAplicationNRpromo
         End Set
     End Property
 
+    Public Property PlusTaxProperty() As Boolean
+        Get
+            Return ViewState("PlusTaxProperty")
+        End Get
+        Set(value As Boolean)
+            ViewState("PlusTaxProperty") = value
+        End Set
+    End Property
+
+    Public Property EcotasaProperty() As Double
+        Get
+            Return ViewState("EcotasaProperty")
+        End Get
+        Set(value As Double)
+            ViewState("EcotasaProperty") = value
+        End Set
+    End Property
+
     'Public Property SourceRateName() As String
     '    Get
     '        Return viewstate("_SRN")
@@ -236,27 +254,27 @@ Partial Public Class ctrRateAplicationNRpromo
 
         If TypeOf Me.Page Is FaresCataloguePromoNR Then
             Me.txtAdultFare.Attributes.Add("onChange", "javascript:FillPrices('" & CType(Me.Page, FaresCataloguePromoNR).IdDgAdult & "','txtAdultFare'" & ",'" & Me.txtAdultFare.ClientID & "');")
-            Me.txtAdultFareNR.Attributes.Add("onChange", "javascript:FillPrices('" & CType(Me.Page, FaresCataloguePromoNR).IdDgAdult & "','txtAdultFareNR'" & ",'" & Me.txtAdultFareNR.ClientID & "')" & ";CheckValContract('" & TextBoxPorcMin.ClientID & "','" & TextBoxPorcMax.ClientID & "','" & txtAdultFareNR.ClientID & "','" & txtAdultFare.ClientID & "','" & lblAdultValMax.ClientID & "','" & lblAdultValMin.ClientID & "');FillPrices('" & CType(Me.Page, FaresCataloguePromoNR).IdDgAdult & "','txtAdultFare'" & ",'" & Me.txtAdultFare.ClientID & "');")
+            Me.txtAdultFareNR.Attributes.Add("onChange", "javascript:FillPrices('" & CType(Me.Page, FaresCataloguePromoNR).IdDgAdult & "','txtAdultFareNR'" & ",'" & Me.txtAdultFareNR.ClientID & "')" & ";CheckValContract('" & TextBoxPorcMin.ClientID & "','" & TextBoxPorcMax.ClientID & "','" & txtAdultFareNR.ClientID & "','" & txtAdultFare.ClientID & "','" & lblAdultValMax.ClientID & "','" & lblAdultValMin.ClientID & "' ,'" & PlusTaxProperty & "', '" & EcotasaProperty & "');FillPrices('" & CType(Me.Page, FaresCataloguePromoNR).IdDgAdult & "','txtAdultFare'" & ",'" & Me.txtAdultFare.ClientID & "');")
             Me.txtChildFare.Attributes.Add("onChange", "javascript:FillPrices('" & CType(Me.Page, FaresCataloguePromoNR).IdDgChild & "','txtChildrenFare'" & ",'" & Me.txtChildFare.ClientID & "')" & ";")
-            Me.txtChildFareNR.Attributes.Add("onChange", "javascript:FillPrices('" & CType(Me.Page, FaresCataloguePromoNR).IdDgChild & "','txtChildrenFareNR'" & ",'" & Me.txtChildFareNR.ClientID & "')" & ";CheckValContract('" & TextBoxPorcMin.ClientID & "','" & TextBoxPorcMax.ClientID & "','" & txtChildFareNR.ClientID & "','" & txtChildFare.ClientID & "','" & lblChildValMax.ClientID & "','" & lblChildValMin.ClientID & "');FillPrices('" & CType(Me.Page, FaresCataloguePromoNR).IdDgChild & "','txtChildrenFare'" & ",'" & Me.txtChildFare.ClientID & "')" & ";")
+            Me.txtChildFareNR.Attributes.Add("onChange", "javascript:FillPrices('" & CType(Me.Page, FaresCataloguePromoNR).IdDgChild & "','txtChildrenFareNR'" & ",'" & Me.txtChildFareNR.ClientID & "')" & ";CheckValContract('" & TextBoxPorcMin.ClientID & "','" & TextBoxPorcMax.ClientID & "','" & txtChildFareNR.ClientID & "','" & txtChildFare.ClientID & "','" & lblChildValMax.ClientID & "','" & lblChildValMin.ClientID & "','" & PlusTaxProperty & "', '" & EcotasaProperty & "');FillPrices('" & CType(Me.Page, FaresCataloguePromoNR).IdDgChild & "','txtChildrenFare'" & ",'" & Me.txtChildFare.ClientID & "')" & ";")
 
 
-            Me.txtTeenFareNR.Attributes.Add("onChange", "javascript:FillPrices('" & CType(Me.Page, FaresCataloguePromoNR).IdDgTeen & "','txtTeenFareNR'" & ",'" & Me.txtTeenFareNR.ClientID & "')" & _
-                                             "; CheckValContract('" & TextBoxPorcMin.ClientID & "','" & TextBoxPorcMax.ClientID & "','" & txtTeenFareNR.ClientID & "','" & txtTeenFare.ClientID & "','" & lblChildValMax.ClientID & "','" & lblChildValMin.ClientID & _
+            Me.txtTeenFareNR.Attributes.Add("onChange", "javascript:FillPrices('" & CType(Me.Page, FaresCataloguePromoNR).IdDgTeen & "','txtTeenFareNR'" & ",'" & Me.txtTeenFareNR.ClientID & "')" &
+                                             "; CheckValContract('" & TextBoxPorcMin.ClientID & "','" & TextBoxPorcMax.ClientID & "','" & txtTeenFareNR.ClientID & "','" & txtTeenFare.ClientID & "','" & lblChildValMax.ClientID & "','" & lblChildValMin.ClientID & "','" & PlusTaxProperty & "', '" & EcotasaProperty &
                                              "');FillPrices('" & CType(Me.Page, FaresCataloguePromoNR).IdDgTeen & "','txtTeenFare'" & ",'" & Me.txtTeenFare.ClientID & "')" & ";")
             Me.txtTeenFare.Attributes.Add("onChange", "javascript:FillPrices('" & CType(Me.Page, FaresCataloguePromoNR).IdDgTeen & "','txtTeenFare'" & ",'" & Me.txtTeenFare.ClientID & "')" & ";")
 
             'Validacion del minimo y maximo porcentaje de ganancia
-            
+
 
             'Validacion de maximos y minimos porcentajes de ganacia de adultos extras y niños extras
-            Me.txtExtraAdultPriceNR.Attributes.Add("onChange", "javascript:CheckValContract('" & TextBoxPorcMin.ClientID & "','" & TextBoxPorcMax.ClientID & "','" & txtExtraAdultPriceNR.ClientID & "','" & txtExtraAdultPrice.ClientID & "','" & lblAdultExtValMax.ClientID & "','" & lblAdultExtValMin.ClientID & "')")
+            Me.txtExtraAdultPriceNR.Attributes.Add("onChange", "javascript:CheckValContract('" & TextBoxPorcMin.ClientID & "','" & TextBoxPorcMax.ClientID & "','" & txtExtraAdultPriceNR.ClientID & "','" & txtExtraAdultPrice.ClientID & "','" & lblAdultExtValMax.ClientID & "','" & lblAdultExtValMin.ClientID & "' ,'" & PlusTaxProperty & "', '" & EcotasaProperty & "')")
 
 
-            Me.txtExtraChildPriceNR.Attributes.Add("onChange", "javascript:CheckValContract('" & TextBoxPorcMin.ClientID & "','" & TextBoxPorcMax.ClientID & "','" & txtExtraChildPriceNR.ClientID & "','" & txtExtraChildPrice.ClientID & "','" & lblChildExtValMax.ClientID & "','" & lblChildExtValMin.ClientID & "')")
+            Me.txtExtraChildPriceNR.Attributes.Add("onChange", "javascript:CheckValContract('" & TextBoxPorcMin.ClientID & "','" & TextBoxPorcMax.ClientID & "','" & txtExtraChildPriceNR.ClientID & "','" & txtExtraChildPrice.ClientID & "','" & lblChildExtValMax.ClientID & "','" & lblChildExtValMin.ClientID & "' ,'" & PlusTaxProperty & "', '" & EcotasaProperty & "')")
 
 
-            Me.txtExtraTeenPriceNR.Attributes.Add("onChange", "javascript:CheckValContract('" & TextBoxPorcMin.ClientID & "','" & TextBoxPorcMax.ClientID & "','" & txtExtraTeenPriceNR.ClientID & "','" & txtExtraTeenPrice.ClientID & "','" & lblChildExtValMax.ClientID & "','" & lblChildExtValMin.ClientID & "')")
+            Me.txtExtraTeenPriceNR.Attributes.Add("onChange", "javascript:CheckValContract('" & TextBoxPorcMin.ClientID & "','" & TextBoxPorcMax.ClientID & "','" & txtExtraTeenPriceNR.ClientID & "','" & txtExtraTeenPrice.ClientID & "','" & lblChildExtValMax.ClientID & "','" & lblChildExtValMin.ClientID & "' ,'" & PlusTaxProperty & "', '" & EcotasaProperty & "')")
 
         End If
 
@@ -623,6 +641,19 @@ Partial Public Class ctrRateAplicationNRpromo
                     TextBoxPorcMax.Text = contrato.Tables(0).Rows(0)(contrato.FIELD_PORCENTAJEMAXIMO)
                     TextBoxPorcMin.Text = contrato.Tables(0).Rows(0)(contrato.FIELD_PORCENTAJEMINIMO)
                 End If
+            End With
+        End If
+
+
+        Dim dsHotel As HotelDatos
+        With New HotelSistema
+            dsHotel = .GetHotelById(m_iHotelId)
+        End With
+
+        If Not dsHotel Is Nothing AndAlso dsHotel.Tables(dsHotel.HOTEL_TABLE).Rows.Count > 0 Then
+            With dsHotel.Tables(dsHotel.HOTEL_TABLE).Rows(0)
+                PlusTaxProperty = IIf(.IsNull(dsHotel.FIELD_PLUSTAX), False, CType(.Item(dsHotel.FIELD_PLUSTAX), Boolean))
+                EcotasaProperty = IIf(.IsNull(dsHotel.FIELD_ECOTASA), 0, CType(.Item(dsHotel.FIELD_ECOTASA), Double))
             End With
         End If
 

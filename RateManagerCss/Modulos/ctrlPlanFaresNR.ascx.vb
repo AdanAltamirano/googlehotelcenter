@@ -98,6 +98,25 @@ Partial Class ctrlPlanFaresNR
         End Set
     End Property
 
+    Public Property PlusTaxProperty() As Boolean
+        Get
+            Return ViewState("PlusTaxProperty")
+        End Get
+        Set(value As Boolean)
+            ViewState("PlusTaxProperty") = value
+        End Set
+    End Property
+
+    Public Property EcotasaProperty() As Double
+        Get
+            Return ViewState("EcotasaProperty")
+        End Get
+        Set(value As Double)
+            ViewState("EcotasaProperty") = value
+        End Set
+    End Property
+
+
 
     Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         If Not IsPostBack Then
@@ -1154,7 +1173,7 @@ Partial Class ctrlPlanFaresNR
         End If
 
         If Not txtAdultFareNR Is Nothing AndAlso Not txtAdultFare Is Nothing Then
-            txtAdultFareNR.Attributes.Add("onChange", "javascript:CheckValContract('" & m_TextBoxPorcMin & "','" & m_TextBoxPorcMax & "','" & txtAdultFareNR.ClientID & "','" & txtAdultFare.ClientID & "','" & lblAdultValMax.ClientID & "','" & lblAdultValMin.ClientID & "')")
+            txtAdultFareNR.Attributes.Add("onChange", "javascript:CheckValContract('" & m_TextBoxPorcMin & "','" & m_TextBoxPorcMax & "','" & txtAdultFareNR.ClientID & "','" & txtAdultFare.ClientID & "','" & lblAdultValMax.ClientID & "','" & lblAdultValMin.ClientID & "' ,'" & PlusTaxProperty & "', '" & EcotasaProperty & "')")
         End If
 
         Dim chkActive As CheckBox
@@ -1232,7 +1251,7 @@ Partial Class ctrlPlanFaresNR
 
         'Validacion de maximo y minimo porcentaje de gananciaUV
         If Not txtChildFareNR Is Nothing AndAlso Not txtChildFare Is Nothing Then
-            txtChildFareNR.Attributes.Add("onChange", "javascript:CheckValContract('" & m_TextBoxPorcMin & "','" & m_TextBoxPorcMax & "','" & txtChildFareNR.ClientID & "','" & txtChildFare.ClientID & "','" & lblChildValMax.ClientID & "','" & lblChildValMin.ClientID & "')")
+            txtChildFareNR.Attributes.Add("onChange", "javascript:CheckValContract('" & m_TextBoxPorcMin & "','" & m_TextBoxPorcMax & "','" & txtChildFareNR.ClientID & "','" & txtChildFare.ClientID & "','" & lblChildValMax.ClientID & "','" & lblChildValMin.ClientID & "','" & PlusTaxProperty & "', '" & EcotasaProperty & "')")
         End If
 
         Dim chkActive As CheckBox
@@ -1333,7 +1352,7 @@ Partial Class ctrlPlanFaresNR
 
         'Validacion de maximo y minimo porcentaje de gananciaUV
         If Not txtChildFareNR Is Nothing AndAlso Not txtChildFare Is Nothing Then
-            txtChildFareNR.Attributes.Add("onChange", "javascript:CheckValContract('" & m_TextBoxPorcMin & "','" & m_TextBoxPorcMax & "','" & txtChildFareNR.ClientID & "','" & txtChildFare.ClientID & "','" & lblChildValMax.ClientID & "','" & lblChildValMin.ClientID & "')")
+            txtChildFareNR.Attributes.Add("onChange", "javascript:CheckValContract('" & m_TextBoxPorcMin & "','" & m_TextBoxPorcMax & "','" & txtChildFareNR.ClientID & "','" & txtChildFare.ClientID & "','" & lblChildValMax.ClientID & "','" & lblChildValMin.ClientID & "' ,'" & PlusTaxProperty & "', '" & EcotasaProperty & "')")
         End If
 
         Dim chkActive As CheckBox

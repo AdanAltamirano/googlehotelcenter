@@ -663,7 +663,7 @@ Partial Class ReservationDetails
         Return sHtmlRate
     End Function
 
-    Private Sub GetDataWS(ByVal nores As String, ByVal ecotasa As Double)
+    Private Sub GetDataWS(ByVal nores As String, ByVal ecotasa As Double, ByVal tax As Double)
         Try
             Dim xdoc As New XmlDataDocument(New reqHotelDisplay)
             Dim dsreq As reqHotelDisplay = CType(xdoc.DataSet, reqHotelDisplay)
@@ -764,23 +764,32 @@ Partial Class ReservationDetails
                     TotalConfirm = dr.Total
                     CurrencyConfirm = dr.Money
 
+                    Dim totalTax As Double = Convert.ToDouble(dr.Total - ecotasa)
+
+                    Dim taxes As Double = Math.Round(totalTax - (totalTax / ((tax / 100) + 1)), 2)
+
                     Me.lblTotal.Text = FCurrency(dr.Total, 2) & " " & If(dr.IsMoneyNull, "", dr.Money)
-                    Me.lblImpuestos.Text = FCurrency(dr.Taxes, 2) & " " & If(dr.IsMoneyNull, "", dr.Money)
+                    'Me.lblImpuestos.Text = FCurrency(dr.Taxes, 2) & " " & If(dr.IsMoneyNull, "", dr.Money)
+                    Me.lblImpuestos.Text = FCurrency(taxes, 2) & " " & If(dr.IsMoneyNull, "", dr.Money)
                     Me.lblEcotasa.Text = FCurrency(ecotasa, 2) & " " & If(dr.IsMoneyNull, "", dr.Money)
                     Me.lblFees.Text = FCurrency(dr.ServiceFee, 2) & " " & If(dr.IsMoneyNull, "", dr.Money)
 
                     If Me.IsSupervisor Or IsUsuarioHotelAssociation Then
                         'mostrar la comision y el comisionfee
                         Me.lblTotal.Text = FCurrency((dr.Total + dr.ServiceFee), 2) & " " & If(dr.IsMoneyNull, "", dr.Money)
-                        Me.lblImpuestos.Text = FCurrency((dr.Taxes + dr.ServiceFee), 2) & " " & If(dr.IsMoneyNull, "", dr.Money)
+                        'Me.lblImpuestos.Text = FCurrency((dr.Taxes + dr.ServiceFee), 2) & " " & If(dr.IsMoneyNull, "", dr.Money)
+                        Me.lblImpuestos.Text = FCurrency((taxes + dr.ServiceFee), 2) & " " & If(dr.IsMoneyNull, "", dr.Money)
                     End If
                     Me.lblTotalH.Text = FCurrency(dr.Total, 2) & " " & If(dr.IsMoneyNull, "", dr.Money)
-                    Me.lblCosto.Text = FCurrency(((dr.Total - dr.Taxes) / (DateDiff(DateInterval.Day, CDate(dr.CheckInDate), CDate(dr.CheckOutDate)))), 2) & " " & dr.Money
+                    'Me.lblCosto.Text = FCurrency(((dr.Total - dr.Taxes) / (DateDiff(DateInterval.Day, CDate(dr.CheckInDate), CDate(dr.CheckOutDate)))), 2) & " " & dr.Money
+                    Me.lblCosto.Text = FCurrency(((dr.Total - taxes) / (DateDiff(DateInterval.Day, CDate(dr.CheckInDate), CDate(dr.CheckOutDate)))), 2) & " " & dr.Money
 
                     If xml.Reservation(0)("plustax").ToString.ToLower = "false" Then
                         lbl2.Visible = True
                         lblImpuestos.Visible = True
                         lblEImpuesto.Visible = True
+                        lblEcotasa.Visible = True
+                        lblEEcotasa.Visible = True
                     End If
                 Else ' NETRATE
                     aNRPolicies.Visible = Me.IsSupervisor Or IsUsuarioHotelAssociation
@@ -789,31 +798,45 @@ Partial Class ReservationDetails
                     tdTextHotel.Visible = Me.IsSupervisor Or IsUsuarioHotelAssociation
                     tdTextUnivisit.Visible = Me.IsSupervisor Or IsUsuarioHotelAssociation
 
+                    Dim totalTaxNR As Double = Convert.ToDouble(totalNR - ecotasa)
+                    Dim taxesHotelNR As Double = Math.Round(totalTaxNR - (totalTaxNR / ((tax / 100) + 1)), 2)
+
                     'HOTEL
                     Me.lblTotal.Text = FCurrency(totalNR, 2) & " " & If(dr.IsMoneyNull, "", dr.Money)
-                    Me.lblImpuestos.Text = FCurrency(taxesNR, 2) & " " & If(dr.IsMoneyNull, "", dr.Money)
+                    'Me.lblImpuestos.Text = FCurrency(taxesNR, 2) & " " & If(dr.IsMoneyNull, "", dr.Money)
+                    Me.lblImpuestos.Text = FCurrency(taxesHotelNR, 2) & " " & If(dr.IsMoneyNull, "", dr.Money)
                     Me.lblEcotasa.Text = FCurrency(ecotasa, 2) & " " & If(dr.IsMoneyNull, "", dr.Money)
                     Me.lblTotalH.Text = FCurrency(totalNR, 2) & " " & If(dr.IsMoneyNull, "", dr.Money)
-                    Me.lblCosto.Text = FCurrency(((totalNR - taxesNR) / (DateDiff(DateInterval.Day, CDate(dr.CheckInDate), CDate(dr.CheckOutDate)))), 2) & " " & dr.Money
+                    'Me.lblCosto.Text = FCurrency(((totalNR - taxesNR) / (DateDiff(DateInterval.Day, CDate(dr.CheckInDate), CDate(dr.CheckOutDate)))), 2) & " " & dr.Money
+                    Me.lblCosto.Text = FCurrency(((totalNR - taxesHotelNR) / (DateDiff(DateInterval.Day, CDate(dr.CheckInDate), CDate(dr.CheckOutDate)))), 2) & " " & dr.Money
                     Me.lblFees.Text = FCurrency(dr.ServiceFee, 2) & " " & If(dr.IsMoneyNull, "", dr.Money)
                     If xml.Reservation(0)("plustax").ToString.ToLower = "false" Then
                         lbl2.Visible = True
                         lblImpuestos.Visible = True
                         lblEImpuesto.Visible = True
+                        lblEcotasa.Visible = True
+                        lblEEcotasa.Visible = True
                     End If
+
+                    Dim totalTaxUV As Double = Convert.ToDouble(dr.Total - ecotasa)
+                    Dim taxesUV As Double = Math.Round(totalTaxUV - (totalTaxUV / ((tax / 100) + 1)), 2)
 
                     'UNIVISIT
                     Me.lblTotalUV.Text = FCurrency(dr.Total, 2) & " " & If(dr.IsMoneyNull, "", dr.Money)
-                    Me.lblImpuestosUV.Text = FCurrency(dr.Taxes, 2) & " " & If(dr.IsMoneyNull, "", dr.Money)
+                    'Me.lblImpuestosUV.Text = FCurrency(dr.Taxes, 2) & " " & If(dr.IsMoneyNull, "", dr.Money)
+                    Me.lblImpuestosUV.Text = FCurrency(taxesUV, 2) & " " & If(dr.IsMoneyNull, "", dr.Money)
                     Me.lblEcotasaUV.Text = FCurrency(ecotasa, 2) & " " & If(dr.IsMoneyNull, "", dr.Money)
                     Me.lblTotalHUV.Text = FCurrency(dr.Total, 2) & " " & If(dr.IsMoneyNull, "", dr.Money)
-                    Me.lblCostoUV.Text = FCurrency(((dr.Total - dr.Taxes) / (DateDiff(DateInterval.Day, CDate(dr.CheckInDate), CDate(dr.CheckOutDate)))), 2) & " " & dr.Money
+                    'Me.lblCostoUV.Text = FCurrency(((dr.Total - dr.Taxes) / (DateDiff(DateInterval.Day, CDate(dr.CheckInDate), CDate(dr.CheckOutDate)))), 2) & " " & dr.Money
+                    Me.lblCostoUV.Text = FCurrency(((dr.Total - taxesUV) / (DateDiff(DateInterval.Day, CDate(dr.CheckInDate), CDate(dr.CheckOutDate)))), 2) & " " & dr.Money
                     Me.lblFeesUV.Text = FCurrency(dr.ServiceFee, 2) & " " & If(dr.IsMoneyNull, "", dr.Money)
                     'lblNRPolicies.Text = CargaPoliticasUvNetRates()
                     If xml.Reservation(0)("plustax").ToString.ToLower = "false" Then
                         lbl2UV.Visible = True
                         lblImpuestosUV.Visible = True
                         lblEImpuestoUV.Visible = True
+                        lblEcotasaUV.Visible = True
+                        lblEEcotasaUV.Visible = True
                     End If
                     TotalConfirm = dr.Total
                     CurrencyConfirm = dr.Money
@@ -1544,7 +1567,7 @@ Partial Class ReservationDetails
 
 
                 If Not dsReservaciones.Tables(dsReservaciones.RESERVA_TABLE).Rows(0).IsNull("source") Then
-                    GetDataWS(dsReservaciones.Tables(dsReservaciones.RESERVA_TABLE).Rows(0).Item(dsReservaciones.FIELD_NORESERVACION), CType(.Item(dsReservaciones.FIELD_ECOTASA), Double))
+                    GetDataWS(dsReservaciones.Tables(dsReservaciones.RESERVA_TABLE).Rows(0).Item(dsReservaciones.FIELD_NORESERVACION), CType(.Item(dsReservaciones.FIELD_ECOTASA), Double), CType(.Item(dsReservaciones.FIELD_IMPUESTO), Double))
                 End If
 
                 LoadUserSeeCards(MyBase.Usuario)

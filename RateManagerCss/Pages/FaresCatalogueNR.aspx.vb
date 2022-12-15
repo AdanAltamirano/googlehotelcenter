@@ -183,6 +183,13 @@ Partial Class FaresCatalogueNR
             hplHideRates.Visible = False
 
             loadDatos()
+
+            CtrlPlanFares2.PlusTaxProperty = CtrRateAplication1.PlusTaxProperty
+            CtrlPlanFares2.EcotasaProperty = CtrRateAplication1.EcotasaProperty
+            CtrlPlanFaresExc2.PlusTaxProperty = CtrRateAplication1.PlusTaxProperty
+            CtrlPlanFaresExc2.EcotasaProperty = CtrRateAplication1.EcotasaProperty
+
+
             idroom = Request.QueryString("Room")
             If idroom <> 0 Then
                 Me.ddlRooms.SelectedValue = idroom

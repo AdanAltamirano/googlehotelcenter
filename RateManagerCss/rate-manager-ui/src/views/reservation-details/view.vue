@@ -81,7 +81,7 @@
                     <tr>
                       <td>SubTotal</td>
                       <td>{{result.totalDetails.subTotal | currency}} {{result.totalDetails.currency}}</td>
-                    </tr>
+                    </tr>                   
                     <tr>
                       <td>{{$t('Taxes')}}</td>
                       <td>{{result.totalDetails.taxes | currency}} {{result.totalDetails.currency}}</td>
@@ -89,7 +89,7 @@
                     <tr>
                       <td>{{$t('Ecotax')}}</td>
                       <td>{{result.totalDetails.ecotasa | currency}} {{result.totalDetails.currency}}</td>
-                    </tr>
+                    </tr>                                
                     <tr>
                       <td>
                         <strong>Total</strong>
