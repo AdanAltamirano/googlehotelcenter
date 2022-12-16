@@ -101,11 +101,17 @@
 
                 var NR = parseFloat(valNR) * (1 + (parseFloat(valMin) / 100));
 
+                console.log(plusTax);
+                console.log(ecotasa);
+
                 if (isPlusTax) {
                     //Validar cuando sea cero valNR
+                    console.log("PlusTax");
                     document.getElementById(uv).value = parseFloat(valNR) > 0 ? ((parseFloat(valNR - ecotasaTax) / ((100 - valMin) / 100)) + ecotasaTax).toFixed(2) : 0;
                 }
-                else {                    
+                else {
+                    console.log("Sin Plus Tax");
+                    console.log(valMin);
                     document.getElementById(uv).value = (parseFloat(valNR) / ((100 - valMin) / 100)).toFixed(2);
                 }
 

@@ -452,21 +452,32 @@ namespace APIServices
                 {
                     foreach (var of in overlappedFares)
                     {
-                        of.PrecioExtraAdulto = extraAdultRate != -1 ? extraAdultRate : of.PrecioExtraAdulto; //(decimal)SetPrice(isNetRate, extraAdultRate, (decimal)hotelPlan.CommissionPercentage),
-                        of.PrecioExtraNinio = extraChildRate != -1 ? extraChildRate : of.PrecioExtraNinio; //(decimal)SetPrice(isNetRate, extraChildRate, (decimal)hotelPlan.CommissionPercentage),
+                        of.PrecioExtraAdulto = extraAdultRate != -1 ? extraAdultRate :  of.PrecioExtraAdulto; //(decimal)SetPrice(isNetRate, extraAdultRate, (decimal)hotelPlan.CommissionPercentage),
+                        of.PrecioExtraNinio = extraChildRate != -1 ?  extraChildRate :  of.PrecioExtraNinio; //(decimal)SetPrice(isNetRate, extraChildRate, (decimal)hotelPlan.CommissionPercentage),
                         of.PrecioAdolescenteExtra = extraJuniorRate != -1 ? extraJuniorRate : of.PrecioAdolescenteExtra; //(decimal)SetPrice(isNetRate, extraJuniorRate, (decimal)hotelPlan.CommissionPercentage),
-                        of.PrecioNR = isNetRate ? adultRate != -1 ? SetPrice(isNetRate, adultRate, (decimal)hotelPlan.CommissionPercentage) : of.PrecioNR : 0;
-                        of.NiniosRateNR = isNetRate ? childRate != -1 ? SetPrice(isNetRate, childRate, (decimal)hotelPlan.CommissionPercentage) : of.NiniosRateNR : 0;
-                        of.PrecioAdolescenteNR = isNetRate ? juniorRate != -1 ? SetPrice(isNetRate, juniorRate, (decimal)hotelPlan.CommissionPercentage) : of.PrecioAdolescenteNR : 0;
-                        of.PrecioExtraAdultoNR = isNetRate ? extraAdultRate != -1 ? SetPrice(isNetRate, extraAdultRate, (decimal)hotelPlan.CommissionPercentage) : of.PrecioExtraAdultoNR : 0;
-                        of.PrecioExtraNinioNR = isNetRate ? extraChildRate != -1 ? SetPrice(isNetRate, extraChildRate, (decimal)hotelPlan.CommissionPercentage) : of.PrecioExtraNinioNR : 0;
-                        of.PrecioAdolescenteExtraNR = isNetRate ? extraJuniorRate != -1 ? SetPrice(isNetRate, extraJuniorRate, (decimal)hotelPlan.CommissionPercentage) : of.PrecioAdolescenteExtraNR : 0;
+
+                        //of.PrecioNR = isNetRate ? adultRate != -1 ? SetPrice(isNetRate, adultRate, (decimal)hotelPlan.CommissionPercentage) : of.PrecioNR : 0;
+                        //of.NiniosRateNR = isNetRate ? childRate != -1 ? SetPrice(isNetRate, childRate, (decimal)hotelPlan.CommissionPercentage) : of.NiniosRateNR : 0;
+                        //of.PrecioAdolescenteNR = isNetRate ? juniorRate != -1 ? SetPrice(isNetRate, juniorRate, (decimal)hotelPlan.CommissionPercentage) : of.PrecioAdolescenteNR : 0;
+                        //of.PrecioExtraAdultoNR = isNetRate ? extraAdultRate != -1 ? SetPrice(isNetRate, extraAdultRate, (decimal)hotelPlan.CommissionPercentage) : of.PrecioExtraAdultoNR : 0;
+                        //of.PrecioExtraNinioNR = isNetRate ? extraChildRate != -1 ? SetPrice(isNetRate, extraChildRate, (decimal)hotelPlan.CommissionPercentage) : of.PrecioExtraNinioNR : 0;
+                        //of.PrecioAdolescenteExtraNR = isNetRate ? extraJuniorRate != -1 ? SetPrice(isNetRate, extraJuniorRate, (decimal)hotelPlan.CommissionPercentage) : of.PrecioAdolescenteExtraNR : 0;
+
+                        of.PrecioNR = isNetRate ? adultRate != -1 ? SetPrice(isNetRate, adultRate, (decimal)hotelPlan.CommissionPercentage, hotelInfo.TaxIncluded, hotelInfo.Ecotasa) : of.PrecioNR : 0;
+                        of.NiniosRateNR = isNetRate ? childRate != -1 ? SetPrice(isNetRate, childRate, (decimal)hotelPlan.CommissionPercentage, hotelInfo.TaxIncluded, hotelInfo.Ecotasa) : of.NiniosRateNR : 0;
+                        of.PrecioAdolescenteNR = isNetRate ? juniorRate != -1 ? SetPrice(isNetRate, juniorRate, (decimal)hotelPlan.CommissionPercentage, hotelInfo.TaxIncluded, hotelInfo.Ecotasa) : of.PrecioAdolescenteNR : 0;
+                        of.PrecioExtraAdultoNR = isNetRate ? extraAdultRate != -1 ? SetPrice(isNetRate, extraAdultRate, (decimal)hotelPlan.CommissionPercentage, hotelInfo.TaxIncluded, hotelInfo.Ecotasa) : of.PrecioExtraAdultoNR : 0;
+                        of.PrecioExtraNinioNR = isNetRate ? extraChildRate != -1 ? SetPrice(isNetRate, extraChildRate, (decimal)hotelPlan.CommissionPercentage, hotelInfo.TaxIncluded, hotelInfo.Ecotasa) : of.PrecioExtraNinioNR : 0;
+                        of.PrecioAdolescenteExtraNR = isNetRate ? extraJuniorRate != -1 ? SetPrice(isNetRate, extraJuniorRate, (decimal)hotelPlan.CommissionPercentage, hotelInfo.TaxIncluded, hotelInfo.Ecotasa) : of.PrecioAdolescenteExtraNR : 0;
+                        
                         of.NoArrivos = rate.Rules?.NoArrival ?? of.NoArrivos;
                         of.Excepciones = rate.Prices?.ExceptionDays ?? of.Excepciones;
                         of.RateRulesDefault = rate.Rules?.UseDefaultRules ?? true;
+                        
                         of.PrecioAdolescente = juniorRate != -1 ? juniorRate : of.PrecioAdolescente;
                         of.NiniosRate = childRate != -1 ? childRate : of.NiniosRate;
                         of.Precio = adultRate != -1 ? adultRate : of.Precio;
+
                         of.idDiccPromoDesc = newDictionaryId == 0 ? null : newDictionaryId;
                         of.DescPromotion = promotionDiscount == 0 ? null : promotionDiscount;
                         of.AdvBooking = rate.Rules?.MinAdvanceBooking ?? of.AdvBooking;
@@ -494,12 +505,12 @@ namespace APIServices
                                         if (price.Type == PaxType.Child)
                                         {
                                             ofRes.TarifaNinio = price.Price;
-                                            ofRes.TarifaNinioNR = isNetRate ? SetPrice(isNetRate, price.Price, (decimal)hotelPlan.CommissionPercentage) : 0;
+                                            ofRes.TarifaNinioNR = isNetRate ? SetPrice(isNetRate, price.Price, (decimal)hotelPlan.CommissionPercentage, hotelInfo.TaxIncluded, hotelInfo.Ecotasa) : 0;
                                         }
                                         else
                                         {
                                             ofRes.TarifaAdolescente = price.Price;
-                                            ofRes.TarifaAdolescenteNR = isNetRate ? SetPrice(isNetRate, price.Price, (decimal)hotelPlan.CommissionPercentage) : 0;
+                                            ofRes.TarifaAdolescenteNR = isNetRate ? SetPrice(isNetRate, price.Price, (decimal)hotelPlan.CommissionPercentage, hotelInfo.TaxIncluded, hotelInfo.Ecotasa) : 0;
                                         }
                                     }
                                 }
@@ -509,7 +520,7 @@ namespace APIServices
                                     foreach (var ofRes in overlappedFaresRestrictions)
                                     {
                                         ofRes.TarifaAdulto = price.Price;
-                                        ofRes.TarifaAdultoNR = isNetRate ? SetPrice(isNetRate, price.Price, (decimal)hotelPlan.CommissionPercentage) : 0;
+                                        ofRes.TarifaAdultoNR = isNetRate ? SetPrice(isNetRate, price.Price, (decimal)hotelPlan.CommissionPercentage, hotelInfo.TaxIncluded, hotelInfo.Ecotasa) : 0;
                                     }
                                 }
                             }
@@ -584,12 +595,12 @@ namespace APIServices
                 PrecioExtraAdulto = extraAdultRate != -1 ? extraAdultRate : 0,
                 PrecioExtraNinio = extraChildRate != -1 ? extraChildRate : 0,
                 PrecioAdolescenteExtra = extraJuniorRate != -1 ? extraJuniorRate : 0,
-                PrecioNR = isNetRate ? SetPrice(isNetRate, adultRate, (decimal)hotelPlan.CommissionPercentage) : 0,
-                NiniosRateNR = isNetRate ? SetPrice(isNetRate, childRate, (decimal)hotelPlan.CommissionPercentage) : 0,
-                PrecioAdolescenteNR = isNetRate ? juniorRate != -1 ? SetPrice(isNetRate, juniorRate, (decimal)hotelPlan.CommissionPercentage) : 0 : 0,
-                PrecioExtraAdultoNR = isNetRate ? extraAdultRate != -1 ? SetPrice(isNetRate, extraAdultRate, (decimal)hotelPlan.CommissionPercentage) : 0 : 0,
-                PrecioExtraNinioNR = isNetRate ? extraChildRate != -1 ? SetPrice(isNetRate, extraChildRate, (decimal)hotelPlan.CommissionPercentage) : 0 : 0,
-                PrecioAdolescenteExtraNR = isNetRate ? extraJuniorRate != -1 ? SetPrice(isNetRate, extraJuniorRate, (decimal)hotelPlan.CommissionPercentage) : 0 : 0,
+                PrecioNR = isNetRate ? SetPrice(isNetRate, adultRate, (decimal)hotelPlan.CommissionPercentage, hotelInfo.TaxIncluded, hotelInfo.Ecotasa) : 0,
+                NiniosRateNR = isNetRate ? SetPrice(isNetRate, childRate, (decimal)hotelPlan.CommissionPercentage, hotelInfo.TaxIncluded, hotelInfo.Ecotasa) : 0,
+                PrecioAdolescenteNR = isNetRate ? juniorRate != -1 ? SetPrice(isNetRate, juniorRate, (decimal)hotelPlan.CommissionPercentage, hotelInfo.TaxIncluded, hotelInfo.Ecotasa) : 0 : 0,
+                PrecioExtraAdultoNR = isNetRate ? extraAdultRate != -1 ? SetPrice(isNetRate, extraAdultRate, (decimal)hotelPlan.CommissionPercentage, hotelInfo.TaxIncluded, hotelInfo.Ecotasa) : 0 : 0,
+                PrecioExtraNinioNR = isNetRate ? extraChildRate != -1 ? SetPrice(isNetRate, extraChildRate, (decimal)hotelPlan.CommissionPercentage, hotelInfo.TaxIncluded, hotelInfo.Ecotasa) : 0 : 0,
+                PrecioAdolescenteExtraNR = isNetRate ? extraJuniorRate != -1 ? SetPrice(isNetRate, extraJuniorRate, (decimal)hotelPlan.CommissionPercentage, hotelInfo.TaxIncluded, hotelInfo.Ecotasa) : 0 : 0,
                 idrateplan = rate.RatePlanCode,
                 NoArrivos = rate.Rules?.NoArrival ?? "NNNNNNN",
                 Excepciones = rate.Prices.ExceptionDays ?? "NNNNNNN",
@@ -617,7 +628,7 @@ namespace APIServices
             contextDb.Tarifas.Add(newRate);
             contextDb.SaveChanges();
 
-            if (!InsertGuestsRates(newRate, isNetRate, (decimal)hotelPlan.CommissionPercentage, rate.Prices, rate.IsOccupancyRate, ref contextDb))
+            if (!InsertGuestsRates(newRate, isNetRate, (decimal)hotelPlan.CommissionPercentage, rate.Prices, rate.IsOccupancyRate, ref contextDb, hotelInfo.TaxIncluded, hotelInfo.Ecotasa))
             {
                 return false;
             }
@@ -697,12 +708,22 @@ namespace APIServices
                         of.PrecioExtraAdulto = extraAdultRate != -1 ? extraAdultRate : of.PrecioExtraAdulto; //(decimal)SetPrice(isNetRate, extraAdultRate, (decimal)hotelPlan.CommissionPercentage),
                         of.PrecioExtraNinio = extraChildRate != -1 ? extraChildRate : of.PrecioExtraNinio; //(decimal)SetPrice(isNetRate, extraChildRate, (decimal)hotelPlan.CommissionPercentage),
                         of.PrecioAdolescenteExtra = extraJuniorRate != -1 ? extraJuniorRate : of.PrecioAdolescenteExtra; //(decimal)SetPrice(isNetRate, extraJuniorRate, (decimal)hotelPlan.CommissionPercentage),
-                        of.PrecioNR = isNetRate ? adultRate != -1 ? SetPrice(isNetRate, adultRate, (decimal)hotelPlan.CommissionPercentage) : of.PrecioNR : 0;
-                        of.NiniosRateNR = isNetRate ? childRate != -1 ? SetPrice(isNetRate, childRate, (decimal)hotelPlan.CommissionPercentage) : of.NiniosRateNR : 0;
-                        of.PrecioAdolescenteNR = isNetRate ? juniorRate != -1 ? SetPrice(isNetRate, juniorRate, (decimal)hotelPlan.CommissionPercentage) : of.PrecioAdolescenteNR : 0;
-                        of.PrecioExtraAdultoNR = isNetRate ? extraAdultRate != -1 ? SetPrice(isNetRate, extraAdultRate, (decimal)hotelPlan.CommissionPercentage) : of.PrecioExtraAdultoNR : 0;
-                        of.PrecioExtraNinioNR = isNetRate ? extraChildRate != -1 ? SetPrice(isNetRate, extraChildRate, (decimal)hotelPlan.CommissionPercentage) : of.PrecioExtraNinioNR : 0;
-                        of.PrecioAdolescenteExtraNR = isNetRate ? extraJuniorRate != -1 ? SetPrice(isNetRate, extraJuniorRate, (decimal)hotelPlan.CommissionPercentage) : of.PrecioAdolescenteExtraNR : 0;
+                        
+                        //of.PrecioNR = isNetRate ? adultRate != -1 ? SetPrice(isNetRate, adultRate, (decimal)hotelPlan.CommissionPercentage) : of.PrecioNR : 0;
+                        //of.NiniosRateNR = isNetRate ? childRate != -1 ? SetPrice(isNetRate, childRate, (decimal)hotelPlan.CommissionPercentage) : of.NiniosRateNR : 0;
+                        //of.PrecioAdolescenteNR = isNetRate ? juniorRate != -1 ? SetPrice(isNetRate, juniorRate, (decimal)hotelPlan.CommissionPercentage) : of.PrecioAdolescenteNR : 0;
+                        //of.PrecioExtraAdultoNR = isNetRate ? extraAdultRate != -1 ? SetPrice(isNetRate, extraAdultRate, (decimal)hotelPlan.CommissionPercentage) : of.PrecioExtraAdultoNR : 0;
+                        //of.PrecioExtraNinioNR = isNetRate ? extraChildRate != -1 ? SetPrice(isNetRate, extraChildRate, (decimal)hotelPlan.CommissionPercentage) : of.PrecioExtraNinioNR : 0;
+                        //of.PrecioAdolescenteExtraNR = isNetRate ? extraJuniorRate != -1 ? SetPrice(isNetRate, extraJuniorRate, (decimal)hotelPlan.CommissionPercentage) : of.PrecioAdolescenteExtraNR : 0;
+
+                        of.PrecioNR = isNetRate ? adultRate != -1 ? SetPrice(isNetRate, adultRate, (decimal)hotelPlan.CommissionPercentage, hotelInfo.TaxIncluded, hotelInfo.Ecotasa) : of.PrecioNR : 0;
+                        of.NiniosRateNR = isNetRate ? childRate != -1 ? SetPrice(isNetRate, childRate, (decimal)hotelPlan.CommissionPercentage, hotelInfo.TaxIncluded, hotelInfo.Ecotasa) : of.NiniosRateNR : 0;
+                        of.PrecioAdolescenteNR = isNetRate ? juniorRate != -1 ? SetPrice(isNetRate, juniorRate, (decimal)hotelPlan.CommissionPercentage, hotelInfo.TaxIncluded, hotelInfo.Ecotasa) : of.PrecioAdolescenteNR : 0;
+                        of.PrecioExtraAdultoNR = isNetRate ? extraAdultRate != -1 ? SetPrice(isNetRate, extraAdultRate, (decimal)hotelPlan.CommissionPercentage, hotelInfo.TaxIncluded, hotelInfo.Ecotasa) : of.PrecioExtraAdultoNR : 0;
+                        of.PrecioExtraNinioNR = isNetRate ? extraChildRate != -1 ? SetPrice(isNetRate, extraChildRate, (decimal)hotelPlan.CommissionPercentage, hotelInfo.TaxIncluded, hotelInfo.Ecotasa) : of.PrecioExtraNinioNR : 0;
+                        of.PrecioAdolescenteExtraNR = isNetRate ? extraJuniorRate != -1 ? SetPrice(isNetRate, extraJuniorRate, (decimal)hotelPlan.CommissionPercentage, hotelInfo.TaxIncluded, hotelInfo.Ecotasa) : of.PrecioAdolescenteExtraNR : 0;
+
+
                         of.NoArrivos = rate.Rules?.NoArrival ?? of.NoArrivos;
                         of.Excepciones = rate.Prices?.ExceptionDays ?? of.Excepciones;
                         of.RateRulesDefault = rate.Rules?.UseDefaultRules ?? true;
@@ -744,13 +765,13 @@ namespace APIServices
                                             {
                                                   
                                                 ofRes.TarifaNinio = price.Price;
-                                                ofRes.TarifaNinioNR = isNetRate ? SetPrice(isNetRate, price.Price, (decimal)hotelPlan.CommissionPercentage) : 0;
+                                                ofRes.TarifaNinioNR = isNetRate ? SetPrice(isNetRate, price.Price, (decimal)hotelPlan.CommissionPercentage, hotelInfo.TaxIncluded, hotelInfo.Ecotasa) : 0;
 
                                                 if(rate.Prices.Exceptions.Count() > 0)
                                                 {
                                                     var priceException = rate.Prices.Exceptions.FirstOrDefault(ex => ex.Type == PaxType.Child && ex.Occupation == price.Occupation);
                                                     ofRes.TarifaNinioExc = priceException.Price;
-                                                    ofRes.TarifaNinioExcNR = isNetRate ? SetPrice(isNetRate, priceException.Price, (decimal)hotelPlan.CommissionPercentage) : 0;
+                                                    ofRes.TarifaNinioExcNR = isNetRate ? SetPrice(isNetRate, priceException.Price, (decimal)hotelPlan.CommissionPercentage, hotelInfo.TaxIncluded, hotelInfo.Ecotasa) : 0;
                                                 }
 
                                             }
@@ -758,14 +779,14 @@ namespace APIServices
                                             {                                         
 
                                                 ofRes.TarifaAdolescente = price.Price;
-                                                ofRes.TarifaAdolescenteNR = isNetRate ? SetPrice(isNetRate, price.Price, (decimal)hotelPlan.CommissionPercentage) : 0;
+                                                ofRes.TarifaAdolescenteNR = isNetRate ? SetPrice(isNetRate, price.Price, (decimal)hotelPlan.CommissionPercentage, hotelInfo.TaxIncluded, hotelInfo.Ecotasa) : 0;
 
                                                 if (rate.Prices.Exceptions.Count() > 0)
                                                 {
                                                     var priceException = rate.Prices.Exceptions.FirstOrDefault(ex => ex.Type == PaxType.Junior && ex.Occupation == price.Occupation);
 
                                                     ofRes.TarifaAdolescenteExc = priceException.Price;
-                                                    ofRes.TarifaAdolescenteExcNR = isNetRate ? SetPrice(isNetRate, priceException.Price, (decimal)hotelPlan.CommissionPercentage) : 0;
+                                                    ofRes.TarifaAdolescenteExcNR = isNetRate ? SetPrice(isNetRate, priceException.Price, (decimal)hotelPlan.CommissionPercentage, hotelInfo.TaxIncluded, hotelInfo.Ecotasa) : 0;
                                                 }
                                             }
                                         }
@@ -778,12 +799,12 @@ namespace APIServices
                                             if (price.Type == PaxType.Child)
                                             {
                                                 ofRes.TarifaNinio = price.Price;
-                                                ofRes.TarifaNinioNR = isNetRate ? SetPrice(isNetRate, price.Price, (decimal)hotelPlan.CommissionPercentage) : 0;
+                                                ofRes.TarifaNinioNR = isNetRate ? SetPrice(isNetRate, price.Price, (decimal)hotelPlan.CommissionPercentage, hotelInfo.TaxIncluded, hotelInfo.Ecotasa) : 0;
                                             }
                                             else
                                             {
                                                 ofRes.TarifaAdolescente = price.Price;
-                                                ofRes.TarifaAdolescenteNR = isNetRate ? SetPrice(isNetRate, price.Price, (decimal)hotelPlan.CommissionPercentage) : 0;
+                                                ofRes.TarifaAdolescenteNR = isNetRate ? SetPrice(isNetRate, price.Price, (decimal)hotelPlan.CommissionPercentage, hotelInfo.TaxIncluded, hotelInfo.Ecotasa) : 0;
                                             }
                                         }
 
@@ -799,14 +820,14 @@ namespace APIServices
                                         foreach (var ofRes in overlappedFaresRestrictions)
                                         {
                                             ofRes.TarifaAdulto = price.Price;
-                                            ofRes.TarifaAdultoNR = isNetRate ? SetPrice(isNetRate, price.Price, (decimal)hotelPlan.CommissionPercentage) : 0;
+                                            ofRes.TarifaAdultoNR = isNetRate ? SetPrice(isNetRate, price.Price, (decimal)hotelPlan.CommissionPercentage, hotelInfo.TaxIncluded, hotelInfo.Ecotasa) : 0;
 
                                             if (rate.Prices.Exceptions.Count() > 0)
                                             {
                                                 var priceException = rate.Prices.Exceptions.FirstOrDefault(ex => ex.Type == PaxType.Adult && ex.Occupation == price.Occupation);
 
                                                 ofRes.TarifaAdultoExc = priceException.Price;
-                                                ofRes.TarifaAdultoExcNR = isNetRate ? SetPrice(isNetRate, priceException.Price, (decimal)hotelPlan.CommissionPercentage) : 0;
+                                                ofRes.TarifaAdultoExcNR = isNetRate ? SetPrice(isNetRate, priceException.Price, (decimal)hotelPlan.CommissionPercentage, hotelInfo.TaxIncluded, hotelInfo.Ecotasa) : 0;
                                             }
                                         }
                                         
@@ -817,7 +838,7 @@ namespace APIServices
                                         foreach (var ofRes in overlappedFaresRestrictions)
                                         {
                                             ofRes.TarifaAdulto = price.Price;
-                                            ofRes.TarifaAdultoNR = isNetRate ? SetPrice(isNetRate, price.Price, (decimal)hotelPlan.CommissionPercentage) : 0;
+                                            ofRes.TarifaAdultoNR = isNetRate ? SetPrice(isNetRate, price.Price, (decimal)hotelPlan.CommissionPercentage, hotelInfo.TaxIncluded, hotelInfo.Ecotasa) : 0;
 
                                         }
 
@@ -897,12 +918,12 @@ namespace APIServices
                 PrecioExtraAdulto = extraAdultRate != -1 ? extraAdultRate : 0,
                 PrecioExtraNinio = extraChildRate != -1 ? extraChildRate : 0,
                 PrecioAdolescenteExtra = extraJuniorRate != -1 ? extraJuniorRate : 0,
-                PrecioNR = isNetRate ? SetPrice(isNetRate, adultRate, (decimal)hotelPlan.CommissionPercentage) : 0,
-                NiniosRateNR = isNetRate ? SetPrice(isNetRate, childRate, (decimal)hotelPlan.CommissionPercentage) : 0,
-                PrecioAdolescenteNR = isNetRate ? juniorRate != -1 ? SetPrice(isNetRate, juniorRate, (decimal)hotelPlan.CommissionPercentage) : 0 : 0,
-                PrecioExtraAdultoNR = isNetRate ? extraAdultRate != -1 ? SetPrice(isNetRate, extraAdultRate, (decimal)hotelPlan.CommissionPercentage) : 0 : 0,
-                PrecioExtraNinioNR = isNetRate ? extraChildRate != -1 ? SetPrice(isNetRate, extraChildRate, (decimal)hotelPlan.CommissionPercentage) : 0 : 0,
-                PrecioAdolescenteExtraNR = isNetRate ? extraJuniorRate != -1 ? SetPrice(isNetRate, extraJuniorRate, (decimal)hotelPlan.CommissionPercentage) : 0 : 0,
+                PrecioNR = isNetRate ? SetPrice(isNetRate, adultRate, (decimal)hotelPlan.CommissionPercentage, hotelInfo.TaxIncluded, hotelInfo.Ecotasa) : 0,
+                NiniosRateNR = isNetRate ? SetPrice(isNetRate, childRate, (decimal)hotelPlan.CommissionPercentage, hotelInfo.TaxIncluded, hotelInfo.Ecotasa) : 0,
+                PrecioAdolescenteNR = isNetRate ? juniorRate != -1 ? SetPrice(isNetRate, juniorRate, (decimal)hotelPlan.CommissionPercentage, hotelInfo.TaxIncluded, hotelInfo.Ecotasa) : 0 : 0,
+                PrecioExtraAdultoNR = isNetRate ? extraAdultRate != -1 ? SetPrice(isNetRate, extraAdultRate, (decimal)hotelPlan.CommissionPercentage, hotelInfo.TaxIncluded, hotelInfo.Ecotasa) : 0 : 0,
+                PrecioExtraNinioNR = isNetRate ? extraChildRate != -1 ? SetPrice(isNetRate, extraChildRate, (decimal)hotelPlan.CommissionPercentage, hotelInfo.TaxIncluded, hotelInfo.Ecotasa) : 0 : 0,
+                PrecioAdolescenteExtraNR = isNetRate ? extraJuniorRate != -1 ? SetPrice(isNetRate, extraJuniorRate, (decimal)hotelPlan.CommissionPercentage, hotelInfo.TaxIncluded, hotelInfo.Ecotasa) : 0 : 0,
                 idrateplan = rate.RatePlanCode,
                 NoArrivos = rate.Rules?.NoArrival ?? "NNNNNNN",
                 Excepciones = rate.Prices.ExceptionDays ?? "NNNNNNN",
@@ -930,7 +951,7 @@ namespace APIServices
             contextDb.Tarifas.Add(newRate);
             contextDb.SaveChanges();
 
-            if (!InsertGuestsRates(newRate, isNetRate, (decimal)hotelPlan.CommissionPercentage, rate.Prices, rate.IsOccupancyRate, ref contextDb))
+            if (!InsertGuestsRates(newRate, isNetRate, (decimal)hotelPlan.CommissionPercentage, rate.Prices, rate.IsOccupancyRate, ref contextDb, hotelInfo.TaxIncluded, hotelInfo.Ecotasa))
             {
                 return false;
             }
@@ -1163,12 +1184,12 @@ namespace APIServices
                 PrecioExtraAdulto = extraAdultRate, //(decimal)SetPrice(isNetRate, extraAdultRate, (decimal)hotelPlan.CommissionPercentage),
                 PrecioExtraNinio = extraChildRate, //(decimal)SetPrice(isNetRate, extraChildRate, (decimal)hotelPlan.CommissionPercentage),
                 PrecioAdolescenteExtra = extraJuniorRate, //(decimal)SetPrice(isNetRate, extraJuniorRate, (decimal)hotelPlan.CommissionPercentage),
-                PrecioNR = isNetRate ? SetPrice(isNetRate, adultRate, (decimal)hotelPlan.CommissionPercentage) : 0,
-                NiniosRateNR = isNetRate ? SetPrice(isNetRate, childRate, (decimal)hotelPlan.CommissionPercentage) : 0,
-                PrecioAdolescenteNR = isNetRate ? SetPrice(isNetRate, extraJuniorRate, (decimal)hotelPlan.CommissionPercentage) : 0,
-                PrecioExtraAdultoNR = isNetRate ? SetPrice(isNetRate, extraAdultRate, (decimal)hotelPlan.CommissionPercentage) : 0,
-                PrecioExtraNinioNR = isNetRate ? SetPrice(isNetRate, extraChildRate, (decimal)hotelPlan.CommissionPercentage) : 0,
-                PrecioAdolescenteExtraNR = isNetRate ? extraJuniorRate : 0,
+                PrecioNR = isNetRate ? SetPrice(isNetRate, adultRate, (decimal)hotelPlan.CommissionPercentage, hotelInfo.TaxIncluded, hotelInfo.Ecotasa) : 0,
+                NiniosRateNR = isNetRate ? SetPrice(isNetRate, childRate, (decimal)hotelPlan.CommissionPercentage, hotelInfo.TaxIncluded, hotelInfo.Ecotasa) : 0,
+                PrecioAdolescenteNR = isNetRate ? SetPrice(isNetRate, extraJuniorRate, (decimal)hotelPlan.CommissionPercentage, hotelInfo.TaxIncluded, hotelInfo.Ecotasa) : 0,
+                PrecioExtraAdultoNR = isNetRate ? SetPrice(isNetRate, extraAdultRate, (decimal)hotelPlan.CommissionPercentage, hotelInfo.TaxIncluded, hotelInfo.Ecotasa) : 0,
+                PrecioExtraNinioNR = isNetRate ? SetPrice(isNetRate, extraChildRate, (decimal)hotelPlan.CommissionPercentage, hotelInfo.TaxIncluded, hotelInfo.Ecotasa) : 0,
+                PrecioAdolescenteExtraNR = isNetRate ? SetPrice(isNetRate, extraJuniorRate, (decimal)hotelPlan.CommissionPercentage, hotelInfo.TaxIncluded, hotelInfo.Ecotasa) : 0,
                 idrateplan = rate.RatePlanCode,
                 NoArrivos = rate.Rules?.NoArrival ?? "NNNNNNN",
                 Excepciones = rate.Prices.ExceptionDays ?? "NNNNNNN",
@@ -1196,7 +1217,7 @@ namespace APIServices
             contextDb.Tarifas.Add(newRate);
             contextDb.SaveChanges();
 
-            if (!InsertGuestsRates(newRate, isNetRate, (decimal)hotelPlan.CommissionPercentage, rate.Prices, rate.IsOccupancyRate, ref contextDb))
+            if (!InsertGuestsRates(newRate, isNetRate, (decimal)hotelPlan.CommissionPercentage, rate.Prices, rate.IsOccupancyRate, ref contextDb, hotelInfo.TaxIncluded, hotelInfo.Ecotasa))
             {
                 return false;
             }
@@ -1204,7 +1225,7 @@ namespace APIServices
             return true;
         }
 
-        private bool InsertGuestsRates(Tarifas newRate, bool isNetRate, decimal commissionPercentage, RateUpdatePrices prices, bool isOccupancyRates, ref OzHotelesEntities contextDb)
+        private bool InsertGuestsRates(Tarifas newRate, bool isNetRate, decimal commissionPercentage, RateUpdatePrices prices, bool isOccupancyRates, ref OzHotelesEntities contextDb, bool taxIncluded, decimal ecotasa)
         {
             vHotelRoom hotelRoom = contextDb.vHotelRoom.FirstOrDefault(r => r.Id == newRate.idTipoHabitacion_Hotel);
             if (hotelRoom == null)
@@ -1232,12 +1253,12 @@ namespace APIServices
                                 TarifaAdultoExc = prices.Exceptions?.SingleOrDefault(p => p.Type == PaxType.Adult)?.Price ?? 0,
                                 TarifaNinioExc = childs > 0 ? prices.Exceptions?.SingleOrDefault(p => p.Type == PaxType.Child)?.Price ?? 0 : 0,
                                 TarifaAdolescenteExc = childs > 0 ? prices.Exceptions?.SingleOrDefault(p => p.Type == PaxType.Junior)?.Price ?? 0 : 0,
-                                TarifaAdultoNR = isNetRate ? SetPrice(isNetRate, prices.Base.SingleOrDefault(p => p.Type == PaxType.Adult)?.Price ?? 0, commissionPercentage) : 0,
-                                TarifaNinioNR = childs > 0 ? isNetRate ? SetPrice(isNetRate, prices.Base.SingleOrDefault(p => p.Type == PaxType.Child)?.Price ?? 0, commissionPercentage) : 0 : 0,
-                                TarifaAdolescenteNR = childs > 0 ? isNetRate ? SetPrice(isNetRate, prices.Base.SingleOrDefault(p => p.Type == PaxType.Junior)?.Price ?? 0, commissionPercentage) : 0 : 0,
-                                TarifaAdultoExcNR = isNetRate ? SetPrice(isNetRate, prices.Exceptions?.SingleOrDefault(p => p.Type == PaxType.Adult)?.Price ?? 0, commissionPercentage) : 0,
-                                TarifaNinioExcNR = childs > 0 ? isNetRate ? SetPrice(isNetRate, prices.Exceptions?.SingleOrDefault(p => p.Type == PaxType.Child)?.Price ?? 0, commissionPercentage) : 0 : 0,
-                                TarifaAdolescenteExcNR = childs > 0 ? isNetRate ? SetPrice(isNetRate, prices.Exceptions?.SingleOrDefault(p => p.Type == PaxType.Junior)?.Price ?? 0, commissionPercentage) : 0 : 0,
+                                TarifaAdultoNR = isNetRate ? SetPrice(isNetRate, prices.Base.SingleOrDefault(p => p.Type == PaxType.Adult)?.Price ?? 0, commissionPercentage, taxIncluded, ecotasa) : 0,
+                                TarifaNinioNR = childs > 0 ? isNetRate ? SetPrice(isNetRate, prices.Base.SingleOrDefault(p => p.Type == PaxType.Child)?.Price ?? 0, commissionPercentage, taxIncluded, ecotasa) : 0 : 0,
+                                TarifaAdolescenteNR = childs > 0 ? isNetRate ? SetPrice(isNetRate, prices.Base.SingleOrDefault(p => p.Type == PaxType.Junior)?.Price ?? 0, commissionPercentage, taxIncluded, ecotasa) : 0 : 0,
+                                TarifaAdultoExcNR = isNetRate ? SetPrice(isNetRate, prices.Exceptions?.SingleOrDefault(p => p.Type == PaxType.Adult)?.Price ?? 0, commissionPercentage, taxIncluded, ecotasa) : 0,
+                                TarifaNinioExcNR = childs > 0 ? isNetRate ? SetPrice(isNetRate, prices.Exceptions?.SingleOrDefault(p => p.Type == PaxType.Child)?.Price ?? 0, commissionPercentage, taxIncluded, ecotasa) : 0 : 0,
+                                TarifaAdolescenteExcNR = childs > 0 ? isNetRate ? SetPrice(isNetRate, prices.Exceptions?.SingleOrDefault(p => p.Type == PaxType.Junior)?.Price ?? 0, commissionPercentage, taxIncluded, ecotasa) : 0 : 0,
                                 Applyday = newRate.Excepciones
                             });
                         }
@@ -1260,12 +1281,12 @@ namespace APIServices
                                 TarifaAdultoExc = prices.Exceptions?.SingleOrDefault(p => p.Occupation == adults && p.Type == PaxType.Adult)?.Price ?? 0,
                                 TarifaNinioExc = prices.Exceptions?.SingleOrDefault(p => p.Occupation == childs && p.Type == PaxType.Child)?.Price ?? 0,
                                 TarifaAdolescenteExc = prices.Exceptions?.SingleOrDefault(p => p.Occupation == childs && p.Type == PaxType.Junior)?.Price ?? 0,
-                                TarifaAdultoNR = isNetRate ? SetPrice(isNetRate, prices.Base.SingleOrDefault(p => p.Occupation == adults && p.Type == PaxType.Adult)?.Price ?? 0, commissionPercentage) : 0,
-                                TarifaNinioNR = isNetRate ? SetPrice(isNetRate, prices.Base.SingleOrDefault(p => p.Occupation == childs && p.Type == PaxType.Child)?.Price ?? 0, commissionPercentage) : 0,
-                                TarifaAdolescenteNR = isNetRate ? SetPrice(isNetRate, prices.Base.SingleOrDefault(p => p.Occupation == childs && p.Type == PaxType.Junior)?.Price ?? 0, commissionPercentage) : 0,
-                                TarifaAdultoExcNR = isNetRate ? SetPrice(isNetRate, prices.Exceptions?.SingleOrDefault(p => p.Occupation == adults && p.Type == PaxType.Adult)?.Price ?? 0, commissionPercentage) : 0,
-                                TarifaNinioExcNR = isNetRate ? SetPrice(isNetRate, prices.Exceptions?.SingleOrDefault(p => p.Occupation == childs && p.Type == PaxType.Child)?.Price ?? 0, commissionPercentage) : 0,
-                                TarifaAdolescenteExcNR = isNetRate ? SetPrice(isNetRate, prices.Exceptions?.SingleOrDefault(p => p.Occupation == childs && p.Type == PaxType.Junior)?.Price ?? 0, commissionPercentage) : 0,
+                                TarifaAdultoNR = isNetRate ? SetPrice(isNetRate, prices.Base.SingleOrDefault(p => p.Occupation == adults && p.Type == PaxType.Adult)?.Price ?? 0, commissionPercentage, taxIncluded, ecotasa) : 0,
+                                TarifaNinioNR = isNetRate ? SetPrice(isNetRate, prices.Base.SingleOrDefault(p => p.Occupation == childs && p.Type == PaxType.Child)?.Price ?? 0, commissionPercentage, taxIncluded, ecotasa) : 0,
+                                TarifaAdolescenteNR = isNetRate ? SetPrice(isNetRate, prices.Base.SingleOrDefault(p => p.Occupation == childs && p.Type == PaxType.Junior)?.Price ?? 0, commissionPercentage, taxIncluded, ecotasa) : 0,
+                                TarifaAdultoExcNR = isNetRate ? SetPrice(isNetRate, prices.Exceptions?.SingleOrDefault(p => p.Occupation == adults && p.Type == PaxType.Adult)?.Price ?? 0, commissionPercentage, taxIncluded, ecotasa) : 0,
+                                TarifaNinioExcNR = isNetRate ? SetPrice(isNetRate, prices.Exceptions?.SingleOrDefault(p => p.Occupation == childs && p.Type == PaxType.Child)?.Price ?? 0, commissionPercentage, taxIncluded, ecotasa) : 0,
+                                TarifaAdolescenteExcNR = isNetRate ? SetPrice(isNetRate, prices.Exceptions?.SingleOrDefault(p => p.Occupation == childs && p.Type == PaxType.Junior)?.Price ?? 0, commissionPercentage, taxIncluded, ecotasa) : 0,
                                 Applyday = newRate.Excepciones
                             });
                         }
@@ -1300,6 +1321,28 @@ namespace APIServices
                 return 0;
             }
         }
+
+        private decimal? SetPrice(bool isNetRate, decimal? price, decimal commissionPercentage,bool isPlusTax, decimal ecotasa)
+        {
+            try
+            {
+                if (price == 0) return 0;
+
+                decimal? NetPrice = 0;
+                if (isNetRate)
+                {
+                    NetPrice = isPlusTax ? ((price - ecotasa) * ((100 - commissionPercentage) / 100)) + ecotasa : price * ((100 - commissionPercentage) / 100);
+                    return Decimal.Round((decimal)NetPrice, 2, MidpointRounding.AwayFromZero);
+                }
+
+                return price;
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
 
         private bool IsOverlappedFares(RateUpdateRQ rate, DateTime ini, DateTime end, ref OzHotelesEntities db)
         {

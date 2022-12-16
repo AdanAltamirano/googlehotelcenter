@@ -20,6 +20,7 @@ namespace APIServices.Models
         public string Currency { get; set; }
         public Nullable<decimal> Tax { get; set; }
         public bool TaxIncluded { get; set; }
+        public decimal Ecotasa { get; set; }
         public Nullable<int> CorpId { get; set; }
         public string Corp { get; set; }
         public byte Status { get; set; }

@@ -36,7 +36,6 @@ namespace APIServices.Models
         public virtual DbSet<ContratosNR> ContratosNR { get; set; }
         public virtual DbSet<vHotelByUser> vHotelByUser { get; set; }
         public virtual DbSet<vAdministrator> vAdministrator { get; set; }
-        public virtual DbSet<vHotelBasicInfo> vHotelBasicInfo { get; set; }
         public virtual DbSet<vDayRateDetail> vDayRateDetail { get; set; }
         public virtual DbSet<vDayRates> vDayRates { get; set; }
         public virtual DbSet<vPermissions> vPermissions { get; set; }
@@ -61,6 +60,7 @@ namespace APIServices.Models
         public virtual DbSet<VReservationRoomPriceDetails> VReservationRoomPriceDetails { get; set; }
         public virtual DbSet<vHotelPlan> vHotelPlan { get; set; }
         public virtual DbSet<vReservationDetails> vReservationDetails { get; set; }
+        public virtual DbSet<vHotelBasicInfo> vHotelBasicInfo { get; set; }
     
         public virtual int spReservationCancel(Nullable<int> idReservacion, string noConfCancelGalileo, string noCancelacion, string txCode, Nullable<bool> statusConf, string systemCode, string travelAgencyName, string voucher, string wizcomPassOn, string wizcomSequenceNumber, string motivoCancelacion, Nullable<bool> cancelWithError, string sessionId, Nullable<int> iduser)
         {
@@ -229,7 +229,7 @@ namespace APIServices.Models
             var idReservacionParameter = idReservacion.HasValue ?
                 new ObjectParameter("idReservacion", idReservacion) :
                 new ObjectParameter("idReservacion", typeof(int));
-
+    
             var nocuentaParameter = nocuenta != null ?
                 new ObjectParameter("nocuenta", nocuenta) :
                 new ObjectParameter("nocuenta", typeof(string));
@@ -259,9 +259,38 @@ namespace APIServices.Models
                 new ObjectParameter("idUsuario", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spReservationsByDeposit_Update", idReservacionParameter, nocuentaParameter, bancoParameter, dep_montoParameter, dep_monedaParameter, fechaParameter, observacionParameter, idUsuarioParameter);
-
         }
-
+    
+        public virtual int spReservationUpdateStatus(Nullable<int> idReservacion, Nullable<byte> status)
+        {
+            var idReservacionParameter = idReservacion.HasValue ?
+                new ObjectParameter("idReservacion", idReservacion) :
+                new ObjectParameter("idReservacion", typeof(int));
+    
+            var statusParameter = status.HasValue ?
+                new ObjectParameter("status", status) :
+                new ObjectParameter("status", typeof(byte));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spReservationUpdateStatus", idReservacionParameter, statusParameter);
+        }
+    
+        public virtual int spReservationConfirmPaymentRequest(string reservationId, string reference, string authorizationNumber)
+        {
+            var reservationIdParameter = reservationId != null ?
+                new ObjectParameter("reservationId", reservationId) :
+                new ObjectParameter("reservationId", typeof(string));
+    
+            var referenceParameter = reference != null ?
+                new ObjectParameter("reference", reference) :
+                new ObjectParameter("reference", typeof(string));
+    
+            var authorizationNumberParameter = authorizationNumber != null ?
+                new ObjectParameter("authorizationNumber", authorizationNumber) :
+                new ObjectParameter("authorizationNumber", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spReservationConfirmPaymentRequest", reservationIdParameter, referenceParameter, authorizationNumberParameter);
+        }
+    
         public virtual int spAgregarDetalleTarifasReservaciones(Nullable<int> idDetalleReservacion, Nullable<int> idTarifa, Nullable<decimal> precio, Nullable<decimal> precioExtra, Nullable<decimal> precioNR, Nullable<decimal> precioExtraNR, string moneda, Nullable<System.DateTime> inicio, Nullable<System.DateTime> fin)
         {
             var idDetalleReservacionParameter = idDetalleReservacion.HasValue ?
@@ -321,7 +350,7 @@ namespace APIServices.Models
             var idReservacionParameter = idReservacion.HasValue ?
                 new ObjectParameter("idReservacion", idReservacion) :
                 new ObjectParameter("idReservacion", typeof(int));
-
+    
             var adultosParameter = adultos.HasValue ?
                 new ObjectParameter("Adultos", adultos) :
                 new ObjectParameter("Adultos", typeof(byte));
@@ -343,36 +372,6 @@ namespace APIServices.Models
                 new ObjectParameter("EdadesNinios", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spModificarDetalleReservaciones", idDetalleReservacionParameter, idReservacionParameter, adultosParameter, niniosParameter, adultosExtrasParameter, niniosExtrasParameter, edadesNiniosParameter);
-        }
-    
-        public virtual int spReservationUpdateStatus(Nullable<int> idReservacion, Nullable<byte> status)
-        {
-            var idReservacionParameter = idReservacion.HasValue ?
-                new ObjectParameter("idReservacion", idReservacion) :
-                new ObjectParameter("idReservacion", typeof(int));
-    
-            var statusParameter = status.HasValue ?
-                new ObjectParameter("status", status) :
-                new ObjectParameter("status", typeof(byte));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spReservationUpdateStatus", idReservacionParameter, statusParameter);
-        }
-    
-        public virtual int spReservationConfirmPaymentRequest(string reservationId, string reference, string authorizationNumber)
-        {
-            var reservationIdParameter = reservationId != null ?
-                new ObjectParameter("reservationId", reservationId) :
-                new ObjectParameter("reservationId", typeof(string));
-    
-            var referenceParameter = reference != null ?
-                new ObjectParameter("reference", reference) :
-                new ObjectParameter("reference", typeof(string));
-    
-            var authorizationNumberParameter = authorizationNumber != null ?
-                new ObjectParameter("authorizationNumber", authorizationNumber) :
-                new ObjectParameter("authorizationNumber", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spReservationConfirmPaymentRequest", reservationIdParameter, referenceParameter, authorizationNumberParameter);
         }
     }
 }

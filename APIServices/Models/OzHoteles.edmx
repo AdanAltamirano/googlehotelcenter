@@ -621,6 +621,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vHotelBasicInfo' no tiene defi
           <Property Name="Currency" Type="nvarchar" MaxLength="3" />
           <Property Name="Tax" Type="numeric" Precision="10" Scale="4" />
           <Property Name="TaxIncluded" Type="bit" Nullable="false" />
+          <Property Name="Ecotasa" Type="smallmoney" Nullable="false" />
           <Property Name="CorpId" Type="int" />
           <Property Name="Corp" Type="nvarchar" MaxLength="20" />
           <Property Name="Status" Type="tinyint" Nullable="false" />
@@ -1213,6 +1214,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
     [vHotelBasicInfo].[Currency] AS [Currency], 
     [vHotelBasicInfo].[Tax] AS [Tax], 
     [vHotelBasicInfo].[TaxIncluded] AS [TaxIncluded], 
+    [vHotelBasicInfo].[Ecotasa] AS [Ecotasa], 
     [vHotelBasicInfo].[CorpId] AS [CorpId], 
     [vHotelBasicInfo].[Corp] AS [Corp], 
     [vHotelBasicInfo].[Status] AS [Status], 
@@ -1512,7 +1514,6 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <EntitySet Name="ContratosNR" EntityType="Models.ContratosNR" />
           <EntitySet Name="vHotelByUser" EntityType="Models.vHotelByUser" />
           <EntitySet Name="vAdministrator" EntityType="Models.vAdministrator" />
-          <EntitySet Name="vHotelBasicInfo" EntityType="Models.vHotelBasicInfo" />
           <EntitySet Name="vDayRateDetail" EntityType="Models.vDayRateDetail" />
           <EntitySet Name="vDayRates" EntityType="Models.vDayRates" />
           <EntitySet Name="vPermissions" EntityType="Models.vPermissions" />
@@ -1636,6 +1637,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
             <Parameter Name="NiniosExtras" Mode="In" Type="Byte" />
             <Parameter Name="EdadesNinios" Mode="In" Type="String" />
           </FunctionImport>
+          <EntitySet Name="vHotelBasicInfo" EntityType="Models.vHotelBasicInfo" />
         </EntityContainer>
         <EntityType Name="RatesPlan">
           <Key>
@@ -1850,25 +1852,6 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <Property Name="Type" Type="Byte" Nullable="false" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="true" />
           <Property Name="CorpId" Type="Int32" />
-        </EntityType>
-        <EntityType Name="vHotelBasicInfo">
-          <Key>
-            <PropertyRef Name="Id" />
-            <PropertyRef Name="CompanyId" />
-            <PropertyRef Name="TaxIncluded" />
-            <PropertyRef Name="Status" />
-            <PropertyRef Name="Provider" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="CompanyId" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="180" FixedLength="false" Unicode="true" />
-          <Property Name="Currency" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
-          <Property Name="Tax" Type="Decimal" Precision="10" Scale="4" />
-          <Property Name="TaxIncluded" Type="Boolean" Nullable="false" />
-          <Property Name="CorpId" Type="Int32" />
-          <Property Name="Corp" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="Status" Type="Byte" Nullable="false" />
-          <Property Name="Provider" Type="String" Nullable="false" MaxLength="14" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="vDayRateDetail">
           <Key>
@@ -2773,6 +2756,26 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <Property Name="idCancellationUser" Type="Int32" />
           <Property Name="userCancellation" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="vHotelBasicInfo">
+          <Key>
+            <PropertyRef Name="CompanyId" />
+            <PropertyRef Name="Provider" />
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="TaxIncluded" />
+            <PropertyRef Name="Status" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="CompanyId" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="180" FixedLength="false" Unicode="true" />
+          <Property Name="Currency" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="Tax" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="TaxIncluded" Type="Boolean" Nullable="false" />
+          <Property Name="Ecotasa" Type="Decimal" Nullable="false" Precision="10" Scale="4" />
+          <Property Name="CorpId" Type="Int32" />
+          <Property Name="Corp" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="Byte" Nullable="false" />
+          <Property Name="Provider" Type="String" Nullable="false" MaxLength="14" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2957,22 +2960,6 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Type" ColumnName="Type" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="vHotelBasicInfo">
-            <EntityTypeMapping TypeName="Models.vHotelBasicInfo">
-              <MappingFragment StoreEntitySet="vHotelBasicInfo">
-                <ScalarProperty Name="Provider" ColumnName="Provider" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="Corp" ColumnName="Corp" />
-                <ScalarProperty Name="CorpId" ColumnName="CorpId" />
-                <ScalarProperty Name="TaxIncluded" ColumnName="TaxIncluded" />
-                <ScalarProperty Name="Tax" ColumnName="Tax" />
-                <ScalarProperty Name="Currency" ColumnName="Currency" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3806,6 +3793,23 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <FunctionImportMapping FunctionImportName="spAgregarDetalleTarifasReservaciones" FunctionName="Models.Store.spAgregarDetalleTarifasReservaciones" />
           <FunctionImportMapping FunctionImportName="spEliminarDetalleTarifasReservaciones" FunctionName="Models.Store.spEliminarDetalleTarifasReservaciones" />
           <FunctionImportMapping FunctionImportName="spModificarDetalleReservaciones" FunctionName="Models.Store.spModificarDetalleReservaciones" />
+          <EntitySetMapping Name="vHotelBasicInfo">
+            <EntityTypeMapping TypeName="Models.vHotelBasicInfo">
+              <MappingFragment StoreEntitySet="vHotelBasicInfo">
+                <ScalarProperty Name="Provider" ColumnName="Provider" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Corp" ColumnName="Corp" />
+                <ScalarProperty Name="CorpId" ColumnName="CorpId" />
+                <ScalarProperty Name="Ecotasa" ColumnName="Ecotasa" />
+                <ScalarProperty Name="TaxIncluded" ColumnName="TaxIncluded" />
+                <ScalarProperty Name="Tax" ColumnName="Tax" />
+                <ScalarProperty Name="Currency" ColumnName="Currency" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
