@@ -622,7 +622,7 @@ namespace APIServices
                     bool isNetRateUV = (bool)reservation.IsNetRateUV;
                     bool plusTax = reservation.PlusTax ?? false;
                     decimal tax = reservation.Impuesto;
-                    decimal ecotasa = (decimal) reservation.Ecotasa;
+                    decimal ecotasa = reservation.Ecotasa == null ? 0: (decimal) reservation.Ecotasa;
                     int nights = (req.CheckOut - req.CheckIn).Days;
                     int totalRooms = req.RoomsDetails.Count;
 
