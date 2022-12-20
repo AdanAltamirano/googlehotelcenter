@@ -781,7 +781,7 @@ Partial Class ReservationDetails
                         Me.lblImpuestos.Text = FCurrency((taxes + dr.ServiceFee), 2) & " " & If(dr.IsMoneyNull, "", dr.Money)
                     End If
                     Me.lblTotalH.Text = FCurrency(dr.Total, 2) & " " & If(dr.IsMoneyNull, "", dr.Money)
-                    'Me.lblCosto.Text = FCurrency(((dr.Total - dr.Taxes) / (DateDiff(DateInterval.Day, CDate(dr.CheckInDate), CDate(dr.CheckOutDate)))), 2) & " " & dr.Money
+                    ' Me.lblCosto.Text = FCurrency(((dr.Total - dr.Taxes) / (DateDiff(DateInterval.Day, CDate(dr.CheckInDate), CDate(dr.CheckOutDate)))), 2) & " " & dr.Money
                     Me.lblCosto.Text = FCurrency(((dr.Total - taxes) / (DateDiff(DateInterval.Day, CDate(dr.CheckInDate), CDate(dr.CheckOutDate)))), 2) & " " & dr.Money
 
                     If xml.Reservation(0)("plustax").ToString.ToLower = "false" Then

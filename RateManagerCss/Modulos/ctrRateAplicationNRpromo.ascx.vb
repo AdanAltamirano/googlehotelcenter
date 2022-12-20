@@ -652,8 +652,26 @@ Partial Public Class ctrRateAplicationNRpromo
 
         If Not dsHotel Is Nothing AndAlso dsHotel.Tables(dsHotel.HOTEL_TABLE).Rows.Count > 0 Then
             With dsHotel.Tables(dsHotel.HOTEL_TABLE).Rows(0)
-                PlusTaxProperty = IIf(.IsNull(dsHotel.FIELD_PLUSTAX), False, CType(.Item(dsHotel.FIELD_PLUSTAX), Boolean))
-                EcotasaProperty = IIf(.IsNull(dsHotel.FIELD_ECOTASA), 0, CType(.Item(dsHotel.FIELD_ECOTASA), Double))
+
+                Dim isNullEcotasa As Boolean = DBNull.Value.Equals(.Item(dsHotel.FIELD_ECOTASA))
+                Dim isNullPlusTax As Boolean = DBNull.Value.Equals(.Item(dsHotel.FIELD_PLUSTAX))
+
+                If isNullPlusTax Then
+                    PlusTaxProperty = False
+                Else
+                    PlusTaxProperty = CType(.Item(dsHotel.FIELD_PLUSTAX), Boolean)
+                End If
+
+
+                If isNullEcotasa Then
+                    EcotasaProperty = 0
+                Else
+                    EcotasaProperty = CType(.Item(dsHotel.FIELD_ECOTASA), Double)
+                End If
+
+
+
+
             End With
         End If
 
