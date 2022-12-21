@@ -294,9 +294,9 @@ Partial Class ctrRateAplicationNR
         If TypeOf Me.Page Is FaresCatalogueNR Then
             'Adultos
 
-            'If Not Me.IsSupervisor And Me.isUsuarioMixto Then
-            '    Me.txtAdultFare.Attributes.Add("onChange", "javascript:FillPrices('" & CType(Me.Page, FaresCatalogueNR).IdDgAdult & "','txtAdultFare'" & ",'" & Me.txtAdultFare.ClientID & "');CheckValContractUv('" & TextBoxPorcMin.ClientID & "','" & TextBoxPorcMax.ClientID & "','" & txtAdultFareNR.ClientID & "','" & txtAdultFare.ClientID & "','" & lblAdultValMax.ClientID & "','" & lblAdultValMin.ClientID & "');FillPrices('" & CType(Me.Page, FaresCatalogueNR).IdDgAdult & "','txtAdultFareNR'" & ",'" & Me.txtAdultFareNR.ClientID & "')")
-            'End If
+            If Not Me.IsSupervisor And Me.isUsuarioMixto Then
+                Me.txtAdultFare.Attributes.Add("onChange", "javascript:FillPrices('" & CType(Me.Page, FaresCatalogueNR).IdDgAdult & "','txtAdultFare'" & ",'" & Me.txtAdultFare.ClientID & "');CheckValContractUv('" & TextBoxPorcMin.ClientID & "','" & TextBoxPorcMax.ClientID & "','" & txtAdultFareNR.ClientID & "','" & txtAdultFare.ClientID & "','" & lblAdultValMax.ClientID & "','" & lblAdultValMin.ClientID & "','" & PlusTaxProperty & "', '" & EcotasaProperty & "');FillPrices('" & CType(Me.Page, FaresCatalogueNR).IdDgAdult & "','txtAdultFareNR'" & ",'" & Me.txtAdultFareNR.ClientID & "')")
+            End If
 
 
             Me.txtAdultFareNR.Attributes.Add("onChange", "javascript:FillPrices('" & CType(Me.Page, FaresCatalogueNR).IdDgAdult & "','txtAdultFareNR'" & ",'" & Me.txtAdultFareNR.ClientID & "');CheckValContract('" & TextBoxPorcMin.ClientID & "','" & TextBoxPorcMax.ClientID & "','" & txtAdultFareNR.ClientID & "','" & txtAdultFare.ClientID & "','" & lblAdultValMax.ClientID & "','" & lblAdultValMin.ClientID & "','" & PlusTaxProperty & "', '" & EcotasaProperty & "');FillPrices('" & CType(Me.Page, FaresCatalogueNR).IdDgAdult & "','txtAdultFare'" & ",'" & Me.txtAdultFare.ClientID & "')")

@@ -105,7 +105,7 @@
                 console.log(ecotasa);
 
                 if (isPlusTax) {
-                    //Validar cuando sea cero valNR
+
                     console.log("PlusTax");
                     document.getElementById(uv).value = parseFloat(valNR) > 0 ? ((parseFloat(valNR - ecotasaTax) / ((100 - valMin) / 100)) + ecotasaTax).toFixed(2) : 0;
                 }
@@ -148,15 +148,31 @@
         }
 
 
-        function CheckValContractUv(min, max, nr, uv, msgMax, msgMin) {
+        function CheckValContractUv(min, max, nr, uv, msgMax, msgMin, plusTax, ecotasa) {
             valMin = parseFloat(document.getElementById(min).value);
             valMax = parseFloat(document.getElementById(max).value);
             valUV = parseFloat(document.getElementById(uv).value);
+            var isPlusTax = plusTax === "True" ? true : false;
+            var ecotasaTax = parseFloat(ecotasa);
 
             if (document.getElementById(nr)) {
 
                 var UV = parseFloat(valUV) * (1 + (parseFloat(valMin) / 100));
-                document.getElementById(nr).value = (parseFloat(valUV) * ((100 - valMin) / 100)).toFixed(2);           
+               // document.getElementById(nr).value = (parseFloat(valUV) * ((100 - valMin) / 100)).toFixed(2);
+
+
+                if (isPlusTax) {
+
+                    console.log("PlusTax");
+                    document.getElementById(nr).value = parseFloat(valUV) > 0 ? ((parseFloat(valUV - ecotasaTax) * ((100 - valMin) / 100)) + ecotasaTax).toFixed(2) : 0;
+
+                }
+                else {
+                    console.log("Sin Plus Tax");
+
+                    document.getElementById(nr).value = (parseFloat(valUV) * ((100 - valMin) / 100)).toFixed(2);
+                }
+
             }
 
             valNR = parseFloat(document.getElementById(nr).value);
