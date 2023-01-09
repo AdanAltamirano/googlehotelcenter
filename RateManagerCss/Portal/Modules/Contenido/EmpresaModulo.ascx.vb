@@ -110,6 +110,9 @@ Partial Class EmpresaModulo
             End If
             Carga_Monedas()
             CargaCorporativos()
+
+            Call Carga_RegimenFiscal()
+
         End If
         If Not IsPostBack Then
             CheckOptionEnabled()
@@ -154,6 +157,7 @@ Partial Class EmpresaModulo
         'Carga_Categorias(10)
         Carga_Monedas()
         CargaCorporativos()
+        Carga_RegimenFiscal()
         Dim data As EmpresaDatos
         data = (New EmpresaSistema).GetCompanyById(idempresa)
         If Not (data Is Nothing) AndAlso data.Tables(EmpresaDatos.COMPANY_TABLE).Rows.Count > 0 Then
@@ -174,6 +178,9 @@ Partial Class EmpresaModulo
                 txtFiscalDom.Text = "" & data.Tables(EmpresaDatos.COMPANY_TABLE).Rows(0).Item(EmpresaDatos.FIELD_BILL_DomFiscal)
 
                 txtRFC.Text = "" & data.Tables(EmpresaDatos.COMPANY_TABLE).Rows(0).Item(EmpresaDatos.FIELD_BILL_RFC)
+                If Not IsDBNull(data.Tables(EmpresaDatos.COMPANY_TABLE).Rows(0).Item(EmpresaDatos.FIELD_BILL_CP)) Then
+                    txtFacturacionCP.Text = data.Tables(EmpresaDatos.COMPANY_TABLE).Rows(0).Item(EmpresaDatos.FIELD_BILL_CP)
+                End If
                 txtCiudadFiscal.Text = "" & data.Tables(EmpresaDatos.COMPANY_TABLE).Rows(0).Item(EmpresaDatos.FIELD_BILL_Ciudad)
 
                 txtContactoPuesto.Text = "" & data.Tables(EmpresaDatos.COMPANY_TABLE).Rows(0).Item(EmpresaDatos.FIELD_ContactoPuesto)
@@ -192,6 +199,11 @@ Partial Class EmpresaModulo
                 txtTelG.Text = "" & data.Tables(EmpresaDatos.COMPANY_TABLE).Rows(0).Item(EmpresaDatos.FIELD_ContactoGteTel)
                 txtCorreoG.Text = "" & data.Tables(EmpresaDatos.COMPANY_TABLE).Rows(0).Item(EmpresaDatos.FIELD_ContactoGteCorreo)
                 txtPaginaWeb.Text = "" & data.Tables(EmpresaDatos.COMPANY_TABLE).Rows(0).Item(EmpresaDatos.FIELD_PAGINAWEB)
+
+                If Not IsDBNull(data.Tables(EmpresaDatos.COMPANY_TABLE).Rows(0).Item(EmpresaDatos.FIELD_BILL_RegimenFiscal)) Then
+                    cmbFacturacionEmpresaFiscal.SelectedIndex = cmbFacturacionEmpresaFiscal.Items.IndexOf(cmbFacturacionEmpresaFiscal.Items.FindByValue(data.Tables(EmpresaDatos.COMPANY_TABLE).Rows(0).Item(EmpresaDatos.FIELD_BILL_RegimenFiscal)))
+                End If
+
 
                 'Call Carga_Categorias(data.Tables(EmpresaDatos.COMPANY_TABLE).Rows(0).Item(EmpresaDatos.FIELD_Rubro))
                 If Not IsDBNull(data.Tables(EmpresaDatos.COMPANY_TABLE).Rows(0).Item(EmpresaDatos.FIELD_IDCATEGORIA)) Then cmbCategoria.SelectedIndex = cmbCategoria.Items.IndexOf(cmbCategoria.Items.FindByValue(data.Tables(EmpresaDatos.COMPANY_TABLE).Rows(0).Item(EmpresaDatos.FIELD_IDCATEGORIA)))
@@ -558,13 +570,13 @@ Partial Class EmpresaModulo
                 'IdAdminist = cmbAdmin.SelectedValue
                 Integer.TryParse(AppSettings("AdminCompanyRegistration"), IdAdminist)
 
-                If .CreateCompany(IdAdminist, Me.ididioma, txtCiudad.Text, "", _
-                     txtContactoCorreo.Text, txtContactoNombre.Text, txtCP.Text, txtDomicilio.Text, _
-                     estado, municipio, txtFax.Text, Date.Now, Guid.NewGuid.ToString, _
-                     cmbCiudades.SelectedValue, cmbPaises.SelectedValue, txtNombre.Text, 10, _
-                     0, txtTel.Text, txtRazonSocial.Text, txtFiscalDom.Text, _
-                     estadof, municipiof, cmbPaises.SelectedValue, txtRFC.Text.Trim, companyData, txtCiudadFiscal.Text.Trim, cmbFiscalCiudades.SelectedValue, cmbCategoria.SelectedValue, txtInventario.Text, txtContactoPuesto.Text, cmbArea.SelectedValue, txtArea.Text, txtContactoTel.Text, _
-                     txtContacto2.Text, txtTel2.Text, txtPuesto2.Text, txtCorreo2.Text, txtContacto3.Text, txtTel3.Text, txtPuesto3.Text, txtCorreo3.Text, txtGerente.Text, txtTelG.Text, txtCorreoG.Text, txtPaginaWeb.Text.Trim, False, False) Then
+                If .CreateCompany(IdAdminist, Me.ididioma, txtCiudad.Text, "",
+                     txtContactoCorreo.Text, txtContactoNombre.Text, txtCP.Text, txtDomicilio.Text,
+                     estado, municipio, txtFax.Text, Date.Now, Guid.NewGuid.ToString,
+                     cmbCiudades.SelectedValue, cmbPaises.SelectedValue, txtNombre.Text, 10,
+                     0, txtTel.Text, txtRazonSocial.Text, txtFiscalDom.Text,
+                     estadof, municipiof, cmbPaises.SelectedValue, txtRFC.Text.Trim, companyData, txtCiudadFiscal.Text.Trim, cmbFiscalCiudades.SelectedValue, cmbCategoria.SelectedValue, txtInventario.Text, txtContactoPuesto.Text, cmbArea.SelectedValue, txtArea.Text, txtContactoTel.Text,
+                     txtContacto2.Text, txtTel2.Text, txtPuesto2.Text, txtCorreo2.Text, txtContacto3.Text, txtTel3.Text, txtPuesto3.Text, txtCorreo3.Text, txtGerente.Text, txtTelG.Text, txtCorreoG.Text, txtPaginaWeb.Text.Trim, False, False, Bill_CP:=txtFacturacionCP.Text, Bill_RegimenFiscal:=cmbFacturacionEmpresaFiscal.SelectedValue) Then
                     idempresa = companyData.Tables(EmpresaDatos.COMPANY_TABLE).Rows(0).Item(EmpresaDatos.FIELD_idEmpresa)
 
                     If AppSettings("idSegmento") = "4" Then
@@ -676,13 +688,13 @@ Partial Class EmpresaModulo
         Integer.TryParse(AppSettings("AdminCompanyRegistration"), idAdminReg)
         dsSource = (New EmpresaSistema).GetCompanyById(idempresa)
         With New EmpresaSistema
-            If .UpdateCompany(idempresa, txtCiudad.Text, "", _
-            txtContactoCorreo.Text, txtContactoNombre.Text, txtCP.Text, txtDomicilio.Text, _
-            cmbEstados.SelectedItem.Text, cmbMunicipio.SelectedItem.Text, txtFax.Text, Date.Now, Guid.NewGuid.ToString, _
-            cmbCiudades.SelectedValue, cmbPaises.SelectedValue, txtNombre.Text, 10, _
-            0, txtTel.Text, txtRazonSocial.Text, txtFiscalDom.Text, _
-            cmbFiscalEstados.SelectedItem.Text, cmbMunicipioFiscal.SelectedItem.Text, cmbPaises.SelectedValue, txtRFC.Text.Trim, companyData, txtCiudadFiscal.Text.Trim, cmbFiscalCiudades.SelectedValue, cmbCategoria.SelectedValue, txtInventario.Text, txtContactoPuesto.Text, cmbArea.SelectedValue, txtArea.Text, txtContactoTel.Text, _
-                txtContacto2.Text, txtTel2.Text, txtPuesto2.Text, txtCorreo2.Text, txtContacto3.Text, txtTel3.Text, txtPuesto3.Text, txtCorreo3.Text, txtGerente.Text, txtTelG.Text, txtCorreoG.Text, False, "", txtPaginaWeb.Text.Trim, False) Then
+            If .UpdateCompany(idempresa, txtCiudad.Text, "",
+            txtContactoCorreo.Text, txtContactoNombre.Text, txtCP.Text, txtDomicilio.Text,
+            cmbEstados.SelectedItem.Text, cmbMunicipio.SelectedItem.Text, txtFax.Text, Date.Now, Guid.NewGuid.ToString,
+            cmbCiudades.SelectedValue, cmbPaises.SelectedValue, txtNombre.Text, 10,
+            0, txtTel.Text, txtRazonSocial.Text, txtFiscalDom.Text,
+            cmbFiscalEstados.SelectedItem.Text, cmbMunicipioFiscal.SelectedItem.Text, cmbPaises.SelectedValue, txtRFC.Text.Trim, companyData, txtCiudadFiscal.Text.Trim, cmbFiscalCiudades.SelectedValue, cmbCategoria.SelectedValue, txtInventario.Text, txtContactoPuesto.Text, cmbArea.SelectedValue, txtArea.Text, txtContactoTel.Text,
+                txtContacto2.Text, txtTel2.Text, txtPuesto2.Text, txtCorreo2.Text, txtContacto3.Text, txtTel3.Text, txtPuesto3.Text, txtCorreo3.Text, txtGerente.Text, txtTelG.Text, txtCorreoG.Text, False, "", txtPaginaWeb.Text.Trim, False, txtFacturacionCP.Text, cmbFacturacionEmpresaFiscal.SelectedValue) Then
                 Update_RelatedContentAdmin(idempresa, idAdminReg)
 
                 '// Guarda en bitacora la modificacion de la pisible modificacion del registro.
@@ -792,6 +804,15 @@ Partial Class EmpresaModulo
     '    'falta la especial
 
     'End Sub
+
+    Private Sub Carga_RegimenFiscal()
+        cmbFacturacionEmpresaFiscal.DataSource = (New RegimenFiscalSistema).GetTaxRegime()
+        cmbFacturacionEmpresaFiscal.DataTextField = RegimenFiscalDatos.FIELD_DESCRIPTION
+        cmbFacturacionEmpresaFiscal.DataValueField = RegimenFiscalDatos.FIELD_TAX_REGIME
+        cmbFacturacionEmpresaFiscal.DataBind()
+        cmbFacturacionEmpresaFiscal.SelectedIndex = cmbFacturacionEmpresaFiscal.Items(0).Value
+    End Sub
+
     Private Sub Carga_Paises()
         Dim strErr As String
         cmbPaises.DataSource = (New clsFacadePaises).GetPaises(PortalCulture.GetIDCulture())
@@ -1034,6 +1055,8 @@ Partial Class EmpresaModulo
         lblFiscalEstado.Text = PortalCulture.GetString("M000050", True) 'Estado    
         lblMunicipioFiscal.Text = PortalCulture.GetString("00253", True) 'Municipio
         lblFiscalCiudad.Text = PortalCulture.GetString("00254", True) 'Ciudad
+        lblFacturacionCP.Text = PortalCulture.GetString("M0BT0000164", True) 'Facturacion Codigo Postal
+        lblFacturacionEmpresaFiscal.Text = PortalCulture.GetString("01669", True) 'Facturacion Empresa Fiscal
 
         lblContactoPuesto.Text = String.Format(PortalCulture.GetString("00826", True), "")
         lblTel1.Text = String.Format(PortalCulture.GetString("00825", True), "")

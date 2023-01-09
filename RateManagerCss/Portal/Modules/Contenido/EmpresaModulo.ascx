@@ -292,6 +292,24 @@
         </td>
     </tr>
     <tr>
+        <td style="height: 35px" align="right">
+            <asp:Label ID="lblFacturacionCP" runat="server" EnableViewState="False">Código Postal :</asp:Label>
+        </td>
+        <td style="height: 35px">
+            <asp:TextBox ID="txtFacturacionCP" runat="server" MaxLength="120" CssClass="textbox" Width="150px"></asp:TextBox>
+           <%-- <asp:RequiredFieldValidator ID="rfvFacturacionCP" runat="server"
+                    CssClass="validators" ForeColor=" " ErrorMessage="Código Postal es un campo requerido"
+                    ControlToValidate="txtFacturacionCP" Display="Dynamic">*</asp:RequiredFieldValidator--%>
+        </td>
+        <td align="right">
+            <asp:Label ID="lblFacturacionEmpresaFiscal" runat="server" EnableViewState="False">Empresa Fiscal :</asp:Label>
+        </td>
+        <td>
+            <asp:DropDownList ID="cmbFacturacionEmpresaFiscal" runat="server" Width="150px">               
+            </asp:DropDownList>
+        </td>
+    </tr>
+    <tr>
         <td align="right"></td>
         <td></td>
         <td align="right"></td>

@@ -8901,4 +8901,7 @@
   <data name="01668" xml:space="preserve">
     <value>Ecotasa es requerido</value>
   </data>
+  <data name="01669" xml:space="preserve">
+    <value>Empresa Fiscal</value>
+  </data>
 </root>
