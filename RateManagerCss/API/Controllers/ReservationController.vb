@@ -367,6 +367,24 @@ Namespace API.Controller
             Return Ok(result)
         End Function
 
+        'POST api/reservations/1978/pms/status/update
+        <Route("{reservationId:int}/pms/status/update"), HttpPost>
+        Public Function PmsStatusUpdate(ByVal reservationId As Integer, <FromBody> request As Pms) As HttpResponseMessage
+
+
+            Dim result As Object = ReservationService.PmsStatusUpdate(reservationId, request)
+
+            If Not result.IsSuccess Then
+
+                Dim [error] As KeyValuePair(Of String, String) = New KeyValuePair(Of String, String)("0", "Error")
+                Return BadRequest([error])
+
+            End If
+
+            Return Ok(result)
+        End Function
+
+
 
         'POST api/reservations/1978/deposit
         <Route("{reservationId:int}/deposit"), HttpPost>

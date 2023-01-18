@@ -25,8 +25,14 @@
                 <div>
                     <strong>{{$t('Status')}}:</strong>
                     {{PmsStatus}}
-                    <div style="display:inline-block !important;">                   
+                    <div class="d-inline-block">                   
                         <pms-status v-if="supervisor" :reservationId="id"></pms-status>
+                    </div>
+                    <div v-if="supervisor">
+                        <strong>{{$t('Change only status')}}</strong>
+                        <div class=" d-inline-block ml-1">
+                            <pms-status-only v-if="supervisor" :reservationId="id"></pms-status-only>
+                        </div>
                     </div>                   
                 </div>                
                 <span v-if="pms.status">
@@ -42,6 +48,7 @@
 <script>
 import ReservationService from '../../../../api/reservation-service';
 import PmsStatus from './Status/Status.vue';
+import PmsStatusOnly from './Status/StatusOnly.vue';
 export default {
     props: {
         id: {
@@ -56,7 +63,8 @@ export default {
         }
     },
     components: {
-        PmsStatus
+        PmsStatus,
+        PmsStatusOnly
     },
     created() {
     },

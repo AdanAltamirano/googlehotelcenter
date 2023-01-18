@@ -48,7 +48,7 @@
                       <td>{{$t('Taxes')}}</td>
                       <td>{{result.totalDetails.taxes | currency}} {{result.totalDetails.currency}}</td>
                     </tr>
-                     <tr>
+                     <tr v-if="result.totalDetails.ecotasa > 0">
                       <td>{{$t('Ecotax')}}</td>
                       <td>{{result.totalDetails.ecotasa | currency}} {{result.totalDetails.currency}}</td>
                     </tr>
@@ -86,7 +86,7 @@
                       <td>{{$t('Taxes')}}</td>
                       <td>{{result.totalDetails.taxes | currency}} {{result.totalDetails.currency}}</td>
                     </tr>
-                    <tr>
+                    <tr v-if="result.totalDetails.ecotasa > 0">
                       <td>{{$t('Ecotax')}}</td>
                       <td>{{result.totalDetails.ecotasa | currency}} {{result.totalDetails.currency}}</td>
                     </tr>                                

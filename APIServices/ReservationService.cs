@@ -868,6 +868,39 @@ namespace APIServices
 
         }
 
+        public ReservationPmsResponse PmsStatusUpdate(int reservationId, Pms request)
+        {
+            ReservationPmsResponse response = new ReservationPmsResponse() { IsSuccess = false };
+
+            try
+            {
+                var reservation = dbContext.Reservaciones.FirstOrDefault(r => r.idReservacion == reservationId);
+
+                if (reservation != null)
+                {
+
+                    reservation.pmsStatus = request.Status;
+
+                    dbContext.SaveChanges();
+
+                    response.IsSuccess = true;
+
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return response;
+
+        }
+
+
+
+
 
         public bool PmsReactivate (int reservationId)
         {

@@ -10,6 +10,7 @@ const reservationDetails = Vue.resource(`${process.env.VUE_APP_API_URL}/reservat
 const reservationDeposit = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations/{reservationId}/deposit`);
 
 const reservationPmsUpdate = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations/{reservationId}/pms/update`);
+const reservationPmsStatusUpdate = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations/{reservationId}/pms/status/update`);
 const reservationPmsReactivate = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations/{reservationId}/pms/reactivate`);
 
 const creditcard = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations/{reservationId}/creditcard/{code}`);
@@ -89,6 +90,11 @@ export default {
     },
     ReservationPmsUpdate(reservationId, request) {
         return reservationPmsUpdate.save({
+            reservationId
+        }, request);
+    },
+    ReservationPmsStatusUpdate(reservationId, request) {
+        return reservationPmsStatusUpdate.save({
             reservationId
         }, request);
     },

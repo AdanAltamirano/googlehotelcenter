@@ -147,5 +147,6 @@ export default {
     'All rooms must has rates' : 'Todas las habitaciones deben de tener tarifas',
     'Until two decimal places' : 'Hasta dos decimales',
     'Send notification email' : 'Enviar correo de notificación',
-    'Taxes Included' : 'Incluye Impuestos'
+    'Taxes Included' : 'Incluye Impuestos',
+    'Change only status' : 'Cambiar solamente status'
 }
