@@ -200,9 +200,11 @@ export default {
     
     },
     updatePriceRoom(roomIndex, priceDetails) {
-
+      console.log("updatePriceRoom");
+      console.log(priceDetails);
       this.roomsDetails[roomIndex].priceDetails = [];
       this.roomsDetails[roomIndex].priceDetails = priceDetails;
+      console.log(this.roomsDetails[roomIndex].priceDetails);
 
       this.calculateTotal();
       if(this.isNetRate) this.calculateTotalNR();

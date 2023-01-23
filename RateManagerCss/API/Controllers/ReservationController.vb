@@ -256,11 +256,13 @@ Namespace API.Controller
 
                 If sendNotification Then
 
+                    Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
+
                     'If updatedData_RDM.Status <> 4 Then
                     If Not String.IsNullOrEmpty(updatedData_RDM.Customer.Email) Then
                         'enviar correo al cliente
                         Dim errorMail As String = String.Empty
-                        If SendModificationEmail(updatedData_RDM.Customer.Email, updatedData_RDM, oldData_RDM, errorMail, TypeClient.Customer) Then
+                        If SendModificationEmail(updatedData_RDM.Customer.Email, updatedData_RDM, oldData_RDM, errorMail, TypeClient.Customer, info) Then
                             result.CustomerEmail = updatedData_RDM.Customer.Email
                         Else
                             Dim xmlError As String = Utilities.GetXML(errorMail)
@@ -270,7 +272,8 @@ Namespace API.Controller
                     If Not String.IsNullOrEmpty(updatedData_RDM.HotelEmail) Then
                         'enviar correo al hotel
                         Dim errorMail As String = String.Empty
-                        If SendModificationEmail(updatedData_RDM.HotelEmail, updatedData_RDM, oldData_RDM, errorMail, TypeClient.Hotel) Then
+
+                        If SendModificationEmail(updatedData_RDM.HotelEmail, updatedData_RDM, oldData_RDM, errorMail, TypeClient.Hotel, info) Then
                             result.HotelEmail = updatedData_RDM.HotelEmail
                         Else
                             Dim xmlError As String = Utilities.GetXML(errorMail)
@@ -303,10 +306,12 @@ Namespace API.Controller
                     ReservationService.GetDetails(reservationId, isSupervisor, isHotelCompany, GetUserId().Value)
                 Log(reservationId, acciones.Reactivar, rdm.HotelId)
 
+                Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
+
                 If Not String.IsNullOrEmpty(rdm.Customer.Email) Then
                     'enviar correo al cliente
                     Dim errorMail As String = String.Empty
-                    If SendReactivationEmail(rdm, rdm.Customer.Email, errorMail) Then
+                    If SendReactivationEmail(rdm, rdm.Customer.Email, errorMail, TypeClient.Customer, info) Then
                         result.CustomerEmail = rdm.Customer.Email
                     Else
                         Dim xmlError As String = Utilities.GetXML(errorMail)
@@ -316,7 +321,7 @@ Namespace API.Controller
                 If Not String.IsNullOrEmpty(rdm.HotelEmail) Then
                     'enviar correo al hotel
                     Dim errorMail As String = String.Empty
-                    If SendReactivationEmail(rdm, rdm.HotelEmail, errorMail) Then
+                    If SendReactivationEmail(rdm, rdm.HotelEmail, errorMail, TypeClient.Hotel, info) Then
                         result.HotelEmail = rdm.HotelEmail
                     Else
                         Dim xmlError As String = Utilities.GetXML(errorMail)
@@ -326,7 +331,7 @@ Namespace API.Controller
                 If String.IsNullOrEmpty(rdm.Customer.Email) AndAlso String.IsNullOrEmpty(rdm.HotelEmail) Then
                     'enviar correo a algun admin
                     Dim errorMail As String = String.Empty
-                    SendReactivationEmail(rdm, "soporte@internetpowerhotel.com", errorMail)
+                    SendReactivationEmail(rdm, "soporte@internetpowerhotel.com", errorMail, TypeClient.Customer, info)
                 End If
             End If
 

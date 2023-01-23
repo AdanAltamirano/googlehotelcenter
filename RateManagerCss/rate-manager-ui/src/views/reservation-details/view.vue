@@ -37,7 +37,33 @@
           <b-row v-if="result.totalDetails" class="pt-3">
             <b-col>
               <h5 class="text-info">{{$t('Cost summary')}}</h5>
-              <template v-if="result.isNetRateUV">
+              <template v-if="RestrictionsHotels && !isSupervisor">
+                <table class="table table-sm">
+                  <tbody>
+                    <tr>
+                      <td>SubTotal</td>
+                      <td>{{result.totalDetails.subTotal | currency}} {{result.totalDetails.currency}}</td>
+                    </tr>                   
+                    <tr>
+                      <td>{{$t('Taxes')}}</td>
+                      <td>{{result.totalDetails.taxes | currency}} {{result.totalDetails.currency}}</td>
+                    </tr>
+                    <tr v-if="result.totalDetails.ecotasa > 0">
+                      <td>{{$t('Ecotax')}}</td>
+                      <td>{{result.totalDetails.ecotasa | currency}} {{result.totalDetails.currency}}</td>
+                    </tr>                                
+                    <tr>
+                      <td>
+                        <strong>Total</strong>
+                      </td>
+                      <td>
+                        <strong>{{result.totalDetails.total | currency}} {{result.totalDetails.currency}}</strong>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </template>
+              <template v-else-if="result.isNetRateUV">
                 <table class="table table-sm">
                   <tbody>
                     <tr>
@@ -123,6 +149,8 @@ import Policies from "./components/Policies.vue";
 import PaymentMethods from "./components/PaymentMethods.vue";
 import Pms from "./components/Pms/Pms.vue";
 import image from "./assets/internetpower.png";
+import listHotels from "../../json/hotels.json";
+
 export default {
   name: "app",
   components: {
@@ -144,6 +172,7 @@ export default {
   },
   data() {
     return {
+      hotelId : this.$appConfig.session.hotelId,
       reservationId: this.$appConfig.confirmNumber,
       result: [],
       showInfo: false,
@@ -154,11 +183,17 @@ export default {
       isHotelUser: (this.$appConfig.session.isHotelUser === 'True')? true : false,
       isHotelCompany:(this.$appConfig.session.isHotelCompany === 'True')? true : false,
       isUsuarioHotelAssociation: (this.$appConfig.session.isUsuarioHotelAssociation === 'True')? true : false,
+      hotelsJson: listHotels.hotels,
     };
   },
   computed: {
     DefaultImage() {
       return this.image;
+    },
+    RestrictionsHotels() {
+      return this.hotelsJson.some(hotelJson => {
+        return hotelJson.id === this.hotelId
+    });
     }
   },
   methods: {

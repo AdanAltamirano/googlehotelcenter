@@ -257,7 +257,7 @@ namespace APIServices
         public List<vReservationRoomDetails> GetRoomsReservation(int reservationId)
         {
             return dbContext.vReservationRoomDetails
-                .Where(x => x.reservationId == reservationId)
+                .AsNoTracking().Where(x => x.reservationId == reservationId)
                 .ToList();
         }
 
@@ -287,7 +287,7 @@ namespace APIServices
             foreach(var room in rooms)
             {
                 var prices = dbContext.VReservationRoomPriceDetails
-                    .Where(x => x.roomPriceId == room.roomPriceId)
+                    .AsNoTracking().Where(x => x.roomPriceId == room.roomPriceId)
                     .ToList();
 
                 var priceDetails = new List<RoomPriceDetails>();

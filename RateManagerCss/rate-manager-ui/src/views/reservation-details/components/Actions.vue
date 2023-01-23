@@ -96,6 +96,8 @@ export default {
             const form = new ModificationForm( new Date(yearCheckIn, monthCheckIn - 1, dayCheckIn),
                                                new Date(yearCheckOut, monthCheckOut - 1, dayCheckOut), 
                                                instance.roomsDetails, instance.statesChangesRoomsRates);
+
+            console.log(instance.roomDetails);
             
             const error = form.validate();
             console.log(error);

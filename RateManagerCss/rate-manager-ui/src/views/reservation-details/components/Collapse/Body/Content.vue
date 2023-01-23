@@ -360,6 +360,11 @@ export default {
             
             //quitarlse ecotasa, quitarle margen y poner la ecotasa 
             this.priceNR = ((parseFloat(price - this.ecotasaPerRoomRate) * ((100 - this.netRateContract) / 100)) + this.ecotasaPerRoomRate).toFixed(2);
+            console.log(price)
+            console.log(this.ecotasaPerRoomRate)
+            console.log(this.netRateContract);
+            console.log(((price - this.ecotasaPerRoomRate) * ((100 - 15) / 100)) + this.ecotasaPerRoomRate);
+            console.log(((price - this.ecotasaPerRoomRate) * ((100 - 15) / 100)));
         },
         calculateExtraPriceNR(extraPrice) {
             this.extraPriceNR = ((parseFloat(extraPrice - this.ecotasaPerRoomRate) * ((100 - this.netRateContract) / 100)) + this.ecotasaPerRoomRate).toFixed(2);
