@@ -226,10 +226,12 @@ namespace APIServices
                 GetPayments(ref model, reservationId);
 
                 double totalRooms = 0;
-                GetRooms(ref model, reservationId, details , out totalRooms);
+                double totalRoomsNR = 0;
+                GetRooms(ref model, reservationId, details , out totalRooms, out totalRoomsNR);
 
                 model.TotalDetails = new TotalDetails();
                 model.TotalDetails.SubTotal = totalRooms;
+                model.TotalDetails.SubTotalNR = totalRoomsNR;
                 model.TotalDetails.TotalNR = Convert.ToDouble(details.totalNetRate); //TODO: Validar si esta en null
                 model.TotalDetails.Total = Convert.ToDouble(details.total);
                 model.TotalDetails.Ecotasa = Convert.ToDouble(details.ecotasa);
@@ -268,13 +270,14 @@ namespace APIServices
                 && r.paymentType == 1);
         }
 
-        void GetRooms(ref ReservationDetailsModel model, int reservationId, vReservationDetails details, out double totalRooms)
+        void GetRooms(ref ReservationDetailsModel model, int reservationId, vReservationDetails details, out double totalRooms, out double totalRoomsNR)
         {
             var rooms = 
                  GetRoomsReservation(reservationId);
 
             int index = 0;
             double totalRoom = 0;
+            double totalRoomNR = 0;
 
             bool includexTaxes = (bool)details.includesTax;
             decimal tax = details.tax;
@@ -336,6 +339,8 @@ namespace APIServices
                 }
 
                 totalRoom += totalPerRoom;
+                totalRoomNR += totalPerRoomNetRate;
+                
 
                 model.RoomDetails.Add(new RoomDetails
                 {
@@ -372,6 +377,7 @@ namespace APIServices
             }
 
             totalRooms = !model.Source.Equals("IDS") ? SubtotalWithoutTax(totalRoom, (double)tax, (double)ecotasa) : totalRoom;
+            totalRoomsNR = !model.Source.Equals("IDS")? SubtotalWithoutTax(totalRoomNR,(double)tax, (double)ecotasa) : totalRoomNR;
         }
 
         void GetPayments(ref ReservationDetailsModel model, int reservationId)

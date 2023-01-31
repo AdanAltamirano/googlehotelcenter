@@ -169,6 +169,7 @@ namespace APIServices.Models.DTO
     public class TotalDetails
     {
         public double SubTotal { get; set; }
+        public double SubTotalNR { get; set; }
         public double Total { get; set; }
         public double Taxes { get; set; }
         public double  TaxesHotel { get; set; }

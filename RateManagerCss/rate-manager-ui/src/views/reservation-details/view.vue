@@ -19,7 +19,7 @@
         <b-col md="6">
           <b-row v-if="result.roomDetails">
             <b-col>
-              <rooms :ratePlan="result.ratePlan" :rooms="result.roomDetails"></rooms>
+              <rooms :isNetRate="result.isNetRateUV" :ratePlan="result.ratePlan" :rooms="result.roomDetails"></rooms>
             </b-col>
           </b-row>
           <b-row v-if="result.policyDetails" class="pt-3">
@@ -37,6 +37,7 @@
           <b-row v-if="result.totalDetails" class="pt-3">
             <b-col>
               <h5 class="text-info">{{$t('Cost summary')}}</h5>
+              <!-- La Concha -->
               <template v-if="RestrictionsHotels && !isSupervisor">
                 <table class="table table-sm">
                   <tbody>
@@ -68,7 +69,8 @@
                   <tbody>
                     <tr>
                       <td>SubTotal</td>
-                      <td>{{result.totalDetails.subTotal | currency}} {{result.totalDetails.currency}}</td>
+                      <td v-if="result.isNetRateUV && !isSupervisor">{{result.totalDetails.subTotalNR | currency}} {{result.totalDetails.currency}}</td>
+                      <td v-else>{{result.totalDetails.subTotal | currency}} {{result.totalDetails.currency}}</td>
                     </tr>
                     <tr v-if="isSupervisor || isUsuarioHotelAssociation">
                       <td>{{$t('Taxes')}}</td>

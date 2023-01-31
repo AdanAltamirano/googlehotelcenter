@@ -36,12 +36,16 @@
                       v-if="price.checkOut != price.checkIn"
                     >- {{$moment(price.checkOut).format('D MMM')}}</span>
                   </td>
-                  <td>{{(price.price) | currency}} {{price.currency}}</td>
-                  <td>{{(price.extraPrice) | currency}} {{price.currency}}</td>
+                  <td v-if="isNetRate && !isSupervisor">{{(price.priceNR) | currency}} {{price.currency}}</td>
+                  <td v-else>{{(price.price) | currency}} {{price.currency}}</td>
+
+                  <td v-if="isNetRate && !isSupervisor">{{(price.extraPriceNR) | currency}} {{price.currency}}</td>
+                  <td v-else>{{(price.extraPrice) | currency}} {{price.currency}}</td>
                 </tr>
                 <tr>
                   <td>Total</td>
-                  <td>{{room.total | currency}} {{room.currency}}</td>
+                  <td v-if="isNetRate && !isSupervisor">{{room.totalNR | currency}} {{room.currency}}</td>
+                  <td v-else>{{room.total | currency}} {{room.currency}}</td>
                   <td></td>
                 </tr>
               </tbody>
@@ -97,11 +101,15 @@ export default {
     ratePlan: {
       required: false,
       type: String
+    },
+    isNetRate: {
+      required: false
     }
   },
   data() {
     return {
-      image: image
+      image: image,
+      isSupervisor: (this.$appConfig.session.isSupervisor === 'True')? true : false,
     };
   },
   computed: {
