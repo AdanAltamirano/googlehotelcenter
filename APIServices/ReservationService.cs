@@ -753,6 +753,7 @@ namespace APIServices
 
                     var reservation = ctx.Reservaciones.First(r => r.NoReservacion == noRes);
                     reservation.Status = 1;
+                    reservation.FechaStatus = DateTime.Now;
                     reservation.NoCancelacion = "";
                     reservation.pmsAct = "SS";
                     reservation.pmsStatus = false;

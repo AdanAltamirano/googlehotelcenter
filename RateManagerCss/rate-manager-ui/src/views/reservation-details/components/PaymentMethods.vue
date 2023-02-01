@@ -36,7 +36,7 @@
           <b-alert show v-if="result.paymentDetails.authorizationNumber.length <= 0 && result.paymentDetails.reference.length <= 0" variant="warning">
             <small>{{$t('Pending payment')}}</small>
           </b-alert>
-          <address class="mt-1">
+          <address v-if="(result.isNetRateUV && isSupervisor) || (!result.isNetRateUV)" class="mt-1">
             <div v-show="result.paymentDetails.pasarela.length > 0">
               {{$t('Payment Gateway')}}:
               <strong>{{result.paymentDetails.pasarela}}</strong>
@@ -130,6 +130,7 @@ export default {
   },
   data() {
     return {
+      isSupervisor: (this.$appConfig.session.isSupervisor === 'True')? true : false,
       dismiss_sec: 300,
       dismiss_countDown: 0,
       code: "",

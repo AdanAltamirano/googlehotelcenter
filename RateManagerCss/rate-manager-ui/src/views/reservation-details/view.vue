@@ -61,6 +61,18 @@
                         <strong>{{result.totalDetails.total | currency}} {{result.totalDetails.currency}}</strong>
                       </td>
                     </tr>
+                     <tr v-if="result.isNetRateUV" style="font-size:smaller;">
+                      <td>{{$t('Commission Internet Power')}}</td>
+                      <td>{{result.totalDetails.commission | currency}} {{result.totalDetails.currency}}</td>
+                    </tr>
+                    <tr v-if="result.isNetRateUV" style="font-size:smaller;">
+                      <td>{{$t('Taxes Hotel')}}</td>
+                      <td>{{result.totalDetails.taxesHotel | currency}} {{result.totalDetails.currency}}</td>
+                    </tr>
+                    <tr v-if="result.isNetRateUV" style="font-size:smaller;">
+                      <td>{{$t('Total Hotel')}}</td>
+                      <td>{{result.totalDetails.totalNR | currency}} {{result.totalDetails.currency}}</td>
+                    </tr>
                   </tbody>
                 </table>
               </template>
@@ -195,7 +207,7 @@ export default {
     RestrictionsHotels() {
       return this.hotelsJson.some(hotelJson => {
         return hotelJson.id === this.hotelId
-    });
+      });
     }
   },
   methods: {

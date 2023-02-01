@@ -20,7 +20,33 @@
             ></b-img>
           </b-col>
           <b-col md="8">
-            <table class="table table-sm text-center">
+            <table v-if="RestrictionsHotels && !isSupervisor" class="table table-sm text-center">
+               <thead>
+                <tr>
+                  <th>{{$t('Date')}}</th>
+                  <th>{{$t('Price per night')}}</th>
+                  <th>{{$t('Price per night extre person(s)')}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="price in room.priceDetails" :key="price">
+                  <td>
+                    {{$moment(price.checkIn).format('D MMM')}}
+                    <span
+                      v-if="price.checkOut != price.checkIn"
+                    >- {{$moment(price.checkOut).format('D MMM')}}</span>
+                  </td>
+                  <td>{{(price.price) | currency}} {{price.currency}}</td>
+                  <td>{{(price.extraPrice) | currency}} {{price.currency}}</td>
+                </tr>
+                <tr>
+                  <td>Total</td>
+                  <td>{{room.total | currency}} {{room.currency}}</td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+            <table v-else class="table table-sm text-center">
               <thead>
                 <tr>
                   <th>{{$t('Date')}}</th>
@@ -92,6 +118,7 @@
 </template>
 <script>
 import image from "../assets/hotel_placeholder.jpg";
+import listHotels from "../../../json/hotels.json";
 export default {
   props: {
     rooms: {
@@ -108,13 +135,20 @@ export default {
   },
   data() {
     return {
-      image: image,
+      hotelId : this.$appConfig.session.hotelId,
       isSupervisor: (this.$appConfig.session.isSupervisor === 'True')? true : false,
+      hotelsJson: listHotels.hotels,
+      image: image,
     };
   },
   computed: {
     DefaultImage() {
       return this.image;
+    },
+    RestrictionsHotels() {
+      return this.hotelsJson.some(hotelJson => {
+        return hotelJson.id === this.hotelId
+      });
     }
   }
 };
