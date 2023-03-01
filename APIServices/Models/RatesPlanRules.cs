@@ -46,6 +46,7 @@ namespace APIServices.Models
         public Nullable<System.DateTime> PromoStartDate { get; set; }
         public Nullable<System.DateTime> PromoEndDate { get; set; }
         public string PromoSpecificDays { get; set; }
+        public string noDepartures { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RatesPlan> RatesPlan { get; set; }

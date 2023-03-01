@@ -50,5 +50,6 @@ namespace APIServices.Models
         public Nullable<int> idRule { get; set; }
         public bool IsCombinablePromotion { get; set; }
         public int IsOldPromotion { get; set; }
+        public string NoDepartures { get; set; }
     }
 }

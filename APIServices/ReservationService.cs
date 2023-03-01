@@ -23,7 +23,7 @@ namespace APIServices
         public OzHotelesEntities dbContext = new OzHotelesEntities();
 
         public IQueryable<vReservation> GetAll() => dbContext.vReservation.AsQueryable();
-
+           
         //obtiene todos los corporativos
         public IQueryable<Corporativos> GetCorporate() => dbContext.Corporativos.AsQueryable();
 
@@ -46,6 +46,7 @@ namespace APIServices
                 CheckOut = r.CheckOut,
                 Origin = r.Portal,
                 Corporate = dbContext.Corporativos.FirstOrDefault(x => x.idCorporativo == r.CorporateId).NombreCorp,
+                PaymentMethod = r.PaymentMethod,
                 Total = r.Total,
                 Status = (r.Status == 1) ? "Reservado" : (r.Status == 3) ? "Cancelado" : "En proceso",
             }).ToList();
@@ -64,8 +65,9 @@ namespace APIServices
             excelWorksheet.Cells[1, 6].Value = "Fecha de salida";
             excelWorksheet.Cells[1, 7].Value = "Origen";
             excelWorksheet.Cells[1, 8].Value = "Corporativo";
-            excelWorksheet.Cells[1, 9].Value = "Total";
-            excelWorksheet.Cells[1, 10].Value = "Status";
+            excelWorksheet.Cells[1, 9].Value = "Forma de Pagó";
+            excelWorksheet.Cells[1, 10].Value = "Total";
+            excelWorksheet.Cells[1, 11].Value = "Status";
 
             
 
@@ -85,8 +87,9 @@ namespace APIServices
                 excelWorksheet.Cells["F" + rowNumber].Value = result.ElementAt(i).CheckOut.ToString("dd/MM/yyyy");
                 excelWorksheet.Cells["G" + rowNumber].Value = result.ElementAt(i).Origin;
                 excelWorksheet.Cells["H" + rowNumber].Value = result.ElementAt(i).Corporate;
-                excelWorksheet.Cells["I" + rowNumber].Value = result.ElementAt(i).Total;
-                excelWorksheet.Cells["J" + rowNumber].Value = result.ElementAt(i).Status;
+                excelWorksheet.Cells["I" + rowNumber].Value = result.ElementAt(i).PaymentMethod;
+                excelWorksheet.Cells["J" + rowNumber].Value = result.ElementAt(i).Total;
+                excelWorksheet.Cells["K" + rowNumber].Value = result.ElementAt(i).Status;
                 row++;
             }
             excelWorksheet.Cells["A1:J" + row.ToString()].AutoFitColumns();
@@ -376,6 +379,7 @@ namespace APIServices
                 index++;
             }
 
+            //Subtotal Normal y Subtotal NR
             totalRooms = !model.Source.Equals("IDS") ? SubtotalWithoutTax(totalRoom, (double)tax, (double)ecotasa) : totalRoom;
             totalRoomsNR = !model.Source.Equals("IDS")? SubtotalWithoutTax(totalRoomNR,(double)tax, (double)ecotasa) : totalRoomNR;
         }

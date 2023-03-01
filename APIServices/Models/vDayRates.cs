@@ -35,5 +35,6 @@ namespace APIServices.Models
         public string ParentRatePlanId { get; set; }
         public bool IsPromotion { get; set; }
         public int Language { get; set; }
+        public string NoDeparturesMap { get; set; }
     }
 }

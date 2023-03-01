@@ -37,5 +37,8 @@ export default {
     'Corporate': 'Corporativo',
     'Agency': 'Agencia',
     'Agencies': 'Agencias',
-    'Agents':'Agentes'
+    'Agents':'Agentes',
+    'Payment Way' : 'Forma de pago',
+    'Deposit' : 'Depósito',
+    '' : ''
 };

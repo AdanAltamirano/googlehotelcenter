@@ -62,6 +62,7 @@ namespace APIServices.Models
         public Nullable<bool> waitListAvailable { get; set; }
         public Nullable<bool> IsRateExtension { get; set; }
         public Nullable<int> MaxAdvBooking { get; set; }
+        public string noDepartures { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TarifasRestricciones> TarifasRestricciones { get; set; }

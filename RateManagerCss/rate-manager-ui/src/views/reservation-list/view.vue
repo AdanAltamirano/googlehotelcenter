@@ -25,7 +25,7 @@
                     <b-link
                     target="_blank"
                     :href=" $appConfig.basePath + '/rate-manager-ui/dist/reservation-details.aspx?qs=' + data.item.id">
-                        {{ data.item.confirmNumber }}
+                        <span v-tooltip="data.item.confirmNumber" class="d-block text-truncate" style="width:100px;">{{ data.item.confirmNumber }}</span>
                     </b-link>
                 </template>
                 <template v-slot:cell(client)="data">
@@ -117,6 +117,10 @@ export default {
                     label: this.$t('Corporate')
                 },
                 {
+                    key: 'paymentMethod',
+                    label: this.$t('Payment Way')
+                },
+                {
                     key: 'total',
                     label: 'Total',
                     sortable: true
@@ -140,6 +144,7 @@ export default {
         getCorporate() {
             ReservationService.GetCorporate().then(response => {
                 this.corporates = response.body;
+                console.log(this.corporates);
             });
         },
         search(filter) {

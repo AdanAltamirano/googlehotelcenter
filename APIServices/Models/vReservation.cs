@@ -33,5 +33,6 @@ namespace APIServices.Models
         public string Total { get; set; }
         public string Provider { get; set; }
         public Nullable<int> CorporateId { get; set; }
+        public string PaymentMethod { get; set; }
     }
 }

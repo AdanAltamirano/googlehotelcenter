@@ -147,6 +147,28 @@
                             </b-col>
                         </b-row>
                         <b-row>
+                            <b-col md="4">
+                                <b-form-group>
+                                    <template slot="label">
+                                        <div class="d-flex">
+                                            <span class="mr-2">{{ $t('Payment Way') }}</span>                                           
+                                        </div>
+                                    </template>
+                                    <multiselect
+                                    track-by="paymentMethodId"
+                                    label="paymentMethod"
+                                    v-model="paymentMethod"
+                                    :options="paymentMethods"
+                                    :multiple="true"
+                                    :selectLabel="$t('select')"
+                                    :selectedLabel="''"
+                                    :deselectLabel="''"
+                                    :placeholder="$t('')">
+                                    </multiselect>
+                                </b-form-group>
+                            </b-col>
+                        </b-row>
+                        <b-row>
                             <b-col>
                                 <b-button variant="primary" @click="search">{{ $t('Search') }}</b-button>
                             </b-col>
@@ -223,6 +245,24 @@ export default {
             source: 'ALL',
             hotel: [],
             hotels: [],
+            paymentMethod:[],
+            paymentMethods:[
+                {paymentMethodId : 'Deposito', paymentMethod: this.$t('Deposit')}, 
+                {paymentMethodId : 'Hotel', paymentMethod: 'Hotel'},
+                {paymentMethodId : 'Banamex', paymentMethod: 'Banamex'},
+                {paymentMethodId : 'Santander', paymentMethod: 'Santander'},
+                {paymentMethodId : 'DineroMail', paymentMethod: 'DineroMail'},
+                {paymentMethodId : 'Bancomer', paymentMethod: 'Bancomer'},
+                {paymentMethodId : 'Banorte', paymentMethod: 'Banorte'},
+                {paymentMethodId : 'AzubaPay', paymentMethod: 'AzubaPay'},
+                {paymentMethodId : 'Bidaiondo', paymentMethod: 'Bidaiondo'},
+                {paymentMethodId : 'American Express', paymentMethod: 'American Express'},
+                {paymentMethodId : 'Paypal', paymentMethod: 'Paypal'},
+                {paymentMethodId : 'PayU', paymentMethod: 'PayU'},
+                {paymentMethodId : 'Conekta / OXXO', paymentMethod: 'Conekta / OXXO'},
+                {paymentMethodId : 'Amex', paymentMethod: 'Amex'},
+                {paymentMethodId : 'Banregio', paymentMethod: 'Banregio'}
+            ],
             ota: 'ALL',
             agency: -1,
             agencies: [],
@@ -391,6 +431,15 @@ export default {
                 });
             }
 
+            if(this.paymentMethod.length > 0) {
+                filter += this.and(filter);
+                this.paymentMethod.forEach((value,index) => {
+                    if (index > 0) filter += ' or ';
+                    filter += `PaymentMethod lk ${value.paymentMethodId}`;
+                });
+            }
+
+
             if(this.source === 'AGENCY')
             {
                 // Si se escogio una agencia
@@ -434,6 +483,7 @@ export default {
             this.source = 'ALL';
             this.hotel = [];
             this.corporate = [];
+            this.paymentMethod = [];
         },
         changeItemsPerPage() {
             this.$emit('changeItems', this.itemPerPage);
