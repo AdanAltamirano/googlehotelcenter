@@ -3,8 +3,8 @@
   <!--Envia el codigo de verificacion para ver los datos de tarjeta-->
   <CodeCC descripcion="codigo cc">
     <subject>
-      <es-MX valor="Código de verificación"></es-MX>
-      <en-US valor="Verification code"></en-US>
+      <es-MX valor="Código de verificación #{0}"></es-MX>
+      <en-US valor="Verification code #{0}"></en-US>
     </subject>
     <from valor="custsrvc@univisit.com" />
     <smtpServer valor="smtp.mandrillapp.com"/>

@@ -24,13 +24,13 @@ Namespace API.Helpers
         '    PortalCulture.SetCulture(Thread.CurrentThread.CurrentCulture.Name)
         'End Sub
 
-        Public Function SendVerificationCodeEmail(ByVal code As String) As Boolean
+        Public Function SendVerificationCodeEmail(ByVal code As String, ByVal reservationId As Integer) As Boolean
 
             Dim mail As New emailTemplates.Template
             mail.To = GetUserEmail()
             mail.TemplateName = "CodeCC"
             mail.Html = True
-            mail.SubjectParam = "credit card"
+            mail.SubjectParam = reservationId
             mail.AddParameter("code") = code
             mail.Idioma = Thread.CurrentThread.CurrentCulture.Name
             Try

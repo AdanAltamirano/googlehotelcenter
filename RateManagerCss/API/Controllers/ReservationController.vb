@@ -414,7 +414,7 @@ Namespace API.Controller
             Dim code As String = ReservationService.GetCode(10)
             HttpContext.Current.Session("code_cc") = code
 
-            Return Ok(New With {Key .success = SendVerificationCodeEmail(code)})
+            Return Ok(New With {Key .success = SendVerificationCodeEmail(code, reservationId)})
         End Function
 
         'GET api/reservations/1978/creditcard/1234
