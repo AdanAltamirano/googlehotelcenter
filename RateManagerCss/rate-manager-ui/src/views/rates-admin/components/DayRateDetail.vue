@@ -181,10 +181,11 @@ export default {
                 this.prices,
                 false,
                 null,
+                [],
                 []
             );
             // validación;
-            rqHelper.validate();
+            rqHelper.validate(true);
 
             let html = '';
             if (rqHelper.errors.length > 0) {

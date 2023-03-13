@@ -56,7 +56,8 @@ export default {
     'yes': 'sí',
     'close': 'cerrar',
     'dates for the rate': 'fechas para la tarifa',
-    'Add Dates': 'Agregar Fechas'
+    'Add Dates': 'Agregar Fechas',
+    'Select RatePlans' : 'Seleccionar Planes Tarifarios'
 
 };
 /* eslint-enable */

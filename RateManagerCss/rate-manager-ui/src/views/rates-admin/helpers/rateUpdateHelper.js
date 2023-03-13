@@ -7,7 +7,7 @@ const toNumber = (source) => {
 
 class RateUpdatHelper {
     constructor(room, ratePlan, dateRange, promotion,
-        areOccupancyPrices, prices, overrideRules, rules,datesList) {
+        areOccupancyPrices, prices, overrideRules, rules,datesList,ratePlansList) {
         this.errors = [];
         this.warnings = [];
 
@@ -20,22 +20,30 @@ class RateUpdatHelper {
             prices,
             overrideRules,
             rules,
-            datesList
+            datesList,
+            ratePlansList
         };
     }
 
     /**
      * Validación del request
      */
-    validate() {
+    validate(isOneRatePlan) {
+
         // realizar validación;
         if (!this.__$.room?.id) {
             this.errors.push('room not selected');
         }
+        
+        if (!isOneRatePlan && this.__$.ratePlansList.length === 0) {
+            this.errors.push('rate plans not selected');
+        }
 
-        if (!this.__$.ratePlan?.code) {
+
+        if (isOneRatePlan && !this.__$.ratePlan?.code) {
             this.errors.push('rate plan not selected');
         }
+        
         // las dos primeras validaciones son obligatorias
         if (this.errors.length > 0) return;
 
@@ -283,7 +291,8 @@ class RateUpdatHelper {
             endDate: moment(this.__$.dateRange?.end).format('YYYY-MM-DD'),
             isOccupancyRate: this.__$.areOccupancyPrices,
             prices,
-            dates
+            dates,
+            ratePlans : this.__$.ratePlansList
         };
         
         console.log("RQ")

@@ -15,9 +15,20 @@
                     <div class="w-20 pr-3">
                         <label>{{'rate plan' | translate}}:</label>
                         <div class="form-group">
-                            <select v-model="ratePlan" class="form-control text-dark" id="ratePlan" name="rateplan">
+                            <!-- <select v-model="ratePlan" class="form-control text-dark" id="ratePlan" name="rateplan">
                                 <option v-for="plan in hotel.ratePlans" :value="plan" :key="plan.code">{{plan.code}} - {{plan.name}}</option>
-                            </select>
+                            </select> -->
+                            <multiselect                                   
+                                v-model="ratePlansList"
+                                :custom-label="customRatePlanLabel"
+                                :options="hotel.ratePlans"
+                                track-by="code"
+                                :multiple="true"                                
+                                :selectLabel="''"
+                                :selectedLabel="''"
+                                :deselectLabel="''"
+                                :placeholder="$t('Select RatePlans')">
+                            </multiselect>
                         </div>
                     </div>
                     <div class="w-25 pr-3">
@@ -469,7 +480,7 @@
 </template>
 
 <script>
-
+import Multiselect from 'vue-multiselect';
 import RQHelper from '../helpers/rateUpdateHelper';
 import ratesService from '../../../api/rates-service';
 import utilities from '../helpers/utilities';
@@ -541,7 +552,8 @@ const initalState = (room, ratePlan, start, end) => ({
         minLOS: null,
         maxLOS: null,
     },
-    datesList:[]
+    datesList:[],
+    ratePlansList:[]
 });
 
 
@@ -556,6 +568,9 @@ export default {
             type: Object,
             required: true,
         },
+    },
+    components: {
+        Multiselect
     },
     mounted() {
         this.updateOccupancyPrices();
@@ -578,6 +593,9 @@ export default {
         },
     },
     methods: {
+        customRatePlanLabel ({code, name}) {
+            return `${code} - ${name}`;
+        },
         addDateToList(date){
             //Pendiente que no traslapen las fechas
             //Ver que las fechas no traslapen asi solo se puede agregar a la lista
@@ -684,10 +702,11 @@ export default {
                 this.prices,
                 this.overrideRules,
                 this.rules,
-                this.datesList
+                this.datesList,
+                this.ratePlansList
             );
             // validación;
-            rqHelper.validate();
+            rqHelper.validate(false);
 
             let html = '';
             if (rqHelper.errors.length > 0) {

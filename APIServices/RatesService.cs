@@ -259,25 +259,43 @@ namespace APIServices
                             return new KeyValuePair<string, string>("0", strError);
                     }
 
-                    if (updateRQ.Dates.Count > 0)
+                    if (updateRQ.RatePlans.Count > 0)
                     {
 
                         bool isDone = false;
 
-                        foreach (RateUpdateRQDate date in updateRQ.Dates)
-                        {
+                        foreach (RatePlanHeader ratePlanHeader in updateRQ.RatePlans) {
 
-                            if (CopyOverlappedRates(updateRQ.RoomId, updateRQ.RatePlanCode, date.StartDate, date.EndDate, ref db)
-                                && UpdateRatesRate(updateRQ, ref db,date.StartDate,date.EndDate))
-                            {
-                                isDone = true;
-                                db.SaveChanges();
-                            }
-                            else
-                            {
-                                isDone = false;                          
-                            }
 
+                            foreach (RateUpdateRQDate date in updateRQ.Dates)
+                            {
+
+                                RateUpdateRQ tempUpdateRq = new RateUpdateRQ
+                                {
+                                    HotelId = updateRQ.HotelId,
+                                    RateId = updateRQ.RateId,
+                                    RoomId = updateRQ.RoomId,
+                                    RatePlanCode = ratePlanHeader.Code,
+                                    StartDate = date.StartDate,
+                                    EndDate = date.EndDate,
+                                    IsOccupancyRate = updateRQ.IsOccupancyRate,
+                                    Prices = updateRQ.Prices,
+                                    Rules = updateRQ.Rules
+                                };
+
+
+                                if (CopyOverlappedRates(tempUpdateRq.RoomId, tempUpdateRq.RatePlanCode, tempUpdateRq.StartDate, tempUpdateRq.EndDate, ref db)
+                                    && UpdateRatesRate(tempUpdateRq, ref db, tempUpdateRq.StartDate, tempUpdateRq.EndDate))
+                                {
+                                    isDone = true;
+                                    db.SaveChanges();
+                                }
+                                else
+                                {
+                                    isDone = false;
+                                }
+
+                            }
                         }
 
                         if(isDone)

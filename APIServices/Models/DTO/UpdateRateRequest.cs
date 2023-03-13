@@ -19,6 +19,7 @@ namespace APIServices.Models.DTO
         public RateUpdatePrices Prices { get; set; }
         public RateUpdateRQRules Rules { get; set; }
         public List<RateUpdateRQDate> Dates { get; set; }
+        public List<RatePlanHeader> RatePlans { get; set; }
     }
 
     public class RateUpdateRQDate

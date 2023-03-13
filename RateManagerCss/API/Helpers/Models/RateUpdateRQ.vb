@@ -16,10 +16,20 @@ Namespace API.Models
         Public Property Rules As RateUpdateRQRules
         Public Property Prices As RateUpdateRQPrices
         Public Property Dates As List(Of RateUpdateRQDate)
+        Public Property RatePlans As List(Of RatePlanHeader)
     End Class
     Public Class RateUpdateRQDate
         Public Property StartDate As Date
         Public Property EndDate As Date
+    End Class
+
+    Public Class RatePlanHeader
+
+        Public Property Code As String
+        Public Property Name As String
+        Public Property HotelId As Integer?
+        Public Property Currency As String
+
     End Class
 
     Public Class RateUpdateRQPrices

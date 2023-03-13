@@ -2,6 +2,7 @@
 export default {
     'room not selected': 'habitación no seleccionada',
     'rate plan not selected': 'rate plan no seleccionado',
+    'rate plans not selected': 'no se han seleccionado planes tarifarios',
     'promo discount must greater than 0 and less than 100': 'el descuento debe ser mayor a 0 y menor a 100',
     'english promo description not defined': 'falta descripción de promoción en inglés',
     'spanish promo description not defined': 'falta descripción de promoción en español',

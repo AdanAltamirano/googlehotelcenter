@@ -66,6 +66,19 @@ Namespace API.Controllers
                 .IsOccupancyRate = RQ.IsOccupancyRate
             }
 
+            Dim ServiceRQRatePlans As New List(Of DTO.RatePlanHeader)
+            For Each itemRatePlan As RatePlanHeader In RQ.RatePlans
+                Dim tempRatePlan As New DTO.RatePlanHeader With {
+                    .Code = itemRatePlan.Code,
+                    .Name = itemRatePlan.Name
+                }
+
+                ServiceRQRatePlans.Add(tempRatePlan)
+            Next
+
+            ServiceRQ.RatePlans = ServiceRQRatePlans
+
+
             Dim ServiceRQDates As New List(Of DTO.RateUpdateRQDate)
             For Each itemDate As RateUpdateRQDate In RQ.Dates
                 Dim tempDate As New DTO.RateUpdateRQDate With {
