@@ -20,6 +20,8 @@ const corporate = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations/corp
 const agencies = Vue.resource(`${process.env.VUE_APP_API_URL}/agencies`);
 const agents = Vue.resource(`${process.env.VUE_APP_API_URL}/agencies/agents`);
 
+const reservationHistoryLog = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations/{reservationId}/history/log`);
+
 export default {
     /**
      *
@@ -42,7 +44,11 @@ export default {
             reservationId
         });
     },
-
+    GetHistoryLog(reservationId) {
+        return reservationHistoryLog.get({
+            reservationId
+        });
+    },
     SendCode(reservationId) {
         return creditcard.get({
             reservationId

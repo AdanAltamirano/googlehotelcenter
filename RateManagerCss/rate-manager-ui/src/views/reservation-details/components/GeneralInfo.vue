@@ -32,6 +32,7 @@
                         {{$t('Reservation number')}}: <strong>{{result.reservationNumber}}</strong>
                         <br>
                         {{$t('Source')}}: <strong>{{result.portal}}</strong>
+                        <br>
                         <div v-if="result.paymentWay === 0 && result.bankDepositDetails.hasDebt" class="alert alert-warning">
                             <span>{{$t('Total debt')}}: <strong>{{result.bankDepositDetails.debt | currency}} {{result.bankDepositDetails.currency}}</strong></span>
                         </div>
@@ -47,6 +48,10 @@
                             <br>
                             {{ $t('User') }}: <strong>{{ result.agencyUser }}</strong>
                         </span>
+                        <span v-if="result.hasLogs">
+                            <b-link @click="alertHistoryLog">{{$t('Track record')}} <i class="fas fa-file-alt"></i></b-link>
+                            <br>
+                        </span>    
                     </address>
                 </b-col>
                 <b-col md="3">
@@ -74,12 +79,18 @@
     </div>
 </template>
 <script>
+import Vue from "vue";
+import Record from './Record/Log.vue';
+
 export default {
     props: {
         result: {
             required: true,
             type: Object,
         },
+    },
+    components: {
+        Record
     },
     methods: {
         alertReason() {
@@ -103,6 +114,39 @@ export default {
                 html:html,
                 showConfirmButton: false,
             })
+        },
+        alertHistoryLog(){
+
+            let component = Vue.extend(Record);
+            let instance = new component({
+                propsData: {
+                    reservationNumber : this.result.reservationNumber,
+                }
+            });
+            
+            instance.$mount();
+
+             this.$swal
+                .fire({
+                customClass:{
+                    popup:'swal2-max-width'
+                },
+                title: this.$t("Track Record"),
+                type: "info",
+                html: "<div></div>",
+                showLoaderOnConfirm: false,
+                showCancelButton: true,
+                showConfirmButton:false,
+                cancelButtonText: this.$t("Close"),
+                cancelButtonColor: "#d33",
+                onBeforeOpen: () => {
+                    this.$swal
+                    .getContent()
+                    .querySelector("div")
+                    .append(instance.$el);
+                },
+            });
+
         }
     },
     computed: {

@@ -656,7 +656,8 @@ Public Class PaginaBase
 
     Public Sub guardalog(ByVal pagina As String, ByVal action As acciones, ByVal nota As String,
                          ByVal peticion As String, ByVal datos As String, ByVal datosDespues As String,
-                         Optional ByVal hotelId As Integer = 0)
+                         Optional ByVal hotelId As Integer = 0, Optional ByVal noReservacion As String = "",
+                         Optional ByVal motivo As String = "")
         Try
 
             If ReadUserCookie.GetValue(0) <> "" Then
@@ -665,16 +666,23 @@ Public Class PaginaBase
                 dr(LogData.FIELD_USUARIO) = ReadUserCookie.GetValue(0)
                 dr(LogData.FIELD_PAGINA) = pagina
                 dr(LogData.FIELD_ACCION) = action
+                dr(LogData.FIELD_NOTA) = nota
+
+                If Not String.IsNullOrEmpty(datos) Then dr(LogData.FIELD_DATOS) = datos
+                If Not String.IsNullOrEmpty(datosDespues) Then dr(LogData.FIELD_DATOSDESPUES) = datosDespues
+                If Not String.IsNullOrEmpty(noReservacion) Then dr(LogData.FIELD_NORESERVACION) = noReservacion
+                If Not String.IsNullOrEmpty(motivo) Then dr(LogData.FIELD_MOTIVO) = motivo
+
+
                 If cInfoActual.Hotel <> 0 Then
                     dr(LogData.FIELD_HOTEL) = cInfoActual.Hotel
                 ElseIf hotelId <> 0 Then
                     dr(LogData.FIELD_HOTEL) = hotelId
                 End If
-                dr(LogData.FIELD_NOTA) = nota
-                If Not String.IsNullOrEmpty(datos) Then dr(LogData.FIELD_DATOS) = datos
-                If Not String.IsNullOrEmpty(datosDespues) Then dr(LogData.FIELD_DATOSDESPUES) = datosDespues
 
-
+                If UserIdentityName <> 0 Then
+                    dr(LogData.FIELD_IDUSUARIO) = UserIdentityName
+                End If
 
                 Try
                     dr(LogData.FIELD_FECHA) = Now.ToString("MM/dd/yyyy") & " " & Now.ToLongTimeString

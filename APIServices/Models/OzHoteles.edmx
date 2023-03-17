@@ -404,6 +404,21 @@
           <Property Name="DetallesModificacion" Type="nvarchar(max)" />
           <Property Name="Ecotasa" Type="smallmoney" />
         </EntityType>
+        <EntityType Name="Reservaciones_Movimientos_Log">
+          <Key>
+            <PropertyRef Name="IdLog" />
+          </Key>
+          <Property Name="IdLog" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Fecha" Type="datetime" />
+          <Property Name="IdUsuario" Type="int" Nullable="false" />
+          <Property Name="Usuario" Type="nvarchar" MaxLength="80" Nullable="false" />
+          <Property Name="NoReservacion" Type="nvarchar" MaxLength="25" Nullable="false" />
+          <Property Name="Accion" Type="tinyint" Nullable="false" />
+          <Property Name="Data_Antes" Type="nvarchar(max)" />
+          <Property Name="Data_Despues" Type="nvarchar(max)" />
+          <Property Name="Motivo" Type="nvarchar(max)" />
+          <Property Name="Comentarios" Type="nvarchar" MaxLength="400" />
+        </EntityType>
         <EntityType Name="ReservationsDeposits">
           <Key>
             <PropertyRef Name="idreservacion" />
@@ -887,6 +902,25 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vReservationDetails' no tiene 
           <Property Name="userCancellation" Type="nvarchar" MaxLength="80" />
         </EntityType>
         <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'OzHoteles.dbo.vReservationLog' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="vReservationLog">
+          <Key>
+            <PropertyRef Name="IdLog" />
+            <PropertyRef Name="IdUser" />
+            <PropertyRef Name="ReservationNumber" />
+            <PropertyRef Name="Action" />
+            <PropertyRef Name="Source" />
+          </Key>
+          <Property Name="IdLog" Type="int" Nullable="false" />
+          <Property Name="Date" Type="datetime" />
+          <Property Name="IdUser" Type="int" Nullable="false" />
+          <Property Name="User" Type="nvarchar" MaxLength="80" />
+          <Property Name="ReservationNumber" Type="nvarchar" MaxLength="25" Nullable="false" />
+          <Property Name="Action" Type="int" Nullable="false" />
+          <Property Name="Source" Type="varchar" MaxLength="2" Nullable="false" />
+          <Property Name="Reason" Type="nvarchar(max)" />
+        </EntityType>
+        <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'OzHoteles.dbo.vReservationPayments' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vReservationPayments">
           <Key>
@@ -1105,6 +1139,9 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <Parameter Name="reference" Type="nvarchar" Mode="In" />
           <Parameter Name="authorizationNumber" Type="nvarchar" Mode="In" />
         </Function>
+        <Function Name="spReservationLog" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ReservationId" Type="nvarchar(max)" Mode="In" />
+        </Function>
         <Function Name="spReservationReactive" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="NoReservacion" Type="nvarchar" Mode="In" />
           <Parameter Name="rm" Type="bit" Mode="In" />
@@ -1144,6 +1181,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <EntitySet Name="ratesPlanDeal" EntityType="Self.ratesPlanDeal" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RatesPlanRules" EntityType="Self.RatesPlanRules" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Reservaciones" EntityType="Self.Reservaciones" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Reservaciones_Movimientos_Log" EntityType="Self.Reservaciones_Movimientos_Log" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ReservationsDeposits" EntityType="Self.ReservationsDeposits" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tarifas" EntityType="Self.Tarifas" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TarifasRestricciones" EntityType="Self.TarifasRestricciones" Schema="dbo" store:Type="Tables" />
@@ -1417,6 +1455,18 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
     [vReservationDetails].[userCancellation] AS [userCancellation]
     FROM [dbo].[vReservationDetails] AS [vReservationDetails]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="vReservationLog" EntityType="Self.vReservationLog" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vReservationLog].[IdLog] AS [IdLog], 
+    [vReservationLog].[Date] AS [Date], 
+    [vReservationLog].[IdUser] AS [IdUser], 
+    [vReservationLog].[User] AS [User], 
+    [vReservationLog].[ReservationNumber] AS [ReservationNumber], 
+    [vReservationLog].[Action] AS [Action], 
+    [vReservationLog].[Source] AS [Source], 
+    [vReservationLog].[Reason] AS [Reason]
+    FROM [dbo].[vReservationLog] AS [vReservationLog]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="vReservationPayments" EntityType="Self.vReservationPayments" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [vReservationPayments].[reservationId] AS [reservationId], 
@@ -1649,6 +1699,11 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           </FunctionImport>
           <EntitySet Name="vHotelBasicInfo" EntityType="Models.vHotelBasicInfo" />
           <EntitySet Name="vReservation" EntityType="Models.vReservation" />
+          <EntitySet Name="Reservaciones_Movimientos_Log" EntityType="Models.Reservaciones_Movimientos_Log" />
+          <EntitySet Name="vReservationLog" EntityType="Models.vReservationLog" />
+          <FunctionImport Name="spReservationLog" ReturnType="Collection(Models.spReservationLog_Result)">
+            <Parameter Name="ReservationId" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="RatesPlan">
           <Key>
@@ -2794,6 +2849,48 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <Property Name="CorporateId" Type="Int32" />
           <Property Name="PaymentMethod" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="Reservaciones_Movimientos_Log">
+          <Key>
+            <PropertyRef Name="IdLog" />
+          </Key>
+          <Property Name="IdLog" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Fecha" Type="DateTime" Precision="3" />
+          <Property Name="IdUsuario" Type="Int32" Nullable="false" />
+          <Property Name="Usuario" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="NoReservacion" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="Accion" Type="Byte" Nullable="false" />
+          <Property Name="Data_Antes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Data_Despues" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Motivo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Comentarios" Type="String" MaxLength="400" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="vReservationLog">
+          <Key>
+            <PropertyRef Name="IdLog" />
+            <PropertyRef Name="IdUser" />
+            <PropertyRef Name="ReservationNumber" />
+            <PropertyRef Name="Action" />
+            <PropertyRef Name="Source" />
+          </Key>
+          <Property Name="IdLog" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Precision="3" />
+          <Property Name="IdUser" Type="Int32" Nullable="false" />
+          <Property Name="User" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="ReservationNumber" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="Action" Type="Int32" Nullable="false" />
+          <Property Name="Source" Type="String" Nullable="false" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="Reason" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <ComplexType Name="spReservationLog_Result">
+          <Property Type="Int32" Name="IdLog" Nullable="false" />
+          <Property Type="DateTime" Name="Date" Nullable="true" Precision="23" />
+          <Property Type="Int32" Name="IdUser" Nullable="false" />
+          <Property Type="String" Name="User" Nullable="true" MaxLength="80" />
+          <Property Type="String" Name="ReservationNumber" Nullable="false" MaxLength="25" />
+          <Property Type="Int32" Name="Action" Nullable="false" />
+          <Property Type="String" Name="Source" Nullable="false" MaxLength="2" />
+          <Property Type="String" Name="Reason" Nullable="true" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3834,6 +3931,50 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Reservaciones_Movimientos_Log">
+            <EntityTypeMapping TypeName="Models.Reservaciones_Movimientos_Log">
+              <MappingFragment StoreEntitySet="Reservaciones_Movimientos_Log">
+                <ScalarProperty Name="Comentarios" ColumnName="Comentarios" />
+                <ScalarProperty Name="Motivo" ColumnName="Motivo" />
+                <ScalarProperty Name="Data_Despues" ColumnName="Data_Despues" />
+                <ScalarProperty Name="Data_Antes" ColumnName="Data_Antes" />
+                <ScalarProperty Name="Accion" ColumnName="Accion" />
+                <ScalarProperty Name="NoReservacion" ColumnName="NoReservacion" />
+                <ScalarProperty Name="Usuario" ColumnName="Usuario" />
+                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="IdLog" ColumnName="IdLog" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vReservationLog">
+            <EntityTypeMapping TypeName="Models.vReservationLog">
+              <MappingFragment StoreEntitySet="vReservationLog">
+                <ScalarProperty Name="Reason" ColumnName="Reason" />
+                <ScalarProperty Name="Source" ColumnName="Source" />
+                <ScalarProperty Name="Action" ColumnName="Action" />
+                <ScalarProperty Name="ReservationNumber" ColumnName="ReservationNumber" />
+                <ScalarProperty Name="User" ColumnName="User" />
+                <ScalarProperty Name="IdUser" ColumnName="IdUser" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="IdLog" ColumnName="IdLog" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spReservationLog" FunctionName="Models.Store.spReservationLog">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Models.spReservationLog_Result">
+                <ScalarProperty Name="IdLog" ColumnName="IdLog" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="IdUser" ColumnName="IdUser" />
+                <ScalarProperty Name="User" ColumnName="User" />
+                <ScalarProperty Name="ReservationNumber" ColumnName="ReservationNumber" />
+                <ScalarProperty Name="Action" ColumnName="Action" />
+                <ScalarProperty Name="Source" ColumnName="Source" />
+                <ScalarProperty Name="Reason" ColumnName="Reason" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

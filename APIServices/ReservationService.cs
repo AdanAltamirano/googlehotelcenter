@@ -130,8 +130,11 @@ namespace APIServices
         public ReservationDetailsModel GetDetails(int reservationId, bool isSupervisor, bool isHotelCompany,int userId, bool isUserChain = false, 
             bool isUsuarioHotelAssociation = false,int idCorporateUserChain = 0, int idCorporatePortal = -1, int idAsociationPb = 0, int idAsociation = -1)
         {
+
             var details = 
                  GetReservation(reservationId);
+
+            var hasLogs = GetReservationHistoryLog(reservationId.ToString()).Count() > 0 ? true : false;
 
             var model = new ReservationDetailsModel();
             if (details != null)
@@ -167,6 +170,7 @@ namespace APIServices
                 model.NamePromotion = details.namePromotion;
                 model.IdCancellationUser = details.idCancellationUser;
                 model.UserCancellation = details.userCancellation;
+                model.HasLogs = hasLogs;
                 model.BankDepositDetails = new BankDepositDetails();
                 if (details.paymentType == 0)
                 {
@@ -1093,7 +1097,50 @@ namespace APIServices
             }
 
             return details;
+
         }
+
+
+        #endregion
+
+        #region Log
+
+        public IEnumerable<spReservationLog_Result> GetReservationHistoryLog(string reservationId) => dbContext.spReservationLog(reservationId).ToList().OrderByDescending(r => r.Date);
+
+        public void SaveMovementReservationLog(ReservationMovementLog reservationMovementLog)
+        {
+            Reservaciones_Movimientos_Log reservationLog = new Reservaciones_Movimientos_Log()
+            {
+                Fecha = reservationMovementLog.Fecha,
+                IdUsuario = reservationMovementLog.IdUsuario,
+                Usuario = reservationMovementLog.Usuario,
+                NoReservacion = reservationMovementLog.NoReservacion,
+                Accion = reservationMovementLog.Accion,
+                Data_Antes = reservationMovementLog.Data_Antes,
+                Data_Despues = reservationMovementLog.Data_Despues,
+                Motivo = reservationMovementLog.Motivo,
+                Comentarios = reservationMovementLog.Comentarios
+            };
+
+            using (DbContextTransaction transaction = dbContext.Database.BeginTransaction())
+            {
+                try
+                {
+                    dbContext.Reservaciones_Movimientos_Log.Add(reservationLog);
+
+                    dbContext.SaveChanges();
+
+                    transaction.Commit();
+
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                }
+            }
+        }
+
+
 
         #endregion
 

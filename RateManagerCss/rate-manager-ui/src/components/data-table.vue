@@ -101,8 +101,7 @@ export default {
       type:String,
       required: false,
       default:'reservas'
-    }
-
+    },
   },
   data() {
     return {
@@ -148,6 +147,7 @@ export default {
           console.log(response.body);
           // establecer el total de elementos
           this.totalRows = Number(response.headers.map["x-total-count"][0]);
+           
           console.log(this.totalRows);
           if(this.totalRows > 0){
             this.start = 1 + (ctx.perPage * ctx.currentPage) - ctx.perPage;

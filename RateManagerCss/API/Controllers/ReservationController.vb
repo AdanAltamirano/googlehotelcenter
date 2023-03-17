@@ -176,6 +176,15 @@ Namespace API.Controller
             Return ReservationService.GetDetails(reservationId, isSupervisor, isHotelCompany, GetUserId().Value, isUserChain, isUsuarioHotelAssociation, idCorporateUserChain, idCorporatePortal, idAsociationPb, idAsociation)
         End Function
 
+        'Get api/reservations/1978/history/log
+        <Route("{reservationId:int}/history/log"), HttpGet>
+        Public Function GetReservationHistoryLog(ByVal reservationId As Integer) As IEnumerable(Of spReservationLog_Result)
+
+            Dim logs = ReservationService.GetReservationHistoryLog(reservationId.ToString())
+
+            Return logs
+        End Function
+
         'POST api/reservations/1978/cancel
         <Route("{reservationId:int}/cancel"), HttpPost>
         Public Function Update(ByVal reservationId As Integer, <FromBody> req As DTO.CancelBookingRQ) As DTO.CancelBookingRS
@@ -187,7 +196,8 @@ Namespace API.Controller
             Dim result As DTO.CancelBookingRS = ReservationService.Cancel(rsv, GetUserId().Value, req.Reason, isSupervisor)
 
             If result.IsSuccess Then
-                Log(reservationId, acciones.Eliminar, rsv.hotelId)
+
+                Log(reservationId, acciones.Eliminar, rsv.hotelId, motivo:=req.Reason)
 
                 'no enviar correo de cancelación si está en proceso
                 'If rsv.status <> 4 Then
@@ -250,7 +260,8 @@ Namespace API.Controller
                     ReservationService.GetDetails(reservationId, isSupervisor, isHotelCompany, GetUserId().Value)
                 Dim xmlOld As String = Utilities.GetXML(oldData_RDM)
                 Dim xmlCurrent As String = Utilities.GetXML(updatedData_RDM)
-                Log(reservationId, acciones.Modificar, updatedData_RDM.HotelId, xmlOld, xmlCurrent)
+
+                Log(reservationId, acciones.Modificar, updatedData_RDM.HotelId, xmlOld, xmlCurrent, motivo:=req.Details)
 
                 result.SendNotification = sendNotification
 
@@ -304,6 +315,7 @@ Namespace API.Controller
 
                 Dim rdm As ReservationDetailsModel =
                     ReservationService.GetDetails(reservationId, isSupervisor, isHotelCompany, GetUserId().Value)
+
                 Log(reservationId, acciones.Reactivar, rdm.HotelId)
 
                 Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
@@ -460,7 +472,7 @@ Namespace API.Controller
         End Function
 
         Sub Log(ByVal reservationId As Integer, ByVal action As acciones, Optional ByVal hotelId As Integer = 0, Optional ByVal oldData As String = "",
-                Optional ByVal currentData As String = "")
+                Optional ByVal currentData As String = "", Optional ByVal motivo As String = "")
             'Dim pb As New PaginaBase()
             Dim msg As String = ""
             Select Case action
@@ -475,7 +487,8 @@ Namespace API.Controller
             End Select
             'pb.guardalog("/rate-manager-ui/dist/reservation-details.aspx?qs=" & reservationId, action, msg, "", oldData, currentData, hotelId)
             With (New PaginaBase)
-                .guardalog("/rate-manager-ui/dist/reservation-details.aspx?qs=" & reservationId, action, msg, "", oldData, currentData, hotelId)
+                .guardalog("/rate-manager-ui/dist/reservation-details.aspx?qs=" & reservationId, action, msg, "", oldData,
+                           currentData, hotelId, noReservacion:=reservationId.ToString(), motivo:=motivo)
             End With
         End Sub
         Function GetQuery(request As HttpRequestMessage, actionContext As Http.Controllers.HttpActionContext) As IQueryable

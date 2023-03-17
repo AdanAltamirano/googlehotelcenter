@@ -145,6 +145,7 @@
     <Compile Include="Models\DTO\RatePlanHeader.cs" />
     <Compile Include="Models\DTO\ReactivationDTO.cs" />
     <Compile Include="Models\DTO\ReservationDetailsModel.cs" />
+    <Compile Include="Models\DTO\ReservationMovementLog.cs" />
     <Compile Include="Models\DTO\Reservation\Deposit\Request\ReservationDepositDTO.cs" />
     <Compile Include="Models\DTO\Reservation\Deposit\Response\ReservationDepositResponse.cs" />
     <Compile Include="Models\DTO\Reservation\Pms\Response\ReservationPmsResponse.cs" />
@@ -228,7 +229,13 @@
     <Compile Include="Models\Reservaciones.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Reservaciones_Movimientos_Log.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\ReservationsDeposits.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\spReservationLog_Result.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\spReservationReactive_Result.cs">
@@ -280,6 +287,9 @@
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\vReservationDetails.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\vReservationLog.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\vReservationPayments.cs">

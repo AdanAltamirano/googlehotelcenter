@@ -61,6 +61,8 @@ namespace APIServices.Models
         public virtual DbSet<vReservationDetails> vReservationDetails { get; set; }
         public virtual DbSet<vHotelBasicInfo> vHotelBasicInfo { get; set; }
         public virtual DbSet<vReservation> vReservation { get; set; }
+        public virtual DbSet<Reservaciones_Movimientos_Log> Reservaciones_Movimientos_Log { get; set; }
+        public virtual DbSet<vReservationLog> vReservationLog { get; set; }
     
         public virtual int spReservationCancel(Nullable<int> idReservacion, string noConfCancelGalileo, string noCancelacion, string txCode, Nullable<bool> statusConf, string systemCode, string travelAgencyName, string voucher, string wizcomPassOn, string wizcomSequenceNumber, string motivoCancelacion, Nullable<bool> cancelWithError, string sessionId, Nullable<int> iduser)
         {
@@ -372,6 +374,15 @@ namespace APIServices.Models
                 new ObjectParameter("EdadesNinios", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spModificarDetalleReservaciones", idDetalleReservacionParameter, idReservacionParameter, adultosParameter, niniosParameter, adultosExtrasParameter, niniosExtrasParameter, edadesNiniosParameter);
+        }
+    
+        public virtual ObjectResult<spReservationLog_Result> spReservationLog(string reservationId)
+        {
+            var reservationIdParameter = reservationId != null ?
+                new ObjectParameter("ReservationId", reservationId) :
+                new ObjectParameter("ReservationId", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spReservationLog_Result>("spReservationLog", reservationIdParameter);
         }
     }
 }

@@ -369,7 +369,12 @@
 			<es-MX valor="Reservacion de hotel confirmada {0} [Univisit.com]" />
 			<en-US valor="Hotel reservation confirmed {0} [Univisit.com]" />
 		</subject>
-		<from valor="reservations@univisit.com" />		
+		<from valor="javier@oz.com.mx" />
+		<smtpServer valor="smtp.mandrillapp.com"/>
+		<userName valor="javier@univisit.com"/>
+		<password valor="NCxlNTHApCDYtSZjtyRvvQ"/>
+		<port valor="587"/>
+		<ssl valor="true"/>	
 		<parametros>
 			<HOTELNAME/>
 			<RESERVATIONNUMBER />
