@@ -181,6 +181,7 @@ namespace APIServices
                     debt = Convert.ToDouble((details.amountTotal -totalDeposited));
                     hasDebt = (debt > 0);
 
+                    model.BankDepositDetails.Target = details.depositTarget;
                     model.BankDepositDetails.Total = Convert.ToDouble(totalDeposited); //(double)details.depositAmount;
                     model.BankDepositDetails.Currency = details.depositCurrency;
                     model.BankDepositDetails.Reference = details.depositReference;

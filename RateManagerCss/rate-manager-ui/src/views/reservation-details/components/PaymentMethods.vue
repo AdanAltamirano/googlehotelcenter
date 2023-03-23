@@ -22,6 +22,9 @@
               {{$t('Reference')}}:
               <strong>{{result.bankDepositDetails.reference}}</strong>
             </div>
+            <div>
+              {{$t('Deposited to')}}: <strong>{{result.bankDepositDetails.target}}</strong>              
+            </div>
           </address>
           <b-alert show v-if="result.status == 4" variant="danger">
             {{$t('Please confirm by email once payment is made to')}}

@@ -162,4 +162,7 @@ export default {
     'Cancellation' : 'Cancelación',
     'Modification' : 'Modificación',
     'Reactivation' : 'Reactivación',
+    'Deposited to' : 'Depositado a',
+    'Send confimation email?' : '¿Enviar correo de confirmación?',
+    'Send confimation email' : 'Enviar correo de confirmación'
 }

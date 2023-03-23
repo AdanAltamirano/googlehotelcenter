@@ -448,27 +448,16 @@ Namespace API.Controller
         'GET api/reservations/1978/sendnotification
         <Route("{reservationId:int}/sendnotification"), HttpGet>
         Public Function SendNotification(ByVal reservationId As Integer) As HttpResponseMessage
-            Dim isSupervisor As Boolean = GetRoles().Contains("supervisor")
-            Dim isHotelCompany As Boolean = GetRoles().Contains("hotelcompany")
 
-            Dim detailsReservation As DTO.ReservationDetailsModel = ReservationService.GetDetails(reservationId, isSupervisor, isHotelCompany, GetUserId().Value)
-            'Enviar Correo
-            'Dim logoUrl As String = "https://crs.univisit.com/Images/global/ImagesSystem/Logos/LogoCompany_"
-            Dim logoUrl As String = System.Configuration.ConfigurationManager.AppSettings("logoUrl")
-            'Dim logoUrl As String = "http://test.univisit.com/RateManager/ozportalglobal/ImagesSystem/Logos/LogoCompany_"
-            'Dim displayReservation As String = "https://secure.internetpower.com.mx/portals/application/hotel/secure/FindBooking.aspx?ReturnUrl=/portals/application/hotel/Secure/DisplayReservation.aspx?ConfirmNum="
-            Dim isSent As Boolean
-            Dim template As String = ReservationService.GetTemplate(detailsReservation, logoUrl)
-            Dim HotelConfig As New HotelConfigurationService
-            Dim emails As String = HotelConfig.Emails(detailsReservation.HotelId)
-            emails = emails & "," & detailsReservation.Customer.Email
-            isSent = SendNotificationEmail(template, emails, detailsReservation.ReservationNumber)
+            Dim isSent As Boolean = EmailConfirmation(reservationId.ToString())
             If isSent Then
                 Dim ok = New HttpResponseMessage(Net.HttpStatusCode.OK)
                 Return ok
             End If
+
             Dim result As KeyValuePair(Of String, String) = New KeyValuePair(Of String, String)("0", "No se envío el correo")
             Return BadRequest(result)
+
         End Function
 
         Sub Log(ByVal reservationId As Integer, ByVal action As acciones, Optional ByVal hotelId As Integer = 0, Optional ByVal oldData As String = "",

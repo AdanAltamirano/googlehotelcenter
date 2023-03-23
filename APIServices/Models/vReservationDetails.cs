@@ -56,6 +56,7 @@ namespace APIServices.Models
         public decimal depositAmount { get; set; }
         public string depositCurrency { get; set; }
         public string depositReference { get; set; }
+        public string depositTarget { get; set; }
         public int provider { get; set; }
         public string rp_cancellationPolicies { get; set; }
         public string rp_guaranteePolicies { get; set; }

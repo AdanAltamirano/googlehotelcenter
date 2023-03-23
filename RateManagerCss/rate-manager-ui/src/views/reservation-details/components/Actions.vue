@@ -9,11 +9,8 @@
         <b-dropdown-item v-if="showModifyButton" @click="modify">{{$t('Modify')}}</b-dropdown-item>
         <b-dropdown-item v-if="showCancelButton" @click="cancel">{{$t('Cancel')}}</b-dropdown-item>
         <b-dropdown-item v-if="showReactivateButton" @click="reactivate">{{$t('Reactivate')}}</b-dropdown-item>
+        <b-dropdown-item v-if="showSendNotificationButton" @click="sendNotification">{{$t('Send confimation email')}}</b-dropdown-item>
         <b-dropdown-item @click="print">{{$t('Print')}}</b-dropdown-item>
-        <!--<b-dropdown-item
-          v-if="showSendNotificationButton"
-          @click="sendNotification"
-        >{{$t('SendEmail')}}</b-dropdown-item>-->
       </b-dropdown>
     </b-button-toolbar>
   </div>
@@ -379,7 +376,7 @@ export default {
       let self = this;
       this.$swal
         .fire({
-          title: self.$t("Send email with reservation details?"),
+          title: self.$t("Send confimation email?"),
           type: "info",
           showCancelButton: true,
           cancelButtonColor: "#d33",
@@ -404,12 +401,19 @@ export default {
                 title: self.$t("Email Sent"),
                 showConfirmButton: false,
                 showCloseButton: true,
+                showCancelButton: true,
+                cancelButtonText: self.$t("Close"),
+                cancelButtonColor: "#d33",
                 timer: 2500
               });
             } else {
               this.$swal.fire({
                 type: "error",
                 title: self.$t("Email Not Sent"),
+                showCloseButton: true,
+                showCancelButton: true,
+                cancelButtonText: self.$t("Close"),
+                cancelButtonColor: "#d33",
                 showConfirmButton: false
               });
             }

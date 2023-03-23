@@ -269,7 +269,7 @@ Partial Public Class ctrlPayments
 
     Public Function SendConfirmationEmail() As Boolean
 
-        Call GetDataWS(Me.txtReservacion.Text)
+        'Call GetDataWS(Me.txtReservacion.Text)
         If lblMens.Visible Then Return False
 
         Return True

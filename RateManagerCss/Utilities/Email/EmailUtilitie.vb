@@ -44,5 +44,50 @@ Namespace Utitlities.Email
 
         End Sub
 
+        Function EmailConfirmation(ByVal reservationNumber As String) As Boolean
+
+            Dim isSent As Boolean = False
+
+            Try
+
+                Dim xdoc As New XmlDataDocument(New reqHotelDisplay)
+                Dim dsreq As reqHotelDisplay = CType(xdoc.DataSet, reqHotelDisplay)
+                Dim xml As resHotelDisplay
+
+
+                Dim drR As reqHotelDisplay.HotelDisplayRow
+                drR = dsreq.HotelDisplay.NewHotelDisplayRow
+                drR.ConfirmNumber = reservationNumber
+                drR.Language = "en-US"
+                dsreq.HotelDisplay.AddHotelDisplayRow(drR)
+
+                With New WSHotelFacade.clsFADisplay
+                    xml = .GetHotelDisplay(xdoc.DocumentElement)
+                End With
+
+                If Not xml Is Nothing AndAlso xml.Reservation.Rows.Count > 0 Then
+                    Dim idioma As String = PortalCulture.GetCulture.ToString
+                    If Not xml.Reservation(0).IsNull("IdIdiomaReservation") Then
+                        If xml.Reservation(0).IdIdiomaReservation = 2 Then
+                            idioma = "en-US"
+                        Else
+                            idioma = "es-MX"
+                        End If
+                    End If
+                    With New Miscelaneos.SendHotelEmails
+                        .sendCustomerEmailReservation(xml, idioma)
+                    End With
+
+                    isSent = True
+
+                End If
+
+            Catch ex As Exception
+
+            End Try
+
+            Return isSent
+        End Function
+
     End Module
 End Namespace

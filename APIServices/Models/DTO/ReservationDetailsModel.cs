@@ -123,6 +123,7 @@ namespace APIServices.Models.DTO
         public string Reference { get; set; }
         public bool HasDebt { get; set; }
         public double Debt { get; set; }
+        public string Target { get; set; }
 
     }
 
