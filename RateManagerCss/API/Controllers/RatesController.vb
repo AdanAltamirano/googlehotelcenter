@@ -5,6 +5,12 @@ Imports NinjAPI
 Imports NinjAPI.Common
 Imports RateManager.API.Helpers
 Imports RateManager.API.Models
+Imports RateManager.PaginaBase
+Imports Portal.General.Common.Data
+Imports Portal.General.Facade
+Imports Portal.General.DataAccess
+Imports Portal.Hotel.Common.Data
+Imports Portal.Hotel.Facade
 
 Namespace API.Controllers
     <RoutePrefix("api/hotels/{HotelId:int}/rates")>
@@ -29,10 +35,67 @@ Namespace API.Controllers
         <Route(""), HttpPost>
         Public Function RateAdd(<FromBody> RQ As RateUpdateRQ, HotelId As Integer) As Net.Http.HttpResponseMessage
             RQ.HotelId = HotelId
+            'Listado de tarifas que se usan para el Log
+            Dim logRates As List(Of Tarifas) = New List(Of Tarifas)()
+
             Dim serviceRQ As DTO.RateUpdateRQ = MappingRateUpdateRQ(RQ)
-            Dim result As KeyValuePair(Of String, String) = Service.AddRate(serviceRQ)
+            Dim result As KeyValuePair(Of String, String) = Service.AddRate(serviceRQ, logRates)
 
             If result.Key = 1 Then
+
+                'Guardar Log
+                If logRates IsNot Nothing And logRates.Count > 0 Then
+                    For Each rate As Tarifas In logRates
+
+                        Dim datFare As New FaresData
+                        Dim rowFare As DataRow
+
+                        With datFare.Tables(FaresData.FARES_TABLE)
+                            rowFare = .NewRow()
+                            rowFare(FaresData.PKIDFARES_FIELD) = rate.idTarifa
+                            rowFare(FaresData.HOTELROOMTYPEID_FIELD) = rate.idTipoHabitacion_Hotel
+                            rowFare(FaresData.STARTDATE_FIELD) = rate.FechaInicia
+                            rowFare(FaresData.ENDDATE_FIELD) = rate.FechaFinaliza
+
+                            rowFare(FaresData.PRICE_FIELD) = rate.Precio
+                            rowFare(FaresData.NINIORATE) = rate.NiniosRate
+                            rowFare(FaresData.RATEENPRICE_FIELD) = rate.PrecioAdolescente
+
+
+                            rowFare(FaresData.EXTRAADULTPRICE_FIELD) = rate.PrecioExtraAdulto
+                            rowFare(FaresData.EXTRACHILDPRICE_FIELD) = rate.PrecioExtraNinio
+                            rowFare(FaresData.EXTRATEENPRICE_FIELD) = rate.PrecioAdolescenteExtra
+
+                            rowFare(FaresData.PRICENR_FIELD) = rate.PrecioNR
+                            rowFare(FaresData.NINIORATENR) = rate.NiniosRateNR
+                            rowFare(FaresData.RATEENPRICENR_FIELD) = rate.PrecioAdolescenteNR
+
+                            rowFare(FaresData.EXTRAADULTPRICENR_FIELD) = rate.PrecioExtraAdultoNR
+                            rowFare(FaresData.EXTRACHILDPRICENR_FIELD) = rate.PrecioExtraNinioNR
+                            rowFare(FaresData.EXTRATEENPRICENR_FIELD) = rate.PrecioAdolescenteExtraNR
+
+
+                            rowFare(FaresData.RATETYPE_FIELD) = rate.TipoTarifa
+                            rowFare(FaresData.RATECODE_FIELD) = rate.CodigoTarifa
+                            rowFare(FaresData.EXCEPTION_FIELD) = rate.Excepciones
+                            rowFare(FaresData.NOARRIVOS_FIELD) = rate.NoArrivos
+                            rowFare(FaresData.IDRATEPLAN_FIELD) = rate.idrateplan
+                            rowFare(FaresData.ENDDATE_FIELD) = rate.FechaFinaliza
+                            rowFare(FaresData.RULESDEFAULT) = rate.RateRulesDefault
+                            rowFare(FaresData.IDDICCDESCPROM_FIELD) = IIf(rate.idDiccPromoDesc Is Nothing, 0, rate.idDiccPromoDesc)
+                            .Rows.Add(rowFare)
+                        End With
+
+                        datFare.Tables(0).Columns.Add("Descr_rateplan")
+                        datFare.Tables(0).Rows(0)("Descr_rateplan") = String.Format("{0} {1}", serviceRQ.RoomCode, serviceRQ.RoomName)
+
+                        Dim xml As String = Util.Utility.GetXml(FaresData.FARES_TABLE, "UpdateRate", datFare)
+
+                        Log(RQ.HotelId, acciones.Crear, serviceRQ.RoomCode, rate.FechaInicia, rate.FechaFinaliza, rate.idrateplan, xml)
+
+                    Next
+                End If
+
                 Return NoContent()
             End If
             Return BadRequest(result)
@@ -46,10 +109,69 @@ Namespace API.Controllers
             RQ.RateId = RateId
             RQ.StartDate = day
             RQ.EndDate = day
+
+            'Listado de tarifas que se usan para el Log
+            Dim logRates As List(Of Tarifas) = New List(Of Tarifas)()
+
             Dim serviceRQ As DTO.RateUpdateRQ = MappingRateUpdateRQ(RQ)
-            Dim result As KeyValuePair(Of String, String) = Service.AddRate(serviceRQ)
+            Dim result As KeyValuePair(Of String, String) = Service.AddRate(serviceRQ, logRates)
 
             If result.Key = 1 Then
+
+                'Guardar Log
+                If logRates IsNot Nothing And logRates.Count > 0 Then
+                    For Each rate As Tarifas In logRates
+
+                        Dim datFare As New FaresData
+                        Dim rowFare As DataRow
+
+                        With datFare.Tables(FaresData.FARES_TABLE)
+                            rowFare = .NewRow()
+                            rowFare(FaresData.PKIDFARES_FIELD) = rate.idTarifa
+                            rowFare(FaresData.HOTELROOMTYPEID_FIELD) = rate.idTipoHabitacion_Hotel
+                            rowFare(FaresData.STARTDATE_FIELD) = rate.FechaInicia
+                            rowFare(FaresData.ENDDATE_FIELD) = rate.FechaFinaliza
+
+                            rowFare(FaresData.PRICE_FIELD) = rate.Precio
+                            rowFare(FaresData.NINIORATE) = rate.NiniosRate
+                            rowFare(FaresData.RATEENPRICE_FIELD) = rate.PrecioAdolescente
+
+
+                            rowFare(FaresData.EXTRAADULTPRICE_FIELD) = rate.PrecioExtraAdulto
+                            rowFare(FaresData.EXTRACHILDPRICE_FIELD) = rate.PrecioExtraNinio
+                            rowFare(FaresData.EXTRATEENPRICE_FIELD) = rate.PrecioAdolescenteExtra
+
+                            rowFare(FaresData.PRICENR_FIELD) = rate.PrecioNR
+                            rowFare(FaresData.NINIORATENR) = rate.NiniosRateNR
+                            rowFare(FaresData.RATEENPRICENR_FIELD) = rate.PrecioAdolescenteNR
+
+                            rowFare(FaresData.EXTRAADULTPRICENR_FIELD) = rate.PrecioExtraAdultoNR
+                            rowFare(FaresData.EXTRACHILDPRICENR_FIELD) = rate.PrecioExtraNinioNR
+                            rowFare(FaresData.EXTRATEENPRICENR_FIELD) = rate.PrecioAdolescenteExtraNR
+
+
+                            rowFare(FaresData.RATETYPE_FIELD) = rate.TipoTarifa
+                            rowFare(FaresData.RATECODE_FIELD) = rate.CodigoTarifa
+                            rowFare(FaresData.EXCEPTION_FIELD) = rate.Excepciones
+                            rowFare(FaresData.NOARRIVOS_FIELD) = rate.NoArrivos
+                            rowFare(FaresData.IDRATEPLAN_FIELD) = rate.idrateplan
+                            rowFare(FaresData.ENDDATE_FIELD) = rate.FechaFinaliza
+                            rowFare(FaresData.RULESDEFAULT) = rate.RateRulesDefault
+                            rowFare(FaresData.IDDICCDESCPROM_FIELD) = IIf(rate.idDiccPromoDesc Is Nothing, 0, rate.idDiccPromoDesc)
+                            .Rows.Add(rowFare)
+                        End With
+
+                        datFare.Tables(0).Columns.Add("Descr_rateplan")
+                        datFare.Tables(0).Rows(0)("Descr_rateplan") = String.Format("{0} {1}", serviceRQ.RoomCode, serviceRQ.RoomName)
+
+                        Dim xml As String = Util.Utility.GetXml(FaresData.FARES_TABLE, "UpdateRate", datFare)
+
+                        Log(RQ.HotelId, acciones.Crear, serviceRQ.RoomCode, rate.FechaInicia, rate.FechaFinaliza, rate.idrateplan, xml)
+
+                    Next
+                End If
+
+
                 Return NoContent()
             End If
             Return BadRequest(result)
@@ -59,6 +181,8 @@ Namespace API.Controllers
             Dim ServiceRQ As New DTO.RateUpdateRQ With {
                 .HotelId = RQ.HotelId,
                 .RoomId = RQ.RoomId,
+                .RoomCode = RQ.RoomCode,
+                .RoomName = RQ.RoomName,
                 .RatePlanCode = RQ.RatePlanCode,
                 .RateId = RQ.RateId,
                 .StartDate = RQ.StartDate,
@@ -219,5 +343,19 @@ Namespace API.Controllers
 
             Return Week
         End Function
+
+        Private Sub Log(ByVal hotelId As Integer, ByVal action As acciones, ByVal room As String, ByVal startDate As Date, ByVal endDate As Date, ByVal rateCode As String, ByVal xml As String)
+
+            Dim msg As String = ""
+            Select Case action
+                Case acciones.Crear
+                    msg = "Se creó la tarifa de la habitación " & room & " de la fecha " & startDate.ToString("MM/dd/yyyy") & " a la fecha " & endDate.ToString("MM/dd/yyyy") & " con el rateplan " & rateCode
+            End Select
+
+            With (New PaginaBase)
+                .guardalog(pagina:="/rate-manager-ui/dist/rates-admin.aspx", action:=action, nota:=msg, peticion:="", datos:="", datosDespues:=xml, hotelId:=hotelId)
+            End With
+        End Sub
+
     End Class
 End Namespace

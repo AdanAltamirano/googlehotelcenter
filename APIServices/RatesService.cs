@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+
 namespace APIServices
 {
     /// <summary>
@@ -241,7 +242,7 @@ namespace APIServices
         /// </summary>
         /// <param name="updateRQ"></param>
         /// <returns></returns>
-        public KeyValuePair<string, string> AddRate(RateUpdateRQ updateRQ)
+        public KeyValuePair<string, string> AddRate(RateUpdateRQ updateRQ, ref List<Tarifas> logRates)
         {
             strError = "";
             OzHotelesEntities db = new OzHotelesEntities();
@@ -275,6 +276,8 @@ namespace APIServices
                                     HotelId = updateRQ.HotelId,
                                     RateId = updateRQ.RateId,
                                     RoomId = updateRQ.RoomId,
+                                    RoomCode = updateRQ.RoomCode,
+                                    RoomName = updateRQ.RoomName,
                                     RatePlanCode = ratePlanHeader.Code,
                                     StartDate = date.StartDate,
                                     EndDate = date.EndDate,
@@ -284,11 +287,13 @@ namespace APIServices
                                 };
 
 
-                                if (CopyOverlappedRates(tempUpdateRq.RoomId, tempUpdateRq.RatePlanCode, tempUpdateRq.StartDate, tempUpdateRq.EndDate, ref db)
-                                    && UpdateRatesRate(tempUpdateRq, ref db, tempUpdateRq.StartDate, tempUpdateRq.EndDate))
+                                if (CopyOverlappedRates(tempUpdateRq.RoomId, tempUpdateRq.RatePlanCode, tempUpdateRq.StartDate, tempUpdateRq.EndDate, ref db, ref logRates)
+                                    && UpdateRatesRate(tempUpdateRq, ref db, tempUpdateRq.StartDate, tempUpdateRq.EndDate, ref logRates))
                                 {
+
                                     isDone = true;
                                     db.SaveChanges();
+
                                 }
                                 else
                                 {
@@ -304,6 +309,7 @@ namespace APIServices
                         }
                         else
                         {
+                            //logRates = null;
                             transaction.Rollback();
                             return new KeyValuePair<string, string>("0", "AddRate" + strError);
                         }
@@ -314,8 +320,8 @@ namespace APIServices
                     else
                     {
 
-                        if (CopyOverlappedRates(updateRQ.RoomId, updateRQ.RatePlanCode, updateRQ.StartDate, updateRQ.EndDate, ref db)
-                            && UpdateRatesRate(updateRQ, ref db))
+                        if (CopyOverlappedRates(updateRQ.RoomId, updateRQ.RatePlanCode, updateRQ.StartDate, updateRQ.EndDate, ref db, ref logRates)
+                            && UpdateRatesRate(updateRQ, ref db, ref logRates))
                         {
                             db.SaveChanges();
                             transaction.Commit();
@@ -336,7 +342,7 @@ namespace APIServices
             }
         }
 
-        private bool CopyOverlappedRates(int roomId, string ratePlanId, DateTime startDate, DateTime endDate, ref OzHotelesEntities contextDb)
+        private bool CopyOverlappedRates(int roomId, string ratePlanId, DateTime startDate, DateTime endDate, ref OzHotelesEntities contextDb, ref List<Tarifas> logRates)
         {
             bool success = true;
             try
@@ -363,7 +369,7 @@ namespace APIServices
                             endDateAux = of.FechaFinaliza;
                             //Actualiza la fecha final de la tarifa en conflicto a un día antes de la fecha inicial de la nueva tarifa
                             of.FechaFinaliza = startDate.AddDays(-1);
-                            success = InsertCopyRate(startDateAux, endDateAux, of, ref contextDb);
+                            success = InsertCopyRate(startDateAux, endDateAux, of, ref contextDb, ref logRates);
                         }
                         else if (startDate <= of.FechaInicia && endDate < of.FechaFinaliza)
                         {
@@ -371,7 +377,7 @@ namespace APIServices
                             endDateAux = endDate;
                             //Actualiza la fecha inicial de la tarifa en conflicto a un día después de la fecha final de la nueva tarifa
                             of.FechaInicia = endDate.AddDays(1);
-                            success = InsertCopyRate(startDateAux, endDateAux, of, ref contextDb);
+                            success = InsertCopyRate(startDateAux, endDateAux, of, ref contextDb, ref logRates);
                         }
                         else if (startDate > of.FechaInicia && endDate < of.FechaFinaliza)
                         {
@@ -383,8 +389,8 @@ namespace APIServices
                             startDateAux = endDate.AddDays(1);
                             endDateAux = newRateEndDate;
 
-                            success = InsertCopyRate(startDateAux, endDateAux, of, ref contextDb);
-                            success = InsertCopyRate(startDate, endDate, of, ref contextDb);
+                            success = InsertCopyRate(startDateAux, endDateAux, of, ref contextDb, ref logRates);
+                            success = InsertCopyRate(startDate, endDate, of, ref contextDb, ref logRates);
                         }
                         else
                         {
@@ -402,7 +408,7 @@ namespace APIServices
             }
         }
 
-        private bool UpdateRatesRate(RateUpdateRQ rate, ref OzHotelesEntities contextDb)
+        private bool UpdateRatesRate(RateUpdateRQ rate, ref OzHotelesEntities contextDb, ref List<Tarifas> logRates)
         {
             bool isNetRate = false;
             int? newDictionaryId = 0;
@@ -551,7 +557,7 @@ namespace APIServices
                             {
                                 rate.StartDate = auxIni;
                                 rate.EndDate = auxEnd;
-                                if (!InsertRate(rate, ref contextDb))
+                                if (!InsertRate(rate, ref contextDb,ref logRates))
                                     return false;
                             }
                         }
@@ -563,7 +569,7 @@ namespace APIServices
                             {
                                 rate.StartDate = auxIni;
                                 rate.EndDate = auxEnd;
-                                if (!InsertRate(rate, ref contextDb))
+                                if (!InsertRate(rate, ref contextDb, ref logRates))
                                     return false;
                             }
                         }
@@ -577,23 +583,25 @@ namespace APIServices
                             {
                                 rate.StartDate = auxIni;
                                 rate.EndDate = auxEnd;
-                                if (!InsertRate(rate, ref contextDb))
+                                if (!InsertRate(rate, ref contextDb, ref logRates))
                                     return false;
                             }
                             if (!IsOverlappedFares(rate, auxIni2, auxEnd2, ref contextDb))
                             {
                                 rate.StartDate = auxIni2;
                                 rate.EndDate = auxEnd2;
-                                if (!InsertRate(rate, ref contextDb))
+                                if (!InsertRate(rate, ref contextDb, ref logRates))
                                     return false;
                             }
                         }
                         else if (rate.StartDate == of.FechaInicia && rate.EndDate == of.FechaFinaliza)
                         {
                             createNewRate = false;
+
                         }
 
                     }
+
 
                     contextDb.SaveChanges();
                     return true;
@@ -646,6 +654,8 @@ namespace APIServices
             contextDb.Tarifas.Add(newRate);
             contextDb.SaveChanges();
 
+            logRates.Add(newRate);
+
             if (!InsertGuestsRates(newRate, isNetRate, (decimal)hotelPlan.CommissionPercentage, rate.Prices, rate.IsOccupancyRate, ref contextDb, hotelInfo.TaxIncluded, hotelInfo.Ecotasa))
             {
                 return false;
@@ -654,8 +664,8 @@ namespace APIServices
             return true;
         }
 
-
-        private bool UpdateRatesRate(RateUpdateRQ rate, ref OzHotelesEntities contextDb, DateTime startD, DateTime endD)
+        //Listado de Logs
+        private bool UpdateRatesRate(RateUpdateRQ rate, ref OzHotelesEntities contextDb, DateTime startD, DateTime endD, ref List<Tarifas> logRates)
         {
             bool isNetRate = false;
             int? newDictionaryId = 0;
@@ -875,7 +885,7 @@ namespace APIServices
                             {
                                 rate.StartDate = auxIni;
                                 rate.EndDate = auxEnd;
-                                if (!InsertRate(rate, ref contextDb))
+                                if (!InsertRate(rate, ref contextDb, ref logRates))
                                     return false;
                             }
                         }
@@ -887,7 +897,7 @@ namespace APIServices
                             {
                                 rate.StartDate = auxIni;
                                 rate.EndDate = auxEnd;
-                                if (!InsertRate(rate, ref contextDb))
+                                if (!InsertRate(rate, ref contextDb, ref logRates))
                                     return false;
                             }
                         }
@@ -901,14 +911,14 @@ namespace APIServices
                             {
                                 rate.StartDate = auxIni;
                                 rate.EndDate = auxEnd;
-                                if (!InsertRate(rate, ref contextDb))
+                                if (!InsertRate(rate, ref contextDb, ref logRates))
                                     return false;
                             }
                             if (!IsOverlappedFares(rate, auxIni2, auxEnd2, ref contextDb))
                             {
                                 rate.StartDate = auxIni2;
                                 rate.EndDate = auxEnd2;
-                                if (!InsertRate(rate, ref contextDb))
+                                if (!InsertRate(rate, ref contextDb, ref logRates))
                                     return false;
                             }
                         }
@@ -968,6 +978,8 @@ namespace APIServices
 
             contextDb.Tarifas.Add(newRate);
             contextDb.SaveChanges();
+
+            logRates.Add(newRate);
 
             if (!InsertGuestsRates(newRate, isNetRate, (decimal)hotelPlan.CommissionPercentage, rate.Prices, rate.IsOccupancyRate, ref contextDb, hotelInfo.TaxIncluded, hotelInfo.Ecotasa))
             {
@@ -1144,7 +1156,7 @@ namespace APIServices
             }
         }
 
-        private bool InsertRate(RateUpdateRQ rate, ref OzHotelesEntities contextDb)
+        private bool InsertRate(RateUpdateRQ rate, ref OzHotelesEntities contextDb, ref List<Tarifas> logRates)
         {
             var adultPrice = rate.Prices.Base.FirstOrDefault(p => p.Type == PaxType.Adult);
             if (adultPrice == null)
@@ -1234,6 +1246,10 @@ namespace APIServices
 
             contextDb.Tarifas.Add(newRate);
             contextDb.SaveChanges();
+
+            logRates.Add(newRate);
+
+
 
             if (!InsertGuestsRates(newRate, isNetRate, (decimal)hotelPlan.CommissionPercentage, rate.Prices, rate.IsOccupancyRate, ref contextDb, hotelInfo.TaxIncluded, hotelInfo.Ecotasa))
             {
@@ -1380,7 +1396,7 @@ namespace APIServices
                 return false;
         }
 
-        private bool InsertCopyRate(DateTime startDate, DateTime endDate, Tarifas rate, ref OzHotelesEntities contextDb)
+        private bool InsertCopyRate(DateTime startDate, DateTime endDate, Tarifas rate, ref OzHotelesEntities contextDb, ref List<Tarifas> logRates)
         {
             IEnumerable<TarifasRestricciones> overlappedFaresRestrictions = null;
             var newRateAux = new Tarifas
@@ -1424,6 +1440,7 @@ namespace APIServices
             };
 
             contextDb.Tarifas.Add(newRateAux);
+            logRates.Add(newRateAux);
             //Copia las restricciones (precios por ocupación) de la tarifa en conflicto para agregarlos a la nueva tarifa
             List<TarifasRestricciones> tarifasRestricciones = new List<TarifasRestricciones>();
             overlappedFaresRestrictions = contextDb.TarifasRestricciones.Where(tr => tr.idTarifa == rate.idTarifa);

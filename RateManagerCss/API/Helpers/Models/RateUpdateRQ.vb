@@ -9,6 +9,8 @@ Namespace API.Models
         Public Property StartDate As Date
         Public Property EndDate As Date
         Public Property RoomId As Integer?
+        Public Property RoomCode As String
+        Public Property RoomName As String
         Public Property RateId As Integer
         Public Property HotelId As Integer?
         Public Property RatePlanCode As String

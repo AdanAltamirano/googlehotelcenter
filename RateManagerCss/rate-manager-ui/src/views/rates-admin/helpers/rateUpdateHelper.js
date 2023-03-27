@@ -283,9 +283,13 @@ class RateUpdatHelper {
 
             dates.push(date);
         }
+
+        console.log(this.__$.room);
         
         const RQ = {
             roomId: this.__$.room?.id,
+            roomCode: this.__$.room.code,
+            roomName: this.__$.room.name,
             ratePlanCode: this.__$.ratePlan?.code,
             startDate: moment(this.__$.dateRange?.start).format('YYYY-MM-DD'),
             endDate: moment(this.__$.dateRange?.end).format('YYYY-MM-DD'),

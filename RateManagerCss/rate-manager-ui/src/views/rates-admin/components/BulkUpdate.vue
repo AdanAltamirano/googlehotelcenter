@@ -705,6 +705,7 @@ export default {
                 this.datesList,
                 this.ratePlansList
             );
+            console.log(this.room);
             // validación;
             rqHelper.validate(false);
 

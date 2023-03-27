@@ -11,6 +11,8 @@ namespace APIServices.Models.DTO
         public int HotelId { get; set; }
         public int RateId { get; set; }
         public int RoomId { get; set; }
+        public string RoomCode { get; set; }
+        public string RoomName { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string RatePlanCode { get; set; }
@@ -71,4 +73,18 @@ namespace APIServices.Models.DTO
         public byte? Children { get; set; }
         public byte? ExtraGuests { get; set; }
     }
+
+    public class RateUpdateLogs
+    {
+        public List<Tarifas> Previous { get; set; }
+        public List<Tarifas> Current { get; set; }
+        //public Acciones Action { get; set; }
+    }
+
+    //public enum Acciones
+    //{
+    //    Crear, 
+    //    Modificar 
+    //}
+
 }
