@@ -9,7 +9,7 @@
         <b-dropdown-item v-if="showModifyButton" @click="modify">{{$t('Modify')}}</b-dropdown-item>
         <b-dropdown-item v-if="showCancelButton" @click="cancel">{{$t('Cancel')}}</b-dropdown-item>
         <b-dropdown-item v-if="showReactivateButton" @click="reactivate">{{$t('Reactivate')}}</b-dropdown-item>
-        <b-dropdown-item v-if="showSendNotificationButton" @click="sendNotification">{{$t('Send confimation email')}}</b-dropdown-item>
+        <!-- <b-dropdown-item v-if="showSendNotificationButton" @click="sendNotification">{{$t('Send confimation email')}}</b-dropdown-item> -->
         <b-dropdown-item @click="print">{{$t('Print')}}</b-dropdown-item>
       </b-dropdown>
     </b-button-toolbar>

@@ -134,7 +134,6 @@ namespace APIServices
             var details = 
                  GetReservation(reservationId);
 
-            var hasLogs = GetReservationHistoryLog(reservationId.ToString()).Count() > 0 ? true : false;
 
             var model = new ReservationDetailsModel();
             if (details != null)
@@ -170,7 +169,7 @@ namespace APIServices
                 model.NamePromotion = details.namePromotion;
                 model.IdCancellationUser = details.idCancellationUser;
                 model.UserCancellation = details.userCancellation;
-                model.HasLogs = hasLogs;
+                model.ShowLogs = !details.source.Equals("IDS") ? true : false;
                 model.BankDepositDetails = new BankDepositDetails();
                 if (details.paymentType == 0)
                 {

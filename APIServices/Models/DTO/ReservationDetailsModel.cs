@@ -55,7 +55,7 @@ namespace APIServices.Models.DTO
         public string NamePromotion { get; set; }
         public Nullable<int> IdCancellationUser  { get; set; }
         public string UserCancellation { get; set; }
-        public bool HasLogs { get; set; }
+        public bool ShowLogs { get; set; }
 
     }
 

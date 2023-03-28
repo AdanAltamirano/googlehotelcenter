@@ -48,7 +48,7 @@
                             <br>
                             {{ $t('User') }}: <strong>{{ result.agencyUser }}</strong>
                         </span>
-                        <span v-if="result.hasLogs">
+                        <span v-if="result.showLogs">
                             <b-link @click="alertHistoryLog">{{$t('Track record')}} <i class="fas fa-file-alt"></i></b-link>
                             <br>
                         </span>    
