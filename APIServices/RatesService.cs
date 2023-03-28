@@ -309,7 +309,7 @@ namespace APIServices
                         }
                         else
                         {
-                            //logRates = null;
+                            logRates = null;
                             transaction.Rollback();
                             return new KeyValuePair<string, string>("0", "AddRate" + strError);
                         }
@@ -328,6 +328,7 @@ namespace APIServices
                         }
                         else
                         {
+                            logRates = null;
                             transaction.Rollback();
                             return new KeyValuePair<string, string>("0", "AddRate: " + strError);
                         }
@@ -600,8 +601,9 @@ namespace APIServices
 
                         }
 
-                    }
+                        logRates.Add(of);
 
+                    }
 
                     contextDb.SaveChanges();
                     return true;
@@ -926,6 +928,8 @@ namespace APIServices
                         {
                             createNewRate = false;
                         }
+
+                        logRates.Add(of);
 
                     }
 

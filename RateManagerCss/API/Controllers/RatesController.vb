@@ -43,58 +43,20 @@ Namespace API.Controllers
 
             If result.Key = 1 Then
 
-                'Guardar Log
-                If logRates IsNot Nothing And logRates.Count > 0 Then
-                    For Each rate As Tarifas In logRates
+                Try
+                    'Guardar Log
+                    If logRates IsNot Nothing And logRates.Count > 0 Then
+                        For Each rate As Tarifas In logRates
 
-                        Dim datFare As New FaresData
-                        Dim rowFare As DataRow
+                            Dim xml As String = CreateXml(serviceRQ.RoomCode, serviceRQ.RoomName, rate)
 
-                        With datFare.Tables(FaresData.FARES_TABLE)
-                            rowFare = .NewRow()
-                            rowFare(FaresData.PKIDFARES_FIELD) = rate.idTarifa
-                            rowFare(FaresData.HOTELROOMTYPEID_FIELD) = rate.idTipoHabitacion_Hotel
-                            rowFare(FaresData.STARTDATE_FIELD) = rate.FechaInicia
-                            rowFare(FaresData.ENDDATE_FIELD) = rate.FechaFinaliza
+                            Log(RQ.HotelId, acciones.Crear, serviceRQ.RoomCode, rate.FechaInicia, rate.FechaFinaliza, rate.idrateplan, xml)
 
-                            rowFare(FaresData.PRICE_FIELD) = rate.Precio
-                            rowFare(FaresData.NINIORATE) = rate.NiniosRate
-                            rowFare(FaresData.RATEENPRICE_FIELD) = rate.PrecioAdolescente
+                        Next
+                    End If
+                Catch
 
-
-                            rowFare(FaresData.EXTRAADULTPRICE_FIELD) = rate.PrecioExtraAdulto
-                            rowFare(FaresData.EXTRACHILDPRICE_FIELD) = rate.PrecioExtraNinio
-                            rowFare(FaresData.EXTRATEENPRICE_FIELD) = rate.PrecioAdolescenteExtra
-
-                            rowFare(FaresData.PRICENR_FIELD) = rate.PrecioNR
-                            rowFare(FaresData.NINIORATENR) = rate.NiniosRateNR
-                            rowFare(FaresData.RATEENPRICENR_FIELD) = rate.PrecioAdolescenteNR
-
-                            rowFare(FaresData.EXTRAADULTPRICENR_FIELD) = rate.PrecioExtraAdultoNR
-                            rowFare(FaresData.EXTRACHILDPRICENR_FIELD) = rate.PrecioExtraNinioNR
-                            rowFare(FaresData.EXTRATEENPRICENR_FIELD) = rate.PrecioAdolescenteExtraNR
-
-
-                            rowFare(FaresData.RATETYPE_FIELD) = rate.TipoTarifa
-                            rowFare(FaresData.RATECODE_FIELD) = rate.CodigoTarifa
-                            rowFare(FaresData.EXCEPTION_FIELD) = rate.Excepciones
-                            rowFare(FaresData.NOARRIVOS_FIELD) = rate.NoArrivos
-                            rowFare(FaresData.IDRATEPLAN_FIELD) = rate.idrateplan
-                            rowFare(FaresData.ENDDATE_FIELD) = rate.FechaFinaliza
-                            rowFare(FaresData.RULESDEFAULT) = rate.RateRulesDefault
-                            rowFare(FaresData.IDDICCDESCPROM_FIELD) = IIf(rate.idDiccPromoDesc Is Nothing, 0, rate.idDiccPromoDesc)
-                            .Rows.Add(rowFare)
-                        End With
-
-                        datFare.Tables(0).Columns.Add("Descr_rateplan")
-                        datFare.Tables(0).Rows(0)("Descr_rateplan") = String.Format("{0} {1}", serviceRQ.RoomCode, serviceRQ.RoomName)
-
-                        Dim xml As String = Util.Utility.GetXml(FaresData.FARES_TABLE, "UpdateRate", datFare)
-
-                        Log(RQ.HotelId, acciones.Crear, serviceRQ.RoomCode, rate.FechaInicia, rate.FechaFinaliza, rate.idrateplan, xml)
-
-                    Next
-                End If
+                End Try
 
                 Return NoContent()
             End If
@@ -117,60 +79,20 @@ Namespace API.Controllers
             Dim result As KeyValuePair(Of String, String) = Service.AddRate(serviceRQ, logRates)
 
             If result.Key = 1 Then
+                Try
+                    'Guardar Log
+                    If logRates IsNot Nothing And logRates.Count > 0 Then
+                        For Each rate As Tarifas In logRates
 
-                'Guardar Log
-                If logRates IsNot Nothing And logRates.Count > 0 Then
-                    For Each rate As Tarifas In logRates
+                            Dim xml As String = CreateXml(serviceRQ.RoomCode, serviceRQ.RoomName, rate)
 
-                        Dim datFare As New FaresData
-                        Dim rowFare As DataRow
+                            Log(RQ.HotelId, acciones.Crear, serviceRQ.RoomCode, rate.FechaInicia, rate.FechaFinaliza, rate.idrateplan, xml)
 
-                        With datFare.Tables(FaresData.FARES_TABLE)
-                            rowFare = .NewRow()
-                            rowFare(FaresData.PKIDFARES_FIELD) = rate.idTarifa
-                            rowFare(FaresData.HOTELROOMTYPEID_FIELD) = rate.idTipoHabitacion_Hotel
-                            rowFare(FaresData.STARTDATE_FIELD) = rate.FechaInicia
-                            rowFare(FaresData.ENDDATE_FIELD) = rate.FechaFinaliza
+                        Next
+                    End If
 
-                            rowFare(FaresData.PRICE_FIELD) = rate.Precio
-                            rowFare(FaresData.NINIORATE) = rate.NiniosRate
-                            rowFare(FaresData.RATEENPRICE_FIELD) = rate.PrecioAdolescente
-
-
-                            rowFare(FaresData.EXTRAADULTPRICE_FIELD) = rate.PrecioExtraAdulto
-                            rowFare(FaresData.EXTRACHILDPRICE_FIELD) = rate.PrecioExtraNinio
-                            rowFare(FaresData.EXTRATEENPRICE_FIELD) = rate.PrecioAdolescenteExtra
-
-                            rowFare(FaresData.PRICENR_FIELD) = rate.PrecioNR
-                            rowFare(FaresData.NINIORATENR) = rate.NiniosRateNR
-                            rowFare(FaresData.RATEENPRICENR_FIELD) = rate.PrecioAdolescenteNR
-
-                            rowFare(FaresData.EXTRAADULTPRICENR_FIELD) = rate.PrecioExtraAdultoNR
-                            rowFare(FaresData.EXTRACHILDPRICENR_FIELD) = rate.PrecioExtraNinioNR
-                            rowFare(FaresData.EXTRATEENPRICENR_FIELD) = rate.PrecioAdolescenteExtraNR
-
-
-                            rowFare(FaresData.RATETYPE_FIELD) = rate.TipoTarifa
-                            rowFare(FaresData.RATECODE_FIELD) = rate.CodigoTarifa
-                            rowFare(FaresData.EXCEPTION_FIELD) = rate.Excepciones
-                            rowFare(FaresData.NOARRIVOS_FIELD) = rate.NoArrivos
-                            rowFare(FaresData.IDRATEPLAN_FIELD) = rate.idrateplan
-                            rowFare(FaresData.ENDDATE_FIELD) = rate.FechaFinaliza
-                            rowFare(FaresData.RULESDEFAULT) = rate.RateRulesDefault
-                            rowFare(FaresData.IDDICCDESCPROM_FIELD) = IIf(rate.idDiccPromoDesc Is Nothing, 0, rate.idDiccPromoDesc)
-                            .Rows.Add(rowFare)
-                        End With
-
-                        datFare.Tables(0).Columns.Add("Descr_rateplan")
-                        datFare.Tables(0).Rows(0)("Descr_rateplan") = String.Format("{0} {1}", serviceRQ.RoomCode, serviceRQ.RoomName)
-
-                        Dim xml As String = Util.Utility.GetXml(FaresData.FARES_TABLE, "UpdateRate", datFare)
-
-                        Log(RQ.HotelId, acciones.Crear, serviceRQ.RoomCode, rate.FechaInicia, rate.FechaFinaliza, rate.idrateplan, xml)
-
-                    Next
-                End If
-
+                Catch
+                End Try
 
                 Return NoContent()
             End If
@@ -356,6 +278,60 @@ Namespace API.Controllers
                 .guardalog(pagina:="/rate-manager-ui/dist/rates-admin.aspx", action:=action, nota:=msg, peticion:="", datos:="", datosDespues:=xml, hotelId:=hotelId)
             End With
         End Sub
+
+        Private Function CreateXml(ByRef roomCode As String, ByRef roomName As String, ByRef rate As Tarifas)
+            Dim datFare As New FaresData
+            Dim rowFare As DataRow
+
+            With datFare.Tables(FaresData.FARES_TABLE)
+                rowFare = .NewRow()
+                rowFare(FaresData.PKIDFARES_FIELD) = rate.idTarifa
+                rowFare(FaresData.HOTELROOMTYPEID_FIELD) = rate.idTipoHabitacion_Hotel
+                rowFare(FaresData.STARTDATE_FIELD) = rate.FechaInicia
+                rowFare(FaresData.ENDDATE_FIELD) = rate.FechaFinaliza
+
+                rowFare(FaresData.PRICE_FIELD) = rate.Precio
+                rowFare(FaresData.NINIORATE) = rate.NiniosRate
+                rowFare(FaresData.RATEENPRICE_FIELD) = rate.PrecioAdolescente
+
+
+                rowFare(FaresData.EXTRAADULTPRICE_FIELD) = rate.PrecioExtraAdulto
+                rowFare(FaresData.EXTRACHILDPRICE_FIELD) = rate.PrecioExtraNinio
+                rowFare(FaresData.EXTRATEENPRICE_FIELD) = rate.PrecioAdolescenteExtra
+
+                rowFare(FaresData.PRICENR_FIELD) = rate.PrecioNR
+                rowFare(FaresData.NINIORATENR) = rate.NiniosRateNR
+                rowFare(FaresData.RATEENPRICENR_FIELD) = rate.PrecioAdolescenteNR
+
+                rowFare(FaresData.EXTRAADULTPRICENR_FIELD) = rate.PrecioExtraAdultoNR
+                rowFare(FaresData.EXTRACHILDPRICENR_FIELD) = rate.PrecioExtraNinioNR
+                rowFare(FaresData.EXTRATEENPRICENR_FIELD) = rate.PrecioAdolescenteExtraNR
+
+
+                rowFare(FaresData.RATETYPE_FIELD) = rate.TipoTarifa
+                rowFare(FaresData.RATECODE_FIELD) = rate.CodigoTarifa
+                rowFare(FaresData.EXCEPTION_FIELD) = rate.Excepciones
+                rowFare(FaresData.NOARRIVOS_FIELD) = rate.NoArrivos
+                rowFare(FaresData.IDRATEPLAN_FIELD) = rate.idrateplan
+                rowFare(FaresData.ENDDATE_FIELD) = rate.FechaFinaliza
+                rowFare(FaresData.RULESDEFAULT) = IIf(rate.RateRulesDefault Is Nothing, True, rate.RateRulesDefault)
+                rowFare(FaresData.IDDICCDESCPROM_FIELD) = IIf(rate.idDiccPromoDesc Is Nothing, 0, rate.idDiccPromoDesc)
+                .Rows.Add(rowFare)
+            End With
+
+            datFare.Tables(0).Columns.Add("Descr_rateplan")
+            datFare.Tables(0).Rows(0)("Descr_rateplan") = String.Format("{0} {1}", roomCode, roomName)
+
+            Dim xml As String = String.Empty
+
+            If rate.PrecioNR > 0 Then
+                xml = Util.Utility.GetXml(FaresData.FARES_TABLE, "UpdateRateNR", datFare)
+            Else
+                xml = Util.Utility.GetXml(FaresData.FARES_TABLE, "UpdateRate", datFare)
+            End If
+
+            Return xml
+        End Function
 
     End Class
 End Namespace
