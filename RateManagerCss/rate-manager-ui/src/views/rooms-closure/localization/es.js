@@ -19,5 +19,7 @@ export default {
     'All' : 'Todos',
     'Show Configurations' : 'Mostrar Configuraciones',
     'Exit' : 'Salir',
-    'Couldn\'t Save The Closure' : 'No se pudo guardar el cierre'  
+    'Couldn\'t Save The Closure' : 'No se pudo guardar el cierre',
+    'Add Dates' : 'Agregar Fechas',
+    'Dates Overlap' : 'Las fechas se traslapan'  
 }

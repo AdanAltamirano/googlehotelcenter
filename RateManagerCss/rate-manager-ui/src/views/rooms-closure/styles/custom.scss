@@ -72,6 +72,15 @@ h4, .h4 {
     width: 80% !important;
 }
 
+.max-w-79 {
+    max-width: 79% !important;
+}
+
+.h-90 {
+    height: 90px !important;
+}
+
+
 .w-70 .flex-fill {
     width: 7.14%;
 }
@@ -143,4 +152,13 @@ body {
 
 .color-primary{
     color: #10467a;
+}
+
+.scroll-y {
+    overflow-y: auto;
+}
+
+.btn:focus{
+    outline: none !important;
+    box-shadow: none !important;
 }

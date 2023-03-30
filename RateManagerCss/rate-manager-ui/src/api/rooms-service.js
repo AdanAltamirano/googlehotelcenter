@@ -12,9 +12,11 @@ const inventory = Vue.resource(
     `${process.env.VUE_APP_API_URL}/hotels/{hotelid}/rooms/{roomid}/inventory{?startdate,enddate}`,
 );
 //http://test.com/ratemanager/api/closure/1978/2020-12-29/2021-01-03/EPB
-const roomClosureGet = Vue.resource(`${process.env.VUE_APP_API_URL}/closure/{hotelid}/{startdate}/{enddate}/{rateplan}`)
+const roomClosureGet = Vue.resource(`${process.env.VUE_APP_API_URL}/closure/{hotelid}/{startdate}/{enddate}/{rateplan}`);
 //http://test.com/ratemanager/api/closure/save/1978/2020-12-29/2021-01-03
-const roomClosurePost = Vue.resource(`${process.env.VUE_APP_API_URL}/closure/save/{hotelid}/{startdate}/{enddate}`)
+//const roomClosurePost = Vue.resource(`${process.env.VUE_APP_API_URL}/closure/save/{hotelid}/{startdate}/{enddate}`)
+
+const roomClosurePost = Vue.resource(`${process.env.VUE_APP_API_URL}/closure/save/{hotelid}`);
 
 const roomClosureGetRatePlans = Vue.resource(`${process.env.VUE_APP_API_URL}/closure/rateplans/{hotelid}`);
 
@@ -63,12 +65,10 @@ export default {
      * @param {Date} enddate 
      * @param {Object} request 
      */
-    saveRoomsClosure(hotelid,startdate,enddate,request){
+    saveRoomsClosure(hotelid,request){
         return roomClosurePost.save(
             {
                 hotelid : hotelid,
-                startdate : startdate,
-                enddate : enddate
             },
             request
         );

@@ -68,16 +68,31 @@
                         mode="range"
                         :min-date="minDate"
                         :popover="{placement:'',visibility: 'click' }"
-                        :columns="2">
+                        :columns="2"
+                        :masks="{input: 'DD/MMM/YYYY'}">
                       </v-date-picker>
 
-                      <b-input-group-append>
+                      <!-- <b-input-group-append>
                         <b-button :disabled="dates == null" variant="danger" @click="dates = null">
                           <i class="fa fa-times"></i>
                         </b-button>
-                      </b-input-group-append>
+                      </b-input-group-append> -->
+
+                      <div class="d-flex ml-2">                          
+                        <button type="button" class="btn" @click="addDateToList(datesSave)"><i class="fas fa-calendar-plus fa-lg" style="color:#15cc3f;"></i></button>
+                        <button type="button" class="btn" @click="removeDateFromList()"><i class="fas fa-calendar-minus fa-lg" style="color:#f55050;"></i></button>
+                      </div>
+
                     </b-input-group>
                   </b-form-group>
+
+                  <!-- Fechas -->
+                  <div v-if="datesList.length > 0" class="list-group max-w-79 h-90 scroll-y">                           
+                      <span v-for="(date,index) in datesList" :value="date" :key="index" class="list-group-item">{{getDateFormat(date)}}</span>                        
+                  </div>
+                  <div v-else class="alert alert-warning" role="alert">
+                    {{'Add Dates' | translate}} 
+                  </div>
                 </b-col>
                 <!-- Rateplan -->
                 <b-col md="4">
@@ -104,7 +119,7 @@
                 </b-col>
                 <b-col md="4">
                   <b-form-group>
-                    <b-button variant="primary" class="mt-6" @click="saveClosure">{{$t('Save')}}</b-button>
+                    <b-button variant="primary" class="mt-6" :disabled="datesList.length == 0" @click="saveClosure">{{$t('Save')}}</b-button>
                   </b-form-group>
                 </b-col>
               </b-row>
@@ -215,7 +230,8 @@ export default {
       loadRates:false,
       loadRoomsByHotel:false,
       loadingClosure: false,
-      showClosure:false
+      showClosure:false,
+      datesList:[]
 
     };
   },
@@ -349,24 +365,35 @@ export default {
     },
     //Save Closure
     saveClosure(){
-      const startDate = this.$moment(this.datesSave.start).format('YYYY-MM-DD'); 
-      const endDate = this.$moment(this.datesSave.end).format('YYYY-MM-DD');;
+      // const startDate = this.$moment(this.datesSave.start).format('YYYY-MM-DD'); 
+      // const endDate = this.$moment(this.datesSave.end).format('YYYY-MM-DD');
       const hotelId =  this.$appConfig.session.hotelId;
       const ratePlan = (this.selectedClosure === '0')? '0' : this.selectedClosure;
       const room = (this.selectedRoom === '0')? '0' : this.selectedRoom;
       const status = this.checkStatus;
 
-      console.log(startDate);
-      console.log(endDate);
+      // console.log(startDate);
+      // console.log(endDate);
       console.log(hotelId);
       console.log(ratePlan);
       console.log(room);
       console.log(status);
 
+      let datesRequest = [];
+
+      this.datesList.forEach(date => {
+        const startDate = this.$moment(date.start).format('YYYY-MM-DD'); 
+        const endDate = this.$moment(date.end).format('YYYY-MM-DD');
+        datesRequest.push({
+          startDate,
+          endDate
+        });
+      });
+
+
       let request = {
         IdHotel : hotelId,
-        StartDate : startDate,
-        EndDate : endDate,
+        Dates : datesRequest,
         RatePlanOption : ratePlan,
         RoomOption : room,
         Status : status
@@ -375,7 +402,7 @@ export default {
       this.loadingClosure = true;
       this.showClosure = false;
 
-      RoomsClosureService.saveRoomsClosure(hotelId,startDate,endDate,request)
+      RoomsClosureService.saveRoomsClosure(hotelId,request)
       .then(response =>{
         console.log(response);
 
@@ -490,7 +517,81 @@ export default {
       // console.log(this.startDateAvailability);
       // console.log(this.endDateAvailability);
 
-    }
+    },
+    addDateToList(date){
+          //Pendiente que no traslapen las fechas
+          //Ver que las fechas no traslapen asi solo se puede agregar a la lista
+          this.datesList.push(this.datesSave);
+
+          const overlap = this.overlapDates(this.datesList);
+          
+          if(overlap.overlap)
+          {
+              this.$appAlert({
+                    type: 'error',
+                  title: this.$t('Dates Overlap'),
+                  showCloseButton: true,
+                  showConfirmButton:false,
+                  showCancelButton:false
+              });
+              
+              this.removeDateFromList();
+              
+          }
+      },
+      overlapDates(dates){
+          var sortedRanges = dates.sort((previous, current) => {  
+              // get the start date from previous and current
+              var previousTime = previous.start.getTime();
+              var currentTime = current.start.getTime();
+
+              // if the previous is earlier than the current
+              if (previousTime < currentTime) {
+              return -1;
+              }
+
+              // if the previous time is the same as the current time
+              if (previousTime === currentTime) {
+              return 0;
+              }
+
+              // if the previous time is later than the current time
+              return 1;
+          });
+
+          var result = sortedRanges.reduce((result, current, idx, arr) => {
+              // get the previous range
+              if (idx === 0) { return result; }
+              var previous = arr[idx-1];
+          
+              // check for any overlap
+              var previousEnd = previous.end.getTime();
+              var currentStart = current.start.getTime();
+              var overlap = (previousEnd >= currentStart);
+          
+              // store the result
+              if (overlap) {
+                  // yes, there is overlap
+                  result.overlap = true;
+                  // store the specific ranges that overlap
+                  result.ranges.push({
+                      previous: previous,
+                      current: current
+                  })
+              }
+          
+              return result;
+          
+              // seed the reduce  
+          }, {overlap: false, ranges: []});
+          return result;
+      },
+      getDateFormat(date) {
+          return `${this.$moment(date.start).format('DD/MMM/YYYY')} - ${this.$moment(date.end).format('DD/MMM/YYYY')}`;
+      },
+      removeDateFromList(){
+          this.datesList.pop();
+      },
   },
 };
 </script>
