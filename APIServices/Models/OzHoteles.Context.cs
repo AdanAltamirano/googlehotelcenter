@@ -376,13 +376,13 @@ namespace APIServices.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spModificarDetalleReservaciones", idDetalleReservacionParameter, idReservacionParameter, adultosParameter, niniosParameter, adultosExtrasParameter, niniosExtrasParameter, edadesNiniosParameter);
         }
     
-        public virtual ObjectResult<spReservationLog_Result> spReservationLog(string reservationId)
+        public virtual ObjectResult<spReservationLog_Result1> spReservationLog(string reservationId)
         {
             var reservationIdParameter = reservationId != null ?
                 new ObjectParameter("ReservationId", reservationId) :
                 new ObjectParameter("ReservationId", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spReservationLog_Result>("spReservationLog", reservationIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spReservationLog_Result1>("spReservationLog", reservationIdParameter);
         }
     }
 }

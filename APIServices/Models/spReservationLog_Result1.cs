@@ -11,14 +11,14 @@ namespace APIServices.Models
 {
     using System;
     
-    public partial class spReservationLog_Result
+    public partial class spReservationLog_Result1
     {
-        public int IdLog { get; set; }
+        public int idLog { get; set; }
         public Nullable<System.DateTime> Date { get; set; }
         public int IdUser { get; set; }
         public string User { get; set; }
         public string ReservationNumber { get; set; }
-        public int Action { get; set; }
+        public Nullable<byte> Action { get; set; }
         public string Source { get; set; }
         public string Reason { get; set; }
     }

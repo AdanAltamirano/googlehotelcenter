@@ -362,14 +362,14 @@ Partial Class Deposits
             If Me.IsOtherPayment Then
                 flag = pnlPayments.Save(inputReserva.Value, sDatos, spayment)
                 If flag Then pnlPayments.SendConfirmationEmail()
-                Me.guardalog("/HotelAdministrator/Pages/Deposits.aspx", PaginaBase.acciones.Crear, String.Format("Creación de depósito {0}, no.reservacion: {1}", spayment, inputReserva.Value), "", "", sDatos)
+                Me.guardalog("/HotelAdministrator/Pages/Deposits.aspx", PaginaBase.acciones.Crear, String.Format("Creación de depósito {0}, no.reservacion: {1}", spayment, inputReserva.Value), "", "", sDatos, noReservacion:=inputReserva.Value)
             Else
                 flag = ctrlDeposits1.Save(inputReserva.Value, sDatos)
                 If flag Then
                     ctrlDeposits1.ConfirmPaymentRequest(inputReserva.Value)
                     ctrlDeposits1.enviarcorreo_conf()
                 End If
-                Me.guardalog("/HotelAdministrator/Pages/Deposits.aspx", PaginaBase.acciones.Crear, String.Format("Creación de depósito, no.reservacion: {0}", inputReserva.Value), "", "", sDatos)
+                Me.guardalog("/HotelAdministrator/Pages/Deposits.aspx", PaginaBase.acciones.Crear, String.Format("Creación de depósito, no.reservacion: {0}", inputReserva.Value), "", "", sDatos, noReservacion:=inputReserva.Value)
             End If
 
 

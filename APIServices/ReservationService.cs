@@ -1105,7 +1105,7 @@ namespace APIServices
 
         #region Log
 
-        public IEnumerable<spReservationLog_Result> GetReservationHistoryLog(string reservationId) => dbContext.spReservationLog(reservationId).ToList().OrderByDescending(r => r.Date);
+        public IEnumerable<spReservationLog_Result1> GetReservationHistoryLog(string reservationId) => dbContext.spReservationLog(reservationId).ToList().OrderByDescending(r => r.Date);
 
         public void SaveMovementReservationLog(ReservationMovementLog reservationMovementLog)
         {
