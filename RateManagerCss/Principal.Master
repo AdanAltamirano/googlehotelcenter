@@ -103,6 +103,7 @@
             jQuery('iframe').load(function() {
                 jQuery('#loading').hide();
                 this.contentWindow.document.body.offsetHeight + 'px';
+                console.log(this.contentWindow.document.body.offsetHeight + 'px');
                 if (window.ratemanager_ui.isUi)
                     functionSetOptionMenu(window.ratemanager_ui.url);
 

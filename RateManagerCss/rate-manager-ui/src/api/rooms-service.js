@@ -12,7 +12,7 @@ const inventory = Vue.resource(
     `${process.env.VUE_APP_API_URL}/hotels/{hotelid}/rooms/{roomid}/inventory{?startdate,enddate}`,
 );
 //http://test.com/ratemanager/api/closure/1978/2020-12-29/2021-01-03/EPB
-const roomClosureGet = Vue.resource(`${process.env.VUE_APP_API_URL}/closure/{hotelid}/{startdate}/{enddate}/{rateplan}`);
+//const roomClosureGet = Vue.resource(`${process.env.VUE_APP_API_URL}/closure/{hotelid}/{startdate}/{enddate}/`);
 //http://test.com/ratemanager/api/closure/save/1978/2020-12-29/2021-01-03
 //const roomClosurePost = Vue.resource(`${process.env.VUE_APP_API_URL}/closure/save/{hotelid}/{startdate}/{enddate}`)
 
@@ -30,14 +30,19 @@ export default {
      * @param {Number} hotelid 
      * @param {Date} startdate 
      * @param {Date} enddate 
-     * @param {String} rateplan 
+     * @param {Array} ratePlans 
      */
-    getRoomsClosure(hotelid,startdate,enddate,rateplan){
+    getRoomsClosure(hotelid,startdate,enddate,ratePlans){
+        
+        const roomClosureGet = Vue.resource(`${process.env.VUE_APP_API_URL}/closure/{hotelid}/{startdate}/{enddate}/`,
+        {},
+        {},
+        {params: {rateplans: ratePlans}});
+
         return roomClosureGet.get({
             hotelid : hotelid,
             startdate : startdate,
             enddate : enddate,
-            rateplan : rateplan
         });
     },
     /**

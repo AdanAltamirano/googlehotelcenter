@@ -21,5 +21,6 @@ export default {
     'Exit' : 'Salir',
     'Couldn\'t Save The Closure' : 'No se pudo guardar el cierre',
     'Add Dates' : 'Agregar Fechas',
-    'Dates Overlap' : 'Las fechas se traslapan'  
+    'Dates Overlap' : 'Las fechas se traslapan',
+    'Select at least one rate plan' : 'Seleccionar por lo menos un plan tarifario'  
 }

@@ -25,7 +25,7 @@ namespace APIServices
         /// <param name="startDate"></param>
         /// <param name="endDate"></param>
         /// <param name="ratePlan">Optional</param>
-        public RoomsClosureModel LoadData(int idHotel, DateTime startDate, DateTime endDate, int idAsoc, string ratePlan = "", int lang = 1)
+        public RoomsClosureModel LoadData(int idHotel, DateTime startDate, DateTime endDate, int idAsoc, string[] ratePlansList, int lang = 1)
         {
             RoomsClosureModel roomsClosureModel = new RoomsClosureModel();
             HotelDatos hotelData = new HotelSistema().GetHotelById(idHotel);
@@ -46,23 +46,28 @@ namespace APIServices
             // Create List
             roomsClosureModel.RateRoomsClosureModelList = new List<RateRoomsClosureModel>();
 
-            //Busqueda por rateplan seleccionado
-            if (!string.IsNullOrEmpty(ratePlan))
+            //Busqueda por rateplans seleccionados
+            if (!ratePlansList.Contains("0"))
             {
-                RateRoomsClosureModel rateRoomsClosureModel = new RateRoomsClosureModel();
-                rateRoomsClosureModel.CodeRoomModelsList = new List<CodeRoomModel>();
 
-                string nameRatePlan = ratePlan;
-                rateRoomsClosureModel.RatePlan = nameRatePlan;
+                foreach (var ratePlan in ratePlansList)
+                {
 
-                DataSet roomsTest = new RoomFacade().getRooms(idHotel);
+                    RateRoomsClosureModel rateRoomsClosureModel = new RateRoomsClosureModel();
+                    rateRoomsClosureModel.CodeRoomModelsList = new List<CodeRoomModel>();
 
-                //Helper
-                GetAvailability(idHotel,ratePlan,
-                       startDate, endDate, roomsTest, hotelData, ref rateRoomsClosureModel);
+                    string nameRatePlan = ratePlan;
+                    rateRoomsClosureModel.RatePlan = nameRatePlan;
+
+                    DataSet roomsTest = new RoomFacade().getRooms(idHotel);
+
+                    //Helper
+                    GetAvailability(idHotel, ratePlan,
+                           startDate, endDate, roomsTest, hotelData, ref rateRoomsClosureModel);
 
 
-                roomsClosureModel.RateRoomsClosureModelList.Add(rateRoomsClosureModel);
+                    roomsClosureModel.RateRoomsClosureModelList.Add(rateRoomsClosureModel);
+                }
             }
             else
             //Busqueda general por cada rateplan

@@ -4,13 +4,11 @@ Namespace API.Models
     Public Class RoomClosureRQ
         Public Property IdHotel As Integer
 
+        Public Property RatePlans As List(Of RatePlanHeader)
+
         Public Property [Dates] As List(Of DatesClosure)
 
-        'Public Property StartDate As Date
-
-        'Public Property EndDate As Date
-
-        Public Property RatePlanOption As String
+        Public Property RatePlanOption As String 'CNV Codigo de RatePlan
 
         Public Property RoomOption As String
 

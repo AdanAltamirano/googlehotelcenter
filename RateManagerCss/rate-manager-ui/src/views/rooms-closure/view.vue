@@ -5,7 +5,7 @@
 			<h3 class="text-primary">{{$t("Room and Rateplan Closure")}}</h3>
 			<b-row class="mt-3">
 				<!-- Dates -->
-				<b-col md="4">
+				<b-col md="3">
 					<b-form-group :label='$t("View Availability")' :description='$t("Date Range")'>
 						<b-input-group>
 							<v-date-picker
@@ -27,16 +27,33 @@
 				</b-col>
 				<!-- Load Button -->
 				<b-col md="4">					
-					<b-form-group :label='$t("Rate Plans")' :description='$t("Search by rateplan")'>
-						<div class="d-flex">
-							<b-form-select v-model="selectedAvailability" :options="options"></b-form-select>
-							<b-button class="ml-4" variant="primary" @click="loadClosure">{{ $t("Load") }}</b-button>
-						</div>
-					</b-form-group>				
+            <b-form-group :label='$t("Rate Plans")' :description='$t("Search by rateplan")'>
+              <div class="d-flex">
+                <!-- <b-form-select v-model="selectedAvailability" :options="options"></b-form-select> -->                
+                <multiselect                                   
+                  v-model="selectedAvailability"
+                  label='text'                     
+                  :options="options"
+                  track-by="value"
+                  :multiple="true"                                
+                  :selectLabel="''"
+                  :selectedLabel="''"
+                  :deselectLabel="''"
+                  :placeholder="$t('Rate Plans')"
+                  @input="RemoveWhenItsAll">
+                </multiselect>
+                <!-- <div>
+                  <b-button class="ml-4" variant="primary" @click="loadClosure">{{ $t("Load") }}</b-button>
+                </div> -->
+              </div>
+            </b-form-group>            				
 				</b-col>
+        <b-col md=1>
+          <b-button class="ml-4" variant="primary" style="position:relative; top:30%;" @click="loadClosure">{{ $t("Load") }}</b-button>
+        </b-col>
 				<!-- Status And Button -->
-				<b-col md="4">         
-					<b-form-group :label='$t("Status")' class="text-end">
+				<b-col md="4">
+					<b-form-group :label='$t("Status")' class="text-end">            
 						<div class="status-box">
               <div style="background-color:green;"></div>
               <div>{{$t("Open")}}</div>
@@ -97,7 +114,21 @@
                 <!-- Rateplan -->
                 <b-col md="4">
                   <b-form-group :label="$t('Rate Plans')">
-                    <b-form-select v-model="selectedClosure" :options="options"></b-form-select>
+                    <!-- <b-form-select v-model="selectedClosure" :options="options"></b-form-select> -->
+                    <multiselect
+                      id="planes"                                   
+                      v-model="ratePlansList"
+                      label='text'                     
+                      :options="options"
+                      track-by="value"
+                      :multiple="true"                                
+                      :selectLabel="''"
+                      :selectedLabel="''"
+                      :deselectLabel="''"
+                      :placeholder="$t('Rate Plans')"
+                      @input="RemoveWhenItsAll">
+                    </multiselect>
+
                   </b-form-group>
                 </b-col>
                 <!-- Status -->
@@ -180,6 +211,7 @@
 import RoomsClosureService from '../../api/rooms-service';
 import Closure from './components/Closure.vue';
 import Ribbon from './components/Ribbon.vue';
+import Multiselect from 'vue-multiselect';
 import Loading from "vue-loading-overlay";
 let loader = null;
 
@@ -188,7 +220,8 @@ export default {
   components: {
     Closure,
     Ribbon,
-    Loading
+    Loading,
+    Multiselect
   },
   data() {
     return {
@@ -196,7 +229,7 @@ export default {
 			dates:null,
       datesSave:null,
 			//Selected Rateplan
-			selectedAvailability:"0",
+			selectedAvailability:[],
       selectedClosure: "0",
 			//Options Rateplan
       options:[],    
@@ -231,7 +264,8 @@ export default {
       loadRoomsByHotel:false,
       loadingClosure: false,
       showClosure:false,
-      datesList:[]
+      datesList:[],
+      ratePlansList:[],
 
     };
   },
@@ -252,6 +286,17 @@ export default {
 
   },
   mounted() {
+    this.selectedAvailability.push({
+       value : "0",
+       text : this.$t('All')
+    });
+
+    this.ratePlansList.push({
+       value : "0",
+       text : this.$t('All')
+    });
+
+    this.loadClosure();
   },
   computed: {
     //Set Minimun Date For DatePicker
@@ -261,8 +306,33 @@ export default {
       return date;
     },
   },
-  watch: {},
+  watch: { 
+  },
   methods: {
+
+    RemoveWhenItsAll(array){
+
+      const predicate = (element) => element.value == '0';
+
+      if(array.some(predicate)){
+
+        const totalOfObject = array.length;
+
+        let i = 0;
+
+        while(i <= totalOfObject){
+          array.pop();
+          i++;
+        }
+
+        array.push({
+          value : "0",
+          text : this.$t('All')
+        });
+
+      }
+    },
+
     //Set Default Dates For DatePicker
     defaultDates() {
       const start = new Date();
@@ -300,14 +370,27 @@ export default {
      // console.log(diff);
 
       const hotelId =  this.$appConfig.session.hotelId;
-      const ratePlan = (this.selectedAvailability === '0')? '' : this.selectedAvailability;
+      //const ratePlan = (this.selectedAvailability === '0')? '' : this.selectedAvailability;
 
-      console.log(startDate);
-      console.log(endDate);
+      //Array Request
+      //const ratePlans = 
+
+      //console.log(startDate);
+      //console.log(endDate);
       //console.log(hotelId);
-      //console.log(ratePlan);
+      console.log(this.selectedAvailability);
 
-      RoomsClosureService.getRoomsClosure(hotelId,startDate,endDate,ratePlan)
+      let ratePlansRequest = [];
+
+      this.selectedAvailability.forEach(ratePlan => {
+        ratePlansRequest.push(ratePlan.value);
+      });
+
+      console.log(ratePlansRequest);
+
+
+
+      RoomsClosureService.getRoomsClosure(hotelId,startDate,endDate,ratePlansRequest)
       .then(response => {
         this.closure = response.body;
         //console.log(this.closure);
@@ -374,10 +457,14 @@ export default {
 
       // console.log(startDate);
       // console.log(endDate);
-      console.log(hotelId);
-      console.log(ratePlan);
-      console.log(room);
-      console.log(status);
+      // console.log(hotelId);
+      // console.log(ratePlan);
+      // console.log(room);
+      // console.log(status);
+
+      console.log(this.ratePlansList);
+
+
 
       let datesRequest = [];
 
@@ -390,34 +477,61 @@ export default {
         });
       });
 
+      let ratesPlansRequest = [];
 
-      let request = {
-        IdHotel : hotelId,
-        Dates : datesRequest,
-        RatePlanOption : ratePlan,
-        RoomOption : room,
-        Status : status
-      }
-
-      this.loadingClosure = true;
-      this.showClosure = false;
-
-      RoomsClosureService.saveRoomsClosure(hotelId,request)
-      .then(response =>{
-        console.log(response);
-
-        this.loadClosure();
-
-      },error =>{
-        this.loadingClosure = false;
-        this.showClosure = true;
-        this.$appAlert({
-        type: "warning",
-        title: this.$t('Couldn\'t Save The Closure'),
-        confirmButtonText: this.$t("Exit"),
-        confirmButtonColor: "#d33"
+      this.ratePlansList.forEach(ratePlan => {
+        ratesPlansRequest.push({
+          code: ratePlan.value,
+          name: ratePlan.text
         });
       });
+
+      // Mostrar Alerta de Error
+      if(ratesPlansRequest.length == 0){
+        
+         this.$appAlert({
+          type: 'error',
+          title: this.$t('Select at least one rate plan'),
+          showCloseButton: true,
+          showConfirmButton:false,
+          showCancelButton:false
+        });
+
+      }
+      else {
+
+        let request = {
+          IdHotel : hotelId,
+          Dates : datesRequest,
+          RatePlans: ratesPlansRequest,
+          RatePlanOption : ratePlan,
+          RoomOption : room,
+          Status : status
+        }
+
+        this.loadingClosure = true;
+        this.showClosure = false;
+
+        //Request API
+        RoomsClosureService.saveRoomsClosure(hotelId,request)
+        .then(response =>{
+          console.log(response);
+
+          this.loadClosure();
+
+        },error =>{
+          this.loadingClosure = false;
+          this.showClosure = true;
+          this.$appAlert({
+          type: "warning",
+          title: this.$t('Couldn\'t Save The Closure'),
+          confirmButtonText: this.$t("Exit"),
+          confirmButtonColor: "#d33"
+          });
+        });
+      }
+
+
     },
     //Get Rateplans By Hotel Id
     loadRatePlans(hotelId){
