@@ -184,6 +184,7 @@
 
             document.addEventListener("mousemove", function () {
                 interact = true;
+                console.log(interact);
             });
 
             //session warning

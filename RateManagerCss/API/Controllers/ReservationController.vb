@@ -178,7 +178,7 @@ Namespace API.Controller
 
         'Get api/reservations/1978/history/log
         <Route("{reservationId:int}/history/log"), HttpGet>
-        Public Function GetReservationHistoryLog(ByVal reservationId As Integer) As IEnumerable(Of spReservationLog_Result1)
+        Public Function GetReservationHistoryLog(ByVal reservationId As Integer) As IEnumerable(Of spReservationLog_Result2)
 
             Dim logs = ReservationService.GetReservationHistoryLog(reservationId.ToString())
 

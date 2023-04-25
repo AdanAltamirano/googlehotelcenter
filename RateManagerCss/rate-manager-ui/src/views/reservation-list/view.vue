@@ -177,14 +177,18 @@ export default {
         defaultDates() {
             const start = new Date();
             start.setMonth(start.getMonth() - 1);
+            
+            let dateEnd = new Date();
+            dateEnd.setDate(dateEnd.getDate() + 1);
+
             return {
                 start: start,
-                end: new Date()
+                end: dateEnd
             };
         },
         defaultSearch() {
             const x = this.defaultDates();
-            const s = `Status eq 1 and ReservationDate gt ${this.$moment(x.start).format("YYYY-MM-DD")} 
+            const s = `Status eq 1 and ReservationDate ge ${this.$moment(x.start).format("YYYY-MM-DD")} 
             and ReservationDate lt ${this.$moment(x.end).format("YYYY-MM-DD")}`;
             return s;
         }

@@ -235,7 +235,13 @@
     <Compile Include="Models\ReservationsDeposits.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\spReservationLog_Result.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\spReservationLog_Result1.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\spReservationLog_Result2.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\spReservationReactive_Result.cs">

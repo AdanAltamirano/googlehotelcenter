@@ -1704,7 +1704,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <EntitySet Name="Reservaciones_Movimientos_Log" EntityType="Models.Reservaciones_Movimientos_Log" />
           <EntitySet Name="vReservationLog" EntityType="Models.vReservationLog" />
           <EntitySet Name="vReservationDetails" EntityType="Models.vReservationDetails" />
-          <FunctionImport Name="spReservationLog" ReturnType="Collection(Models.spReservationLog_Result1)">
+          <FunctionImport Name="spReservationLog" ReturnType="Collection(Models.spReservationLog_Result2)">
             <Parameter Name="ReservationId" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
@@ -2906,6 +2906,16 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <Property Type="String" Name="Source" Nullable="false" MaxLength="1" />
           <Property Type="String" Name="Reason" Nullable="false" />
         </ComplexType>
+        <ComplexType Name="spReservationLog_Result2">
+          <Property Type="Int32" Name="idLog" Nullable="false" />
+          <Property Type="DateTime" Name="Date" Nullable="true" Precision="23" />
+          <Property Type="Int32" Name="IdUser" Nullable="false" />
+          <Property Type="String" Name="User" Nullable="true" MaxLength="80" />
+          <Property Type="String" Name="ReservationNumber" Nullable="false" MaxLength="25" />
+          <Property Type="Int32" Name="Action" Nullable="true" />
+          <Property Type="String" Name="Source" Nullable="false" MaxLength="2" />
+          <Property Type="String" Name="Reason" Nullable="true" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3979,7 +3989,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="spReservationLog" FunctionName="Models.Store.spReservationLog">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="Models.spReservationLog_Result1">
+              <ComplexTypeMapping TypeName="Models.spReservationLog_Result2">
                 <ScalarProperty Name="idLog" ColumnName="idLog" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="IdUser" ColumnName="IdUser" />
