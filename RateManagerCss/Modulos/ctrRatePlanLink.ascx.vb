@@ -277,7 +277,15 @@ Partial Class ctrRatePlanLink
         Dim isNetRateSrc As Boolean = False
         Dim isNetRateTrg As Boolean = False
         Dim idMonedaSource = GetidMoneda(Me.ddlRatePlanSource.SelectedValue, isNetRateSrc)
-        Dim idMonedaTarget = GetidMoneda(Me.ddlRatePlanTarget.SelectedValue, isNetRateTrg)
+        Dim idMonedaTarget = 0
+
+        If Me.Editar Then
+            idMonedaTarget = GetidMoneda(Me.Target, isNetRateTrg)
+        Else
+            idMonedaTarget = GetidMoneda(Me.ddlRatePlanTarget.SelectedValue, isNetRateTrg)
+        End If
+
+
         Dim sData As String = ""
         Dim sDataPrev As String = ""
 

@@ -255,7 +255,7 @@ namespace APIServices
                 model.TotalDetails.Taxes = Math.Round(totalTax - (totalTax / ((tax / 100) + 1)), 2);
                 
                 model.TotalDetails.Currency = details.currency;
-                model.TotalDetails.Commission = Convert.ToDouble((details.IsNetRateUV ? details.total - details.totalNetRate : 0));
+                model.TotalDetails.Commission = Convert.ToDouble((details.IsNetRateUV ? (details.total - details.totalNetRate > 0)? details.total - details.totalNetRate : 0 : 0));
 
                 Permissions(ref model, isSupervisor, isUserChain, isUsuarioHotelAssociation, idCorporateUserChain, idCorporatePortal, idAsociationPb, idAsociation);
             }
