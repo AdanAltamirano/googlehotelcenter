@@ -5,9 +5,12 @@
 			<es-MX valor="Reservación # {0}" />
 			<en-US valor="Reservation # {0}" />
 		</subject>
-		<from valor="javier@oz.com.mx" />
-		
-		
+		<from  valor="custsrvc@internetpowerhotel.com" />
+		<smtpServer valor="smtp.mandrillapp.com"/>
+		<userName valor="javier@univisit.com"/>
+		<password valor="NCxlNTHApCDYtSZjtyRvvQ"/>
+		<port valor="587"/>
+		<ssl valor="true"/>
 		<html>
 			<es-MX valor="/Hotel/emails/html/ReservationSummaryHotel_ES.htm" />
 			<en-US valor="/Hotel/emails/html/ReservationSummaryHotel_EN.htm" />

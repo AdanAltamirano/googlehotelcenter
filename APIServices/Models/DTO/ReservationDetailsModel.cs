@@ -46,6 +46,7 @@ namespace APIServices.Models.DTO
         public bool AllowsModify { get; set; } = false;
         public bool AllowsReactivate { get; set; } = false;
         public bool AllowsConfirm { get; set; } = false;
+        public bool AllowsSendConfirmationEmail { get; set; } = false;
 
         public string CancellationReason { get; set; }
         public string ModificationReason { get; set; }

@@ -493,6 +493,7 @@ namespace APIServices
 
 
                         model.AllowsModify = isSupervisor ? true : false;
+                        model.AllowsSendConfirmationEmail = true;
 
                     }
 

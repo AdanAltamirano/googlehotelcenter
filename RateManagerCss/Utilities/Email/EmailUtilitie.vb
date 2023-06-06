@@ -31,7 +31,7 @@ Namespace Utitlities.Email
                         End If
                     End If
                     With New Miscelaneos.SendHotelEmails
-                        .sendCustomerEmailReservation(xml, idioma)
+                        .sendCustomerEmailReservation(xml, idioma, True)
                         .SendEmailtoAlHotel(xml, idioma)
 
                         Util.Utility.MailerSend("Reserva", .GetBody())
@@ -75,7 +75,7 @@ Namespace Utitlities.Email
                         End If
                     End If
                     With New Miscelaneos.SendHotelEmails
-                        .sendCustomerEmailReservation(xml, idioma)
+                        .sendCustomerEmailReservation(xml, idioma, False)
                     End With
 
                     isSent = True

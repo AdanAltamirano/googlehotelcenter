@@ -1957,6 +1957,7 @@ Partial Class ReservationDetails
         Dim noreservacion As String
         Dim trans As Boolean
         Dim dt As Date
+        Dim idHotel As Integer
 
         trans = False
         sqlconn.Open()
@@ -1974,6 +1975,7 @@ Partial Class ReservationDetails
             src = dr("source").ToString.ToUpper.Trim
             dt = dr(dsReservaciones.FIELD_CHECKIN)
             noreservacion = dr(dsReservaciones.FIELD_NORESERVACION)
+            idHotel = CType(dr(dsReservaciones.FIELD_IDHOTEL), Integer)
 
             Dim sqlcmd As New SqlCommand("spReservationReactive", sqlconn)
             sqlcmd.CommandType = CommandType.StoredProcedure
@@ -1985,7 +1987,10 @@ Partial Class ReservationDetails
             transacc.Commit()
             trans = False
             If afec > 0 Then
-                enviarcorreo(dsReservaciones, False)
+
+                MyBase.guardalog("/HotelAdministrator/Pages/ReservationDetails.aspx?qs=" & IdReservacion, PaginaBase.acciones.Modificar, "Se reactivo la reservacion  " & noreservacion, "", "", "", hotelId:=idHotel, noReservacion:=noreservacion)
+
+                'enviarcorreo(dsReservaciones, False)
 
                 Dim NR As New WSHotelDataAccess.clsDANetRates
                 'NR.InsertNetRateMail(dr(dsReservaciones.FIELD_NORESERVACION), WSHotelRules.clsRUCommon.eEmailTypeNetRate.Cancel, False, DateTime.Now)
@@ -1994,7 +1999,7 @@ Partial Class ReservationDetails
                 Dim PMS As New WSHotelRules.clsRUPMS
                 PMS.ExecuteOperation(dr(dsReservaciones.FIELD_NORESERVACION), eOperationPMS.Active)
 
-                MyBase.guardalog("/HotelAdministrator/Pages/ReservationDetails.aspx?qs=" & IdReservacion, PaginaBase.acciones.Modificar, "Se reactivo la reservacion  " & noreservacion)
+
                 Return True
             Else
                 Return False
@@ -2082,6 +2087,7 @@ Partial Class ReservationDetails
 
                 End If
                 Dim idReservacion As String = .Item(dsReservaciones.FIELD_IDRESERVACION)
+                Dim hotelId As Integer = .Item(dsReservaciones.FIELD_IDHOTEL)
 
                 If LocalCancel(idReservacion, GalileoConfCancelNumber, CInt(Val(.Item("idUsuario").ToString)), NoCancelacion, idReservacion.ToString) Then
 
@@ -2101,8 +2107,7 @@ Partial Class ReservationDetails
 
                     Threading.Thread.CurrentThread.CurrentUICulture = gUI
                     PortalCulture.SetCulture(gUI.ToString)
-                    Me.guardalog("/HotelAdministrator/Pages/ReservationDetails.aspx", PaginaBase.acciones.Eliminar, "Cancel� la reservacion " & idReservacion)
-
+                    Me.guardalog("/HotelAdministrator/Pages/ReservationDetails.aspx?qs=" & idReservacion, PaginaBase.acciones.Eliminar, "Cancelo la reservacion " & idReservacion, "", "", "", hotelId:=hotelId, noReservacion:=idReservacion)
                     MyBase.OTA_PushNotif(cInfoActual.Hotel)
 
                     If Not String.IsNullOrEmpty(AppSettings("ZunUrl")) Then
@@ -2961,12 +2966,18 @@ Partial Class ReservationDetails
             End Try
 
             If success Then
-                Dim reservaDatos As ReservaDatos
+                Dim dsReservaciones As ReservaDatos
                 With (New ReservaFacade)
-                    reservaDatos = .GetDataReserva(CInt(Request.QueryString("qs")))
+                    dsReservaciones = .GetDataReserva(CInt(Request.QueryString("qs")))
                 End With
 
-                enviarcorreo(reservaDatos, False, True)
+                Dim dr As DataRow = dsReservaciones.Tables(dsReservaciones.RESERVA_TABLE).Rows(0)
+                Dim noreservacion As String = dr(dsReservaciones.FIELD_NORESERVACION)
+                Dim idHotel As Integer = CType(dr(dsReservaciones.FIELD_IDHOTEL), Integer)
+
+                MyBase.guardalog("/HotelAdministrator/Pages/ReservationDetails.aspx?qs=" & IdReservacion, PaginaBase.acciones.Modificar, "Se modifico la reservacion  " & noreservacion, "", "", "", hotelId:=idHotel, noReservacion:=noreservacion)
+
+                enviarcorreo(dsReservaciones, False, True)
                 MyBase.OTA_PushNotif(cInfoActual.Hotel)
             End If
         End With

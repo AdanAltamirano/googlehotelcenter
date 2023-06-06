@@ -199,43 +199,50 @@ Public Class clsGetAvail
             GetRestricted(dr, minS, MaxS, AdvB, StatusA, noarrivosS, checkin)
             '//'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             '//la configuracion  de los bloqueos y configuracion de lo s planes por fechas
-            drsRule = ds.Tables(3).Select("fecha='" & checkin.ToString("yyyy/MM/dd") & "' and codigotarifa='" & dr("CodigoTarifa") & "'")
-            If drsRule.Length > 0 Then
-                GetRestricted(drsRule(0), minS, MaxS, AdvB, StatusA, noarrivosS, checkin, "lrp")
-            End If
-            '//'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-            '//'''''''''' leo la configuracion de las tarifas '''''''''''''''''''''''''''''''''
-            drtemp = getRateLinked(ds, dr, dr("CodigoTarifa"), dr("idtipohabitacion_hotel"))
-            drsRule = ds.Tables(5).Select("fechainicia<=#" & checkin.ToString("M/dd/yy") & "# and RateCode='" & drtemp("RateCode") & "'" _
-                & "and fechaFinaliza>=#" & checkin.ToString("M/dd/yy") & "#")
-            If drsRule.Length > 0 Then
-                If Not drsRule(0).IsNull("tRateRulesDefault") AndAlso Not drsRule(0)("tRateRulesDefault") Then
-                    minS = 1
-                    MaxS = Byte.MaxValue
-                    AdvB = 0
-                    noarrivosS = ""
+
+            If ds.Tables.Count > 6 Then
+
+                drsRule = ds.Tables(3).Select("fecha='" & checkin.ToString("yyyy/MM/dd") & "' and codigotarifa='" & dr("CodigoTarifa") & "'")
+                If drsRule.Length > 0 Then
+                    GetRestricted(drsRule(0), minS, MaxS, AdvB, StatusA, noarrivosS, checkin, "lrp")
                 End If
-                GetRestricted(drsRule(0), minS, MaxS, AdvB, StatusA, noarrivosS, checkin, "T")
-            End If
-            '//''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-            f = checkin
-            If Not ValidateRestricted(checkin, noarrivosS, et2) Then
-                'Exit For
-            End If
-            '//''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-            qtyRooms = -1
-            Porc = -1
-            If Not dr.IsNull("QtyRooms") Then
-                qtyRooms = dr("QtyRooms")
-            End If
-            If Not dr.IsNull("VQtyRooms") Then
-                qtyRooms = dr("VQtyRooms")
-            End If
+                '//'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                '//'''''''''' leo la configuracion de las tarifas '''''''''''''''''''''''''''''''''
+                drtemp = getRateLinked(ds, dr, dr("CodigoTarifa"), dr("idtipohabitacion_hotel"))
+                drsRule = ds.Tables(5).Select("fechainicia<=#" & checkin.ToString("M/dd/yy") & "# and RateCode='" & drtemp("RateCode") & "'" _
+                    & "and fechaFinaliza>=#" & checkin.ToString("M/dd/yy") & "#")
+                If drsRule.Length > 0 Then
+                    If Not drsRule(0).IsNull("tRateRulesDefault") AndAlso Not drsRule(0)("tRateRulesDefault") Then
+                        minS = 1
+                        MaxS = Byte.MaxValue
+                        AdvB = 0
+                        noarrivosS = ""
+                    End If
+                    GetRestricted(drsRule(0), minS, MaxS, AdvB, StatusA, noarrivosS, checkin, "T")
+                End If
 
 
-            ApplyRulesRatesSeasson(ds, dr("RateCode"), minS, MaxS, AdvB, StatusA, checkin _
-            , noarrivosS, dr("codigotarifa"), dr("RoomCode"), dr("idtipohabitacion_hotel"), qtyRooms, Porc, _
-            dr("RateCodeV"), dr("idtipohabvinc"), et2, price1, price2, hab, res, dr)
+                '//''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                f = checkin
+                If Not ValidateRestricted(checkin, noarrivosS, et2) Then
+                    'Exit For
+                End If
+                '//''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                qtyRooms = -1
+                Porc = -1
+                If Not dr.IsNull("QtyRooms") Then
+                    qtyRooms = dr("QtyRooms")
+                End If
+                If Not dr.IsNull("VQtyRooms") Then
+                    qtyRooms = dr("VQtyRooms")
+                End If
+
+
+                ApplyRulesRatesSeasson(ds, dr("RateCode"), minS, MaxS, AdvB, StatusA, checkin _
+                , noarrivosS, dr("codigotarifa"), dr("RoomCode"), dr("idtipohabitacion_hotel"), qtyRooms, Porc,
+                dr("RateCodeV"), dr("idtipohabvinc"), et2, price1, price2, hab, res, dr)
+
+            End If
 
             If drsGral.Length > 0 Then
                 GetRestrictedHotel(drsGral(0), minS, MaxS, checkin, "LG")
