@@ -755,8 +755,15 @@ Public Class Promotions
                 If Not ds Is Nothing AndAlso ds.Tables(0).Rows.Count > 0 Then
                     Dim startDate, endDate As Date
 
-                    bookingWindowFrom.Text = IIf(Date.TryParse(ds.Tables(0).Rows(0)("fechaInicio"), startDate), startDate.ToString("dd/MM/yyyy"), "")
-                    bookingWindowTo.Text = IIf(Date.TryParse(ds.Tables(0).Rows(0)("fechaFin"), endDate), endDate.ToString("dd/MM/yyyy"), "")
+                    If ds.Tables(0).Rows(0)("fechaInicio") IsNot DBNull.Value Then
+                        IIf(Date.TryParse(ds.Tables(0).Rows(0)("fechaInicio"), startDate), startDate.ToString("dd/MM/yyyy"), "")
+                    End If
+
+                    If ds.Tables(0).Rows(0)("fechaFin") IsNot DBNull.Value Then
+                        IIf(Date.TryParse(ds.Tables(0).Rows(0)("fechaFin"), startDate), startDate.ToString("dd/MM/yyyy"), "")
+                    End If
+
+
 
                     If ds.Tables(0).Rows(0)("horaInicio") Is DBNull.Value Or ds.Tables(0).Rows(0)("horaInicio").ToString().Length = 0 Then
                         CheckBoxDefHora.Checked = False
