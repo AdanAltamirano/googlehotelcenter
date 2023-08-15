@@ -1694,10 +1694,12 @@
 
             if ($("#txtCancelPolicyDescription").val() === "") {
                 $("#txtCancelPolicyDescription").addClass("incorrect");
+                isValid = false;
             }
 
             if ($("#ddlCancelationPolicy")[0].selectedIndex == 0 || $("#txtCancellationPolicy").val() === "") {
                 $(".cancelPolicy").addClass("incorrect");
+                isValid = false;
 
             }
             return isValid;
