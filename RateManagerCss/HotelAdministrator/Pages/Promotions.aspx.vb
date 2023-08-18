@@ -756,13 +756,15 @@ Public Class Promotions
                     Dim startDate, endDate As Date
 
                     If ds.Tables(0).Rows(0)("fechaInicio") IsNot DBNull.Value Then
-                        IIf(Date.TryParse(ds.Tables(0).Rows(0)("fechaInicio"), startDate), startDate.ToString("dd/MM/yyyy"), "")
-                        bookingWindowFrom.Text = startDate
+                        'IIf(Date.TryParse(ds.Tables(0).Rows(0)("fechaInicio"), startDate), startDate.ToString("dd/MM/yyyy"), "")
+                        bookingWindowFrom.Text = CType(ds.Tables(0).Rows(0)("fechaInicio"), Date).ToString("dd/MM/yyyy")
+
+
                     End If
 
                     If ds.Tables(0).Rows(0)("fechaFin") IsNot DBNull.Value Then
-                        IIf(Date.TryParse(ds.Tables(0).Rows(0)("fechaFin"), endDate), endDate.ToString("dd/MM/yyyy"), "")
-                        bookingWindowTo.Text = endDate
+                        'IIf(Date.TryParse(ds.Tables(0).Rows(0)("fechaFin"), endDate), endDate.ToString("dd/MM/yyyy"), "")
+                        bookingWindowTo.Text = CType(ds.Tables(0).Rows(0)("fechaFin"), Date).ToString("dd/MM/yyyy")
                     End If
 
 
