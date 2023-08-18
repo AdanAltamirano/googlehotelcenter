@@ -200,7 +200,7 @@ Public Class clsGetAvail
             '//'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             '//la configuracion  de los bloqueos y configuracion de lo s planes por fechas
 
-            If ds.Tables.Count > 6 Then
+            If ds.Tables.Count >= 6 Then
 
                 drsRule = ds.Tables(3).Select("fecha='" & checkin.ToString("yyyy/MM/dd") & "' and codigotarifa='" & dr("CodigoTarifa") & "'")
                 If drsRule.Length > 0 Then

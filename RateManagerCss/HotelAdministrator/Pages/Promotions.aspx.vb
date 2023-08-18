@@ -389,11 +389,11 @@ Public Class Promotions
                         Me.txtAddValueDescription.Update(idPromoDescription, publish)
                         If bookingWindowFrom.Text <> "" AndAlso bookingWindowTo.Text <> "" Then
                             If CheckBoxDefHora.Checked = True Then
-                                .InsertRatePlanDeal(Me.txtPromotionCode.Text.ToUpper, Me.m_iHotelId, Date.ParseExact(bookingWindowFrom.Text, "dd/MM/yyyy", Globalization.DateTimeFormatInfo.InvariantInfo).ToString("MM/dd/yyyy"),
-                                                    Date.ParseExact(bookingWindowTo.Text, "dd/MM/yyyy", Globalization.DateTimeFormatInfo.InvariantInfo).ToString("MM/dd/yyyy"), HoraInicio.SelectedValue & ":" & MinutoInicio.SelectedValue, HoraFin.SelectedValue & ":" & MinutoFin.SelectedValue)
+                                .InsertRatePlanDeal(Me.txtPromotionCode.Text.ToUpper, Me.m_iHotelId, Date.ParseExact(bookingWindowFrom.Text, "dd/MM/yyyy", Globalization.DateTimeFormatInfo.InvariantInfo),
+                                                    Date.ParseExact(bookingWindowTo.Text, "dd/MM/yyyy", Globalization.DateTimeFormatInfo.InvariantInfo), HoraInicio.SelectedValue & ":" & MinutoInicio.SelectedValue, HoraFin.SelectedValue & ":" & MinutoFin.SelectedValue)
                             Else
-                                .InsertRatePlanDeal(Me.txtPromotionCode.Text.ToUpper, Me.m_iHotelId, Date.ParseExact(bookingWindowFrom.Text, "dd/MM/yyyy", Globalization.DateTimeFormatInfo.InvariantInfo).ToString("MM/dd/yyyy"),
-                                                    Date.ParseExact(bookingWindowTo.Text, "dd/MM/yyyy", Globalization.DateTimeFormatInfo.InvariantInfo).ToString("MM/dd/yyyy"), "", "")
+                                .InsertRatePlanDeal(Me.txtPromotionCode.Text.ToUpper, Me.m_iHotelId, Date.ParseExact(bookingWindowFrom.Text, "dd/MM/yyyy", Globalization.DateTimeFormatInfo.InvariantInfo),
+                                                    Date.ParseExact(bookingWindowTo.Text, "dd/MM/yyyy", Globalization.DateTimeFormatInfo.InvariantInfo), "", "")
                             End If
                         End If
 
@@ -534,11 +534,11 @@ Public Class Promotions
 
                     If bookingWindowFrom.Text <> "" AndAlso bookingWindowTo.Text <> "" Then
                         If CheckBoxDefHora.Checked = True Then
-                            .UpdateRatePlanDeal(IdRatePlan, Me.m_iHotelId, Date.ParseExact(bookingWindowFrom.Text, "dd/MM/yyyy", Globalization.DateTimeFormatInfo.InvariantInfo).ToString("MM/dd/yyyy"),
-                                                Date.ParseExact(bookingWindowTo.Text, "dd/MM/yyyy", Globalization.DateTimeFormatInfo.InvariantInfo).ToString("MM/dd/yyyy"), HoraInicio.SelectedValue & ":" & MinutoInicio.SelectedValue, HoraFin.SelectedValue & ":" & MinutoFin.SelectedValue)
+
+                            .UpdateRatePlanDeal(IdRatePlan, Me.m_iHotelId, Date.ParseExact(bookingWindowFrom.Text, "dd/MM/yyyy", Globalization.DateTimeFormatInfo.InvariantInfo), Date.ParseExact(bookingWindowTo.Text, "dd/MM/yyyy", Globalization.DateTimeFormatInfo.InvariantInfo), HoraInicio.SelectedValue & ":" & MinutoInicio.SelectedValue, HoraFin.SelectedValue & ":" & MinutoFin.SelectedValue)
                         Else
-                            .UpdateRatePlanDeal(IdRatePlan, Me.m_iHotelId, Date.ParseExact(bookingWindowFrom.Text, "dd/MM/yyyy", Globalization.DateTimeFormatInfo.InvariantInfo).ToString("MM/dd/yyyy"),
-                                                Date.ParseExact(bookingWindowTo.Text, "dd/MM/yyyy", Globalization.DateTimeFormatInfo.InvariantInfo).ToString("MM/dd/yyyy"), "", "")
+
+                            .UpdateRatePlanDeal(IdRatePlan, Me.m_iHotelId, Date.ParseExact(bookingWindowFrom.Text, "dd/MM/yyyy", Globalization.DateTimeFormatInfo.InvariantInfo), Date.ParseExact(bookingWindowTo.Text, "dd/MM/yyyy", Globalization.DateTimeFormatInfo.InvariantInfo), "", "")
                         End If
                     Else
                         .DelRateRatePlanDeal(IdRatePlan, Me.m_iHotelId)
@@ -757,10 +757,12 @@ Public Class Promotions
 
                     If ds.Tables(0).Rows(0)("fechaInicio") IsNot DBNull.Value Then
                         IIf(Date.TryParse(ds.Tables(0).Rows(0)("fechaInicio"), startDate), startDate.ToString("dd/MM/yyyy"), "")
+                        bookingWindowFrom.Text = startDate
                     End If
 
                     If ds.Tables(0).Rows(0)("fechaFin") IsNot DBNull.Value Then
-                        IIf(Date.TryParse(ds.Tables(0).Rows(0)("fechaFin"), startDate), startDate.ToString("dd/MM/yyyy"), "")
+                        IIf(Date.TryParse(ds.Tables(0).Rows(0)("fechaFin"), endDate), endDate.ToString("dd/MM/yyyy"), "")
+                        bookingWindowTo.Text = endDate
                     End If
 
 
@@ -1395,6 +1397,7 @@ Public Class Promotions
             NoArr &= cheked
         Next
         Return NoArr
+
     End Function
 
     Private Function GetSpecificDays() As String
@@ -1406,6 +1409,7 @@ Public Class Promotions
             NoArr &= cheked
         Next
         Return NoArr
+
     End Function
 
     Public Function validaTexto(ByVal bIdioma As Boolean, ByVal txtControlIdioma As CtrlIdioma, ByVal idDicc As Integer) As String

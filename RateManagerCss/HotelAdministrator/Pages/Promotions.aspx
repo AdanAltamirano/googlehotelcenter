@@ -609,13 +609,22 @@
                                 <label for="open_SpecificDate">Promo válida para días específicos.</label>-->
                                     <div class="weekDays toggle">
                                         <asp:CheckBoxList runat="server" ID="ckhlSpecificDay" RepeatDirection="Horizontal" TextAlign="Left">
-                                            <asp:ListItem Text="Dom" Value="1" Selected="True"></asp:ListItem>
+                                            <%--<asp:ListItem Text="Dom" Value="1" Selected="True"></asp:ListItem>
                                             <asp:ListItem Text="Lun" Value="2" Selected="True"></asp:ListItem>
                                             <asp:ListItem Text="Mar" Value="3" Selected="True"></asp:ListItem>
                                             <asp:ListItem Text="Mie" Value="4" Selected="True"></asp:ListItem>
                                             <asp:ListItem Text="Jue" Value="5" Selected="True"></asp:ListItem>
                                             <asp:ListItem Text="Vie" Value="6" Selected="True"></asp:ListItem>
-                                            <asp:ListItem Text="Sab" Value="7" Selected="True"></asp:ListItem>
+                                            <asp:ListItem Text="Sab" Value="7" Selected="True"></asp:ListItem>--%>
+
+                                            <asp:ListItem Text="Lun" Value="1" Selected="True"></asp:ListItem>
+                                            <asp:ListItem Text="Mar" Value="2" Selected="True"></asp:ListItem>
+                                            <asp:ListItem Text="Mie" Value="3" Selected="True"></asp:ListItem>
+                                            <asp:ListItem Text="Jue" Value="4" Selected="True"></asp:ListItem>
+                                            <asp:ListItem Text="Vie" Value="5" Selected="True"></asp:ListItem>
+                                            <asp:ListItem Text="Sab" Value="6" Selected="True"></asp:ListItem>
+                                            <asp:ListItem Text="Dom" Value="7" Selected="True"></asp:ListItem>
+
                                         </asp:CheckBoxList>
                                     </div>
                                 </div>
@@ -625,13 +634,22 @@
                                 <label for="open_SpecificArrivals">Promo aplica días de llegada específicos.</label>-->
                                     <div class="weekDays toggle">
                                         <asp:CheckBoxList runat="server" ID="chklSpecificArrivals" RepeatDirection="Horizontal" TextAlign="Left">
-                                            <asp:ListItem Text="Dom" Value="1" Selected="True"></asp:ListItem>
+                                           <%-- <asp:ListItem Text="Dom" Value="1" Selected="True"></asp:ListItem>
                                             <asp:ListItem Text="Lun" Value="2" Selected="True"></asp:ListItem>
                                             <asp:ListItem Text="Mar" Value="3" Selected="True"></asp:ListItem>
                                             <asp:ListItem Text="Mie" Value="4" Selected="True"></asp:ListItem>
                                             <asp:ListItem Text="Jue" Value="5" Selected="True"></asp:ListItem>
                                             <asp:ListItem Text="Vie" Value="6" Selected="True"></asp:ListItem>
-                                            <asp:ListItem Text="Sab" Value="7" Selected="True"></asp:ListItem>
+                                            <asp:ListItem Text="Sab" Value="7" Selected="True"></asp:ListItem>--%>
+                                            
+                                            <asp:ListItem Text="Lun" Value="1" Selected="True"></asp:ListItem>
+                                            <asp:ListItem Text="Mar" Value="2" Selected="True"></asp:ListItem>
+                                            <asp:ListItem Text="Mie" Value="3" Selected="True"></asp:ListItem>
+                                            <asp:ListItem Text="Jue" Value="4" Selected="True"></asp:ListItem>
+                                            <asp:ListItem Text="Vie" Value="5" Selected="True"></asp:ListItem>
+                                            <asp:ListItem Text="Sab" Value="6" Selected="True"></asp:ListItem>
+                                            <asp:ListItem Text="Dom" Value="7" Selected="True"></asp:ListItem>
+
                                         </asp:CheckBoxList>
                                     </div>
                                 </div>
