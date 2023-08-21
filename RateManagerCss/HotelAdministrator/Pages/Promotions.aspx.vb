@@ -1360,57 +1360,67 @@ Public Class Promotions
 
     Private Sub getNoArrrivalsField(ByVal Field As String)
         If Field <> "" Then
-            Dim i As Integer = 1
-            For Each item As ListItem In chklSpecificArrivals.Items
-                item.Selected = False
-                Try
-                    If Field.Substring(i - 1, 1) = "Y" Then
-                        item.Selected = True
-                    End If
-                Catch ex As Exception
-                End Try
-                i += 1
-            Next
+
+            Dim fieldArr As Char() = Field.ToCharArray()
+
+            'Empieza en la 0 Domingo en la UI - Guardado Empieza en la 0 Lunes data
+            chklSpecificArrivals.Items(0).Selected = IIf(fieldArr(6) = "Y", True, False)
+            chklSpecificArrivals.Items(1).Selected = IIf(fieldArr(0) = "Y", True, False)
+            chklSpecificArrivals.Items(2).Selected = IIf(fieldArr(1) = "Y", True, False)
+            chklSpecificArrivals.Items(3).Selected = IIf(fieldArr(2) = "Y", True, False)
+            chklSpecificArrivals.Items(4).Selected = IIf(fieldArr(3) = "Y", True, False)
+            chklSpecificArrivals.Items(5).Selected = IIf(fieldArr(4) = "Y", True, False)
+            chklSpecificArrivals.Items(6).Selected = IIf(fieldArr(5) = "Y", True, False)
+
         End If
     End Sub
 
     Private Sub LoadSpecificDaysField(ByVal Field As String)
         If Field <> "" Then
-            Dim i As Integer = 1
-            For Each item As ListItem In ckhlSpecificDay.Items
-                item.Selected = False
-                Try
-                    If Field.Substring(i - 1, 1) = "Y" Then
-                        item.Selected = True
-                    End If
-                Catch ex As Exception
-                End Try
-                i += 1
-            Next
+
+            Dim fieldArr As Char() = Field.ToCharArray()
+
+            'Empieza en la 0 Domingo en la UI - Guardado Empieza en la 0 Lunes data
+            ckhlSpecificDay.Items(0).Selected = IIf(fieldArr(6) = "Y", True, False)
+            ckhlSpecificDay.Items(1).Selected = IIf(fieldArr(0) = "Y", True, False)
+            ckhlSpecificDay.Items(2).Selected = IIf(fieldArr(1) = "Y", True, False)
+            ckhlSpecificDay.Items(3).Selected = IIf(fieldArr(2) = "Y", True, False)
+            ckhlSpecificDay.Items(4).Selected = IIf(fieldArr(3) = "Y", True, False)
+            ckhlSpecificDay.Items(5).Selected = IIf(fieldArr(4) = "Y", True, False)
+            ckhlSpecificDay.Items(6).Selected = IIf(fieldArr(5) = "Y", True, False)
+
         End If
     End Sub
 
     Private Function GetArrivosField() As String
-        Dim NoArr As String = ""
-        Dim cheked As String
-        For Each item As ListItem In chklSpecificArrivals.Items
-            cheked = "Y"
-            If Not item.Selected Then cheked = "N"
-            NoArr &= cheked
-        Next
-        Return NoArr
+
+        Dim arrDays(7) As Char
+
+        arrDays(0) = IIf(chklSpecificArrivals.Items(1).Selected = True, "Y", "N")
+        arrDays(1) = IIf(chklSpecificArrivals.Items(2).Selected = True, "Y", "N")
+        arrDays(2) = IIf(chklSpecificArrivals.Items(3).Selected = True, "Y", "N")
+        arrDays(3) = IIf(chklSpecificArrivals.Items(4).Selected = True, "Y", "N")
+        arrDays(4) = IIf(chklSpecificArrivals.Items(5).Selected = True, "Y", "N")
+        arrDays(5) = IIf(chklSpecificArrivals.Items(6).Selected = True, "Y", "N")
+        arrDays(6) = IIf(chklSpecificArrivals.Items(0).Selected = True, "Y", "N")
+
+        Return New String(arrDays)
 
     End Function
 
     Private Function GetSpecificDays() As String
-        Dim NoArr As String = ""
-        Dim cheked As String
-        For Each item As ListItem In ckhlSpecificDay.Items
-            cheked = "Y"
-            If Not item.Selected Then cheked = "N"
-            NoArr &= cheked
-        Next
-        Return NoArr
+
+        Dim arrDays(7) As Char
+
+        arrDays(0) = IIf(ckhlSpecificDay.Items(1).Selected = True, "Y", "N")
+        arrDays(1) = IIf(ckhlSpecificDay.Items(2).Selected = True, "Y", "N")
+        arrDays(2) = IIf(ckhlSpecificDay.Items(3).Selected = True, "Y", "N")
+        arrDays(3) = IIf(ckhlSpecificDay.Items(4).Selected = True, "Y", "N")
+        arrDays(4) = IIf(ckhlSpecificDay.Items(5).Selected = True, "Y", "N")
+        arrDays(5) = IIf(ckhlSpecificDay.Items(6).Selected = True, "Y", "N")
+        arrDays(6) = IIf(ckhlSpecificDay.Items(0).Selected = True, "Y", "N")
+
+        Return New String(arrDays)
 
     End Function
 
