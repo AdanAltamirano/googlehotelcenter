@@ -27,24 +27,19 @@ namespace APIServices
         {
             return new DaysOfWeekType()
             {
-                Sun = map[0] == 'Y' ? true : false,
-                Mon = map[1] == 'Y' ? true : false,
-                Tue = map[2] == 'Y' ? true : false,
+                Sun = map[6] == 'Y' ? true : false,
+                Mon = map[0] == 'Y' ? true : false,
+                Tue = map[1] == 'Y' ? true : false,
+                Weds = map[2] == 'Y' ? true : false,
                 Thur = map[3] == 'Y' ? true : false,
-                Weds = map[4] == 'Y' ? true : false,
-                Fri = map[5] == 'Y' ? true : false,
-                Sat = map[6] == 'Y' ? true : false                
+                Fri = map[4] == 'Y' ? true : false,
+                Sat = map[5] == 'Y' ? true : false                
             };
         }
 
         public static string GetDaysOfWeekString(DaysOfWeekType days)
         {
             string strDays = "";
-            if (days.Sun)
-                strDays += "Y";
-            else
-                strDays += "N";
-
             if (days.Mon)
                 strDays += "Y";
             else
@@ -55,12 +50,12 @@ namespace APIServices
             else
                 strDays += "N";
 
-            if (days.Thur)
+            if (days.Weds)
                 strDays += "Y";
             else
                 strDays += "N";
 
-            if (days.Weds)
+            if (days.Thur)
                 strDays += "Y";
             else
                 strDays += "N";
@@ -71,6 +66,11 @@ namespace APIServices
                 strDays += "N";
 
             if (days.Sat)
+                strDays += "Y";
+            else
+                strDays += "N";
+
+            if (days.Sun)
                 strDays += "Y";
             else
                 strDays += "N";

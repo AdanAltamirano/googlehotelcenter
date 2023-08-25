@@ -113,8 +113,11 @@ class formValidation {
             sat: false // 6
         };
 
-        if(_array.length > 0)
-        {
+        console.log(array);
+        console.log(_array);
+
+        //if(_array.length > 0)
+        //{
             if(_array.includes(0)) array.sun = true; else array.sun = false;
             if(_array.includes(1)) array.mon = true; else array.mon = false;
             if(_array.includes(2)) array.tue = true; else array.tue = false;
@@ -122,7 +125,7 @@ class formValidation {
             if(_array.includes(4)) array.thur = true; else array.thur = false;
             if(_array.includes(5)) array.fri = true; else array.fri = false;
             if(_array.includes(6)) array.sat = true; else array.sat = false;
-        }
+        //}
 
         result.sun = array.sun;
         result.mon = array.mon; 

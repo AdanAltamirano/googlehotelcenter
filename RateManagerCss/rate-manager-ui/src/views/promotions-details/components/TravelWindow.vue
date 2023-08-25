@@ -108,20 +108,6 @@
 
 <script>
 export default {
-    created() {
-        this.setDays(this.model.rule.applyDays, 'applyDays');
-        this.setDays(this.model.rule.noArrivals, 'noArrivals');
-        if (this.model.startDate)
-            this.model.startDate = new Date(this.model.startDate);
-        if (this.model.endDate)
-            this.model.endDate = new Date(this.model.endDate);
-        if(this.model.rule.excludedDates.length > 0)
-        {
-            this.model.rule.excludedDates[0].start = new Date(this.model.rule.excludedDates[0].start);
-            this.model.rule.excludedDates[0].end = new Date(this.model.rule.excludedDates[0].end);
-            this.addClosure();
-        }
-    },
     props: {
         dataModel: {
             type: Object,
@@ -145,6 +131,21 @@ export default {
                 end:new Date()
             },
             code:this.$appConfig.session.code
+        }
+    },
+    created() {
+        console.log(this.model.rule._applyDays);
+        this.setDays(this.model.rule.applyDays, 'applyDays');
+        this.setDays(this.model.rule.noArrivals, 'noArrivals');
+        if (this.model.startDate)
+            this.model.startDate = new Date(this.model.startDate);
+        if (this.model.endDate)
+            this.model.endDate = new Date(this.model.endDate);
+        if(this.model.rule.excludedDates.length > 0)
+        {
+            this.model.rule.excludedDates[0].start = new Date(this.model.rule.excludedDates[0].start);
+            this.model.rule.excludedDates[0].end = new Date(this.model.rule.excludedDates[0].end);
+            this.addClosure();
         }
     },
     watch:{
