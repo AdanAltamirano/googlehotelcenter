@@ -1421,6 +1421,7 @@
     <Content Include="Security\logon.aspx" />
     <Content Include="Security\passwordReminder.aspx" />
     <Content Include="Security\unauthorized.aspx" />
+    <Content Include="Session.js" />
     <Content Include="sorry.htm.htm" />
     <Content Include="Styles.css" />
     <Content Include="StyleSheets\Styles.css" />

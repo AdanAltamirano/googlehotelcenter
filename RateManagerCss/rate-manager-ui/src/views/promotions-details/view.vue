@@ -157,7 +157,7 @@ export default {
                     //API
                     noArrivals: {},
                     //View
-                    _noArrivals:[0,1,2,3,4,5,6],
+                    _noArrivals:[],
                     //API
                     applyDays: {},
                     //View

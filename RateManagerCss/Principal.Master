@@ -37,6 +37,53 @@
 
     </script>
 
+    <script type="text/javascript" language="javascript">
+
+        window.time = 0;
+        window.waitingForceLogout;
+
+        function logout() {
+
+            if (!Swal.isVisible()) {
+                Swal.fire({
+                    title: '<%=GetLabel("01655") %>',
+                    text: '<%=GetLabel("01656") %>',
+                    type: 'warning',
+                    confirmButtonText: '<%=GetLabel("01657") %>',
+                    cancelButtonText: '<%=GetLabel("00159") %>',
+                    showCloseButton: false,
+                    showCancelButton: true,
+                    allowOutsideClick: false,
+                    allowEscapeKey: false
+                    }).then(function (result) {
+                        if (result.value) {
+                            console.log('Limpiar')
+                            clearTimeout(window.waitingForceLogout);
+                            resetTimer();
+                        }
+                        else {
+                            window.location = jQuery('#ctl00_linkLogOut').attr('href');
+                    }
+                })
+
+                window.waitingForceLogout = setTimeout(forceLogout, 180000);
+            }
+         }
+
+
+         function resetTimer() {
+            console.log('reset');
+            clearTimeout(window.time);
+             window.time = setTimeout(logout, 300000)
+        }
+
+        function forceLogout() {
+            console.log('Force');
+            window.location = jQuery('#ctl00_linkLogOut').attr('href');
+        }
+
+    </script>
+
 
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
@@ -52,7 +99,7 @@
         }
         jQuery.noConflict();
         
-        jQuery(document).ready(function() {
+        jQuery(document).ready(function () {
 
             //opcionesIcono y preguntas frecuentes
             jQuery("#opcionesIcono, #linkPreguntasFrecuentes").click(function() {
@@ -107,14 +154,12 @@
                 if (window.ratemanager_ui.isUi)
                     functionSetOptionMenu(window.ratemanager_ui.url);
 
-
-                var iframe = jQuery('iframe');
-
+                var iframe = jQuery('#frmPrincipal');
                 iframe[0].contentWindow.addEventListener("mousemove", function () {
-                    interact = true;                   
-                });
-
+                    resetTimer();
+                });                
             });
+
             jQuery(".submenuprin li").click(function() {
                 jQuery(this).parent("ul").toggleClass("hovered");
 
@@ -182,7 +227,22 @@
             	jQuery('.overlay').removeClass('active');
             })
 
-            document.addEventListener("mousemove", function () {
+
+            var initEvents = function () {                
+                // DOM Events
+                document.onmousemove = resetTimer;
+                document.onkeydown = resetTimer
+             };
+
+            window.onload = function () {
+                initEvents();
+                resetTimer();
+            }
+
+
+
+
+            <%--document.addEventListener("mousemove", function () {
                 interact = true;
                 console.log(interact);
             });
@@ -219,7 +279,7 @@
                                 else logOut();
                             })
 
-                            setInterval(sessionWarningTime, 60000);
+                            //setInterval(sessionWarningTime, 60000);
                         }
                     }
                 }
@@ -241,7 +301,7 @@
 
             function logOut() {
                 window.location = jQuery('#ctl00_linkLogOut').attr('href');
-            }
+            }--%>
         });
     </script>
 

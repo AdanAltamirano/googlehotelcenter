@@ -176,7 +176,7 @@ export default {
     Pms
   },
   created() {
-    this.session();
+    //this.session();
     this.showLoader();
     ReservationService.GetDetails(this.reservationId).then(response => {
       this.result = response.body;
