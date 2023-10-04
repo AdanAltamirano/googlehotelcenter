@@ -356,7 +356,7 @@
                         </tr>
                     </table>
                     <%-- Club 100 Info --%>
-                    <div>
+                   <%-- <div>
                         <%If Me.IsClub100Enabled Then%>
                         <div class="Club100Box">
                             <a target="_blank" href="https://crs.univisit.com/club100">
@@ -379,7 +379,7 @@
                         <%Else%>
                         &nbsp;
                         <%End If%>
-                    </div>
+                    </div>--%>
                     <%-- ************* --%>
                     <asp:HyperLink ID="hplLogoCertificacion" runat="server" ImageUrl="../../Images/logoCertificado.JPG"></asp:HyperLink>
                 </td>
