@@ -1471,6 +1471,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API\Controllers\ConfluxController.vb" />
     <Compile Include="API\Controllers\CurrencyController.vb" />
     <Compile Include="API\Controllers\F2GController.vb" />
     <Compile Include="API\Controllers\HotelConfigurationController.vb" />
@@ -1858,6 +1859,10 @@
       <DependentUpon>IPRModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="LogGenerator.vb" />
+    <Compile Include="Models\OtaRequest\BaseGuestAmount.vb" />
+    <Compile Include="Models\OtaRequest\Rate.vb" />
+    <Compile Include="Models\OtaRequest\RateAmountMessage.vb" />
+    <Compile Include="Models\OtaRequest\StatusApplicationControl.vb" />
     <Compile Include="Modulos\ctrlAutoComplete.ascx.designer.vb">
       <DependentUpon>ctrlAutoComplete.ascx</DependentUpon>
     </Compile>

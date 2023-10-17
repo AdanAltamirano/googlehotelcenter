@@ -40,5 +40,30 @@ namespace APIServices.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetHotelsByCorporateId_Result>("GetHotelsByCorporateId", corporateIdParameter);
         }
+    
+        public virtual ObjectResult<Nullable<int>> spCreateUserConfigurationConectivity(Nullable<int> companyId, Nullable<int> hotelId, string userName, string password, Nullable<bool> addToHotelPms)
+        {
+            var companyIdParameter = companyId.HasValue ?
+                new ObjectParameter("companyId", companyId) :
+                new ObjectParameter("companyId", typeof(int));
+    
+            var hotelIdParameter = hotelId.HasValue ?
+                new ObjectParameter("hotelId", hotelId) :
+                new ObjectParameter("hotelId", typeof(int));
+    
+            var userNameParameter = userName != null ?
+                new ObjectParameter("userName", userName) :
+                new ObjectParameter("userName", typeof(string));
+    
+            var passwordParameter = password != null ?
+                new ObjectParameter("password", password) :
+                new ObjectParameter("password", typeof(string));
+    
+            var addToHotelPmsParameter = addToHotelPms.HasValue ?
+                new ObjectParameter("addToHotelPms", addToHotelPms) :
+                new ObjectParameter("addToHotelPms", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spCreateUserConfigurationConectivity", companyIdParameter, hotelIdParameter, userNameParameter, passwordParameter, addToHotelPmsParameter);
+        }
     }
 }

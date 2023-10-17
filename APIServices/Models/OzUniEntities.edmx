@@ -62,6 +62,13 @@
         <Function Name="GetHotelsByCorporateId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="corporateId" Type="int" Mode="In" />
         </Function>
+        <Function Name="spCreateUserConfigurationConectivity" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="companyId" Type="int" Mode="In" />
+          <Parameter Name="hotelId" Type="int" Mode="In" />
+          <Parameter Name="userName" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="password" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="addToHotelPms" Type="bit" Mode="In" />
+        </Function>
         <EntityContainer Name="OzUniModelStoreContainer">
           <EntitySet Name="AplicacionPortal" EntityType="Self.AplicacionPortal" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Ciudades" EntityType="Self.Ciudades" Schema="dbo" store:Type="Tables" />
@@ -95,6 +102,13 @@
           <Parameter Name="corporateId" Mode="In" Type="Int32" />
           </FunctionImport>
           <EntitySet Name="Monedas" EntityType="OzUniModel.Moneda" />
+          <FunctionImport Name="spCreateUserConfigurationConectivity" ReturnType="Collection(Int32)">
+            <Parameter Name="companyId" Mode="In" Type="Int32" />
+            <Parameter Name="hotelId" Mode="In" Type="Int32" />
+            <Parameter Name="userName" Mode="In" Type="String" />
+            <Parameter Name="password" Mode="In" Type="String" />
+            <Parameter Name="addToHotelPms" Mode="In" Type="Boolean" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="AplicacionPortal">
           <Key>
@@ -215,6 +229,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spCreateUserConfigurationConectivity" FunctionName="OzUniModel.Store.spCreateUserConfigurationConectivity" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -229,7 +244,7 @@
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />

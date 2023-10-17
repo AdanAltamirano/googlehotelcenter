@@ -46,6 +46,7 @@
         <EntityTypeShape EntityType="Models.Reservaciones_Movimientos_Log" Width="1.5" PointX="20.375" PointY="10.75" />
         <EntityTypeShape EntityType="Models.vReservationLog" Width="1.5" PointX="20.375" PointY="6.75" />
         <EntityTypeShape EntityType="Models.vReservationDetails" Width="1.5" PointX="3.375" PointY="14.75" />
+        <EntityTypeShape EntityType="Models.vHotelActives" Width="1.5" PointX="11.375" PointY="20.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

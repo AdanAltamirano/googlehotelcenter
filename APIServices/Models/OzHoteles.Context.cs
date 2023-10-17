@@ -63,6 +63,7 @@ namespace APIServices.Models
         public virtual DbSet<Reservaciones_Movimientos_Log> Reservaciones_Movimientos_Log { get; set; }
         public virtual DbSet<vReservationLog> vReservationLog { get; set; }
         public virtual DbSet<vReservationDetails> vReservationDetails { get; set; }
+        public virtual DbSet<vHotelActives> vHotelActives { get; set; }
     
         public virtual int spReservationCancel(Nullable<int> idReservacion, string noConfCancelGalileo, string noCancelacion, string txCode, Nullable<bool> statusConf, string systemCode, string travelAgencyName, string voucher, string wizcomPassOn, string wizcomSequenceNumber, string motivoCancelacion, Nullable<bool> cancelWithError, string sessionId, Nullable<int> iduser)
         {
@@ -383,6 +384,15 @@ namespace APIServices.Models
                 new ObjectParameter("ReservationId", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spReservationLog_Result2>("spReservationLog", reservationIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetCurrentRatesByHotel_Result> spGetCurrentRatesByHotel(Nullable<int> hotelId)
+        {
+            var hotelIdParameter = hotelId.HasValue ?
+                new ObjectParameter("hotelId", hotelId) :
+                new ObjectParameter("hotelId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCurrentRatesByHotel_Result>("spGetCurrentRatesByHotel", hotelIdParameter);
         }
     }
 }

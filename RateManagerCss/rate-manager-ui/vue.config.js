@@ -25,6 +25,11 @@ module.exports = {
                         reuseExistingChunk: true,
                         enforce: true,
                     },
+                    vendor:{
+                        name: "node_vendors",
+                        test: /[\\/]node_modules[\\/]/,
+                        chunks: "all",
+                    }
                 },
             },
         },
@@ -46,51 +51,63 @@ module.exports = {
             entry: 'src/views/rates-admin/main.js',
             template: 'public/rates-admin.aspx',
             filename: 'rates-admin.aspx',
-            chunks: ['commons', 'rates_admin'],
+            chunks: ['node_vendors','commons', 'rates_admin'],
         },
         reservation_list: {
             entry: 'src/views/reservation-list/main.js',
             template: 'public/reservation-list.aspx',
             filename: 'reservation-list.aspx',
-            chunks: ['commons', 'reservation_list'],
+            chunks: ['node_vendors','commons', 'reservation_list'],
         },
         reservation_details: {
             entry: 'src/views/reservation-details/main.js',
             template: 'public/reservation-details.aspx',
             filename: 'reservation-details.aspx',
-            chunks: ['commons', 'reservation_details'],
+            chunks: ['node_vendors','commons', 'reservation_details'],
         },
         hotel_config: {
             entry: 'src/views/hotel-config/main.js',
             template: 'public/hotel-config.aspx',
             filename: 'hotel-config.aspx',
-            chunks: ['commons', 'hotel_config'],
+            chunks: ['node_vendors','commons', 'hotel_config'],
 
         },
         mapping_f2g: {
             entry: 'src/views/mapping-f2g/main.js',
             template: 'public/mapping-rate-plans.aspx',
             filename: 'mapping-rate-plans.aspx',
-            chunks: ['commons', 'mapping_f2g'],
+            chunks: ['node_vendors','commons', 'mapping_f2g'],
         },
         promotions:{
             entry: 'src/views/promotions/main.js',
             template: 'public/promotions.aspx',
             filename: 'promotions.aspx',
-            chunks: ['commons', 'promotions'] 
+            chunks: ['node_vendors','commons', 'promotions'] 
         },
         promotions_details: {
             entry: 'src/views/promotions-details/main.js',
             template: 'public/promotions-details.aspx',
             filename: 'promotions-details.aspx',
-            chunks: ['commons', 'promotions_details']
+            chunks: ['node_vendors','commons', 'promotions_details']
         },
         rooms_closure:{
             entry:'src/views/rooms-closure/main.js',
             template:'public/rooms-closure.aspx',
             filename:'rooms-closure.aspx',
-            chunks:['commons','rooms_closure']
-        }
+            chunks:['node_vendors','commons','rooms_closure']
+        },
+        channel_rates_update: {
+            entry:'src/views/channel-rates-update/main.js',
+            template:'public/channel-rates-update.aspx',
+            filename:'channel-rates-update.aspx',
+            chunks:['node_vendors','commons','channel_rates_update']
+        },
+        channel_hotels: {
+            entry:'src/views/channel-hotels/main.js',
+            template:'public/channel-hotels.aspx',
+            filename:'channel-hotels.aspx',
+            chunks:['node_vendors','commons','channel_hotels']
+        },
         /* hotel_list: {
             entry: 'src/views/hotel-list/main.js',
             template: 'public/hotel-list.aspx',

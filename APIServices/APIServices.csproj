@@ -109,6 +109,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AgencyService.cs" />
+    <Compile Include="Conflux\ConfluxService.cs" />
+    <Compile Include="Conflux\Models\OTA\Rates\BaseGuestAmount.cs" />
+    <Compile Include="Conflux\Models\OTA\Rates\Rate.cs" />
+    <Compile Include="Conflux\Models\OTA\Rates\RateAmountMessage.cs" />
+    <Compile Include="Conflux\Models\OTA\Rates\RateAmountMessages.cs" />
+    <Compile Include="Conflux\Models\OTA\Rates\StatusApplicationControl.cs" />
+    <Compile Include="Conflux\Models\User\Response\UserReponse.cs" />
+    <Compile Include="Conflux\Models\User\User.cs" />
+    <Compile Include="Conflux\Parser\Parser.cs" />
     <Compile Include="Currency\CurrencyService.cs" />
     <Compile Include="Dictionary.cs" />
     <Compile Include="Extension\ConfigurationExtensions.cs" />
@@ -235,6 +244,9 @@
     <Compile Include="Models\ReservationsDeposits.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\spGetCurrentRatesByHotel_Result.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\spReservationLog_Result.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
@@ -269,6 +281,9 @@
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\vDayRates.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\vHotelActives.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\vHotelBasicInfo.cs">
@@ -319,6 +334,9 @@
     <Compile Include="RoomsClosureService.cs" />
     <Compile Include="RoomsService.cs" />
     <Compile Include="Utilities.cs" />
+    <Compile Include="Xml\OTA\Request\Rates\HotelRateAmountNotifRQ.cs" />
+    <Compile Include="Xml\OTA\Request\Rates\HotelRateAmountNotifRS.cs" />
+    <Compile Include="Xml\Soap\Soap.cs" />
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="Models\OzHoteles.edmx">
