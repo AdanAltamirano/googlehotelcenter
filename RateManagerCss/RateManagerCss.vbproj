@@ -317,7 +317,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\Portal.SearchEngine.DataAccess.dll</HintPath>
     </Reference>
-    <Reference Include="Portal.SearchEngine.Facade, Version=1.0.7097.24157, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Portal.SearchEngine.Facade, Version=1.0.3759.18648, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\Portal.SearchEngine.Facade.dll</HintPath>
     </Reference>
@@ -461,6 +461,8 @@
     <Content Include="bin\Albums.Facade.dll" />
     <Content Include="bin\Albums.Reglas.dll" />
     <Content Include="bin\Anthem.dll" />
+    <Content Include="bin\APIServices.dll" />
+    <Content Include="bin\APIServices.pdb" />
     <Content Include="bin\App_Code.dll" />
     <Content Include="bin\Autorentas.Common.dll" />
     <Content Include="bin\Autorentas.DataAccess.dll" />
@@ -470,16 +472,47 @@
     <Content Include="bin\c1.c1excel.dll" />
     <Content Include="bin\Common.dll" />
     <Content Include="bin\Contenido.Negocio.dll" />
+    <Content Include="bin\CrystalDecisions.CrystalReports.Engine.dll" />
+    <Content Include="bin\CrystalDecisions.CrystalReports.Engine.xml" />
+    <Content Include="bin\CrystalDecisions.ReportSource.dll" />
+    <Content Include="bin\CrystalDecisions.ReportSource.xml" />
+    <Content Include="bin\CrystalDecisions.Shared.dll" />
+    <Content Include="bin\CrystalDecisions.Shared.xml" />
+    <Content Include="bin\CrystalDecisions.VSDesigner.dll" />
+    <Content Include="bin\CrystalDecisions.Web.dll" />
+    <Content Include="bin\CrystalDecisions.Web.xml" />
+    <Content Include="bin\CrystalDecisions.Windows.Forms.dll" />
+    <Content Include="bin\CrystalDecisions.Windows.Forms.xml" />
     <Content Include="bin\DataAccess.dll" />
     <Content Include="bin\emailTemplates.dll" />
+    <Content Include="bin\EntityFramework.dll" />
+    <Content Include="bin\EntityFramework.SqlServer.dll" />
+    <Content Include="bin\EntityFramework.SqlServer.xml" />
+    <Content Include="bin\EntityFramework.xml" />
+    <Content Include="bin\EnvDTE.dll" />
+    <Content Include="bin\EnvDTE80.dll" />
     <Content Include="bin\en\Miscelaneos.resources.dll" />
+    <Content Include="bin\EPPlus.dll" />
     <Content Include="bin\es\Miscelaneos.resources.dll" />
+    <Content Include="bin\FluentValidation.dll" />
+    <Content Include="bin\FluentValidation.ValidatorAttribute.dll" />
+    <Content Include="bin\FluentValidation.WebApi.dll" />
+    <Content Include="bin\FluentValidation.WebApi.xml" />
+    <Content Include="bin\FluentValidation.xml" />
     <Content Include="bin\FredCK.FCKeditorV2.dll" />
     <Content Include="bin\LoginAuthenticate.dll" />
+    <Content Include="bin\Microsoft.Build.Utilities.v3.5.dll" />
+    <Content Include="bin\Microsoft.Build.Utilities.v3.5.xml" />
+    <Content Include="bin\Microsoft.MSXML.dll" />
+    <Content Include="bin\Microsoft.VisualStudio.TemplateWizardInterface.dll" />
+    <Content Include="bin\Microsoft.VisualStudio.TemplateWizardInterface.xml" />
+    <Content Include="bin\Microsoft.VisualStudio.VSHelp.dll" />
+    <Content Include="bin\Microsoft.VisualStudio.XmlEditor.dll" />
     <Content Include="bin\MiscComponent.dll" />
     <Content Include="bin\MiscComponent.pdb" />
     <Content Include="bin\Miscelaneos.dll" />
     <Content Include="bin\Newtonsoft.Json.dll" />
+    <Content Include="bin\NinjAPI.dll" />
     <Content Include="bin\Oz.BillingSystem.Banking.dll" />
     <Content Include="bin\Oz.BillingSystem.Common.dll" />
     <Content Include="bin\Oz.BillingSystem.eBillingEngine.dll" />
@@ -515,12 +548,24 @@
     <Content Include="bin\Portal.SearchEngine.DataAccess.dll" />
     <Content Include="bin\Portal.SearchEngine.Facade.dll" />
     <Content Include="bin\RateManager.dll" />
+    <Content Include="bin\RateManager.xml" />
     <Content Include="bin\ReferencesSystem.dll" />
     <Content Include="bin\skmmenu.dll" />
+    <Content Include="bin\stdole.dll" />
+    <Content Include="bin\System.Net.Http.Formatting.dll" />
+    <Content Include="bin\System.Net.Http.Formatting.xml" />
+    <Content Include="bin\System.Web.Http.dll" />
+    <Content Include="bin\System.Web.Http.WebHost.dll" />
+    <Content Include="bin\System.Web.Http.WebHost.xml" />
+    <Content Include="bin\System.Web.Http.xml" />
     <Content Include="bin\TaskManager.Common.dll" />
     <Content Include="bin\TaskManager.DataAccess.dll" />
     <Content Include="bin\TaskManager.Facade.dll" />
     <Content Include="bin\TaskManager.Rules.dll" />
+    <Content Include="bin\VSLangProj.dll" />
+    <Content Include="bin\VSLangProj2.dll" />
+    <Content Include="bin\VSLangProj80.dll" />
+    <Content Include="bin\VsWebSite.Interop.dll" />
     <Content Include="bin\XCrypt.dll" />
     <Content Include="Calendar\agenda.js" />
     <Content Include="Calendar\calbtn.gif" />
@@ -1302,6 +1347,7 @@
     <Content Include="Pages\IPReport.html" />
     <Content Include="Pages\LoadAvailabilityRestrictions.aspx" />
     <Content Include="Pages\LogHotelNoAvailable.aspx" />
+    <Content Include="Pages\NightsByChannelReport.aspx" />
     <Content Include="Pages\NoRatesReport.aspx" />
     <Content Include="Pages\NoticiasRSS.aspx" />
     <Content Include="Pages\OnlinePaymentReservationProccesReport.aspx" />
@@ -1447,6 +1493,7 @@
     <Content Include="Web References\WsConnectWcf\OTA_HotelAvailRS.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </Content>
+    <Content Include="bin\RateManager.dll.config" />
     <None Include="Web References\WsConnectWcf\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.vb</LastGenOutput>
@@ -1896,6 +1943,13 @@
     </Compile>
     <Compile Include="Pages\LoadAvailabilityRestrictions.ashx.vb">
       <DependentUpon>LoadAvailabilityRestrictions.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\NightsByChannelReport.aspx.designer.vb">
+      <DependentUpon>NightsByChannelReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\NightsByChannelReport.aspx.vb">
+      <DependentUpon>NightsByChannelReport.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
     </Compile>
     <Compile Include="Pages\OnlinePaymentReservationProccesReport.aspx.designer.vb">
       <DependentUpon>OnlinePaymentReservationProccesReport.aspx</DependentUpon>

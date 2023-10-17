@@ -1,13 +1,12 @@
 ﻿Imports System.Configuration.ConfigurationManager
 Imports System.Web
 Imports System.Web.Services
-
+Imports System.Data.SqlClient
 Imports Portal.Hotel.Common.Data
 Imports Portal.Hotel.Facade
 Imports Portal.General.Common.Data
 Imports Portal.General.DataAccess
 Imports Portal.General.Facade
-
 
 
 Public Class ExecutorServer
@@ -29,6 +28,84 @@ Public Class ExecutorServer
             room = .getRooms(idHotel, idIdioma)
         End With
         Return room
+    End Function
+
+    Public Function getHotelsList(ByVal idUsuario As Integer, ByVal idPais As String, ByVal status As String, ByVal idIdioma As String) As DataSet
+        Dim conection As New SqlConnection(AppSettings("PortalConectionString"))
+        Dim command As New SqlCommand("spCompanySearchCompanys", conection)
+
+        With command
+            .CommandType = CommandType.StoredProcedure
+            .Parameters.Add(New SqlParameter("@idRubro", 10))
+            .Parameters.Add(New SqlParameter("@Nombre", ""))
+            .Parameters.Add(New SqlParameter("@idUsuario", idUsuario))
+        End With
+        Dim adapter As New SqlDataAdapter(command)
+        Dim dRes As New DataSet
+        adapter.Fill(dRes)
+
+        If dRes.Tables.Count > 0 AndAlso dRes.Tables(0).Rows.Count > 0 Then
+
+            Dim filtro As String = ""
+
+            ' Si se especifica status de hotel, se establece en el filtro
+            If Not String.IsNullOrWhiteSpace(status) Then
+
+                If status.Equals("2") Then
+                    status = "0"
+                End If
+
+                filtro += "Active = '" & CBool(status).ToString & "'"
+
+                If Not String.IsNullOrWhiteSpace(idPais) Then
+                    filtro += " and "
+                End If
+            End If
+
+            ' Si se especifican paises
+            If Not String.IsNullOrWhiteSpace(idPais) Then
+                Dim paises() As String = idPais.Split(",")
+                filtro += "idPais in ("
+                For x As Integer = 0 To paises.Count - 1
+                    If Not String.IsNullOrWhiteSpace(paises(x)) Then ' Para evitar comas accidentales o con espacios en blanco
+                        filtro += "'" & paises(x) & "'"
+                        If x < paises.Count - 1 Then
+                            filtro += ","
+                        End If
+                    End If
+                Next
+
+                filtro += ")"
+
+            End If
+
+            ' Se aplica el filtro
+            If filtro.Length > 0 Then
+                Dim tablaFiltrada As DataTable = dRes.Tables(0).Select(filtro).CopyToDataTable
+
+                If tablaFiltrada.Rows.Count > 0 Then
+                    tablaFiltrada.TableName = "Properties"
+
+                    For x As Integer = 0 To tablaFiltrada.Rows.Count - 1
+                        tablaFiltrada.Rows(x)("NombreEmpresa") = tablaFiltrada.Rows(x)("idEmpresa") & "-" & tablaFiltrada.Rows(x)("NombreEmpresa")
+                    Next
+
+                    tablaFiltrada.AcceptChanges()
+
+                    dRes.Clear()
+                    dRes = New DataSet
+                    dRes.Tables.Add(tablaFiltrada)
+                End If
+
+                'Dim newDRes = New DataSet
+                'newDRes.Tables.Add(tablaFiltrada)
+                'Return newDRes
+            End If
+
+        End If
+
+
+        Return dRes
     End Function
 
     Private Function LoadRateplans(ByVal idHotel As String, ByVal idCultura As String, ByVal context As HttpContext) As DataSet
@@ -120,8 +197,12 @@ Public Class ExecutorServer
         Dim sError As String = ""
         Dim idIdioma As String = 2
         Dim idHotel As String = "0"
+        Dim idPais As String = ""
+        Dim status As String = ""
         Dim idSegmento As Integer = 0
         Dim idCorporate As Integer = 0
+        Dim idUsuario As Integer = 0
+
         If Not String.IsNullOrEmpty(context.Request.QueryString("idIdioma")) Then
             idIdioma = context.Request.QueryString("idIdioma")
         Else
@@ -129,8 +210,23 @@ Public Class ExecutorServer
                 idIdioma = AppSettings("DefaultLanguage")
             End If
         End If
+
         If Not String.IsNullOrEmpty(context.Request.QueryString("idHotel")) Then
             idHotel = context.Request.QueryString("idHotel")
+        End If
+
+        If Not String.IsNullOrEmpty(context.Request.QueryString("status")) Then
+            status = context.Request.QueryString("status")
+        End If
+
+        If Not String.IsNullOrEmpty(context.Request.QueryString("idPais")) Then
+            idPais = context.Request.QueryString("idPais")
+        End If
+
+        If Not String.IsNullOrEmpty(context.Request.QueryString("idUsuario")) Then
+            idUsuario = CType(context.Request.QueryString("idUsuario"), Integer)
+        Else
+            idUsuario = -1
         End If
 
         If Not String.IsNullOrEmpty(context.Request.QueryString("idSegmento")) Then
@@ -161,7 +257,8 @@ Public Class ExecutorServer
                     DS = LoadGroups(idCorporate)
                 Case "AGREEMENTS"
                     DS = LoadAgreements(idCorporate)
-
+                Case "PROPERTIES"
+                    DS = getHotelsList(idUsuario, idPais, status, idIdioma)
             End Select
         End If
 
