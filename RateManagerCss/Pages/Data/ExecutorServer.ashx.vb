@@ -30,15 +30,31 @@ Public Class ExecutorServer
         Return room
     End Function
 
+    Public Function getUserRoles(ByVal idUsuario As Integer) As DataSet
+        Dim conection As New SqlConnection(AppSettings("PortalConectionString"))
+        Dim command As New SqlCommand("spUserGetRoleByUserId", conection)
+
+        With command
+            .CommandType = CommandType.StoredProcedure
+            .Parameters.Add(New SqlParameter("@idUsuario", idUsuario))
+        End With
+        Dim adapter As New SqlDataAdapter(command)
+        Dim dRes As New DataSet
+        adapter.Fill(dRes)
+
+        Return dRes
+    End Function
+
     Public Function getHotelsList(ByVal idUsuario As Integer, ByVal idPais As String, ByVal status As String, ByVal idIdioma As String) As DataSet
+
         Dim conection As New SqlConnection(AppSettings("PortalConectionString"))
         Dim command As New SqlCommand("spCompanySearchCompanys", conection)
 
         With command
             .CommandType = CommandType.StoredProcedure
+            .Parameters.Add(New SqlParameter("@idUsuario", idUsuario))
             .Parameters.Add(New SqlParameter("@idRubro", 10))
             .Parameters.Add(New SqlParameter("@Nombre", ""))
-            .Parameters.Add(New SqlParameter("@idUsuario", idUsuario))
         End With
         Dim adapter As New SqlDataAdapter(command)
         Dim dRes As New DataSet
@@ -202,6 +218,11 @@ Public Class ExecutorServer
         Dim idSegmento As Integer = 0
         Dim idCorporate As Integer = 0
         Dim idUsuario As Integer = 0
+        Dim IsSupervisor As Boolean = False
+
+        If Not String.IsNullOrEmpty(context.Request.QueryString("IsSupervisor")) Then
+            IsSupervisor = CBool(context.Request.QueryString("IsSupervisor"))
+        End If
 
         If Not String.IsNullOrEmpty(context.Request.QueryString("idIdioma")) Then
             idIdioma = context.Request.QueryString("idIdioma")
@@ -258,6 +279,9 @@ Public Class ExecutorServer
                 Case "AGREEMENTS"
                     DS = LoadAgreements(idCorporate)
                 Case "PROPERTIES"
+                    If IsSupervisor Then
+                        idUsuario = -1
+                    End If
                     DS = getHotelsList(idUsuario, idPais, status, idIdioma)
             End Select
         End If

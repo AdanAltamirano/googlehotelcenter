@@ -11,86 +11,86 @@ Option Strict On
 Option Explicit On
 
 
-Partial Public Class NightsByChannelReport
+Partial Public Class ExportExcellReportNBC
 
     '''<summary>
-    '''Control lblFilter.
+    '''Control Form1.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents lblFilter As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents Form1 As Global.System.Web.UI.HtmlControls.HtmlForm
 
     '''<summary>
-    '''Control ddlDeletedFilter.
+    '''Control tblTitle.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents ddlDeletedFilter As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents tblTitle As Global.System.Web.UI.WebControls.Table
 
     '''<summary>
-    '''Control Label_year.
+    '''Control lblHotel.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents Label_year As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblHotel As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
-    '''Control ddlYear.
+    '''Control tblHeaders.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents ddlYear As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents tblHeaders As Global.System.Web.UI.WebControls.Table
 
     '''<summary>
-    '''Control Label1.
+    '''Control lblReportName.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents Label1 As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblReportName As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
-    '''Control ddlMonth.
+    '''Control thWhiteSpace1.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents ddlMonth As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents thWhiteSpace1 As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
-    '''Control btnExcel.
+    '''Control thWhiteSpace2.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents btnExcel As Global.System.Web.UI.WebControls.HyperLink
+    Protected WithEvents thWhiteSpace2 As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
-    '''Control ctrlAutoCompleteHotels.
+    '''Control lblGenerated.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents ctrlAutoCompleteHotels As Global.RateManager.ctrlAutoComplete
+    Protected WithEvents lblGenerated As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
-    '''Control nightsByChannel.
+    '''Control Grid.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents nightsByChannel As Global.System.Web.UI.WebControls.DataGrid
+    Protected WithEvents Grid As Global.System.Web.UI.WebControls.DataGrid
 End Class

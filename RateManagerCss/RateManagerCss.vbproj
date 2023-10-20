@@ -671,8 +671,10 @@
     <Content Include="Data\RoomTypes.xml" />
     <Content Include="Data\Segmentos.xml" />
     <Content Include="Default.aspx" />
+    <Content Include="ExportExcel\DetailedReport.aspx" />
     <Content Include="ExportExcel\Reports.aspx" />
     <Content Include="HotelAdministrator\Invoicing\Vouchers.aspx" />
+    <Content Include="HotelAdministrator\Pages\ExportExcellReportNBC.aspx" />
     <Content Include="HotelAdministrator\Pages\IDSMapping.aspx" />
     <Content Include="HotelAdministrator\Pages\MapeoPlanesF2G.aspx" />
     <Content Include="HotelAdministrator\Pages\Promotions.aspx" />
@@ -1630,6 +1632,13 @@
     <Compile Include="Default.aspx.designer.vb">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ExportExcel\DetailedReport.aspx.designer.vb">
+      <DependentUpon>DetailedReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ExportExcel\DetailedReport.aspx.vb">
+      <DependentUpon>DetailedReport.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
     <Compile Include="ExportExcel\Reports.aspx.designer.vb">
       <DependentUpon>Reports.aspx</DependentUpon>
     </Compile>
@@ -1647,6 +1656,13 @@
     </Compile>
     <Compile Include="HotelAdministrator\Invoicing\Vouchers.aspx.vb">
       <DependentUpon>Vouchers.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="HotelAdministrator\Pages\ExportExcellReportNBC.aspx.designer.vb">
+      <DependentUpon>ExportExcellReportNBC.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="HotelAdministrator\Pages\ExportExcellReportNBC.aspx.vb">
+      <DependentUpon>ExportExcellReportNBC.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\IDSMapping.aspx.designer.vb">

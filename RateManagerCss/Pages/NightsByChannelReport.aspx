@@ -47,42 +47,61 @@
 </head>
 <body>
     <form id="form1" runat="server">
-
-
         <div class="clear">
-            <!-- Autocomplete -->
-            <uc2:ctrlAutoComplete ID="ctrlAutoCompleteHotels" runat="server" />
 
-                <!-- Filtros -->
-                <div style="float: left; clear: none; margin-bottom: 15px;">
-                    <!-- Boton Excell -->
-                    <asp:HyperLink ID="btnExcel" runat="server" Enabled="False" NavigateUrl="../pages/ExportExcell.aspx" ToolTip="Excel" ImageUrl="../../Images/excel.png" ></asp:Hyperlink>
+            <!-- Filtros -->
+            <div style="display: flex; margin-bottom: 15px;">
 
-                    <!-- Filtro Status -->
-                    <div hidden>
-                        <asp:Label ID="lblFilter" runat="server" Text="Filtro:"></asp:Label>
-                        <asp:DropDownList ID="ddlDeletedFilter" runat="server" AutoPostBack="False">
-                            <asp:ListItem Text="Solo activos" Value="1"></asp:ListItem>
-                            <asp:ListItem Text="Solo no activos" Value="0"></asp:ListItem>
-                            <asp:ListItem Text="Todos" Value=""></asp:ListItem>
-                        </asp:DropDownList>
+                <!-- Filtro Status -->
+                <div hidden>
+                    <asp:Label ID="lblFilter" runat="server" Text="Filtro:"></asp:Label>
+                    <asp:DropDownList ID="ddlDeletedFilter" runat="server" AutoPostBack="False">
+                        <asp:ListItem Text="Solo activos" Value="1"></asp:ListItem>
+                        <asp:ListItem Text="Solo no activos" Value="0"></asp:ListItem>
+                        <asp:ListItem Text="Todos" Value=""></asp:ListItem>
+                    </asp:DropDownList>
 
-                    </div>
-                    <!-- Filtro Año -->
-                    <div style="margin-left: 15px;">
-                        <asp:Label ID="Label_year" runat="server" Text="Año:"></asp:Label>
-                        <asp:DropDownList ID="ddlYear" runat="server" AutoPostBack="False">
-                        </asp:DropDownList>
-                    </div>
-                    <!-- Filtro Mes -->
-                    <div style="margin-left: 15px;">
-                        <asp:Label ID="Label1" runat="server" Text="Mes:"></asp:Label>
-                        <asp:DropDownList ID="ddlMonth" runat="server" AutoPostBack="False">
-                        </asp:DropDownList>
-                    </div>
+                </div>
+                <!-- Filtro Año -->
+                <div style="margin-left: 15px;">
+                    <asp:Label ID="Label_year" runat="server" Text="Año:"></asp:Label>
+                    <asp:DropDownList ID="ddlYear" runat="server" AutoPostBack="False">
+                    </asp:DropDownList>
+                </div>
+                <!-- Filtro Mes -->
+                <div style="margin-left: 15px;">
+                    <asp:Label ID="Label1" runat="server" Text="Mes:"></asp:Label>
+                    <asp:DropDownList ID="ddlMonth" runat="server" AutoPostBack="False">
+                        <asp:ListItem Text="Enero" Value="01"></asp:ListItem>
+                        <asp:ListItem Text="Febrero" Value="02"></asp:ListItem>
+                        <asp:ListItem Text="Marzo" Value="03"></asp:ListItem>
+                        <asp:ListItem Text="Abril" Value="04"></asp:ListItem>
+                        <asp:ListItem Text="Mayo" Value="05"></asp:ListItem>
+                        <asp:ListItem Text="Junio" Value="06"></asp:ListItem>
+                        <asp:ListItem Text="Julio" Value="07"></asp:ListItem>
+                        <asp:ListItem Text="Agosto" Value="08"></asp:ListItem>
+                        <asp:ListItem Text="Septiembre" Value="09"></asp:ListItem>
+                        <asp:ListItem Text="Octubre" Value="10"></asp:ListItem>
+                        <asp:ListItem Text="Noviembre" Value="11"></asp:ListItem>
+                        <asp:ListItem Text="Diciembre" Value="12"></asp:ListItem>
+                    </asp:DropDownList>
                 </div>
 
-                <!-- DataGrid -->
+                <!-- Boton Excell -->
+                <div style="margin-left: 15px;">
+                    <asp:HyperLink ID="btnExcel" runat="server" Enabled="True" NavigateUrl="../HotelAdministrator/pages/ExportExcellReportNBC.aspx"
+                        ToolTip="Excel" ImageUrl="../Images/excel.png"></asp:HyperLink>
+                </div>
+
+                <!-- Autocomplete -->
+                <div style="width: 90%">
+                    <span id="lblAutoComplete" style="float: right; margin-right: 53%;">Hotel: </span>
+                    <uc2:ctrlAutoComplete ID="ctrlAutoCompleteHotels" runat="server" />
+                </div>
+            </div>
+
+            <!-- DataGrid -->
+            <div>
                 <asp:DataGrid ID="nightsByChannel" runat="server" Width="70%" AllowPaging="False" PageSize="20"
                     GridLines="Both" AutoGenerateColumns="True" CssClass="DataGrid" ShowFooter="True">
                     <SelectedItemStyle CssClass="dgSelected"></SelectedItemStyle>
@@ -91,6 +110,7 @@
                     <HeaderStyle CssClass="dgHeader"></HeaderStyle>
                     <FooterStyle HorizontalAlign="Right"></FooterStyle>
                 </asp:DataGrid>
+            </div>
         </div>
     </form>
 </body>

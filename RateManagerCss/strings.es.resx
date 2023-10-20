@@ -8904,4 +8904,16 @@
   <data name="01669" xml:space="preserve">
     <value>Empresa Fiscal</value>
   </data>
+  <data name="commonString_Day" xml:space="preserve">
+    <value>Dia</value>
+  </data>
+  <data name="tt_totalByDay" xml:space="preserve">
+    <value>Total Por Dia</value>
+  </data>
+  <data name="tt_totalBySource" xml:space="preserve">
+    <value>Total Por Fuente</value>
+  </data>
+  <data name="reportText_Generated" xml:space="preserve">
+    <value>Generado el </value>
+  </data>
 </root>
