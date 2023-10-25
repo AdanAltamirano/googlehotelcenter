@@ -8916,4 +8916,7 @@
   <data name="reportText_Generated" xml:space="preserve">
     <value>Generado el </value>
   </data>
+  <data name="reportNoResults" xml:space="preserve">
+    <value>No hay resultados para esta busqueda</value>
+  </data>
 </root>

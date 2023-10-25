@@ -100,6 +100,9 @@
                 </div>
             </div>
 
+            <asp:Label ID="lblError" runat="server" CssClass="Validators" Visible="False">Error</asp:Label>
+            <asp:Label ID="lblErrorSource" runat="server" CssClass="Validators" Visible="False">*</asp:Label>
+
             <!-- DataGrid -->
             <div>
                 <asp:DataGrid ID="nightsByChannel" runat="server" Width="70%" AllowPaging="False" PageSize="20"

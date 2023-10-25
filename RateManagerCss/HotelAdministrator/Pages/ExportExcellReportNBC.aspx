@@ -29,15 +29,15 @@
         </asp:Table>
 
         <asp:DataGrid ID="Grid" Style="z-index: 101; left: 8px; position: absolute; top: 8px" runat="server" AutoGenerateColumns="True" HorizontalAlign="Center" Width="95%" CssClass="DataGrid">
-            <FooterStyle HorizontalAlign="Right"></FooterStyle>
+            <FooterStyle HorizontalAlign="Center"></FooterStyle>
 
-            <SelectedItemStyle CssClass="dgSelected"></SelectedItemStyle>
+            <SelectedItemStyle HorizontalAlign="Center" CssClass="dgSelected"></SelectedItemStyle>
 
-            <AlternatingItemStyle CssClass="dgAlternate"></AlternatingItemStyle>
+            <AlternatingItemStyle HorizontalAlign="Center" CssClass="dgAlternate"></AlternatingItemStyle>
 
-            <ItemStyle CssClass="dgItem"></ItemStyle>
+            <ItemStyle HorizontalAlign="Center" CssClass="dgItem"></ItemStyle>
 
-            <HeaderStyle CssClass="dgHeader"></HeaderStyle>
+            <HeaderStyle HorizontalAlign="Center" CssClass="dgHeader"></HeaderStyle>
 
         </asp:DataGrid>
 
