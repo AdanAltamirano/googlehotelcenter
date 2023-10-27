@@ -671,7 +671,6 @@
     <Content Include="Data\RoomTypes.xml" />
     <Content Include="Data\Segmentos.xml" />
     <Content Include="Default.aspx" />
-    <Content Include="ExportExcel\DetailedReport.aspx" />
     <Content Include="ExportExcel\Reports.aspx" />
     <Content Include="HotelAdministrator\Invoicing\Vouchers.aspx" />
     <Content Include="HotelAdministrator\Pages\ExportExcellReportNBC.aspx" />
@@ -1631,13 +1630,6 @@
     </Compile>
     <Compile Include="Default.aspx.designer.vb">
       <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="ExportExcel\DetailedReport.aspx.designer.vb">
-      <DependentUpon>DetailedReport.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="ExportExcel\DetailedReport.aspx.vb">
-      <DependentUpon>DetailedReport.aspx</DependentUpon>
-      <SubType>ASPXCodebehind</SubType>
     </Compile>
     <Compile Include="ExportExcel\Reports.aspx.designer.vb">
       <DependentUpon>Reports.aspx</DependentUpon>
