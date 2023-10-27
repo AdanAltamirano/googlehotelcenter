@@ -36,7 +36,7 @@
                 ' Formatear la fecha a fecha corta y hora
 
                 Dim hotelName As String = Session("HotelReportNBC").ToString()
-                Dim generatedAt As String = DateTime.Now.ToString("dd/MMM/yyyy hh-mm-ss")
+                Dim generatedAt As String = DateTime.Now.ToString("dd/MMM/yyyy hh:mm:ss")
 
                 Response.Clear()
                 Response.Buffer = True

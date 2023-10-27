@@ -21,7 +21,7 @@ Public Class NightsByChannelReport
             ddlYear.Items.Add(New ListItem(year, year))
         Next
 
-        btnExcel.Visible = If(Session("dvReportNBC") Is Nothing, False, True)
+        btnExcel.Visible = If(Session("dvReportNBC") Is Nothing Or currentReport Is Nothing, False, True)
         btnExcel.DataBind()
 
     End Sub
@@ -37,6 +37,7 @@ Public Class NightsByChannelReport
             If currentReport IsNot Nothing AndAlso currentReport.Tables.Count > 0 AndAlso currentReport.Tables(0).Rows.Count > 0 Then
                 ' Se habilita el boton de descarga
 
+                lblError.Visible = False
                 ' Centrado del contenido en DataGrid y DataBinding
                 nightsByChannel.HeaderStyle.HorizontalAlign = HorizontalAlign.Center
                 nightsByChannel.ItemStyle.HorizontalAlign = HorizontalAlign.Center
@@ -46,7 +47,15 @@ Public Class NightsByChannelReport
                 btnExcel.Visible = True
                 btnExcel.DataBind()
                 nightsByChannel.DataBind()
+            Else
+                lblError.Text = PortalCulture.GetString("reportNoResults")
+                lblError.Visible = True
+                nightsByChannel.DataSource = Nothing
+                nightsByChannel.DataBind()
+                btnExcel.Visible = False
+                btnExcel.DataBind()
             End If
+
         End If
 
     End Sub
@@ -54,6 +63,7 @@ Public Class NightsByChannelReport
     Public Function getHotelRBNReport(ByVal idEmpresa As String) As DataSet
         ' [spHotelNightsByChannelAndMonth] 15268,'2023/10/01'
         Session("dvReportNBC") = Nothing
+        currentReport = Nothing
         Dim conection As New SqlConnection(AppSettings("HotelConnectionString"))
         Dim command As New SqlCommand("spHotelNightsByChannelAndMonth", conection)
         yearSelected = ddlYear.SelectedItem.Value
