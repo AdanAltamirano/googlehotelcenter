@@ -86,6 +86,15 @@ Partial Public Class NightsByChannelReport
     Protected WithEvents ctrlAutoCompleteHotels As Global.RateManager.ctrlAutoComplete
 
     '''<summary>
+    '''Control btnSend.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents btnSend As Global.System.Web.UI.WebControls.Button
+
+    '''<summary>
     '''Control lblError.
     '''</summary>
     '''<remarks>

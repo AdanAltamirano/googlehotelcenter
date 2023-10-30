@@ -8916,4 +8916,7 @@
   <data name="reportNoResults" xml:space="preserve">
     <value>There is no results for this search</value>
   </data>
+  <data name="msgSelectOneHotel" xml:space="preserve">
+    <value>Invalid Search</value>
+  </data>
 </root>
