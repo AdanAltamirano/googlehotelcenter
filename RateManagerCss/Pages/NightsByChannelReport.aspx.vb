@@ -1,5 +1,6 @@
 ﻿Imports System.Data.SqlClient
 Imports System.Configuration.ConfigurationManager
+Imports System.Xml
 
 Public Class NightsByChannelReport
     Inherits PaginaBase
@@ -10,60 +11,112 @@ Public Class NightsByChannelReport
     Dim monthSelected As String = "01"
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Dim currentYear As Integer = Date.Now.Year
-        Dim yearsLimit As Integer = currentYear - 5
 
-        ddlYear.Items.Clear()
+        If Not IsPostBack Then
 
-        ddlYear.Items.Add(New ListItem(currentYear, currentYear, True))
+            Dim currentYear As Integer = Date.Now.Year
+            Dim yearsLimit As Integer = currentYear - 5
 
-        For year As Integer = currentYear - 1 To yearsLimit Step year - 1
-            ddlYear.Items.Add(New ListItem(year, year))
-        Next
+            ddlYear.Items.Clear()
+
+            ddlYear.Items.Add(New ListItem(currentYear, currentYear, True))
+
+            For year As Integer = currentYear - 1 To yearsLimit Step year - 1
+                ddlYear.Items.Add(New ListItem(year, year))
+            Next
+
+        End If
 
         btnExcel.Visible = If(Session("dvReportNBC") Is Nothing Or currentReport Is Nothing, False, True)
         btnExcel.DataBind()
 
     End Sub
 
-    Private Sub ctrlAutoCompleteHotels_onSendFilter(ByVal id As String, ByVal hotelName As String) Handles ctrlAutoCompleteHotels.OnSendFilter
-        If Not String.IsNullOrWhiteSpace(hotelName) Then
+    Private Sub ExcecuteReport()
+        Dim searchInput As HtmlInputText = ctrlAutoCompleteHotels.Controls(0)
 
-            ' a partir de donde termina la cadena de like, mas el tamaño de la cadena menos el residuo constante
-            Dim selected() As String = hotelName.Substring(21, hotelName.Length - 24).Split("-")
-            hotelName = selected(1)
-            Session("HotelReportNBC") = hotelName
-            currentReport = getHotelRBNReport(selected(0))
-            If currentReport IsNot Nothing AndAlso currentReport.Tables.Count > 0 AndAlso currentReport.Tables(0).Rows.Count > 0 Then
-                ' Se habilita el boton de descarga
+        If Not String.IsNullOrWhiteSpace(searchInput.Value) AndAlso searchInput.Value.Length > 0 Then
 
-                lblError.Visible = False
-                ' Centrado del contenido en DataGrid y DataBinding
-                nightsByChannel.HeaderStyle.HorizontalAlign = HorizontalAlign.Center
-                nightsByChannel.ItemStyle.HorizontalAlign = HorizontalAlign.Center
-                nightsByChannel.AlternatingItemStyle.HorizontalAlign = HorizontalAlign.Center
-                nightsByChannel.DataSource = currentReport
-                Session("dvReportNBC") = currentReport
-                btnExcel.Visible = True
-                btnExcel.DataBind()
-                nightsByChannel.DataBind()
-            Else
-                lblError.Text = PortalCulture.GetString("reportNoResults")
-                lblError.Visible = True
-                nightsByChannel.DataSource = Nothing
-                nightsByChannel.DataBind()
-                btnExcel.Visible = False
-                btnExcel.DataBind()
-            End If
+            Dim searchString As String = searchInput.Value
 
+            Try
+                If searchString.Contains("-") Then
+                    Dim selected() As String = searchString.Split("-")
+                    searchString = selected(1)
+                    Dim idEmpresa As String = selected(0)
+
+                    If Integer.Parse(idEmpresa) > 0 Then ' Si el idEmpresa es un valor entero valido
+                        If searchString.Length > 0 AndAlso idEmpresa.Length > 0 Then
+                            currentReport = getHotelRBNReport(idEmpresa)
+                        End If
+
+                        If currentReport IsNot Nothing AndAlso currentReport.Tables.Count > 0 AndAlso currentReport.Tables(0).Rows.Count > 0 Then
+                            Session("HotelReportNBC") = searchString ' Guarda el nombre del hotel
+                            ' Se habilita el boton de descarga
+                            lblError.Visible = False
+                            ' Centrado del contenido en DataGrid y DataBinding
+                            nightsByChannel.HeaderStyle.HorizontalAlign = HorizontalAlign.Center
+                            nightsByChannel.ItemStyle.HorizontalAlign = HorizontalAlign.Center
+                            nightsByChannel.AlternatingItemStyle.HorizontalAlign = HorizontalAlign.Center
+                            nightsByChannel.DataSource = currentReport
+                            Session("dvReportNBC") = currentReport
+                            btnExcel.Visible = True
+                            btnExcel.DataBind()
+                            nightsByChannel.DataBind()
+                        Else
+                            showError(1)
+                        End If
+                    End If
+
+                Else
+                    showError(2)
+                End If
+            Catch ex As Exception
+                showError() ' Busqueda no valida
+            End Try
+        Else
+            showError(2)
         End If
-
     End Sub
+
+    Private Sub ctrlAutoCompleteHotels_onSendFilter(ByVal id As String, ByVal hotelName As String) Handles ctrlAutoCompleteHotels.OnSendFilter
+        ExcecuteReport()
+    End Sub
+
+    Private Sub btnSend_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSend.Click
+
+        ExcecuteReport()
+    End Sub
+
+    Private Function showError(Optional ByVal ErrorCode As Integer = 0)
+        Dim ErrorString As String = PortalCulture.GetString("msgInvalidSearch")
+        lblError.CssClass = "Validators" ' Texto en rojo
+        'lblError.CssClass = "" ' Texto default
+        Select Case ErrorCode
+            Case 1
+                ErrorString = PortalCulture.GetString("reportNoResults")
+            Case 2
+                ErrorString = PortalCulture.GetString("msgSelectOneHotel")
+
+        End Select
+        currentReport = Nothing
+        Session("dvReportNBC") = Nothing
+
+        lblError.Text = ErrorString
+        lblError.Visible = True
+        nightsByChannel.DataSource = Nothing
+        nightsByChannel.DataBind()
+        btnExcel.Visible = False
+        btnExcel.DataBind()
+    End Function
+
+
 
     Public Function getHotelRBNReport(ByVal idEmpresa As String) As DataSet
         ' [spHotelNightsByChannelAndMonth] 15268,'2023/10/01'
         Session("dvReportNBC") = Nothing
         currentReport = Nothing
+        Session("HotelReportNBC") = ""
         Dim conection As New SqlConnection(AppSettings("HotelConnectionString"))
         Dim command As New SqlCommand("spHotelNightsByChannelAndMonth", conection)
         yearSelected = ddlYear.SelectedItem.Value

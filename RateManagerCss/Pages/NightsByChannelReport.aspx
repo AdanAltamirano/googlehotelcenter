@@ -23,6 +23,11 @@
     <script type="text/javascript" src="../Includes/Script/JsSearch-1.0.js"></script>
 
     <script>
+        function initValidations() {
+            var filterBtn = document.getElementById("ctrlAutoCompleteHotels_lnkFilter");
+            filterBtn.hidden = true;
+        }
+
         SearchStart.AddParam
             (
                 {
@@ -45,7 +50,7 @@
             );
     </script>
 </head>
-<body>
+<body onload="initValidations()">
     <form id="form1" runat="server">
         <div class="clear">
 
@@ -99,6 +104,8 @@
                     <uc2:ctrlAutoComplete ID="ctrlAutoCompleteHotels" runat="server" />
                 </div>
             </div>
+
+            <asp:Button ID="btnSend" Text="Cargar" runat="server" CssClass="Button" style="margin-right: 4%; float:inline-end;"  />
 
             <asp:Label ID="lblError" runat="server" CssClass="Validators" Visible="False">Error</asp:Label>
             <asp:Label ID="lblErrorSource" runat="server" CssClass="Validators" Visible="False">*</asp:Label>
