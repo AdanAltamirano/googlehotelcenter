@@ -394,5 +394,14 @@ namespace APIServices.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCurrentRatesByHotel_Result>("spGetCurrentRatesByHotel", hotelIdParameter);
         }
+    
+        public virtual ObjectResult<spGetPricesByRate_Result> spGetPricesByRate(Nullable<int> rateId)
+        {
+            var rateIdParameter = rateId.HasValue ?
+                new ObjectParameter("RateId", rateId) :
+                new ObjectParameter("RateId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetPricesByRate_Result>("spGetPricesByRate", rateIdParameter);
+        }
     }
 }

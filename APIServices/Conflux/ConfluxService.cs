@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using APIServices.Models;
 using APIServices.Conflux.Models.User;
 using APIServices.Conflux.Models.User.Response;
+using APIServices.Conflux.Models.Rates.Response;
 using APIServices.Xml.OTA.Request.Rates;
 using APIServices.Xml.Soap;
 
@@ -68,15 +69,18 @@ namespace APIServices.Conflux
             return response;
         }
 
-        public bool UpdateRates(int hotelId, int companyId)
+        public RateResponse UpdateRates(int hotelId, int companyId)
         {
-            bool isSuccess = false;
+            RateResponse res = new RateResponse();
 
             try
             {
                 var currentRates = dbContext.spGetCurrentRatesByHotel(hotelId).ToList();
 
-                var rateAmountMessages = Parser.Parser.ToRateAmountMessages(currentRates, companyId);
+                var hotel = dbContext.Hoteles.First(h => h.idHotel == hotelId);
+
+
+                var rateAmountMessages = Parser.Parser.ToRateAmountMessages(currentRates, companyId, hotel.PlusTax, hotel.Impuesto);
 
                 var xml = HotelRateAmountNotifRQ.CreateHotelRateAmountNotifRQ(rateAmountMessages);
 
@@ -94,16 +98,17 @@ namespace APIServices.Conflux
 
                 var otaRS = HotelRateAmountNotifRS.ParseHotelRateAmountNotifRS(result);
 
-                isSuccess = HotelRateAmountNotifRS.IsSuccessRequest(otaRS);
+                res.IsSuccess = HotelRateAmountNotifRS.IsSuccessRequest(otaRS);
 
             }
             catch(Exception ex)
             {
-                isSuccess = false;
+                res.IsSuccess = false;
+                res.Error = new KeyValuePair<string, string>("448", "System Error");
             }
-           
 
-            return isSuccess;
+
+            return res;
 
         }
 

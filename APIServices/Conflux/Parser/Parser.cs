@@ -3,13 +3,14 @@ using System.Linq;
 
 using APIServices.Models;
 using APIServices.Conflux.OTA.Models.Rates;
+using APIServices.Conflux.Helpers;
 
 
 namespace APIServices.Conflux.Parser
 {
     public static class Parser
     {
-        public static RateAmountMessages ToRateAmountMessages(List<spGetCurrentRatesByHotel_Result> currentRates, int companyId)
+        public static RateAmountMessages ToRateAmountMessages(List<spGetCurrentRatesByHotel_Result> currentRates, int companyId, bool? plusTax, decimal? tax)
         {
             RateAmountMessages rateAmountMessages = new RateAmountMessages();
 
@@ -24,13 +25,31 @@ namespace APIServices.Conflux.Parser
 
                 List<Rate> rates = new List<Rate>();
 
-                Rate rate = new Rate();
+                List<vDayRates> vDayRate = RatesHelpers.GetVDayRate(currentRate);
 
-                rate.StartDate = currentRate.StartDate.ToString("yyyyMMdd");//revisar el formato
-                rate.EndDate = currentRate.EndDate.ToString("yyyyMMdd");
-                rate.BaseGuestAmounts = new List<BaseGuestAmount>(); // Faltan precios
+                List<vDayRates> promos = vDayRate
+                    .Where(vdr => vdr.IsPromotion == true)
+                    .OrderBy(vdr => vdr.StartDate)
+                    .ToList();
 
-                rates.Add(rate);
+                var startDate = currentRate.StartDate;
+                var endDate = currentRate.EndDate;
+
+
+
+
+                //Rate rate = new Rate();
+
+                //rate.StartDate = currentRate.StartDate.ToString("yyyyMMdd");//revisar el formato
+                //rate.EndDate = currentRate.EndDate.ToString("yyyyMMdd");
+
+                //RatesHelpers.Init(plusTax, tax);
+
+                //var prices = RatesHelpers.GetPrices(currentRate.RateId);
+                //rate.BaseGuestAmounts = RatesHelpers.UpdateBaseGuestAmountPricesWithTaxesAndDiscounts(currentRate, prices);
+                //rate.AdditionalGuestAmounts = RatesHelpers.UpdateAdditionalGuestAmountPrices(prices);
+
+                //rates.Add(rate);
 
                 rateAmountMessage.statusApplicationControl = statusApplicationControl;
                 rateAmountMessage.Rates = rates;

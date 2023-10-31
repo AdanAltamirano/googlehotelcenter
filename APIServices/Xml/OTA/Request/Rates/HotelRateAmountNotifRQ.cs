@@ -77,11 +77,31 @@ namespace APIServices.Xml.OTA.Request.Rates
 
                     foreach(BaseGuestAmount baseGuestAmount in rate.BaseGuestAmounts)
                     {
-                        //TODO: Precios
-                        //TODO: Sea grega a BaseGuestAmount Element
+
+                        XElement baseGuestAmountXml = new XElement(blank + "BaseByGuestAmt", 
+                            new XAttribute("AmountBeforeTax", baseGuestAmount.AmountBeforeTax),
+                            new XAttribute("AmountAfterTax", baseGuestAmount.AmountAfterTax),
+                            new XAttribute("NumberOfGuests", baseGuestAmount.NumberOfGuests),
+                            new XAttribute("AgeQualifyingCode", baseGuestAmount.AgeQualifyingCode));
+
+                        baseGuestAmounts.Add(baseGuestAmountXml);
+
                     }
 
-                    ratesXml.Add(baseGuestAmounts);
+                    XElement additionalGuestAmounts = new XElement(blank + "AdditionalGuestAmounts");
+
+                    foreach (AdditionalGuestAmount additionalGuestAmount in rate.AdditionalGuestAmounts)
+                    {
+                        XElement additionalGuestAmountXml = new XElement(blank + "AdditionalGuestAmount",
+                            new XAttribute("Amount", additionalGuestAmount.Amount),
+                            new XAttribute("AgeQualifyingCode", additionalGuestAmount.AgeQualifyingCode));
+
+                        additionalGuestAmounts.Add(additionalGuestAmountXml);
+                    }
+
+
+
+                    ratesXml.Add(baseGuestAmounts, additionalGuestAmounts);
 
                     rates.Add(ratesXml);
                 }

@@ -6,6 +6,7 @@ Imports APIServices.Conflux
 Imports APIServices.Models
 Imports APIServices.Conflux.Models.User
 Imports APIServices.Conflux.Models.User.Response
+Imports APIServices.Conflux.Models.Rates.Response
 
 Namespace API.Controllers
     <RoutePrefix("api/conflux")>
@@ -39,15 +40,23 @@ Namespace API.Controllers
 
 
         <Route("updaterates/{hotelId:int}"), HttpPost>
-        Public Sub UpdateRates(ByVal hotelId As Integer)
+        Public Function UpdateRates(ByVal hotelId As Integer) As HttpResponseMessage
 
             Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
 
-            Dim isSuccess As Boolean = ConfluxService.UpdateRates(hotelId, info.Empresa)
+            Dim result As RateResponse = ConfluxService.UpdateRates(hotelId, info.Empresa)
 
-            'TODO:Regresar Respuesta a Cliente
+            If Not result.IsSuccess Then
 
-        End Sub
+                Return BadRequest(result.Error)
+
+            End If
+
+            Dim toObject As Object = result
+
+            Return Ok(toObject)
+
+        End Function
 
     End Class
 End Namespace

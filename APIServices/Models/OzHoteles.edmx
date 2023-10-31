@@ -1127,6 +1127,9 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
         <Function Name="spGetCurrentRatesByHotel" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="hotelId" Type="int" Mode="In" />
         </Function>
+        <Function Name="spGetPricesByRate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="RateId" Type="int" Mode="In" />
+        </Function>
         <Function Name="spModificarDetalleReservaciones" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="idDetalleReservacion" Type="int" Mode="In" />
           <Parameter Name="idReservacion" Type="int" Mode="In" />
@@ -1752,6 +1755,9 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <Parameter Name="hotelId" Mode="In" Type="Int32" />
           </FunctionImport>
           <EntitySet Name="vHotelActives" EntityType="Models.vHotelActives" />
+          <FunctionImport Name="spGetPricesByRate" ReturnType="Collection(Models.spGetPricesByRate_Result)">
+            <Parameter Name="RateId" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="RatesPlan">
           <Key>
@@ -2999,6 +3005,11 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <Property Name="Status" Type="Byte" Nullable="false" />
           <Property Name="Provider" Type="String" Nullable="false" MaxLength="14" FixedLength="false" Unicode="false" />
         </EntityType>
+        <ComplexType Name="spGetPricesByRate_Result">
+          <Property Type="Int32" Name="PersonType" Nullable="true" />
+          <Property Type="Int32" Name="Quantity" Nullable="true" />
+          <Property Type="Decimal" Name="Price" Nullable="true" Precision="19" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4122,6 +4133,15 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spGetPricesByRate" FunctionName="Models.Store.spGetPricesByRate">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Models.spGetPricesByRate_Result">
+                <ScalarProperty Name="PersonType" ColumnName="PersonType" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

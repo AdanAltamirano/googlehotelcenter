@@ -8,8 +8,9 @@ namespace APIServices.Conflux.OTA.Models.Rates
 {
     public class BaseGuestAmount
     {
-        public string AmountBeforeTax { get; set; }
+        public decimal? AmountBeforeTax { get; set; }
+        public decimal? AmountAfterTax { get; set; }
         public string NumberOfGuests { get; set; }
-        public string AgeQualifyingCode { get; set; }
+        public int? AgeQualifyingCode { get; set; }
     }
 }
