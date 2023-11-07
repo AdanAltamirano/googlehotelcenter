@@ -586,6 +586,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vDayRateDetail' no tiene defin
 advertencia 6002: La tabla o vista 'OzHoteles.dbo.vDayRates' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vDayRates">
           <Key>
+            <PropertyRef Name="PromoDays" />
             <PropertyRef Name="NoDeparturesMap" />
             
             
@@ -609,6 +610,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vDayRates' no tiene definida n
           <Property Name="RatePlanName" Type="nvarchar" MaxLength="80" />
           <Property Name="StartDate" Type="smalldatetime" Nullable="false" />
           <Property Name="EndDate" Type="smalldatetime" Nullable="false" />
+          <Property Name="PromoDays" Type="char" MaxLength="7" Nullable="false" />
           <Property Name="NoArrivalsMap" Type="char" MaxLength="7" />
           <Property Name="NoDeparturesMap" Type="nvarchar" MaxLength="7" Nullable="false" />
           <Property Name="ExceptionMap" Type="nvarchar" MaxLength="7" />
@@ -1130,6 +1132,9 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
         <Function Name="spGetPricesByRate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="RateId" Type="int" Mode="In" />
         </Function>
+        <Function Name="spGetPricesByRateException" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="RateId" Type="int" Mode="In" />
+        </Function>
         <Function Name="spModificarDetalleReservaciones" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="idDetalleReservacion" Type="int" Mode="In" />
           <Parameter Name="idReservacion" Type="int" Mode="In" />
@@ -1267,6 +1272,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
     [vDayRates].[RatePlanName] AS [RatePlanName], 
     [vDayRates].[StartDate] AS [StartDate], 
     [vDayRates].[EndDate] AS [EndDate], 
+    [vDayRates].[PromoDays] AS [PromoDays], 
     [vDayRates].[NoArrivalsMap] AS [NoArrivalsMap], 
     [vDayRates].[NoDeparturesMap] AS [NoDeparturesMap], 
     [vDayRates].[ExceptionMap] AS [ExceptionMap], 
@@ -1623,7 +1629,6 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <EntitySet Name="vHotelByUser" EntityType="Models.vHotelByUser" />
           <EntitySet Name="vAdministrator" EntityType="Models.vAdministrator" />
           <EntitySet Name="vDayRateDetail" EntityType="Models.vDayRateDetail" />
-          <EntitySet Name="vDayRates" EntityType="Models.vDayRates" />
           <EntitySet Name="vPermissions" EntityType="Models.vPermissions" />
           <FunctionImport Name="spReservationCancel">
             <Parameter Name="idReservacion" Mode="In" Type="Int32" />
@@ -1756,6 +1761,10 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           </FunctionImport>
           <EntitySet Name="vHotelActives" EntityType="Models.vHotelActives" />
           <FunctionImport Name="spGetPricesByRate" ReturnType="Collection(Models.spGetPricesByRate_Result)">
+          <Parameter Name="RateId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="vDayRates" EntityType="Models.vDayRates" />
+          <FunctionImport Name="spGetPricesByRateException" ReturnType="Collection(Models.spGetPricesByRateException_Result)">
             <Parameter Name="RateId" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
@@ -1998,43 +2007,6 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <Property Name="ExtraAdultPrice" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
           <Property Name="ExtraChildPrice" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
           <Property Name="ExtraJuniorPrice" Type="Decimal" Precision="19" Scale="4" />
-        </EntityType>
-        <EntityType Name="vDayRates">
-          <Key>
-            <PropertyRef Name="Currency" />
-            <PropertyRef Name="RateId" />
-            <PropertyRef Name="HotelId" />
-            <PropertyRef Name="RoomId" />
-            <PropertyRef Name="RatePlanId" />
-            <PropertyRef Name="StartDate" />
-            <PropertyRef Name="EndDate" />
-            <PropertyRef Name="Language" />
-            <PropertyRef Name="IsPromotion" />
-            <PropertyRef Name="Price" />
-            <PropertyRef Name="NoDeparturesMap" />
-          </Key>
-          <Property Name="RateId" Type="Int32" Nullable="false" />
-          <Property Name="HotelId" Type="Int32" Nullable="false" />
-          <Property Name="RoomId" Type="Int32" Nullable="false" />
-          <Property Name="RatePlanId" Type="String" MaxLength="54" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="RatePlanName" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
-          <Property Name="StartDate" Type="DateTime" Precision="0" Nullable="false" />
-          <Property Name="EndDate" Type="DateTime" Precision="0" Nullable="false" />
-          <Property Name="NoArrivalsMap" Type="String" MaxLength="7" FixedLength="true" Unicode="false" />
-          <Property Name="ExceptionMap" Type="String" MaxLength="7" FixedLength="false" Unicode="true" />
-          <Property Name="Occupancy" Type="Byte" />
-          <Property Name="Price" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
-          <Property Name="ExceptionPrice" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
-          <Property Name="Discount" Type="Decimal" Nullable="false" Precision="10" Scale="4" />
-          <Property Name="DayDiscount" Type="Decimal" Nullable="false" Precision="10" Scale="4" />
-          <Property Name="DiscountLevel" Type="Int32" Nullable="false" />
-          <Property Name="Factor" Type="Decimal" Precision="10" Scale="4" />
-          <Property Name="Offset" Type="Decimal" Precision="10" Scale="4" />
-          <Property Name="Currency" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="true" />
-          <Property Name="ParentRatePlanId" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
-          <Property Name="IsPromotion" Type="Boolean" Nullable="false" />
-          <Property Name="Language" Type="Int32" Nullable="false" />
-          <Property Name="NoDeparturesMap" Type="String" Nullable="false" MaxLength="7" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="vPermissions">
           <Key>
@@ -3010,6 +2982,50 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <Property Type="Int32" Name="Quantity" Nullable="true" />
           <Property Type="Decimal" Name="Price" Nullable="true" Precision="19" />
         </ComplexType>
+        <EntityType Name="vDayRates">
+          <Key>
+            <PropertyRef Name="PromoDays" />
+            <PropertyRef Name="NoDeparturesMap" />
+            <PropertyRef Name="Currency" />
+            <PropertyRef Name="IsPromotion" />
+            <PropertyRef Name="RateId" />
+            <PropertyRef Name="HotelId" />
+            <PropertyRef Name="RoomId" />
+            <PropertyRef Name="RatePlanId" />
+            <PropertyRef Name="StartDate" />
+            <PropertyRef Name="EndDate" />
+            <PropertyRef Name="Price" />
+            <PropertyRef Name="Language" />
+          </Key>
+          <Property Name="RateId" Type="Int32" Nullable="false" />
+          <Property Name="HotelId" Type="Int32" Nullable="false" />
+          <Property Name="RoomId" Type="Int32" Nullable="false" />
+          <Property Name="RatePlanId" Type="String" MaxLength="54" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RatePlanName" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="StartDate" Type="DateTime" Precision="0" Nullable="false" />
+          <Property Name="EndDate" Type="DateTime" Precision="0" Nullable="false" />
+          <Property Name="PromoDays" Type="String" Nullable="false" MaxLength="7" FixedLength="true" Unicode="false" />
+          <Property Name="NoArrivalsMap" Type="String" MaxLength="7" FixedLength="true" Unicode="false" />
+          <Property Name="NoDeparturesMap" Type="String" Nullable="false" MaxLength="7" FixedLength="false" Unicode="true" />
+          <Property Name="ExceptionMap" Type="String" MaxLength="7" FixedLength="false" Unicode="true" />
+          <Property Name="Occupancy" Type="Byte" />
+          <Property Name="Price" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="ExceptionPrice" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="Discount" Type="Decimal" Nullable="false" Precision="10" Scale="4" />
+          <Property Name="DayDiscount" Type="Decimal" Nullable="false" Precision="10" Scale="4" />
+          <Property Name="DiscountLevel" Type="Int32" Nullable="false" />
+          <Property Name="Factor" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="Offset" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="Currency" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="ParentRatePlanId" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="IsPromotion" Type="Boolean" Nullable="false" />
+          <Property Name="Language" Type="Int32" Nullable="false" />
+        </EntityType>
+        <ComplexType Name="spGetPricesByRateException_Result">
+          <Property Type="Int32" Name="PersonType" Nullable="true" />
+          <Property Type="Int32" Name="Quantity" Nullable="true" />
+          <Property Type="Decimal" Name="Price" Nullable="true" Precision="19" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3214,34 +3230,6 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
                 <ScalarProperty Name="Adults" ColumnName="Adults" />
                 <ScalarProperty Name="RateId" ColumnName="RateId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="vDayRates">
-            <EntityTypeMapping TypeName="Models.vDayRates">
-              <MappingFragment StoreEntitySet="vDayRates">
-                <ScalarProperty Name="NoDeparturesMap" ColumnName="NoDeparturesMap" />
-                <ScalarProperty Name="Language" ColumnName="Language" />
-                <ScalarProperty Name="IsPromotion" ColumnName="IsPromotion" />
-                <ScalarProperty Name="ParentRatePlanId" ColumnName="ParentRatePlanId" />
-                <ScalarProperty Name="Currency" ColumnName="Currency" />
-                <ScalarProperty Name="Offset" ColumnName="Offset" />
-                <ScalarProperty Name="Factor" ColumnName="Factor" />
-                <ScalarProperty Name="DiscountLevel" ColumnName="DiscountLevel" />
-                <ScalarProperty Name="DayDiscount" ColumnName="DayDiscount" />
-                <ScalarProperty Name="Discount" ColumnName="Discount" />
-                <ScalarProperty Name="ExceptionPrice" ColumnName="ExceptionPrice" />
-                <ScalarProperty Name="Price" ColumnName="Price" />
-                <ScalarProperty Name="Occupancy" ColumnName="Occupancy" />
-                <ScalarProperty Name="ExceptionMap" ColumnName="ExceptionMap" />
-                <ScalarProperty Name="NoArrivalsMap" ColumnName="NoArrivalsMap" />
-                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
-                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
-                <ScalarProperty Name="RatePlanName" ColumnName="RatePlanName" />
-                <ScalarProperty Name="RatePlanId" ColumnName="RatePlanId" />
-                <ScalarProperty Name="RoomId" ColumnName="RoomId" />
-                <ScalarProperty Name="HotelId" ColumnName="HotelId" />
-                <ScalarProperty Name="RateId" ColumnName="RateId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -4136,6 +4124,44 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <FunctionImportMapping FunctionImportName="spGetPricesByRate" FunctionName="Models.Store.spGetPricesByRate">
             <ResultMapping>
               <ComplexTypeMapping TypeName="Models.spGetPricesByRate_Result">
+                <ScalarProperty Name="PersonType" ColumnName="PersonType" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="vDayRates">
+            <EntityTypeMapping TypeName="Models.vDayRates">
+              <MappingFragment StoreEntitySet="vDayRates">
+                <ScalarProperty Name="Language" ColumnName="Language" />
+                <ScalarProperty Name="IsPromotion" ColumnName="IsPromotion" />
+                <ScalarProperty Name="ParentRatePlanId" ColumnName="ParentRatePlanId" />
+                <ScalarProperty Name="Currency" ColumnName="Currency" />
+                <ScalarProperty Name="Offset" ColumnName="Offset" />
+                <ScalarProperty Name="Factor" ColumnName="Factor" />
+                <ScalarProperty Name="DiscountLevel" ColumnName="DiscountLevel" />
+                <ScalarProperty Name="DayDiscount" ColumnName="DayDiscount" />
+                <ScalarProperty Name="Discount" ColumnName="Discount" />
+                <ScalarProperty Name="ExceptionPrice" ColumnName="ExceptionPrice" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Occupancy" ColumnName="Occupancy" />
+                <ScalarProperty Name="ExceptionMap" ColumnName="ExceptionMap" />
+                <ScalarProperty Name="NoDeparturesMap" ColumnName="NoDeparturesMap" />
+                <ScalarProperty Name="NoArrivalsMap" ColumnName="NoArrivalsMap" />
+                <ScalarProperty Name="PromoDays" ColumnName="PromoDays" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="RatePlanName" ColumnName="RatePlanName" />
+                <ScalarProperty Name="RatePlanId" ColumnName="RatePlanId" />
+                <ScalarProperty Name="RoomId" ColumnName="RoomId" />
+                <ScalarProperty Name="HotelId" ColumnName="HotelId" />
+                <ScalarProperty Name="RateId" ColumnName="RateId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spGetPricesByRateException" FunctionName="Models.Store.spGetPricesByRateException">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Models.spGetPricesByRateException_Result">
                 <ScalarProperty Name="PersonType" ColumnName="PersonType" />
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />
                 <ScalarProperty Name="Price" ColumnName="Price" />

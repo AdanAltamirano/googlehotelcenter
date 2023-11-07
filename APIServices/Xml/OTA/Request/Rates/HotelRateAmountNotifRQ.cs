@@ -73,6 +73,19 @@ namespace APIServices.Xml.OTA.Request.Rates
                         new XAttribute("Start", rate.StartDate),
                         new XAttribute("End", rate.EndDate));
 
+                    if (rate.IsPromotion || rate.HasPriceException)
+                    {
+                        ratesXml.Add(
+                            new XAttribute("Mon", rate.ApplyMon.ToString().ToLower()),
+                            new XAttribute("Tue", rate.ApplyTue.ToString().ToLower()),
+                            new XAttribute("Weds", rate.ApplyWed.ToString().ToLower()),
+                            new XAttribute("Thur", rate.ApplyThu.ToString().ToLower()),
+                            new XAttribute("Fri", rate.ApplyFri.ToString().ToLower()),
+                            new XAttribute("Sat", rate.ApplySat.ToString().ToLower()),
+                            new XAttribute("Sun", rate.ApplySun.ToString().ToLower()));
+                    }
+
+
                     XElement baseGuestAmounts = new XElement(blank + "BaseByGuestAmts");
 
                     foreach(BaseGuestAmount baseGuestAmount in rate.BaseGuestAmounts)
@@ -88,20 +101,27 @@ namespace APIServices.Xml.OTA.Request.Rates
 
                     }
 
-                    XElement additionalGuestAmounts = new XElement(blank + "AdditionalGuestAmounts");
+                    ratesXml.Add(baseGuestAmounts);
 
-                    foreach (AdditionalGuestAmount additionalGuestAmount in rate.AdditionalGuestAmounts)
+                    if (rate.AdditionalGuestAmounts != null && rate.AdditionalGuestAmounts.Count() > 0)
                     {
-                        XElement additionalGuestAmountXml = new XElement(blank + "AdditionalGuestAmount",
-                            new XAttribute("Amount", additionalGuestAmount.Amount),
-                            new XAttribute("AgeQualifyingCode", additionalGuestAmount.AgeQualifyingCode));
 
-                        additionalGuestAmounts.Add(additionalGuestAmountXml);
+                        XElement additionalGuestAmounts = new XElement(blank + "AdditionalGuestAmounts");
+
+                        foreach (AdditionalGuestAmount additionalGuestAmount in rate.AdditionalGuestAmounts)
+                        {
+                            XElement additionalGuestAmountXml = new XElement(blank + "AdditionalGuestAmount",
+                                new XAttribute("Amount", additionalGuestAmount.Amount),
+                                new XAttribute("AgeQualifyingCode", additionalGuestAmount.AgeQualifyingCode));
+
+                            additionalGuestAmounts.Add(additionalGuestAmountXml);
+                        }
+
+                        ratesXml.Add(additionalGuestAmounts);
+
                     }
 
-
-
-                    ratesXml.Add(baseGuestAmounts, additionalGuestAmounts);
+                    //ratesXml.Add(baseGuestAmounts, additionalGuestAmounts);
 
                     rates.Add(ratesXml);
                 }

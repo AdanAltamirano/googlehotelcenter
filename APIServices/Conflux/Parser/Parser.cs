@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-
 using APIServices.Models;
-using APIServices.Conflux.OTA.Models.Rates;
 using APIServices.Conflux.Helpers;
+using APIServices.Conflux.Models.Rates;
+using APIServices.Conflux.OTA.Models.Rates;
+
 
 
 namespace APIServices.Conflux.Parser
@@ -17,44 +18,73 @@ namespace APIServices.Conflux.Parser
             rateAmountMessages.HotelCode = companyId;
             rateAmountMessages.RateAmountMessagesList = new List<RateAmountMessage>();
 
+            RatesHelpers.Init(plusTax, tax);
+
             foreach (var currentRate in currentRates)
             {
-                RateAmountMessage rateAmountMessage = new RateAmountMessage();
-                
-                StatusApplicationControl statusApplicationControl = new StatusApplicationControl() { RatePlanCode = currentRate.RatePlanId, InvTypeCode = currentRate.RoomCode };
+                var prices = RatesHelpers.GetPrices(currentRate.RateId);
+                var pricesException = RatesHelpers.GetPricesException(currentRate.RateId);
+                List<vDayRates> vDayRates = RatesHelpers.GetVDayRate(currentRate);
 
-                List<Rate> rates = new List<Rate>();
+                foreach(var vDayRate in vDayRates)
+                {
+                    RateAmountMessage rateAmountMessage = new RateAmountMessage();
 
-                List<vDayRates> vDayRate = RatesHelpers.GetVDayRate(currentRate);
+                    StatusApplicationControl statusApplicationControl = new StatusApplicationControl() { RatePlanCode = vDayRate.RatePlanId, InvTypeCode = currentRate.RoomCode };
 
-                List<vDayRates> promos = vDayRate
-                    .Where(vdr => vdr.IsPromotion == true)
-                    .OrderBy(vdr => vdr.StartDate)
-                    .ToList();
+                    List<Rate> rates = new List<Rate>();
+                    
+                    Rate rate = new Rate();
+                    rate.StartDate = vDayRate.StartDate.ToString("yyyyMMdd");//revisar el formato
+                    rate.EndDate = vDayRate.EndDate.ToString("yyyyMMdd");
 
-                var startDate = currentRate.StartDate;
-                var endDate = currentRate.EndDate;
+                    if (vDayRate.IsPromotion)
+                    {
+                        rate.IsPromotion = true;
+
+                        rate.ApplyMon = vDayRate.PromoDays[0] == 'Y' ? true : false;
+                        rate.ApplyTue = vDayRate.PromoDays[1] == 'Y' ? true : false;
+                        rate.ApplyWed = vDayRate.PromoDays[2] == 'Y' ? true : false;
+                        rate.ApplyThu = vDayRate.PromoDays[3] == 'Y' ? true : false;
+                        rate.ApplyFri = vDayRate.PromoDays[4] == 'Y' ? true : false;
+                        rate.ApplySat = vDayRate.PromoDays[5] == 'Y' ? true : false;
+                        rate.ApplySun = vDayRate.PromoDays[6] == 'Y' ? true : false;
+                    }
 
 
+                    rate.BaseGuestAmounts = RatesHelpers.UpdateBaseGuestAmountPricesWithTaxesAndDiscounts(vDayRate, prices);
+                    rate.AdditionalGuestAmounts = RatesHelpers.UpdateAdditionalGuestAmountPrices(prices); // Ver si llevan impuestos y descuento los extra
+
+                    rates.Add(rate);
+
+                    //Precios Excepciones
+                    if(pricesException.Count > 0 && !vDayRate.IsPromotion)
+                    {
+                        Rate rateException = new Rate();
+                        rateException.HasPriceException = true;
+                        rateException.StartDate = vDayRate.StartDate.ToString("yyyyMMdd");//revisar el formato
+                        rateException.EndDate = vDayRate.EndDate.ToString("yyyyMMdd");
+
+                        rateException.ApplyMon = vDayRate.ExceptionMap[0] == 'Y' ? true : false;
+                        rateException.ApplyTue = vDayRate.ExceptionMap[1] == 'Y' ? true : false;
+                        rateException.ApplyWed = vDayRate.ExceptionMap[2] == 'Y' ? true : false;
+                        rateException.ApplyThu = vDayRate.ExceptionMap[3] == 'Y' ? true : false;
+                        rateException.ApplyFri = vDayRate.ExceptionMap[4] == 'Y' ? true : false;
+                        rateException.ApplySat = vDayRate.ExceptionMap[5] == 'Y' ? true : false;
+                        rateException.ApplySun = vDayRate.ExceptionMap[6] == 'Y' ? true : false;
+
+                        rateException.BaseGuestAmounts = RatesHelpers.UpdateBaseGuestAmountPricesWithTaxesAndDiscounts(vDayRate, pricesException);
+
+                        rates.Add(rateException);
+                    }
+
+                    rateAmountMessage.statusApplicationControl = statusApplicationControl;
+                    rateAmountMessage.Rates = rates;
+
+                    rateAmountMessages.RateAmountMessagesList.Add(rateAmountMessage);
+                }
 
 
-                //Rate rate = new Rate();
-
-                //rate.StartDate = currentRate.StartDate.ToString("yyyyMMdd");//revisar el formato
-                //rate.EndDate = currentRate.EndDate.ToString("yyyyMMdd");
-
-                //RatesHelpers.Init(plusTax, tax);
-
-                //var prices = RatesHelpers.GetPrices(currentRate.RateId);
-                //rate.BaseGuestAmounts = RatesHelpers.UpdateBaseGuestAmountPricesWithTaxesAndDiscounts(currentRate, prices);
-                //rate.AdditionalGuestAmounts = RatesHelpers.UpdateAdditionalGuestAmountPrices(prices);
-
-                //rates.Add(rate);
-
-                rateAmountMessage.statusApplicationControl = statusApplicationControl;
-                rateAmountMessage.Rates = rates;
-
-                rateAmountMessages.RateAmountMessagesList.Add(rateAmountMessage);
             }
 
 

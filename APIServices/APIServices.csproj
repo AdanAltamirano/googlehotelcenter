@@ -118,6 +118,7 @@
     <Compile Include="Conflux\Models\OTA\Rates\RateAmountMessage.cs" />
     <Compile Include="Conflux\Models\OTA\Rates\RateAmountMessages.cs" />
     <Compile Include="Conflux\Models\OTA\Rates\StatusApplicationControl.cs" />
+    <Compile Include="Conflux\Models\Rates\Promo.cs" />
     <Compile Include="Conflux\Models\Rates\RatePrice.cs" />
     <Compile Include="Conflux\Models\Rates\Response\RateResponse.cs" />
     <Compile Include="Conflux\Models\User\Response\UserReponse.cs" />
@@ -250,6 +251,9 @@
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\spGetCurrentRatesByHotel_Result.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\spGetPricesByRateException_Result.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\spGetPricesByRate_Result.cs">

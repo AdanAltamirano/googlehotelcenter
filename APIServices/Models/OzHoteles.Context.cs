@@ -37,7 +37,6 @@ namespace APIServices.Models
         public virtual DbSet<vHotelByUser> vHotelByUser { get; set; }
         public virtual DbSet<vAdministrator> vAdministrator { get; set; }
         public virtual DbSet<vDayRateDetail> vDayRateDetail { get; set; }
-        public virtual DbSet<vDayRates> vDayRates { get; set; }
         public virtual DbSet<vPermissions> vPermissions { get; set; }
         public virtual DbSet<Hoteles> Hoteles { get; set; }
         public virtual DbSet<Corporativos> Corporativos { get; set; }
@@ -64,6 +63,7 @@ namespace APIServices.Models
         public virtual DbSet<vReservationLog> vReservationLog { get; set; }
         public virtual DbSet<vReservationDetails> vReservationDetails { get; set; }
         public virtual DbSet<vHotelActives> vHotelActives { get; set; }
+        public virtual DbSet<vDayRates> vDayRates { get; set; }
     
         public virtual int spReservationCancel(Nullable<int> idReservacion, string noConfCancelGalileo, string noCancelacion, string txCode, Nullable<bool> statusConf, string systemCode, string travelAgencyName, string voucher, string wizcomPassOn, string wizcomSequenceNumber, string motivoCancelacion, Nullable<bool> cancelWithError, string sessionId, Nullable<int> iduser)
         {
@@ -402,6 +402,15 @@ namespace APIServices.Models
                 new ObjectParameter("RateId", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetPricesByRate_Result>("spGetPricesByRate", rateIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetPricesByRateException_Result> spGetPricesByRateException(Nullable<int> rateId)
+        {
+            var rateIdParameter = rateId.HasValue ?
+                new ObjectParameter("RateId", rateId) :
+                new ObjectParameter("RateId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetPricesByRateException_Result>("spGetPricesByRateException", rateIdParameter);
         }
     }
 }
