@@ -111,6 +111,7 @@
     <Compile Include="AgencyService.cs" />
     <Compile Include="Conflux\ConfluxService.cs" />
     <Compile Include="Conflux\Enum\PersonTypeEnum.cs" />
+    <Compile Include="Conflux\Enum\TypeRateEnum.cs" />
     <Compile Include="Conflux\Helpers\RatesHelpers.cs" />
     <Compile Include="Conflux\Models\OTA\Rates\AdditionalGuestAmount.cs" />
     <Compile Include="Conflux\Models\OTA\Rates\BaseGuestAmount.cs" />
@@ -253,7 +254,22 @@
     <Compile Include="Models\spGetCurrentRatesByHotel_Result.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\spGetCurrentRatesByHotel_Result1.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\spGetCurrentRatesByHotel_Result2.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\spGetCurrentRatesByHotel_Result3.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\spGetPricesByRateException_Result.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\spGetPricesByRatePromotionException_Result.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\spGetPricesByRatePromotion_Result.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\spGetPricesByRate_Result.cs">
@@ -293,6 +309,9 @@
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\vDayRates.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\vDayRatesExceptions.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\vHotelActives.cs">

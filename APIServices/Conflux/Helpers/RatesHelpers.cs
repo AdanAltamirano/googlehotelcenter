@@ -17,7 +17,7 @@ namespace APIServices.Conflux.Helpers
             PlusTax = plusTax;
             Tax = tax;
         }
-        public static List<vDayRates> GetVDayRate(spGetCurrentRatesByHotel_Result rate)
+        public static List<vDayRates> GetVDayRate(spGetCurrentRatesByHotel_Result3 rate)
         {
             List<vDayRates> vDayRate = null;
 
@@ -37,6 +37,27 @@ namespace APIServices.Conflux.Helpers
 
             return vDayRate;
         }
+        public static List<vDayRatesExceptions> GetVDayRateException(spGetCurrentRatesByHotel_Result3 rate)
+        {
+            List<vDayRatesExceptions> vDayRate = null;
+
+            using (OzHotelesEntities dbContext = new OzHotelesEntities())
+            {
+                vDayRate = dbContext.vDayRatesExceptions.Where(
+                    dr => dr.RateId == rate.RateId
+                    && dr.RoomId == rate.RoomHotelId
+                    && dr.HotelId == rate.HotelId
+                    && dr.StartDate >= rate.StartDate
+                    && dr.EndDate <= rate.EndDate
+                    && dr.EndDate >= dr.StartDate
+                    && dr.Language == 1)
+                    .OrderBy(vdr => vdr.StartDate)
+                    .ToList();
+            }
+
+            return vDayRate;
+        }
+
         public static List<spGetPricesByRate_Result> GetPrices(int? rateId)
         {
             List<spGetPricesByRate_Result> prices = null;
@@ -61,6 +82,31 @@ namespace APIServices.Conflux.Helpers
             return prices;
         }
 
+        public static List<spGetPricesByRatePromotion_Result> GetPricesPromotion(int? rateId)
+        {
+            List<spGetPricesByRatePromotion_Result> prices = null;
+
+            using (OzHotelesEntities dbContext = new OzHotelesEntities())
+            {
+                prices = dbContext.spGetPricesByRatePromotion(rateId).ToList<spGetPricesByRatePromotion_Result>();
+            }
+
+            return prices;
+        }
+
+        public static List<spGetPricesByRatePromotionException_Result> GetPricesPromotionException(int? rateId)
+        {
+            List<spGetPricesByRatePromotionException_Result> prices = null;
+
+            using (OzHotelesEntities dbContext = new OzHotelesEntities())
+            {
+                prices = dbContext.spGetPricesByRatePromotionException(rateId).ToList<spGetPricesByRatePromotionException_Result>();
+            }
+
+            return prices;
+        }
+
+        #region Tarifas Habitacion
         public static List<BaseGuestAmount> UpdateBaseGuestAmountPricesWithTaxesAndDiscounts(vDayRates vDayRate , List<spGetPricesByRate_Result> prices)
         {
             List<BaseGuestAmount> updatedPrices = null;
@@ -345,7 +391,296 @@ namespace APIServices.Conflux.Helpers
 
             return baseGuestAmounts;
         }
+        #endregion
 
+        #region Tarifas Promociones
+
+        public static List<BaseGuestAmount> UpdateBaseGuestAmountPricesWithTaxesAndDiscounts(vDayRatesExceptions vDayRate, List<spGetPricesByRatePromotion_Result> prices)
+        {
+            List<BaseGuestAmount> updatedPrices = null;
+
+            updatedPrices = BaseGuestAmountApplyingTaxes(prices);
+
+            switch (vDayRate.DiscountLevel)
+            {
+                case 0:
+                    //Solo DayDiscount
+
+                    foreach (var price in updatedPrices)
+                    {
+                        if (price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraAdult
+                            && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraChild
+                            && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
+                        {
+                            price.AmountBeforeTax = PriorityRateDiscount(price.AmountBeforeTax, vDayRate.DayDiscount);
+                            price.AmountAfterTax = PriorityRateDiscount(price.AmountAfterTax, vDayRate.DayDiscount);
+                        }
+                    }
+
+                    break;
+                case 1:
+
+                    //Sum of All Discounts
+
+                    var allDiscount = vDayRate.DayDiscount + vDayRate.Discount;
+
+                    foreach (var price in updatedPrices)
+                    {
+                        if (price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraAdult
+                            && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraChild
+                            && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
+                        {
+
+                            price.AmountBeforeTax = AllDiscounts(price.AmountBeforeTax, vDayRate.DayDiscount);
+                            price.AmountAfterTax = AllDiscounts(price.AmountAfterTax, vDayRate.DayDiscount);
+
+                        }
+
+                    }
+
+                    break;
+                case 2:
+
+                    //Additional Discount
+
+                    foreach (var price in updatedPrices)
+                    {
+
+                        if (price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraAdult
+                            && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraChild
+                            && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
+                        {
+                            price.AmountBeforeTax = AdditionalDiscount(price.AmountBeforeTax, vDayRate.DayDiscount, vDayRate.Discount);
+                            price.AmountAfterTax = AdditionalDiscount(price.AmountAfterTax, vDayRate.DayDiscount, vDayRate.Discount);
+                        }
+                    }
+
+                    break;
+            }
+
+            return updatedPrices;
+
+        }
+
+        public static List<BaseGuestAmount> BaseGuestAmountApplyingTaxes(List<spGetPricesByRatePromotion_Result> prices)
+        {
+            List<BaseGuestAmount> baseGuestAmounts = new List<BaseGuestAmount>();
+
+            switch (PlusTax)
+            {
+                case true:
+
+                    foreach (var price in prices)
+                    {
+                        if (price.PersonType != (int)PersonTypeEnum.ExtraAdult
+                            && price.PersonType != (int)PersonTypeEnum.ExtraChild
+                            && price.PersonType != (int)PersonTypeEnum.ExtraTeeneger)
+                        {
+
+                            var amountBeforeTax = decimal.Round((decimal)(price.Price / (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
+
+                            BaseGuestAmount baseGuestAmount = new BaseGuestAmount()
+                            {
+                                AmountBeforeTax = amountBeforeTax,
+                                AmountAfterTax = price.Price,
+                                NumberOfGuests = price.Quantity.ToString(),
+                                AgeQualifyingCode = price.PersonType
+                            };
+
+                            baseGuestAmounts.Add(baseGuestAmount);
+                        }
+                    }
+
+                    break;
+                case false:
+
+                    foreach (var price in prices)
+                    {
+                        if (price.PersonType != (int)PersonTypeEnum.ExtraAdult
+                            && price.PersonType != (int)PersonTypeEnum.ExtraChild
+                            && price.PersonType != (int)PersonTypeEnum.ExtraTeeneger)
+                        {
+
+                            var amountAfterTax = decimal.Round((decimal)(price.Price * (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
+
+                            BaseGuestAmount baseGuestAmount = new BaseGuestAmount()
+                            {
+                                AmountBeforeTax = price.Price,
+                                AmountAfterTax = amountAfterTax,
+                                NumberOfGuests = price.Quantity.ToString(),
+                                AgeQualifyingCode = price.PersonType
+                            };
+
+                            baseGuestAmounts.Add(baseGuestAmount);
+                        }
+                    }
+
+                    break;
+            }
+
+            return baseGuestAmounts;
+        }
+
+        public static List<BaseGuestAmount> UpdateBaseGuestAmountPricesWithTaxesAndDiscounts(vDayRatesExceptions vDayRate, List<spGetPricesByRatePromotionException_Result> prices)
+        {
+            List<BaseGuestAmount> updatedPrices = null;
+
+            updatedPrices = BaseGuestAmountApplyingTaxes(prices);
+
+            switch (vDayRate.DiscountLevel)
+            {
+                case 0:
+                    //Solo DayDiscount
+
+                    foreach (var price in updatedPrices)
+                    {
+                        if (price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraAdult
+                            && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraChild
+                            && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
+                        {
+                            price.AmountBeforeTax = PriorityRateDiscount(price.AmountBeforeTax, vDayRate.DayDiscount);
+                            price.AmountAfterTax = PriorityRateDiscount(price.AmountAfterTax, vDayRate.DayDiscount);
+                        }
+                    }
+
+                    break;
+                case 1:
+
+                    //Sum of All Discounts
+
+                    var allDiscount = vDayRate.DayDiscount + vDayRate.Discount;
+
+                    foreach (var price in updatedPrices)
+                    {
+                        if (price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraAdult
+                            && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraChild
+                            && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
+                        {
+
+                            price.AmountBeforeTax = AllDiscounts(price.AmountBeforeTax, vDayRate.DayDiscount);
+                            price.AmountAfterTax = AllDiscounts(price.AmountAfterTax, vDayRate.DayDiscount);
+
+                        }
+
+                    }
+
+                    break;
+                case 2:
+
+                    //Additional Discount
+
+                    foreach (var price in updatedPrices)
+                    {
+
+                        if (price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraAdult
+                            && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraChild
+                            && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
+                        {
+                            price.AmountBeforeTax = AdditionalDiscount(price.AmountBeforeTax, vDayRate.DayDiscount, vDayRate.Discount);
+                            price.AmountAfterTax = AdditionalDiscount(price.AmountAfterTax, vDayRate.DayDiscount, vDayRate.Discount);
+                        }
+                    }
+
+                    break;
+            }
+
+            return updatedPrices;
+
+        }
+
+        public static List<BaseGuestAmount> BaseGuestAmountApplyingTaxes(List<spGetPricesByRatePromotionException_Result> prices)
+        {
+            List<BaseGuestAmount> baseGuestAmounts = new List<BaseGuestAmount>();
+
+            switch (PlusTax)
+            {
+                case true:
+
+                    foreach (var price in prices)
+                    {
+                        if (price.PersonType != (int)PersonTypeEnum.ExtraAdult
+                            && price.PersonType != (int)PersonTypeEnum.ExtraChild
+                            && price.PersonType != (int)PersonTypeEnum.ExtraTeeneger)
+                        {
+
+                            var amountBeforeTax = decimal.Round((decimal)(price.Price / (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
+
+                            BaseGuestAmount baseGuestAmount = new BaseGuestAmount()
+                            {
+                                AmountBeforeTax = amountBeforeTax,
+                                AmountAfterTax = price.Price,
+                                NumberOfGuests = price.Quantity.ToString(),
+                                AgeQualifyingCode = price.PersonType
+                            };
+
+                            baseGuestAmounts.Add(baseGuestAmount);
+                        }
+                    }
+
+                    break;
+                case false:
+
+                    foreach (var price in prices)
+                    {
+                        if (price.PersonType != (int)PersonTypeEnum.ExtraAdult
+                            && price.PersonType != (int)PersonTypeEnum.ExtraChild
+                            && price.PersonType != (int)PersonTypeEnum.ExtraTeeneger)
+                        {
+
+                            var amountAfterTax = decimal.Round((decimal)(price.Price * (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
+
+                            BaseGuestAmount baseGuestAmount = new BaseGuestAmount()
+                            {
+                                AmountBeforeTax = price.Price,
+                                AmountAfterTax = amountAfterTax,
+                                NumberOfGuests = price.Quantity.ToString(),
+                                AgeQualifyingCode = price.PersonType
+                            };
+
+                            baseGuestAmounts.Add(baseGuestAmount);
+                        }
+                    }
+
+                    break;
+            }
+
+            return baseGuestAmounts;
+        }
+
+        public static List<AdditionalGuestAmount> UpdateAdditionalGuestAmountPrices(List<spGetPricesByRatePromotion_Result> prices)
+        {
+            List<AdditionalGuestAmount> updatedPrices = new List<AdditionalGuestAmount>();
+
+            foreach (var price in prices)
+            {
+                if (price.PersonType == (int)PersonTypeEnum.ExtraAdult
+                    || price.PersonType == (int)PersonTypeEnum.ExtraChild
+                    || price.PersonType == (int)PersonTypeEnum.ExtraTeeneger)
+                {
+                    decimal amount = 0M;
+                    switch (PlusTax)
+                    {
+                        case true:
+                            amount = decimal.Round((decimal)price.Price, 2, MidpointRounding.AwayFromZero);
+                            break;
+                        case false:
+                            amount = decimal.Round((decimal)(price.Price * (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
+                            break;
+                    }
+
+                    AdditionalGuestAmount additionalGuestAmount = new AdditionalGuestAmount();
+                    additionalGuestAmount.Amount = decimal.Round(amount, MidpointRounding.AwayFromZero);
+                    additionalGuestAmount.AgeQualifyingCode = GetAgeQualifyingCodeExtras(price.PersonType);
+
+                    updatedPrices.Add(additionalGuestAmount);
+                }
+            }
+
+            return updatedPrices;
+
+        }
+
+        #endregion
 
         public static List<Promo> GetActiveDatesPromo (DateTime startDate, DateTime endDate, string promoDays, vDayRates vDayRate)
         {
