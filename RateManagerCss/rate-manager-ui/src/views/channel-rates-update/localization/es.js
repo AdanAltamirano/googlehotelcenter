@@ -3,5 +3,6 @@ export default {
     'Rates Updated' : 'Tarifas Actualizadas',
     'System Error' : 'Error de Sistema',
     'Exit' : 'Salir',
-    'Update Rates' : 'Actualizar Tarifas'
+    'Update Rates' : 'Sincronizar Tarifas',
+    'This operation make take a few minutes' : 'Esta operación puede tomar unos minutos'
 }

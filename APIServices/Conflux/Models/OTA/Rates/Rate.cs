@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+using APIServices.Conflux.Enum;
 namespace APIServices.Conflux.OTA.Models.Rates
 {
     public class Rate
     {
         public bool IsPromotion { get; set; }
         public bool HasPriceException { get; set; }
+        public TypeRateEnum TypeRate { get; set; }
         public string StartDate { get; set; }
         public string EndDate { get; set; }
         public List<BaseGuestAmount> BaseGuestAmounts { get; set; }

@@ -73,7 +73,7 @@ namespace APIServices.Xml.OTA.Request.Rates
                         new XAttribute("Start", rate.StartDate),
                         new XAttribute("End", rate.EndDate));
 
-                    if (rate.IsPromotion || rate.HasPriceException)
+                    if (rate.IsPromotion || rate.HasPriceException || rate.TypeRate == Conflux.Enum.TypeRateEnum.RoomRatePromotion)
                     {
                         ratesXml.Add(
                             new XAttribute("Mon", rate.ApplyMon.ToString().ToLower()),

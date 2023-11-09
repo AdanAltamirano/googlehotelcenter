@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using APIServices.Models;
 using APIServices.Conflux.Helpers;
@@ -123,7 +124,7 @@ namespace APIServices.Conflux.Parser
                 List<Rate> rates = new List<Rate>();
 
                 Rate rate = new Rate();
-                rate.StartDate = vDayRate.StartDate.ToString("yyyyMMdd");//revisar el formato
+                rate.StartDate = vDayRate.StartDate < DateTime.Now.Date? DateTime.Now.Date.ToString("yyyyMMdd"): vDayRate.StartDate.ToString("yyyyMMdd");//revisar el formato
                 rate.EndDate = vDayRate.EndDate.ToString("yyyyMMdd");
 
                 if (vDayRate.IsPromotion)
@@ -188,7 +189,8 @@ namespace APIServices.Conflux.Parser
                 List<Rate> rates = new List<Rate>();
 
                 Rate rate = new Rate();
-                rate.StartDate = vDayRate.StartDate.ToString("yyyyMMdd");//revisar el formato
+                rate.TypeRate = TypeRateEnum.RoomRatePromotion;
+                rate.StartDate = vDayRate.StartDate < DateTime.Now.Date ? DateTime.Now.Date.ToString("yyyyMMdd") : vDayRate.StartDate.ToString("yyyyMMdd");//revisar el formato
                 rate.EndDate = vDayRate.EndDate.ToString("yyyyMMdd");
 
                 if (vDayRate.IsPromotion)

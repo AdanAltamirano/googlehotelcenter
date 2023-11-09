@@ -10,6 +10,11 @@
                     {{$t('Update Rates')}}
                 </b-button>
             </div>
+            <div class="center-flex mt-3">
+                <label style="color:#dc3545;">
+                    {{$t("This operation make take a few minutes")}}
+                </label>
+            </div>
         </b-container>
     </div>
 </template>

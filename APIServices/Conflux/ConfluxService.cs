@@ -91,7 +91,8 @@ namespace APIServices.Conflux
                 string url = ConfigurationManager.AppSettings["confluxApiUrl"] + "pms/ota/rates/update";
 
                 var uri = new Uri(url);
-                
+
+                client.Timeout = TimeSpan.FromMinutes(50);
                 var response = client.PostAsync(uri, httpContent).Result;
 
                 string result = response.Content.ReadAsStringAsync().Result; //regresa un xml
