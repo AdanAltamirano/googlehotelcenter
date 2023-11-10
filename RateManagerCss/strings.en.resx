@@ -8901,4 +8901,22 @@
   <data name="01669" xml:space="preserve">
     <value>Tax Company</value>
   </data>
+  <data name="commonString_Day" xml:space="preserve">
+    <value>Day</value>
+  </data>
+  <data name="tt_totalByDay" xml:space="preserve">
+    <value>Total By Day</value>
+  </data>
+  <data name="tt_totalBySource" xml:space="preserve">
+    <value>Total By Source</value>
+  </data>
+  <data name="reportText_Generated" xml:space="preserve">
+    <value>Generated at </value>
+  </data>
+  <data name="reportNoResults" xml:space="preserve">
+    <value>There is no results for this search</value>
+  </data>
+  <data name="msgSelectOneHotel" xml:space="preserve">
+    <value>Invalid Search</value>
+  </data>
 </root>
