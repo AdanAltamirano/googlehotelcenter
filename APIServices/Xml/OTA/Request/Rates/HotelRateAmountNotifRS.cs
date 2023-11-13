@@ -34,6 +34,5 @@ namespace APIServices.Xml.OTA.Request.Rates
 
         }
 
-
     }
 }

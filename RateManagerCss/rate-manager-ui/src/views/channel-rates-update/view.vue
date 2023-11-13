@@ -44,11 +44,13 @@ export default {
             this.callApi = true;
             ConfluxService.UpdateRates(this.hotelId)
             .then(response => {
+                console.log(response);
                 this.callApi = false;
                 this.showButton = true;
                 this.$appAlert(this.success(this.$t("Rates Updated")));
             })
             .catch(error => {
+                console.log(error);
                 this.callApi = false;
                 this.showButton = true;
                 this.$appAlert(this.error(this.$t('System Error')))

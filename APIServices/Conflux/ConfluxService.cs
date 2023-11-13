@@ -14,8 +14,6 @@ namespace APIServices.Conflux
 {
     public class ConfluxService
     {
-        private static readonly HttpClient client = new HttpClient();
-
         private OzHotelesEntities dbContext = new OzHotelesEntities();
 
         public IQueryable<vHotelActives> GetHotels() => dbContext.vHotelActives.AsQueryable();
@@ -92,20 +90,39 @@ namespace APIServices.Conflux
 
                 var uri = new Uri(url);
 
-                client.Timeout = TimeSpan.FromMinutes(50);
-                var response = client.PostAsync(uri, httpContent).Result;
+                System.Xml.Linq.XElement otaRS = null;
 
-                string result = response.Content.ReadAsStringAsync().Result; //regresa un xml
+                using (var client = new HttpClient())
+                {
 
-                var otaRS = HotelRateAmountNotifRS.ParseHotelRateAmountNotifRS(result);
+                    client.Timeout = TimeSpan.FromMinutes(50);
+                    var response = client.PostAsync(uri, httpContent).Result;
 
+                    string result = response.Content.ReadAsStringAsync().Result; //regresa un xml
+
+                    otaRS = HotelRateAmountNotifRS.ParseHotelRateAmountNotifRS(result);
+                }
+
+                res.Xml = otaRS.ToString();
                 res.IsSuccess = HotelRateAmountNotifRS.IsSuccessRequest(otaRS);
 
             }
             catch(Exception ex)
             {
                 res.IsSuccess = false;
-                res.Error = new KeyValuePair<string, string>("448", "System Error");
+                res.Error = new KeyValuePair<string, string>("448", ex.Message);
+
+                var errorsElement = new System.Xml.Linq.XElement("Errors");
+                var errorElementProperty = new System.Xml.Linq.XElement("Error");
+                errorElementProperty.Add(
+                    new System.Xml.Linq.XAttribute("Type", "3"),
+                    new System.Xml.Linq.XAttribute("Code", "448"),
+                    new System.Xml.Linq.XText(ex.Message));
+
+                errorsElement.Add(errorElementProperty);
+
+                res.Xml = errorsElement.ToString();
+
             }
 
 
