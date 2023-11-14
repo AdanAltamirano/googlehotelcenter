@@ -37,71 +37,6 @@ namespace APIServices.Conflux.Parser
                         break;
 
                 }
-
-
-                //var prices = RatesHelpers.GetPrices(currentRate.RateId);
-                //var pricesException = RatesHelpers.GetPricesException(currentRate.RateId);
-                //List<vDayRates> vDayRates = RatesHelpers.GetVDayRate(currentRate);
-
-                //foreach(var vDayRate in vDayRates)
-                //{
-                //    RateAmountMessage rateAmountMessage = new RateAmountMessage();
-
-                //    StatusApplicationControl statusApplicationControl = new StatusApplicationControl() { RatePlanCode = vDayRate.RatePlanId, InvTypeCode = currentRate.RoomCode };
-
-                //    List<Rate> rates = new List<Rate>();
-                    
-                //    Rate rate = new Rate();
-                //    rate.StartDate = vDayRate.StartDate.ToString("yyyyMMdd");//revisar el formato
-                //    rate.EndDate = vDayRate.EndDate.ToString("yyyyMMdd");
-
-                //    if (vDayRate.IsPromotion)
-                //    {
-                //        rate.IsPromotion = true;
-
-                //        rate.ApplyMon = vDayRate.PromoDays[0] == 'Y' ? true : false;
-                //        rate.ApplyTue = vDayRate.PromoDays[1] == 'Y' ? true : false;
-                //        rate.ApplyWed = vDayRate.PromoDays[2] == 'Y' ? true : false;
-                //        rate.ApplyThu = vDayRate.PromoDays[3] == 'Y' ? true : false;
-                //        rate.ApplyFri = vDayRate.PromoDays[4] == 'Y' ? true : false;
-                //        rate.ApplySat = vDayRate.PromoDays[5] == 'Y' ? true : false;
-                //        rate.ApplySun = vDayRate.PromoDays[6] == 'Y' ? true : false;
-                //    }
-
-
-                //    rate.BaseGuestAmounts = RatesHelpers.UpdateBaseGuestAmountPricesWithTaxesAndDiscounts(vDayRate, prices);
-                //    rate.AdditionalGuestAmounts = RatesHelpers.UpdateAdditionalGuestAmountPrices(prices); // Ver si llevan impuestos y descuento los extra
-
-                //    rates.Add(rate);
-
-                //    //Precios Excepciones
-                //    if(pricesException.Count > 0 && !vDayRate.IsPromotion)
-                //    {
-                //        Rate rateException = new Rate();
-                //        rateException.HasPriceException = true;
-                //        rateException.StartDate = vDayRate.StartDate.ToString("yyyyMMdd");//revisar el formato
-                //        rateException.EndDate = vDayRate.EndDate.ToString("yyyyMMdd");
-
-                //        rateException.ApplyMon = vDayRate.ExceptionMap[0] == 'Y' ? true : false;
-                //        rateException.ApplyTue = vDayRate.ExceptionMap[1] == 'Y' ? true : false;
-                //        rateException.ApplyWed = vDayRate.ExceptionMap[2] == 'Y' ? true : false;
-                //        rateException.ApplyThu = vDayRate.ExceptionMap[3] == 'Y' ? true : false;
-                //        rateException.ApplyFri = vDayRate.ExceptionMap[4] == 'Y' ? true : false;
-                //        rateException.ApplySat = vDayRate.ExceptionMap[5] == 'Y' ? true : false;
-                //        rateException.ApplySun = vDayRate.ExceptionMap[6] == 'Y' ? true : false;
-
-                //        rateException.BaseGuestAmounts = RatesHelpers.UpdateBaseGuestAmountPricesWithTaxesAndDiscounts(vDayRate, pricesException);
-
-                //        rates.Add(rateException);
-                //    }
-
-                //    rateAmountMessage.statusApplicationControl = statusApplicationControl;
-                //    rateAmountMessage.Rates = rates;
-
-                //    rateAmountMessages.RateAmountMessagesList.Add(rateAmountMessage);
-                //}
-
-
             }
 
 
@@ -141,7 +76,7 @@ namespace APIServices.Conflux.Parser
                 }
 
 
-                rate.BaseGuestAmounts = RatesHelpers.UpdateBaseGuestAmountPricesWithTaxesAndDiscounts(vDayRate, prices);
+                rate.BaseGuestAmounts = RatesHelpers.UpdateBaseGuestAmountPricesWithTaxesAndDiscounts(vDayRate, prices, currentRate);
                 rate.AdditionalGuestAmounts = RatesHelpers.UpdateAdditionalGuestAmountPrices(prices); // Ver si llevan impuestos y descuento los extra
 
                 rates.Add(rate);
@@ -162,7 +97,7 @@ namespace APIServices.Conflux.Parser
                     rateException.ApplySat = vDayRate.ExceptionMap[5] == 'Y' ? true : false;
                     rateException.ApplySun = vDayRate.ExceptionMap[6] == 'Y' ? true : false;
 
-                    rateException.BaseGuestAmounts = RatesHelpers.UpdateBaseGuestAmountPricesWithTaxesAndDiscounts(vDayRate, pricesException);
+                    rateException.BaseGuestAmounts = RatesHelpers.UpdateBaseGuestAmountPricesWithTaxesAndDiscounts(vDayRate, pricesException, currentRate);
 
                     rates.Add(rateException);
                 }
@@ -217,7 +152,7 @@ namespace APIServices.Conflux.Parser
                 }
 
 
-                rate.BaseGuestAmounts = RatesHelpers.UpdateBaseGuestAmountPricesWithTaxesAndDiscounts(vDayRate, prices);
+                rate.BaseGuestAmounts = RatesHelpers.UpdateBaseGuestAmountPricesWithTaxesAndDiscounts(vDayRate, prices, currentRate);
                 rate.AdditionalGuestAmounts = RatesHelpers.UpdateAdditionalGuestAmountPrices(prices); // Ver si llevan impuestos y descuento los extra
 
                 rates.Add(rate);
@@ -238,7 +173,7 @@ namespace APIServices.Conflux.Parser
                     rateException.ApplySat = vDayRate.ExceptionMap[5] == 'Y' ? true : false;
                     rateException.ApplySun = vDayRate.ExceptionMap[6] == 'Y' ? true : false;
 
-                    rateException.BaseGuestAmounts = RatesHelpers.UpdateBaseGuestAmountPricesWithTaxesAndDiscounts(vDayRate, pricesException);
+                    rateException.BaseGuestAmounts = RatesHelpers.UpdateBaseGuestAmountPricesWithTaxesAndDiscounts(vDayRate, pricesException, currentRate);
 
                     rates.Add(rateException);
                 }

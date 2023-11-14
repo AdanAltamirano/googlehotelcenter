@@ -107,11 +107,11 @@ namespace APIServices.Conflux.Helpers
         }
 
         #region Tarifas Habitacion
-        public static List<BaseGuestAmount> UpdateBaseGuestAmountPricesWithTaxesAndDiscounts(vDayRates vDayRate , List<spGetPricesByRate_Result> prices)
+        public static List<BaseGuestAmount> UpdateBaseGuestAmountPricesWithTaxesAndDiscounts(vDayRates vDayRate , List<spGetPricesByRate_Result> prices, spGetCurrentRatesByHotel_Result3 currentRate)
         {
             List<BaseGuestAmount> updatedPrices = null;
 
-            updatedPrices = BaseGuestAmountApplyingTaxes(prices);
+            updatedPrices = BaseGuestAmountApplyingTaxes(prices, currentRate);
 
             switch (vDayRate.DiscountLevel)
             {
@@ -174,11 +174,11 @@ namespace APIServices.Conflux.Helpers
 
         }
 
-        public static List<BaseGuestAmount> UpdateBaseGuestAmountPricesWithTaxesAndDiscounts(vDayRates vDayRate, List<spGetPricesByRateException_Result> prices)
+        public static List<BaseGuestAmount> UpdateBaseGuestAmountPricesWithTaxesAndDiscounts(vDayRates vDayRate, List<spGetPricesByRateException_Result> prices, spGetCurrentRatesByHotel_Result3 currentRate)
         {
             List<BaseGuestAmount> updatedPrices = null;
 
-            updatedPrices = BaseGuestAmountApplyingTaxes(prices);
+            updatedPrices = BaseGuestAmountApplyingTaxes(prices, currentRate);
 
             switch (vDayRate.DiscountLevel)
             {
@@ -274,58 +274,160 @@ namespace APIServices.Conflux.Helpers
 
         }
 
-        public static List<BaseGuestAmount> BaseGuestAmountApplyingTaxes(List<spGetPricesByRate_Result> prices)
+        public static List<BaseGuestAmount> BaseGuestAmountApplyingTaxes(List<spGetPricesByRate_Result> prices, spGetCurrentRatesByHotel_Result3 currentRate)
         {
+            int maxAdults = Convert.ToInt32(currentRate.MaxAdults);
+            int maxChildren = Convert.ToInt32(currentRate.MaxChildren);
+
             List<BaseGuestAmount> baseGuestAmounts = new List<BaseGuestAmount>();
 
             switch (PlusTax)
             {
                 case true:
 
-                    foreach (var price in prices)
+                    //Adultos
+
+                    for(var i = 0; i < maxAdults; i++)
                     {
-                        if (price.PersonType != (int)PersonTypeEnum.ExtraAdult
-                            && price.PersonType != (int)PersonTypeEnum.ExtraChild
-                            && price.PersonType != (int)PersonTypeEnum.ExtraTeeneger)
+                        var price = prices.First(p => p.Quantity == (i + 1) && p.PersonType  == (int)PersonTypeEnum.Adult);
+
+                        var amountBeforeTax = decimal.Round((decimal)(price.Price / (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
+
+                        BaseGuestAmount baseGuestAmount = new BaseGuestAmount()
                         {
+                            AmountBeforeTax = amountBeforeTax,
+                            AmountAfterTax = price.Price,
+                            NumberOfGuests = price.Quantity.ToString(),
+                            AgeQualifyingCode = price.PersonType
+                        };
 
-                            var amountBeforeTax = decimal.Round((decimal)(price.Price / (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
-
-                            BaseGuestAmount baseGuestAmount = new BaseGuestAmount()
-                            {
-                                AmountBeforeTax = amountBeforeTax,
-                                AmountAfterTax = price.Price,
-                                NumberOfGuests = price.Quantity.ToString(),
-                                AgeQualifyingCode = price.PersonType
-                            };
-
-                            baseGuestAmounts.Add(baseGuestAmount);
-                        }
+                        baseGuestAmounts.Add(baseGuestAmount);
                     }
+
+                    //Ninios
+ 
+                    for (var i = 0; i < maxChildren; i++)
+                    {
+                        var priceChild = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Child);
+                        var amountBeforeTaxChild = decimal.Round((decimal)(priceChild.Price / (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
+
+                        var priceTeeneger = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Teeneger);
+                        var amountBeforeTaxTeeneger = decimal.Round((decimal)(priceTeeneger.Price / (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
+
+                        BaseGuestAmount baseGuestAmountChild = new BaseGuestAmount()
+                        {
+                            AmountBeforeTax = amountBeforeTaxChild,
+                            AmountAfterTax = priceChild.Price,
+                            NumberOfGuests = priceChild.Quantity.ToString(),
+                            AgeQualifyingCode = priceChild.PersonType
+                        };
+
+                        BaseGuestAmount baseGuestAmountTeeneger = new BaseGuestAmount()
+                        {
+                            AmountBeforeTax = amountBeforeTaxTeeneger,
+                            AmountAfterTax = priceTeeneger.Price,
+                            NumberOfGuests = priceTeeneger.Quantity.ToString(),
+                            AgeQualifyingCode = priceTeeneger.PersonType
+                        };
+
+                        baseGuestAmounts.Add(baseGuestAmountChild);
+                        baseGuestAmounts.Add(baseGuestAmountTeeneger);
+                    }
+
+
+                    //foreach (var price in prices)
+                    //{
+                    //    if (price.PersonType != (int)PersonTypeEnum.ExtraAdult
+                    //        && price.PersonType != (int)PersonTypeEnum.ExtraChild
+                    //        && price.PersonType != (int)PersonTypeEnum.ExtraTeeneger)
+                    //    {
+
+                    //        var amountBeforeTax = decimal.Round((decimal)(price.Price / (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
+
+                    //        BaseGuestAmount baseGuestAmount = new BaseGuestAmount()
+                    //        {
+                    //            AmountBeforeTax = amountBeforeTax,
+                    //            AmountAfterTax = price.Price,
+                    //            NumberOfGuests = price.Quantity.ToString(),
+                    //            AgeQualifyingCode = price.PersonType
+                    //        };
+
+                    //        baseGuestAmounts.Add(baseGuestAmount);
+                    //    }
+                    //}
 
                     break;
                 case false:
 
-                    foreach (var price in prices)
+                    //Adultos
+
+                    for (var i = 0; i < maxAdults; i++)
                     {
-                        if (price.PersonType != (int)PersonTypeEnum.ExtraAdult
-                            && price.PersonType != (int)PersonTypeEnum.ExtraChild
-                            && price.PersonType != (int)PersonTypeEnum.ExtraTeeneger)
+                        var price = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Adult);
+
+                        var amountAfterTax = decimal.Round((decimal)(price.Price * (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
+
+                        BaseGuestAmount baseGuestAmount = new BaseGuestAmount()
                         {
+                            AmountBeforeTax = price.Price,
+                            AmountAfterTax = amountAfterTax,
+                            NumberOfGuests = price.Quantity.ToString(),
+                            AgeQualifyingCode = price.PersonType
+                        };
 
-                            var amountAfterTax = decimal.Round((decimal)(price.Price * (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
-
-                            BaseGuestAmount baseGuestAmount = new BaseGuestAmount()
-                            {
-                                AmountBeforeTax = price.Price,
-                                AmountAfterTax = amountAfterTax,
-                                NumberOfGuests = price.Quantity.ToString(),
-                                AgeQualifyingCode = price.PersonType
-                            };
-
-                            baseGuestAmounts.Add(baseGuestAmount);
-                        }
+                        baseGuestAmounts.Add(baseGuestAmount);
                     }
+
+                    //Ninios
+
+                    for (var i = 0; i < maxChildren; i++)
+                    {
+                        var priceChild = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Child);
+                        var amountAfterTaxChild = decimal.Round((decimal)(priceChild.Price * (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
+
+                        var priceTeeneger = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Teeneger);
+                        var amountAfterTaxTeeneger = decimal.Round((decimal)(priceTeeneger.Price * (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
+
+                        BaseGuestAmount baseGuestAmountChild = new BaseGuestAmount()
+                        {
+                            AmountBeforeTax = priceChild.Price,
+                            AmountAfterTax = amountAfterTaxChild,
+                            NumberOfGuests = priceChild.Quantity.ToString(),
+                            AgeQualifyingCode = priceChild.PersonType
+                        };
+
+                        BaseGuestAmount baseGuestAmountTeeneger = new BaseGuestAmount()
+                        {
+                            AmountBeforeTax = priceTeeneger.Price,
+                            AmountAfterTax = amountAfterTaxTeeneger,
+                            NumberOfGuests = priceTeeneger.Quantity.ToString(),
+                            AgeQualifyingCode = priceTeeneger.PersonType
+                        };
+
+                        baseGuestAmounts.Add(baseGuestAmountChild);
+                        baseGuestAmounts.Add(baseGuestAmountTeeneger);
+                    }
+
+                    //foreach (var price in prices)
+                    //{
+                    //    if (price.PersonType != (int)PersonTypeEnum.ExtraAdult
+                    //        && price.PersonType != (int)PersonTypeEnum.ExtraChild
+                    //        && price.PersonType != (int)PersonTypeEnum.ExtraTeeneger)
+                    //    {
+
+                    //        var amountAfterTax = decimal.Round((decimal)(price.Price * (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
+
+                    //        BaseGuestAmount baseGuestAmount = new BaseGuestAmount()
+                    //        {
+                    //            AmountBeforeTax = price.Price,
+                    //            AmountAfterTax = amountAfterTax,
+                    //            NumberOfGuests = price.Quantity.ToString(),
+                    //            AgeQualifyingCode = price.PersonType
+                    //        };
+
+                    //        baseGuestAmounts.Add(baseGuestAmount);
+                    //    }
+                    //}
 
                     break;
             }
@@ -333,58 +435,157 @@ namespace APIServices.Conflux.Helpers
             return baseGuestAmounts;
         }
 
-        public static List<BaseGuestAmount> BaseGuestAmountApplyingTaxes(List<spGetPricesByRateException_Result> prices)
+        public static List<BaseGuestAmount> BaseGuestAmountApplyingTaxes(List<spGetPricesByRateException_Result> prices, spGetCurrentRatesByHotel_Result3 currentRate)
         {
+            int maxAdults = Convert.ToInt32(currentRate.MaxAdults);
+            int maxChildren = Convert.ToInt32(currentRate.MaxChildren);
+
             List<BaseGuestAmount> baseGuestAmounts = new List<BaseGuestAmount>();
 
             switch (PlusTax)
             {
                 case true:
 
-                    foreach (var price in prices)
+                    //Adultos
+
+                    for (var i = 0; i < maxAdults; i++)
                     {
-                        if (price.PersonType != (int)PersonTypeEnum.ExtraAdult
-                            && price.PersonType != (int)PersonTypeEnum.ExtraChild
-                            && price.PersonType != (int)PersonTypeEnum.ExtraTeeneger)
+                        var price = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Adult);
+
+                        var amountBeforeTax = decimal.Round((decimal)(price.Price / (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
+
+                        BaseGuestAmount baseGuestAmount = new BaseGuestAmount()
                         {
+                            AmountBeforeTax = amountBeforeTax,
+                            AmountAfterTax = price.Price,
+                            NumberOfGuests = price.Quantity.ToString(),
+                            AgeQualifyingCode = price.PersonType
+                        };
 
-                            var amountBeforeTax = decimal.Round((decimal)(price.Price / (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
-
-                            BaseGuestAmount baseGuestAmount = new BaseGuestAmount()
-                            {
-                                AmountBeforeTax = amountBeforeTax,
-                                AmountAfterTax = price.Price,
-                                NumberOfGuests = price.Quantity.ToString(),
-                                AgeQualifyingCode = price.PersonType
-                            };
-
-                            baseGuestAmounts.Add(baseGuestAmount);
-                        }
+                        baseGuestAmounts.Add(baseGuestAmount);
                     }
+
+                    //Ninios
+
+                    for (var i = 0; i < maxChildren; i++)
+                    {
+                        var priceChild = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Child);
+                        var amountBeforeTaxChild = decimal.Round((decimal)(priceChild.Price / (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
+
+                        var priceTeeneger = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Teeneger);
+                        var amountBeforeTaxTeeneger = decimal.Round((decimal)(priceTeeneger.Price / (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
+
+                        BaseGuestAmount baseGuestAmountChild = new BaseGuestAmount()
+                        {
+                            AmountBeforeTax = amountBeforeTaxChild,
+                            AmountAfterTax = priceChild.Price,
+                            NumberOfGuests = priceChild.Quantity.ToString(),
+                            AgeQualifyingCode = priceChild.PersonType
+                        };
+
+                        BaseGuestAmount baseGuestAmountTeeneger = new BaseGuestAmount()
+                        {
+                            AmountBeforeTax = amountBeforeTaxTeeneger,
+                            AmountAfterTax = priceTeeneger.Price,
+                            NumberOfGuests = priceTeeneger.Quantity.ToString(),
+                            AgeQualifyingCode = priceTeeneger.PersonType
+                        };
+
+                        baseGuestAmounts.Add(baseGuestAmountChild);
+                        baseGuestAmounts.Add(baseGuestAmountTeeneger);
+                    }
+
+
+                    //foreach (var price in prices)
+                    //{
+                    //    if (price.PersonType != (int)PersonTypeEnum.ExtraAdult
+                    //        && price.PersonType != (int)PersonTypeEnum.ExtraChild
+                    //        && price.PersonType != (int)PersonTypeEnum.ExtraTeeneger)
+                    //    {
+
+                    //        var amountBeforeTax = decimal.Round((decimal)(price.Price / (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
+
+                    //        BaseGuestAmount baseGuestAmount = new BaseGuestAmount()
+                    //        {
+                    //            AmountBeforeTax = amountBeforeTax,
+                    //            AmountAfterTax = price.Price,
+                    //            NumberOfGuests = price.Quantity.ToString(),
+                    //            AgeQualifyingCode = price.PersonType
+                    //        };
+
+                    //        baseGuestAmounts.Add(baseGuestAmount);
+                    //    }
+                    //}
 
                     break;
                 case false:
 
-                    foreach (var price in prices)
+                    for (var i = 0; i < maxAdults; i++)
                     {
-                        if (price.PersonType != (int)PersonTypeEnum.ExtraAdult
-                            && price.PersonType != (int)PersonTypeEnum.ExtraChild
-                            && price.PersonType != (int)PersonTypeEnum.ExtraTeeneger)
+                        var price = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Adult);
+
+                        var amountAfterTax = decimal.Round((decimal)(price.Price * (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
+
+                        BaseGuestAmount baseGuestAmount = new BaseGuestAmount()
                         {
+                            AmountBeforeTax = price.Price,
+                            AmountAfterTax = amountAfterTax,
+                            NumberOfGuests = price.Quantity.ToString(),
+                            AgeQualifyingCode = price.PersonType
+                        };
 
-                            var amountAfterTax = decimal.Round((decimal)(price.Price * (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
-
-                            BaseGuestAmount baseGuestAmount = new BaseGuestAmount()
-                            {
-                                AmountBeforeTax = price.Price,
-                                AmountAfterTax = amountAfterTax,
-                                NumberOfGuests = price.Quantity.ToString(),
-                                AgeQualifyingCode = price.PersonType
-                            };
-
-                            baseGuestAmounts.Add(baseGuestAmount);
-                        }
+                        baseGuestAmounts.Add(baseGuestAmount);
                     }
+
+                    for (var i = 0; i < maxChildren; i++)
+                    {
+                        var priceChild = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Child);
+                        var amountAfterTaxChild = decimal.Round((decimal)(priceChild.Price * (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
+
+                        var priceTeeneger = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Teeneger);
+                        var amountAfterTaxTeeneger = decimal.Round((decimal)(priceTeeneger.Price * (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
+
+                        BaseGuestAmount baseGuestAmountChild = new BaseGuestAmount()
+                        {
+                            AmountBeforeTax = priceChild.Price,
+                            AmountAfterTax = amountAfterTaxChild,
+                            NumberOfGuests = priceChild.Quantity.ToString(),
+                            AgeQualifyingCode = priceChild.PersonType
+                        };
+
+                        BaseGuestAmount baseGuestAmountTeeneger = new BaseGuestAmount()
+                        {
+                            AmountBeforeTax = priceTeeneger.Price,
+                            AmountAfterTax = amountAfterTaxTeeneger,
+                            NumberOfGuests = priceTeeneger.Quantity.ToString(),
+                            AgeQualifyingCode = priceTeeneger.PersonType
+                        };
+
+                        baseGuestAmounts.Add(baseGuestAmountChild);
+                        baseGuestAmounts.Add(baseGuestAmountTeeneger);
+                    }
+
+
+                    //foreach (var price in prices)
+                    //{
+                    //    if (price.PersonType != (int)PersonTypeEnum.ExtraAdult
+                    //        && price.PersonType != (int)PersonTypeEnum.ExtraChild
+                    //        && price.PersonType != (int)PersonTypeEnum.ExtraTeeneger)
+                    //    {
+
+                    //        var amountAfterTax = decimal.Round((decimal)(price.Price * (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
+
+                    //        BaseGuestAmount baseGuestAmount = new BaseGuestAmount()
+                    //        {
+                    //            AmountBeforeTax = price.Price,
+                    //            AmountAfterTax = amountAfterTax,
+                    //            NumberOfGuests = price.Quantity.ToString(),
+                    //            AgeQualifyingCode = price.PersonType
+                    //        };
+
+                    //        baseGuestAmounts.Add(baseGuestAmount);
+                    //    }
+                    //}
 
                     break;
             }
@@ -395,11 +596,11 @@ namespace APIServices.Conflux.Helpers
 
         #region Tarifas Promociones
 
-        public static List<BaseGuestAmount> UpdateBaseGuestAmountPricesWithTaxesAndDiscounts(vDayRatesExceptions vDayRate, List<spGetPricesByRatePromotion_Result> prices)
+        public static List<BaseGuestAmount> UpdateBaseGuestAmountPricesWithTaxesAndDiscounts(vDayRatesExceptions vDayRate, List<spGetPricesByRatePromotion_Result> prices, spGetCurrentRatesByHotel_Result3 currentRate)
         {
             List<BaseGuestAmount> updatedPrices = null;
 
-            updatedPrices = BaseGuestAmountApplyingTaxes(prices);
+            updatedPrices = BaseGuestAmountApplyingTaxes(prices, currentRate);
 
             switch (vDayRate.DiscountLevel)
             {
@@ -462,58 +663,121 @@ namespace APIServices.Conflux.Helpers
 
         }
 
-        public static List<BaseGuestAmount> BaseGuestAmountApplyingTaxes(List<spGetPricesByRatePromotion_Result> prices)
+        public static List<BaseGuestAmount> BaseGuestAmountApplyingTaxes(List<spGetPricesByRatePromotion_Result> prices, spGetCurrentRatesByHotel_Result3 currentRate)
         {
+            int maxAdults = Convert.ToInt32(currentRate.MaxAdults);
+            int maxChildren = Convert.ToInt32(currentRate.MaxChildren);
+
             List<BaseGuestAmount> baseGuestAmounts = new List<BaseGuestAmount>();
 
             switch (PlusTax)
             {
                 case true:
 
-                    foreach (var price in prices)
+                    //Adultos
+
+                    for (var i = 0; i < maxAdults; i++)
                     {
-                        if (price.PersonType != (int)PersonTypeEnum.ExtraAdult
-                            && price.PersonType != (int)PersonTypeEnum.ExtraChild
-                            && price.PersonType != (int)PersonTypeEnum.ExtraTeeneger)
+                        var price = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Adult);
+
+                        var amountBeforeTax = decimal.Round((decimal)(price.Price / (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
+
+                        BaseGuestAmount baseGuestAmount = new BaseGuestAmount()
                         {
+                            AmountBeforeTax = amountBeforeTax,
+                            AmountAfterTax = price.Price,
+                            NumberOfGuests = price.Quantity.ToString(),
+                            AgeQualifyingCode = price.PersonType
+                        };
 
-                            var amountBeforeTax = decimal.Round((decimal)(price.Price / (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
-
-                            BaseGuestAmount baseGuestAmount = new BaseGuestAmount()
-                            {
-                                AmountBeforeTax = amountBeforeTax,
-                                AmountAfterTax = price.Price,
-                                NumberOfGuests = price.Quantity.ToString(),
-                                AgeQualifyingCode = price.PersonType
-                            };
-
-                            baseGuestAmounts.Add(baseGuestAmount);
-                        }
+                        baseGuestAmounts.Add(baseGuestAmount);
                     }
+
+                    //Ninios
+
+                    for (var i = 0; i < maxChildren; i++)
+                    {
+                        var priceChild = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Child);
+                        var amountBeforeTaxChild = decimal.Round((decimal)(priceChild.Price / (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
+
+                        var priceTeeneger = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Teeneger);
+                        var amountBeforeTaxTeeneger = decimal.Round((decimal)(priceTeeneger.Price / (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
+
+                        BaseGuestAmount baseGuestAmountChild = new BaseGuestAmount()
+                        {
+                            AmountBeforeTax = amountBeforeTaxChild,
+                            AmountAfterTax = priceChild.Price,
+                            NumberOfGuests = priceChild.Quantity.ToString(),
+                            AgeQualifyingCode = priceChild.PersonType
+                        };
+
+                        BaseGuestAmount baseGuestAmountTeeneger = new BaseGuestAmount()
+                        {
+                            AmountBeforeTax = amountBeforeTaxTeeneger,
+                            AmountAfterTax = priceTeeneger.Price,
+                            NumberOfGuests = priceTeeneger.Quantity.ToString(),
+                            AgeQualifyingCode = priceTeeneger.PersonType
+                        };
+
+                        baseGuestAmounts.Add(baseGuestAmountChild);
+                        baseGuestAmounts.Add(baseGuestAmountTeeneger);
+                    }
+
+
+
 
                     break;
                 case false:
 
-                    foreach (var price in prices)
+                    //Adultos
+
+                    for (var i = 0; i < maxAdults; i++)
                     {
-                        if (price.PersonType != (int)PersonTypeEnum.ExtraAdult
-                            && price.PersonType != (int)PersonTypeEnum.ExtraChild
-                            && price.PersonType != (int)PersonTypeEnum.ExtraTeeneger)
+                        var price = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Adult);
+
+                        var amountAfterTax = decimal.Round((decimal)(price.Price * (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
+
+                        BaseGuestAmount baseGuestAmount = new BaseGuestAmount()
                         {
+                            AmountBeforeTax = price.Price,
+                            AmountAfterTax = amountAfterTax,
+                            NumberOfGuests = price.Quantity.ToString(),
+                            AgeQualifyingCode = price.PersonType
+                        };
 
-                            var amountAfterTax = decimal.Round((decimal)(price.Price * (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
-
-                            BaseGuestAmount baseGuestAmount = new BaseGuestAmount()
-                            {
-                                AmountBeforeTax = price.Price,
-                                AmountAfterTax = amountAfterTax,
-                                NumberOfGuests = price.Quantity.ToString(),
-                                AgeQualifyingCode = price.PersonType
-                            };
-
-                            baseGuestAmounts.Add(baseGuestAmount);
-                        }
+                        baseGuestAmounts.Add(baseGuestAmount);
                     }
+
+                    //Ninios
+
+                    for (var i = 0; i < maxChildren; i++)
+                    {
+                        var priceChild = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Child);
+                        var amountAfterTaxChild = decimal.Round((decimal)(priceChild.Price * (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
+
+                        var priceTeeneger = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Teeneger);
+                        var amountAfterTaxTeeneger = decimal.Round((decimal)(priceTeeneger.Price * (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
+
+                        BaseGuestAmount baseGuestAmountChild = new BaseGuestAmount()
+                        {
+                            AmountBeforeTax = priceChild.Price,
+                            AmountAfterTax = amountAfterTaxChild,
+                            NumberOfGuests = priceChild.Quantity.ToString(),
+                            AgeQualifyingCode = priceChild.PersonType
+                        };
+
+                        BaseGuestAmount baseGuestAmountTeeneger = new BaseGuestAmount()
+                        {
+                            AmountBeforeTax = priceTeeneger.Price,
+                            AmountAfterTax = amountAfterTaxTeeneger,
+                            NumberOfGuests = priceTeeneger.Quantity.ToString(),
+                            AgeQualifyingCode = priceTeeneger.PersonType
+                        };
+
+                        baseGuestAmounts.Add(baseGuestAmountChild);
+                        baseGuestAmounts.Add(baseGuestAmountTeeneger);
+                    }
+
 
                     break;
             }
@@ -521,11 +785,11 @@ namespace APIServices.Conflux.Helpers
             return baseGuestAmounts;
         }
 
-        public static List<BaseGuestAmount> UpdateBaseGuestAmountPricesWithTaxesAndDiscounts(vDayRatesExceptions vDayRate, List<spGetPricesByRatePromotionException_Result> prices)
+        public static List<BaseGuestAmount> UpdateBaseGuestAmountPricesWithTaxesAndDiscounts(vDayRatesExceptions vDayRate, List<spGetPricesByRatePromotionException_Result> prices, spGetCurrentRatesByHotel_Result3 currentRate)
         {
             List<BaseGuestAmount> updatedPrices = null;
 
-            updatedPrices = BaseGuestAmountApplyingTaxes(prices);
+            updatedPrices = BaseGuestAmountApplyingTaxes(prices, currentRate);
 
             switch (vDayRate.DiscountLevel)
             {
@@ -588,58 +852,118 @@ namespace APIServices.Conflux.Helpers
 
         }
 
-        public static List<BaseGuestAmount> BaseGuestAmountApplyingTaxes(List<spGetPricesByRatePromotionException_Result> prices)
+        public static List<BaseGuestAmount> BaseGuestAmountApplyingTaxes(List<spGetPricesByRatePromotionException_Result> prices, spGetCurrentRatesByHotel_Result3 currentRate)
         {
+            int maxAdults = Convert.ToInt32(currentRate.MaxAdults);
+            int maxChildren = Convert.ToInt32(currentRate.MaxChildren);
+
             List<BaseGuestAmount> baseGuestAmounts = new List<BaseGuestAmount>();
 
             switch (PlusTax)
             {
                 case true:
 
-                    foreach (var price in prices)
+                    //Adultos
+
+                    for (var i = 0; i < maxAdults; i++)
                     {
-                        if (price.PersonType != (int)PersonTypeEnum.ExtraAdult
-                            && price.PersonType != (int)PersonTypeEnum.ExtraChild
-                            && price.PersonType != (int)PersonTypeEnum.ExtraTeeneger)
+                        var price = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Adult);
+
+                        var amountBeforeTax = decimal.Round((decimal)(price.Price / (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
+
+                        BaseGuestAmount baseGuestAmount = new BaseGuestAmount()
                         {
+                            AmountBeforeTax = amountBeforeTax,
+                            AmountAfterTax = price.Price,
+                            NumberOfGuests = price.Quantity.ToString(),
+                            AgeQualifyingCode = price.PersonType
+                        };
 
-                            var amountBeforeTax = decimal.Round((decimal)(price.Price / (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
-
-                            BaseGuestAmount baseGuestAmount = new BaseGuestAmount()
-                            {
-                                AmountBeforeTax = amountBeforeTax,
-                                AmountAfterTax = price.Price,
-                                NumberOfGuests = price.Quantity.ToString(),
-                                AgeQualifyingCode = price.PersonType
-                            };
-
-                            baseGuestAmounts.Add(baseGuestAmount);
-                        }
+                        baseGuestAmounts.Add(baseGuestAmount);
                     }
+
+                    //Ninios
+
+                    for (var i = 0; i < maxChildren; i++)
+                    {
+                        var priceChild = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Child);
+                        var amountBeforeTaxChild = decimal.Round((decimal)(priceChild.Price / (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
+
+                        var priceTeeneger = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Teeneger);
+                        var amountBeforeTaxTeeneger = decimal.Round((decimal)(priceTeeneger.Price / (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
+
+                        BaseGuestAmount baseGuestAmountChild = new BaseGuestAmount()
+                        {
+                            AmountBeforeTax = amountBeforeTaxChild,
+                            AmountAfterTax = priceChild.Price,
+                            NumberOfGuests = priceChild.Quantity.ToString(),
+                            AgeQualifyingCode = priceChild.PersonType
+                        };
+
+                        BaseGuestAmount baseGuestAmountTeeneger = new BaseGuestAmount()
+                        {
+                            AmountBeforeTax = amountBeforeTaxTeeneger,
+                            AmountAfterTax = priceTeeneger.Price,
+                            NumberOfGuests = priceTeeneger.Quantity.ToString(),
+                            AgeQualifyingCode = priceTeeneger.PersonType
+                        };
+
+                        baseGuestAmounts.Add(baseGuestAmountChild);
+                        baseGuestAmounts.Add(baseGuestAmountTeeneger);
+                    }
+
 
                     break;
                 case false:
 
-                    foreach (var price in prices)
+                    //Adults
+                    for (var i = 0; i < maxAdults; i++)
                     {
-                        if (price.PersonType != (int)PersonTypeEnum.ExtraAdult
-                            && price.PersonType != (int)PersonTypeEnum.ExtraChild
-                            && price.PersonType != (int)PersonTypeEnum.ExtraTeeneger)
+                        var price = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Adult);
+
+                        var amountAfterTax = decimal.Round((decimal)(price.Price * (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
+
+                        BaseGuestAmount baseGuestAmount = new BaseGuestAmount()
                         {
+                            AmountBeforeTax = price.Price,
+                            AmountAfterTax = amountAfterTax,
+                            NumberOfGuests = price.Quantity.ToString(),
+                            AgeQualifyingCode = price.PersonType
+                        };
 
-                            var amountAfterTax = decimal.Round((decimal)(price.Price * (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
-
-                            BaseGuestAmount baseGuestAmount = new BaseGuestAmount()
-                            {
-                                AmountBeforeTax = price.Price,
-                                AmountAfterTax = amountAfterTax,
-                                NumberOfGuests = price.Quantity.ToString(),
-                                AgeQualifyingCode = price.PersonType
-                            };
-
-                            baseGuestAmounts.Add(baseGuestAmount);
-                        }
+                        baseGuestAmounts.Add(baseGuestAmount);
                     }
+
+                    //Ninios
+
+                    for (var i = 0; i < maxChildren; i++)
+                    {
+                        var priceChild = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Child);
+                        var amountAfterTaxChild = decimal.Round((decimal)(priceChild.Price * (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
+
+                        var priceTeeneger = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Teeneger);
+                        var amountAfterTaxTeeneger = decimal.Round((decimal)(priceTeeneger.Price * (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
+
+                        BaseGuestAmount baseGuestAmountChild = new BaseGuestAmount()
+                        {
+                            AmountBeforeTax = priceChild.Price,
+                            AmountAfterTax = amountAfterTaxChild,
+                            NumberOfGuests = priceChild.Quantity.ToString(),
+                            AgeQualifyingCode = priceChild.PersonType
+                        };
+
+                        BaseGuestAmount baseGuestAmountTeeneger = new BaseGuestAmount()
+                        {
+                            AmountBeforeTax = priceTeeneger.Price,
+                            AmountAfterTax = amountAfterTaxTeeneger,
+                            NumberOfGuests = priceTeeneger.Quantity.ToString(),
+                            AgeQualifyingCode = priceTeeneger.PersonType
+                        };
+
+                        baseGuestAmounts.Add(baseGuestAmountChild);
+                        baseGuestAmounts.Add(baseGuestAmountTeeneger);
+                    }
+
 
                     break;
             }

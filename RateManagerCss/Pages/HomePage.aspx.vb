@@ -6,7 +6,7 @@ Imports Portal.Hotel.Facade
 
 Imports System.Text
 Imports System.IO
-
+Imports APIServices.Xml.Soap
 
 Partial Class HomePage
     Inherits PaginaBase
@@ -198,9 +198,9 @@ Partial Class HomePage
             Div1.Style.Add("display", "block")
         End If
 
-        If cInfoActual.IsSingleImgInv AndAlso IsSupervisor Then
-            btnSingleImgInv.Visible = True
-        End If
+        'If cInfoActual.IsSingleImgInv AndAlso IsSupervisor Then
+        btnSingleImgInv.Visible = True
+        'End If
         'If SourceName <> "" Then
         '    lblRoomName.Text = Me.SourceName.Split("//")(2 * ddlRoomtype.SelectedIndex)
         'End If
@@ -1112,6 +1112,14 @@ Partial Class HomePage
         POS(0).RequestorID = RequestorID
 
         Dim strRequest As String = MyBase.GetXMLFromObject(RQ)
+
+        Dim requestXDocument As System.Xml.Linq.XDocument = System.Xml.Linq.XDocument.Parse(strRequest)
+
+        Dim xmlRQ As System.Xml.Linq.XElement = requestXDocument.Element("OTA_HotelAvailNotifRQ")
+
+        Dim soapRequest As System.Xml.Linq.XDocument = Soap.CreateSoapRequestXml(xmlRQ)
+
+
         MyBase.WriteLog(String.Format("Request: {0}", strRequest), "SingleImgInv")
         Dim url As String = ConfigurationManager.AppSettings("TwoWayUpdateURL")
         Dim strError As String = String.Empty
@@ -1119,7 +1127,7 @@ Partial Class HomePage
             Dim HttpReq As System.Net.HttpWebRequest = System.Net.WebRequest.Create(url)
 
             HttpReq.Method = "POST"
-            Dim bytes() As Byte = System.Text.Encoding.ASCII.GetBytes(strRequest)
+            Dim bytes() As Byte = System.Text.Encoding.ASCII.GetBytes(soapRequest.ToString())
             HttpReq.ContentType = "application/xml; encoding='utf-8'"
             HttpReq.ContentLength = bytes.Length
             Dim requestStream As System.IO.Stream = HttpReq.GetRequestStream()
