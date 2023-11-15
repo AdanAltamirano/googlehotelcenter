@@ -791,6 +791,53 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vHotelRoom' no tiene definida 
           <Property Name="Language" Type="int" />
         </EntityType>
         <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'OzHoteles.dbo.vLinkedRatePlans' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="vLinkedRatePlans">
+          <Key>
+            <PropertyRef Name="SourceRatePlan" />
+            <PropertyRef Name="IdHotel" />
+            <PropertyRef Name="TargetRatePlan" />
+            <PropertyRef Name="idLinkRatePlan" />
+          </Key>
+          <Property Name="SourceRatePlan" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="IdHotel" Type="int" Nullable="false" />
+          <Property Name="OnePersonRatio" Type="smallmoney" />
+          <Property Name="OnePersonOffset" Type="smallmoney" />
+          <Property Name="TwoPersonRatio" Type="smallmoney" />
+          <Property Name="TwoPersonOffset" Type="smallmoney" />
+          <Property Name="ExtraAdultRatio" Type="smallmoney" />
+          <Property Name="ExtraAdultOffset" Type="smallmoney" />
+          <Property Name="ExtraChildRatio" Type="smallmoney" />
+          <Property Name="ExtraChildOffset" Type="smallmoney" />
+          <Property Name="RoundAmount" Type="bit" />
+          <Property Name="TargetRatePlan" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="OthersOccupationRatio" Type="smallmoney" />
+          <Property Name="OthersOccupationOffset" Type="smallmoney" />
+          <Property Name="SoldOutPerc" Type="smallmoney" />
+          <Property Name="idLinkRatePlan" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'OzHoteles.dbo.vLinkedRoomTypes' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="vLinkedRoomTypes">
+          <Key>
+            <PropertyRef Name="idtipohabitacion_Target" />
+            <PropertyRef Name="IdTipohabitacion_Source" />
+          </Key>
+          <Property Name="OnePersonRatio" Type="smallmoney" />
+          <Property Name="OnePersonOffset" Type="smallmoney" />
+          <Property Name="TwoPersonRatio" Type="smallmoney" />
+          <Property Name="TwoPersonOffset" Type="smallmoney" />
+          <Property Name="ExtraAdultRatio" Type="smallmoney" />
+          <Property Name="ExtraAdultOffset" Type="smallmoney" />
+          <Property Name="ExtraChildRatio" Type="smallmoney" />
+          <Property Name="ExtraChildOffset" Type="smallmoney" />
+          <Property Name="RoundAmount" Type="bit" />
+          <Property Name="idtipohabitacion_Target" Type="int" Nullable="false" />
+          <Property Name="IdTipohabitacion_Source" Type="int" Nullable="false" />
+          <Property Name="OtherOccupationRatio" Type="smallmoney" />
+          <Property Name="OtherOccupationOffset" Type="smallmoney" />
+        </EntityType>
+        <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'OzHoteles.dbo.vPermissions' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vPermissions">
           <Key>
@@ -1447,6 +1494,43 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
     [vHotelRoom].[Language] AS [Language]
     FROM [dbo].[vHotelRoom] AS [vHotelRoom]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="vLinkedRatePlans" EntityType="Self.vLinkedRatePlans" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vLinkedRatePlans].[SourceRatePlan] AS [SourceRatePlan], 
+    [vLinkedRatePlans].[IdHotel] AS [IdHotel], 
+    [vLinkedRatePlans].[OnePersonRatio] AS [OnePersonRatio], 
+    [vLinkedRatePlans].[OnePersonOffset] AS [OnePersonOffset], 
+    [vLinkedRatePlans].[TwoPersonRatio] AS [TwoPersonRatio], 
+    [vLinkedRatePlans].[TwoPersonOffset] AS [TwoPersonOffset], 
+    [vLinkedRatePlans].[ExtraAdultRatio] AS [ExtraAdultRatio], 
+    [vLinkedRatePlans].[ExtraAdultOffset] AS [ExtraAdultOffset], 
+    [vLinkedRatePlans].[ExtraChildRatio] AS [ExtraChildRatio], 
+    [vLinkedRatePlans].[ExtraChildOffset] AS [ExtraChildOffset], 
+    [vLinkedRatePlans].[RoundAmount] AS [RoundAmount], 
+    [vLinkedRatePlans].[TargetRatePlan] AS [TargetRatePlan], 
+    [vLinkedRatePlans].[OthersOccupationRatio] AS [OthersOccupationRatio], 
+    [vLinkedRatePlans].[OthersOccupationOffset] AS [OthersOccupationOffset], 
+    [vLinkedRatePlans].[SoldOutPerc] AS [SoldOutPerc], 
+    [vLinkedRatePlans].[idLinkRatePlan] AS [idLinkRatePlan]
+    FROM [dbo].[vLinkedRatePlans] AS [vLinkedRatePlans]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vLinkedRoomTypes" EntityType="Self.vLinkedRoomTypes" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vLinkedRoomTypes].[OnePersonRatio] AS [OnePersonRatio], 
+    [vLinkedRoomTypes].[OnePersonOffset] AS [OnePersonOffset], 
+    [vLinkedRoomTypes].[TwoPersonRatio] AS [TwoPersonRatio], 
+    [vLinkedRoomTypes].[TwoPersonOffset] AS [TwoPersonOffset], 
+    [vLinkedRoomTypes].[ExtraAdultRatio] AS [ExtraAdultRatio], 
+    [vLinkedRoomTypes].[ExtraAdultOffset] AS [ExtraAdultOffset], 
+    [vLinkedRoomTypes].[ExtraChildRatio] AS [ExtraChildRatio], 
+    [vLinkedRoomTypes].[ExtraChildOffset] AS [ExtraChildOffset], 
+    [vLinkedRoomTypes].[RoundAmount] AS [RoundAmount], 
+    [vLinkedRoomTypes].[idtipohabitacion_Target] AS [idtipohabitacion_Target], 
+    [vLinkedRoomTypes].[IdTipohabitacion_Source] AS [IdTipohabitacion_Source], 
+    [vLinkedRoomTypes].[OtherOccupationRatio] AS [OtherOccupationRatio], 
+    [vLinkedRoomTypes].[OtherOccupationOffset] AS [OtherOccupationOffset]
+    FROM [dbo].[vLinkedRoomTypes] AS [vLinkedRoomTypes]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="vPermissions" EntityType="Self.vPermissions" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [vPermissions].[showCreditCard] AS [showCreditCard], 
@@ -1851,9 +1935,11 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <Parameter Name="RateId" Mode="In" Type="Int32" />
           </FunctionImport>
           <EntitySet Name="vDayRatesExceptions" EntityType="Models.vDayRatesExceptions" />
-          <FunctionImport Name="spGetCurrentRatesByHotel" ReturnType="Collection(Models.spGetCurrentRatesByHotel_Result3)">
-            <Parameter Name="hotelId" Mode="In" Type="Int32" />
+          <FunctionImport Name="spGetCurrentRatesByHotel" ReturnType="Collection(Models.spGetCurrentRatesByHotel_Result4)">
+          <Parameter Name="hotelId" Mode="In" Type="Int32" />
           </FunctionImport>
+          <EntitySet Name="vLinkedRoomTypes" EntityType="Models.vLinkedRoomTypes" />
+          <EntitySet Name="vLinkedRatePlans" EntityType="Models.vLinkedRatePlans" />
         </EntityContainer>
         <EntityType Name="RatesPlan">
           <Key>
@@ -1905,7 +1991,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <NavigationProperty Name="Hoteles" Relationship="Models.FK_RatesPlan_Hoteles" FromRole="RatesPlan" ToRole="Hoteles" />
           <NavigationProperty Name="RatesPlanRules" Relationship="Models.FK_RatesPlan_RatesPlanRules" FromRole="RatesPlan" ToRole="RatesPlanRules" />
           <Property Name="IsCombinablePromotion" Type="Boolean" />
-        </EntityType>
+          </EntityType>
         <EntityType Name="Tarifas">
           <Key>
             <PropertyRef Name="idTarifa" />
@@ -3216,6 +3302,68 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <Property Type="String" Name="RoomCode" Nullable="true" MaxLength="4" />
           <Property Type="Int32" Name="TypeRate" Nullable="false" />
         </ComplexType>
+        <ComplexType Name="spGetCurrentRatesByHotel_Result4">
+          <Property Type="Int32" Name="RateId" Nullable="true" />
+          <Property Type="Int32" Name="ParentRoomHotelId" Nullable="true" />
+          <Property Type="Int32" Name="RoomHotelId" Nullable="true" />
+          <Property Type="DateTime" Name="StartDate" Nullable="true" Precision="16" />
+          <Property Type="DateTime" Name="EndDate" Nullable="true" Precision="16" />
+          <Property Type="String" Name="RateCode" Nullable="true" MaxLength="8" />
+          <Property Type="String" Name="RatePlanId" Nullable="true" MaxLength="4" />
+          <Property Type="Int32" Name="RoomId" Nullable="true" />
+          <Property Type="Int32" Name="HotelId" Nullable="true" />
+          <Property Type="Byte" Name="People" Nullable="true" />
+          <Property Type="Byte" Name="ExtraPeople" Nullable="true" />
+          <Property Type="Byte" Name="MaxAdults" Nullable="true" />
+          <Property Type="Byte" Name="MinAdults" Nullable="true" />
+          <Property Type="Byte" Name="MaxChildren" Nullable="true" />
+          <Property Type="String" Name="RoomName" Nullable="true" MaxLength="80" />
+          <Property Type="String" Name="RoomCode" Nullable="true" MaxLength="4" />
+          <Property Type="Int32" Name="TypeRate" Nullable="false" />
+        </ComplexType>
+        <EntityType Name="vLinkedRoomTypes">
+          <Key>
+            <PropertyRef Name="idtipohabitacion_Target" />
+            <PropertyRef Name="IdTipohabitacion_Source" />
+          </Key>
+          <Property Name="OnePersonRatio" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="OnePersonOffset" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="TwoPersonRatio" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="TwoPersonOffset" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="ExtraAdultRatio" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="ExtraAdultOffset" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="ExtraChildRatio" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="ExtraChildOffset" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="RoundAmount" Type="Boolean" />
+          <Property Name="idtipohabitacion_Target" Type="Int32" Nullable="false" />
+          <Property Name="IdTipohabitacion_Source" Type="Int32" Nullable="false" />
+          <Property Name="OtherOccupationRatio" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="OtherOccupationOffset" Type="Decimal" Precision="10" Scale="4" />
+        </EntityType>
+        <EntityType Name="vLinkedRatePlans">
+          <Key>
+            <PropertyRef Name="SourceRatePlan" />
+            <PropertyRef Name="IdHotel" />
+            <PropertyRef Name="TargetRatePlan" />
+            <PropertyRef Name="idLinkRatePlan" />
+          </Key>
+          <Property Name="SourceRatePlan" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IdHotel" Type="Int32" Nullable="false" />
+          <Property Name="OnePersonRatio" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="OnePersonOffset" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="TwoPersonRatio" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="TwoPersonOffset" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="ExtraAdultRatio" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="ExtraAdultOffset" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="ExtraChildRatio" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="ExtraChildOffset" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="RoundAmount" Type="Boolean" />
+          <Property Name="TargetRatePlan" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="OthersOccupationRatio" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="OthersOccupationOffset" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="SoldOutPerc" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="idLinkRatePlan" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4387,8 +4535,9 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="spGetCurrentRatesByHotel" FunctionName="Models.Store.spGetCurrentRatesByHotel">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="Models.spGetCurrentRatesByHotel_Result3">
+              <ComplexTypeMapping TypeName="Models.spGetCurrentRatesByHotel_Result4">
                 <ScalarProperty Name="RateId" ColumnName="RateId" />
+                <ScalarProperty Name="ParentRoomHotelId" ColumnName="ParentRoomHotelId" />
                 <ScalarProperty Name="RoomHotelId" ColumnName="RoomHotelId" />
                 <ScalarProperty Name="StartDate" ColumnName="StartDate" />
                 <ScalarProperty Name="EndDate" ColumnName="EndDate" />
@@ -4407,6 +4556,47 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="vLinkedRoomTypes">
+            <EntityTypeMapping TypeName="Models.vLinkedRoomTypes">
+              <MappingFragment StoreEntitySet="vLinkedRoomTypes">
+                <ScalarProperty Name="OtherOccupationOffset" ColumnName="OtherOccupationOffset" />
+                <ScalarProperty Name="OtherOccupationRatio" ColumnName="OtherOccupationRatio" />
+                <ScalarProperty Name="IdTipohabitacion_Source" ColumnName="IdTipohabitacion_Source" />
+                <ScalarProperty Name="idtipohabitacion_Target" ColumnName="idtipohabitacion_Target" />
+                <ScalarProperty Name="RoundAmount" ColumnName="RoundAmount" />
+                <ScalarProperty Name="ExtraChildOffset" ColumnName="ExtraChildOffset" />
+                <ScalarProperty Name="ExtraChildRatio" ColumnName="ExtraChildRatio" />
+                <ScalarProperty Name="ExtraAdultOffset" ColumnName="ExtraAdultOffset" />
+                <ScalarProperty Name="ExtraAdultRatio" ColumnName="ExtraAdultRatio" />
+                <ScalarProperty Name="TwoPersonOffset" ColumnName="TwoPersonOffset" />
+                <ScalarProperty Name="TwoPersonRatio" ColumnName="TwoPersonRatio" />
+                <ScalarProperty Name="OnePersonOffset" ColumnName="OnePersonOffset" />
+                <ScalarProperty Name="OnePersonRatio" ColumnName="OnePersonRatio" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vLinkedRatePlans">
+            <EntityTypeMapping TypeName="Models.vLinkedRatePlans">
+              <MappingFragment StoreEntitySet="vLinkedRatePlans">
+                <ScalarProperty Name="idLinkRatePlan" ColumnName="idLinkRatePlan" />
+                <ScalarProperty Name="SoldOutPerc" ColumnName="SoldOutPerc" />
+                <ScalarProperty Name="OthersOccupationOffset" ColumnName="OthersOccupationOffset" />
+                <ScalarProperty Name="OthersOccupationRatio" ColumnName="OthersOccupationRatio" />
+                <ScalarProperty Name="TargetRatePlan" ColumnName="TargetRatePlan" />
+                <ScalarProperty Name="RoundAmount" ColumnName="RoundAmount" />
+                <ScalarProperty Name="ExtraChildOffset" ColumnName="ExtraChildOffset" />
+                <ScalarProperty Name="ExtraChildRatio" ColumnName="ExtraChildRatio" />
+                <ScalarProperty Name="ExtraAdultOffset" ColumnName="ExtraAdultOffset" />
+                <ScalarProperty Name="ExtraAdultRatio" ColumnName="ExtraAdultRatio" />
+                <ScalarProperty Name="TwoPersonOffset" ColumnName="TwoPersonOffset" />
+                <ScalarProperty Name="TwoPersonRatio" ColumnName="TwoPersonRatio" />
+                <ScalarProperty Name="OnePersonOffset" ColumnName="OnePersonOffset" />
+                <ScalarProperty Name="OnePersonRatio" ColumnName="OnePersonRatio" />
+                <ScalarProperty Name="IdHotel" ColumnName="IdHotel" />
+                <ScalarProperty Name="SourceRatePlan" ColumnName="SourceRatePlan" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

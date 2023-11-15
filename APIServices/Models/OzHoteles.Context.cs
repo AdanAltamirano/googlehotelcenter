@@ -65,6 +65,8 @@ namespace APIServices.Models
         public virtual DbSet<vHotelActives> vHotelActives { get; set; }
         public virtual DbSet<vDayRates> vDayRates { get; set; }
         public virtual DbSet<vDayRatesExceptions> vDayRatesExceptions { get; set; }
+        public virtual DbSet<vLinkedRoomTypes> vLinkedRoomTypes { get; set; }
+        public virtual DbSet<vLinkedRatePlans> vLinkedRatePlans { get; set; }
     
         public virtual int spReservationCancel(Nullable<int> idReservacion, string noConfCancelGalileo, string noCancelacion, string txCode, Nullable<bool> statusConf, string systemCode, string travelAgencyName, string voucher, string wizcomPassOn, string wizcomSequenceNumber, string motivoCancelacion, Nullable<bool> cancelWithError, string sessionId, Nullable<int> iduser)
         {
@@ -423,13 +425,13 @@ namespace APIServices.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetPricesByRatePromotionException_Result>("spGetPricesByRatePromotionException", rateIdParameter);
         }
     
-        public virtual ObjectResult<spGetCurrentRatesByHotel_Result3> spGetCurrentRatesByHotel(Nullable<int> hotelId)
+        public virtual ObjectResult<spGetCurrentRatesByHotel_Result4> spGetCurrentRatesByHotel(Nullable<int> hotelId)
         {
             var hotelIdParameter = hotelId.HasValue ?
                 new ObjectParameter("hotelId", hotelId) :
                 new ObjectParameter("hotelId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCurrentRatesByHotel_Result3>("spGetCurrentRatesByHotel", hotelIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCurrentRatesByHotel_Result4>("spGetCurrentRatesByHotel", hotelIdParameter);
         }
     }
 }

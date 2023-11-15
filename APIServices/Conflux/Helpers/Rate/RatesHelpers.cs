@@ -6,9 +6,9 @@ using APIServices.Conflux.Enum;
 using APIServices.Conflux.Models.Rates;
 using APIServices.Conflux.OTA.Models.Rates;
 
-namespace APIServices.Conflux.Helpers
+namespace APIServices.Conflux.Helpers.Rate
 {
-    public static class RatesHelpers
+    public static partial class RatesHelpers
     {
         private static bool? PlusTax { get; set; }
         private static decimal? Tax { get; set; }
@@ -107,7 +107,7 @@ namespace APIServices.Conflux.Helpers
         }
 
         #region Tarifas Habitacion
-        public static List<BaseGuestAmount> UpdateBaseGuestAmountPricesWithTaxesAndDiscounts(vDayRates vDayRate , List<spGetPricesByRate_Result> prices, spGetCurrentRatesByHotel_Result4 currentRate)
+        public static List<BaseGuestAmount> UpdateBaseGuestAmountPricesWithTaxesAndDiscounts(vDayRates vDayRate, List<spGetPricesByRate_Result> prices, spGetCurrentRatesByHotel_Result4 currentRate)
         {
             List<BaseGuestAmount> updatedPrices = null;
 
@@ -125,7 +125,7 @@ namespace APIServices.Conflux.Helpers
                             && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
                         {
                             price.AmountBeforeTax = PriorityRateDiscount(price.AmountBeforeTax, vDayRate.DayDiscount);
-                            price.AmountAfterTax  = PriorityRateDiscount(price.AmountAfterTax, vDayRate.DayDiscount);
+                            price.AmountAfterTax = PriorityRateDiscount(price.AmountAfterTax, vDayRate.DayDiscount);
                         }
                     }
 
@@ -287,9 +287,9 @@ namespace APIServices.Conflux.Helpers
 
                     //Adultos
 
-                    for(var i = 0; i < maxAdults; i++)
+                    for (var i = 0; i < maxAdults; i++)
                     {
-                        var price = prices.First(p => p.Quantity == (i + 1) && p.PersonType  == (int)PersonTypeEnum.Adult);
+                        var price = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Adult);
 
                         var amountBeforeTax = decimal.Round((decimal)(price.Price / (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
 
@@ -305,7 +305,7 @@ namespace APIServices.Conflux.Helpers
                     }
 
                     //Ninios
- 
+
                     for (var i = 0; i < maxChildren; i++)
                     {
                         var priceChild = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Child);
@@ -1006,7 +1006,7 @@ namespace APIServices.Conflux.Helpers
 
         #endregion
 
-        public static List<Promo> GetActiveDatesPromo (DateTime startDate, DateTime endDate, string promoDays, vDayRates vDayRate)
+        public static List<Promo> GetActiveDatesPromo(DateTime startDate, DateTime endDate, string promoDays, vDayRates vDayRate)
         {
             List<Promo> promosList = new List<Promo>();
 
@@ -1018,21 +1018,21 @@ namespace APIServices.Conflux.Helpers
             {
                 DayOfWeek dayOfTheWeek = currentDate.DayOfWeek;
 
-                if(promoDays[Convert.ToInt32(dayOfTheWeek)] == 'Y')
+                if (promoDays[Convert.ToInt32(dayOfTheWeek)] == 'Y')
                 {
                     if (activeStartDate == DateTime.MinValue) activeStartDate = currentDate;
 
-                    if (inactiveStartDate != DateTime.MinValue) 
+                    if (inactiveStartDate != DateTime.MinValue)
                     {
                         Console.WriteLine("Rango inactivo: " + inactiveStartDate.ToString("yyyy-MM-dd") + " - " + currentDate.AddDays(-1).ToString("yyyy-MM-dd"));
                         inactiveStartDate = DateTime.MinValue;
-                    }                   
+                    }
                 }
                 else
                 {
                     if (inactiveStartDate == DateTime.MinValue) inactiveStartDate = currentDate;
 
-                    if(activeStartDate != DateTime.MinValue)
+                    if (activeStartDate != DateTime.MinValue)
                     {
                         Console.WriteLine("Rango activo: " + activeStartDate.ToString("yyyy-MM-dd") + " - " + currentDate.AddDays(-1).ToString("yyyy-MM-dd"));
 
@@ -1052,7 +1052,7 @@ namespace APIServices.Conflux.Helpers
                 currentDate = currentDate.AddDays(1);
             }
 
-            if(activeStartDate != DateTime.MinValue)
+            if (activeStartDate != DateTime.MinValue)
             {
                 Promo promo = new Promo();
                 promo.DiscountLevel = vDayRate.DiscountLevel;
@@ -1089,7 +1089,7 @@ namespace APIServices.Conflux.Helpers
 
                         //Primera Promo tiene un descuento Mayor
                         if (promos[i].Discount > promos[i + 1].Discount)
-                        {                           
+                        {
                             promos[i + 1].StartDate = promos[i].EndDate.AddDays(1);
                         }
                         //El segunto tiene mayor descuento
@@ -1142,7 +1142,7 @@ namespace APIServices.Conflux.Helpers
                         }
                     }
                 }
-                
+
                 i++;
             }
 
@@ -1156,10 +1156,10 @@ namespace APIServices.Conflux.Helpers
             DateTime activeStartDateRate = rateStartDate;
             bool endDateFound = false;
 
-            for(int i = 0; i < promos.Count; i++)
+            for (int i = 0; i < promos.Count; i++)
             {
                 //Sacar posible dia
-                if(activeStartDateRate != promos[i].StartDate && activeStartDateRate < promos[i].StartDate)
+                if (activeStartDateRate != promos[i].StartDate && activeStartDateRate < promos[i].StartDate)
                 {
                     endDateFound = true;
 
@@ -1210,7 +1210,7 @@ namespace APIServices.Conflux.Helpers
         {
             var firstDiscountPrice = price - (price * (discount / 100));
 
-            return decimal.Round((decimal)(firstDiscountPrice - (firstDiscountPrice * (dayDiscount / 100))), 2 , MidpointRounding.AwayFromZero);          
+            return decimal.Round((decimal)(firstDiscountPrice - (firstDiscountPrice * (dayDiscount / 100))), 2, MidpointRounding.AwayFromZero);
         }
 
         private static string GetAgeQualifyingCodeExtras(int? personType)

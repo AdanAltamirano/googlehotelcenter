@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using APIServices.Models;
-using APIServices.Conflux.Helpers;
+//using APIServices.Conflux.Helpers;
+using APIServices.Conflux.Helpers.Rate;
 using APIServices.Conflux.Models.Rates;
 using APIServices.Conflux.OTA.Models.Rates;
 using APIServices.Conflux.Enum;
@@ -13,7 +14,7 @@ namespace APIServices.Conflux.Parser
 {
     public static class Parser
     {
-        public static RateAmountMessages ToRateAmountMessages(List<spGetCurrentRatesByHotel_Result3> currentRates, int companyId, bool? plusTax, decimal? tax)
+        public static RateAmountMessages ToRateAmountMessages(List<spGetCurrentRatesByHotel_Result4> currentRates, int companyId, bool? plusTax, decimal? tax)
         {
             RateAmountMessages rateAmountMessages = new RateAmountMessages();
 
@@ -44,14 +45,16 @@ namespace APIServices.Conflux.Parser
         }
         
 
-        public static void RoomRateMessages(spGetCurrentRatesByHotel_Result3 currentRate, ref RateAmountMessages rateAmountMessages)
+        public static void RoomRateMessages(spGetCurrentRatesByHotel_Result4 currentRate, ref RateAmountMessages rateAmountMessages)
         {
-            var prices = RatesHelpers.GetPrices(currentRate.RateId);
-            var pricesException = RatesHelpers.GetPricesException(currentRate.RateId);
             List<vDayRates> vDayRates = RatesHelpers.GetVDayRate(currentRate);
 
             foreach (var vDayRate in vDayRates)
             {
+                var prices = RatesHelpers.GetPrices(currentRate.RateId);
+                var pricesException = RatesHelpers.GetPricesException(currentRate.RateId);
+
+
                 RateAmountMessage rateAmountMessage = new RateAmountMessage();
 
                 StatusApplicationControl statusApplicationControl = new StatusApplicationControl() { RatePlanCode = vDayRate.RatePlanId, InvTypeCode = currentRate.RoomCode };
@@ -73,6 +76,47 @@ namespace APIServices.Conflux.Parser
                     rate.ApplyFri = vDayRate.PromoDays[4] == 'Y' ? true : false;
                     rate.ApplySat = vDayRate.PromoDays[5] == 'Y' ? true : false;
                     rate.ApplySun = vDayRate.PromoDays[6] == 'Y' ? true : false;
+                }
+
+                //Ver si es habitacion vinculada y actualizar precios
+                vLinkedRoomTypes linkedRoom = null;
+
+                using(OzHotelesEntities ozHoteles = new OzHotelesEntities())
+                {
+                    linkedRoom = ozHoteles.vLinkedRoomTypes
+                        .Where(lkt => lkt.idtipohabitacion_Target == currentRate.RoomHotelId
+                        && lkt.IdTipohabitacion_Source == currentRate.ParentRoomHotelId)
+                        .FirstOrDefault();
+
+                    if (linkedRoom != null)
+                    {
+                        RatesHelpers.UpdatePricesLinkedRoom(linkedRoom, ref prices);
+                        RatesHelpers.UpdatePricesLinkedRoom(linkedRoom, ref pricesException);
+                    }
+
+
+                }
+
+
+                //Ver si es plan vinculado y actualizar precios
+
+                if (!string.IsNullOrEmpty(vDayRate.ParentRatePlanId)) {
+
+                    vLinkedRatePlans linkedRatePlan = null;
+
+                    using (OzHotelesEntities ozHoteles = new OzHotelesEntities())
+                    {
+                        linkedRatePlan = ozHoteles.vLinkedRatePlans
+                            .Where(lrr => lrr.SourceRatePlan == vDayRate.ParentRatePlanId && lrr.TargetRatePlan == vDayRate.RatePlanId)
+                            .FirstOrDefault();
+                    }
+
+                    if (linkedRatePlan != null)
+                    {
+                        RatesHelpers.UpdatePricesLinkedRatePlan(linkedRatePlan, ref prices);
+                        RatesHelpers.UpdatePricesLinkedRatePlan(linkedRatePlan, ref pricesException);
+                    }
+                    
                 }
 
 
@@ -109,14 +153,15 @@ namespace APIServices.Conflux.Parser
             }
         }
         
-        public static void RoomRatePromotionMessages(spGetCurrentRatesByHotel_Result3 currentRate, ref RateAmountMessages rateAmountMessages)
+        public static void RoomRatePromotionMessages(spGetCurrentRatesByHotel_Result4 currentRate, ref RateAmountMessages rateAmountMessages)
         {
-            var prices = RatesHelpers.GetPricesPromotion(currentRate.RateId);
-            var pricesException = RatesHelpers.GetPricesPromotionException(currentRate.RateId);
             List<vDayRatesExceptions> vDayRates = RatesHelpers.GetVDayRateException(currentRate);
 
             foreach (var vDayRate in vDayRates)
             {
+                var prices = RatesHelpers.GetPricesPromotion(currentRate.RateId);
+                var pricesException = RatesHelpers.GetPricesPromotionException(currentRate.RateId);
+
                 RateAmountMessage rateAmountMessage = new RateAmountMessage();
 
                 StatusApplicationControl statusApplicationControl = new StatusApplicationControl() { RatePlanCode = vDayRate.RatePlanId, InvTypeCode = currentRate.RoomCode };
@@ -149,6 +194,46 @@ namespace APIServices.Conflux.Parser
                     rate.ApplyFri = vDayRate.ApplyDayMap[4] == 'Y' ? true : false;
                     rate.ApplySat = vDayRate.ApplyDayMap[5] == 'Y' ? true : false;
                     rate.ApplySun = vDayRate.ApplyDayMap[6] == 'Y' ? true : false;
+                }
+
+                //Ver si es habitacion vinculada y actualizar precios
+                vLinkedRoomTypes linkedRoom = null;
+
+                using (OzHotelesEntities ozHoteles = new OzHotelesEntities())
+                {
+                    linkedRoom = ozHoteles.vLinkedRoomTypes
+                        .Where(lkt => lkt.idtipohabitacion_Target == currentRate.RoomHotelId
+                        && lkt.IdTipohabitacion_Source == currentRate.ParentRoomHotelId)
+                        .FirstOrDefault();
+
+                    if (linkedRoom != null)
+                    {
+                        RatesHelpers.UpdatePricesLinkedRoom(linkedRoom, ref prices);
+                        RatesHelpers.UpdatePricesLinkedRoom(linkedRoom, ref pricesException);
+                    }
+                }
+
+                //Ver si es plan vinculado y actualizar precios
+
+                if (!string.IsNullOrEmpty(vDayRate.ParentRatePlanId))
+                {
+
+                    vLinkedRatePlans linkedRatePlan = null;
+
+                    using (OzHotelesEntities ozHoteles = new OzHotelesEntities())
+                    {
+                        linkedRatePlan = ozHoteles.vLinkedRatePlans
+                            .Where(lrr => lrr.SourceRatePlan == vDayRate.ParentRatePlanId
+                            && lrr.TargetRatePlan == vDayRate.RatePlanId)
+                            .FirstOrDefault();
+                    }
+
+                    if (linkedRatePlan != null)
+                    {
+                        RatesHelpers.UpdatePricesLinkedRatePlan(linkedRatePlan, ref prices);
+                        RatesHelpers.UpdatePricesLinkedRatePlan(linkedRatePlan, ref pricesException);
+                    }
+
                 }
 
 
