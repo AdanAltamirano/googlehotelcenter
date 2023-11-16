@@ -3,12 +3,18 @@ using System.Configuration;
 using System.Linq;
 using System.Net.Http;
 using System.Collections.Generic;
+using System.Xml.Linq;
 using APIServices.Models;
 using APIServices.Conflux.Models.User;
 using APIServices.Conflux.Models.User.Response;
 using APIServices.Conflux.Models.Rates.Response;
-using APIServices.Xml.OTA.Request.Rates;
+using APIServices.Conflux.Models.Restrictions.Response;
+using APIServices.Conflux.Parser.Restriction;
 using APIServices.Xml.Soap;
+using APIServices.Xml.OTA.Request.Rates;
+using APIServices.Xml.OTA.Request.Restrictions;
+
+
 
 namespace APIServices.Conflux
 {
@@ -128,6 +134,52 @@ namespace APIServices.Conflux
 
             return res;
 
+        }
+
+
+        public RestrictionResponse UpdateRestrictions(int hotelId, int companyId)
+        {
+            RestrictionResponse response = new RestrictionResponse();
+
+            //Armar Requests
+
+            //LockRoomType
+            var lockRoomTypes = dbContext.spGetLockRoomTypesByHotel(hotelId).ToList();
+
+            var availStatusMessagesLockRoomTypes = RestrictionsParser.ToAvailStatusMessages(lockRoomTypes);
+
+            var lockRoomTypeHotelAvailNotifRQ= HotelAvailNotifRQ.CreateHotelAvailNotifRQ(availStatusMessagesLockRoomTypes);
+            
+            //Request LockRoomType
+            var lockRoomTypeSoapRQ = Soap.CreateSoapRequestXml(lockRoomTypeHotelAvailNotifRQ);
+
+            List<XDocument> lockRoomTypesPrioritySoapRQ = new List<XDocument>();
+            lockRoomTypesPrioritySoapRQ.Add(lockRoomTypeSoapRQ);
+
+            //Termina LockRoomType
+
+
+            //Crear Prioridad Request
+            var priorityLockRoomType = Convert.ToInt32(ConfigurationManager.AppSettings["PriorityLockRoomTypes"]); //3
+            var priorityratePlanLock = Convert.ToInt32(ConfigurationManager.AppSettings["PriorityLockRatePlans"]); // 1
+            var priorityLockGral = Convert.ToInt32(ConfigurationManager.AppSettings["PriorityLockGral"]); //2
+
+            List<List<XDocument>> priorityRequests = new List<List<XDocument>>(3);
+            priorityRequests[priorityLockRoomType - 1] = lockRoomTypesPrioritySoapRQ;
+
+            foreach(var priorityRequest in priorityRequests)
+            {
+                foreach (var soapRequest in priorityRequest)
+                {
+                    //Request
+                }
+            }
+
+
+
+
+
+            return response;
         }
 
     }

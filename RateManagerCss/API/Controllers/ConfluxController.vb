@@ -7,6 +7,7 @@ Imports APIServices.Models
 Imports APIServices.Conflux.Models.User
 Imports APIServices.Conflux.Models.User.Response
 Imports APIServices.Conflux.Models.Rates.Response
+Imports APIServices.Conflux.Models.Restrictions.Response
 Imports RateManager.PaginaBase
 
 Namespace API.Controllers
@@ -60,6 +61,29 @@ Namespace API.Controllers
             Return Ok(toObject)
 
         End Function
+
+        <Route("updaterestrictions/{hotelId:int}"), HttpPost>
+        Public Function UpdateRestrictions(ByVal hotelId As Integer) As HttpResponseMessage
+
+            Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
+
+            Dim result As RestrictionResponse = ConfluxService.UpdateRestrictions(hotelId, info.Empresa)
+
+            'TODO:Cambiar mensaje en Log de Sincronizar Tarifas a Sincronizar Restricciones
+            Log(result.Xml, hotelId)
+
+            If Not result.IsSuccess Then
+
+                Return BadRequest(result.Error)
+
+            End If
+
+            Dim toObject As Object = result
+
+            Return Ok(toObject)
+
+        End Function
+
 
         Private Sub Log(ByVal xml As String, ByVal hotelId As Integer)
             With (New PaginaBase)

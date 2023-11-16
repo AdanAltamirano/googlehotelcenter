@@ -116,18 +116,26 @@
     <Compile Include="Conflux\Helpers\Rate\LinkedPricesRates.cs" />
     <Compile Include="Conflux\Helpers\Rate\LinkedPricesRatesPromotion.cs" />
     <Compile Include="Conflux\Helpers\Rate\RatesHelpers.cs" />
+    <Compile Include="Conflux\Helpers\Restriction\RestrictionHelper.cs" />
     <Compile Include="Conflux\Models\OTA\Rates\AdditionalGuestAmount.cs" />
     <Compile Include="Conflux\Models\OTA\Rates\BaseGuestAmount.cs" />
     <Compile Include="Conflux\Models\OTA\Rates\Rate.cs" />
     <Compile Include="Conflux\Models\OTA\Rates\RateAmountMessage.cs" />
     <Compile Include="Conflux\Models\OTA\Rates\RateAmountMessages.cs" />
     <Compile Include="Conflux\Models\OTA\Rates\StatusApplicationControl.cs" />
+    <Compile Include="Conflux\Models\OTA\Restrictions\AvailStatusMessage.cs" />
+    <Compile Include="Conflux\Models\OTA\Restrictions\AvailStatusMessages.cs" />
+    <Compile Include="Conflux\Models\OTA\Restrictions\LengthOfStay.cs" />
+    <Compile Include="Conflux\Models\OTA\Restrictions\RestrictionStatus.cs" />
+    <Compile Include="Conflux\Models\OTA\Restrictions\StatusApplicationControl.cs" />
     <Compile Include="Conflux\Models\Rates\Promo.cs" />
     <Compile Include="Conflux\Models\Rates\RatePrice.cs" />
     <Compile Include="Conflux\Models\Rates\Response\RateResponse.cs" />
+    <Compile Include="Conflux\Models\Restrictions\Response\RestrictionResponse.cs" />
     <Compile Include="Conflux\Models\User\Response\UserReponse.cs" />
     <Compile Include="Conflux\Models\User\User.cs" />
     <Compile Include="Conflux\Parser\Parser.cs" />
+    <Compile Include="Conflux\Parser\Restriction\RestrictionsParser.cs" />
     <Compile Include="Currency\CurrencyService.cs" />
     <Compile Include="Dictionary.cs" />
     <Compile Include="Extension\ConfigurationExtensions.cs" />
@@ -269,6 +277,9 @@
     <Compile Include="Models\spGetCurrentRatesByHotel_Result4.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\spGetLockRoomTypesByHotel_Result.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\spGetPricesByRateException_Result.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
@@ -379,6 +390,7 @@
     <Compile Include="Utilities.cs" />
     <Compile Include="Xml\OTA\Request\Rates\HotelRateAmountNotifRQ.cs" />
     <Compile Include="Xml\OTA\Request\Rates\HotelRateAmountNotifRS.cs" />
+    <Compile Include="Xml\OTA\Request\Restrictions\HotelAvailNotifRQ.cs" />
     <Compile Include="Xml\Soap\Soap.cs" />
   </ItemGroup>
   <ItemGroup>
