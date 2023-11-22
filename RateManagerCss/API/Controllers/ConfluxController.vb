@@ -3,6 +3,7 @@ Imports System.Net.Http
 Imports NinjAPI
 Imports NinjAPI.Query
 Imports APIServices.Conflux
+Imports APIServices.Conflux.Enum
 Imports APIServices.Models
 Imports APIServices.Conflux.Models.User
 Imports APIServices.Conflux.Models.User.Response
@@ -48,7 +49,7 @@ Namespace API.Controllers
 
             Dim result As RateResponse = ConfluxService.UpdateRates(hotelId, info.Empresa)
 
-            Log(result.Xml, hotelId)
+            Log("Sincronizar Tarifas Conflux con el hotel: ", result.Xml, hotelId)
 
             If Not result.IsSuccess Then
 
@@ -69,13 +70,21 @@ Namespace API.Controllers
 
             Dim result As RestrictionResponse = ConfluxService.UpdateRestrictions(hotelId, info.Empresa)
 
-            'TODO:Cambiar mensaje en Log de Sincronizar Tarifas a Sincronizar Restricciones
-            Log(result.Xml, hotelId)
-
             If Not result.IsSuccess Then
-
+                Log("Sincronizar Restricciones Conflux con el hotel: ", result.Xml, hotelId)
                 Return BadRequest(result.Error)
-
+            ElseIf result.IsSuccess Then
+                For Each restriction As Restriction In result.Restrictions
+                    Select Case restriction.Type
+                        Case RestrictionEnum.LockGral
+                            Log("Sincronizar Restricciones LockGral No Promo Conflux con el hotel: ", restriction.Xml(0).ToString(), hotelId)
+                            Log("Sincronizar Restricciones LockGral Promo Conflux con el hotel: ", restriction.Xml(1).ToString(), hotelId)
+                        Case RestrictionEnum.LockRatePlan
+                            Log("Sincronizar Restricciones LockRatePlan Conflux con el hotel: ", restriction.Xml(0).ToString(), hotelId)
+                        Case RestrictionEnum.LockRoomType
+                            Log("Sincronizar Restricciones LockRoomType Conflux con el hotel: ", restriction.Xml(0).ToString(), hotelId)
+                    End Select
+                Next
             End If
 
             Dim toObject As Object = result
@@ -85,9 +94,9 @@ Namespace API.Controllers
         End Function
 
 
-        Private Sub Log(ByVal xml As String, ByVal hotelId As Integer)
+        Private Sub Log(ByVal note As String, ByVal xml As String, ByVal hotelId As Integer)
             With (New PaginaBase)
-                .guardalog("/rate-manager-ui/dist/channel-rates-update.aspx", acciones.Sincronizar, "Sincronizar Tarifas Conflux con el hotel: " & hotelId, "", "", xml, hotelId:=hotelId)
+                .guardalog("/rate-manager-ui/dist/channel-rates-update.aspx", acciones.Sincronizar, note & hotelId, "", "", xml, hotelId:=hotelId)
             End With
         End Sub
 

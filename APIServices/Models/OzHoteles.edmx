@@ -1222,6 +1222,12 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
         <Function Name="spGetCurrentRatesByHotel" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="hotelId" Type="int" Mode="In" />
         </Function>
+        <Function Name="spGetLockGralByHotel" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="hotelId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="spGetLockRatePlansByHotel" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="hotelId" Type="int" Mode="In" />
+        </Function>
         <Function Name="spGetLockRoomTypesByHotel" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="hotelId" Type="int" Mode="In" />
         </Function>
@@ -1944,6 +1950,12 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <EntitySet Name="vLinkedRoomTypes" EntityType="Models.vLinkedRoomTypes" />
           <EntitySet Name="vLinkedRatePlans" EntityType="Models.vLinkedRatePlans" />
           <FunctionImport Name="spGetLockRoomTypesByHotel" ReturnType="Collection(Models.spGetLockRoomTypesByHotel_Result)">
+          <Parameter Name="hotelId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="spGetLockRatePlansByHotel" ReturnType="Collection(Models.spGetLockRatePlansByHotel_Result)">
+          <Parameter Name="hotelId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="spGetLockGralByHotel" ReturnType="Collection(Models.spGetLockGralByHotel_Result)">
             <Parameter Name="hotelId" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
@@ -3379,6 +3391,23 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <Property Type="DateTime" Name="StartDate" Nullable="true" Precision="16" />
           <Property Type="DateTime" Name="EndDate" Nullable="true" Precision="16" />
         </ComplexType>
+        <ComplexType Name="spGetLockRatePlansByHotel_Result">
+          <Property Type="Int32" Name="HotelId" Nullable="false" />
+          <Property Type="String" Name="RatePlanId" Nullable="false" MaxLength="4" />
+          <Property Type="String" Name="Status" Nullable="true" MaxLength="1" />
+          <Property Type="DateTime" Name="StartDate" Nullable="true" Precision="16" />
+          <Property Type="DateTime" Name="EndDate" Nullable="false" Precision="16" />
+          <Property Type="Byte" Name="MinDays" Nullable="true" />
+          <Property Type="Byte" Name="MaxDays" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="spGetLockGralByHotel_Result">
+          <Property Type="Int32" Name="HotelId" Nullable="true" />
+          <Property Type="String" Name="Status" Nullable="true" MaxLength="1" />
+          <Property Type="DateTime" Name="StartDate" Nullable="true" Precision="16" />
+          <Property Type="DateTime" Name="EndDate" Nullable="false" Precision="16" />
+          <Property Type="Byte" Name="MinDays" Nullable="true" />
+          <Property Type="Byte" Name="MaxDays" Nullable="true" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4622,6 +4651,31 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="StartDate" ColumnName="StartDate" />
                 <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetLockRatePlansByHotel" FunctionName="Models.Store.spGetLockRatePlansByHotel">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Models.spGetLockRatePlansByHotel_Result">
+                <ScalarProperty Name="HotelId" ColumnName="HotelId" />
+                <ScalarProperty Name="RatePlanId" ColumnName="RatePlanId" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="MinDays" ColumnName="MinDays" />
+                <ScalarProperty Name="MaxDays" ColumnName="MaxDays" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetLockGralByHotel" FunctionName="Models.Store.spGetLockGralByHotel">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Models.spGetLockGralByHotel_Result">
+                <ScalarProperty Name="HotelId" ColumnName="HotelId" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="MinDays" ColumnName="MinDays" />
+                <ScalarProperty Name="MaxDays" ColumnName="MaxDays" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

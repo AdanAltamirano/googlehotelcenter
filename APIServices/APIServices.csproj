@@ -111,6 +111,7 @@
     <Compile Include="AgencyService.cs" />
     <Compile Include="Conflux\ConfluxService.cs" />
     <Compile Include="Conflux\Enum\PersonTypeEnum.cs" />
+    <Compile Include="Conflux\Enum\RestrictionEnum.cs" />
     <Compile Include="Conflux\Enum\TypeRateEnum.cs" />
     <Compile Include="Conflux\Helpers\RatesHelpers.cs" />
     <Compile Include="Conflux\Helpers\Rate\LinkedPricesRates.cs" />
@@ -131,6 +132,7 @@
     <Compile Include="Conflux\Models\Rates\Promo.cs" />
     <Compile Include="Conflux\Models\Rates\RatePrice.cs" />
     <Compile Include="Conflux\Models\Rates\Response\RateResponse.cs" />
+    <Compile Include="Conflux\Models\Restrictions\Response\Restriction.cs" />
     <Compile Include="Conflux\Models\Restrictions\Response\RestrictionResponse.cs" />
     <Compile Include="Conflux\Models\User\Response\UserReponse.cs" />
     <Compile Include="Conflux\Models\User\User.cs" />
@@ -277,6 +279,12 @@
     <Compile Include="Models\spGetCurrentRatesByHotel_Result4.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\spGetLockGralByHotel_Result.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\spGetLockRatePlansByHotel_Result.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\spGetLockRoomTypesByHotel_Result.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
@@ -391,6 +399,7 @@
     <Compile Include="Xml\OTA\Request\Rates\HotelRateAmountNotifRQ.cs" />
     <Compile Include="Xml\OTA\Request\Rates\HotelRateAmountNotifRS.cs" />
     <Compile Include="Xml\OTA\Request\Restrictions\HotelAvailNotifRQ.cs" />
+    <Compile Include="Xml\OTA\Request\Restrictions\HotelAvailNotifRS.cs" />
     <Compile Include="Xml\Soap\Soap.cs" />
   </ItemGroup>
   <ItemGroup>
