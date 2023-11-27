@@ -1,4 +1,5 @@
 <%@ Page Language="vb" AutoEventWireup="false" CodeBehind="PmsCoincidences.aspx.vb" Inherits="RateManager.PmsCoincidences" %>
+
 <%@ Register TagPrefix="uc1" TagName="CtrMenu" Src="../Portal/Modules/CtrMenu.ascx" %>
 <%@ Register TagPrefix="uc1" TagName="ctlMensajes" Src="../Modulos/ctlMensajes.ascx" %>
 <%@ Register TagPrefix="uc1" TagName="ctrlHeader" Src="../Portal/Modules/ctrlHeader.ascx" %>
@@ -24,108 +25,86 @@
                                 <asp:Label ID="lblTitle" runat="server" EnableViewState="False">Configuración de Conexión PMS</asp:Label></td>
                         </tr>
                         <tr>
-                            <td height="5" colspan="3"></td>
-                        </tr>
-                        <tr>
-                            <td width="50%" align="left">
-                                <asp:Label ID="Label1" runat="server" CssClass="clslabel">Hoteles</asp:Label></td>
-                            <td width="50%"></td>
-                        </tr>
-                        <tr>
-                            <td style="HEIGHT: 22px" width="50%" colspan="2" align="left">
+                            <td style="height: 22px" width="50%" colspan="2" align="left">
+                                <asp:DropDownList ID="ddlCorporatives" runat="server" Width="232px" AutoPostBack="True"></asp:DropDownList>&nbsp;
                                 <asp:DropDownList ID="ddlHoteles" runat="server" Width="232px"></asp:DropDownList>&nbsp;
-									<asp:Button Style="Z-INDEX: 0" ID="btnCargar" runat="server" EnableViewState="False" CssClass="button"
-                                        Text="Cargar"></asp:Button></td>
+									<asp:Button Style="z-index: 0" ID="btnCargar" runat="server" EnableViewState="False" CssClass="button"
+                                        Text="Cargar"></asp:Button>
+                                <!-- Boton Excell -->
+                                <div style="margin-left: 15px;">
+                                    <asp:HyperLink ID="btnExcel" runat="server" Enabled="True" NavigateUrl="../HotelAdministrator/pages/ExportExcellPMSCodes.aspx"
+                                        ToolTip="Excel" ImageUrl="../Images/excel.png"></asp:HyperLink>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr align="center">
+                            <td style="height: 13px"></td>
+                            <td style="height: 13px"></td>
+                        </tr>
+                        <tr align="center">
+                            <asp:Label Style="z-index: 0" ID="lblHotelSelected" runat="server" CssClass="bookingnormallabel">Hotel Seleccionado</asp:Label>
                         </tr>
                         <tr>
-                            <td style="HEIGHT: 13px" width="50%" align="center"></td>
-                            <td style="HEIGHT: 13px" width="50%"></td>
+                            <td style="height: 11px" align="center"></td>
+                            <td style="height: 11px" align="center"></td>
                         </tr>
-                        <tr>
-                            <td style="HEIGHT: 11px" width="50%" colspan="2" align="center">
-                                <asp:Label Style="Z-INDEX: 0" ID="lblHotelSelected" runat="server" CssClass="bookingnormallabel">Hotel Seleccionado</asp:Label></td>
-                        </tr>
-                        <tr>
-                            <td style="HEIGHT: 11px" width="50%" align="center"></td>
-                            <td style="HEIGHT: 11px" width="50%" align="center"></td>
-                        </tr>
-                        <tr id="renglonEtiquetas" runat="server">
-                            <td style="HEIGHT: 11px" width="50%" align="center">
-                                <asp:Label Style="Z-INDEX: 0" ID="lblRatesPlan" runat="server" CssClass="bookingnormallabel">Rates Plan</asp:Label></td>
-                            <td style="HEIGHT: 11px" width="50%" align="center">
-                                <asp:Label Style="Z-INDEX: 0" ID="lblHoteles" runat="server" CssClass="bookingnormallabel">Rooms</asp:Label></td>
+                        <tr align="center">
+                            <td>
+                                <asp:Label ID="lblRatesPlan" runat="server" CssClass="bookingnormallabel">Rates Plan</asp:Label></td>
+                            <td>
+                                <asp:Label ID="lblHoteles" runat="server" CssClass="bookingnormallabel">Rooms</asp:Label></td>
                         </tr>
                         <tr id="renglonDatos" runat="server">
-                            <td valign="top" width="50%" align="center">
-                                <div style="HEIGHT: 350px; OVERFLOW: auto" id="ratesPlan" runat="server" ms_positioning="FlowLayout">
-                                    <asp:DataGrid ID="dgRatesPlan" runat="server" CssClass="datagrid" Width="99%" AutoGenerateColumns="False"
-                                        PageSize="5" ShowFooter="True">
-                                        <FooterStyle HorizontalAlign="Right"></FooterStyle>
+                            <td valign="top" align="center">
+                                <div style="height: 350px; overflow: auto" id="ratesPlan" runat="server" ms_positioning="FlowLayout">
+                                    <asp:DataGrid ID="dgRatesPlan" runat="server" CssClass="datagrid" AutoGenerateColumns="False" ShowFooter="False">
                                         <SelectedItemStyle CssClass="dgSelected"></SelectedItemStyle>
                                         <AlternatingItemStyle CssClass="dgAlternate"></AlternatingItemStyle>
                                         <ItemStyle CssClass="dgItem"></ItemStyle>
                                         <HeaderStyle CssClass="dgHeader"></HeaderStyle>
                                         <Columns>
-                                            <asp:BoundColumn DataField="idRatePlan" HeaderText="Codigo">
-                                                <ItemStyle Width="30%"></ItemStyle>
-                                            </asp:BoundColumn>
-                                            <asp:BoundColumn DataField="Nombre" HeaderText="Nombre">
-                                                <ItemStyle Width="30%"></ItemStyle>
-                                            </asp:BoundColumn>
-                                            <asp:BoundColumn Visible="False" DataField="idRatePlanPMS">
-                                                <ItemStyle Width="30%"></ItemStyle>
-                                            </asp:BoundColumn>
-                                            <asp:TemplateColumn HeaderText="Hotel">
-                                                <ItemStyle Width="10%"></ItemStyle>
+                                            <asp:BoundColumn DataField="idRatePlan" HeaderText="Codigo"></asp:BoundColumn>
+                                            <asp:BoundColumn DataField="Nombre" HeaderText="Nombre"></asp:BoundColumn>
+                                            <asp:BoundColumn Visible="False" DataField="idRatePlanPMS"></asp:BoundColumn>
+                                            <asp:TemplateColumn HeaderText="Hotel" Visible="false">
                                                 <ItemTemplate>
-                                                    <asp:TextBox ID="txtidRatePlanPMS" runat="server" Width="160px" MaxLength="100"></asp:TextBox>
+                                                    <asp:TextBox ID="txtidRatePlanPMS" runat="server" MaxLength="100"></asp:TextBox>
                                                 </ItemTemplate>
                                             </asp:TemplateColumn>
                                         </Columns>
-                                        <PagerStyle NextPageText="Siguiente &gt;&gt;" PrevPageText="&lt;&lt; Anterior" HorizontalAlign="Right"
-                                            Position="Top" CssClass="dgPager" Mode="NumericPages"></PagerStyle>
-                                    </asp:DataGrid><asp:Label Style="Z-INDEX: 0" ID="msgRatesPlan" runat="server" CssClass="Validators" Visible="False">No existen Planes Tarifarios</asp:Label>
+                                    </asp:DataGrid>
+                                    <asp:Label Style="z-index: 0" ID="msgRatesPlan" runat="server" CssClass="Validators" Visible="False">No existen Planes Tarifarios</asp:Label>
                                 </div>
                             </td>
-                            <td valign="top" width="50%">
-                                <div style="HEIGHT: 350px; OVERFLOW: auto" id="rooms" runat="server" ms_positioning="FlowLayout">
-                                    <asp:DataGrid ID="dgRooms" runat="server" CssClass="datagrid" Width="99%" AutoGenerateColumns="False"
-                                        PageSize="5" ShowFooter="True">
-                                        <FooterStyle HorizontalAlign="Right"></FooterStyle>
+                            <td valign="top">
+                                <div style="height: 350px; overflow: auto" id="rooms" runat="server" ms_positioning="FlowLayout">
+                                    <asp:DataGrid ID="dgRooms" runat="server" CssClass="datagrid" AutoGenerateColumns="False" ShowFooter="False">
                                         <SelectedItemStyle CssClass="dgSelected"></SelectedItemStyle>
                                         <AlternatingItemStyle CssClass="dgAlternate"></AlternatingItemStyle>
                                         <ItemStyle CssClass="dgItem"></ItemStyle>
                                         <HeaderStyle CssClass="dgHeader"></HeaderStyle>
                                         <Columns>
-                                            <asp:BoundColumn DataField="CodigoHabitacion" HeaderText="Codigo">
-                                                <ItemStyle Width="30%"></ItemStyle>
-                                            </asp:BoundColumn>
-                                            <asp:BoundColumn DataField="Nombre" HeaderText="Nombre">
-                                                <ItemStyle Width="30%"></ItemStyle>
-                                            </asp:BoundColumn>
-                                            <asp:BoundColumn Visible="False" DataField="CodigoHabitacionPMS">
-                                                <ItemStyle Width="30%"></ItemStyle>
-                                            </asp:BoundColumn>
-                                            <asp:TemplateColumn>
-                                                <ItemStyle Width="10%"></ItemStyle>
+                                            <asp:BoundColumn DataField="CodigoHabitacion" HeaderText="Codigo"></asp:BoundColumn>
+                                            <asp:BoundColumn DataField="Nombre" HeaderText="Nombre"></asp:BoundColumn>
+                                            <asp:BoundColumn Visible="False" DataField="CodigoHabitacionPMS"></asp:BoundColumn>
+                                            <asp:TemplateColumn Visible="false">
                                                 <ItemTemplate>
-                                                    <asp:TextBox ID="txtCodigoHabitacionPMS" runat="server" Width="290px" MaxLength="100"></asp:TextBox>
+                                                    <asp:TextBox ID="txtCodigoHabitacionPMS" runat="server" MaxLength="100"></asp:TextBox>
                                                 </ItemTemplate>
                                             </asp:TemplateColumn>
                                         </Columns>
-                                        <PagerStyle NextPageText="Siguiente &gt;&gt;" PrevPageText="&lt;&lt; Anterior" HorizontalAlign="Right"
-                                            Position="Top" CssClass="dgPager" Mode="NumericPages"></PagerStyle>
-                                    </asp:DataGrid><asp:Label Style="Z-INDEX: 0" ID="msgRooms" runat="server" CssClass="Validators" Visible="False">No existen Habitaciones</asp:Label>
+                                    </asp:DataGrid>
+                                    <asp:Label Style="z-index: 0" ID="msgRooms" runat="server" CssClass="Validators" Visible="False">No existen Habitaciones</asp:Label>
                                 </div>
                             </td>
                         </tr>
                         <tr>
-                            <td style="HEIGHT: 22px" colspan="3" align="center">
+                            <td style="height: 22px" colspan="3" align="center">
                                 <asp:Label ID="lblMsgActualizacion" runat="server" CssClass="Validators" Visible="False"> Operacion Exitosa</asp:Label></td>
                         </tr>
                         <tr id="renglonBotones" runat="server">
                             <td align="center" colspan="3">
-                                <asp:Button ID="btnAceptar" runat="server" EnableViewState="False" CssClass="button" Text="Guardar"></asp:Button>
+                                <asp:Button ID="btnAceptar" runat="server" EnableViewState="False" CssClass="button" Text="Guardar" Visible="false"></asp:Button>
                                 <asp:Button ID="btnCancel" runat="server" EnableViewState="False" CssClass="button" Text="Cancelar"
                                     CausesValidation="False"></asp:Button>
                             </td>

@@ -23,13 +23,13 @@ Partial Public Class PmsCoincidences
     Protected WithEvents lblTitle As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
-    '''Control Label1.
+    '''Control ddlCorporatives.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents Label1 As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents ddlCorporatives As Global.System.Web.UI.WebControls.DropDownList
 
     '''<summary>
     '''Control ddlHoteles.
@@ -50,6 +50,15 @@ Partial Public Class PmsCoincidences
     Protected WithEvents btnCargar As Global.System.Web.UI.WebControls.Button
 
     '''<summary>
+    '''Control btnExcel.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents btnExcel As Global.System.Web.UI.WebControls.HyperLink
+
+    '''<summary>
     '''Control lblHotelSelected.
     '''</summary>
     '''<remarks>
@@ -57,15 +66,6 @@ Partial Public Class PmsCoincidences
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
     Protected WithEvents lblHotelSelected As Global.System.Web.UI.WebControls.Label
-
-    '''<summary>
-    '''Control renglonEtiquetas.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents renglonEtiquetas As Global.System.Web.UI.HtmlControls.HtmlTableRow
 
     '''<summary>
     '''Control lblRatesPlan.
