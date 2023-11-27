@@ -1069,6 +1069,8 @@ Partial Class HomePage
         RQ.Version = 1
         RequestorID.Type = "22"
         RequestorID.ID = "IPRM"
+        Dim myuuid As Guid = Guid.NewGuid()
+        RQ.EchoToken = myuuid.ToString()
 
         ASMQuantity = dsRooms.Tables(0).Rows.Count - 1
 
@@ -1139,6 +1141,8 @@ Partial Class HomePage
                 lblError.Visible = True
             Else
                 MyBase.WriteLog(String.Format("Response: {0}", response.StatusCode.ToString()), "SingleImgInv")
+                lblError.Text = "Inventario Actualizado"
+                lblError.Visible = True
             End If
         Catch ex As Exception
             lblError.Text = ex.Message

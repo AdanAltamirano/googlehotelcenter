@@ -68,27 +68,27 @@ namespace APIServices.Conflux.Parser.Restriction
 
                     availStatusMessage.RestrictionStatus = RestrictionHelper.GetRestrictionStatus(lockRatePlan.Status);
 
-                    if (lockRatePlan.MinDays > 0)
-                    {
-                        LengthOfStay lengthOfStay = new LengthOfStay()
-                        {
-                            MinMaxMessageType = "SetMinLOS",
-                            Time = (int?) lockRatePlan.MinDays
-                        };
+                    //if (lockRatePlan.MinDays > 0)
+                    //{
+                    //    LengthOfStay lengthOfStay = new LengthOfStay()
+                    //    {
+                    //        MinMaxMessageType = "SetMinLOS",
+                    //        Time = (int?) lockRatePlan.MinDays
+                    //    };
 
-                        availStatusMessage.LengthsOfStay.Add(lengthOfStay);
-                    }
+                    //    availStatusMessage.LengthsOfStay.Add(lengthOfStay);
+                    //}
 
-                    if (lockRatePlan.MaxDays > 0)
-                    {
-                        LengthOfStay lengthOfStay = new LengthOfStay()
-                        {
-                            MinMaxMessageType = "SetMaxLOS",
-                            Time = (int?)lockRatePlan.MaxDays
-                        };
+                    //if (lockRatePlan.MaxDays > 0)
+                    //{
+                    //    LengthOfStay lengthOfStay = new LengthOfStay()
+                    //    {
+                    //        MinMaxMessageType = "SetMaxLOS",
+                    //        Time = (int?)lockRatePlan.MaxDays
+                    //    };
 
-                        availStatusMessage.LengthsOfStay.Add(lengthOfStay);
-                    }
+                    //    availStatusMessage.LengthsOfStay.Add(lengthOfStay);
+                    //}
 
                     availStatusMessages.AvailStatusMessageList.Add(availStatusMessage);
 
@@ -126,27 +126,27 @@ namespace APIServices.Conflux.Parser.Restriction
 
                         availStatusMessage.RestrictionStatus = RestrictionHelper.GetRestrictionStatus(lockGral.Status);
 
-                        if (lockGral.MinDays > 0)
-                        {
-                            LengthOfStay lengthOfStay = new LengthOfStay()
-                            {
-                                MinMaxMessageType = "SetMinLOS",
-                                Time = (int?)lockGral.MinDays
-                            };
+                        //if (lockGral.MinDays > 0)
+                        //{
+                        //    LengthOfStay lengthOfStay = new LengthOfStay()
+                        //    {
+                        //        MinMaxMessageType = "SetMinLOS",
+                        //        Time = (int?)lockGral.MinDays
+                        //    };
 
-                            availStatusMessage.LengthsOfStay.Add(lengthOfStay);
-                        }
+                        //    availStatusMessage.LengthsOfStay.Add(lengthOfStay);
+                        //}
 
-                        if (lockGral.MaxDays > 0)
-                        {
-                            LengthOfStay lengthOfStay = new LengthOfStay()
-                            {
-                                MinMaxMessageType = "SetMaxLOS",
-                                Time = (int?)lockGral.MaxDays
-                            };
+                        //if (lockGral.MaxDays > 0)
+                        //{
+                        //    LengthOfStay lengthOfStay = new LengthOfStay()
+                        //    {
+                        //        MinMaxMessageType = "SetMaxLOS",
+                        //        Time = (int?)lockGral.MaxDays
+                        //    };
 
-                            availStatusMessage.LengthsOfStay.Add(lengthOfStay);
-                        }
+                        //    availStatusMessage.LengthsOfStay.Add(lengthOfStay);
+                        //}
 
                         availStatusMessages.AvailStatusMessageList.Add(availStatusMessage);
 

@@ -1,34 +1,39 @@
 <template>
 	<div id="app">
         <b-container fluid>
-            <h2 class="text-primary">{{ $t('Synchronize Rates in Channel Manager') }}</h2>
+            <h1 class="text-primary">{{ $t('Synchronize with Google Hotel Center') }}</h1>
             <!-- Tarifas -->
             <div>
-                <div v-if="callApi" class="center-flex mt-3 vld-parent" style="height:200px;">
-                    <loading :active="true" :is-full-page="false" color="#007bff"></loading>
+                <h2 class="text-primary">{{$t('Prices')}}</h2>
+                <details class="text-primary">{{$t('This action will only send the current prices to Google Hotel Center as of the current date')}}</details>
+                <div v-if="callApi" class="mt-3 vld-parent" style="height:80px;">
+                    <loading style="display:block !important;" :active="true" :is-full-page="false" color="#007bff"></loading>
                 </div>
-                <div else class="center-flex mt-3">
-                    <b-button v-if="showButton" variant="primary" @click="updateRates()">
+                <div else class="mt-4">
+                    <b-button class="mt-1" v-if="showButton" variant="primary" @click="updateRates()">
                         {{$t('Update Rates')}}
                     </b-button>
                 </div>
-                <div class="center-flex mt-3">
+                <div class="mt-3">
                     <label style="color:#dc3545;">
                         {{$t("This operation make take a few minutes")}}
                     </label>
                 </div>
             </div>
             <!-- Restricciones -->
+            <hr class="solid">
             <div>
-                <div v-if="callApiRestrictions" class="center-flex mt-3 vld-parent" style="height:200px;">
-                    <loading :active="true" :is-full-page="false" color="#007bff"></loading>
+                <h2 class="text-primary">{{$t('Closure')}}</h2>
+                <details class="text-primary">{{$t('This action will only send the current closures to Google Hotel Center from the current date')}}</details>
+                <div v-if="callApiRestrictions" class="mt-3 vld-parent" style="height:80px;">
+                    <loading style="display:block !important;" :active="true" :is-full-page="false" color="#007bff"></loading>
                 </div>
-                <div else class="center-flex mt-3">
-                    <b-button v-if="showButtonRestrictions" variant="primary" @click="updateRestrictions()">
-                        {{$t('Update Restrictions')}}
+                <div else class="mt-4">
+                    <b-button class="mt-1" v-if="showButtonRestrictions" variant="primary" @click="updateRestrictions()">
+                        {{$t('Update Closures')}}
                     </b-button>
                 </div>
-                <div class="center-flex mt-3">
+                <div class="mt-3">
                     <label style="color:#dc3545;">
                         {{$t("This operation make take a few minutes")}}
                     </label>
@@ -97,7 +102,7 @@ export default {
                 console.log(html);
                 this.callApiRestrictions = false;
                 this.showButtonRestrictions = true;
-                this.$appAlert(this.successHTML(this.$t('Restrictions'),html));
+                this.$appAlert(this.successHTML(this.$t('Closures'),html));
 
             })
             .catch(error => {
