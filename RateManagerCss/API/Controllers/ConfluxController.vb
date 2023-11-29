@@ -78,7 +78,9 @@ Namespace API.Controllers
                     Select Case restriction.Type
                         Case RestrictionEnum.LockGral
                             Log("Sincronizar Restricciones LockGral No Promo Conflux con el hotel: ", restriction.Xml(0).ToString(), hotelId)
-                            Log("Sincronizar Restricciones LockGral Promo Conflux con el hotel: ", restriction.Xml(1).ToString(), hotelId)
+                            If restriction.IsSuccessPromo Then
+                                Log("Sincronizar Restricciones LockGral Promo Conflux con el hotel: ", restriction.Xml(1).ToString(), hotelId)
+                            End If
                         Case RestrictionEnum.LockRatePlan
                             Log("Sincronizar Restricciones LockRatePlan Conflux con el hotel: ", restriction.Xml(0).ToString(), hotelId)
                         Case RestrictionEnum.LockRoomType
