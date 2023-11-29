@@ -114,6 +114,7 @@ namespace APIServices.Conflux
                 }
 
                 res.Xml = otaRS.ToString();
+                res.RequestXML = soapRequest.ToString();
                 res.IsSuccess = HotelRateAmountNotifRS.IsSuccessRequest(otaRS);
 
             }

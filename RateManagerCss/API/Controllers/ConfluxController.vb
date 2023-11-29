@@ -49,7 +49,7 @@ Namespace API.Controllers
 
             Dim result As RateResponse = ConfluxService.UpdateRates(hotelId, info.Empresa)
 
-            Log("Sincronizar Tarifas Conflux con el hotel: ", result.Xml, hotelId)
+            Log("Sincronizar Tarifas Conflux con el hotel: ", result.Xml, hotelId, result.RequestXML)
 
             If Not result.IsSuccess Then
 
@@ -94,9 +94,9 @@ Namespace API.Controllers
         End Function
 
 
-        Private Sub Log(ByVal note As String, ByVal xml As String, ByVal hotelId As Integer)
+        Private Sub Log(ByVal note As String, ByVal xml As String, ByVal hotelId As Integer, Optional ByVal requestXMl As String = "")
             With (New PaginaBase)
-                .guardalog("/rate-manager-ui/dist/channel-rates-update.aspx", acciones.Sincronizar, note & hotelId, "", "", xml, hotelId:=hotelId)
+                .guardalog("/rate-manager-ui/dist/channel-rates-update.aspx", acciones.Sincronizar, note & hotelId, "", requestXMl, xml, hotelId:=hotelId)
             End With
         End Sub
 
