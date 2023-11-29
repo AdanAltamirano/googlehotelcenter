@@ -113,63 +113,92 @@ namespace APIServices.Conflux.Helpers.Rate
 
             updatedPrices = BaseGuestAmountApplyingTaxes(prices, currentRate);
 
-            switch (vDayRate.DiscountLevel)
+            if (vDayRate.DayDiscount > 0 && vDayRate.Discount > 0)
             {
-                case 0:
-                    //Solo DayDiscount
 
-                    foreach (var price in updatedPrices)
-                    {
-                        if (price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraAdult
-                            && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraChild
-                            && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
+                switch (vDayRate.DiscountLevel)
+                {
+                    case 0:
+                        //Solo DayDiscount
+
+                        foreach (var price in updatedPrices)
                         {
-                            price.AmountBeforeTax = PriorityRateDiscount(price.AmountBeforeTax, vDayRate.DayDiscount);
-                            price.AmountAfterTax = PriorityRateDiscount(price.AmountAfterTax, vDayRate.DayDiscount);
-                        }
-                    }
-
-                    break;
-                case 1:
-
-                    //Sum of All Discounts
-
-                    var allDiscount = vDayRate.DayDiscount + vDayRate.Discount;
-
-                    foreach (var price in updatedPrices)
-                    {
-                        if (price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraAdult
-                            && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraChild
-                            && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
-                        {
-
-                            price.AmountBeforeTax = AllDiscounts(price.AmountBeforeTax, vDayRate.DayDiscount);
-                            price.AmountAfterTax = AllDiscounts(price.AmountAfterTax, vDayRate.DayDiscount);
-
+                            if (price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraAdult
+                                && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraChild
+                                && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
+                            {
+                                price.AmountBeforeTax = PriorityRateDiscount(price.AmountBeforeTax, vDayRate.DayDiscount);
+                                price.AmountAfterTax = PriorityRateDiscount(price.AmountAfterTax, vDayRate.DayDiscount);
+                            }
                         }
 
-                    }
+                        break;
+                    case 1:
 
-                    break;
-                case 2:
+                        //Sum of All Discounts
 
-                    //Additional Discount
+                        var allDiscount = vDayRate.DayDiscount + vDayRate.Discount;
 
-                    foreach (var price in updatedPrices)
-                    {
-
-                        if (price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraAdult
-                            && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraChild
-                            && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
+                        foreach (var price in updatedPrices)
                         {
-                            price.AmountBeforeTax = AdditionalDiscount(price.AmountBeforeTax, vDayRate.DayDiscount, vDayRate.Discount);
-                            price.AmountAfterTax = AdditionalDiscount(price.AmountAfterTax, vDayRate.DayDiscount, vDayRate.Discount);
-                        }
-                    }
+                            if (price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraAdult
+                                && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraChild
+                                && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
+                            {
 
-                    break;
+                                price.AmountBeforeTax = AllDiscounts(price.AmountBeforeTax, vDayRate.DayDiscount);
+                                price.AmountAfterTax = AllDiscounts(price.AmountAfterTax, vDayRate.DayDiscount);
+
+                            }
+
+                        }
+
+                        break;
+                    case 2:
+
+                        //Additional Discount
+
+                        foreach (var price in updatedPrices)
+                        {
+
+                            if (price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraAdult
+                                && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraChild
+                                && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
+                            {
+                                price.AmountBeforeTax = AdditionalDiscount(price.AmountBeforeTax, vDayRate.DayDiscount, vDayRate.Discount);
+                                price.AmountAfterTax = AdditionalDiscount(price.AmountAfterTax, vDayRate.DayDiscount, vDayRate.Discount);
+                            }
+                        }
+
+                        break;
+                }
             }
-
+            else if (vDayRate.Discount > 0 && vDayRate.DayDiscount == 0)
+            {
+                foreach (var price in updatedPrices)
+                {
+                    if (price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraAdult
+                        && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraChild
+                        && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
+                    {
+                        price.AmountBeforeTax = PriorityRateDiscount(price.AmountBeforeTax, vDayRate.Discount);
+                        price.AmountAfterTax = PriorityRateDiscount(price.AmountAfterTax, vDayRate.Discount);
+                    }
+                }
+            }
+            else if (vDayRate.DayDiscount > 0 && vDayRate.Discount == 0)
+            {
+                foreach (var price in updatedPrices)
+                {
+                    if (price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraAdult
+                        && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraChild
+                        && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
+                    {
+                        price.AmountBeforeTax = PriorityRateDiscount(price.AmountBeforeTax, vDayRate.DayDiscount);
+                        price.AmountAfterTax = PriorityRateDiscount(price.AmountAfterTax, vDayRate.DayDiscount);
+                    }
+                }
+            }
             return updatedPrices;
 
         }
@@ -180,61 +209,91 @@ namespace APIServices.Conflux.Helpers.Rate
 
             updatedPrices = BaseGuestAmountApplyingTaxes(prices, currentRate);
 
-            switch (vDayRate.DiscountLevel)
+            if (vDayRate.Discount > 0 && vDayRate.DayDiscount > 0)
             {
-                case 0:
-                    //Solo DayDiscount
 
-                    foreach (var price in updatedPrices)
-                    {
-                        if (price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraAdult
-                            && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraChild
-                            && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
+                switch (vDayRate.DiscountLevel)
+                {
+                    case 0:
+                        //Solo DayDiscount
+
+                        foreach (var price in updatedPrices)
                         {
-                            price.AmountBeforeTax = PriorityRateDiscount(price.AmountBeforeTax, vDayRate.DayDiscount);
-                            price.AmountAfterTax = PriorityRateDiscount(price.AmountAfterTax, vDayRate.DayDiscount);
-                        }
-                    }
-
-                    break;
-                case 1:
-
-                    //Sum of All Discounts
-
-                    var allDiscount = vDayRate.DayDiscount + vDayRate.Discount;
-
-                    foreach (var price in updatedPrices)
-                    {
-                        if (price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraAdult
-                            && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraChild
-                            && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
-                        {
-
-                            price.AmountBeforeTax = AllDiscounts(price.AmountBeforeTax, vDayRate.DayDiscount);
-                            price.AmountAfterTax = AllDiscounts(price.AmountAfterTax, vDayRate.DayDiscount);
-
+                            if (price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraAdult
+                                && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraChild
+                                && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
+                            {
+                                price.AmountBeforeTax = PriorityRateDiscount(price.AmountBeforeTax, vDayRate.DayDiscount);
+                                price.AmountAfterTax = PriorityRateDiscount(price.AmountAfterTax, vDayRate.DayDiscount);
+                            }
                         }
 
-                    }
+                        break;
+                    case 1:
 
-                    break;
-                case 2:
+                        //Sum of All Discounts
 
-                    //Additional Discount
+                        var allDiscount = vDayRate.DayDiscount + vDayRate.Discount;
 
-                    foreach (var price in updatedPrices)
-                    {
-
-                        if (price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraAdult
-                            && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraChild
-                            && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
+                        foreach (var price in updatedPrices)
                         {
-                            price.AmountBeforeTax = AdditionalDiscount(price.AmountBeforeTax, vDayRate.DayDiscount, vDayRate.Discount);
-                            price.AmountAfterTax = AdditionalDiscount(price.AmountAfterTax, vDayRate.DayDiscount, vDayRate.Discount);
-                        }
-                    }
+                            if (price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraAdult
+                                && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraChild
+                                && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
+                            {
 
-                    break;
+                                price.AmountBeforeTax = AllDiscounts(price.AmountBeforeTax, vDayRate.DayDiscount);
+                                price.AmountAfterTax = AllDiscounts(price.AmountAfterTax, vDayRate.DayDiscount);
+
+                            }
+
+                        }
+
+                        break;
+                    case 2:
+
+                        //Additional Discount
+
+                        foreach (var price in updatedPrices)
+                        {
+
+                            if (price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraAdult
+                                && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraChild
+                                && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
+                            {
+                                price.AmountBeforeTax = AdditionalDiscount(price.AmountBeforeTax, vDayRate.DayDiscount, vDayRate.Discount);
+                                price.AmountAfterTax = AdditionalDiscount(price.AmountAfterTax, vDayRate.DayDiscount, vDayRate.Discount);
+                            }
+                        }
+
+                        break;
+                }
+            }
+            else if (vDayRate.Discount > 0 && vDayRate.DayDiscount == 0)
+            {
+                foreach (var price in updatedPrices)
+                {
+                    if (price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraAdult
+                        && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraChild
+                        && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
+                    {
+                        price.AmountBeforeTax = PriorityRateDiscount(price.AmountBeforeTax, vDayRate.Discount);
+                        price.AmountAfterTax = PriorityRateDiscount(price.AmountAfterTax, vDayRate.Discount);
+                    }
+                }
+            }
+            else if (vDayRate.DayDiscount > 0 && vDayRate.Discount == 0)
+            {
+                foreach (var price in updatedPrices)
+                {
+                    if (price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraAdult
+                        && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraChild
+                        && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
+                    {
+                        price.AmountBeforeTax = PriorityRateDiscount(price.AmountBeforeTax, vDayRate.DayDiscount);
+                        price.AmountAfterTax = PriorityRateDiscount(price.AmountAfterTax, vDayRate.DayDiscount);
+                    }
+                }
             }
 
             return updatedPrices;
@@ -602,61 +661,90 @@ namespace APIServices.Conflux.Helpers.Rate
 
             updatedPrices = BaseGuestAmountApplyingTaxes(prices, currentRate);
 
-            switch (vDayRate.DiscountLevel)
+            if (vDayRate.Discount > 0 && vDayRate.DayDiscount > 0)
             {
-                case 0:
-                    //Solo DayDiscount
+                switch (vDayRate.DiscountLevel)
+                {
+                    case 0:
+                        //Solo DayDiscount
 
-                    foreach (var price in updatedPrices)
-                    {
-                        if (price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraAdult
-                            && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraChild
-                            && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
+                        foreach (var price in updatedPrices)
                         {
-                            price.AmountBeforeTax = PriorityRateDiscount(price.AmountBeforeTax, vDayRate.DayDiscount);
-                            price.AmountAfterTax = PriorityRateDiscount(price.AmountAfterTax, vDayRate.DayDiscount);
-                        }
-                    }
-
-                    break;
-                case 1:
-
-                    //Sum of All Discounts
-
-                    var allDiscount = vDayRate.DayDiscount + vDayRate.Discount;
-
-                    foreach (var price in updatedPrices)
-                    {
-                        if (price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraAdult
-                            && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraChild
-                            && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
-                        {
-
-                            price.AmountBeforeTax = AllDiscounts(price.AmountBeforeTax, vDayRate.DayDiscount);
-                            price.AmountAfterTax = AllDiscounts(price.AmountAfterTax, vDayRate.DayDiscount);
-
+                            if (price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraAdult
+                                && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraChild
+                                && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
+                            {
+                                price.AmountBeforeTax = PriorityRateDiscount(price.AmountBeforeTax, vDayRate.DayDiscount);
+                                price.AmountAfterTax = PriorityRateDiscount(price.AmountAfterTax, vDayRate.DayDiscount);
+                            }
                         }
 
-                    }
+                        break;
+                    case 1:
 
-                    break;
-                case 2:
+                        //Sum of All Discounts
 
-                    //Additional Discount
+                        var allDiscount = vDayRate.DayDiscount + vDayRate.Discount;
 
-                    foreach (var price in updatedPrices)
-                    {
-
-                        if (price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraAdult
-                            && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraChild
-                            && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
+                        foreach (var price in updatedPrices)
                         {
-                            price.AmountBeforeTax = AdditionalDiscount(price.AmountBeforeTax, vDayRate.DayDiscount, vDayRate.Discount);
-                            price.AmountAfterTax = AdditionalDiscount(price.AmountAfterTax, vDayRate.DayDiscount, vDayRate.Discount);
-                        }
-                    }
+                            if (price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraAdult
+                                && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraChild
+                                && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
+                            {
 
-                    break;
+                                price.AmountBeforeTax = AllDiscounts(price.AmountBeforeTax, vDayRate.DayDiscount);
+                                price.AmountAfterTax = AllDiscounts(price.AmountAfterTax, vDayRate.DayDiscount);
+
+                            }
+
+                        }
+
+                        break;
+                    case 2:
+
+                        //Additional Discount
+
+                        foreach (var price in updatedPrices)
+                        {
+
+                            if (price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraAdult
+                                && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraChild
+                                && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
+                            {
+                                price.AmountBeforeTax = AdditionalDiscount(price.AmountBeforeTax, vDayRate.DayDiscount, vDayRate.Discount);
+                                price.AmountAfterTax = AdditionalDiscount(price.AmountAfterTax, vDayRate.DayDiscount, vDayRate.Discount);
+                            }
+                        }
+
+                        break;
+                }
+            }
+            else if(vDayRate.Discount > 0 && vDayRate.DayDiscount == 0)
+            {
+                foreach (var price in updatedPrices)
+                {
+                    if (price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraAdult
+                        && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraChild
+                        && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
+                    {
+                        price.AmountBeforeTax = PriorityRateDiscount(price.AmountBeforeTax, vDayRate.Discount);
+                        price.AmountAfterTax = PriorityRateDiscount(price.AmountAfterTax, vDayRate.Discount);
+                    }
+                }
+            }
+            else if(vDayRate.DayDiscount > 0 && vDayRate.Discount == 0)
+            {
+                foreach (var price in updatedPrices)
+                {
+                    if (price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraAdult
+                        && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraChild
+                        && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
+                    {
+                        price.AmountBeforeTax = PriorityRateDiscount(price.AmountBeforeTax, vDayRate.DayDiscount);
+                        price.AmountAfterTax = PriorityRateDiscount(price.AmountAfterTax, vDayRate.DayDiscount);
+                    }
+                }
             }
 
             return updatedPrices;
@@ -791,61 +879,90 @@ namespace APIServices.Conflux.Helpers.Rate
 
             updatedPrices = BaseGuestAmountApplyingTaxes(prices, currentRate);
 
-            switch (vDayRate.DiscountLevel)
+            if (vDayRate.Discount > 0 && vDayRate.DayDiscount > 0)
             {
-                case 0:
-                    //Solo DayDiscount
+                switch (vDayRate.DiscountLevel)
+                {
+                    case 0:
+                        //Solo DayDiscount
 
-                    foreach (var price in updatedPrices)
-                    {
-                        if (price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraAdult
-                            && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraChild
-                            && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
+                        foreach (var price in updatedPrices)
                         {
-                            price.AmountBeforeTax = PriorityRateDiscount(price.AmountBeforeTax, vDayRate.DayDiscount);
-                            price.AmountAfterTax = PriorityRateDiscount(price.AmountAfterTax, vDayRate.DayDiscount);
-                        }
-                    }
-
-                    break;
-                case 1:
-
-                    //Sum of All Discounts
-
-                    var allDiscount = vDayRate.DayDiscount + vDayRate.Discount;
-
-                    foreach (var price in updatedPrices)
-                    {
-                        if (price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraAdult
-                            && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraChild
-                            && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
-                        {
-
-                            price.AmountBeforeTax = AllDiscounts(price.AmountBeforeTax, vDayRate.DayDiscount);
-                            price.AmountAfterTax = AllDiscounts(price.AmountAfterTax, vDayRate.DayDiscount);
-
+                            if (price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraAdult
+                                && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraChild
+                                && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
+                            {
+                                price.AmountBeforeTax = PriorityRateDiscount(price.AmountBeforeTax, vDayRate.DayDiscount);
+                                price.AmountAfterTax = PriorityRateDiscount(price.AmountAfterTax, vDayRate.DayDiscount);
+                            }
                         }
 
-                    }
+                        break;
+                    case 1:
 
-                    break;
-                case 2:
+                        //Sum of All Discounts
 
-                    //Additional Discount
+                        var allDiscount = vDayRate.DayDiscount + vDayRate.Discount;
 
-                    foreach (var price in updatedPrices)
-                    {
-
-                        if (price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraAdult
-                            && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraChild
-                            && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
+                        foreach (var price in updatedPrices)
                         {
-                            price.AmountBeforeTax = AdditionalDiscount(price.AmountBeforeTax, vDayRate.DayDiscount, vDayRate.Discount);
-                            price.AmountAfterTax = AdditionalDiscount(price.AmountAfterTax, vDayRate.DayDiscount, vDayRate.Discount);
-                        }
-                    }
+                            if (price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraAdult
+                                && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraChild
+                                && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
+                            {
 
-                    break;
+                                price.AmountBeforeTax = AllDiscounts(price.AmountBeforeTax, vDayRate.DayDiscount);
+                                price.AmountAfterTax = AllDiscounts(price.AmountAfterTax, vDayRate.DayDiscount);
+
+                            }
+
+                        }
+
+                        break;
+                    case 2:
+
+                        //Additional Discount
+
+                        foreach (var price in updatedPrices)
+                        {
+
+                            if (price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraAdult
+                                && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraChild
+                                && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
+                            {
+                                price.AmountBeforeTax = AdditionalDiscount(price.AmountBeforeTax, vDayRate.DayDiscount, vDayRate.Discount);
+                                price.AmountAfterTax = AdditionalDiscount(price.AmountAfterTax, vDayRate.DayDiscount, vDayRate.Discount);
+                            }
+                        }
+
+                        break;
+                }
+            }
+            else if (vDayRate.Discount > 0 && vDayRate.DayDiscount == 0)
+            {
+                foreach (var price in updatedPrices)
+                {
+                    if (price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraAdult
+                        && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraChild
+                        && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
+                    {
+                        price.AmountBeforeTax = PriorityRateDiscount(price.AmountBeforeTax, vDayRate.Discount);
+                        price.AmountAfterTax = PriorityRateDiscount(price.AmountAfterTax, vDayRate.Discount);
+                    }
+                }
+            }
+            else if (vDayRate.DayDiscount > 0 && vDayRate.Discount == 0)
+            {
+                foreach (var price in updatedPrices)
+                {
+                    if (price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraAdult
+                        && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraChild
+                        && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
+                    {
+                        price.AmountBeforeTax = PriorityRateDiscount(price.AmountBeforeTax, vDayRate.DayDiscount);
+                        price.AmountAfterTax = PriorityRateDiscount(price.AmountAfterTax, vDayRate.DayDiscount);
+                    }
+                }
             }
 
             return updatedPrices;
