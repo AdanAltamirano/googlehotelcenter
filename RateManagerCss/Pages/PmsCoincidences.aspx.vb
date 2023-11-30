@@ -3,6 +3,9 @@ Imports Portal.General.DataAccess
 Imports System.Data.SqlClient
 Imports System.Configuration.ConfigurationManager
 Imports Microsoft.Office.Interop
+Imports System.Net.Http
+Imports System.IO
+Imports ClosedXML.Excel
 
 Partial Class PmsCoincidences
     Inherits PaginaBase
@@ -26,24 +29,66 @@ Partial Class PmsCoincidences
 
 #End Region
 
+    Private Function SendExcelToConflux(type As String, excelFile As String)
+        ' URL de la API a la que deseas llamar
+        Dim apiUrl As String = "https://engine.confluxmanager.com/api/properties/11/" & type
+
+        ' Configurar el contenido de la solicitud con el archivo Excel
+        Dim content As New MultipartFormDataContent()
+
+        ' Guardar el archivo Excel en una secuencia de bytes
+        Dim excelBytes As Byte() = Nothing
+        Dim ms As New MemoryStream()
+
+        Using workBook As New XLWorkbook(excelFile)
+            workBook.SaveAs(ms)
+            excelBytes = ms.ToArray()
+        End Using
+
+        ' Agregar el contenido del archivo Excel a la solicitud
+        Dim excelContent As New ByteArrayContent(excelBytes)
+        excelContent.Headers.ContentType = New System.Net.Http.Headers.MediaTypeHeaderValue("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+        content.Add(excelContent, "archivo", excelFile)
+
+        ' Crear una instancia de HttpClient
+        Using httpClient As New HttpClient()
+            ' Realizar la llamada a la API utilizando una solicitud POST y enviar el archivo Excel
+            Dim response As HttpResponseMessage = httpClient.PostAsync(apiUrl, content).Result
+
+            ' Verificar si la llamada fue exitosa (código de estado 200)
+            If response.IsSuccessStatusCode Then
+                ' Leer el contenido de la respuesta como una cadena
+                Dim responseData As String = response.Content.ReadAsStringAsync().Result
+
+                ' Aquí puedes procesar la respuesta según tus necesidades
+                'log("Respuesta de la API: " & responseData)
+                PaginaBase.WriteLog(responseData, "Log_PMSRatesAndRooms_ExportExcel")
+            Else
+                ' La llamada no fue exitosa
+                'MessageBox.Show(")
+                PaginaBase.WriteLog("Error al llamar a la API. Código de estado: " & response.StatusCode.ToString() & " / Error MSG: " & response.ReasonPhrase.ToString(), "Log_PMSRatesAndRooms_ExportExcel_Error")
+            End If
+        End Using
+    End Function
+
     Private Property hotelId() As Integer
         Get
-            Return viewstate("hotelId")
+            Return ViewState("hotelId")
         End Get
         Set(ByVal Value As Integer)
-            viewstate("hotelId") = Value
+            ViewState("hotelId") = Value
         End Set
     End Property
 
     Dim hotels As DataTable
     Dim corporatives As DataTable = New DataTable
+    Dim reportRequestTime As String = ""
 
     Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        'Put user code to initialize the page here
-
-        btnExcel.Visible = If(Session("PMSRatePlans") IsNot Nothing AndAlso Session("PMSRatePlans").Tables(0).Rows.Count > 0 AndAlso Session("PMSRooms") IsNot Nothing AndAlso Session("PMSRooms").Tables(0).Rows.Count > 0, True, False)
 
         If Not Page.IsPostBack Then
+
+            btnExcel.Visible = If(Session("PMSRatePlans") IsNot Nothing AndAlso Session("PMSRatePlans").Tables(0).Rows.Count > 0 AndAlso Session("PMSRooms") IsNot Nothing AndAlso Session("PMSRooms").Tables(0).Rows.Count > 0, True, False)
 
             If Not Session("idCorporativoUserChain") Is Nothing Then 'AndAlso Session("idCorporativoUserChain") <> "-1" Then
 
@@ -93,6 +138,7 @@ Partial Class PmsCoincidences
 
             End If
         Else
+            btnExcel.Visible = False
             If Session("dsHotelsList") IsNot Nothing Then
                 hotels = New DataTable
                 hotels.Merge(CType(Session("dsHotelsList"), DataTable))
@@ -143,13 +189,25 @@ Partial Class PmsCoincidences
         Dim workBook As Excel.Workbook = excellApp.Workbooks.Add()
         Dim workSheet As Excel.Worksheet = CType(workBook.Sheets(1), Excel.Worksheet)
 
-        ' Headers Tabla 1 - RatePlans
+        ' Encabezados
         Dim tColumns As Integer = table.Columns.Count
         For x As Integer = 0 To tColumns - 1
             workSheet.Cells(1, x + 1) = table.Columns(x).ColumnName
         Next
 
-        ' Rows Tabla 1 - RatePlans
+        If subtitle.Equals("RatePlans") Then
+            Dim rangeH As Excel.Range = workSheet.Range("H1").EntireColumn
+            Dim rangeI As Excel.Range = workSheet.Range("I1").EntireColumn
+            Dim rangeL As Excel.Range = workSheet.Range("L1").EntireColumn
+
+            ' Establece formato "Texto" para columnas de hora (Ej. 20:00)
+            rangeH.NumberFormat = "@"
+            rangeI.NumberFormat = "@"
+            rangeL.NumberFormat = "@"
+
+        End If
+
+        ' Renglones
         Dim tRows As Integer = table.Rows.Count
         For x As Integer = 0 To tRows - 1
             For z As Integer = 0 To tColumns - 1
@@ -158,9 +216,14 @@ Partial Class PmsCoincidences
         Next
 
         Dim fileRoute As String = Server.MapPath("~/ExcelConflux/") '"C:\testFolder\"
-        Dim fileName As String = Session("PMSCodeId") & "_" & Session("PMSHotelName") & "_" & subtitle & "_" & Date.Now.ToString("dd-MM-yyyy") & ".xls"
+        Dim fileName As String = Session("PMSCodeId") & "_" & Session("PMSHotelName") & "_" & subtitle & "_" & Date.Now.ToString("dd-MM-yyyy") & "_" & reportRequestTime & ".xlsx"
 
         workBook.SaveAs(fileRoute & fileName)
+
+        excellApp.Quit()
+        ReleaseComObject(excellApp)
+
+        SendExcelToConflux(subtitle, fileRoute & fileName)
 
     End Function
 
@@ -175,7 +238,8 @@ Partial Class PmsCoincidences
             Session("PMSCodeId") = hotels.Select("idHotel = " & Me.hotelId)(0).Item("idEmpresa")
 
             Dim dsPMSData As DataSet
-            dsPMSData = getHotelPMSRoomsAndRatePlans(Me.hotelId)
+            reportRequestTime = Date.Now.Hour.ToString & Date.Now.Minute.ToString & Date.Now.Millisecond.ToString
+            dsPMSData = getHotelPMSRoomsAndRatePlans(Me.hotelId, 1)
 
             CreatePMSDataDoc("RatePlans", dsPMSData.Tables(0))
             CreatePMSDataDoc("Rooms", dsPMSData.Tables(1))
@@ -273,6 +337,17 @@ Partial Class PmsCoincidences
         btnExcel.Visible = If(Session("PMSRatePlans") IsNot Nothing AndAlso Session("PMSRatePlans").Rows.Count > 0 AndAlso Session("PMSRooms") IsNot Nothing AndAlso Session("PMSRooms").Rows.Count > 0, True, False)
         btnExcel.DataBind()
 
+    End Sub
+
+    ' Función para liberar recursos de la Interfaz de Excel
+    Private Sub ReleaseComObject(obj As Object)
+        Try
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(obj)
+        Catch ex As Exception
+            ' Manejar la excepción si es necesario
+        Finally
+            obj = Nothing
+        End Try
     End Sub
 
     Private Sub btnAceptar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAceptar.Click
