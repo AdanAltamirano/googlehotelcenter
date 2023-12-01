@@ -3,7 +3,7 @@ Imports Portal.Hotel.Common.Data
 Imports Portal.General.Common.Data
 Imports Portal.General.Facade
 Imports Portal.Hotel.Facade
-
+Imports System
 Imports System.Text
 Imports System.IO
 Imports APIServices.Xml.Soap
@@ -894,6 +894,7 @@ Partial Class HomePage
                     dr(RoomsInventoryData.FLD_ID_ROOM_HOTEL) = Me.ddlRoomtype.Items(i).Value
                     dr(RoomsInventoryData.FLD_NUMBER_ROOMS) = row(RoomsInventoryData.FLD_NUMBER_ROOMS)
                     dr(RoomsInventoryData.FLD_STATUS) = 0
+                    dr(RoomsInventoryData.FLD_NUMBER_AVAILABILITY) = row(RoomsInventoryData.FLD_NUMBER_AVAILABILITY)
                     dr("RoomCode") = Me.ddlRoomtype.Items(i).Text.Split("-")(0).Trim()
                     ds.Tables(RoomsInventoryData.TBL_ROOMS_INVENTORY).Rows.Add(dr)
                     dr.AcceptChanges()
@@ -1080,7 +1081,7 @@ Partial Class HomePage
 
             Dim StatusApplicationControl As New WsConnectWcf.StatusApplicationControlType
 
-            AvailStatusMessage(Index).BookingLimit = dr(RoomsInventoryData.FLD_NUMBER_ROOMS)
+            AvailStatusMessage(Index).BookingLimit = dr(RoomsInventoryData.FLD_NUMBER_AVAILABILITY)
             StatusApplicationControl.InvTypeCode = dr("RoomCode")
             StatusApplicationControl.Start = CDate(dr(RoomsInventoryData.FLD_STARTDATE)).ToString("yyyy-MM-dd").Replace("-", "")
             StatusApplicationControl.End = CDate(dr(RoomsInventoryData.FLD_ENDDATE)).ToString("yyyy-MM-dd").Replace("-", "")
@@ -1122,7 +1123,7 @@ Partial Class HomePage
         Dim soapRequest As System.Xml.Linq.XDocument = Soap.CreateSoapRequestXml(xmlRQ)
 
 
-        MyBase.WriteLog(String.Format("Request: {0}", strRequest), "SingleImgInv")
+        MyBase.WriteLog(String.Format("Request: {0}", soapRequest.ToString()), "SingleImgInv")
         Dim url As String = ConfigurationManager.AppSettings("TwoWayUpdateURL")
         Dim strError As String = String.Empty
         Try

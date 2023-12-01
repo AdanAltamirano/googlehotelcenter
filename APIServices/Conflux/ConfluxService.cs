@@ -292,6 +292,7 @@ namespace APIServices.Conflux
 
                             //Repuesta API
                             restriction.Xml.Add(otaRS.ToString());
+                            restriction.XmlRequest.Add(soapRequest.ToString());
 
                             if (requestIndex == 0)
                             {
