@@ -339,9 +339,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Data">
-      <Private>False</Private>
-    </Reference>
+    <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing">
       <Private>False</Private>
@@ -1519,6 +1517,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API\Controllers\ConfluxController.vb" />
     <Compile Include="API\Controllers\CurrencyController.vb" />
     <Compile Include="API\Controllers\F2GController.vb" />
     <Compile Include="API\Controllers\HotelConfigurationController.vb" />
@@ -1913,6 +1912,10 @@
       <DependentUpon>IPRModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="LogGenerator.vb" />
+    <Compile Include="Models\OtaRequest\BaseGuestAmount.vb" />
+    <Compile Include="Models\OtaRequest\Rate.vb" />
+    <Compile Include="Models\OtaRequest\RateAmountMessage.vb" />
+    <Compile Include="Models\OtaRequest\StatusApplicationControl.vb" />
     <Compile Include="Modulos\ctrlAutoComplete.ascx.designer.vb">
       <DependentUpon>ctrlAutoComplete.ascx</DependentUpon>
     </Compile>
@@ -4836,10 +4839,10 @@
       <CachedAppSettingsObjectName>MySettings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>RateManager_RulesWebService_RulesWebService</CachedSettingsPropName>
     </WebReferenceUrl>
-    <WebReferenceUrl Include="http://www.test.com/WsConnectividad-Repo/wsConnectWCFv2.svc">
+    <WebReferenceUrl Include="https://secure.internetpower.com.mx/wsconnectividad/wsConnectWCFv2.svc">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\WsConnectWcf\</RelPath>
-      <UpdateFromURL>http://www.test.com/WsConnectividad-Repo/wsConnectWCFv2.svc</UpdateFromURL>
+      <UpdateFromURL>https://secure.internetpower.com.mx/wsconnectividad/wsConnectWCFv2.svc</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>

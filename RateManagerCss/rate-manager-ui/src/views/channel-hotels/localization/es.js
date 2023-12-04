@@ -1,0 +1,23 @@
+export default {
+    'Registered Hotels': 'Hoteles Registrados',
+    'Search by hotel name' : 'Búsqueda por nombre de hotel',
+    'Hotel name' : 'Nombre del hotel',
+    'Search' : 'Buscar',
+    'Refresh table' : 'Actualizar tabla',
+    'Name' : 'Nombre',
+    'Company Id' : 'Empresa Id',
+    'Corporate' : 'Corporativo',
+    'Add User Channel' : 'Agregar Usuario Channel',
+    'Add User Pms' : 'Agregar Usuario Pms',
+    'Enter username' : 'Ingresar usuario',
+    'Enter password' : 'Ingresar contraseña',
+    'Save' : 'Guardar',
+    'User created' : 'Usuario creado',
+    'Error creating user' : 'Error al crear el usuario',
+    'User Channel' : 'Usuario Channel',
+    'User to do requests' : 'Usuario para hacer peticiones',
+    'User Pms' : 'Usuario Pms',
+    'User to administrate' : 'Usuario para administrar',
+    'System Error' : 'Error del Sistema',
+    'User already exists' : 'El usuario ya existe'
+}

@@ -4,9 +4,9 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="fa57533aba3a4716a6b5cc2f30621586" Name="Diagram1" ZoomLevel="81">
+      <Diagram DiagramId="fa57533aba3a4716a6b5cc2f30621586" Name="Diagram1" ZoomLevel="71">
         <EntityTypeShape EntityType="Models.RatesPlan" Width="1.5" PointX="0.75" PointY="5.75" />
-        <EntityTypeShape EntityType="Models.Tarifas" Width="1.5" PointX="5.375" PointY="3.75" />
+        <EntityTypeShape EntityType="Models.Tarifas" Width="1.5" PointX="3" PointY="3.25" />
         <EntityTypeShape EntityType="Models.TarifasRestricciones" Width="1.5" PointX="7.625" PointY="10.125" />
         <AssociationConnector Association="Models.Tarifas_Tarifas_Planes_FK1" />
         <EntityTypeShape EntityType="Models.Diccionario" Width="1.5" PointX="13.625" PointY="3.875" />
@@ -17,7 +17,6 @@
         <EntityTypeShape EntityType="Models.vHotelByUser" Width="1.5" PointX="12.375" PointY="0.75" />
         <EntityTypeShape EntityType="Models.vAdministrator" Width="1.5" PointX="3.375" PointY="0.75" />
         <EntityTypeShape EntityType="Models.vDayRateDetail" Width="1.5" PointX="0.75" PointY="0.75" />
-        <EntityTypeShape EntityType="Models.vDayRates" Width="1.5" PointX="7.375" PointY="0.75" />
         <EntityTypeShape EntityType="Models.vPermissions" Width="1.5" PointX="14.375" PointY="0.75" />
         <EntityTypeShape EntityType="Models.Hoteles" Width="1.5" PointX="0.75" PointY="43.5" />
         <AssociationConnector Association="Models.FK_RatesPlan_Hoteles" />
@@ -46,6 +45,11 @@
         <EntityTypeShape EntityType="Models.Reservaciones_Movimientos_Log" Width="1.5" PointX="20.375" PointY="10.75" />
         <EntityTypeShape EntityType="Models.vReservationLog" Width="1.5" PointX="20.375" PointY="6.75" />
         <EntityTypeShape EntityType="Models.vReservationDetails" Width="1.5" PointX="3.375" PointY="14.75" />
+        <EntityTypeShape EntityType="Models.vHotelActives" Width="1.5" PointX="11.375" PointY="20.75" />
+        <EntityTypeShape EntityType="Models.vDayRates" Width="1.5" PointX="7.375" PointY="0.625" />
+        <EntityTypeShape EntityType="Models.vDayRatesExceptions" Width="1.5" PointX="5.375" PointY="0.625" />
+        <EntityTypeShape EntityType="Models.vLinkedRoomTypes" Width="1.5" PointX="13.375" PointY="20.75" />
+        <EntityTypeShape EntityType="Models.vLinkedRatePlans" Width="1.5" PointX="15.375" PointY="20.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

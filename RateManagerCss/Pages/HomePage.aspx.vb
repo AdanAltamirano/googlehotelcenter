@@ -3,10 +3,10 @@ Imports Portal.Hotel.Common.Data
 Imports Portal.General.Common.Data
 Imports Portal.General.Facade
 Imports Portal.Hotel.Facade
-
+Imports System
 Imports System.Text
 Imports System.IO
-
+Imports APIServices.Xml.Soap
 
 Partial Class HomePage
     Inherits PaginaBase
@@ -198,9 +198,9 @@ Partial Class HomePage
             Div1.Style.Add("display", "block")
         End If
 
-        If cInfoActual.IsSingleImgInv AndAlso IsSupervisor Then
-            btnSingleImgInv.Visible = True
-        End If
+        'If cInfoActual.IsSingleImgInv AndAlso IsSupervisor Then
+        btnSingleImgInv.Visible = True
+        'End If
         'If SourceName <> "" Then
         '    lblRoomName.Text = Me.SourceName.Split("//")(2 * ddlRoomtype.SelectedIndex)
         'End If
@@ -894,6 +894,7 @@ Partial Class HomePage
                     dr(RoomsInventoryData.FLD_ID_ROOM_HOTEL) = Me.ddlRoomtype.Items(i).Value
                     dr(RoomsInventoryData.FLD_NUMBER_ROOMS) = row(RoomsInventoryData.FLD_NUMBER_ROOMS)
                     dr(RoomsInventoryData.FLD_STATUS) = 0
+                    dr(RoomsInventoryData.FLD_NUMBER_AVAILABILITY) = row(RoomsInventoryData.FLD_NUMBER_AVAILABILITY)
                     dr("RoomCode") = Me.ddlRoomtype.Items(i).Text.Split("-")(0).Trim()
                     ds.Tables(RoomsInventoryData.TBL_ROOMS_INVENTORY).Rows.Add(dr)
                     dr.AcceptChanges()
@@ -1069,6 +1070,8 @@ Partial Class HomePage
         RQ.Version = 1
         RequestorID.Type = "22"
         RequestorID.ID = "IPRM"
+        Dim myuuid As Guid = Guid.NewGuid()
+        RQ.EchoToken = myuuid.ToString()
 
         ASMQuantity = dsRooms.Tables(0).Rows.Count - 1
 
@@ -1078,7 +1081,7 @@ Partial Class HomePage
 
             Dim StatusApplicationControl As New WsConnectWcf.StatusApplicationControlType
 
-            AvailStatusMessage(Index).BookingLimit = dr(RoomsInventoryData.FLD_NUMBER_ROOMS)
+            AvailStatusMessage(Index).BookingLimit = dr(RoomsInventoryData.FLD_NUMBER_AVAILABILITY)
             StatusApplicationControl.InvTypeCode = dr("RoomCode")
             StatusApplicationControl.Start = CDate(dr(RoomsInventoryData.FLD_STARTDATE)).ToString("yyyy-MM-dd").Replace("-", "")
             StatusApplicationControl.End = CDate(dr(RoomsInventoryData.FLD_ENDDATE)).ToString("yyyy-MM-dd").Replace("-", "")
@@ -1112,14 +1115,22 @@ Partial Class HomePage
         POS(0).RequestorID = RequestorID
 
         Dim strRequest As String = MyBase.GetXMLFromObject(RQ)
-        MyBase.WriteLog(String.Format("Request: {0}", strRequest), "SingleImgInv")
+
+        Dim requestXDocument As System.Xml.Linq.XDocument = System.Xml.Linq.XDocument.Parse(strRequest)
+
+        Dim xmlRQ As System.Xml.Linq.XElement = requestXDocument.Element("OTA_HotelAvailNotifRQ")
+
+        Dim soapRequest As System.Xml.Linq.XDocument = Soap.CreateSoapRequestXml(xmlRQ)
+
+
+        MyBase.WriteLog(String.Format("Request: {0}", soapRequest.ToString()), "SingleImgInv")
         Dim url As String = ConfigurationManager.AppSettings("TwoWayUpdateURL")
         Dim strError As String = String.Empty
         Try
             Dim HttpReq As System.Net.HttpWebRequest = System.Net.WebRequest.Create(url)
 
             HttpReq.Method = "POST"
-            Dim bytes() As Byte = System.Text.Encoding.ASCII.GetBytes(strRequest)
+            Dim bytes() As Byte = System.Text.Encoding.ASCII.GetBytes(soapRequest.ToString())
             HttpReq.ContentType = "application/xml; encoding='utf-8'"
             HttpReq.ContentLength = bytes.Length
             Dim requestStream As System.IO.Stream = HttpReq.GetRequestStream()
@@ -1131,6 +1142,8 @@ Partial Class HomePage
                 lblError.Visible = True
             Else
                 MyBase.WriteLog(String.Format("Response: {0}", response.StatusCode.ToString()), "SingleImgInv")
+                lblError.Text = "Inventario Actualizado"
+                lblError.Visible = True
             End If
         Catch ex As Exception
             lblError.Text = ex.Message

@@ -102,6 +102,11 @@ export default {
       required: false,
       default:'reservas'
     },
+    newProperties:{
+      type:Object,
+      required:false,
+      default:null
+    }
   },
   data() {
     return {
@@ -160,6 +165,18 @@ export default {
           else{
             this.start = 0;
             this.end = 0;
+          }
+          //agregar nuevas propiedades a la respuesta
+          if(this.newProperties != null){
+            let keys = Object.keys(this.newProperties);         
+            keys.forEach(key =>{
+              console.log(key);
+              let value = this.newProperties[key.toString()];
+              console.log(value);
+              response.body.forEach(element => {
+                element[key] = value
+              });
+            });
           }
           // prooveer el arreglo de elementos
           callback(response.body);

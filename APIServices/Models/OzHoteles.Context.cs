@@ -37,7 +37,6 @@ namespace APIServices.Models
         public virtual DbSet<vHotelByUser> vHotelByUser { get; set; }
         public virtual DbSet<vAdministrator> vAdministrator { get; set; }
         public virtual DbSet<vDayRateDetail> vDayRateDetail { get; set; }
-        public virtual DbSet<vDayRates> vDayRates { get; set; }
         public virtual DbSet<vPermissions> vPermissions { get; set; }
         public virtual DbSet<Hoteles> Hoteles { get; set; }
         public virtual DbSet<Corporativos> Corporativos { get; set; }
@@ -63,6 +62,11 @@ namespace APIServices.Models
         public virtual DbSet<Reservaciones_Movimientos_Log> Reservaciones_Movimientos_Log { get; set; }
         public virtual DbSet<vReservationLog> vReservationLog { get; set; }
         public virtual DbSet<vReservationDetails> vReservationDetails { get; set; }
+        public virtual DbSet<vHotelActives> vHotelActives { get; set; }
+        public virtual DbSet<vDayRates> vDayRates { get; set; }
+        public virtual DbSet<vDayRatesExceptions> vDayRatesExceptions { get; set; }
+        public virtual DbSet<vLinkedRoomTypes> vLinkedRoomTypes { get; set; }
+        public virtual DbSet<vLinkedRatePlans> vLinkedRatePlans { get; set; }
     
         public virtual int spReservationCancel(Nullable<int> idReservacion, string noConfCancelGalileo, string noCancelacion, string txCode, Nullable<bool> statusConf, string systemCode, string travelAgencyName, string voucher, string wizcomPassOn, string wizcomSequenceNumber, string motivoCancelacion, Nullable<bool> cancelWithError, string sessionId, Nullable<int> iduser)
         {
@@ -383,6 +387,78 @@ namespace APIServices.Models
                 new ObjectParameter("ReservationId", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spReservationLog_Result2>("spReservationLog", reservationIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetPricesByRate_Result> spGetPricesByRate(Nullable<int> rateId)
+        {
+            var rateIdParameter = rateId.HasValue ?
+                new ObjectParameter("RateId", rateId) :
+                new ObjectParameter("RateId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetPricesByRate_Result>("spGetPricesByRate", rateIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetPricesByRateException_Result> spGetPricesByRateException(Nullable<int> rateId)
+        {
+            var rateIdParameter = rateId.HasValue ?
+                new ObjectParameter("RateId", rateId) :
+                new ObjectParameter("RateId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetPricesByRateException_Result>("spGetPricesByRateException", rateIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetPricesByRatePromotion_Result> spGetPricesByRatePromotion(Nullable<int> rateId)
+        {
+            var rateIdParameter = rateId.HasValue ?
+                new ObjectParameter("RateId", rateId) :
+                new ObjectParameter("RateId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetPricesByRatePromotion_Result>("spGetPricesByRatePromotion", rateIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetPricesByRatePromotionException_Result> spGetPricesByRatePromotionException(Nullable<int> rateId)
+        {
+            var rateIdParameter = rateId.HasValue ?
+                new ObjectParameter("RateId", rateId) :
+                new ObjectParameter("RateId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetPricesByRatePromotionException_Result>("spGetPricesByRatePromotionException", rateIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetCurrentRatesByHotel_Result4> spGetCurrentRatesByHotel(Nullable<int> hotelId)
+        {
+            var hotelIdParameter = hotelId.HasValue ?
+                new ObjectParameter("hotelId", hotelId) :
+                new ObjectParameter("hotelId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCurrentRatesByHotel_Result4>("spGetCurrentRatesByHotel", hotelIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetLockRoomTypesByHotel_Result> spGetLockRoomTypesByHotel(Nullable<int> hotelId)
+        {
+            var hotelIdParameter = hotelId.HasValue ?
+                new ObjectParameter("hotelId", hotelId) :
+                new ObjectParameter("hotelId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetLockRoomTypesByHotel_Result>("spGetLockRoomTypesByHotel", hotelIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetLockRatePlansByHotel_Result> spGetLockRatePlansByHotel(Nullable<int> hotelId)
+        {
+            var hotelIdParameter = hotelId.HasValue ?
+                new ObjectParameter("hotelId", hotelId) :
+                new ObjectParameter("hotelId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetLockRatePlansByHotel_Result>("spGetLockRatePlansByHotel", hotelIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetLockGralByHotel_Result> spGetLockGralByHotel(Nullable<int> hotelId)
+        {
+            var hotelIdParameter = hotelId.HasValue ?
+                new ObjectParameter("hotelId", hotelId) :
+                new ObjectParameter("hotelId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetLockGralByHotel_Result>("spGetLockGralByHotel", hotelIdParameter);
         }
     }
 }

@@ -1,0 +1,19 @@
+.center-flex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bg-success{
+    background: greenyellow;
+}
+
+.bg-error{
+    background: red;
+}
+
+/* Solid border */
+hr.solid {
+    border-top: 1px solid #bbb;
+  }
+  

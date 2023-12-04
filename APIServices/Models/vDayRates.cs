@@ -21,7 +21,9 @@ namespace APIServices.Models
         public string RatePlanName { get; set; }
         public System.DateTime StartDate { get; set; }
         public System.DateTime EndDate { get; set; }
+        public string PromoDays { get; set; }
         public string NoArrivalsMap { get; set; }
+        public string NoDeparturesMap { get; set; }
         public string ExceptionMap { get; set; }
         public Nullable<byte> Occupancy { get; set; }
         public decimal Price { get; set; }
@@ -35,6 +37,5 @@ namespace APIServices.Models
         public string ParentRatePlanId { get; set; }
         public bool IsPromotion { get; set; }
         public int Language { get; set; }
-        public string NoDeparturesMap { get; set; }
     }
 }

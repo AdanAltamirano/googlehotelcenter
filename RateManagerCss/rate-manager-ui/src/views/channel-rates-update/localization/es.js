@@ -1,0 +1,22 @@
+export default {
+    'Synchronize Rates in Channel Manager' : 'Sincronizar Tarifas en Channel  Manager',
+    'Rates Updated' : 'Tarifas Actualizadas',
+    'System Error' : 'Error de Sistema',
+    'Exit' : 'Salir',
+    'Update Rates' : 'Sincronizar Tarifas',
+    'Update Closures' : 'Sincronizar Cierres',
+    'This operation make take a few minutes' : 'Esta operación puede tomar unos minutos',
+    'Updated' : 'Actualizado',
+    'Fail' : 'No Actualizado',
+    'Restrictions' : 'Restricciones',
+    'Closures' : 'Cierres',
+    'Restriction RatePlan' : 'Cierres por Plan Tarifario',
+    'Restriction General' : 'Cierre General',
+    'Restriction Promos' : 'Cierre General Promociones',
+    'Restriction by Room and RatePlan' : 'Cierre por Habitación y Plan Tarifario',
+    'Synchronize with Google Hotel Center' : 'Sincronizar con Google Hotel Center',
+    'Prices' : 'Precios',
+    'Closure' : 'Cierres',
+    'This action will only send the current closures to Google Hotel Center from the current date' : 'Esta acción solo enviara los cierres vigentes a google hotel center a partir de la fecha actual',
+    'This action will only send the current prices to Google Hotel Center as of the current date' : 'Esta acción solo enviara los precios vigentes a google hotel center a partir de la fecha actual'
+}
