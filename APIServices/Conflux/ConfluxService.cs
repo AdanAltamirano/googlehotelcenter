@@ -77,6 +77,67 @@ namespace APIServices.Conflux
             return response;
         }
 
+        public RateResponse UpdateRate(int rateId,DateTime startDate, DateTime endDate, int hotelId ,int companyId)
+        {
+            RateResponse res = new RateResponse();
+
+            try
+            {
+                var rates = APIServices.Conflux.Helpers.Rate.RatesHelpers.GetVDayRate(rateId, startDate, endDate);
+                var hotel = dbContext.Hoteles.First(h => h.idHotel == hotelId);
+
+                var rateAmountMessages = Parser.Parser.ToRateAmountMessages(rates, companyId, hotel.PlusTax, hotel.Impuesto);
+
+                var xml = HotelRateAmountNotifRQ.CreateHotelRateAmountNotifRQ(rateAmountMessages);
+
+                var soapRequest = Soap.CreateSoapRequestXml(xml);
+
+                HttpContent httpContent = new StringContent(soapRequest.ToString());
+
+                string url = ConfigurationManager.AppSettings["confluxApiUrl"] + "pms/ota/rates/update";
+
+                var uri = new Uri(url);
+
+                System.Xml.Linq.XElement otaRS = null;
+
+                using (var client = new HttpClient())
+                {
+
+                    client.Timeout = TimeSpan.FromMinutes(50);
+                    var response = client.PostAsync(uri, httpContent).Result;
+
+                    string result = response.Content.ReadAsStringAsync().Result; //regresa un xml
+
+                    otaRS = HotelRateAmountNotifRS.ParseHotelRateAmountNotifRS(result);
+                }
+
+                res.Xml = otaRS.ToString();
+                res.RequestXML = soapRequest.ToString();
+                res.IsSuccess = HotelRateAmountNotifRS.IsSuccessRequest(otaRS);
+            }
+            catch (Exception ex)
+            {
+                res.IsSuccess = false;
+                res.Error = new KeyValuePair<string, string>("448", ex.Message);
+
+                var errorsElement = new System.Xml.Linq.XElement("Errors");
+                var errorElementProperty = new System.Xml.Linq.XElement("Error");
+                errorElementProperty.Add(
+                    new System.Xml.Linq.XAttribute("Type", "3"),
+                    new System.Xml.Linq.XAttribute("Code", "448"),
+                    new System.Xml.Linq.XText(ex.Message));
+
+                errorsElement.Add(errorElementProperty);
+
+                res.Xml = errorsElement.ToString();
+
+            }
+
+
+
+            return res;
+        }
+
         public RateResponse UpdateRates(int hotelId, int companyId)
         {
             RateResponse res = new RateResponse();

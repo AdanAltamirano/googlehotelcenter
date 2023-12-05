@@ -11,6 +11,8 @@ Imports Portal.General.Facade
 Imports Portal.General.DataAccess
 Imports Portal.Hotel.Common.Data
 Imports Portal.Hotel.Facade
+Imports APIServices.Conflux
+Imports APIServices.Conflux.Models.Rates.Response
 
 Namespace API.Controllers
     <RoutePrefix("api/hotels/{HotelId:int}/rates")>
@@ -18,6 +20,7 @@ Namespace API.Controllers
         Inherits ShurikenController
 
         Public Service As New RatesService
+        Public ConfluxService As New ConfluxService()
 
         'GET api/hotels/1/rates
         <Route(""), HttpGet>
@@ -42,6 +45,39 @@ Namespace API.Controllers
             Dim result As KeyValuePair(Of String, String) = Service.AddRate(serviceRQ, logRates)
 
             If result.Key = 1 Then
+
+                Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
+
+                If logRates IsNot Nothing And logRates.Count > 0 Then
+
+                    Dim updatedRates As IEnumerable(Of Tarifas) = logRates.Distinct()
+
+                    Try
+                        For Each rate As Tarifas In updatedRates
+
+                            Dim res As RateResponse = ConfluxService.UpdateRate(rate.idTarifa, rate.FechaInicia, rate.FechaFinaliza, HotelId, info.Empresa)
+
+                            Log(hotelId:=RQ.HotelId, action:=acciones.Sincronizar, room:="", startDate:=Nothing, endDate:=Nothing, rateCode:="", xml:=res.Xml, dataXml:=res.RequestXML)
+
+                        Next
+
+                    Catch ex As Exception
+
+                        Dim errorsElement As New System.Xml.Linq.XElement("Errors")
+                        Dim errorElementProperty As New System.Xml.Linq.XElement("Error")
+
+                        errorElementProperty.Add(
+                            New System.Xml.Linq.XAttribute("Type", "3"),
+                            New System.Xml.Linq.XAttribute("Code", "448"),
+                            New System.Xml.Linq.XText(ex.Message)
+                        )
+
+                        errorsElement.Add(errorElementProperty)
+
+                        Log(RQ.HotelId, acciones.Sincronizar, "", Nothing, Nothing, "", xml:=errorsElement.ToString())
+
+                    End Try
+                End If
 
                 Try
                     'Guardar Log
@@ -79,6 +115,40 @@ Namespace API.Controllers
             Dim result As KeyValuePair(Of String, String) = Service.AddRate(serviceRQ, logRates)
 
             If result.Key = 1 Then
+
+
+                Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
+
+                If logRates IsNot Nothing And logRates.Count > 0 Then
+                    Try
+
+                        Dim updatedRateDay As IEnumerable(Of Tarifas) = logRates.Where(Function(t) t.FechaInicia = RQ.StartDate And t.FechaFinaliza = RQ.EndDate).Distinct()
+
+                        For Each rate As Tarifas In updatedRateDay
+
+                            Dim res As RateResponse = ConfluxService.UpdateRate(rate.idTarifa, rate.FechaInicia, rate.FechaFinaliza, HotelId, info.Empresa)
+
+                            Log(hotelId:=RQ.HotelId, action:=acciones.Sincronizar, room:="", startDate:=Nothing, endDate:=Nothing, rateCode:="", xml:=res.Xml, dataXml:=res.RequestXML)
+
+                        Next
+
+                    Catch ex As Exception
+
+                        Dim errorsElement As New System.Xml.Linq.XElement("Errors")
+                        Dim errorElementProperty As New System.Xml.Linq.XElement("Error")
+
+                        errorElementProperty.Add(
+                            New System.Xml.Linq.XAttribute("Type", "3"),
+                            New System.Xml.Linq.XAttribute("Code", "448"),
+                            New System.Xml.Linq.XText(ex.Message)
+                        )
+
+                        errorsElement.Add(errorElementProperty)
+
+                        Log(RQ.HotelId, acciones.Sincronizar, HotelId, "", Nothing, Nothing, xml:=errorsElement.ToString())
+                    End Try
+                End If
+
                 Try
                     'Guardar Log
                     If logRates IsNot Nothing And logRates.Count > 0 Then
@@ -266,7 +336,7 @@ Namespace API.Controllers
             Return Week
         End Function
 
-        Private Sub Log(ByVal hotelId As Integer, ByVal action As acciones, ByVal room As String, ByVal startDate As Date, ByVal endDate As Date, ByVal rateCode As String, ByVal xml As String)
+        Private Sub Log(ByVal hotelId As Integer, ByVal action As acciones, ByVal room As String, ByVal startDate As Date, ByVal endDate As Date, ByVal rateCode As String, ByVal xml As String, Optional ByVal dataXml As String = "")
 
             Dim msg As String = ""
             Select Case action
@@ -275,7 +345,7 @@ Namespace API.Controllers
             End Select
 
             With (New PaginaBase)
-                .guardalog(pagina:="/rate-manager-ui/dist/rates-admin.aspx", action:=action, nota:=msg, peticion:="", datos:="", datosDespues:=xml, hotelId:=hotelId)
+                .guardalog(pagina:="/rate-manager-ui/dist/rates-admin.aspx", action:=action, nota:=msg, peticion:="", datos:=dataXml, datosDespues:=xml, hotelId:=hotelId)
             End With
         End Sub
 

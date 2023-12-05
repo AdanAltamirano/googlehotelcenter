@@ -61,8 +61,12 @@ namespace APIServices.Xml.OTA.Request.Restrictions
             {
                 XElement availStatusMessageXml = new XElement(blank + "AvailStatusMessage");
 
+                var start = availStatusMessage.StatusApplicationControl.Start.Date < DateTime.Now.Date ? 
+                    DateTime.Now.Date: 
+                    availStatusMessage.StatusApplicationControl.Start;
+
                 XElement statusApplicationControl = new XElement(blank + "StatusApplicationControl",
-                    new XAttribute("Start", availStatusMessage.StatusApplicationControl.Start.ToString("yyyyMMdd")),
+                    new XAttribute("Start", start.ToString("yyyyMMdd")),
                     new XAttribute("End", availStatusMessage.StatusApplicationControl.End.ToString("yyyyMMdd")),
                     new XAttribute("RatePlanCode", availStatusMessage.StatusApplicationControl.RatePlanCode),
                     new XAttribute("InvTypeCode", availStatusMessage.StatusApplicationControl.InvTypeCode));
