@@ -1,6 +1,9 @@
 Imports System.Runtime.Serialization
 Imports Portal.Hotel.Common.Data
 Imports Portal.Hotel.Facade
+Imports APIServices.Conflux
+Imports APIServices.Conflux.Models.Rates.Response
+
 Partial Class FaresCatalogue
     Inherits PaginaBase
     Enum dgcolumns
@@ -34,18 +37,18 @@ Partial Class FaresCatalogue
     End Property
     Private Property idroom() As Integer
         Get
-            Return viewstate("_idRoom")
+            Return ViewState("_idRoom")
         End Get
         Set(ByVal Value As Integer)
-            viewstate("_idRoom") = Value
+            ViewState("_idRoom") = Value
         End Set
     End Property
     Private Property room() As String
         Get
-            Return viewstate("_Room")
+            Return ViewState("_Room")
         End Get
         Set(ByVal Value As String)
-            viewstate("_Room") = Value
+            ViewState("_Room") = Value
         End Set
     End Property
     Public ReadOnly Property IdDg() As String
@@ -130,17 +133,17 @@ Partial Class FaresCatalogue
             Dim value As Integer = 0
 
             If (Not Me.CtrlPlanFares2.IsFareValuesEqualTo("Adult", Me.CtrRateAplication1.GetFareFor("Adult", False), False) _
-                    OrElse _
+                    OrElse
                     Not Me.CtrlPlanFares2.IsFareValuesEqualTo("Children", Me.CtrRateAplication1.GetFareFor("Child", False), False) _
-                    OrElse _
+                    OrElse
                     Not Me.CtrlPlanFares2.IsFareValuesEqualTo("Teen", Me.CtrRateAplication1.GetFareFor("Teen", False), False) _
-                OrElse _
+                OrElse
                       (Me.CtrlPlanFaresExc2.FieldException <> "NNNNNNN" _
                         AndAlso (Not Me.CtrlPlanFaresExc2.IsFareValuesEqualTo("Adult", Me.CtrRateAplication1.GetFareFor("Adult", False), False) _
-                        OrElse _
+                        OrElse
                         Not Me.CtrlPlanFaresExc2.IsFareValuesEqualTo("Children", Me.CtrRateAplication1.GetFareFor("Child", False), False) _
-                        OrElse _
-                        Not Me.CtrlPlanFaresExc2.IsFareValuesEqualTo("Teen", Me.CtrRateAplication1.GetFareFor("Teen", False), False) _
+                        OrElse
+                        Not Me.CtrlPlanFaresExc2.IsFareValuesEqualTo("Teen", Me.CtrRateAplication1.GetFareFor("Teen", False), False)
                         ))) Then
                 value = 1
             End If
@@ -242,7 +245,7 @@ Partial Class FaresCatalogue
         If Editando Then
             lblMsg.Text = String.Format("{0} {1}", PortalCulture.GetString("01250"), PortalCulture.GetString("00133"))
         Else
-            lblMsg.Text = String.Format("{0} {1}", PortalCulture.GetString("00102"), PortalCulture.GetString("00133"))            
+            lblMsg.Text = String.Format("{0} {1}", PortalCulture.GetString("00102"), PortalCulture.GetString("00133"))
         End If
         lblTitle.Text = PortalCulture.GetString("00133")
         Me.lblEName.Text = PortalCulture.GetString("00170", True)
@@ -450,7 +453,7 @@ Partial Class FaresCatalogue
             '    Next
             '    .AcceptChanges()
             'End With
-            
+
 
             Dim dvFares As DataView
             dvFares = datFares.Tables(FaresData.FARES_TABLE).DefaultView
@@ -645,6 +648,10 @@ Partial Class FaresCatalogue
                     '  actualizaidroom()
                     Me.CtrlPlanFaresExc2.createFieldException()
                     CtrRateAplication1.Exceptions = Me.CtrlPlanFaresExc2.FieldException()
+
+                    Dim confluxService As New ConfluxService()
+                    Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
+
                     For i As Integer = 1 To CtrRateAplication1.lstDatesCount
                         Dim f1, f2 As Date
                         f1 = CDate(CtrRateAplication1.lstDatesItemI(i).Split("-")(0))
@@ -669,14 +676,43 @@ Partial Class FaresCatalogue
 
                         FaresAdjust(f1, f2)
 
+                        Dim auxFareId As Integer = 0
+
+
                         If CtrRateAplication1.AddFare(idroom, CtrRateAplication1.m_iFareId, f1, f2, chLast, rpLast, f1Last, f2Last, ddlRooms.SelectedItem.Text, publish, (bPorOcupacion = 1), FareAdultMin, FareChildMin, FareJuniorMin, sCorreo) = True Then
                             CtrlPlanFares2.m_iFareId = CtrRateAplication1.m_iFareId
+                            auxFareId = CtrRateAplication1.m_iFareId
                             CtrlPlanFares2.Save(rpLast, ddlRooms.SelectedItem.Text, sCorreo, Me.CtrlPlanFaresExc2.getRatesExceptions())
                             Me.dgRooms.SelectedIndex = -1
                             '-------- Tarifas especiales -------------------------
                             Me.CtrlPlanFares2.m_iRoomId = idroom
                             Me.CtrlPlanFares2.m_iFareId = 0
                             CtrRateAplication1.m_iFareId = 0
+
+                            'Request Google
+
+                            Try
+
+                                Dim res As RateResponse = confluxService.UpdateRate(auxFareId, f1, f2, info.Hotel, info.Empresa)
+
+                                Me.guardalog("/Pages/FaresCatalogue.aspx", acciones.Sincronizar, "", "", res.RequestXML, res.Xml, info.Hotel)
+
+                            Catch ex As Exception
+
+                                Dim errorsElement As New System.Xml.Linq.XElement("Errors")
+                                Dim errorElementProperty As New System.Xml.Linq.XElement("Error")
+
+                                errorElementProperty.Add(
+                                    New System.Xml.Linq.XAttribute("Type", "3"),
+                                    New System.Xml.Linq.XAttribute("Code", "448"),
+                                    New System.Xml.Linq.XText(ex.Message)
+                                )
+
+                                errorsElement.Add(errorElementProperty)
+
+                                Me.guardalog("/Pages/FaresCatalogue.aspx", acciones.Sincronizar, "", "", "", errorsElement.ToString(), info.Hotel)
+                            End Try
+
                         Else
                             _exito = False
                             cmdNew.Style.Add("display", "none")
