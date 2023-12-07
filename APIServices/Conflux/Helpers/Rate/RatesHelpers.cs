@@ -37,6 +37,25 @@ namespace APIServices.Conflux.Helpers.Rate
             return vDayRate;
         }
 
+        public static List<vDayRatesExceptions> GetVDayRateException(int rateId, DateTime startDate, DateTime endDate)
+        {
+            List<vDayRatesExceptions> vDayRate = null;
+
+            using (OzHotelesEntities dbContext = new OzHotelesEntities())
+            {
+                vDayRate = dbContext.vDayRatesExceptions.Where(
+                    dr => dr.RateId == rateId
+                    && dr.StartDate >= startDate
+                    && dr.EndDate <= endDate
+                    && dr.EndDate >= startDate
+                    && dr.Language == 1)
+                    .OrderBy(vdr => vdr.StartDate)
+                    .ToList();
+            }
+
+            return vDayRate;
+        }
+
         public static List<vDayRates> GetVDayRate(spGetCurrentRatesByHotel_Result4 rate)
         {
             List<vDayRates> vDayRate = null;

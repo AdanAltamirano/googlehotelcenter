@@ -5,6 +5,9 @@ Imports Portal.General.Common.Data
 Imports Portal.General.DataAccess
 Imports Portal.General.Facade
 Imports Portal.General.Common
+Imports APIServices.Conflux
+Imports APIServices.Conflux.Enum
+Imports APIServices.Conflux.Models.Rates.Response
 
 Partial Public Class FaresCataloguePromoNR
     Inherits PaginaBase
@@ -615,6 +618,10 @@ Partial Public Class FaresCataloguePromoNR
                     Me.CtrlPlanFaresExc2.createFieldException()
                     ctrRateAplicationNRpromo1.Exceptions = Me.CtrlPlanFaresExc2.FieldException()
                     Dim chLast As String, rpLast As String = "", f1Last As String = "", f2Last As String = ""
+
+                    Dim confluxService As New ConfluxService()
+                    Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
+
                     For i As Integer = 1 To ctrRateAplicationNRpromo1.lstDatesCount
                         Dim f1, f2 As Date
                         f1 = CDate(ctrRateAplicationNRpromo1.lstDatesItemI(i).Split("-")(0))
@@ -636,14 +643,43 @@ Partial Public Class FaresCataloguePromoNR
                         Dim bPorOcupacion As Integer = RateModeView
                         Dim scorreos As String = ""
                         CtrlPlanFares2.TarifaMinima(lstFare)
+
+                        Dim auxFareId As Integer = 0
+
                         If ctrRateAplicationNRpromo1.AddFare(idroom, ctrRateAplicationNRpromo1.m_iFareId, f1, f2, chLast, rpLast, f1Last, f2Last, ddlRooms.SelectedItem.Text, publish, (bPorOcupacion = 1), lstFare, scorreos) = True Then
                             CtrlPlanFares2.m_iFareId = ctrRateAplicationNRpromo1.m_iFareId
+                            auxFareId = ctrRateAplicationNRpromo1.m_iFareId
                             CtrlPlanFares2.Save(rpLast, ddlRooms.SelectedItem.Text, scorreos, Me.CtrlPlanFaresExc2.getRatesExceptions())
                             Me.dgRooms.SelectedIndex = -1
                             '-------- Tarifas especiales -------------------------
                             Me.CtrlPlanFares2.m_iRoomId = idroom
                             Me.CtrlPlanFares2.m_iFareId = 0
                             ctrRateAplicationNRpromo1.m_iFareId = 0
+
+                            'Request Google
+
+                            Try
+
+                                Dim res As RateResponse = confluxService.UpdateRate(auxFareId, f1, f2, info.Hotel, info.Empresa, TypeRateEnum.RoomRatePromotion)
+
+                                Me.guardalog("/Pages/FaresCataloguePromoNR.aspx", acciones.Sincronizar, "", "", res.RequestXML, res.Xml, info.Hotel)
+
+                            Catch ex As Exception
+
+                                Dim errorsElement As New System.Xml.Linq.XElement("Errors")
+                                Dim errorElementProperty As New System.Xml.Linq.XElement("Error")
+
+                                errorElementProperty.Add(
+                                    New System.Xml.Linq.XAttribute("Type", "3"),
+                                    New System.Xml.Linq.XAttribute("Code", "448"),
+                                    New System.Xml.Linq.XText(ex.Message)
+                                )
+
+                                errorsElement.Add(errorElementProperty)
+
+                                Me.guardalog("/Pages/FaresCataloguePromoNR.aspx", acciones.Sincronizar, "", "", "", errorsElement.ToString(), info.Hotel)
+                            End Try
+
                         Else
                             _exito = False
                             cmdNew.Style.Add("display", "none")

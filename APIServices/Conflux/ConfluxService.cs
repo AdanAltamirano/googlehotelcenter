@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Collections.Generic;
 using System.Xml.Linq;
 using APIServices.Models;
+using APIServices.Conflux.Enum;
 using APIServices.Conflux.Models.User;
 using APIServices.Conflux.Models.User.Response;
 using APIServices.Conflux.Models.Rates.Response;
@@ -77,16 +78,28 @@ namespace APIServices.Conflux
             return response;
         }
 
-        public RateResponse UpdateRate(int rateId,DateTime startDate, DateTime endDate, int hotelId ,int companyId)
+        public RateResponse UpdateRate(int rateId,DateTime startDate, DateTime endDate, int hotelId ,int companyId, TypeRateEnum typeRate)
         {
             RateResponse res = new RateResponse();
 
             try
             {
-                var rates = APIServices.Conflux.Helpers.Rate.RatesHelpers.GetVDayRate(rateId, startDate, endDate);
+                List<vDayRates> rates = null;
+                List<vDayRatesExceptions> ratesExceptions = null;
+
+                switch (typeRate)
+                {
+                    case TypeRateEnum.RoomRate:
+                        rates = APIServices.Conflux.Helpers.Rate.RatesHelpers.GetVDayRate(rateId, startDate, endDate);
+                        break;
+                    case TypeRateEnum.RoomRatePromotion:
+                        ratesExceptions = APIServices.Conflux.Helpers.Rate.RatesHelpers.GetVDayRateException(rateId, startDate, endDate);
+                        break;
+                }
+
                 var hotel = dbContext.Hoteles.First(h => h.idHotel == hotelId);
 
-                var rateAmountMessages = Parser.Parser.ToRateAmountMessages(rates, companyId, hotel.PlusTax, hotel.Impuesto);
+                var rateAmountMessages = Parser.Parser.ToRateAmountMessages(rates, ratesExceptions, companyId, hotel.PlusTax, hotel.Impuesto, typeRate);
 
                 var xml = HotelRateAmountNotifRQ.CreateHotelRateAmountNotifRQ(rateAmountMessages);
 

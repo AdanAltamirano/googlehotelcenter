@@ -6,6 +6,7 @@ Imports Portal.General.DataAccess
 Imports Portal.General.Facade
 Imports Portal.General.Common
 Imports APIServices.Conflux
+Imports APIServices.Conflux.Enum
 Imports APIServices.Conflux.Models.Rates.Response
 
 Partial Class FaresCatalogueNR
@@ -720,7 +721,7 @@ Partial Class FaresCatalogueNR
 
                             Try
 
-                                Dim res As RateResponse = confluxService.UpdateRate(auxFareId, f1, f2, info.Hotel, info.Empresa)
+                                Dim res As RateResponse = confluxService.UpdateRate(auxFareId, f1, f2, info.Hotel, info.Empresa, TypeRateEnum.RoomRate)
 
                                 Me.guardalog("/Pages/FaresCatalogueNR.aspx", acciones.Sincronizar, "", "", res.RequestXML, res.Xml, info.Hotel)
 

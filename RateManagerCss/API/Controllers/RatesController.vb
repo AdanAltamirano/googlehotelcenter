@@ -12,6 +12,7 @@ Imports Portal.General.DataAccess
 Imports Portal.Hotel.Common.Data
 Imports Portal.Hotel.Facade
 Imports APIServices.Conflux
+Imports APIServices.Conflux.Enum
 Imports APIServices.Conflux.Models.Rates.Response
 
 Namespace API.Controllers
@@ -55,7 +56,7 @@ Namespace API.Controllers
                     Try
                         For Each rate As Tarifas In updatedRates
 
-                            Dim res As RateResponse = ConfluxService.UpdateRate(rate.idTarifa, rate.FechaInicia, rate.FechaFinaliza, HotelId, info.Empresa)
+                            Dim res As RateResponse = ConfluxService.UpdateRate(rate.idTarifa, rate.FechaInicia, rate.FechaFinaliza, HotelId, info.Empresa, TypeRateEnum.RoomRate)
 
                             Log(hotelId:=RQ.HotelId, action:=acciones.Sincronizar, room:="", startDate:=Nothing, endDate:=Nothing, rateCode:="", xml:=res.Xml, dataXml:=res.RequestXML)
 
@@ -126,7 +127,7 @@ Namespace API.Controllers
 
                         For Each rate As Tarifas In updatedRateDay
 
-                            Dim res As RateResponse = ConfluxService.UpdateRate(rate.idTarifa, rate.FechaInicia, rate.FechaFinaliza, HotelId, info.Empresa)
+                            Dim res As RateResponse = ConfluxService.UpdateRate(rate.idTarifa, rate.FechaInicia, rate.FechaFinaliza, HotelId, info.Empresa, TypeRateEnum.RoomRate)
 
                             Log(hotelId:=RQ.HotelId, action:=acciones.Sincronizar, room:="", startDate:=Nothing, endDate:=Nothing, rateCode:="", xml:=res.Xml, dataXml:=res.RequestXML)
 
