@@ -4,6 +4,7 @@ Imports Portal.Hotel.Facade
 Imports APIServices.Conflux
 Imports APIServices.Conflux.Enum
 Imports APIServices.Conflux.Models.Rates.Response
+Imports RateManager.Utitlities.Hotel
 
 Partial Class FaresCatalogue
     Inherits PaginaBase
@@ -28,6 +29,7 @@ Partial Class FaresCatalogue
     End Enum
     Const KEY_MINPRICE As String = "mintarifaAdulto"
     Const KEY_MAXPRICE As String = "maxtarifaAdulto"
+    Private enabledGoogle As Boolean = False
     Private Property dsRooms() As RoomsHotelData
         Get
             Return Session("_dsrooms")
@@ -52,6 +54,7 @@ Partial Class FaresCatalogue
             ViewState("_Room") = Value
         End Set
     End Property
+
     Public ReadOnly Property IdDg() As String
         Get
             Return Me.CtrlPlanFares2.iddg
@@ -652,6 +655,7 @@ Partial Class FaresCatalogue
 
                     Dim confluxService As New ConfluxService()
                     Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
+                    Dim isEnabledGoogleRequest As Boolean = HotelUtilitie.IsEnableGoogleRequest(info.Hotel)
 
                     For i As Integer = 1 To CtrRateAplication1.lstDatesCount
                         Dim f1, f2 As Date
@@ -692,27 +696,30 @@ Partial Class FaresCatalogue
 
                             'Request Google
 
-                            Try
+                            If isEnabledGoogleRequest Then
 
-                                Dim res As RateResponse = confluxService.UpdateRate(auxFareId, f1, f2, info.Hotel, info.Empresa, TypeRateEnum.RoomRate)
+                                Try
 
-                                Me.guardalog("/Pages/FaresCatalogue.aspx", acciones.Sincronizar, "", "", res.RequestXML, res.Xml, info.Hotel)
+                                    Dim res As RateResponse = confluxService.UpdateRate(auxFareId, f1, f2, info.Hotel, info.Empresa, TypeRateEnum.RoomRate)
 
-                            Catch ex As Exception
+                                    Me.guardalog("/Pages/FaresCatalogue.aspx", acciones.Sincronizar, "", "", res.RequestXML, res.Xml, info.Hotel)
 
-                                Dim errorsElement As New System.Xml.Linq.XElement("Errors")
-                                Dim errorElementProperty As New System.Xml.Linq.XElement("Error")
+                                Catch ex As Exception
 
-                                errorElementProperty.Add(
+                                    Dim errorsElement As New System.Xml.Linq.XElement("Errors")
+                                    Dim errorElementProperty As New System.Xml.Linq.XElement("Error")
+
+                                    errorElementProperty.Add(
                                     New System.Xml.Linq.XAttribute("Type", "3"),
                                     New System.Xml.Linq.XAttribute("Code", "448"),
                                     New System.Xml.Linq.XText(ex.Message)
                                 )
 
-                                errorsElement.Add(errorElementProperty)
+                                    errorsElement.Add(errorElementProperty)
 
-                                Me.guardalog("/Pages/FaresCatalogue.aspx", acciones.Sincronizar, "", "", "", errorsElement.ToString(), info.Hotel)
-                            End Try
+                                    Me.guardalog("/Pages/FaresCatalogue.aspx", acciones.Sincronizar, "", "", "", errorsElement.ToString(), info.Hotel)
+                                End Try
+                            End If
 
                         Else
                             _exito = False

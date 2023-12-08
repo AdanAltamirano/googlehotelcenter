@@ -6,6 +6,7 @@ Imports NinjAPI.Common
 Imports RateManager.API.Helpers
 Imports RateManager.API.Models
 Imports RateManager.PaginaBase
+Imports RateManager.Utitlities.Hotel
 Imports Portal.General.Common.Data
 Imports Portal.General.Facade
 Imports Portal.General.DataAccess
@@ -48,36 +49,38 @@ Namespace API.Controllers
             If result.Key = 1 Then
 
                 Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
+                Dim isEnabledGoogleRequest As Boolean = HotelUtilitie.IsEnableGoogleRequest(info.Hotel)
 
                 If logRates IsNot Nothing And logRates.Count > 0 Then
+                    If isEnabledGoogleRequest Then
+                        Dim updatedRates As IEnumerable(Of Tarifas) = logRates.Distinct()
 
-                    Dim updatedRates As IEnumerable(Of Tarifas) = logRates.Distinct()
+                        Try
+                            For Each rate As Tarifas In updatedRates
 
-                    Try
-                        For Each rate As Tarifas In updatedRates
+                                Dim res As RateResponse = ConfluxService.UpdateRate(rate.idTarifa, rate.FechaInicia, rate.FechaFinaliza, HotelId, info.Empresa, TypeRateEnum.RoomRate)
 
-                            Dim res As RateResponse = ConfluxService.UpdateRate(rate.idTarifa, rate.FechaInicia, rate.FechaFinaliza, HotelId, info.Empresa, TypeRateEnum.RoomRate)
+                                Log(hotelId:=RQ.HotelId, action:=acciones.Sincronizar, room:="", startDate:=Nothing, endDate:=Nothing, rateCode:="", xml:=res.Xml, dataXml:=res.RequestXML)
 
-                            Log(hotelId:=RQ.HotelId, action:=acciones.Sincronizar, room:="", startDate:=Nothing, endDate:=Nothing, rateCode:="", xml:=res.Xml, dataXml:=res.RequestXML)
+                            Next
 
-                        Next
+                        Catch ex As Exception
 
-                    Catch ex As Exception
+                            Dim errorsElement As New System.Xml.Linq.XElement("Errors")
+                            Dim errorElementProperty As New System.Xml.Linq.XElement("Error")
 
-                        Dim errorsElement As New System.Xml.Linq.XElement("Errors")
-                        Dim errorElementProperty As New System.Xml.Linq.XElement("Error")
-
-                        errorElementProperty.Add(
+                            errorElementProperty.Add(
                             New System.Xml.Linq.XAttribute("Type", "3"),
                             New System.Xml.Linq.XAttribute("Code", "448"),
                             New System.Xml.Linq.XText(ex.Message)
                         )
 
-                        errorsElement.Add(errorElementProperty)
+                            errorsElement.Add(errorElementProperty)
 
-                        Log(RQ.HotelId, acciones.Sincronizar, "", Nothing, Nothing, "", xml:=errorsElement.ToString())
+                            Log(RQ.HotelId, acciones.Sincronizar, "", Nothing, Nothing, "", xml:=errorsElement.ToString())
 
-                    End Try
+                        End Try
+                    End If
                 End If
 
                 Try
@@ -119,35 +122,38 @@ Namespace API.Controllers
 
 
                 Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
+                Dim isEnabledGoogleRequest As Boolean = HotelUtilitie.IsEnableGoogleRequest(info.Hotel)
 
                 If logRates IsNot Nothing And logRates.Count > 0 Then
-                    Try
+                    If isEnabledGoogleRequest Then
+                        Try
 
-                        Dim updatedRateDay As IEnumerable(Of Tarifas) = logRates.Where(Function(t) t.FechaInicia = RQ.StartDate And t.FechaFinaliza = RQ.EndDate).Distinct()
+                            Dim updatedRateDay As IEnumerable(Of Tarifas) = logRates.Where(Function(t) t.FechaInicia = RQ.StartDate And t.FechaFinaliza = RQ.EndDate).Distinct()
 
-                        For Each rate As Tarifas In updatedRateDay
+                            For Each rate As Tarifas In updatedRateDay
 
-                            Dim res As RateResponse = ConfluxService.UpdateRate(rate.idTarifa, rate.FechaInicia, rate.FechaFinaliza, HotelId, info.Empresa, TypeRateEnum.RoomRate)
+                                Dim res As RateResponse = ConfluxService.UpdateRate(rate.idTarifa, rate.FechaInicia, rate.FechaFinaliza, HotelId, info.Empresa, TypeRateEnum.RoomRate)
 
-                            Log(hotelId:=RQ.HotelId, action:=acciones.Sincronizar, room:="", startDate:=Nothing, endDate:=Nothing, rateCode:="", xml:=res.Xml, dataXml:=res.RequestXML)
+                                Log(hotelId:=RQ.HotelId, action:=acciones.Sincronizar, room:="", startDate:=Nothing, endDate:=Nothing, rateCode:="", xml:=res.Xml, dataXml:=res.RequestXML)
 
-                        Next
+                            Next
 
-                    Catch ex As Exception
+                        Catch ex As Exception
 
-                        Dim errorsElement As New System.Xml.Linq.XElement("Errors")
-                        Dim errorElementProperty As New System.Xml.Linq.XElement("Error")
+                            Dim errorsElement As New System.Xml.Linq.XElement("Errors")
+                            Dim errorElementProperty As New System.Xml.Linq.XElement("Error")
 
-                        errorElementProperty.Add(
+                            errorElementProperty.Add(
                             New System.Xml.Linq.XAttribute("Type", "3"),
                             New System.Xml.Linq.XAttribute("Code", "448"),
                             New System.Xml.Linq.XText(ex.Message)
                         )
 
-                        errorsElement.Add(errorElementProperty)
+                            errorsElement.Add(errorElementProperty)
 
-                        Log(RQ.HotelId, acciones.Sincronizar, HotelId, "", Nothing, Nothing, xml:=errorsElement.ToString())
-                    End Try
+                            Log(RQ.HotelId, acciones.Sincronizar, HotelId, "", Nothing, Nothing, xml:=errorsElement.ToString())
+                        End Try
+                    End If
                 End If
 
                 Try

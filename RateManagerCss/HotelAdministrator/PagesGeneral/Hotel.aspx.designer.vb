@@ -473,6 +473,24 @@ Partial Public Class Hotel
     Protected WithEvents chkPushNotif As Global.System.Web.UI.WebControls.CheckBox
 
     '''<summary>
+    '''Control lblEnableGoogle.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblEnableGoogle As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control chkEnableGoogle.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents chkEnableGoogle As Global.System.Web.UI.WebControls.CheckBox
+
+    '''<summary>
     '''Control lblEcotasa.
     '''</summary>
     '''<remarks>

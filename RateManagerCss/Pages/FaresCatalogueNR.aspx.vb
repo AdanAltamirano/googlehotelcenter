@@ -8,6 +8,7 @@ Imports Portal.General.Common
 Imports APIServices.Conflux
 Imports APIServices.Conflux.Enum
 Imports APIServices.Conflux.Models.Rates.Response
+Imports RateManager.Utitlities.Hotel
 
 Partial Class FaresCatalogueNR
     Inherits PaginaBase
@@ -682,6 +683,7 @@ Partial Class FaresCatalogueNR
 
                     Dim confluxService As New ConfluxService()
                     Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
+                    Dim isEnabledGoogleRequest As Boolean = HotelUtilitie.IsEnableGoogleRequest(info.Hotel)
 
                     For i As Integer = 1 To CtrRateAplication1.lstDatesCount
                         Dim f1, f2 As Date
@@ -719,30 +721,33 @@ Partial Class FaresCatalogueNR
 
                             'Request Google
 
-                            Try
+                            If isEnabledGoogleRequest Then
 
-                                Dim res As RateResponse = confluxService.UpdateRate(auxFareId, f1, f2, info.Hotel, info.Empresa, TypeRateEnum.RoomRate)
+                                Try
 
-                                Me.guardalog("/Pages/FaresCatalogueNR.aspx", acciones.Sincronizar, "", "", res.RequestXML, res.Xml, info.Hotel)
+                                    Dim res As RateResponse = confluxService.UpdateRate(auxFareId, f1, f2, info.Hotel, info.Empresa, TypeRateEnum.RoomRate)
 
-                            Catch ex As Exception
+                                    Me.guardalog("/Pages/FaresCatalogueNR.aspx", acciones.Sincronizar, "", "", res.RequestXML, res.Xml, info.Hotel)
 
-                                Dim errorsElement As New System.Xml.Linq.XElement("Errors")
-                                Dim errorElementProperty As New System.Xml.Linq.XElement("Error")
+                                Catch ex As Exception
 
-                                errorElementProperty.Add(
+                                    Dim errorsElement As New System.Xml.Linq.XElement("Errors")
+                                    Dim errorElementProperty As New System.Xml.Linq.XElement("Error")
+
+                                    errorElementProperty.Add(
                                     New System.Xml.Linq.XAttribute("Type", "3"),
                                     New System.Xml.Linq.XAttribute("Code", "448"),
                                     New System.Xml.Linq.XText(ex.Message)
                                 )
 
-                                errorsElement.Add(errorElementProperty)
+                                    errorsElement.Add(errorElementProperty)
 
-                                Me.guardalog("/Pages/FaresCatalogueNR.aspx", acciones.Sincronizar, "", "", "", errorsElement.ToString(), info.Hotel)
-                            End Try
+                                    Me.guardalog("/Pages/FaresCatalogueNR.aspx", acciones.Sincronizar, "", "", "", errorsElement.ToString(), info.Hotel)
+                                End Try
+                            End If
 
                         Else
-                            _exito = False
+                                _exito = False
                             cmdNew.Style.Add("display", "none")
                             pnlData.Style.Add("display", "")
                         End If

@@ -8925,4 +8925,7 @@
   <data name="msgSelectOneHotel" xml:space="preserve">
     <value>Debe seleccionar un hotel de la lista</value>
   </data>
+  <data name="01670" xml:space="preserve">
+    <value>Precios Google</value>
+  </data>
 </root>
