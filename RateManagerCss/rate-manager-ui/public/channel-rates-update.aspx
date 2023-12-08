@@ -1,4 +1,5 @@
 <%@ Page Language="vb" AutoEventWireup="false" Inherits="RateManager.PaginaBase" %>
+<%@ Import Namespace="RateManager.Utitlities.Hotel" %>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -11,6 +12,11 @@
     <script language="vb" runat="server">
       Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         If Not MyBase.IsHotelSelected Then MyBase.redirectTo(RateManager.PaginaBase.pages.Home)
+
+        Dim isEnabledGoogleRequest As Boolean = HotelUtilitie.IsEnableGoogleRequest(Me.cInfoActual.Hotel)
+
+        Session("IsEnabledGoogleRequest") = IIf(isEnabledGoogleRequest, 1,0)
+
       End Sub
     </script>
     <noscript>
@@ -19,7 +25,8 @@
     <script>
       window.app = {
         hotelId: <%= Me.cInfoActual.Hotel%>,
-        language: '<%= If(Me.IdIdiomaMenu = 1, "es", "en")%>'
+        language: '<%= If(Me.IdIdiomaMenu = 1, "es", "en")%>',
+        isEnabledGoogleRequest : <%=Session("IsEnabledGoogleRequest")%>,    
       }
     </script>
     <div id="app"></div>

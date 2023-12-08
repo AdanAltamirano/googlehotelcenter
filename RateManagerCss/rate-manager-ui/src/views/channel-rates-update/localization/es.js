@@ -18,5 +18,6 @@ export default {
     'Prices' : 'Precios',
     'Closure' : 'Cierres',
     'This action will only send the current closures to Google Hotel Center from the current date' : 'Esta acción solo enviara los cierres vigentes a google hotel center a partir de la fecha actual',
-    'This action will only send the current prices to Google Hotel Center as of the current date' : 'Esta acción solo enviara los precios vigentes a google hotel center a partir de la fecha actual'
+    'This action will only send the current prices to Google Hotel Center as of the current date' : 'Esta acción solo enviara los precios vigentes a google hotel center a partir de la fecha actual',
+    'Enable Google Prices in Content / General Information' : 'Habilitar Precios Google en Contenido / Información General'
 }

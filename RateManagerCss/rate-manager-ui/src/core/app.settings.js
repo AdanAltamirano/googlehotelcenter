@@ -15,6 +15,9 @@ const appConfig = {
         isUsuarioHotelAssociation: window.app.isUsuarioHotelAssociation,
         code: window.app.code
     },
+    google:{
+        isEnabledGoogleRequest: window.app.isEnabledGoogleRequest
+    },
     themeColors: {
         primary: '#10467a',
         info: '#007bff',

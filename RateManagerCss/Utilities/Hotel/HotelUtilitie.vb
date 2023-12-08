@@ -3,7 +3,7 @@ Imports Portal.General.Common.Data
 Imports Portal.General.DataAccess
 
 Namespace Utitlities.Hotel
-    Module HotelUtilitie
+    Public Module HotelUtilitie
         Function IsEnableGoogleRequest(ByVal hotelId As Integer) As Boolean
             Dim dsHotel As HotelDatos = New HotelSistema().GetHotelById(hotelId)
             With dsHotel.Tables(dsHotel.HOTEL_TABLE).Rows(0)
