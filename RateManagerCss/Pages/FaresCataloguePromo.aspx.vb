@@ -425,6 +425,14 @@ Partial Public Class FaresCataloguePromo
             Dim lbl As Label
             lk = e.Item.FindControl("lnkEdit")
             lk.Text = PortalCulture.GetString("00065")
+
+            lbl = e.Item.FindControl("lblStartDateNoFormat")
+            lbl.Text = CDate(e.Item.Cells(dgcolumns.FechaInicia).Text).ToString("MM/dd/yyyy")
+
+            lbl = e.Item.FindControl("lblEndDateNoFormat")
+            lbl.Text = CDate(e.Item.Cells(dgcolumns.FechaFinaliza).Text).ToString("MM/dd/yyyy")
+
+
             e.Item.Cells(dgcolumns.FechaInicia).Text = CDate(e.Item.Cells(dgcolumns.FechaInicia).Text).ToString("MMM/dd/yyyy")
             e.Item.Cells(dgcolumns.FechaFinaliza).Text = CDate(e.Item.Cells(dgcolumns.FechaFinaliza).Text).ToString("MMM/dd/yyyy")
             lk = e.Item.FindControl("lnkDelete2")
@@ -456,11 +464,6 @@ Partial Public Class FaresCataloguePromo
                 If lbl.Text.Trim <> "" Then lbl.Text += " -- "
                 lbl.Text += DataBinder.Eval(e.Item.DataItem, "NameRatePlan")
             End If
-            lbl = e.Item.FindControl("lblStartDateNoFormat")
-            lbl.Text = CDate(e.Item.Cells(dgcolumns.FechaInicia).Text).ToString("MM/dd/yyyy")
-
-            lbl = e.Item.FindControl("lblEndDateNoFormat")
-            lbl.Text = CDate(e.Item.Cells(dgcolumns.FechaFinaliza).Text).ToString("MM/dd/yyyy")
 
         End If
         If e.Item.ItemType = ListItemType.Header Then
@@ -566,10 +569,16 @@ Partial Public Class FaresCataloguePromo
 
     Private Sub dgRooms_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles dgRooms.ItemCommand
         Dim iFareId As Integer = 0
+        Dim startDateFareId As Date
+        Dim endDateFareId As Date
         If e.CommandName = "Edit" Then
 
             Try
                 iFareId = Integer.Parse(e.Item.Cells(dgcolumns.idTarifa).Text)
+                Dim lblStartDateNoFormat As Label = e.Item.Cells(dgcolumns.startDateNoFormat).FindControl("lblStartDateNoFormat")
+                Dim lblEndDateNoFormat As Label = e.Item.Cells(dgcolumns.startDateNoFormat).FindControl("lblEndDateNoFormat")
+                startDateFareId = CDate(lblStartDateNoFormat.Text)
+                endDateFareId = CDate(lblEndDateNoFormat.Text)
             Catch ex As Exception
                 Return
             End Try
@@ -579,6 +588,8 @@ Partial Public Class FaresCataloguePromo
             Me.dgRooms.SelectedIndex = e.Item.ItemIndex
             Me.ctrRateAplicationExc.m_iFareId = iFareId
             Me.ctrRateAplicationExc.m_iHotelId = Me.cInfoActual.Hotel
+            Me.ctrRateAplicationExc.m_StartDateFareId = startDateFareId
+            Me.ctrRateAplicationExc.m_EndDateFareId = endDateFareId
             Me.ctrRateAplicationExc.LoadFare(iFareId, 0)
             Me.CtrlPlanFares2.m_iRoomId = Integer.Parse(e.Item.Cells(dgcolumns.idtipohabitacion_hotel).Text)
             Me.CtrlPlanFares2.m_iFareId = iFareId
@@ -696,6 +707,11 @@ Partial Public Class FaresCataloguePromo
 
                         Dim auxFareId As Integer = 0
 
+                        Dim vDayRates As List(Of vDayRatesExceptions) = Nothing
+                        If Editando Then
+                            vDayRates = Helpers.Rate.RatesHelpers.GetVDayRateException(ctrRateAplicationExc.m_iFareId, ctrRateAplicationExc.m_StartDateFareId, ctrRateAplicationExc.m_EndDateFareId)
+                        End If
+
                         If ctrRateAplicationExc.AddFare(idroom, ctrRateAplicationExc.m_iFareId, f1, f2, chLast, rpLast, f1Last, f2Last, ddlRooms.SelectedItem.Text, publish, (bPorOcupacion = 1), FareAdultMin, FareChildMin, FareJuniorMin, sCorreoMod) = True Then
                             CtrlPlanFares2.m_iFareId = ctrRateAplicationExc.m_iFareId
                             auxFareId = ctrRateAplicationExc.m_iFareId
@@ -712,6 +728,20 @@ Partial Public Class FaresCataloguePromo
                             If isEnabledGoogleRequest Then
                                 Try
 
+                                    If Editando Then
+                                        'Eliminar Viejitas
+                                        Dim rateAmountMessages As RateAmountMessages = New RateAmountMessages()
+
+                                        rateAmountMessages.HotelCode = info.Empresa
+                                        rateAmountMessages.RateAmountMessagesList = New List(Of OTA.Models.Rates.RateAmountMessage)
+
+                                        Parser.Parser.ToRateAmountMessagesDelete(Nothing, vDayRates, TypeRateEnum.RoomRatePromotion, rateAmountMessages.RateAmountMessagesList)
+
+                                        Dim deleleteResponse As RateResponse = confluxService.DeleteRates(rateAmountMessages)
+                                        Me.guardalog("/Pages/FaresCataloguePromo.aspx", acciones.Eliminar, "", "", deleleteResponse.RequestXML, deleleteResponse.Xml, info.Hotel)
+                                    End If
+
+                                    'Actualizar
                                     Dim res As RateResponse = confluxService.UpdateRate(auxFareId, f1, f2, info.Hotel, info.Empresa, TypeRateEnum.RoomRatePromotion)
 
                                     Me.guardalog("/Pages/FaresCataloguePromo.aspx", acciones.Sincronizar, "", "", res.RequestXML, res.Xml, info.Hotel)

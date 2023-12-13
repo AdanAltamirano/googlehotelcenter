@@ -67,6 +67,8 @@ Partial Public Class ctrRateAplicationExc
         End Set
     End Property
     Const KEY_FAREID As String = "FareId"
+    Const KEY_STARTDATE_FAREID As String = "StartDateFareId"
+    Const KEY_ENDDATE_FAREID As String = "EndDateFareId"
     Public Property m_iFareId() As Integer
         Get
             Return ViewState(KEY_FAREID)
@@ -75,6 +77,25 @@ Partial Public Class ctrRateAplicationExc
             ViewState(KEY_FAREID) = Value
         End Set
     End Property
+
+    Public Property m_StartDateFareId() As Date
+        Get
+            Return ViewState(KEY_STARTDATE_FAREID)
+        End Get
+        Set(value As Date)
+            ViewState(KEY_STARTDATE_FAREID) = value
+        End Set
+    End Property
+
+    Public Property m_EndDateFareId() As Date
+        Get
+            Return ViewState(KEY_ENDDATE_FAREID)
+        End Get
+        Set(value As Date)
+            ViewState(KEY_ENDDATE_FAREID) = value
+        End Set
+    End Property
+
 
 
     Public Function GetClientID() As String
