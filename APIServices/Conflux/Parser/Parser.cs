@@ -73,6 +73,74 @@ namespace APIServices.Conflux.Parser
             return rateAmountMessages;
         }
 
+        #region Delete
+        //Invividual
+        public static void ToRateAmountMessagesDelete(List<vDayRates> vDayRates, List<vDayRatesExceptions> ratesExceptions, TypeRateEnum typeRate, ref List<RateAmountMessage> rateAmountMessages)
+        {
+           
+            switch (typeRate)
+            {
+                case TypeRateEnum.RoomRate:
+
+                    foreach(var vDayRate in vDayRates)
+                    {
+                        var room = RoomHelper.GetRoom(vDayRate.RoomId);
+
+                        RateAmountMessage rateAmountMessage = new RateAmountMessage();
+                        rateAmountMessage.statusApplicationControl = new StatusApplicationControl { RatePlanCode = vDayRate.RatePlanId, InvTypeCode = room.Code ?? "" };
+
+                        List<Rate> rates = new List<Rate>();
+
+                        Rate rate = new Rate() 
+                        {
+                            StartDate = vDayRate.StartDate.ToString("yyyyMMdd"),
+                            EndDate = vDayRate.EndDate.ToString("yyyyMMdd")
+                        };
+
+                        rates.Add(rate);
+
+                        rateAmountMessage.Rates = rates;
+
+
+                        rateAmountMessages.Add(rateAmountMessage);
+
+                    }
+                   
+                    break;
+                case TypeRateEnum.RoomRatePromotion:
+
+                    foreach (var vDayRate in ratesExceptions)
+                    {
+                        var room = RoomHelper.GetRoom(vDayRate.RoomId);
+
+                        RateAmountMessage rateAmountMessage = new RateAmountMessage();
+                        rateAmountMessage.statusApplicationControl = new StatusApplicationControl { RatePlanCode = vDayRate.RatePlanId, InvTypeCode = room.Code ?? "" };
+
+                        List<Rate> rates = new List<Rate>();
+
+                        Rate rate = new Rate()
+                        {
+                            StartDate = vDayRate.StartDate.ToString("yyyyMMdd"),
+                            EndDate = vDayRate.EndDate.ToString("yyyyMMdd")
+                        };
+
+                        rates.Add(rate);
+
+                        rateAmountMessage.Rates = rates;
+
+
+                        rateAmountMessages.Add(rateAmountMessage);
+
+                    }
+
+                    break;
+
+            }
+
+        }
+
+        #endregion
+
         #region General
         public static void RoomRateMessages(spGetCurrentRatesByHotel_Result4 currentRate, ref RateAmountMessages rateAmountMessages)
         {
@@ -172,7 +240,7 @@ namespace APIServices.Conflux.Parser
 
                     rateException.BaseGuestAmounts = RatesHelpers.UpdateBaseGuestAmountPricesWithTaxesAndDiscounts(vDayRate, pricesException, currentRate);
 
-                    rates.Add(rateException);
+                    if(rateException.BaseGuestAmounts.Count() > 0 )rates.Add(rateException);
                 }
 
                 rateAmountMessage.statusApplicationControl = statusApplicationControl;
@@ -404,7 +472,7 @@ namespace APIServices.Conflux.Parser
 
                     rateException.BaseGuestAmounts = RatesHelpers.UpdateBaseGuestAmountPricesWithTaxesAndDiscounts(vDayRate, pricesException, roomCapactity);
 
-                    rates.Add(rateException);
+                    if(rateException.BaseGuestAmounts.Count() > 0) rates.Add(rateException);
                 }
 
                 rateAmountMessage.statusApplicationControl = statusApplicationControl;

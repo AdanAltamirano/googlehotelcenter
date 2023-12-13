@@ -8,6 +8,7 @@ using APIServices.Models;
 using APIServices.Conflux.Enum;
 using APIServices.Conflux.Models.User;
 using APIServices.Conflux.Models.User.Response;
+using APIServices.Conflux.OTA.Models.Rates;
 using APIServices.Conflux.Models.Rates.Response;
 using APIServices.Conflux.Models.Restrictions.Response;
 using APIServices.Conflux.Parser.Restriction;
@@ -18,7 +19,6 @@ using Portal.General.Facade;
 using Portal.Hotel.Facade;
 using Portal.Hotel.Common.Data;
 using Portal.General.Common.Data;
-
 
 
 namespace APIServices.Conflux
@@ -214,7 +214,6 @@ namespace APIServices.Conflux
             return res;
 
         }
-
 
         public RestrictionResponse UpdateRestrictions(int hotelId, int companyId)
         {
@@ -425,6 +424,61 @@ namespace APIServices.Conflux
             }
 
             #endregion
+
+            return res;
+        }
+
+        public RateResponse DeleteRates(RateAmountMessages rateAmountMessages)
+        {
+            RateResponse res = new RateResponse();
+
+            try
+            {
+                var xml = HotelRateAmountNotifRQ.CreateHotelRateAmountNotifRQ(rateAmountMessages);
+
+                var soapRequest = Soap.CreateSoapRequestXml(xml);
+
+                HttpContent httpContent = new StringContent(soapRequest.ToString());
+
+                string url = ConfigurationManager.AppSettings["confluxApiUrl"] + "pms/ota/rates/delete";
+
+                var uri = new Uri(url);
+
+                System.Xml.Linq.XElement otaRS = null;
+
+                using (var client = new HttpClient())
+                {
+
+                    client.Timeout = TimeSpan.FromMinutes(50);
+                    var response = client.PostAsync(uri, httpContent).Result;
+
+                    string result = response.Content.ReadAsStringAsync().Result; //regresa un xml
+
+                    otaRS = HotelRateAmountNotifRS.ParseHotelRateAmountNotifRS(result);
+                }
+
+                res.Xml = otaRS.ToString();
+                res.RequestXML = soapRequest.ToString();
+                res.IsSuccess = HotelRateAmountNotifRS.IsSuccessRequest(otaRS);
+
+            }
+            catch (Exception ex)
+            {
+                res.IsSuccess = false;
+                res.Error = new KeyValuePair<string, string>("448", ex.Message);
+
+                var errorsElement = new System.Xml.Linq.XElement("Errors");
+                var errorElementProperty = new System.Xml.Linq.XElement("Error");
+                errorElementProperty.Add(
+                    new System.Xml.Linq.XAttribute("Type", "3"),
+                    new System.Xml.Linq.XAttribute("Code", "448"),
+                    new System.Xml.Linq.XText(ex.Message));
+
+                errorsElement.Add(errorElementProperty);
+
+                res.Xml = errorsElement.ToString();
+
+            }
 
             return res;
         }

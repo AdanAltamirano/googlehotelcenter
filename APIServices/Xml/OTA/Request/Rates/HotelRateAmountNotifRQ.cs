@@ -85,23 +85,26 @@ namespace APIServices.Xml.OTA.Request.Rates
                             new XAttribute("Sun", rate.ApplySun.ToString().ToLower()));
                     }
 
-
-                    XElement baseGuestAmounts = new XElement(blank + "BaseByGuestAmts");
-
-                    foreach(BaseGuestAmount baseGuestAmount in rate.BaseGuestAmounts)
+                    if (rate.BaseGuestAmounts != null && rate.BaseGuestAmounts.Count() > 0)
                     {
 
-                        XElement baseGuestAmountXml = new XElement(blank + "BaseByGuestAmt", 
-                            new XAttribute("AmountBeforeTax", baseGuestAmount.AmountBeforeTax),
-                            new XAttribute("AmountAfterTax", baseGuestAmount.AmountAfterTax),
-                            new XAttribute("NumberOfGuests", baseGuestAmount.NumberOfGuests),
-                            new XAttribute("AgeQualifyingCode", baseGuestAmount.AgeQualifyingCode));
+                        XElement baseGuestAmounts = new XElement(blank + "BaseByGuestAmts");
 
-                        baseGuestAmounts.Add(baseGuestAmountXml);
+                        foreach (BaseGuestAmount baseGuestAmount in rate.BaseGuestAmounts)
+                        {
 
+                            XElement baseGuestAmountXml = new XElement(blank + "BaseByGuestAmt",
+                                new XAttribute("AmountBeforeTax", baseGuestAmount.AmountBeforeTax),
+                                new XAttribute("AmountAfterTax", baseGuestAmount.AmountAfterTax),
+                                new XAttribute("NumberOfGuests", baseGuestAmount.NumberOfGuests),
+                                new XAttribute("AgeQualifyingCode", baseGuestAmount.AgeQualifyingCode));
+
+                            baseGuestAmounts.Add(baseGuestAmountXml);
+
+                        }
+
+                        ratesXml.Add(baseGuestAmounts);
                     }
-
-                    ratesXml.Add(baseGuestAmounts);
 
                     if (rate.AdditionalGuestAmounts != null && rate.AdditionalGuestAmounts.Count() > 0)
                     {

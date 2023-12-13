@@ -1,10 +1,14 @@
+Imports System.Collections.Generic
 Imports System.Runtime.Serialization
 Imports Portal.Hotel.Common.Data
 Imports Portal.Hotel.Facade
+Imports APIServices.Models
 Imports APIServices.Conflux
 Imports APIServices.Conflux.Enum
+Imports APIServices.Conflux.OTA.Models.Rates
 Imports APIServices.Conflux.Models.Rates.Response
 Imports RateManager.Utitlities.Hotel
+
 
 Partial Class FaresCatalogue
     Inherits PaginaBase
@@ -26,6 +30,8 @@ Partial Class FaresCatalogue
         rateportal
         rateUnip
         rateADS
+        startDateNoFormat
+        endDateNoFormat
     End Enum
     Const KEY_MINPRICE As String = "mintarifaAdulto"
     Const KEY_MAXPRICE As String = "maxtarifaAdulto"
@@ -212,18 +218,67 @@ Partial Class FaresCatalogue
 
     Public Sub CommandDelete(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.CommandEventArgs)
         If e.CommandName = "Delete" Then
+
+            Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
+            Dim isEnabledGoogleRequest As Boolean = HotelUtilitie.IsEnableGoogleRequest(info.Hotel)
+            Dim rateAmountMessages As RateAmountMessages = New RateAmountMessages()
+
+            rateAmountMessages.HotelCode = info.Empresa
+            rateAmountMessages.RateAmountMessagesList = New List(Of OTA.Models.Rates.RateAmountMessage)
+
             For Each room As DataGridItem In dgRooms.Items
                 Dim checkBoxTemp As CheckBox = room.FindControl("deleteCheckbox")
                 Dim labelTemp As Label = room.FindControl("glblRatePlanName")
                 If checkBoxTemp.Checked Then
                     Dim iFareIdTemp As Integer = Integer.Parse(room.Cells(dgcolumns.idTarifa).Text)
+                    Dim lblStartDateNoFormat As Label = room.FindControl("lblStartDateNoFormat")
+                    Dim lblEndDateNoFormat As Label = room.FindControl("lblEndDateNoFormat")
+                    Dim startDate As DateTime = Convert.ToDateTime(lblStartDateNoFormat.Text)
+                    Dim endDate As DateTime = Convert.ToDateTime(lblEndDateNoFormat.Text)
+                    Dim vDayRates As List(Of vDayRates) = Helpers.Rate.RatesHelpers.GetVDayRate(iFareIdTemp, startDate, endDate)
+
                     With New FaresSystem
                         If .DeleteFares(iFareIdTemp) Then
+
                             Me.guardalog("/Pages/FaresCatalogue.aspx", PaginaBase.acciones.Eliminar, "Se eliminó la tarifa de la habitación " & room.Cells(dgcolumns.codigohabitacion).Text & " de la fecha " & room.Cells(dgcolumns.FechaInicia).Text & " a la fecha " & room.Cells(dgcolumns.FechaFinaliza).Text & " con el rateplan " & labelTemp.Text)
+
+                            If isEnabledGoogleRequest Then
+
+                                Parser.Parser.ToRateAmountMessagesDelete(vDayRates, Nothing, TypeRateEnum.RoomRate, rateAmountMessages.RateAmountMessagesList)
+
+                            End If
+
                         End If
                     End With
                 End If
             Next
+
+            If isEnabledGoogleRequest Then
+                Dim confluxService As New ConfluxService()
+                Try
+
+
+                    Dim res As RateResponse = confluxService.DeleteRates(rateAmountMessages)
+                    Me.guardalog("/Pages/FaresCatalogue.aspx", acciones.Eliminar, "", "", res.RequestXML, res.Xml, info.Hotel)
+
+                Catch ex As Exception
+
+                    Dim errorsElement As New System.Xml.Linq.XElement("Errors")
+                    Dim errorElementProperty As New System.Xml.Linq.XElement("Error")
+
+                    errorElementProperty.Add(
+                    New System.Xml.Linq.XAttribute("Type", "3"),
+                    New System.Xml.Linq.XAttribute("Code", "448"),
+                    New System.Xml.Linq.XText(ex.Message)
+                )
+
+                    errorsElement.Add(errorElementProperty)
+
+                    Me.guardalog("/Pages/FaresCatalogue.aspx", acciones.Eliminar, "", "", "", errorsElement.ToString(), info.Hotel)
+                End Try
+            End If
+
+
 
             If dgRooms.CurrentPageIndex > 0 And dgRooms.Items.Count = 1 Then
                 dgRooms.CurrentPageIndex = ((dgRooms.CurrentPageIndex * dgRooms.PageSize) \ dgRooms.PageSize) - 1
@@ -419,6 +474,14 @@ Partial Class FaresCatalogue
                 If lbl.Text.Trim <> "" Then lbl.Text += " -- "
                 lbl.Text += DataBinder.Eval(e.Item.DataItem, "NameRatePlan")
             End If
+
+
+            lbl = e.Item.FindControl("lblStartDateNoFormat")
+            lbl.Text = CDate(e.Item.Cells(dgcolumns.FechaInicia).Text).ToString("MM/dd/yyyy")
+
+            lbl = e.Item.FindControl("lblEndDateNoFormat")
+            lbl.Text = CDate(e.Item.Cells(dgcolumns.FechaFinaliza).Text).ToString("MM/dd/yyyy")
+
 
         End If
         If e.Item.ItemType = ListItemType.Header Then
