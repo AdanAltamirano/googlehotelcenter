@@ -198,9 +198,14 @@ Partial Class HomePage
             Div1.Style.Add("display", "block")
         End If
 
-        If cInfoActual.IsSingleImgInv AndAlso IsSupervisor Then
-            btnSingleImgInv.Visible = True
-        End If
+        btnSingleImgInv.Visible = True
+
+        'Inicia aqui comentado para pruebas
+        'If cInfoActual.IsSingleImgInv AndAlso IsSupervisor Then
+        '    btnSingleImgInv.Visible = True
+        'End If
+        'Termina aqui comentado para pruebas
+
         'If SourceName <> "" Then
         '    lblRoomName.Text = Me.SourceName.Split("//")(2 * ddlRoomtype.SelectedIndex)
         'End If

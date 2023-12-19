@@ -10,6 +10,11 @@ Imports ClosedXML.Excel
 Partial Class PmsCoincidences
     Inherits PaginaBase
 
+    Dim dsPMS As DataSet
+    Dim fileRoute As String = ""
+    Dim fileName As String = ""
+    ' fileRoute & Session("PMSCodeId") & "_" & TipoArchivo & "_" & fileName
+
 #Region " Web Form Designer Generated Code "
 
     'This call is required by the Web Form Designer.
@@ -29,9 +34,10 @@ Partial Class PmsCoincidences
 
 #End Region
 
-    Private Function SendExcelToConflux(type As String, excelFile As String)
+    Private Function SendExcelToConflux(type As String)
         ' URL de la API a la que deseas llamar
-        Dim apiUrl As String = "https://engine.confluxmanager.com/api/properties/11/" & type
+        Dim excelFile As String = fileRoute & Session("PMSCodeId") & "_" & type & "_" & fileName
+        Dim confluxUrl As String = AppSettings("Default_Conflux_URL") & type
 
         ' Configurar el contenido de la solicitud con el archivo Excel
         Dim content As New MultipartFormDataContent()
@@ -53,7 +59,7 @@ Partial Class PmsCoincidences
         ' Crear una instancia de HttpClient
         Using httpClient As New HttpClient()
             ' Realizar la llamada a la API utilizando una solicitud POST y enviar el archivo Excel
-            Dim response As HttpResponseMessage = httpClient.PostAsync(apiUrl, content).Result
+            Dim response As HttpResponseMessage = httpClient.PostAsync(confluxUrl, content).Result
 
             ' Verificar si la llamada fue exitosa (código de estado 200)
             If response.IsSuccessStatusCode Then
@@ -87,8 +93,11 @@ Partial Class PmsCoincidences
     Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
         If Not Page.IsPostBack Then
-
-            btnExcel.Visible = If(Session("PMSRatePlans") IsNot Nothing AndAlso Session("PMSRatePlans").Tables(0).Rows.Count > 0 AndAlso Session("PMSRooms") IsNot Nothing AndAlso Session("PMSRooms").Tables(0).Rows.Count > 0, True, False)
+            Try
+                btnExcel.Visible = If(Session("PMSRatePlans") IsNot Nothing AndAlso Session("PMSRatePlans").Tables(0).Rows.Count > 0 AndAlso Session("PMSRooms") IsNot Nothing AndAlso Session("PMSRooms").Tables(0).Rows.Count > 0, True, False)
+            Catch ex As Exception
+                btnExcel.Visible = False
+            End Try
 
             If Not Session("idCorporativoUserChain") Is Nothing Then 'AndAlso Session("idCorporativoUserChain") <> "-1" Then
 
@@ -127,7 +136,11 @@ Partial Class PmsCoincidences
                         ddlCorporatives.DataSource = corporatives
                         ddlCorporatives.DataTextField = "NombreCorp"
                         ddlCorporatives.DataValueField = "idCorporativo"
+                        Dim item As ListItem = New ListItem
+                        item.Text = PortalCulture.GetString("M000272", False)
+                        item.Value = -1
                         ddlCorporatives.DataBind()
+                        ddlCorporatives.Items.Insert(0, item)
 
                     End If
 
@@ -148,21 +161,21 @@ Partial Class PmsCoincidences
 
     Protected Sub ddlCorporatives_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlCorporatives.SelectedIndexChanged
         ddlHoteles.Items.Clear()
-        If Not hotels Is Nothing AndAlso hotels.Rows.Count Then
-            Dim hotelsByCorporate As DataTable = hotels.Select("idCorporativo = " & ddlCorporatives.SelectedValue.ToString).CopyToDataTable
-            ddlHoteles.DataSource = hotelsByCorporate
-            ddlHoteles.DataTextField = "Nombre"
-            ddlHoteles.DataValueField = "idHotel"
-            ddlHoteles.DataBind()
+        If Integer.Parse(ddlCorporatives.SelectedValue) > 0 Then
+            If Not hotels Is Nothing AndAlso hotels.Rows.Count Then
+                Dim hotelsByCorporate As DataTable = hotels.Select("idCorporativo = " & ddlCorporatives.SelectedValue.ToString).CopyToDataTable
+                ddlHoteles.DataSource = hotelsByCorporate
+                ddlHoteles.DataTextField = "Nombre"
+                ddlHoteles.DataValueField = "idHotel"
+                ddlHoteles.DataBind()
+            End If
+            lblHotelSelected.Style.Add("display", "none")
+            lblHotelSelected.Text = ""
         End If
         Dim item As ListItem = New ListItem
         item.Text = PortalCulture.GetString("M000272", False)
         item.Value = -1
         ddlHoteles.Items.Insert(0, item)
-        renglonDatos.Style.Add("display", "none")
-        renglonBotones.Style.Add("display", "none")
-        lblHotelSelected.Style.Add("display", "none")
-        lblHotelSelected.Text = ""
     End Sub
 
     Private Function getHotelPMSRoomsAndRatePlans(ByVal idHotel As Integer, Optional ByVal language As Integer = 1) As DataSet
@@ -178,6 +191,10 @@ Partial Class PmsCoincidences
         Dim adapter As New SqlDataAdapter(command)
         Dim dRes As New DataSet
         adapter.Fill(dRes)
+
+        If dRes.Tables(0).Rows.Count > 0 Then
+            btnSendToConflux.Visible = True
+        End If
 
         Return dRes
     End Function
@@ -215,17 +232,36 @@ Partial Class PmsCoincidences
             Next
         Next
 
-        Dim fileRoute As String = Server.MapPath("~/ExcelConflux/") '"C:\testFolder\"
-        Dim fileName As String = Session("PMSCodeId") & "_" & Session("PMSHotelName") & "_" & subtitle & "_" & Date.Now.ToString("dd-MM-yyyy") & "_" & reportRequestTime & ".xlsx"
+        fileRoute = Server.MapPath("~" & AppSettings("Default_Conflux_Docs_Folder") & "/") '"C:\testFolder\"
+        fileName = Session("PMSHotelName") & "_" & Date.Now.ToString("dd-MM-yyyy") & "_" & reportRequestTime & ".xlsx"
 
-        workBook.SaveAs(fileRoute & fileName)
+        workBook.SaveAs(fileRoute & Session("PMSCodeId") & "_" & subtitle & "_" & fileName)
 
         excellApp.Quit()
         ReleaseComObject(excellApp)
 
-        SendExcelToConflux(subtitle, fileRoute & fileName)
-
     End Function
+
+    Private Function labelsState(ByVal state As Boolean)
+        lbl_PMS_Data.Visible = state
+        lblRatesPlan.Visible = state
+        lblRooms.Visible = state
+        lbl_Conflux_Data_RP.Visible = state
+        lbl_Conflux_Data_RT.Visible = state
+    End Function
+
+    Private Sub btnSendToConflux_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSendToConflux.Click
+
+        If String.IsNullOrWhiteSpace(fileRoute) Or String.IsNullOrWhiteSpace(fileName) Then
+            dsPMS = getHotelPMSRoomsAndRatePlans(Me.hotelId, 1)
+            reportRequestTime = Date.Now.Hour.ToString & Date.Now.Minute.ToString & Date.Now.Millisecond.ToString
+            CreatePMSDataDoc("RatePlans", dsPMS.Tables(0))
+            CreatePMSDataDoc("Rooms", dsPMS.Tables(1))
+        End If
+
+        SendExcelToConflux("RatePlans")
+        SendExcelToConflux("Rooms")
+    End Sub
 
     Private Sub btnCargar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCargar.Click
         lblMsgActualizacion.Visible = False
@@ -237,12 +273,21 @@ Partial Class PmsCoincidences
             Session("PMSHotelName") = ddlHoteles.SelectedItem.Text
             Session("PMSCodeId") = hotels.Select("idHotel = " & Me.hotelId)(0).Item("idEmpresa")
 
-            Dim dsPMSData As DataSet
-            reportRequestTime = Date.Now.Hour.ToString & Date.Now.Minute.ToString & Date.Now.Millisecond.ToString
-            dsPMSData = getHotelPMSRoomsAndRatePlans(Me.hotelId, 1)
+            dsPMS = getHotelPMSRoomsAndRatePlans(Me.hotelId, 1)
 
-            CreatePMSDataDoc("RatePlans", dsPMSData.Tables(0))
-            CreatePMSDataDoc("Rooms", dsPMSData.Tables(1))
+            If Not IsNothing(dsPMS) Then
+
+                If dsPMS.Tables(0).Rows.Count > 0 Then
+                    dgCFRP.DataSource = dsPMS.Tables(0)
+                    dgCFRP.DataBind()
+                End If
+
+                If dsPMS.Tables(1).Rows.Count > 0 Then
+                    dgCFRT.DataSource = dsPMS.Tables(1)
+                    dgCFRT.DataBind()
+                End If
+
+            End If
 
             lblHotelSelected.Style.Add("display", "block")
             Dim ds As DataSet
@@ -303,8 +348,8 @@ Partial Class PmsCoincidences
             dgRooms.DataSource = dsRooms
             dgRooms.DataBind()
 
-            renglonDatos.Style.Add("display", "block")
-            renglonBotones.Style.Add("display", "block")
+            'renglonDatos.Style.Add("display", "block")
+            'renglonBotones.Style.Add("display", "block")
             Dim ban As Boolean = False
 
             If Not ds Is Nothing AndAlso ds.Tables(0).Rows.Count > 0 Then
@@ -324,17 +369,18 @@ Partial Class PmsCoincidences
                 msgRooms.Visible = True
             End If
             If Not ban Then
-                renglonBotones.Style.Add("display", "none")
+                'renglonBotones.Style.Add("display", "none")
             End If
         Else
-            renglonDatos.Style.Add("display", "none")
-            renglonBotones.Style.Add("display", "none")
+            'renglonDatos.Style.Add("display", "none")
+            'renglonBotones.Style.Add("display", "none")
             lblHotelSelected.Text = ""
             lblHotelSelected.Style.Add("display", "none")
             Me.hotelId = -1
         End If
 
         btnExcel.Visible = If(Session("PMSRatePlans") IsNot Nothing AndAlso Session("PMSRatePlans").Rows.Count > 0 AndAlso Session("PMSRooms") IsNot Nothing AndAlso Session("PMSRooms").Rows.Count > 0, True, False)
+        labelsState(btnExcel.Visible)
         btnExcel.DataBind()
 
     End Sub
@@ -416,8 +462,8 @@ Partial Class PmsCoincidences
         cancelar()
     End Sub
     Private Sub cancelar()
-        renglonDatos.Style.Add("display", "none")
-        renglonBotones.Style.Add("display", "none")
+        'renglonDatos.Style.Add("display", "none")
+        'renglonBotones.Style.Add("display", "none")
         ddlHoteles.SelectedIndex = 0
         Me.hotelId = -1
         lblHotelSelected.Text = ""
@@ -428,7 +474,7 @@ Partial Class PmsCoincidences
     Private Sub Page_PreRender1(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.PreRender
         btnCargar.Text = PortalCulture.GetString("00149", False)
         lblRatesPlan.Text = PortalCulture.GetString("00047", False)
-        lblHoteles.Text = PortalCulture.GetString("00048", False)
+        lblRooms.Text = PortalCulture.GetString("00048", False)
         msgRatesPlan.Text = PortalCulture.GetString("01149", False)
         msgRooms.Text = PortalCulture.GetString("01150", False)
         lblMsgActualizacion.Text = PortalCulture.GetString("01151", False)
