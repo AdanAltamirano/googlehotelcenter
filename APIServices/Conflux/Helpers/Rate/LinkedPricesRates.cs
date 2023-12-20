@@ -16,17 +16,18 @@ namespace APIServices.Conflux.Helpers.Rate
                     price.PersonType == (int)PersonTypeEnum.Child || 
                     price.PersonType == (int)PersonTypeEnum.Teeneger)
                 {
-                    price.Price = UpdatePriceByQuantityLinkedRoom(price.Quantity, price.Price, linkedRoom);
+
+                    if(price.Price > 0) price.Price = UpdatePriceByQuantityLinkedRoom(price.Quantity, price.Price, linkedRoom);
 
                 }
                 else if(price.PersonType == (int)PersonTypeEnum.ExtraAdult)
                 {
-                    price.Price = UpdatePrice(price.Price, linkedRoom.ExtraAdultRatio, linkedRoom.ExtraAdultOffset);
+                    if (price.Price > 0) price.Price = UpdatePrice(price.Price, linkedRoom.ExtraAdultRatio, linkedRoom.ExtraAdultOffset);
                 }
                 else if (price.PersonType == (int)PersonTypeEnum.ExtraChild ||
                             price.PersonType == (int)PersonTypeEnum.ExtraTeeneger)
                 {
-                    price.Price = UpdatePrice(price.Price, linkedRoom.ExtraChildRatio, linkedRoom.ExtraChildOffset);
+                    if (price.Price > 0) price.Price = UpdatePrice(price.Price, linkedRoom.ExtraChildRatio, linkedRoom.ExtraChildOffset);
                 }
             }
 
@@ -40,17 +41,17 @@ namespace APIServices.Conflux.Helpers.Rate
                     price.PersonType == (int)PersonTypeEnum.Child ||
                     price.PersonType == (int)PersonTypeEnum.Teeneger)
                 {
-                    price.Price = UpdatePriceByQuantityLinkedRatePlan(price.Quantity, price.Price, linkedRatePlan);
+                    if (price.Price > 0) price.Price = UpdatePriceByQuantityLinkedRatePlan(price.Quantity, price.Price, linkedRatePlan);
 
                 }
                 else if (price.PersonType == (int)PersonTypeEnum.ExtraAdult)
                 {
-                    price.Price = UpdatePrice(price.Price, linkedRatePlan.ExtraAdultRatio, linkedRatePlan.ExtraAdultOffset);
+                    if (price.Price > 0) price.Price = UpdatePrice(price.Price, linkedRatePlan.ExtraAdultRatio, linkedRatePlan.ExtraAdultOffset);
                 }
                 else if (price.PersonType == (int)PersonTypeEnum.ExtraChild ||
                             price.PersonType == (int)PersonTypeEnum.ExtraTeeneger)
                 {
-                    price.Price = UpdatePrice(price.Price, linkedRatePlan.ExtraChildRatio, linkedRatePlan.ExtraChildOffset);
+                    if (price.Price > 0) price.Price = UpdatePrice(price.Price, linkedRatePlan.ExtraChildRatio, linkedRatePlan.ExtraChildOffset);
                 }
             }
         }
@@ -66,17 +67,17 @@ namespace APIServices.Conflux.Helpers.Rate
                     price.PersonType == (int)PersonTypeEnum.Child ||
                     price.PersonType == (int)PersonTypeEnum.Teeneger)
                 {
-                    price.Price = UpdatePriceByQuantityLinkedRoom(price.Quantity, price.Price, linkedRoom);
+                    if (price.Price > 0) price.Price = UpdatePriceByQuantityLinkedRoom(price.Quantity, price.Price, linkedRoom);
 
                 }
                 else if (price.PersonType == (int)PersonTypeEnum.ExtraAdult)
                 {
-                    price.Price = UpdatePrice(price.Price, linkedRoom.ExtraAdultRatio, linkedRoom.ExtraAdultOffset);
+                    if (price.Price > 0) price.Price = UpdatePrice(price.Price, linkedRoom.ExtraAdultRatio, linkedRoom.ExtraAdultOffset);
                 }
                 else if (price.PersonType == (int)PersonTypeEnum.ExtraChild ||
                             price.PersonType == (int)PersonTypeEnum.ExtraTeeneger)
                 {
-                    price.Price = UpdatePrice(price.Price, linkedRoom.ExtraChildRatio, linkedRoom.ExtraChildOffset);
+                    if (price.Price > 0) price.Price = UpdatePrice(price.Price, linkedRoom.ExtraChildRatio, linkedRoom.ExtraChildOffset);
                 }
             }
 
@@ -90,17 +91,17 @@ namespace APIServices.Conflux.Helpers.Rate
                     price.PersonType == (int)PersonTypeEnum.Child ||
                     price.PersonType == (int)PersonTypeEnum.Teeneger)
                 {
-                    price.Price = UpdatePriceByQuantityLinkedRatePlan(price.Quantity, price.Price, linkedRatePlan);
+                    if (price.Price > 0) price.Price = UpdatePriceByQuantityLinkedRatePlan(price.Quantity, price.Price, linkedRatePlan);
 
                 }
                 else if (price.PersonType == (int)PersonTypeEnum.ExtraAdult)
                 {
-                    price.Price = UpdatePrice(price.Price, linkedRatePlan.ExtraAdultRatio, linkedRatePlan.ExtraAdultOffset);
+                    if (price.Price > 0) price.Price = UpdatePrice(price.Price, linkedRatePlan.ExtraAdultRatio, linkedRatePlan.ExtraAdultOffset);
                 }
                 else if (price.PersonType == (int)PersonTypeEnum.ExtraChild ||
                             price.PersonType == (int)PersonTypeEnum.ExtraTeeneger)
                 {
-                    price.Price = UpdatePrice(price.Price, linkedRatePlan.ExtraChildRatio, linkedRatePlan.ExtraChildOffset);
+                    if (price.Price > 0) price.Price = UpdatePrice(price.Price, linkedRatePlan.ExtraChildRatio, linkedRatePlan.ExtraChildOffset);
                 }
             }
         }

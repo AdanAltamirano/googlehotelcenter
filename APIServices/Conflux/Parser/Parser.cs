@@ -226,8 +226,8 @@ namespace APIServices.Conflux.Parser
                 if (pricesException.Count > 0 && !vDayRate.IsPromotion)
                 {
                     Rate rateException = new Rate();
-                    rateException.HasPriceException = true;
-                    rateException.StartDate = vDayRate.StartDate.ToString("yyyyMMdd");//revisar el formato
+                    rateException.HasPriceException = true;                   
+                    rateException.StartDate = vDayRate.StartDate < DateTime.Now.Date ? DateTime.Now.Date.ToString("yyyyMMdd") : vDayRate.StartDate.ToString("yyyyMMdd");
                     rateException.EndDate = vDayRate.EndDate.ToString("yyyyMMdd");
 
                     rateException.ApplyMon = vDayRate.ExceptionMap[0] == 'Y' ? true : false;
@@ -240,7 +240,14 @@ namespace APIServices.Conflux.Parser
 
                     rateException.BaseGuestAmounts = RatesHelpers.UpdateBaseGuestAmountPricesWithTaxesAndDiscounts(vDayRate, pricesException, currentRate);
 
-                    if(rateException.BaseGuestAmounts.Count() > 0 )rates.Add(rateException);
+                    if (rateException.BaseGuestAmounts.Count() > 0 
+                        && (rateException.ApplyMon || 
+                        rateException.ApplyTue || 
+                        rateException.ApplyWed || 
+                        rateException.ApplyThu || 
+                        rateException.ApplyFri ||
+                        rateException.ApplySat ||
+                        rateException.ApplySun)) { rates.Add(rateException); }
                 }
 
                 rateAmountMessage.statusApplicationControl = statusApplicationControl;
@@ -344,7 +351,7 @@ namespace APIServices.Conflux.Parser
                 {
                     Rate rateException = new Rate();
                     rateException.HasPriceException = true;
-                    rateException.StartDate = vDayRate.StartDate.ToString("yyyyMMdd");//revisar el formato
+                    rateException.StartDate = vDayRate.StartDate < DateTime.Now.Date ? DateTime.Now.Date.ToString("yyyyMMdd") : vDayRate.StartDate.ToString("yyyyMMdd");
                     rateException.EndDate = vDayRate.EndDate.ToString("yyyyMMdd");
 
                     rateException.ApplyMon = vDayRate.ExceptionMap[0] == 'Y' ? true : false;
@@ -357,7 +364,14 @@ namespace APIServices.Conflux.Parser
 
                     rateException.BaseGuestAmounts = RatesHelpers.UpdateBaseGuestAmountPricesWithTaxesAndDiscounts(vDayRate, pricesException, currentRate);
 
-                    rates.Add(rateException);
+                    if (rateException.BaseGuestAmounts.Count() > 0
+                        && (rateException.ApplyMon ||
+                        rateException.ApplyTue ||
+                        rateException.ApplyWed ||
+                        rateException.ApplyThu ||
+                        rateException.ApplyFri ||
+                        rateException.ApplySat ||
+                        rateException.ApplySun)) { rates.Add(rateException); }
                 }
 
                 rateAmountMessage.statusApplicationControl = statusApplicationControl;
@@ -472,7 +486,15 @@ namespace APIServices.Conflux.Parser
 
                     rateException.BaseGuestAmounts = RatesHelpers.UpdateBaseGuestAmountPricesWithTaxesAndDiscounts(vDayRate, pricesException, roomCapactity);
 
-                    if(rateException.BaseGuestAmounts.Count() > 0) rates.Add(rateException);
+                    if (rateException.BaseGuestAmounts.Count() > 0
+                        && (rateException.ApplyMon ||
+                        rateException.ApplyTue ||
+                        rateException.ApplyWed ||
+                        rateException.ApplyThu ||
+                        rateException.ApplyFri ||
+                        rateException.ApplySat ||
+                        rateException.ApplySun)) { rates.Add(rateException); }
+
                 }
 
                 rateAmountMessage.statusApplicationControl = statusApplicationControl;
