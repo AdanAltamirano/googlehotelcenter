@@ -46,10 +46,10 @@
         <EntityTypeShape EntityType="Models.vReservationLog" Width="1.5" PointX="20.375" PointY="6.75" />
         <EntityTypeShape EntityType="Models.vReservationDetails" Width="1.5" PointX="3.375" PointY="14.75" />
         <EntityTypeShape EntityType="Models.vHotelActives" Width="1.5" PointX="11.375" PointY="20.75" />
-        <EntityTypeShape EntityType="Models.vDayRates" Width="1.5" PointX="7.375" PointY="0.625" />
-        <EntityTypeShape EntityType="Models.vDayRatesExceptions" Width="1.5" PointX="5.375" PointY="0.625" />
         <EntityTypeShape EntityType="Models.vLinkedRoomTypes" Width="1.5" PointX="13.375" PointY="20.75" />
         <EntityTypeShape EntityType="Models.vLinkedRatePlans" Width="1.5" PointX="15.375" PointY="20.75" />
+        <EntityTypeShape EntityType="Models.vDayRates" Width="1.5" PointX="5.25" PointY="0.625" />
+        <EntityTypeShape EntityType="Models.vDayRatesExceptions" Width="1.5" PointX="7.375" PointY="0.625" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

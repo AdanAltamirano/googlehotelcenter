@@ -19,6 +19,7 @@ namespace APIServices.Models
         public int RoomId { get; set; }
         public string RatePlanId { get; set; }
         public string RatePlanName { get; set; }
+        public string Segment { get; set; }
         public System.DateTime StartDate { get; set; }
         public System.DateTime EndDate { get; set; }
         public string ApplyDayMap { get; set; }
