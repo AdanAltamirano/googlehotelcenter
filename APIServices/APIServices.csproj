@@ -142,6 +142,7 @@
     <Compile Include="Dictionary.cs" />
     <Compile Include="Extension\ConfigurationExtensions.cs" />
     <Compile Include="F2GService.cs" />
+    <Compile Include="Helpers\Reservation\ReservationHelper.cs" />
     <Compile Include="Helpers\Room\RoomHelper.cs" />
     <Compile Include="HotelConfigurationService.cs" />
     <Compile Include="HotelService.cs" />
@@ -396,6 +397,9 @@
     <Compile Include="ReservationService.cs" />
     <Compile Include="RoomsClosureService.cs" />
     <Compile Include="RoomsService.cs" />
+    <Compile Include="Service\HotelVerse\HotelVerseService.cs" />
+    <Compile Include="Service\HotelVerse\Models\Record.cs" />
+    <Compile Include="Service\HotelVerse\Models\Response\ResponseRequest.cs" />
     <Compile Include="Utilities.cs" />
     <Compile Include="Xml\OTA\Request\Rates\HotelRateAmountNotifRQ.cs" />
     <Compile Include="Xml\OTA\Request\Rates\HotelRateAmountNotifRS.cs" />

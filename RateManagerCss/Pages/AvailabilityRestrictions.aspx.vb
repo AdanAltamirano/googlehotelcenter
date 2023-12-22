@@ -963,22 +963,22 @@ Partial Class AvailabilityRestrictions
             '    End If
             'End If
 
-            Dim confluxService As New ConfluxService()
-            Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
-            Dim isEnabledGoogleRequest As Boolean = HotelUtilitie.IsEnableGoogleRequest(info.Hotel)
+            'Dim confluxService As New ConfluxService()
+            'Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
+            'Dim isEnabledGoogleRequest As Boolean = HotelUtilitie.IsEnableGoogleRequest(info.Hotel)
 
-            Dim roomsByHotel As RoomsHotelData = New RoomFacade().getAllRooms(info.Hotel, 1)
-            Dim activeRooms As List(Of DataRow) = roomsByHotel.Tables(RoomsHotelData.TBL_ROOM_HOTEL).Select("eliminada=false").ToList()
+            'Dim roomsByHotel As RoomsHotelData = New RoomFacade().getAllRooms(info.Hotel, 1)
+            'Dim activeRooms As List(Of DataRow) = roomsByHotel.Tables(RoomsHotelData.TBL_ROOM_HOTEL).Select("eliminada=false").ToList()
 
-            Dim startDate, endDate As Date
-            startDate = CDate(Me.txtInicio.Text)
-            endDate = CDate(Me.txtFinal.Text)
+            'Dim startDate, endDate As Date
+            'startDate = CDate(Me.txtInicio.Text)
+            'endDate = CDate(Me.txtFinal.Text)
 
-            Dim apply As String = Me.GetAplyWeek()
-            Dim applyDays As String = RestrictionHelper.ToDayOfWeek(apply)
-            Dim dates As List(Of Tuple(Of Date, Date)) = RestrictionHelper.GetActiveDates(startDate, endDate, applyDays)
+            'Dim apply As String = Me.GetAplyWeek()
+            'Dim applyDays As String = RestrictionHelper.ToDayOfWeek(apply)
+            'Dim dates As List(Of Tuple(Of Date, Date)) = RestrictionHelper.GetActiveDates(startDate, endDate, applyDays)
 
-            RestrictionsParser.Init(info.Empresa)
+            'RestrictionsParser.Init(info.Empresa)
 
 
             Dim banSelecccion As Boolean = RbdRatePlan.Checked
@@ -999,11 +999,13 @@ Partial Class AvailabilityRestrictions
                 closehotel(nota)
                 If chkApplyAllPlan.Checked AndAlso RbdHotel.Checked Then
                     For Each r As ListItem In ddlRateplans.Items
-                        closeRateplan(nota, r.Value, False, splan:=r.Text, hotelId:=info.Hotel, dates:=dates, confluxService:=confluxService, isEnabledGoogleRequest:=isEnabledGoogleRequest, activeRooms:=activeRooms, restrictionType:=RestrictionEnum.LockGral)
+                        closeRateplan(nota, r.Value, False, splan:=r.Text)
+                        'closeRateplan(nota, r.Value, False, splan:=r.Text, hotelId:=info.Hotel, dates:=dates, confluxService:=confluxService, isEnabledGoogleRequest:=isEnabledGoogleRequest, activeRooms:=activeRooms, restrictionType:=RestrictionEnum.LockGral)
                     Next
                 End If
             Else
-                closeRateplan(nota, splan:=ddlRateplans.SelectedItem.Text, hotelId:=info.Hotel, dates:=dates, confluxService:=confluxService, isEnabledGoogleRequest:=isEnabledGoogleRequest, activeRooms:=activeRooms, restrictionType:=RestrictionEnum.LockRatePlan)
+                closeRateplan(nota, splan:=ddlRateplans.SelectedItem.Text)
+                'closeRateplan(nota, splan:=ddlRateplans.SelectedItem.Text, hotelId:=info.Hotel, dates:=dates, confluxService:=confluxService, isEnabledGoogleRequest:=isEnabledGoogleRequest, activeRooms:=activeRooms, restrictionType:=RestrictionEnum.LockRatePlan)
             End If
             iniCtrl()
         End If
@@ -1155,34 +1157,34 @@ Partial Class AvailabilityRestrictions
                         Me.guardalog("/Pages/AvailabilityRestrictions.aspx", PaginaBase.acciones.Modificar, "Se modificó el rateplan " & splan & " con los siguientes datos: " & nota, "Update status by rate plan", sDatos, sDatosDespues, sDatoCorreo)
                     End If
 
-                    If isEnabledGoogleRequest Then
+                    'If isEnabledGoogleRequest Then
 
-                        Dim status As String = CType(dstrans.Tables(dstrans.TABLE_LockRatePlan).Rows(0).Item(lockRatePlanData.FIELD_StatusAvailability), String)
-                        Dim ratePlanId As String = CType(dstrans.Tables(dstrans.TABLE_LockRatePlan).Rows(0).Item(lockRatePlanData.FIELD_RatePlan), String)
+                    '    Dim status As String = CType(dstrans.Tables(dstrans.TABLE_LockRatePlan).Rows(0).Item(lockRatePlanData.FIELD_StatusAvailability), String)
+                    '    Dim ratePlanId As String = CType(dstrans.Tables(dstrans.TABLE_LockRatePlan).Rows(0).Item(lockRatePlanData.FIELD_RatePlan), String)
 
-                        Dim lockRatePlans As List(Of spGetLockRatePlansByHotel_Result) = RestrictionHelper.CreateLockRatePlansByHotel(dates, status, ratePlanId)
+                    '    Dim lockRatePlans As List(Of spGetLockRatePlansByHotel_Result) = RestrictionHelper.CreateLockRatePlansByHotel(dates, status, ratePlanId)
 
-                        Dim availStatusMessagesLockRatePlans = RestrictionsParser.ToAvailStatusMessages(activeRooms, lockRatePlans)
+                    '    Dim availStatusMessagesLockRatePlans = RestrictionsParser.ToAvailStatusMessages(activeRooms, lockRatePlans)
 
-                        Dim lockRatePlanHotelAvailNotifRQ = HotelAvailNotifRQ.CreateHotelAvailNotifRQ(availStatusMessagesLockRatePlans)
+                    '    Dim lockRatePlanHotelAvailNotifRQ = HotelAvailNotifRQ.CreateHotelAvailNotifRQ(availStatusMessagesLockRatePlans)
 
-                        Dim lockRatePlanSoapRQ As XDocument = Soap.CreateSoapRequestXml(lockRatePlanHotelAvailNotifRQ)
+                    '    Dim lockRatePlanSoapRQ As XDocument = Soap.CreateSoapRequestXml(lockRatePlanHotelAvailNotifRQ)
 
-                        Dim restrictionResponse As RestrictionResponse = confluxService.UpdateRestriction(lockRatePlanSoapRQ, restrictionType)
+                    '    Dim restrictionResponse As RestrictionResponse = confluxService.UpdateRestriction(lockRatePlanSoapRQ, restrictionType)
 
 
-                        If Not restrictionResponse.IsSuccess Then
-                            Me.guardalog("/Pages/AvailabilityRestrictions.aspx", PaginaBase.acciones.Sincronizar, nota:="Sincronizar LockRatePlan", peticion:="", datos:="", datosDespues:=restrictionResponse.Xml, hotelId:=hotelId)
-                        ElseIf restrictionResponse.IsSuccess Then
-                            For Each restriction As Restriction In restrictionResponse.Restrictions
-                                Select Case restriction.Type
-                                    Case RestrictionEnum.LockRatePlan
-                                        Me.guardalog("/Pages/AvailabilityRestrictions.aspx", PaginaBase.acciones.Sincronizar, nota:="Sincronizar LockRatePlan", peticion:="", datos:=restriction.XmlRequest(0).ToString(), datosDespues:=restriction.Xml(0).ToString(), hotelId:=hotelId)
-                                End Select
-                            Next
-                        End If
+                    '    If Not restrictionResponse.IsSuccess Then
+                    '        Me.guardalog("/Pages/AvailabilityRestrictions.aspx", PaginaBase.acciones.Sincronizar, nota:="Sincronizar LockRatePlan", peticion:="", datos:="", datosDespues:=restrictionResponse.Xml, hotelId:=hotelId)
+                    '    ElseIf restrictionResponse.IsSuccess Then
+                    '        For Each restriction As Restriction In restrictionResponse.Restrictions
+                    '            Select Case restriction.Type
+                    '                Case RestrictionEnum.LockRatePlan
+                    '                    Me.guardalog("/Pages/AvailabilityRestrictions.aspx", PaginaBase.acciones.Sincronizar, nota:="Sincronizar LockRatePlan", peticion:="", datos:=restriction.XmlRequest(0).ToString(), datosDespues:=restriction.Xml(0).ToString(), hotelId:=hotelId)
+                    '            End Select
+                    '        Next
+                    '    End If
 
-                    End If 'Termina Google
+                    'End If 'Termina Google
 
                 End If
             End If

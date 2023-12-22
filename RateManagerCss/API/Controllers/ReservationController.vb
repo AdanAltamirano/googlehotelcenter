@@ -18,6 +18,10 @@ Imports RateManager.Utitlities.Email
 Imports System.Threading
 Imports Portal.General.Common.Data
 Imports Portal.General.Facade
+Imports RateManager.Utitlities.XML
+Imports APIServices.Helpers.Reservation
+Imports APIServices.Service.HotelVerse.Models.Response
+Imports APIServices.Service.HotelVerse
 
 Namespace API.Controller
     <RoutePrefix("api/reservations"), AuthorizeUser(Roles:="supervisor,userchain,hotelcompany,agencycompany")>
@@ -197,7 +201,22 @@ Namespace API.Controller
 
             If result.IsSuccess Then
 
-                Log(reservationId, acciones.Eliminar, rsv.hotelId, motivo:=req.Reason)
+
+                Log(reservationId, acciones.Eliminar, rsv.hotelId, motivo:=req.Reason, nota:=String.Format("Canceló la reserva #{0}", reservationId))
+
+                Dim reservation As Reservaciones = ReservationHelper.GetReservation(reservationId)
+
+                If reservation.idAgencia IsNot Nothing And reservation.idAgencia = 211 Then
+
+                    Dim response As ResponseRequest = HotelVerseService.CancelReservation(reservation.RecordLocator)
+
+                    Dim xml As String = XmlUtilitie.ToXmlString(response)
+
+                    Log(reservationId, acciones.Eliminar, rsv.hotelId, motivo:="", currentData:=xml, nota:=String.Format("Canceló la reserva Hotel Verse #{0}", reservationId))
+
+                End If
+
+
 
                 'no enviar correo de cancelación si está en proceso
                 'If rsv.status <> 4 Then
@@ -461,12 +480,12 @@ Namespace API.Controller
         End Function
 
         Sub Log(ByVal reservationId As Integer, ByVal action As acciones, Optional ByVal hotelId As Integer = 0, Optional ByVal oldData As String = "",
-                Optional ByVal currentData As String = "", Optional ByVal motivo As String = "")
+                Optional ByVal currentData As String = "", Optional ByVal motivo As String = "", Optional ByVal nota As String = "")
             'Dim pb As New PaginaBase()
             Dim msg As String = ""
             Select Case action
                 Case acciones.Eliminar
-                    msg = String.Format("Canceló la reserva #{0}", reservationId)
+                    msg = nota
                 Case acciones.Modificar
                     msg = String.Format("Modifico la reserva #{0}", reservationId)
                 Case acciones.Reactivar
