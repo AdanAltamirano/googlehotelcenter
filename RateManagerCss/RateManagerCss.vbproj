@@ -671,6 +671,7 @@
     <Content Include="Default.aspx" />
     <Content Include="ExportExcel\Reports.aspx" />
     <Content Include="HotelAdministrator\Invoicing\Vouchers.aspx" />
+    <Content Include="HotelAdministrator\Pages\ExportExcellPMSCodes.aspx" />
     <Content Include="HotelAdministrator\Pages\ExportExcellReportNBC.aspx" />
     <Content Include="HotelAdministrator\Pages\IDSMapping.aspx" />
     <Content Include="HotelAdministrator\Pages\MapeoPlanesF2G.aspx" />
@@ -1648,6 +1649,13 @@
     <Compile Include="HotelAdministrator\Invoicing\Vouchers.aspx.vb">
       <DependentUpon>Vouchers.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="HotelAdministrator\Pages\ExportExcellPMSCodes.aspx.designer.vb">
+      <DependentUpon>ExportExcellPMSCodes.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="HotelAdministrator\Pages\ExportExcellPMSCodes.aspx.vb">
+      <DependentUpon>ExportExcellPMSCodes.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\ExportExcellReportNBC.aspx.designer.vb">
       <DependentUpon>ExportExcellReportNBC.aspx</DependentUpon>
