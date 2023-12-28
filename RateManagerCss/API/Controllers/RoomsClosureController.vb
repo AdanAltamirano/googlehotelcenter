@@ -1,4 +1,5 @@
-﻿Imports System.Web.Http
+﻿Imports System.Linq
+Imports System.Web.Http
 Imports System.Net.Http
 Imports NinjAPI
 Imports APIServices
@@ -9,6 +10,15 @@ Imports Portal.Hotel.Facade
 Imports Portal.Hotel.Common.Data
 Imports RateManager.PaginaBase
 Imports Portal.General.Common.Data
+Imports System.Xml.Linq
+Imports APIServices.Conflux
+Imports APIServices.Conflux.Enum
+Imports APIServices.Xml.Soap
+Imports APIServices.Conflux.Helpers.Restriction
+Imports APIServices.Conflux.Parser.Restriction
+Imports APIServices.Xml.OTA.Request.Restrictions
+Imports APIServices.Conflux.Models.Restrictions.Response
+Imports RateManager.Utitlities.Hotel
 
 Namespace API.Controller
     <RoutePrefix("api/closure")>
@@ -35,6 +45,20 @@ Namespace API.Controller
         <Route("save/{idHotel:Int}"), HttpPost>
         Public Function SaveClosureByHotelId(ByVal idHotel As Integer, <FromBody> roomClosureRQ As RoomClosureRQ) As HttpResponseMessage
 
+            Dim pageBase As New PaginaBase
+
+            Dim confluxService As New ConfluxService()
+            Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
+            Dim isEnabledGoogleRequest As Boolean = HotelUtilitie.IsEnableGoogleRequest(info.Hotel)
+            RestrictionsParser.Init(info.Empresa)
+
+            Dim dsrooms As RoomsHotelData
+
+            With New RoomFacade
+                dsrooms = .getRooms(idHotel)
+            End With
+
+            Dim rooms As IEnumerable(Of DataRow) = dsrooms.Tables(0).Rows.Cast(Of DataRow)
 
             For Each dateClosure As DatesClosure In roomClosureRQ.Dates
 
@@ -43,7 +67,8 @@ Namespace API.Controller
 
                     Dim allRatePlans As Boolean = (ratePlan.Code = "0")
                     Dim allRooms As Boolean = (roomClosureRQ.RoomOption = "0")
-                    Dim dsrateplans As RatePlanData, dsrooms As RoomsHotelData
+                    Dim dsrateplans As RatePlanData ', dsrooms As RoomsHotelData
+
 
                     Dim nota As String = String.Empty
 
@@ -51,6 +76,7 @@ Namespace API.Controller
 
                     Dim page As New PaginaBase
                     hotelName = page.HotelName
+
 
                     nota &= "Cierre en el hotel " & hotelName
                     If allRooms Then
@@ -75,15 +101,49 @@ Namespace API.Controller
                                 dsrateplans = .GetRatePlanByIdHotel(idHotel.ToString(), PortalCulture.GetIDCulture, 0, 1, idAsociacion:=page.GetIdAsociation, DeleteFilter:=1)
                             End With
                             If allRooms Then
-                                With New RoomFacade
-                                    dsrooms = .getRooms(idHotel)
-                                End With
+                                'With New RoomFacade
+                                '    dsrooms = .getRooms(idHotel)
+                                'End With
                                 'Se guarda por todos los rateplans y todas las habitaciones
                                 For Each drrateplan As DataRow In dsrateplans.Tables(0).Rows
                                     For Each drroom As DataRow In dsrooms.Tables(0).Rows
                                         service.SaveData(roomClosureRQ.IdHotel, dateClosure.StartDate, dateClosure.EndDate,
                                                  drrateplan(dsrateplans.FIELD_CODIGOTARIFA), drroom(dsrooms.FLD_ID_ROOM_HOTEL),
                                                  roomClosureRQ.Status)
+
+
+                                        Try
+
+                                            If isEnabledGoogleRequest Then
+
+                                                Dim dates As List(Of Tuple(Of Date, Date)) = New List(Of Tuple(Of Date, Date))
+                                                dates.Add(New Tuple(Of Date, Date)(dateClosure.StartDate, dateClosure.EndDate))
+
+                                                Dim lockRatePlans As List(Of spGetLockRatePlansByHotel_Result) = RestrictionHelper.CreateLockRatePlansByHotel(dates, roomClosureRQ.Status, drrateplan(dsrateplans.FIELD_CODIGOTARIFA).ToString())
+
+                                                Dim room As DataRow = rooms.FirstOrDefault(Function(r) r.Item(0).ToString() = drroom(dsrooms.FLD_ID_ROOM_HOTEL).ToString())
+
+                                                Dim availStatusMessagesLockRatePlans = RestrictionsParser.ToAvailStatusMessages(room, lockRatePlans)
+
+                                                Dim lockRatePlanHotelAvailNotifRQ = HotelAvailNotifRQ.CreateHotelAvailNotifRQ(availStatusMessagesLockRatePlans)
+
+                                                Dim lockRatePlanSoapRQ As XDocument = Soap.CreateSoapRequestXml(lockRatePlanHotelAvailNotifRQ)
+
+                                                Dim restrictionResponse As RestrictionResponse = confluxService.UpdateRestriction(lockRatePlanSoapRQ, RestrictionEnum.LockRoomType)
+
+                                                If restrictionResponse.IsSuccess Then
+                                                    pageBase.WriteLog(restrictionResponse.Restrictions(0).XmlRequest(0).ToString(), "LockRoomType")
+                                                    pageBase.WriteLog(restrictionResponse.Restrictions(0).Xml(0).ToString(), "LockRoomType")
+                                                Else
+                                                    pageBase.WriteLog(restrictionResponse.Xml.ToString(), "LockRoomType")
+                                                End If
+
+                                            End If 'Termina Google
+
+                                        Catch ex As Exception
+                                            pageBase.WriteLog(ex.Message, "LockRoomType")
+                                        End Try
+
                                     Next
                                 Next
                             Else
@@ -92,24 +152,123 @@ Namespace API.Controller
                                     service.SaveData(roomClosureRQ.IdHotel, dateClosure.StartDate, dateClosure.EndDate,
                                                 drrateplan(dsrateplans.FIELD_CODIGOTARIFA), roomClosureRQ.RoomOption,
                                                 roomClosureRQ.Status)
+
+                                    Try
+
+                                        If isEnabledGoogleRequest Then
+
+                                            Dim dates As List(Of Tuple(Of Date, Date)) = New List(Of Tuple(Of Date, Date))
+                                            dates.Add(New Tuple(Of Date, Date)(dateClosure.StartDate, dateClosure.EndDate))
+
+                                            Dim lockRatePlans As List(Of spGetLockRatePlansByHotel_Result) = RestrictionHelper.CreateLockRatePlansByHotel(dates, roomClosureRQ.Status, drrateplan(dsrateplans.FIELD_CODIGOTARIFA).ToString())
+
+                                            Dim room As DataRow = rooms.FirstOrDefault(Function(r) r.Item(0).ToString() = roomClosureRQ.RoomOption)
+
+                                            Dim availStatusMessagesLockRatePlans = RestrictionsParser.ToAvailStatusMessages(room, lockRatePlans)
+
+                                            Dim lockRatePlanHotelAvailNotifRQ = HotelAvailNotifRQ.CreateHotelAvailNotifRQ(availStatusMessagesLockRatePlans)
+
+                                            Dim lockRatePlanSoapRQ As XDocument = Soap.CreateSoapRequestXml(lockRatePlanHotelAvailNotifRQ)
+
+                                            Dim restrictionResponse As RestrictionResponse = confluxService.UpdateRestriction(lockRatePlanSoapRQ, RestrictionEnum.LockRoomType)
+
+                                            If restrictionResponse.IsSuccess Then
+                                                pageBase.WriteLog(restrictionResponse.Restrictions(0).XmlRequest(0).ToString(), "LockRoomType")
+                                                pageBase.WriteLog(restrictionResponse.Restrictions(0).Xml(0).ToString(), "LockRoomType")
+                                            Else
+                                                pageBase.WriteLog(restrictionResponse.Xml.ToString(), "LockRoomType")
+                                            End If
+
+                                        End If 'Termina Google
+                                    Catch ex As Exception
+                                        pageBase.WriteLog(ex.Message, "LockRoomType")
+                                    End Try
+
+
                                 Next
                             End If
                         Else
                             If allRooms Then
-                                With New RoomFacade
-                                    dsrooms = .getRooms(idHotel)
-                                End With
+                                'With New RoomFacade
+                                '    dsrooms = .getRooms(idHotel)
+                                'End With
                                 'Se guarda por el rateplan que se eligio y todas las habitaciones
                                 For Each drroom As DataRow In dsrooms.Tables(0).Rows
                                     service.SaveData(roomClosureRQ.IdHotel, dateClosure.StartDate, dateClosure.EndDate,
                                                ratePlan.Code, drroom(dsrooms.FLD_ID_ROOM_HOTEL),
                                                roomClosureRQ.Status)
+
+                                    Try
+
+                                        If isEnabledGoogleRequest Then
+
+                                            Dim dates As List(Of Tuple(Of Date, Date)) = New List(Of Tuple(Of Date, Date))
+                                            dates.Add(New Tuple(Of Date, Date)(dateClosure.StartDate, dateClosure.EndDate))
+
+                                            Dim lockRatePlans As List(Of spGetLockRatePlansByHotel_Result) = RestrictionHelper.CreateLockRatePlansByHotel(dates, roomClosureRQ.Status, ratePlan.Code)
+
+                                            Dim room As DataRow = rooms.FirstOrDefault(Function(r) r.Item(0).ToString() = drroom(dsrooms.FLD_ID_ROOM_HOTEL).ToString())
+
+                                            Dim availStatusMessagesLockRatePlans = RestrictionsParser.ToAvailStatusMessages(room, lockRatePlans)
+
+                                            Dim lockRatePlanHotelAvailNotifRQ = HotelAvailNotifRQ.CreateHotelAvailNotifRQ(availStatusMessagesLockRatePlans)
+
+                                            Dim lockRatePlanSoapRQ As XDocument = Soap.CreateSoapRequestXml(lockRatePlanHotelAvailNotifRQ)
+
+                                            Dim restrictionResponse As RestrictionResponse = confluxService.UpdateRestriction(lockRatePlanSoapRQ, RestrictionEnum.LockRoomType)
+
+                                            If restrictionResponse.IsSuccess Then
+                                                pageBase.WriteLog(restrictionResponse.Restrictions(0).XmlRequest(0).ToString(), "LockRoomType")
+                                                pageBase.WriteLog(restrictionResponse.Restrictions(0).Xml(0).ToString(), "LockRoomType")
+                                            Else
+                                                pageBase.WriteLog(restrictionResponse.Xml.ToString(), "LockRoomType")
+                                            End If
+
+                                        End If 'Termina Google
+
+                                    Catch ex As Exception
+                                        pageBase.WriteLog(ex.Message, "LockRoomType")
+                                    End Try
+
                                 Next
                             Else
                                 'Se guarda por el rateplan que se eligio y la habitacion que se eligio
                                 service.SaveData(roomClosureRQ.IdHotel, dateClosure.StartDate, dateClosure.EndDate,
                                                ratePlan.Code, roomClosureRQ.RoomOption,
                                                roomClosureRQ.Status)
+
+                                If isEnabledGoogleRequest Then
+
+                                    Try
+
+                                        Dim dates As List(Of Tuple(Of Date, Date)) = New List(Of Tuple(Of Date, Date))
+                                        dates.Add(New Tuple(Of Date, Date)(dateClosure.StartDate, dateClosure.EndDate))
+
+                                        Dim lockRatePlans As List(Of spGetLockRatePlansByHotel_Result) = RestrictionHelper.CreateLockRatePlansByHotel(dates, roomClosureRQ.Status, ratePlan.Code)
+
+                                        Dim room As DataRow = rooms.FirstOrDefault(Function(r) r.Item(0).ToString() = roomClosureRQ.RoomOption)
+
+                                        Dim availStatusMessagesLockRatePlans = RestrictionsParser.ToAvailStatusMessages(room, lockRatePlans)
+
+                                        Dim lockRatePlanHotelAvailNotifRQ = HotelAvailNotifRQ.CreateHotelAvailNotifRQ(availStatusMessagesLockRatePlans)
+
+                                        Dim lockRatePlanSoapRQ As XDocument = Soap.CreateSoapRequestXml(lockRatePlanHotelAvailNotifRQ)
+
+                                        Dim restrictionResponse As RestrictionResponse = confluxService.UpdateRestriction(lockRatePlanSoapRQ, RestrictionEnum.LockRoomType)
+
+                                        If restrictionResponse.IsSuccess Then
+                                            pageBase.WriteLog(restrictionResponse.Restrictions(0).XmlRequest(0).ToString(), "LockRoomType")
+                                            pageBase.WriteLog(restrictionResponse.Restrictions(0).Xml(0).ToString(), "LockRoomType")
+                                        Else
+                                            pageBase.WriteLog(restrictionResponse.Xml.ToString(), "LockRoomType")
+                                        End If
+
+                                    Catch ex As Exception
+                                        pageBase.WriteLog(ex.Message, "LockRoomType")
+                                    End Try
+
+                                End If
+
                             End If
                         End If
 

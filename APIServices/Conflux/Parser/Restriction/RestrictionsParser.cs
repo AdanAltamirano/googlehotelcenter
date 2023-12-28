@@ -45,6 +45,38 @@ namespace APIServices.Conflux.Parser.Restriction
 
         }
 
+        public static AvailStatusMessages ToAvailStatusMessages(DataRow activeRoom, List<spGetLockRatePlansByHotel_Result> lockRatePlans)
+        {
+            AvailStatusMessages availStatusMessages = new AvailStatusMessages()
+            {
+                HotelCode = HotelCode,
+                AvailStatusMessageList = new List<AvailStatusMessage>()
+            };
+
+
+            foreach (var lockRatePlan in lockRatePlans)
+            {
+                AvailStatusMessage availStatusMessage = new AvailStatusMessage();
+                availStatusMessage.StatusApplicationControl = new StatusApplicationControl()
+                {
+                    Start = (DateTime)lockRatePlan.StartDate,
+                    End = (DateTime)lockRatePlan.EndDate,
+                    InvTypeCode = activeRoom.ItemArray[22].ToString() ?? "",
+                    RatePlanCode = lockRatePlan.RatePlanId
+                };
+
+                availStatusMessage.RestrictionStatus = RestrictionHelper.GetRestrictionStatus(lockRatePlan.Status);
+
+                availStatusMessages.AvailStatusMessageList.Add(availStatusMessage);
+
+            }
+
+            return availStatusMessages;
+
+        }
+
+
+
         public static AvailStatusMessages ToAvailStatusMessages(List<DataRow> activeRooms, List<spGetLockRatePlansByHotel_Result> lockRatePlans)
         {
             AvailStatusMessages availStatusMessages = new AvailStatusMessages()
@@ -100,6 +132,11 @@ namespace APIServices.Conflux.Parser.Restriction
             return availStatusMessages;
 
         }
+
+
+
+
+
 
         public static AvailStatusMessages ToAvailStatusMessages(List<spGetLockGralByHotel_Result> locksGral ,List<DataRow> rooms, List<DataRow> ratePlans)
         {
