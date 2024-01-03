@@ -21,6 +21,8 @@ Partial Class ctrRatePlan
     Protected WithEvents Button2 As System.Web.UI.WebControls.Button
     Protected WithEvents CheckBox1 As System.Web.UI.WebControls.CheckBox
     Protected WithEvents hotelPayment As System.Web.UI.WebControls.CheckBox
+    Protected WithEvents portalMovil As System.Web.UI.WebControls.CheckBox
+    Protected WithEvents onlyCC As System.Web.UI.WebControls.CheckBox
 
     Protected WithEvents ctrPortal1 As ctrPortal
     '''Protected WithEvents trPortal As System.Web.UI.HtmlControls.HtmlTableRow
@@ -539,11 +541,12 @@ Partial Class ctrRatePlan
             End If
             .Item(dsRate.FIELD_DESCRIPTION) = Me.txtDescripcion.textodefault
 
-
             .Item(dsRate.FIELD_SEGMENT) = Me.ddlSegmentos.SelectedValue
             .Item(dsRate.FIELD_IDHOTEL) = Me.m_iHotelId
             .Item(dsRate.FIELD_IDDICDESC) = Me.txtDescripcion.IdIndice
             .Item(dsRate.FIELD_HOTELPAYMENT) = hotelPayment.Checked
+            .Item(dsRate.FIELD_ISMOBILERATE) = portalMovil.Checked
+            .Item(dsRate.FIELD_ISCALLCENTERONLY) = onlyCC.Checked
             .Item(dsRate.FIELD_CODIGOTARIFA) = Me.txtRateCode.Text.ToUpper
             .Item(dsRate.FIELD_NAME) = Me.txtShortDescription.textodefault
             .Item(dsRate.FIELD_IDDICSHORTDESC) = Me.txtShortDescription.IdIndice
@@ -835,6 +838,10 @@ Partial Class ctrRatePlan
     '    End With
     'End Function
 
+    Private Sub onlyCC_On_Checked_Change(ByVal sender As Object, ByVal e As System.EventArgs) Handles onlyCC.CheckedChanged
+
+    End Sub
+
     Private Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.PreRender
         loadResources()
         If Me.edicion Then
@@ -936,6 +943,19 @@ Partial Class ctrRatePlan
                 Else
                     hotelPayment.Checked = False
                 End If
+
+                If Not .IsNull(dsRatePlan.FIELD_ISMOBILERATE) Then
+                    portalMovil.Checked = .Item(dsRatePlan.FIELD_ISMOBILERATE)
+                Else
+                    portalMovil.Checked = False
+                End If
+
+                If Not .IsNull(dsRatePlan.FIELD_ISCALLCENTERONLY) Then
+                    onlyCC.Checked = .Item(dsRatePlan.FIELD_ISCALLCENTERONLY)
+                Else
+                    onlyCC.Checked = False
+                End If
+
                 Trace.Write("HotelPayment despues")
                 If Not .IsNull(dsRatePlan.FIELD_IDDICSHORTDESC) Then
                     idShortDesc = .Item(dsRatePlan.FIELD_IDDICSHORTDESC)
@@ -1157,6 +1177,8 @@ Partial Class ctrRatePlan
 
     Public Sub ClearData()
         Me.hotelPayment.Checked = False
+        Me.portalMovil.Checked = False
+        Me.onlyCC.Checked = False
         Me.HasData = False
         txtDescripcion.Limpia()
         Me.txtPromoDescription.Limpia()
@@ -1226,6 +1248,8 @@ Partial Class ctrRatePlan
         ddlContratosNR.Items.Insert(0, PortalCulture.GetString("M000482"))
         ddlContratosNR.Items(0).Value = 0
     End Sub
+
+
 
     Public Sub SetMsgTarifasCom1(ByVal script As String)
         ddlContratosNR.Attributes.Add("onChange", script)

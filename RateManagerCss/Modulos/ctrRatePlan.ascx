@@ -3,6 +3,9 @@
 <%@ Register TagPrefix="uc1" TagName="CtrlIdioma" Src="CtrlIdioma.ascx" %>
 
 <script src="../Pages/Scripts/jquery.min.js" type="text/javascript"></script>
+
+
+
 <script type="text/javascript">
     
     var descriptionWasChanged = false;
@@ -401,6 +404,22 @@
 </script>
 <asp:HiddenField ID="strError" runat="server" />
 
+<div id="msgGoogleHC" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Se ah seleccionado: Es Movil / Exclusivo Call Center</h2>
+        </div>
+        <div class="modal-body">
+            <h4 class="msg">Actualmente esta característica solo aplicará para el envío de información hacía Google Hotel Center. Posteriormente se implementarán validaciones que aplicarán en Call Center y Motor de reservaciones de Internet Power Hotel.</h4>
+        </div>
+        <div class="modal-footer">
+            <input type="button" value="Aceptar" onclick="closeModal();" />
+        </div>
+    </div>
+</div>
+
 <table id="Table1" class="Form" cellspacing="1" cellpadding="1" width="100%" border="0">
     <tbody>
 
@@ -466,6 +485,8 @@
 
                 <span id="spanHotelPayment">
                     <asp:CheckBox ID="hotelPayment" CssClass="clslabel" runat="server" Text="Hotel Payment"></asp:CheckBox>
+                    <asp:CheckBox ID="portalMovil" CssClass="clslabel" runat="server" Text="Its movil"></asp:CheckBox>
+                    <asp:CheckBox ID="onlyCC" CssClass="clslabel" runat="server" Text="Call Center Exclusive"></asp:CheckBox>
                 </span>
             </td>
         </tr>
