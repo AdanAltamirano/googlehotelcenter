@@ -26,11 +26,15 @@ namespace APIServices.Conflux.Parser.Restriction
 
             foreach(var lockRoomType in lockRoomTypesList)
             {
+                var starDate = ((DateTime)lockRoomType.StartDate).Date < DateTime.Now.Date ? DateTime.Now.Date : ((DateTime)lockRoomType.StartDate).Date;
+                var diff = ((DateTime)lockRoomType.EndDate).Date - starDate.Date;
+                var endDate = diff.TotalDays > 1096 ? starDate.AddYears(3) : ((DateTime)lockRoomType.EndDate).Date;
+
                 AvailStatusMessage availStatusMessage = new AvailStatusMessage();
                 availStatusMessage.StatusApplicationControl = new StatusApplicationControl()
                 {
-                    Start = (DateTime) lockRoomType.StartDate,
-                    End = (DateTime) lockRoomType.EndDate,
+                    Start = starDate.Date,
+                    End = endDate.Date,
                     InvTypeCode = lockRoomType.RoomCode,
                     RatePlanCode = lockRoomType.RatePlanId
                 };
@@ -56,11 +60,16 @@ namespace APIServices.Conflux.Parser.Restriction
 
             foreach (var lockRatePlan in lockRatePlans)
             {
+
+                var starDate = ((DateTime)lockRatePlan.StartDate).Date < DateTime.Now.Date ? DateTime.Now.Date : ((DateTime)lockRatePlan.StartDate).Date;
+                var diff = ((DateTime)lockRatePlan.EndDate).Date - starDate.Date;
+                var endDate = diff.TotalDays > 1096 ? starDate.AddYears(3) : ((DateTime)lockRatePlan.EndDate).Date;
+
                 AvailStatusMessage availStatusMessage = new AvailStatusMessage();
                 availStatusMessage.StatusApplicationControl = new StatusApplicationControl()
                 {
-                    Start = (DateTime)lockRatePlan.StartDate,
-                    End = (DateTime)lockRatePlan.EndDate,
+                    Start = starDate.Date,
+                    End = endDate.Date,
                     InvTypeCode = activeRoom.ItemArray[22].ToString() ?? "",
                     RatePlanCode = lockRatePlan.RatePlanId
                 };
@@ -89,11 +98,15 @@ namespace APIServices.Conflux.Parser.Restriction
             {
                 foreach(var lockRatePlan in lockRatePlans)
                 {
+                    var starDate = ((DateTime)lockRatePlan.StartDate).Date < DateTime.Now.Date ? DateTime.Now.Date : ((DateTime)lockRatePlan.StartDate).Date;
+                    var diff = ((DateTime)lockRatePlan.EndDate).Date - starDate.Date;
+                    var endDate = diff.TotalDays > 1096 ? starDate.AddYears(3) : ((DateTime)lockRatePlan.EndDate).Date;
+
                     AvailStatusMessage availStatusMessage = new AvailStatusMessage();
                     availStatusMessage.StatusApplicationControl = new StatusApplicationControl()
                     {
-                        Start = (DateTime)lockRatePlan.StartDate,
-                        End = (DateTime)lockRatePlan.EndDate,
+                        Start = starDate.Date,
+                        End = endDate.Date,
                         InvTypeCode = activeRoom.ItemArray[22].ToString() ?? "",
                         RatePlanCode = lockRatePlan.RatePlanId
                     };
@@ -152,11 +165,15 @@ namespace APIServices.Conflux.Parser.Restriction
                 {
                     foreach(var rateplan in ratePlans)
                     {
+                        var starDate = ((DateTime)lockGral.StartDate).Date < DateTime.Now.Date ? DateTime.Now.Date : ((DateTime)lockGral.StartDate).Date;
+                        var diff = ((DateTime)lockGral.EndDate).Date - starDate.Date;
+                        var endDate = diff.TotalDays > 1096 ? starDate.AddYears(3) : ((DateTime)lockGral.EndDate).Date;
+
                         AvailStatusMessage availStatusMessage = new AvailStatusMessage();
                         availStatusMessage.StatusApplicationControl = new StatusApplicationControl()
                         {
-                            Start = (DateTime)lockGral.StartDate,
-                            End = (DateTime)lockGral.EndDate,
+                            Start = starDate.Date,
+                            End = endDate.Date,
                             InvTypeCode = room.ItemArray[22].ToString() ?? "",
                             RatePlanCode = rateplan.ItemArray[0].ToString()
                         };

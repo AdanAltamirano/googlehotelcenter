@@ -165,9 +165,14 @@ namespace APIServices.Conflux.Parser
 
                     List<Rate> rates = new List<Rate>();
 
+                    var starDate = vDayRate.StartDate.Date < DateTime.Now.Date ? DateTime.Now.Date : vDayRate.StartDate.Date;
+                    var diff = vDayRate.EndDate.Date - starDate.Date;
+                    var endDate = diff.TotalDays > 1096 ? starDate.AddYears(3) : vDayRate.EndDate.Date;
+
+
                     Rate rate = new Rate();
-                    rate.StartDate = vDayRate.StartDate < DateTime.Now.Date ? DateTime.Now.Date.ToString("yyyyMMdd") : vDayRate.StartDate.ToString("yyyyMMdd");//revisar el formato
-                    rate.EndDate = vDayRate.EndDate.ToString("yyyyMMdd");
+                    rate.StartDate = starDate.Date.ToString("yyyyMMdd");//revisar el formato
+                    rate.EndDate = endDate.Date.ToString("yyyyMMdd");
 
                     if (vDayRate.IsPromotion)
                     {
@@ -235,8 +240,8 @@ namespace APIServices.Conflux.Parser
                     {
                         Rate rateException = new Rate();
                         rateException.HasPriceException = true;
-                        rateException.StartDate = vDayRate.StartDate < DateTime.Now.Date ? DateTime.Now.Date.ToString("yyyyMMdd") : vDayRate.StartDate.ToString("yyyyMMdd");
-                        rateException.EndDate = vDayRate.EndDate.ToString("yyyyMMdd");
+                        rateException.StartDate = starDate.Date.ToString("yyyyMMdd");
+                        rateException.EndDate = endDate.Date.ToString("yyyyMMdd");
 
                         rateException.ApplyMon = vDayRate.ExceptionMap[0] == 'Y' ? true : false;
                         rateException.ApplyTue = vDayRate.ExceptionMap[1] == 'Y' ? true : false;
@@ -289,10 +294,15 @@ namespace APIServices.Conflux.Parser
 
                     List<Rate> rates = new List<Rate>();
 
+                    var starDate = vDayRate.StartDate.Date < DateTime.Now.Date ? DateTime.Now.Date : vDayRate.StartDate.Date;
+                    var diff = vDayRate.EndDate.Date - starDate.Date;
+                    var endDate = diff.TotalDays > 1096 ? starDate.AddYears(3) : vDayRate.EndDate.Date;
+
+
                     Rate rate = new Rate();
                     rate.TypeRate = TypeRateEnum.RoomRatePromotion;
-                    rate.StartDate = vDayRate.StartDate < DateTime.Now.Date ? DateTime.Now.Date.ToString("yyyyMMdd") : vDayRate.StartDate.ToString("yyyyMMdd");//revisar el formato
-                    rate.EndDate = vDayRate.EndDate.ToString("yyyyMMdd");
+                    rate.StartDate = starDate.Date.ToString("yyyyMMdd");
+                    rate.EndDate = endDate.Date.ToString("yyyyMMdd");
 
                     if (vDayRate.IsPromotion)
                     {
@@ -368,8 +378,8 @@ namespace APIServices.Conflux.Parser
                     {
                         Rate rateException = new Rate();
                         rateException.HasPriceException = true;
-                        rateException.StartDate = vDayRate.StartDate < DateTime.Now.Date ? DateTime.Now.Date.ToString("yyyyMMdd") : vDayRate.StartDate.ToString("yyyyMMdd");
-                        rateException.EndDate = vDayRate.EndDate.ToString("yyyyMMdd");
+                        rateException.StartDate = starDate.Date.ToString("yyyyMMdd");
+                        rateException.EndDate = endDate.Date.ToString("yyyyMMdd");
 
                         rateException.ApplyMon = vDayRate.ExceptionMap[0] == 'Y' ? true : false;
                         rateException.ApplyTue = vDayRate.ExceptionMap[1] == 'Y' ? true : false;
@@ -427,9 +437,13 @@ namespace APIServices.Conflux.Parser
 
                     List<Rate> rates = new List<Rate>();
 
+                    var starDate = vDayRate.StartDate.Date < DateTime.Now.Date ? DateTime.Now.Date : vDayRate.StartDate.Date;
+                    var diff = vDayRate.EndDate.Date - starDate.Date;
+                    var endDate = diff.TotalDays > 1096 ? starDate.AddYears(3) : vDayRate.EndDate.Date;
+
                     Rate rate = new Rate();
-                    rate.StartDate = vDayRate.StartDate < DateTime.Now.Date ? DateTime.Now.Date.ToString("yyyyMMdd") : vDayRate.StartDate.ToString("yyyyMMdd");//revisar el formato
-                    rate.EndDate = vDayRate.EndDate.ToString("yyyyMMdd");
+                    rate.StartDate = starDate.Date.ToString("yyyyMMdd");
+                    rate.EndDate = endDate.Date.ToString("yyyyMMdd");
 
                     if (vDayRate.IsPromotion)
                     {
@@ -500,8 +514,8 @@ namespace APIServices.Conflux.Parser
                     {
                         Rate rateException = new Rate();
                         rateException.HasPriceException = true;
-                        rateException.StartDate = vDayRate.StartDate < DateTime.Now.Date ? DateTime.Now.Date.ToString("yyyyMMdd") : vDayRate.StartDate.ToString("yyyyMMdd");
-                        rateException.EndDate = vDayRate.EndDate.ToString("yyyyMMdd");
+                        rateException.StartDate = starDate.Date.ToString("yyyyMMdd");
+                        rateException.EndDate = endDate.Date.ToString("yyyyMMdd");
 
                         rateException.ApplyMon = vDayRate.ExceptionMap[0] == 'Y' ? true : false;
                         rateException.ApplyTue = vDayRate.ExceptionMap[1] == 'Y' ? true : false;
@@ -554,10 +568,14 @@ namespace APIServices.Conflux.Parser
 
                     List<Rate> rates = new List<Rate>();
 
+                    var startDate = vDayRate.StartDate.Date < DateTime.Now.Date ? DateTime.Now.Date : vDayRate.StartDate.Date;
+                    var diff = vDayRate.EndDate.Date - startDate.Date;
+                    var endDate = diff.TotalDays > 1096 ? startDate.AddYears(3) : vDayRate.EndDate.Date;
+
                     Rate rate = new Rate();
                     rate.TypeRate = TypeRateEnum.RoomRatePromotion;
-                    rate.StartDate = vDayRate.StartDate < DateTime.Now.Date ? DateTime.Now.Date.ToString("yyyyMMdd") : vDayRate.StartDate.ToString("yyyyMMdd");//revisar el formato
-                    rate.EndDate = vDayRate.EndDate.ToString("yyyyMMdd");
+                    rate.StartDate = startDate.Date.ToString("yyyyMMdd");
+                    rate.EndDate = endDate.Date.ToString("yyyyMMdd");
 
                     if (vDayRate.IsPromotion)
                     {
@@ -639,8 +657,8 @@ namespace APIServices.Conflux.Parser
                     {
                         Rate rateException = new Rate();
                         rateException.HasPriceException = true;
-                        rateException.StartDate = vDayRate.StartDate < DateTime.Now.Date ? DateTime.Now.Date.ToString("yyyyMMdd") : vDayRate.StartDate.ToString("yyyyMMdd");
-                        rateException.EndDate = vDayRate.EndDate.ToString("yyyyMMdd");
+                        rateException.StartDate = startDate.Date.ToString("yyyyMMdd");
+                        rateException.EndDate = endDate.Date.ToString("yyyyMMdd");
 
                         rateException.ApplyMon = vDayRate.ExceptionMap[0] == 'Y' ? true : false;
                         rateException.ApplyTue = vDayRate.ExceptionMap[1] == 'Y' ? true : false;
