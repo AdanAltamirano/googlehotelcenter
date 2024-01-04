@@ -14,6 +14,15 @@ Option Explicit On
 Partial Public Class PmsCoincidences
 
     '''<summary>
+    '''Control lblHotelSelected.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblHotelSelected As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
     '''Control lblTitle.
     '''</summary>
     '''<remarks>
@@ -23,6 +32,15 @@ Partial Public Class PmsCoincidences
     Protected WithEvents lblTitle As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
+    '''Control lblCorp.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblCorp As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
     '''Control ddlCorporatives.
     '''</summary>
     '''<remarks>
@@ -30,6 +48,15 @@ Partial Public Class PmsCoincidences
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
     Protected WithEvents ddlCorporatives As Global.System.Web.UI.WebControls.DropDownList
+
+    '''<summary>
+    '''Control lblHotels.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblHotels As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
     '''Control ddlHoteles.
@@ -59,13 +86,31 @@ Partial Public Class PmsCoincidences
     Protected WithEvents btnExcel As Global.System.Web.UI.WebControls.HyperLink
 
     '''<summary>
-    '''Control lblHotelSelected.
+    '''Control btnSendToConflux.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents lblHotelSelected As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents btnSendToConflux As Global.System.Web.UI.WebControls.Button
+
+    '''<summary>
+    '''Control lbl_PMS_Data.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lbl_PMS_Data As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control generalTable.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents generalTable As Global.System.Web.UI.WebControls.Table
 
     '''<summary>
     '''Control lblRatesPlan.
@@ -74,25 +119,16 @@ Partial Public Class PmsCoincidences
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents lblRatesPlan As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblRatesPlan As Global.System.Web.UI.WebControls.TableHeaderCell
 
     '''<summary>
-    '''Control lblHoteles.
+    '''Control lblRooms.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents lblHoteles As Global.System.Web.UI.WebControls.Label
-
-    '''<summary>
-    '''Control renglonDatos.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents renglonDatos As Global.System.Web.UI.HtmlControls.HtmlTableRow
+    Protected WithEvents lblRooms As Global.System.Web.UI.WebControls.TableHeaderCell
 
     '''<summary>
     '''Control ratesPlan.
@@ -149,6 +185,42 @@ Partial Public Class PmsCoincidences
     Protected WithEvents msgRooms As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
+    '''Control lbl_Conflux_Data_RP.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lbl_Conflux_Data_RP As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control dgCFRP.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents dgCFRP As Global.System.Web.UI.WebControls.DataGrid
+
+    '''<summary>
+    '''Control lbl_Conflux_Data_RT.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lbl_Conflux_Data_RT As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control dgCFRT.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents dgCFRT As Global.System.Web.UI.WebControls.DataGrid
+
+    '''<summary>
     '''Control lblMsgActualizacion.
     '''</summary>
     '''<remarks>
@@ -156,15 +228,6 @@ Partial Public Class PmsCoincidences
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
     Protected WithEvents lblMsgActualizacion As Global.System.Web.UI.WebControls.Label
-
-    '''<summary>
-    '''Control renglonBotones.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents renglonBotones As Global.System.Web.UI.HtmlControls.HtmlTableRow
 
     '''<summary>
     '''Control btnAceptar.

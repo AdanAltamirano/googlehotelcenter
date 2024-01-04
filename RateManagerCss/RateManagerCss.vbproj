@@ -58,9 +58,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Albums.AccesoDato">
-      <HintPath>..\packages\RateManager.IvSolution.1.0.0\lib\net45\Albums.AccesoDato.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Albums.AccesoDato, Version=1.0.4490.24136, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Albums.AccesoDato.dll</HintPath>
     </Reference>
     <Reference Include="Albums.Comun">
       <HintPath>..\packages\RateManager.IvSolution.1.0.0\lib\net45\Albums.Comun.dll</HintPath>
