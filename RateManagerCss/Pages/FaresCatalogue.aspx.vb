@@ -259,7 +259,7 @@ Partial Class FaresCatalogue
 
 
                     Dim res As RateResponse = confluxService.DeleteRates(rateAmountMessages)
-                    Me.guardalog("/Pages/FaresCatalogue.aspx", acciones.Eliminar, "", "", res.RequestXML, res.Xml, info.Hotel)
+                    Me.guardalog("/Pages/FaresCatalogue.aspx", acciones.Eliminar, "Eliminar tarifas Conflux", "", res.RequestXML, res.Xml, info.Hotel)
 
                 Catch ex As Exception
 
@@ -274,7 +274,7 @@ Partial Class FaresCatalogue
 
                     errorsElement.Add(errorElementProperty)
 
-                    Me.guardalog("/Pages/FaresCatalogue.aspx", acciones.Eliminar, "", "", "", errorsElement.ToString(), info.Hotel)
+                    Me.guardalog("/Pages/FaresCatalogue.aspx", acciones.Eliminar, "Error al eliminar tarifas Conflux", "", "", errorsElement.ToString(), info.Hotel)
                 End Try
             End If
 
@@ -785,14 +785,14 @@ Partial Class FaresCatalogue
                                         Parser.Parser.ToRateAmountMessagesDelete(vDayRates, Nothing, TypeRateEnum.RoomRate, rateAmountMessages.RateAmountMessagesList)
 
                                         Dim deleleteResponse As RateResponse = confluxService.DeleteRates(rateAmountMessages)
-                                        Me.guardalog("/Pages/FaresCatalogue.aspx", acciones.Eliminar, "", "", deleleteResponse.RequestXML, deleleteResponse.Xml, info.Hotel)
+                                        Me.guardalog("/Pages/FaresCatalogue.aspx", acciones.Eliminar, "Tarifa para eliminar Conflux", "", deleleteResponse.RequestXML, deleleteResponse.Xml, info.Hotel)
 
                                     End If
 
                                     'Actualizar
                                     Dim res As RateResponse = confluxService.UpdateRate(auxFareId, f1, f2, info.Hotel, info.Empresa, TypeRateEnum.RoomRate)
 
-                                    Me.guardalog("/Pages/FaresCatalogue.aspx", acciones.Sincronizar, "", "", res.RequestXML, res.Xml, info.Hotel)
+                                    Me.guardalog("/Pages/FaresCatalogue.aspx", acciones.Sincronizar, "Tarifa enviada a Conflux", "", res.RequestXML, res.Xml, info.Hotel)
 
                                 Catch ex As Exception
 
@@ -807,7 +807,7 @@ Partial Class FaresCatalogue
 
                                     errorsElement.Add(errorElementProperty)
 
-                                    Me.guardalog("/Pages/FaresCatalogue.aspx", acciones.Sincronizar, "", "", "", errorsElement.ToString(), info.Hotel)
+                                    Me.guardalog("/Pages/FaresCatalogue.aspx", acciones.Sincronizar, "Error al sincronizar con Conflux", "", "", errorsElement.ToString(), info.Hotel)
                                 End Try
                             End If
 

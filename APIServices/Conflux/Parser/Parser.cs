@@ -152,7 +152,7 @@ namespace APIServices.Conflux.Parser
             foreach (var vDayRate in vDayRates)
             {
                 //El Segmento no esta en los segmentos no validos
-                if (vDayRate.Segment.IndexOfAny(segmentsNoRates) == -1)
+                if (vDayRate.Segment.IndexOfAny(segmentsNoRates) == -1 && (!vDayRate.IsMobileRate && !vDayRate.IsCallCenterOnly))
                 {
 
                     var prices = RatesHelpers.GetPrices(currentRate.RateId);
@@ -282,7 +282,7 @@ namespace APIServices.Conflux.Parser
 
             foreach (var vDayRate in vDayRates)
             {
-                if (vDayRate.Segment.IndexOfAny(segmentsNoRates) == -1)
+                if (vDayRate.Segment.IndexOfAny(segmentsNoRates) == -1 && (!vDayRate.IsMobileRate && !vDayRate.IsCallCenterOnly))
                 {
 
                     var prices = RatesHelpers.GetPricesPromotion(currentRate.RateId);
@@ -423,7 +423,7 @@ namespace APIServices.Conflux.Parser
             foreach (var vDayRate in vDayRates)
             {
 
-                if (vDayRate.Segment.IndexOfAny(segmentsNoRates) == -1)
+                if (vDayRate.Segment.IndexOfAny(segmentsNoRates) == -1 && (!vDayRate.IsMobileRate && !vDayRate.IsCallCenterOnly))
                 {
 
                     var prices = RatesHelpers.GetPrices(vDayRate.RateId);
@@ -554,7 +554,7 @@ namespace APIServices.Conflux.Parser
 
             foreach (var vDayRate in vDayRates)
             {
-                if (vDayRate.Segment.IndexOfAny(segmentsNoRates) == -1)
+                if (vDayRate.Segment.IndexOfAny(segmentsNoRates) == -1 && (!vDayRate.IsMobileRate && !vDayRate.IsCallCenterOnly))
                 {
 
                     var prices = RatesHelpers.GetPricesPromotion(vDayRate.RateId);

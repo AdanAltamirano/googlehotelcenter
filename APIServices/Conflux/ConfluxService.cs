@@ -498,11 +498,16 @@ namespace APIServices.Conflux
 
                 var soapRequest = Soap.CreateSoapRequestXml(xml);
 
-                HttpContent httpContent = new StringContent(soapRequest.ToString());
-
                 string url = ConfigurationManager.AppSettings["confluxApiUrl"] + "pms/ota/rates/delete";
 
                 var uri = new Uri(url);
+
+                var request = new HttpRequestMessage
+                {
+                    Method = HttpMethod.Delete,
+                    RequestUri = uri,
+                    Content = new StringContent(soapRequest.ToString())
+                };
 
                 System.Xml.Linq.XElement otaRS = null;
 
@@ -510,7 +515,7 @@ namespace APIServices.Conflux
                 {
 
                     client.Timeout = TimeSpan.FromMinutes(50);
-                    var response = client.PostAsync(uri, httpContent).Result;
+                    var response = client.SendAsync(request).Result;
 
                     string result = response.Content.ReadAsStringAsync().Result; //regresa un xml
 

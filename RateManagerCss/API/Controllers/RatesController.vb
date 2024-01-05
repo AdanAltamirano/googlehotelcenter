@@ -60,7 +60,7 @@ Namespace API.Controllers
 
                                 Dim res As RateResponse = ConfluxService.UpdateRate(rate.idTarifa, rate.FechaInicia, rate.FechaFinaliza, HotelId, info.Empresa, TypeRateEnum.RoomRate)
 
-                                Log(hotelId:=RQ.HotelId, action:=acciones.Sincronizar, room:="", startDate:=Nothing, endDate:=Nothing, rateCode:="", xml:=res.Xml, dataXml:=res.RequestXML)
+                                Log(hotelId:=RQ.HotelId, action:=acciones.Sincronizar, room:="", startDate:=Nothing, endDate:=Nothing, rateCode:="", xml:=res.Xml, dataXml:=res.RequestXML, note:="Tarifa enviada a Conflux")
 
                             Next
 
@@ -77,7 +77,7 @@ Namespace API.Controllers
 
                             errorsElement.Add(errorElementProperty)
 
-                            Log(RQ.HotelId, acciones.Sincronizar, "", Nothing, Nothing, "", xml:=errorsElement.ToString())
+                            Log(RQ.HotelId, acciones.Sincronizar, "", Nothing, Nothing, "", xml:=errorsElement.ToString(), note:="No se pudo enviar la tarifa a Conflux")
 
                         End Try
                     End If
@@ -90,7 +90,9 @@ Namespace API.Controllers
 
                             Dim xml As String = CreateXml(serviceRQ.RoomCode, serviceRQ.RoomName, rate)
 
-                            Log(RQ.HotelId, acciones.Crear, serviceRQ.RoomCode, rate.FechaInicia, rate.FechaFinaliza, rate.idrateplan, xml)
+                            Dim msg As String = "Se creó la tarifa de la habitación " & serviceRQ.RoomCode & " de la fecha " & rate.FechaInicia.ToString("MM/dd/yyyy") & " a la fecha " & rate.FechaFinaliza.ToString("MM/dd/yyyy") & " con el rateplan " & rate.idrateplan
+
+                            Log(RQ.HotelId, acciones.Crear, serviceRQ.RoomCode, rate.FechaInicia, rate.FechaFinaliza, rate.idrateplan, xml, note:=msg)
 
                         Next
                     End If
@@ -134,7 +136,7 @@ Namespace API.Controllers
 
                                 Dim res As RateResponse = ConfluxService.UpdateRate(rate.idTarifa, rate.FechaInicia, rate.FechaFinaliza, HotelId, info.Empresa, TypeRateEnum.RoomRate)
 
-                                Log(hotelId:=RQ.HotelId, action:=acciones.Sincronizar, room:="", startDate:=Nothing, endDate:=Nothing, rateCode:="", xml:=res.Xml, dataXml:=res.RequestXML)
+                                Log(hotelId:=RQ.HotelId, action:=acciones.Sincronizar, room:="", startDate:=Nothing, endDate:=Nothing, rateCode:="", xml:=res.Xml, dataXml:=res.RequestXML, note:="Tarifa enviada a Conflux")
 
                             Next
 
@@ -151,7 +153,7 @@ Namespace API.Controllers
 
                             errorsElement.Add(errorElementProperty)
 
-                            Log(RQ.HotelId, acciones.Sincronizar, HotelId, "", Nothing, Nothing, xml:=errorsElement.ToString())
+                            Log(RQ.HotelId, acciones.Sincronizar, HotelId, "", Nothing, Nothing, xml:=errorsElement.ToString(), note:="No se pudo enviar la tarifa a Conflux")
                         End Try
                     End If
                 End If
@@ -163,7 +165,9 @@ Namespace API.Controllers
 
                             Dim xml As String = CreateXml(serviceRQ.RoomCode, serviceRQ.RoomName, rate)
 
-                            Log(RQ.HotelId, acciones.Crear, serviceRQ.RoomCode, rate.FechaInicia, rate.FechaFinaliza, rate.idrateplan, xml)
+                            Dim msg As String = "Se creó la tarifa de la habitación " & serviceRQ.RoomCode & " de la fecha " & rate.FechaInicia.ToString("MM/dd/yyyy") & " a la fecha " & rate.FechaFinaliza.ToString("MM/dd/yyyy") & " con el rateplan " & rate.idrateplan
+
+                            Log(RQ.HotelId, acciones.Crear, serviceRQ.RoomCode, rate.FechaInicia, rate.FechaFinaliza, rate.idrateplan, xml, note:=msg)
 
                         Next
                     End If
@@ -343,16 +347,18 @@ Namespace API.Controllers
             Return Week
         End Function
 
-        Private Sub Log(ByVal hotelId As Integer, ByVal action As acciones, ByVal room As String, ByVal startDate As Date, ByVal endDate As Date, ByVal rateCode As String, ByVal xml As String, Optional ByVal dataXml As String = "")
+        Private Sub Log(ByVal hotelId As Integer, ByVal action As acciones, ByVal room As String, ByVal startDate As Date, ByVal endDate As Date, ByVal rateCode As String, ByVal xml As String, Optional ByVal dataXml As String = "", Optional ByVal note As String = "")
 
-            Dim msg As String = ""
-            Select Case action
-                Case acciones.Crear
-                    msg = "Se creó la tarifa de la habitación " & room & " de la fecha " & startDate.ToString("MM/dd/yyyy") & " a la fecha " & endDate.ToString("MM/dd/yyyy") & " con el rateplan " & rateCode
-            End Select
+            'Dim msg As String = ""
+            'Select Case action
+            '    Case acciones.Crear
+            '        msg = "Se creó la tarifa de la habitación " & room & " de la fecha " & startDate.ToString("MM/dd/yyyy") & " a la fecha " & endDate.ToString("MM/dd/yyyy") & " con el rateplan " & rateCode
+            'End Select
+
+
 
             With (New PaginaBase)
-                .guardalog(pagina:="/rate-manager-ui/dist/rates-admin.aspx", action:=action, nota:=msg, peticion:="", datos:=dataXml, datosDespues:=xml, hotelId:=hotelId)
+                .guardalog(pagina:="/rate-manager-ui/dist/rates-admin.aspx", action:=action, nota:=note, peticion:="", datos:=dataXml, datosDespues:=xml, hotelId:=hotelId)
             End With
         End Sub
 

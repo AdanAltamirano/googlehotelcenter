@@ -246,7 +246,7 @@ Partial Public Class FaresCataloguePromo
                 Dim confluxService As New ConfluxService()
                 Try
                     Dim res As RateResponse = confluxService.DeleteRates(rateAmountMessages)
-                    Me.guardalog("/Pages/FaresCataloguePromo.aspx", acciones.Eliminar, "", "", res.RequestXML, res.Xml, info.Hotel)
+                    Me.guardalog("/Pages/FaresCataloguePromo.aspx", acciones.Eliminar, "Eliminar Tarifas Conflux", "", res.RequestXML, res.Xml, info.Hotel)
                 Catch ex As Exception
 
                     Dim errorsElement As New System.Xml.Linq.XElement("Errors")
@@ -260,7 +260,7 @@ Partial Public Class FaresCataloguePromo
 
                     errorsElement.Add(errorElementProperty)
 
-                    Me.guardalog("/Pages/FaresCataloguePromo.aspx", acciones.Eliminar, "", "", "", errorsElement.ToString(), info.Hotel)
+                    Me.guardalog("/Pages/FaresCataloguePromo.aspx", acciones.Eliminar, "Error al eliminar tarifas Conflux", "", "", errorsElement.ToString(), info.Hotel)
                 End Try
             End If
 
@@ -738,13 +738,13 @@ Partial Public Class FaresCataloguePromo
                                         Parser.Parser.ToRateAmountMessagesDelete(Nothing, vDayRates, TypeRateEnum.RoomRatePromotion, rateAmountMessages.RateAmountMessagesList)
 
                                         Dim deleleteResponse As RateResponse = confluxService.DeleteRates(rateAmountMessages)
-                                        Me.guardalog("/Pages/FaresCataloguePromo.aspx", acciones.Eliminar, "", "", deleleteResponse.RequestXML, deleleteResponse.Xml, info.Hotel)
+                                        Me.guardalog("/Pages/FaresCataloguePromo.aspx", acciones.Eliminar, "Eliminar Tarifa Conflux", "", deleleteResponse.RequestXML, deleleteResponse.Xml, info.Hotel)
                                     End If
 
                                     'Actualizar
                                     Dim res As RateResponse = confluxService.UpdateRate(auxFareId, f1, f2, info.Hotel, info.Empresa, TypeRateEnum.RoomRatePromotion)
 
-                                    Me.guardalog("/Pages/FaresCataloguePromo.aspx", acciones.Sincronizar, "", "", res.RequestXML, res.Xml, info.Hotel)
+                                    Me.guardalog("/Pages/FaresCataloguePromo.aspx", acciones.Sincronizar, "Tarifa enviada a Conflux", "", res.RequestXML, res.Xml, info.Hotel)
 
                                 Catch ex As Exception
 
@@ -759,7 +759,7 @@ Partial Public Class FaresCataloguePromo
 
                                     errorsElement.Add(errorElementProperty)
 
-                                    Me.guardalog("/Pages/FaresCataloguePromo.aspx", acciones.Sincronizar, "", "", "", errorsElement.ToString(), info.Hotel)
+                                    Me.guardalog("/Pages/FaresCataloguePromo.aspx", acciones.Sincronizar, "Error al enviar tarifa Conflux", "", "", errorsElement.ToString(), info.Hotel)
                                 End Try
                             End If
 

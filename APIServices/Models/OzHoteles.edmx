@@ -246,6 +246,8 @@
           <Property Name="DaysFreeType" Type="bit" />
           <Property Name="DiscountLevel" Type="int" />
           <Property Name="IsCombinablePromotion" Type="bit" />
+          <Property Name="IsMobileRate" Type="bit" />
+          <Property Name="IsCallCenterOnly" Type="bit" />
         </EntityType>
         <EntityType Name="ratesPlanDeal">
           <Key>
@@ -625,6 +627,8 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vDayRates' no tiene definida n
           <Property Name="ParentRatePlanId" Type="nvarchar" MaxLength="4" />
           <Property Name="IsPromotion" Type="bit" Nullable="false" />
           <Property Name="Language" Type="int" Nullable="false" />
+          <Property Name="IsMobileRate" Type="bit" Nullable="false" />
+          <Property Name="IsCallCenterOnly" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'OzHoteles.dbo.vDayRatesExceptions' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
@@ -667,6 +671,8 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vDayRatesExceptions' no tiene 
           <Property Name="ParentRatePlanId" Type="nvarchar" MaxLength="50" />
           <Property Name="IsPromotion" Type="bit" Nullable="false" />
           <Property Name="Language" Type="int" Nullable="false" />
+          <Property Name="IsMobileRate" Type="bit" Nullable="false" />
+          <Property Name="IsCallCenterOnly" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'OzHoteles.dbo.vHotelActives' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
@@ -1391,7 +1397,9 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
     [vDayRates].[Currency] AS [Currency], 
     [vDayRates].[ParentRatePlanId] AS [ParentRatePlanId], 
     [vDayRates].[IsPromotion] AS [IsPromotion], 
-    [vDayRates].[Language] AS [Language]
+    [vDayRates].[Language] AS [Language], 
+    [vDayRates].[IsMobileRate] AS [IsMobileRate], 
+    [vDayRates].[IsCallCenterOnly] AS [IsCallCenterOnly]
     FROM [dbo].[vDayRates] AS [vDayRates]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vDayRatesExceptions" EntityType="Self.vDayRatesExceptions" store:Type="Views" store:Schema="dbo">
@@ -1420,7 +1428,9 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
     [vDayRatesExceptions].[Currency] AS [Currency], 
     [vDayRatesExceptions].[ParentRatePlanId] AS [ParentRatePlanId], 
     [vDayRatesExceptions].[IsPromotion] AS [IsPromotion], 
-    [vDayRatesExceptions].[Language] AS [Language]
+    [vDayRatesExceptions].[Language] AS [Language], 
+    [vDayRatesExceptions].[IsMobileRate] AS [IsMobileRate], 
+    [vDayRatesExceptions].[IsCallCenterOnly] AS [IsCallCenterOnly]
     FROM [dbo].[vDayRatesExceptions] AS [vDayRatesExceptions]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vHotelActives" EntityType="Self.vHotelActives" store:Type="Views" store:Schema="dbo">
@@ -2006,6 +2016,8 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <NavigationProperty Name="Hoteles" Relationship="Models.FK_RatesPlan_Hoteles" FromRole="RatesPlan" ToRole="Hoteles" />
           <NavigationProperty Name="RatesPlanRules" Relationship="Models.FK_RatesPlan_RatesPlanRules" FromRole="RatesPlan" ToRole="RatesPlanRules" />
           <Property Name="IsCombinablePromotion" Type="Boolean" />
+          <Property Name="IsMobileRate" Type="Boolean" />
+          <Property Name="IsCallCenterOnly" Type="Boolean" />
           </EntityType>
         <EntityType Name="Tarifas">
           <Key>
@@ -3368,6 +3380,8 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <Property Name="ParentRatePlanId" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
           <Property Name="IsPromotion" Type="Boolean" Nullable="false" />
           <Property Name="Language" Type="Int32" Nullable="false" />
+          <Property Name="IsMobileRate" Type="Boolean" Nullable="false" />
+          <Property Name="IsCallCenterOnly" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="vDayRatesExceptions">
           <Key>
@@ -3408,6 +3422,8 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <Property Name="ParentRatePlanId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="IsPromotion" Type="Boolean" Nullable="false" />
           <Property Name="Language" Type="Int32" Nullable="false" />
+          <Property Name="IsMobileRate" Type="Boolean" Nullable="false" />
+          <Property Name="IsCallCenterOnly" Type="Boolean" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -3418,6 +3434,8 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <EntitySetMapping Name="RatesPlan">
             <EntityTypeMapping TypeName="Models.RatesPlan">
               <MappingFragment StoreEntitySet="RatesPlan">
+                <ScalarProperty Name="IsCallCenterOnly" ColumnName="IsCallCenterOnly" />
+                <ScalarProperty Name="IsMobileRate" ColumnName="IsMobileRate" />
                 <ScalarProperty Name="IsCombinablePromotion" ColumnName="IsCombinablePromotion" />
                 <ScalarProperty Name="DiscountLevel" ColumnName="DiscountLevel" />
                 <ScalarProperty Name="DaysFreeType" ColumnName="DaysFreeType" />
@@ -4625,6 +4643,8 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <EntitySetMapping Name="vDayRates">
             <EntityTypeMapping TypeName="Models.vDayRates">
               <MappingFragment StoreEntitySet="vDayRates">
+                <ScalarProperty Name="IsCallCenterOnly" ColumnName="IsCallCenterOnly" />
+                <ScalarProperty Name="IsMobileRate" ColumnName="IsMobileRate" />
                 <ScalarProperty Name="Language" ColumnName="Language" />
                 <ScalarProperty Name="IsPromotion" ColumnName="IsPromotion" />
                 <ScalarProperty Name="ParentRatePlanId" ColumnName="ParentRatePlanId" />
@@ -4655,6 +4675,8 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <EntitySetMapping Name="vDayRatesExceptions">
             <EntityTypeMapping TypeName="Models.vDayRatesExceptions">
               <MappingFragment StoreEntitySet="vDayRatesExceptions">
+                <ScalarProperty Name="IsCallCenterOnly" ColumnName="IsCallCenterOnly" />
+                <ScalarProperty Name="IsMobileRate" ColumnName="IsMobileRate" />
                 <ScalarProperty Name="Language" ColumnName="Language" />
                 <ScalarProperty Name="IsPromotion" ColumnName="IsPromotion" />
                 <ScalarProperty Name="ParentRatePlanId" ColumnName="ParentRatePlanId" />
