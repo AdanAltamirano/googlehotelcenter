@@ -724,18 +724,18 @@ Partial Public Class FaresCataloguePromoNR
                             If isEnabledGoogleRequest Then
                                 Try
 
-                                    If Editando Then
-                                        'Eliminar Viejitas
-                                        Dim rateAmountMessages As RateAmountMessages = New RateAmountMessages()
+                                    'If Editando Then
+                                    '    'Eliminar Viejitas
+                                    '    Dim rateAmountMessages As RateAmountMessages = New RateAmountMessages()
 
-                                        rateAmountMessages.HotelCode = info.Empresa
-                                        rateAmountMessages.RateAmountMessagesList = New List(Of OTA.Models.Rates.RateAmountMessage)
+                                    '    rateAmountMessages.HotelCode = info.Empresa
+                                    '    rateAmountMessages.RateAmountMessagesList = New List(Of OTA.Models.Rates.RateAmountMessage)
 
-                                        Parser.Parser.ToRateAmountMessagesDelete(Nothing, vDayRates, TypeRateEnum.RoomRatePromotion, rateAmountMessages.RateAmountMessagesList)
+                                    '    Parser.Parser.ToRateAmountMessagesDelete(Nothing, vDayRates, TypeRateEnum.RoomRatePromotion, rateAmountMessages.RateAmountMessagesList)
 
-                                        Dim deleleteResponse As RateResponse = confluxService.DeleteRates(rateAmountMessages)
-                                        Me.guardalog("/Pages/FaresCataloguePromoNR.aspx", acciones.Eliminar, "Eliminar tarifa Conflux", "", deleleteResponse.RequestXML, deleleteResponse.Xml, info.Hotel)
-                                    End If
+                                    '    Dim deleleteResponse As RateResponse = confluxService.DeleteRates(rateAmountMessages)
+                                    '    Me.guardalog("/Pages/FaresCataloguePromoNR.aspx", acciones.Eliminar, "Eliminar tarifa Conflux", "", deleleteResponse.RequestXML, deleleteResponse.Xml, info.Hotel)
+                                    'End If
 
 
                                     Dim res As RateResponse = confluxService.UpdateRate(auxFareId, f1, f2, info.Hotel, info.Empresa, TypeRateEnum.RoomRatePromotion)

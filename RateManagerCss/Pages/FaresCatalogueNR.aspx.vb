@@ -787,18 +787,18 @@ Partial Class FaresCatalogueNR
 
                                 Try
 
-                                    If Editando Then
-                                        'Eliminar Viejitas
-                                        Dim rateAmountMessages As RateAmountMessages = New RateAmountMessages()
+                                    'If Editando Then
+                                    '    'Eliminar Viejitas
+                                    '    Dim rateAmountMessages As RateAmountMessages = New RateAmountMessages()
 
-                                        rateAmountMessages.HotelCode = info.Empresa
-                                        rateAmountMessages.RateAmountMessagesList = New List(Of OTA.Models.Rates.RateAmountMessage)
+                                    '    rateAmountMessages.HotelCode = info.Empresa
+                                    '    rateAmountMessages.RateAmountMessagesList = New List(Of OTA.Models.Rates.RateAmountMessage)
 
-                                        Parser.Parser.ToRateAmountMessagesDelete(vDayRates, Nothing, TypeRateEnum.RoomRate, rateAmountMessages.RateAmountMessagesList)
+                                    '    Parser.Parser.ToRateAmountMessagesDelete(vDayRates, Nothing, TypeRateEnum.RoomRate, rateAmountMessages.RateAmountMessagesList)
 
-                                        Dim deleleteResponse As RateResponse = confluxService.DeleteRates(rateAmountMessages)
-                                        Me.guardalog("/Pages/FaresCatalogueNR.aspx", acciones.Eliminar, "Eliminar Tarifa Conflux", "", deleleteResponse.RequestXML, deleleteResponse.Xml, info.Hotel)
-                                    End If
+                                    '    Dim deleleteResponse As RateResponse = confluxService.DeleteRates(rateAmountMessages)
+                                    '    Me.guardalog("/Pages/FaresCatalogueNR.aspx", acciones.Eliminar, "Eliminar Tarifa Conflux", "", deleleteResponse.RequestXML, deleleteResponse.Xml, info.Hotel)
+                                    'End If
 
                                     'Actualizar
                                     Dim res As RateResponse = confluxService.UpdateRate(auxFareId, f1, f2, info.Hotel, info.Empresa, TypeRateEnum.RoomRate)

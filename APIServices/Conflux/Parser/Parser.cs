@@ -216,9 +216,23 @@ namespace APIServices.Conflux.Parser
 
                         using (OzHotelesEntities ozHoteles = new OzHotelesEntities())
                         {
-                            linkedRatePlan = ozHoteles.vLinkedRatePlans
-                                .Where(lrr => lrr.SourceRatePlan == vDayRate.ParentRatePlanId && lrr.TargetRatePlan == vDayRate.RatePlanId)
-                                .FirstOrDefault();
+
+                            if (vDayRate.IsPromotion)
+                            {
+                                linkedRatePlan = ozHoteles.vLinkedRatePlans
+                                    .Where(lrr => lrr.TargetRatePlan == vDayRate.ParentRatePlanId)
+                                    .FirstOrDefault();
+                            }
+                            else
+                            {
+                                linkedRatePlan = ozHoteles.vLinkedRatePlans
+                                    .Where(lrr => lrr.SourceRatePlan == vDayRate.ParentRatePlanId && lrr.TargetRatePlan == vDayRate.RatePlanId)
+                                    .FirstOrDefault();
+                            }
+
+                            //linkedRatePlan = ozHoteles.vLinkedRatePlans
+                            //    .Where(lrr => lrr.SourceRatePlan == vDayRate.ParentRatePlanId && lrr.TargetRatePlan == vDayRate.RatePlanId)
+                            //    .FirstOrDefault();
                         }
 
                         if (linkedRatePlan != null)
@@ -353,10 +367,24 @@ namespace APIServices.Conflux.Parser
 
                         using (OzHotelesEntities ozHoteles = new OzHotelesEntities())
                         {
-                            linkedRatePlan = ozHoteles.vLinkedRatePlans
-                                .Where(lrr => lrr.SourceRatePlan == vDayRate.ParentRatePlanId
-                                && lrr.TargetRatePlan == vDayRate.RatePlanId)
-                                .FirstOrDefault();
+
+                            if (vDayRate.IsPromotion)
+                            {
+                                linkedRatePlan = ozHoteles.vLinkedRatePlans
+                                    .Where(lrr => lrr.TargetRatePlan == vDayRate.ParentRatePlanId)
+                                    .FirstOrDefault();
+                            }
+                            else
+                            {
+                                linkedRatePlan = ozHoteles.vLinkedRatePlans
+                                    .Where(lrr => lrr.SourceRatePlan == vDayRate.ParentRatePlanId && lrr.TargetRatePlan == vDayRate.RatePlanId)
+                                    .FirstOrDefault();
+                            }
+
+                            //linkedRatePlan = ozHoteles.vLinkedRatePlans
+                            //    .Where(lrr => lrr.SourceRatePlan == vDayRate.ParentRatePlanId
+                            //    && lrr.TargetRatePlan == vDayRate.RatePlanId)
+                            //    .FirstOrDefault();
                         }
 
                         if (linkedRatePlan != null)
@@ -484,9 +512,18 @@ namespace APIServices.Conflux.Parser
 
                         using (OzHotelesEntities ozHoteles = new OzHotelesEntities())
                         {
-                            linkedRatePlan = ozHoteles.vLinkedRatePlans
-                                .Where(lrr => lrr.SourceRatePlan == vDayRate.ParentRatePlanId && lrr.TargetRatePlan == vDayRate.RatePlanId)
-                                .FirstOrDefault();
+                            if (vDayRate.IsPromotion)
+                            {
+                                linkedRatePlan = ozHoteles.vLinkedRatePlans
+                                    .Where(lrr =>  lrr.TargetRatePlan == vDayRate.ParentRatePlanId)
+                                    .FirstOrDefault();
+                            }
+                            else
+                            {
+                                linkedRatePlan = ozHoteles.vLinkedRatePlans
+                                    .Where(lrr => lrr.SourceRatePlan == vDayRate.ParentRatePlanId && lrr.TargetRatePlan == vDayRate.RatePlanId)
+                                    .FirstOrDefault();
+                            }
                         }
 
                         if (linkedRatePlan != null)
@@ -625,10 +662,25 @@ namespace APIServices.Conflux.Parser
 
                         using (OzHotelesEntities ozHoteles = new OzHotelesEntities())
                         {
-                            linkedRatePlan = ozHoteles.vLinkedRatePlans
-                                .Where(lrr => lrr.SourceRatePlan == vDayRate.ParentRatePlanId
-                                && lrr.TargetRatePlan == vDayRate.RatePlanId)
-                                .FirstOrDefault();
+
+                            if (vDayRate.IsPromotion)
+                            {
+                                linkedRatePlan = ozHoteles.vLinkedRatePlans
+                                    .Where(lrr => lrr.TargetRatePlan == vDayRate.ParentRatePlanId)
+                                    .FirstOrDefault();
+                            }
+                            else
+                            {
+                                linkedRatePlan = ozHoteles.vLinkedRatePlans
+                                    .Where(lrr => lrr.SourceRatePlan == vDayRate.ParentRatePlanId && lrr.TargetRatePlan == vDayRate.RatePlanId)
+                                    .FirstOrDefault();
+                            }
+
+
+                            //linkedRatePlan = ozHoteles.vLinkedRatePlans
+                            //    .Where(lrr => lrr.SourceRatePlan == vDayRate.ParentRatePlanId
+                            //    && lrr.TargetRatePlan == vDayRate.RatePlanId)
+                            //    .FirstOrDefault();
                         }
 
                         if (linkedRatePlan != null)
