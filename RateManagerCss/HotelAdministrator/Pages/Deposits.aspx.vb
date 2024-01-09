@@ -6,6 +6,11 @@ Imports Portal.General.Common
 Imports Portal.General.Common.Data
 Imports Portal.General.DataAccess
 Imports System.Text
+Imports RateManager.Utitlities.XML
+Imports APIServices.Models
+Imports APIServices.Helpers.Reservation
+Imports APIServices.Service.HotelVerse
+Imports APIServices.Service.HotelVerse.Models.Response
 
 Partial Class Deposits
     Inherits PaginaBase
@@ -363,6 +368,25 @@ Partial Class Deposits
                 flag = pnlPayments.Save(inputReserva.Value, sDatos, spayment)
                 If flag Then pnlPayments.SendConfirmationEmail()
                 Me.guardalog("/HotelAdministrator/Pages/Deposits.aspx", PaginaBase.acciones.Crear, String.Format("Creación de depósito {0}, no.reservacion: {1}", spayment, inputReserva.Value), "", "", sDatos, noReservacion:=inputReserva.Value)
+
+                If flag Then
+                    'HotelVerse
+
+                    Dim reservation As Reservaciones = ReservationHelper.GetReservation(CType(inputReserva.Value, Integer))
+
+                    If reservation.idAgencia IsNot Nothing And reservation.idAgencia = 211 Then
+
+                        Dim response As ResponseRequest = HotelVerseService.ConfirmReservation(reservation)
+
+                        Dim xml As String = XmlUtilitie.ToXmlString(response)
+
+                        Me.guardalog("/HotelAdministrator/Pages/Deposits.aspx?qs=" & inputReserva.Value, PaginaBase.acciones.Crear, "Confirmo la reservacion Hotel Verse: " & inputReserva.Value, peticion:="", datos:="", datosDespues:=xml)
+
+
+                    End If
+                End If
+
+
             Else
                 flag = ctrlDeposits1.Save(inputReserva.Value, sDatos)
                 If flag Then
@@ -370,6 +394,25 @@ Partial Class Deposits
                     ctrlDeposits1.enviarcorreo_conf()
                 End If
                 Me.guardalog("/HotelAdministrator/Pages/Deposits.aspx", PaginaBase.acciones.Crear, String.Format("Creación de depósito, no.reservacion: {0}", inputReserva.Value), "", "", sDatos, noReservacion:=inputReserva.Value)
+
+                If flag Then
+                    'HotelVerse
+
+                    Dim reservation As Reservaciones = ReservationHelper.GetReservation(CType(inputReserva.Value, Integer))
+
+                    If reservation.idAgencia IsNot Nothing And reservation.idAgencia = 211 Then
+
+                        Dim response As ResponseRequest = HotelVerseService.ConfirmReservation(reservation)
+
+                        Dim xml As String = XmlUtilitie.ToXmlString(response)
+
+                        Me.guardalog("/HotelAdministrator/Pages/Deposits.aspx?qs=" & inputReserva.Value, PaginaBase.acciones.Crear, "Confirmo la reservacion Hotel Verse: " & inputReserva.Value, peticion:="", datos:="", datosDespues:=xml)
+
+
+                    End If
+                End If
+
+
             End If
 
 

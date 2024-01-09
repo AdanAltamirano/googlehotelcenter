@@ -19,4 +19,9 @@ namespace APIServices.Service.HotelVerse.Models
 
     }
 
+    public class ConfirmRequest
+    {
+        public List<Record> bookingsLocatorToConfirmList { get; set; } = null;
+    }
+
 }
