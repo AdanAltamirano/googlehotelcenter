@@ -119,6 +119,7 @@
 <body bottommargin="0" leftmargin="0" topmargin="0" rightmargin="0" ms_positioning="FlowLayout">
     <form id="Form1" method="post" runat="server">
     <uc1:ctlMensajes ID="CtlMensajes1" runat="server"></uc1:ctlMensajes>
+    <uc1:ctlMensajes ID="CtlMensajes2" runat="server"></uc1:ctlMensajes>
     <div class="clear">
         <div class="clear">
             <div style="float: left">
@@ -201,7 +202,7 @@
             <HeaderStyle CssClass="dgHeader"></HeaderStyle>
             <Columns>
                 <asp:BoundColumn Visible="False" HeaderText="Id"></asp:BoundColumn>
-                
+                <asp:BoundColumn HeaderText="Orden"></asp:BoundColumn>
                  <asp:BoundColumn
                  HeaderText="CodigoHabitacion">
                     <ItemStyle Width="9%"></ItemStyle>
@@ -256,6 +257,15 @@
                         <asp:LinkButton ID="ibtnDelete2" Style="display: none" runat="server" CssClass="dgLink"
                             CausesValidation="False" CommandName="Delete"></asp:LinkButton>
                         <asp:HyperLink ID="ibtnDelete" runat="server" CssClass="dglink">Delete</asp:HyperLink>
+                    </ItemTemplate>
+                </asp:TemplateColumn>
+                <asp:TemplateColumn>
+                    <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
+                    <ItemStyle HorizontalAlign="Center" Width="9%"></ItemStyle>
+                    <ItemTemplate>
+                        <asp:LinkButton ID="ibtnActive2" Style="display: none" runat="server" CssClass="dgLink"
+                            CausesValidation="False" CommandName="Active"></asp:LinkButton>
+                        <asp:HyperLink ID="ibtnActive" runat="server" CssClass="dglink">Active</asp:HyperLink>
                     </ItemTemplate>
                 </asp:TemplateColumn>
                 <asp:BoundColumn Visible="False" HeaderText="Description"></asp:BoundColumn>

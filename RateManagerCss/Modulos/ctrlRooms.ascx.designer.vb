@@ -221,31 +221,13 @@ Partial Public Class ctrlRooms
     Protected WithEvents lblOrden As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
-    '''Control txtOrden.
+    '''Control ddlOrden.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents txtOrden As Global.System.Web.UI.WebControls.TextBox
-
-    '''<summary>
-    '''Control Regularexpressionvalidator2.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents Regularexpressionvalidator2 As Global.System.Web.UI.WebControls.RegularExpressionValidator
-
-    '''<summary>
-    '''Control Requiredfieldvalidator2.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents Requiredfieldvalidator2 As Global.System.Web.UI.WebControls.RequiredFieldValidator
+    Protected WithEvents ddlOrden As Global.System.Web.UI.WebControls.DropDownList
 
     '''<summary>
     '''Control lblImgShow.

@@ -118,6 +118,25 @@ Partial Class ctrlRooms
         End Set
     End Property
 
+    Public Property totalRooms As Integer
+        Get
+            Return ViewState("totalRooms")
+        End Get
+        Set(ByVal Value As Integer)
+            ViewState("totalRooms") = Value
+        End Set
+    End Property
+    Public Property edicion() As Boolean
+        Get
+            Return ViewState("Edicion")
+        End Get
+        Set(ByVal Value As Boolean)
+            ViewState("Edicion") = Value
+
+        End Set
+    End Property
+
+
     Protected CtrlLanguageButton1 As ctrlLanguageButton
 
     Protected mlNameRoom As CtrlIdioma
@@ -281,11 +300,24 @@ Partial Class ctrlRooms
             mlDescriptionRoom.CargaDatos(room.Tables(RoomsHotelData.TBL_ROOM_HOTEL).Rows(0).Item(RoomsHotelData.FLD_ID_DESCRIPTION))
             mlDescriptionRoom.textodefault = room.Tables(RoomsHotelData.TBL_ROOM_HOTEL).Rows(0).Item(RoomsHotelData.FLD_DESCRIPTION)
 
-            If Not room.Tables(RoomsHotelData.TBL_ROOM_HOTEL).Rows(0).IsNull(RoomsHotelData.FLD_ORDEN) Then
-                Me.txtOrden.Text = room.Tables(RoomsHotelData.TBL_ROOM_HOTEL).Rows(0).Item(RoomsHotelData.FLD_ORDEN)
+            If Not room.Tables(RoomsHotelData.TBL_ROOM_HOTEL).Rows(0).IsNull(RoomsHotelData.FLD_ORDEN) And Not room.Tables(RoomsHotelData.TBL_ROOM_HOTEL).Rows(0)(RoomsHotelData.FLD_ORDEN).ToString().Equals("---") Then
+                'Me.txtOrden.Text = room.Tables(RoomsHotelData.TBL_ROOM_HOTEL).Rows(0).Item(RoomsHotelData.FLD_ORDEN)
+
+
+                Dim ordenRoom As Integer = CInt(room.Tables(RoomsHotelData.TBL_ROOM_HOTEL).Rows(0).Item(RoomsHotelData.FLD_ORDEN).ToString())
+
+                If (ordenRoom > totalRooms) Then
+                    Me.ddlOrden.SelectedValue = totalRooms.ToString()
+                Else
+
+                    Me.ddlOrden.SelectedValue = room.Tables(RoomsHotelData.TBL_ROOM_HOTEL).Rows(0).Item(RoomsHotelData.FLD_ORDEN)
+                End If
+
+
+
             End If
 
-            Me.lstMinNumberAdults.SelectedIndex = 0
+                Me.lstMinNumberAdults.SelectedIndex = 0
             If Not room.Tables(RoomsHotelData.TBL_ROOM_HOTEL).Rows(0).IsNull(RoomsHotelData.FLD_NUMBER_MINADULTS) Then
                 Me.lstMinNumberAdults.SelectedValue = room.Tables(RoomsHotelData.TBL_ROOM_HOTEL).Rows(0).Item(RoomsHotelData.FLD_NUMBER_MINADULTS)
             End If
@@ -386,20 +418,20 @@ Partial Class ctrlRooms
                 If ImgFileOpen.Value <> "" Then
                     If IsValidIMG(ImgFileOpen) Then
                         cvImagen.IsValid = True
-                        SaveRoom = _
-                        .createRoom(Me.lstRoomType.SelectedValue, _
-                           Me.idHotel, _
-                           Me.txtNumberRooms.Text, _
-                           Me.lstPeoplesInRoom.SelectedValue, _
-                           Me.lstPeoplesExtras.SelectedValue, _
-                           Me.lstNumberAdults.SelectedValue, _
-                           Me.lstNumberChildrens.SelectedValue, _
-                           Me.mlDescriptionRoom.textodefault, _
-                           mlNameRoom.textodefault, _
-                           RoomCode, 0, 0, Me.ddlMaxAdultRoll.SelectedValue, _
-                            Me.ddlMaxChildRoll.SelectedValue, Me.ddlMaxCribRoll.SelectedValue, _
-                            CDbl(Val(Me.txtPriceAdultRoll.Text)), CDbl(Val(Me.txtPriceChildRoll.Text)), CInt(Val(Me.txtPriceCribRoll.Text)), _
-                           rooms, Me.txtOrden.Text, lstMinNumberAdults.SelectedValue)
+                        SaveRoom =
+                        .createRoom(Me.lstRoomType.SelectedValue,
+                           Me.idHotel,
+                           Me.txtNumberRooms.Text,
+                           Me.lstPeoplesInRoom.SelectedValue,
+                           Me.lstPeoplesExtras.SelectedValue,
+                           Me.lstNumberAdults.SelectedValue,
+                           Me.lstNumberChildrens.SelectedValue,
+                           Me.mlDescriptionRoom.textodefault,
+                           mlNameRoom.textodefault,
+                           RoomCode, 0, 0, Me.ddlMaxAdultRoll.SelectedValue,
+                            Me.ddlMaxChildRoll.SelectedValue, Me.ddlMaxCribRoll.SelectedValue,
+                            CDbl(Val(Me.txtPriceAdultRoll.Text)), CDbl(Val(Me.txtPriceChildRoll.Text)), CInt(Val(Me.txtPriceCribRoll.Text)),
+                           rooms, Me.ddlOrden.SelectedValue, lstMinNumberAdults.SelectedValue)
                         'si se inserto el registro, entonces  se procede a subir la imagen 
                         If SaveRoom Then
                             mlDescriptionRoom.Update(rooms.Tables(RoomsHotelData.TBL_ROOM_HOTEL).Rows(0)(RoomsHotelData.FLD_ID_DESCRIPTION), publish)
@@ -412,20 +444,20 @@ Partial Class ctrlRooms
                         Er = 1
                     End If
                 Else
-                    SaveRoom = _
-                    .createRoom(Me.lstRoomType.SelectedValue, _
-                       Me.idHotel, _
-                       Me.txtNumberRooms.Text, _
-                       Me.lstPeoplesInRoom.SelectedValue, _
-                       Me.lstPeoplesExtras.SelectedValue, _
-                       Me.lstNumberAdults.SelectedValue, _
-                       Me.lstNumberChildrens.SelectedValue, _
-                       Me.mlDescriptionRoom.textodefault, _
-                       mlNameRoom.textodefault, _
-                       RoomCode, 0, 0, Me.ddlMaxAdultRoll.SelectedValue, _
-                            Me.ddlMaxChildRoll.SelectedValue, Me.ddlMaxCribRoll.SelectedValue, _
-                        CDbl(Val(Me.txtPriceAdultRoll.Text)), CDbl(Val(Me.txtPriceChildRoll.Text)), CInt(Val(Me.txtPriceCribRoll.Text)), _
-                       rooms, Me.txtOrden.Text, lstMinNumberAdults.SelectedValue)
+                    SaveRoom =
+                    .createRoom(Me.lstRoomType.SelectedValue,
+                       Me.idHotel,
+                       Me.txtNumberRooms.Text,
+                       Me.lstPeoplesInRoom.SelectedValue,
+                       Me.lstPeoplesExtras.SelectedValue,
+                       Me.lstNumberAdults.SelectedValue,
+                       Me.lstNumberChildrens.SelectedValue,
+                       Me.mlDescriptionRoom.textodefault,
+                       mlNameRoom.textodefault,
+                       RoomCode, 0, 0, Me.ddlMaxAdultRoll.SelectedValue,
+                            Me.ddlMaxChildRoll.SelectedValue, Me.ddlMaxCribRoll.SelectedValue,
+                        CDbl(Val(Me.txtPriceAdultRoll.Text)), CDbl(Val(Me.txtPriceChildRoll.Text)), CInt(Val(Me.txtPriceCribRoll.Text)),
+                       rooms, Me.ddlOrden.SelectedValue, lstMinNumberAdults.SelectedValue)
                     If SaveRoom Then
                         mlDescriptionRoom.Update(rooms.Tables(RoomsHotelData.TBL_ROOM_HOTEL).Rows(0)(RoomsHotelData.FLD_ID_DESCRIPTION), publish)
                         mlNameRoom.Update(rooms.Tables(RoomsHotelData.TBL_ROOM_HOTEL).Rows(0)(RoomsHotelData.FLD_ID_NOMBRE), publish)
@@ -449,21 +481,21 @@ Partial Class ctrlRooms
                         'TODO: Se debe de checar el cambio de max adults ect etc
                         'Para modificar las reglas de habitacion (Eliminar reglas que no cumplan con el nuevo criterio)
                         'Y enviar un mensaje al usuario
-                        SaveRoom = _
-                        .updateRoom(Me.idRoom, _
-                           Me.lstRoomType.SelectedValue, _
-                           Me.idHotel, _
-                           Me.txtNumberRooms.Text, _
-                           Me.lstPeoplesInRoom.SelectedValue, _
-                           Me.lstPeoplesExtras.SelectedValue, _
-                           Me.lstNumberAdults.SelectedValue, _
-                           Me.lstNumberChildrens.SelectedValue, _
-                           Me.mlDescriptionRoom.textodefault, _
-                           mlNameRoom.textodefault, _
-                         "", 0, 0, Me.ddlMaxAdultRoll.SelectedValue, _
-                            Me.ddlMaxChildRoll.SelectedValue, Me.ddlMaxCribRoll.SelectedValue, _
-                        CDbl(Val(Me.txtPriceAdultRoll.Text)), CDbl(Val(Me.txtPriceChildRoll.Text)), CInt(Val(Me.txtPriceCribRoll.Text)), _
-                           rooms, Me.txtOrden.Text, lstMinNumberAdults.SelectedValue, False)
+                        SaveRoom =
+                        .updateRoom(Me.idRoom,
+                           Me.lstRoomType.SelectedValue,
+                           Me.idHotel,
+                           Me.txtNumberRooms.Text,
+                           Me.lstPeoplesInRoom.SelectedValue,
+                           Me.lstPeoplesExtras.SelectedValue,
+                           Me.lstNumberAdults.SelectedValue,
+                           Me.lstNumberChildrens.SelectedValue,
+                           Me.mlDescriptionRoom.textodefault,
+                           mlNameRoom.textodefault,
+                         "", 0, 0, Me.ddlMaxAdultRoll.SelectedValue,
+                            Me.ddlMaxChildRoll.SelectedValue, Me.ddlMaxCribRoll.SelectedValue,
+                        CDbl(Val(Me.txtPriceAdultRoll.Text)), CDbl(Val(Me.txtPriceChildRoll.Text)), CInt(Val(Me.txtPriceCribRoll.Text)),
+                           rooms, Me.ddlOrden.SelectedValue, lstMinNumberAdults.SelectedValue, False)
                         If SaveRoom Then
                             mlDescriptionRoom.Update(rooms.Tables(RoomsHotelData.TBL_ROOM_HOTEL).Rows(0)(RoomsHotelData.FLD_ID_DESCRIPTION), publish)
                             mlNameRoom.Update(rooms.Tables(RoomsHotelData.TBL_ROOM_HOTEL).Rows(0)(RoomsHotelData.FLD_ID_NOMBRE), publish)
@@ -476,21 +508,21 @@ Partial Class ctrlRooms
                         Er = 1
                     End If
                 Else
-                    SaveRoom = _
-                    .updateRoom(Me.idRoom, _
-                     Me.lstRoomType.SelectedValue, _
-                     Me.idHotel, _
-                     Me.txtNumberRooms.Text, _
-                     Me.lstPeoplesInRoom.SelectedValue, _
-                     Me.lstPeoplesExtras.SelectedValue, _
-                     Me.lstNumberAdults.SelectedValue, _
-                     Me.lstNumberChildrens.SelectedValue, _
-                     Me.mlDescriptionRoom.textodefault, _
-                     mlNameRoom.textodefault, _
-                    "", 0, 0, Me.ddlMaxAdultRoll.SelectedValue, _
-                            Me.ddlMaxChildRoll.SelectedValue, Me.ddlMaxCribRoll.SelectedValue, _
-                        CDbl(Val(Me.txtPriceAdultRoll.Text)), CDbl(Val(Me.txtPriceChildRoll.Text)), CInt(Val(Me.txtPriceCribRoll.Text)), _
-                     rooms, Me.txtOrden.Text, lstMinNumberAdults.SelectedValue, False)
+                    SaveRoom =
+                    .updateRoom(Me.idRoom,
+                     Me.lstRoomType.SelectedValue,
+                     Me.idHotel,
+                     Me.txtNumberRooms.Text,
+                     Me.lstPeoplesInRoom.SelectedValue,
+                     Me.lstPeoplesExtras.SelectedValue,
+                     Me.lstNumberAdults.SelectedValue,
+                     Me.lstNumberChildrens.SelectedValue,
+                     Me.mlDescriptionRoom.textodefault,
+                     mlNameRoom.textodefault,
+                    "", 0, 0, Me.ddlMaxAdultRoll.SelectedValue,
+                            Me.ddlMaxChildRoll.SelectedValue, Me.ddlMaxCribRoll.SelectedValue,
+                        CDbl(Val(Me.txtPriceAdultRoll.Text)), CDbl(Val(Me.txtPriceChildRoll.Text)), CInt(Val(Me.txtPriceCribRoll.Text)),
+                     rooms, Me.ddlOrden.SelectedValue, lstMinNumberAdults.SelectedValue, False)
 
                     If SaveRoom Then
                         Dim idDictionryDesc As Integer = rooms.Tables(RoomsHotelData.TBL_ROOM_HOTEL).Rows(0)(RoomsHotelData.FLD_ID_DESCRIPTION)
@@ -530,7 +562,7 @@ Partial Class ctrlRooms
             'Modificado: agrege el parametro Me.lstRoomType.SelectedValue  la funcion 
             Dim idmessage As Integer
             With New RoomFacade
-                idmessage = .EliminateRoom(idRoom, (Not elimina)) '.deleteRoom(idRoom, Me.lstRoomType.SelectedValue)
+                idmessage = .EliminateRoom(idRoom, (Not elimina), Me.idHotel) '.deleteRoom(idRoom, Me.lstRoomType.SelectedValue)
             End With
             Me.newRoom()
             Return 0
@@ -559,11 +591,21 @@ Partial Class ctrlRooms
         Me.newRoom()
     End Function
 
+    Public Function activeRoom() As Integer
+        Dim idmessage As Integer
+        With New RoomFacade
+            idMEssage = .ActiveRoom(idRoom, 0, Me.idHotel)
+        End With
+
+        Me.newRoom()
+
+        Return idmessage
+    End Function
+
 
     Public Function newRoom() As Boolean
         Me.CtrlLanguageButton1.Visible = False
         'Me.CtrlLanguageButton2.Visible = False
-
         Me.HasData = False
         Me.txtDescription.Text = ""
         mlNameRoom.Limpia()
@@ -597,7 +639,7 @@ Partial Class ctrlRooms
         Me.divPriceCrib.Style.Add("display", "none")
         Me.divlabelPrice.Style.Add("display", "none")
         Me.txtNumberRooms.Enabled = True
-        Me.txtOrden.Text = String.Empty
+        'Me.txtOrden.Text = String.Empty
         Try
             mlNameRoom.SetEN(lstRoomType.SelectedItem.Text.Split("-")(1))
             mlNameRoom.setES(lstRoomType.SelectedItem.Text.Split("-")(1))
@@ -716,6 +758,21 @@ Partial Class ctrlRooms
     End Function
 
 #End Region
+    Public Sub cargarOrden()
+        Dim i As Integer
+
+        ddlOrden.Items.Clear()
+        ddlOrden.Items.Insert(0, "0")
+
+        For i = 1 To Me.totalRooms
+            ddlOrden.Items.Add(i.ToString)
+        Next
+
+        If Me.edicion = False Then
+            ddlOrden.Items.Add(ddlOrden.Items.Count)
+            ddlOrden.SelectedIndex = ddlOrden.Items.Count - 1
+        End If
+    End Sub
 
     Private Sub loadResources()
         rfvRoomsType.Text = PortalCulture.GetString("00071")
@@ -728,12 +785,12 @@ Partial Class ctrlRooms
         lblNumberChildrens.Text = PortalCulture.GetString("00077", True)
         rfvDescription.Text = PortalCulture.GetString("00078")
         RegularExpressionValidator1.Text = PortalCulture.GetString("00079")
-        Regularexpressionvalidator2.Text = PortalCulture.GetString("00784")
+        'Regularexpressionvalidator2.Text = PortalCulture.GetString("00784")
 
         lblImgShow.Text = PortalCulture.GetString("00080")
         lblDescription.Text = PortalCulture.GetString("00081")
         Requiredfieldvalidator1.Text = PortalCulture.GetString("00078")
-        Requiredfieldvalidator2.Text = PortalCulture.GetString("00785")
+        'Requiredfieldvalidator2.Text = PortalCulture.GetString("00785")
 
         Me.ValAdultPriceCribRoll.Text = PortalCulture.GetString("00083")
         Me.ValChildPriceCribRoll.Text = PortalCulture.GetString("00083")

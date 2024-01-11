@@ -150,9 +150,12 @@
 					<TD align="right">
 						<asp:label id="lblOrden" runat="server" EnableViewState="False" CssClass="clslabel">Orden:</asp:label></TD>
 					<TD align="left">
-						<asp:textbox id="txtOrden" runat="server" CssClass="textbox" Width="30px" Columns="3" MaxLength="2"></asp:textbox><asp:regularexpressionvalidator id="Regularexpressionvalidator2" runat="server" CssClass="validators" Display="Dynamic"
+						<%--<asp:textbox id="txtOrden" runat="server" CssClass="textbox" Width="30px" Columns="3" MaxLength="2"></asp:textbox><asp:regularexpressionvalidator id="Regularexpressionvalidator2" runat="server" CssClass="validators" Display="Dynamic"
 							ForeColor=" " ControlToValidate="txtOrden" ErrorMessage="0-99" ValidationExpression="^\d+$"></asp:regularexpressionvalidator><asp:requiredfieldvalidator id="Requiredfieldvalidator2" runat="server" CssClass="validators" Display="Dynamic"
-							ForeColor=" " ControlToValidate="txtOrden" ErrorMessage="*"></asp:requiredfieldvalidator></TD>
+							ForeColor=" " ControlToValidate="txtOrden" ErrorMessage="*"></asp:requiredfieldvalidator>--%>
+
+						<asp:DropDownList ID="ddlOrden" runat="server"></asp:DropDownList>
+					</TD>
 					<TD align="right">
 						<asp:label id="lblImgShow" runat="server" EnableViewState="False" CssClass="clsLabel">Imagen:</asp:label></TD>
 					<TD align="left" colSpan="3"><INPUT class="textbox" id="ImgFileOpen" style="WIDTH: 100%; HEIGHT: 30px" type="file"
