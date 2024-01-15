@@ -357,7 +357,7 @@
           <Property Name="ChainCode" Type="nvarchar" MaxLength="4" />
           <Property Name="THOR_Rate" Type="tinyint" />
           <Property Name="BookingSource" Type="nvarchar" MaxLength="100" />
-          <Property Name="RecordLocator" Type="nvarchar" MaxLength="8" />
+          <Property Name="RecordLocator" Type="nvarchar" MaxLength="20" />
           <Property Name="RFCode" Type="nvarchar" MaxLength="20" />
           <Property Name="MoneyComision" Type="money" />
           <Property Name="PlusTax" Type="bit" />
@@ -592,8 +592,14 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vDayRates' no tiene definida n
             <PropertyRef Name="Segment" />
             <PropertyRef Name="PromoDays" />
             <PropertyRef Name="NoDeparturesMap" />
+            
+            
+            
+            
             <PropertyRef Name="Currency" />
             <PropertyRef Name="IsPromotion" />
+            
+            
             <PropertyRef Name="RateId" />
             <PropertyRef Name="HotelId" />
             <PropertyRef Name="RoomId" />
@@ -634,9 +640,16 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vDayRates' no tiene definida n
 advertencia 6002: La tabla o vista 'OzHoteles.dbo.vDayRatesExceptions' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vDayRatesExceptions">
           <Key>
+            
             <PropertyRef Name="NoDeparturesMap" />
+            
+            
+            
+            
             <PropertyRef Name="Currency" />
             <PropertyRef Name="IsPromotion" />
+            
+            
             <PropertyRef Name="RateId" />
             <PropertyRef Name="HotelId" />
             <PropertyRef Name="RoomId" />
@@ -1243,6 +1256,10 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
         </Function>
         <Function Name="spGetPricesByRatePromotionException" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="RateId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="spGetPromosByRatePlan" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idHotel" Type="int" Mode="In" />
+          <Parameter Name="ratePlan" Type="nvarchar" Mode="In" />
         </Function>
         <Function Name="spModificarDetalleReservaciones" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="idDetalleReservacion" Type="int" Mode="In" />
@@ -1965,6 +1982,10 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           </FunctionImport>
           <EntitySet Name="vDayRates" EntityType="Models.vDayRates" />
           <EntitySet Name="vDayRatesExceptions" EntityType="Models.vDayRatesExceptions" />
+          <FunctionImport Name="spGetPromosByRatePlan" ReturnType="Collection(Models.spGetPromosByRatePlan_Result)">
+            <Parameter Name="idHotel" Mode="In" Type="Int32" />
+            <Parameter Name="ratePlan" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="RatesPlan">
           <Key>
@@ -2687,7 +2708,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <Property Name="ChainCode" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
           <Property Name="THOR_Rate" Type="Byte" />
           <Property Name="BookingSource" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="RecordLocator" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
+          <Property Name="RecordLocator" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="RFCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="MoneyComision" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="PlusTax" Type="Boolean" />
@@ -3425,6 +3446,12 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <Property Name="IsMobileRate" Type="Boolean" Nullable="false" />
           <Property Name="IsCallCenterOnly" Type="Boolean" Nullable="false" />
         </EntityType>
+        <ComplexType Name="spGetPromosByRatePlan_Result">
+          <Property Type="Int32" Name="IdPromocion_RatePlan" Nullable="false" />
+          <Property Type="String" Name="IdPromocion" Nullable="false" MaxLength="4" />
+          <Property Type="String" Name="IdRatePlan" Nullable="false" MaxLength="4" />
+          <Property Type="Int32" Name="IdHotel" Nullable="false" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4705,6 +4732,16 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spGetPromosByRatePlan" FunctionName="Models.Store.spGetPromosByRatePlan">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Models.spGetPromosByRatePlan_Result">
+                <ScalarProperty Name="IdPromocion_RatePlan" ColumnName="IdPromocion_RatePlan" />
+                <ScalarProperty Name="IdPromocion" ColumnName="IdPromocion" />
+                <ScalarProperty Name="IdRatePlan" ColumnName="IdRatePlan" />
+                <ScalarProperty Name="IdHotel" ColumnName="IdHotel" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -755,6 +755,7 @@ Partial Class FaresCatalogue
 
                         Dim auxFareId As Integer = 0
                         Dim vDayRates As List(Of vDayRates) = Nothing
+                        Dim areSameDates = False
                         If Editando Then
                             vDayRates = Helpers.Rate.RatesHelpers.GetVDayRate(CtrRateAplication1.m_iFareId, CtrRateAplication1.m_StartDateFareId, CtrRateAplication1.m_EndDateFareId)
                         End If
@@ -775,24 +776,39 @@ Partial Class FaresCatalogue
 
                                 Try
 
-                                    'If Editando Then
-                                    '    'Eliminar Viejitas
-                                    '    Dim rateAmountMessages As RateAmountMessages = New RateAmountMessages()
+                                    If Editando Then
+                                        'Eliminar Viejitas
+                                        'Dim rateAmountMessages As RateAmountMessages = New RateAmountMessages()
 
-                                    '    rateAmountMessages.HotelCode = info.Empresa
-                                    '    rateAmountMessages.RateAmountMessagesList = New List(Of OTA.Models.Rates.RateAmountMessage)
+                                        'rateAmountMessages.HotelCode = info.Empresa
+                                        'rateAmountMessages.RateAmountMessagesList = New List(Of OTA.Models.Rates.RateAmountMessage)
 
-                                    '    Parser.Parser.ToRateAmountMessagesDelete(vDayRates, Nothing, TypeRateEnum.RoomRate, rateAmountMessages.RateAmountMessagesList)
+                                        'Parser.Parser.ToRateAmountMessagesDelete(vDayRates, Nothing, TypeRateEnum.RoomRate, rateAmountMessages.RateAmountMessagesList)
 
-                                    '    Dim deleleteResponse As RateResponse = confluxService.DeleteRates(rateAmountMessages)
-                                    '    Me.guardalog("/Pages/FaresCatalogue.aspx", acciones.Eliminar, "Tarifa para eliminar Conflux", "", deleleteResponse.RequestXML, deleleteResponse.Xml, info.Hotel)
+                                        'If vDayRates.Count() > 0 Then
 
-                                    'End If
+                                        '    Dim sameDateStartDate As Date = vDayRates.First().StartDate
+                                        '    Dim sameDateEndDate As Date = vDayRates.First().EndDate
 
-                                    'Actualizar
-                                    Dim res As RateResponse = confluxService.UpdateRate(auxFareId, f1, f2, info.Hotel, info.Empresa, TypeRateEnum.RoomRate)
+                                        '    If sameDateStartDate <> f1 Or sameDateEndDate <> f2 Then
 
-                                    Me.guardalog("/Pages/FaresCatalogue.aspx", acciones.Sincronizar, "Tarifa enviada a Conflux", "", res.RequestXML, res.Xml, info.Hotel)
+                                        '        Dim deleleteResponse As RateResponse = confluxService.DeleteRates(rateAmountMessages)
+                                        '        Me.guardalog("/Pages/FaresCatalogue.aspx", acciones.Eliminar, "Tarifa para eliminar Conflux", "", deleleteResponse.RequestXML, deleleteResponse.Xml, info.Hotel)
+                                        '    End If
+                                        'End If
+
+                                        Dim res As RateResponse = confluxService.UpdateRate(auxFareId, f1, f2, info.Hotel, info.Empresa, TypeRateEnum.RoomRate)
+
+                                        Me.guardalog("/Pages/FaresCatalogue.aspx", acciones.Sincronizar, "Tarifa enviada a Conflux", "", res.RequestXML, res.Xml, info.Hotel)
+
+                                    Else
+
+                                            'Actualizar
+                                            Dim res As RateResponse = confluxService.UpdateRate(auxFareId, f1, f2, info.Hotel, info.Empresa, TypeRateEnum.RoomRate)
+
+                                        Me.guardalog("/Pages/FaresCatalogue.aspx", acciones.Sincronizar, "Tarifa enviada a Conflux", "", res.RequestXML, res.Xml, info.Hotel)
+
+                                    End If
 
                                 Catch ex As Exception
 

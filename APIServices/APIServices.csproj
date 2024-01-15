@@ -302,6 +302,9 @@
     <Compile Include="Models\spGetPricesByRate_Result.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\spGetPromosByRatePlan_Result.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\spReservationLog_Result.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>

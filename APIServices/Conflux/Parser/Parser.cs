@@ -250,7 +250,7 @@ namespace APIServices.Conflux.Parser
                     rates.Add(rate);
 
                     //Precios Excepciones
-                    if (pricesException.Count > 0 && !vDayRate.IsPromotion)
+                    if (pricesException.Count > 0)
                     {
                         Rate rateException = new Rate();
                         rateException.HasPriceException = true;
@@ -402,7 +402,7 @@ namespace APIServices.Conflux.Parser
                     rates.Add(rate);
 
                     //Precios Excepciones
-                    if (pricesException.Count > 0 && !vDayRate.IsPromotion)
+                    if (pricesException.Count > 0)
                     {
                         Rate rateException = new Rate();
                         rateException.HasPriceException = true;
@@ -547,7 +547,7 @@ namespace APIServices.Conflux.Parser
                     rates.Add(rate);
 
                     //Precios Excepciones
-                    if (pricesException.Count > 0 && !vDayRate.IsPromotion)
+                    if (pricesException.Count > 0)
                     {
                         Rate rateException = new Rate();
                         rateException.HasPriceException = true;
@@ -705,7 +705,7 @@ namespace APIServices.Conflux.Parser
                     rates.Add(rate);
 
                     //Precios Excepciones
-                    if (pricesException.Count > 0 && !vDayRate.IsPromotion)
+                    if (pricesException.Count > 0)
                     {
                         Rate rateException = new Rate();
                         rateException.HasPriceException = true;

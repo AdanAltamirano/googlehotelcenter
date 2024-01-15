@@ -460,5 +460,18 @@ namespace APIServices.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetLockGralByHotel_Result>("spGetLockGralByHotel", hotelIdParameter);
         }
+    
+        public virtual ObjectResult<spGetPromosByRatePlan_Result> spGetPromosByRatePlan(Nullable<int> idHotel, string ratePlan)
+        {
+            var idHotelParameter = idHotel.HasValue ?
+                new ObjectParameter("idHotel", idHotel) :
+                new ObjectParameter("idHotel", typeof(int));
+    
+            var ratePlanParameter = ratePlan != null ?
+                new ObjectParameter("ratePlan", ratePlan) :
+                new ObjectParameter("ratePlan", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetPromosByRatePlan_Result>("spGetPromosByRatePlan", idHotelParameter, ratePlanParameter);
+        }
     }
 }

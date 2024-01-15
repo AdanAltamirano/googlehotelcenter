@@ -1039,11 +1039,31 @@ Partial Class AvailabilityRestrictions
                 closeRateplan(nota, splan:=ddlRateplans.SelectedItem.Text)
                 'closeRateplan(nota, splan:=ddlRateplans.SelectedItem.Text, hotelId:=info.Hotel, dates:=dates, confluxService:=confluxService, isEnabledGoogleRequest:=isEnabledGoogleRequest, activeRooms:=activeRooms, restrictionType:=RestrictionEnum.LockRatePlan)
 
-                'If isEnabledGoogleRequest Then
+                If isEnabledGoogleRequest Then
+                    Dim dsRatePlansPromos As RatePlanData = New RatePlanFacade().GetRatePlanByIdHotel(info.Hotel.ToString(), idioma:=1, IncluirPaquetesSegmentoK:=1, incluirNetRatesPlan:=1, idAsociacion:=-1, DeleteFilter:=1, getPromos:=True)
+                    Dim filterPromosDates As String = "((FechaFin IS NOT NULL AND FechaFin>= '" + DateTime.Now.Date.ToString() + "') OR (FechaFin IS NULL AND PromoEndDate >= '" + DateTime.Now.Date.ToString() + "'))"
+                    Dim activeRatePlansPromos As List(Of DataRow) = dsRatePlansPromos.Tables(RatePlanData.RATEPLAN_TABLE).Select(filterPromosDates).ToList()
 
-                '    RequestLockRatePlanGoogle(ddlStatus.SelectedValue, ddlRateplans.SelectedValue, dates, activeRooms, confluxService)
+                    Dim promos As List(Of spGetPromosByRatePlan_Result) = HotelUtilitie.GetPromosByRatePlan(info.Hotel, ddlRateplans.SelectedValue)
 
-                'End If
+                    Dim validPromosList As List(Of DataRow) = GetValidPromos(activeRatePlansPromos, promos)
+
+                    'Solo se usa el Modelo
+                    Dim lockPromos As List(Of spGetLockGralByHotel_Result) = New List(Of spGetLockGralByHotel_Result)
+
+                    For Each [date] As Tuple(Of Date, Date) In dates
+
+                        Dim tempLock As spGetLockGralByHotel_Result = New spGetLockGralByHotel_Result
+                        tempLock.StartDate = [date].Item1
+                        tempLock.EndDate = [date].Item2
+                        tempLock.Status = ddlStatus.SelectedValue
+                        lockPromos.Add(tempLock)
+                    Next
+
+                    RequestLockRatePlanGoogle(ddlStatus.SelectedValue, ddlRateplans.SelectedValue, dates, activeRooms, confluxService)
+                    RequestLockRatePlanPromosGoogle(lockPromos, activeRooms, validPromosList, confluxService)
+
+                End If
             End If
             iniCtrl()
         End If
@@ -2175,7 +2195,68 @@ Partial Class AvailabilityRestrictions
 
     End Sub
 
+    Public Sub RequestLockRatePlanPromosGoogle(ByVal lockGral As List(Of spGetLockGralByHotel_Result), ByVal activeRooms As List(Of DataRow), ByVal activeRatePlansPromos As List(Of DataRow), ByVal confluxService As ConfluxService)
+        Try
 
+            If activeRatePlansPromos.Count > 0 Then
+                Dim availStatusMessagesLockGralPromos As AvailStatusMessages = RestrictionsParser.ToAvailStatusMessages(lockGral, activeRooms, activeRatePlansPromos)
+                Dim lockGralPromosHotelAvailNotifRQ As XElement = HotelAvailNotifRQ.CreateHotelAvailNotifRQ(availStatusMessagesLockGralPromos)
+
+                Dim lockGralPromosSoapRQ As XDocument = Soap.CreateSoapRequestXml(lockGralPromosHotelAvailNotifRQ)
+
+                Dim restrictionResponsePromos As RestrictionResponse = confluxService.UpdateRestriction(lockGralPromosSoapRQ, restrictionEnum:=RestrictionEnum.LockRatePlan)
+
+                If Not restrictionResponsePromos.IsSuccess Then
+                    MyBase.WriteLog(restrictionResponsePromos.Xml, "LockRatePlanPromos")
+                ElseIf restrictionResponsePromos.IsSuccess Then
+                    For Each restriction As Restriction In restrictionResponsePromos.Restrictions
+                        Select Case restriction.Type
+                            Case RestrictionEnum.LockGral
+                                MyBase.WriteLog(restriction.XmlRequest(0).ToString(), "LockRatePlanPromos")
+                                MyBase.WriteLog(restriction.Xml(0).ToString(), "LockRatePlanPromos")
+                        End Select
+                    Next
+                End If
+
+            End If
+
+        Catch ex As Exception
+            MyBase.WriteLog(ex.Message, "LockRatePlanPromos")
+        End Try
+    End Sub
+
+
+    Private Function GetValidPromos(ByVal activeRatePlansPromos As List(Of DataRow), ByVal promos As List(Of spGetPromosByRatePlan_Result)) As List(Of DataRow)
+
+        Dim validPromos As List(Of DataRow) = New List(Of DataRow)
+
+        Dim dsRatePlans As RatePlanData = New RatePlanData
+
+        Dim dt As DataTable = dsRatePlans.Tables(RatePlanData.RATEPLAN_TABLE)
+
+        For Each activeRatePlanPromo As DataRow In activeRatePlansPromos
+
+            For Each promo As spGetPromosByRatePlan_Result In promos
+
+                If promo.IdPromocion = activeRatePlanPromo.ItemArray(0).ToString() Then
+
+                    Dim tempData As DataRow = dt.NewRow()
+
+                    With tempData
+                        .Item(RatePlanData.FIELD_IDRATEPLAN) = promo.IdPromocion
+                    End With
+
+                    validPromos.Add(tempData)
+
+                End If
+
+            Next
+
+        Next
+
+        Return validPromos
+
+    End Function
 
 #End Region
 

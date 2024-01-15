@@ -1,4 +1,6 @@
-﻿Imports Portal.General.Facade
+﻿Imports APIServices.Models
+
+Imports Portal.General.Facade
 Imports Portal.General.Common.Data
 Imports Portal.General.DataAccess
 
@@ -13,5 +15,20 @@ Namespace Utitlities.Hotel
             End With
             Return False
         End Function
+
+        Function GetPromosByRatePlan(ByVal hotelId As Integer, ByVal ratePlanId As String) As List(Of spGetPromosByRatePlan_Result)
+
+            Dim promos As List(Of spGetPromosByRatePlan_Result) = New List(Of spGetPromosByRatePlan_Result)
+
+            Using dbContext As New OzHotelesEntities()
+
+                promos = dbContext.spGetPromosByRatePlan(hotelId, ratePlanId).ToList()
+
+            End Using
+
+            Return promos
+
+        End Function
+
     End Module
 End Namespace
