@@ -3,6 +3,11 @@ Imports Portal.Hotel.Facade
 Imports System.Configuration.ConfigurationManager
 Imports Portal.General.Common.Data
 Imports Portal.General.Facade
+Imports APIServices.Conflux
+Imports APIServices.Conflux.Enum
+Imports APIServices.Conflux.OTA.Models.Rates
+Imports APIServices.Conflux.Models.Rates.Response
+Imports RateManager.Utitlities.Hotel
 
 Public Class Promotions
     Inherits PaginaBase
@@ -297,10 +302,28 @@ Public Class Promotions
         Dim sDataPrev As String = ""
         Dim idAsoc As Integer = Me.GetIdAsociation
 
+        Dim totalPromotionDiscountBeforeEdition As String = Nothing
 
         With New RatePlanFacade
             Rp = .GetRatePlanByIdHotel(Me.m_iHotelId, idAsociacion:=idAsoc)
         End With
+
+        If Me.edicion Then
+
+            Dim dsRatePlan As RatePlanData
+
+            With New RatePlanFacade
+                dsRatePlan = .GetDataRatePlan(IdRatePlan, Me.m_iHotelId)
+            End With
+
+            If dsRatePlan.Tables(dsRatePlan.RATEPLAN_TABLE).Rows.Count > 0 Then
+                With dsRatePlan.Tables(dsRatePlan.RATEPLAN_TABLE).Rows(0)
+                    totalPromotionDiscountBeforeEdition = .Item(dsRatePlan.FIELD_DESCPROMOTION).ToString()
+                End With
+            End If
+
+        End If
+
         sDataPrev = getDataXML()
 
 
@@ -556,6 +579,40 @@ Public Class Promotions
                     'End If
 
                     'clearConfDealData()
+
+                    'Google
+
+                    Dim confluxService As New ConfluxService()
+                    Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
+                    Dim isEnabledGoogleRequest As Boolean = HotelUtilitie.IsEnableGoogleRequest(info.Hotel)
+
+                    'Me.txtPromoDiscount.Text = .Item(dsRatePlan.FIELD_DESCPROMOTION).ToString
+
+                    If isEnabledGoogleRequest And chkPromoDiscount.Checked Then
+
+                        If totalPromotionDiscountBeforeEdition <> "" And txtPromoDiscount.Text = "" Then
+                            Dim res As RateResponse = confluxService.UpdateRatePromotion(info.Hotel, info.Empresa, IdRatePlan, TypeRateEnum.RoomRate)
+                            CType(Me.Page, PaginaBase).guardalog("/HotelAdministrator/Pages/Promotions.aspx", CType(Me.Page, PaginaBase).acciones.Sincronizar, "Sincronizar Promotions", "", res.RequestXML, res.Xml, info.Hotel)
+
+                            Dim resPromotion As RateResponse = confluxService.UpdateRatePromotion(info.Hotel, info.Empresa, IdRatePlan, TypeRateEnum.RoomRatePromotion)
+                            CType(Me.Page, PaginaBase).guardalog("/HotelAdministrator/Pages/Promotions.aspx", CType(Me.Page, PaginaBase).acciones.Sincronizar, "Sincronizar Promotions", "", resPromotion.RequestXML, resPromotion.Xml, info.Hotel)
+                        ElseIf totalPromotionDiscountBeforeEdition <> "" And txtPromoDiscount.Text <> "" Then
+                            If CDbl(totalPromotionDiscountBeforeEdition) <> CDbl(txtPromoDiscount.Text) Then
+                                Dim res As RateResponse = confluxService.UpdateRatePromotion(info.Hotel, info.Empresa, IdRatePlan, TypeRateEnum.RoomRate)
+                                CType(Me.Page, PaginaBase).guardalog("/HotelAdministrator/Pages/Promotions.aspx", CType(Me.Page, PaginaBase).acciones.Sincronizar, "Sincronizar Promotions", "", res.RequestXML, res.Xml, info.Hotel)
+
+                                Dim resPromotion As RateResponse = confluxService.UpdateRatePromotion(info.Hotel, info.Empresa, IdRatePlan, TypeRateEnum.RoomRatePromotion)
+                                CType(Me.Page, PaginaBase).guardalog("/HotelAdministrator/Pages/Promotions.aspx", CType(Me.Page, PaginaBase).acciones.Sincronizar, "Sincronizar Promotions", "", resPromotion.RequestXML, resPromotion.Xml, info.Hotel)
+                            End If
+                        ElseIf totalPromotionDiscountBeforeEdition = "" And txtPromoDiscount.Text <> "" Then
+                            Dim res As RateResponse = confluxService.UpdateRatePromotion(info.Hotel, info.Empresa, IdRatePlan, TypeRateEnum.RoomRate)
+                            CType(Me.Page, PaginaBase).guardalog("/HotelAdministrator/Pages/Promotions.aspx", CType(Me.Page, PaginaBase).acciones.Sincronizar, "Sincronizar Promotions", "", res.RequestXML, res.Xml, info.Hotel)
+
+                            Dim resPromotion As RateResponse = confluxService.UpdateRatePromotion(info.Hotel, info.Empresa, IdRatePlan, TypeRateEnum.RoomRatePromotion)
+                            CType(Me.Page, PaginaBase).guardalog("/HotelAdministrator/Pages/Promotions.aspx", CType(Me.Page, PaginaBase).acciones.Sincronizar, "Sincronizar Promotions", "", resPromotion.RequestXML, resPromotion.Xml, info.Hotel)
+                        End If
+                    End If
+
                     ClearData()
                     Return 0
                 End If

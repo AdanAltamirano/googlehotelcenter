@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Collections.Generic;
 using System.Xml.Linq;
@@ -11,10 +12,13 @@ using APIServices.Conflux.Models.User.Response;
 using APIServices.Conflux.OTA.Models.Rates;
 using APIServices.Conflux.Models.Rates.Response;
 using APIServices.Conflux.Models.Restrictions.Response;
+using APIServices.Conflux.Models.RatePlan.Response;
+    using APIServices.Conflux.Parser.RatePlan;
 using APIServices.Conflux.Parser.Restriction;
 using APIServices.Xml.Soap;
 using APIServices.Xml.OTA.Request.Rates;
 using APIServices.Xml.OTA.Request.Restrictions;
+using APIServices.Xml.OTA.Request.RatePlan;
 using Portal.General.Facade;
 using Portal.Hotel.Facade;
 using Portal.Hotel.Common.Data;
@@ -74,6 +78,47 @@ namespace APIServices.Conflux
                 response.Error = new KeyValuePair<string, string>("500","Error del Sistema");
             }
 
+
+            return response;
+        }
+
+        public RatePlanResponse InsertRatePlan(int hotelId, int companyId,string ratePlanId, string ratePlanName, string ratePlanDesc, string language = "ES")
+        {
+            RatePlanResponse response = new RatePlanResponse();
+
+            try
+            {
+
+                var transaction = RatePlanParser.ToTransaction(companyId, ratePlanId, ratePlanName, ratePlanDesc, language);
+
+                var xml = HotelRatePlanRQ.CreateHotelRatePlanInsertRQ(transaction);
+
+                var soapRequest = Soap.CreateSoapRequestXml(xml);
+
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
+                string endPoint = string.Format("properties/{0}/ratePlans", companyId);
+
+                HttpRequestMessage request = new HttpRequestMessage(new HttpMethod("PATCH"),endPoint);
+                request.Content = new StringContent(soapRequest.ToString());
+
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(ConfigurationManager.AppSettings["confluxApiUrl"].ToString());
+
+                    var responseRequest = client.SendAsync(request).Result;
+
+                    response.StatusCode = (int)responseRequest.StatusCode;
+                    response.Response = responseRequest.Content.ReadAsStringAsync().Result;
+                    response.RequestXML = soapRequest.ToString();
+                }
+
+            }
+            catch(Exception ex)
+            {
+                response.StatusCode = 500;
+                response.Response = ex.Message;
+            }
 
             return response;
         }
@@ -149,6 +194,151 @@ namespace APIServices.Conflux
 
 
             return res;
+        }
+
+        public RateResponse UpdateRate(int hotelId, int companyId, string ratePlanId ,TypeRateEnum typeRate)
+        {
+            RateResponse res = new RateResponse();
+
+            try
+            {
+                List<vDayRates> rates = null;
+                List<vDayRatesExceptions> ratesExceptions = null;
+
+                switch (typeRate)
+                {
+                    case TypeRateEnum.RoomRate:
+                        rates = APIServices.Conflux.Helpers.Rate.RatesHelpers.GetVDayRate(hotelId, ratePlanId);
+                        break;
+                    case TypeRateEnum.RoomRatePromotion:
+                       ratesExceptions = APIServices.Conflux.Helpers.Rate.RatesHelpers.GetVDayRateException(hotelId, ratePlanId);
+                        break;
+                }
+
+                var hotel = dbContext.Hoteles.First(h => h.idHotel == hotelId);
+
+                var rateAmountMessages = Parser.Parser.ToRateAmountMessages(rates, ratesExceptions, companyId, hotel.PlusTax, hotel.Impuesto, typeRate);
+
+                var xml = HotelRateAmountNotifRQ.CreateHotelRateAmountNotifRQ(rateAmountMessages);
+
+                var soapRequest = Soap.CreateSoapRequestXml(xml);
+
+                HttpContent httpContent = new StringContent(soapRequest.ToString());
+
+                string url = ConfigurationManager.AppSettings["confluxApiUrl"] + "pms/ota/rates/update";
+
+                var uri = new Uri(url);
+
+                System.Xml.Linq.XElement otaRS = null;
+
+                using (var client = new HttpClient())
+                {
+
+                    client.Timeout = TimeSpan.FromMinutes(50);
+                    var response = client.PostAsync(uri, httpContent).Result;
+
+                    string result = response.Content.ReadAsStringAsync().Result; //regresa un xml
+
+                    otaRS = HotelRateAmountNotifRS.ParseHotelRateAmountNotifRS(result);
+                }
+
+                res.Xml = otaRS.ToString();
+                res.RequestXML = soapRequest.ToString();
+                res.IsSuccess = HotelRateAmountNotifRS.IsSuccessRequest(otaRS);
+            }
+            catch (Exception ex)
+            {
+                res.IsSuccess = false;
+                res.Error = new KeyValuePair<string, string>("448", ex.Message);
+
+                var errorsElement = new System.Xml.Linq.XElement("Errors");
+                var errorElementProperty = new System.Xml.Linq.XElement("Error");
+                errorElementProperty.Add(
+                    new System.Xml.Linq.XAttribute("Type", "3"),
+                    new System.Xml.Linq.XAttribute("Code", "448"),
+                    new System.Xml.Linq.XText(ex.Message));
+
+                errorsElement.Add(errorElementProperty);
+
+                res.Xml = errorsElement.ToString();
+
+            }
+
+
+
+            return res;
+        }
+
+        public RateResponse UpdateRatePromotion(int hotelId, int companyId, string ratePlanId, TypeRateEnum typeRate)
+        {
+            RateResponse res = new RateResponse();
+
+            try
+            {
+                List<vDayRates> rates = null;
+                List<vDayRatesExceptions> ratesExceptions = null;
+
+                switch (typeRate)
+                {
+                    case TypeRateEnum.RoomRate:
+                        rates = APIServices.Conflux.Helpers.Rate.RatesHelpers.GetVDayRatePromotion(hotelId, ratePlanId);
+                        break;
+                    case TypeRateEnum.RoomRatePromotion:
+                        ratesExceptions = APIServices.Conflux.Helpers.Rate.RatesHelpers.GetVDayRatePromotionException(hotelId, ratePlanId);
+                        break;
+                }
+
+                var hotel = dbContext.Hoteles.First(h => h.idHotel == hotelId);
+
+                var rateAmountMessages = Parser.Parser.ToRateAmountMessages(rates, ratesExceptions, companyId, hotel.PlusTax, hotel.Impuesto, typeRate);
+
+                var xml = HotelRateAmountNotifRQ.CreateHotelRateAmountNotifRQ(rateAmountMessages);
+
+                var soapRequest = Soap.CreateSoapRequestXml(xml);
+
+                HttpContent httpContent = new StringContent(soapRequest.ToString());
+
+                string url = ConfigurationManager.AppSettings["confluxApiUrl"] + "pms/ota/rates/update";
+
+                var uri = new Uri(url);
+
+                System.Xml.Linq.XElement otaRS = null;
+
+                using (var client = new HttpClient())
+                {
+
+                    client.Timeout = TimeSpan.FromMinutes(50);
+                    var response = client.PostAsync(uri, httpContent).Result;
+
+                    string result = response.Content.ReadAsStringAsync().Result; //regresa un xml
+
+                    otaRS = HotelRateAmountNotifRS.ParseHotelRateAmountNotifRS(result);
+                }
+
+                res.Xml = otaRS.ToString();
+                res.RequestXML = soapRequest.ToString();
+                res.IsSuccess = HotelRateAmountNotifRS.IsSuccessRequest(otaRS);
+            }
+            catch (Exception ex)
+            {
+                res.IsSuccess = false;
+                res.Error = new KeyValuePair<string, string>("448", ex.Message);
+
+                var errorsElement = new System.Xml.Linq.XElement("Errors");
+                var errorElementProperty = new System.Xml.Linq.XElement("Error");
+                errorElementProperty.Add(
+                    new System.Xml.Linq.XAttribute("Type", "3"),
+                    new System.Xml.Linq.XAttribute("Code", "448"),
+                    new System.Xml.Linq.XText(ex.Message));
+
+                errorsElement.Add(errorElementProperty);
+
+                res.Xml = errorsElement.ToString();
+
+            }
+
+            return res;
+
         }
 
         public RateResponse UpdateRates(int hotelId, int companyId)

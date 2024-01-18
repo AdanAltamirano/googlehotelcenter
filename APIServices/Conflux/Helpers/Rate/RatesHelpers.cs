@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Collections.Generic;
 using APIServices.Models;
@@ -18,6 +19,7 @@ namespace APIServices.Conflux.Helpers.Rate
             Tax = tax;
         }
 
+        #region vDayRate
         public static List<vDayRates> GetVDayRate(int rateId, DateTime startDate, DateTime endDate)
         {
             List<vDayRates> vDayRate = null;
@@ -96,6 +98,88 @@ namespace APIServices.Conflux.Helpers.Rate
 
             return vDayRate;
         }
+
+        public static List<vDayRates> GetVDayRate(int hotelId, string ratePlan)
+        {
+            List<vDayRates> vDayRate = null;
+
+            using (OzHotelesEntities dbContext = new OzHotelesEntities())
+            {
+                vDayRate = dbContext.vDayRates.Where(                    
+                    dr => dr.HotelId == hotelId
+                    && dr.EndDate >= DbFunctions.TruncateTime(DateTime.Now)
+                    && dr.Language == 1
+                    && dr.IsPromotion == false
+                    && (dr.RatePlanId == ratePlan
+                        || dr.ParentRatePlanId == ratePlan))
+                    .OrderBy(vdr => vdr.StartDate)
+                    .ToList();
+            }
+
+            return vDayRate;
+
+        }
+
+        public static List<vDayRatesExceptions> GetVDayRateException(int hotelId, string ratePlan)
+        {
+            List<vDayRatesExceptions> vDayRate = null;
+
+            using (OzHotelesEntities dbContext = new OzHotelesEntities())
+            {
+                vDayRate = dbContext.vDayRatesExceptions.Where(
+                    dr => dr.HotelId == hotelId
+                    && dr.EndDate >= DbFunctions.TruncateTime(DateTime.Now)
+                    && dr.Language == 1
+                    && dr.IsPromotion == false
+                    && (dr.RatePlanId == ratePlan
+                        || dr.ParentRatePlanId == ratePlan))
+                    .OrderBy(vdr => vdr.StartDate)
+                    .ToList();
+            }
+
+            return vDayRate;
+        }
+
+        public static List<vDayRates> GetVDayRatePromotion(int hotelId, string ratePlan)
+        {
+            List<vDayRates> vDayRate = null;
+
+            using (OzHotelesEntities dbContext = new OzHotelesEntities())
+            {
+                vDayRate = dbContext.vDayRates.Where(
+                    dr => dr.HotelId == hotelId
+                    && dr.EndDate >= DbFunctions.TruncateTime(DateTime.Now)
+                    && dr.Language == 1
+                    && dr.IsPromotion == true
+                    && dr.RatePlanId.Contains(ratePlan))
+                    .OrderBy(vdr => vdr.StartDate)
+                    .ToList();
+            }
+
+            return vDayRate;
+        }
+
+        public static List<vDayRatesExceptions> GetVDayRatePromotionException(int hotelId, string ratePlan)
+        {
+            List<vDayRatesExceptions> vDayRate = null;
+
+            using (OzHotelesEntities dbContext = new OzHotelesEntities())
+            {
+                vDayRate = dbContext.vDayRatesExceptions.Where(
+                    dr => dr.HotelId == hotelId
+                    && dr.EndDate >= DbFunctions.TruncateTime(DateTime.Now)
+                    && dr.Language == 1
+                    && dr.IsPromotion == true
+                    && dr.RatePlanId.Contains(ratePlan))
+                    .OrderBy(vdr => vdr.StartDate)
+                    .ToList();
+            }
+
+            return vDayRate;
+        }
+
+
+        #endregion
 
         public static List<spGetPricesByRate_Result> GetPrices(int? rateId)
         {

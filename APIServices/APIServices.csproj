@@ -129,6 +129,8 @@
     <Compile Include="Conflux\Models\OTA\Restrictions\LengthOfStay.cs" />
     <Compile Include="Conflux\Models\OTA\Restrictions\RestrictionStatus.cs" />
     <Compile Include="Conflux\Models\OTA\Restrictions\StatusApplicationControl.cs" />
+    <Compile Include="Conflux\Models\RatePlan\RatePlan.cs" />
+    <Compile Include="Conflux\Models\RatePlan\Response\RatePlanResponse.cs" />
     <Compile Include="Conflux\Models\Rates\Promo.cs" />
     <Compile Include="Conflux\Models\Rates\RatePrice.cs" />
     <Compile Include="Conflux\Models\Rates\Response\RateResponse.cs" />
@@ -137,6 +139,7 @@
     <Compile Include="Conflux\Models\User\Response\UserReponse.cs" />
     <Compile Include="Conflux\Models\User\User.cs" />
     <Compile Include="Conflux\Parser\Parser.cs" />
+    <Compile Include="Conflux\Parser\RatePlan\RatePlanParser.cs" />
     <Compile Include="Conflux\Parser\Restriction\RestrictionsParser.cs" />
     <Compile Include="Currency\CurrencyService.cs" />
     <Compile Include="Dictionary.cs" />
@@ -404,6 +407,7 @@
     <Compile Include="Service\HotelVerse\Models\Record.cs" />
     <Compile Include="Service\HotelVerse\Models\Response\ResponseRequest.cs" />
     <Compile Include="Utilities.cs" />
+    <Compile Include="Xml\OTA\Request\RatePlan\HotelRatePlanRQ.cs" />
     <Compile Include="Xml\OTA\Request\Rates\HotelRateAmountNotifRQ.cs" />
     <Compile Include="Xml\OTA\Request\Rates\HotelRateAmountNotifRS.cs" />
     <Compile Include="Xml\OTA\Request\Restrictions\HotelAvailNotifRQ.cs" />
