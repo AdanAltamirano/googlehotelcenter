@@ -97,7 +97,7 @@ namespace APIServices.Conflux
 
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-                string endPoint = string.Format("properties/{0}/ratePlans", companyId);
+                string endPoint = string.Format("properties/{0}/rateplans", companyId);
 
                 HttpRequestMessage request = new HttpRequestMessage(new HttpMethod("PATCH"),endPoint);
                 request.Content = new StringContent(soapRequest.ToString());
