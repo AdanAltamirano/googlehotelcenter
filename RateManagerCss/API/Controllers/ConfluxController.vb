@@ -49,13 +49,17 @@ Namespace API.Controllers
 
             Dim result As RateResponse = ConfluxService.UpdateRates(hotelId, info.Empresa)
 
-            Log("Sincronizar Tarifas Conflux con el hotel: ", result.Xml, hotelId, result.RequestXML)
-
             If Not result.IsSuccess Then
+
+                Log("Sincronizar Tarifas Conflux con el hotel: ", result.Xml, hotelId, String.Empty)
 
                 Return BadRequest(result.Error)
 
             End If
+
+            For Each request As APIServices.Conflux.Models.Rates.Response.Rate In result.Rates
+                Log("Sincronizar Tarifas Conflux con el hotel: ", request.Xml, hotelId, request.XmlRequest)
+            Next
 
             Dim toObject As Object = result
 
@@ -68,7 +72,7 @@ Namespace API.Controllers
 
             Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
 
-            Dim result As RestrictionResponse = ConfluxService.UpdateRestrictions(hotelId, info.Empresa)
+            Dim result As RestrictionResponse = ConfluxService.UpdateRestrictionsGeneral(hotelId, info.Empresa)
 
             If Not result.IsSuccess Then
                 Log("Sincronizar Restricciones Conflux con el hotel: ", result.Xml, hotelId)
@@ -77,14 +81,20 @@ Namespace API.Controllers
                 For Each restriction As Restriction In result.Restrictions
                     Select Case restriction.Type
                         Case RestrictionEnum.LockGral
-                            Log("Sincronizar Restricciones LockGral No Promo Conflux con el hotel: ", restriction.Xml(0).ToString(), hotelId, requestXMl:=restriction.XmlRequest(0).ToString())
-                            If restriction.IsSuccessPromo Then
-                                Log("Sincronizar Restricciones LockGral Promo Conflux con el hotel: ", restriction.Xml(1).ToString(), hotelId, requestXMl:=restriction.XmlRequest(1).ToString())
-                            End If
+                            For index As Integer = 0 To restriction.Xml.Count() Step 1
+                                Dim note As String = String.Format("Sincronizar request numero {0} LockGral Conflux con el hotel: ", (index + 1))
+                                Log(note, restriction.Xml(index).ToString(), hotelId, requestXMl:=restriction.XmlRequest(index).ToString())
+                            Next
                         Case RestrictionEnum.LockRatePlan
-                            Log("Sincronizar Restricciones LockRatePlan Conflux con el hotel: ", restriction.Xml(0).ToString(), hotelId, requestXMl:=restriction.XmlRequest(0).ToString())
+                            For index As Integer = 0 To restriction.Xml.Count() Step 1
+                                Dim note As String = String.Format("Sincronizar request numero {0} LockRatePlan Conflux con el hotel: ", (index + 1))
+                                Log(note, restriction.Xml(index).ToString(), hotelId, requestXMl:=restriction.XmlRequest(index).ToString())
+                            Next
                         Case RestrictionEnum.LockRoomType
-                            Log("Sincronizar Restricciones LockRoomType Conflux con el hotel: ", restriction.Xml(0).ToString(), hotelId, requestXMl:=restriction.XmlRequest(0).ToString())
+                            For index As Integer = 0 To restriction.Xml.Count() Step 1
+                                Dim note As String = String.Format("Sincronizar request numero {0} LockRoomtype Conflux con el hotel: ", (index + 1))
+                                Log(note, restriction.Xml(index).ToString(), hotelId, requestXMl:=restriction.XmlRequest(index).ToString())
+                            Next
                     End Select
                 Next
             End If

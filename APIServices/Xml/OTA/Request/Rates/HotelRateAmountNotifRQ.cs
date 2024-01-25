@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
+using System.Collections.Generic;
 using APIServices.Conflux.OTA.Models.Rates;
 
 namespace APIServices.Xml.OTA.Request.Rates
@@ -32,6 +33,32 @@ namespace APIServices.Xml.OTA.Request.Rates
 
             return otaHotelRateAmountNotifRQ;
         }
+
+        public static List<XElement> CreateHotelRateAmountNotifRQList(RateAmountMessages rateAmountMessages)
+        {
+            List<XElement> otaHotelRateAmountNotifRQList = new List<XElement>();
+
+            List<XElement> rateAmountMessagesXmlList = GetRateAmountMessages(rateAmountMessages.HotelCode, rateAmountMessages.RateAmountMessagesList);
+
+            foreach(XElement rateAmountMessagesXml in rateAmountMessagesXmlList)
+            {
+                XElement otaHotelRateAmountNotifRQ = new XElement("OTA_HotelRateAmountNotifRQ",
+                new XAttribute(XNamespace.Xmlns + "xsi", xsi),
+                new XAttribute(XNamespace.Xmlns + "xsd", xsd),
+                new XAttribute("EchoToken", Guid.NewGuid()),
+                new XAttribute("Version", "1"));
+
+                XElement pos = GetPOS();
+
+                otaHotelRateAmountNotifRQ.Add(pos, rateAmountMessagesXml);
+
+                otaHotelRateAmountNotifRQList.Add(otaHotelRateAmountNotifRQ);
+
+            }
+
+            return otaHotelRateAmountNotifRQList;
+        }
+
 
         private static XElement GetPOS()
         {
@@ -137,6 +164,127 @@ namespace APIServices.Xml.OTA.Request.Rates
             return rateAmountMessagesXml;
         }
 
+        private static List<XElement> GetRateAmountMessages(int hotelCode, List<RateAmountMessage> rateAmountMessagesList) 
+        {
+            List<XElement> rateAmountMessagesListElements = new List<XElement>();
+
+            int limitBytesMessage = 900000000;
+            int currentBytesMessages = 0;
+            XNamespace blank = XNamespace.Get(@"http://www.opentravel.org/OTA/2003/05");
+            XElement rateAmountMessagesXml = null;
+
+            int index = 0;
+
+            while (index < rateAmountMessagesList.Count)
+            {
+                //Nuevo RateAmountMessages
+                if(currentBytesMessages == 0 && rateAmountMessagesXml == null)
+                {
+                    rateAmountMessagesXml = new XElement(blank + "RateAmountMessages",
+                        new XAttribute("xmlns", blank.NamespaceName),
+                        new XAttribute("HotelCode", hotelCode));
+                }
+
+
+                XElement rateAmountMessage = new XElement(blank + "RateAmountMessage");
+
+                XElement statusApplicationControl = new XElement(blank + "StatusApplicationControl",
+                    new XAttribute("RatePlanCode", rateAmountMessagesList[index].statusApplicationControl.RatePlanCode),
+                    new XAttribute("InvTypeCode", rateAmountMessagesList[index].statusApplicationControl.InvTypeCode));
+
+                XElement rates = new XElement(blank + "Rates");
+
+                foreach (Rate rate in rateAmountMessagesList[index].Rates)
+                {
+                    XElement ratesXml = new XElement(blank + "Rate",
+                        new XAttribute("Start", rate.StartDate),
+                        new XAttribute("End", rate.EndDate));
+
+                    if (rate.IsPromotion || rate.HasPriceException || rate.TypeRate == Conflux.Enum.TypeRateEnum.RoomRatePromotion)
+                    {
+                        ratesXml.Add(
+                            new XAttribute("Mon", rate.ApplyMon.ToString().ToLower()),
+                            new XAttribute("Tue", rate.ApplyTue.ToString().ToLower()),
+                            new XAttribute("Weds", rate.ApplyWed.ToString().ToLower()),
+                            new XAttribute("Thur", rate.ApplyThu.ToString().ToLower()),
+                            new XAttribute("Fri", rate.ApplyFri.ToString().ToLower()),
+                            new XAttribute("Sat", rate.ApplySat.ToString().ToLower()),
+                            new XAttribute("Sun", rate.ApplySun.ToString().ToLower()));
+                    }
+
+                    if (rate.BaseGuestAmounts != null && rate.BaseGuestAmounts.Count() > 0)
+                    {
+
+                        XElement baseGuestAmounts = new XElement(blank + "BaseByGuestAmts");
+
+                        foreach (BaseGuestAmount baseGuestAmount in rate.BaseGuestAmounts)
+                        {
+
+                            XElement baseGuestAmountXml = new XElement(blank + "BaseByGuestAmt",
+                                new XAttribute("AmountBeforeTax", baseGuestAmount.AmountBeforeTax),
+                                new XAttribute("AmountAfterTax", baseGuestAmount.AmountAfterTax),
+                                new XAttribute("NumberOfGuests", baseGuestAmount.NumberOfGuests),
+                                new XAttribute("AgeQualifyingCode", baseGuestAmount.AgeQualifyingCode));
+
+                            baseGuestAmounts.Add(baseGuestAmountXml);
+
+                        }
+
+                        ratesXml.Add(baseGuestAmounts);
+                    }
+
+                    if (rate.AdditionalGuestAmounts != null && rate.AdditionalGuestAmounts.Count() > 0)
+                    {
+
+                        XElement additionalGuestAmounts = new XElement(blank + "AdditionalGuestAmounts");
+
+                        foreach (AdditionalGuestAmount additionalGuestAmount in rate.AdditionalGuestAmounts)
+                        {
+                            XElement additionalGuestAmountXml = new XElement(blank + "AdditionalGuestAmount",
+                                new XAttribute("Amount", additionalGuestAmount.Amount),
+                                new XAttribute("AgeQualifyingCode", additionalGuestAmount.AgeQualifyingCode));
+
+                            additionalGuestAmounts.Add(additionalGuestAmountXml);
+                        }
+
+                        ratesXml.Add(additionalGuestAmounts);
+
+                    }
+
+                    //ratesXml.Add(baseGuestAmounts, additionalGuestAmounts);
+
+                    rates.Add(ratesXml);
+                }
+
+                rateAmountMessage.Add(statusApplicationControl, rates);
+
+                //Calcular Bytes del mensaje
+
+                var rateAmountMessageByteSize = System.Text.ASCIIEncoding.Unicode.GetByteCount(rateAmountMessage.ToString());
+                currentBytesMessages += rateAmountMessageByteSize;
+
+                if(currentBytesMessages < limitBytesMessage)
+                {
+                    rateAmountMessagesXml.Add(rateAmountMessage); //Nodo Padre
+                    index++;
+                }
+                else
+                {
+                    rateAmountMessagesListElements.Add(rateAmountMessagesXml);
+                    currentBytesMessages = 0;
+                    rateAmountMessagesXml = null;
+                }
+
+            }
+
+            if(rateAmountMessagesXml != null)
+            {
+                rateAmountMessagesListElements.Add(rateAmountMessagesXml);
+            }
+
+            return rateAmountMessagesListElements;
+
+        }
 
 
     }

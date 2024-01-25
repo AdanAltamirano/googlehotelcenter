@@ -133,6 +133,7 @@
     <Compile Include="Conflux\Models\RatePlan\Response\RatePlanResponse.cs" />
     <Compile Include="Conflux\Models\Rates\Promo.cs" />
     <Compile Include="Conflux\Models\Rates\RatePrice.cs" />
+    <Compile Include="Conflux\Models\Rates\Response\Rate.cs" />
     <Compile Include="Conflux\Models\Rates\Response\RateResponse.cs" />
     <Compile Include="Conflux\Models\Restrictions\Response\Restriction.cs" />
     <Compile Include="Conflux\Models\Restrictions\Response\RestrictionResponse.cs" />

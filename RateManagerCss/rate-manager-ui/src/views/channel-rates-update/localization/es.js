@@ -8,6 +8,7 @@ export default {
     'This operation make take a few minutes' : 'Esta operación puede tomar unos minutos',
     'Updated' : 'Actualizado',
     'Fail' : 'No Actualizado',
+    'One or more requests were not successful. Check logs.' : 'Uno o más peticiones no se realizaron correctamente. Verificar registros.',
     'Restrictions' : 'Restricciones',
     'Closures' : 'Cierres',
     'Restriction RatePlan' : 'Cierres por Plan Tarifario',

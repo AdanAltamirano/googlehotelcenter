@@ -343,7 +343,7 @@ namespace APIServices.Conflux
 
         public RateResponse UpdateRates(int hotelId, int companyId)
         {
-            RateResponse res = new RateResponse();
+            RateResponse rateResponse = new RateResponse();
 
             try
             {
@@ -351,41 +351,50 @@ namespace APIServices.Conflux
 
                 var hotel = dbContext.Hoteles.First(h => h.idHotel == hotelId);
 
-
                 var rateAmountMessages = Parser.Parser.ToRateAmountMessages(currentRates, companyId, hotel.PlusTax, hotel.Impuesto);
 
-                var xml = HotelRateAmountNotifRQ.CreateHotelRateAmountNotifRQ(rateAmountMessages);
+                var xmlList = HotelRateAmountNotifRQ.CreateHotelRateAmountNotifRQList(rateAmountMessages);
 
-                var soapRequest = Soap.CreateSoapRequestXml(xml);
-
-                HttpContent httpContent = new StringContent(soapRequest.ToString());
-
-                string url = ConfigurationManager.AppSettings["confluxApiUrl"] + "pms/ota/rates/update";
-
-                var uri = new Uri(url);
-
-                System.Xml.Linq.XElement otaRS = null;
-
-                using (var client = new HttpClient())
+                foreach (XElement xml in xmlList)
                 {
+                    Models.Rates.Response.Rate res = new Models.Rates.Response.Rate();
 
-                    client.Timeout = TimeSpan.FromMinutes(50);
-                    var response = client.PostAsync(uri, httpContent).Result;
+                    var soapRequest = Soap.CreateSoapRequestXml(xml);
 
-                    string result = response.Content.ReadAsStringAsync().Result; //regresa un xml
+                    HttpContent httpContent = new StringContent(soapRequest.ToString());
 
-                    otaRS = HotelRateAmountNotifRS.ParseHotelRateAmountNotifRS(result);
+                    string url = ConfigurationManager.AppSettings["confluxApiUrl"] + "pms/ota/rates/update";
+
+                    var uri = new Uri(url);
+
+                    System.Xml.Linq.XElement otaRS = null;
+
+                    using (var client = new HttpClient())
+                    {
+
+                        client.Timeout = TimeSpan.FromMinutes(50);
+                        var response = client.PostAsync(uri, httpContent).Result;
+
+                        string result = response.Content.ReadAsStringAsync().Result; //regresa un xml
+
+                        otaRS = HotelRateAmountNotifRS.ParseHotelRateAmountNotifRS(result);
+                    }
+
+                    res.Xml = otaRS.ToString();
+                    res.XmlRequest = soapRequest.ToString();
+                    res.IsSuccess = HotelRateAmountNotifRS.IsSuccessRequest(otaRS);
+
+                    rateResponse.Rates.Add(res);
+
                 }
 
-                res.Xml = otaRS.ToString();
-                res.RequestXML = soapRequest.ToString();
-                res.IsSuccess = HotelRateAmountNotifRS.IsSuccessRequest(otaRS);
+                rateResponse.IsSuccess = true;
 
             }
             catch(Exception ex)
             {
-                res.IsSuccess = false;
-                res.Error = new KeyValuePair<string, string>("448", ex.Message);
+                rateResponse.IsSuccess = false;
+                rateResponse.Error = new KeyValuePair<string, string>("448", ex.Message);
 
                 var errorsElement = new System.Xml.Linq.XElement("Errors");
                 var errorElementProperty = new System.Xml.Linq.XElement("Error");
@@ -396,12 +405,12 @@ namespace APIServices.Conflux
 
                 errorsElement.Add(errorElementProperty);
 
-                res.Xml = errorsElement.ToString();
+                rateResponse.Xml = errorsElement.ToString();
 
             }
 
 
-            return res;
+            return rateResponse;
 
         }
 
@@ -484,7 +493,7 @@ namespace APIServices.Conflux
                 //Request LockRatePlan
                 var lockRatePlanSoapRQ = Soap.CreateSoapRequestXml(lockRatePlanHotelAvailNotifRQ);
 
-                List<XDocument> lockRatePlanPrioritySoapRQ = new List<XDocument>();
+                List<XDocument> lockRatePlanPrioritySoapRQ = new List<XDocument>(); //aqui irian los diferentes requests
                 lockRatePlanPrioritySoapRQ.Add(lockRatePlanSoapRQ);
 
                 #endregion
@@ -617,6 +626,215 @@ namespace APIServices.Conflux
 
             return res;
         }
+
+        public RestrictionResponse UpdateRestrictionsGeneral(int hotelId, int companyId)
+        {
+            RestrictionResponse res = new RestrictionResponse();
+
+            try
+            {
+                #region Habitaciones
+                RoomsHotelData ds = new RoomFacade().getAllRooms(hotelId, 1);
+                var activeRooms = ds.Tables[RoomsHotelData.TBL_ROOM_HOTEL].Select("eliminada=false").ToList();
+                #endregion
+
+                #region Planes Tarifarios
+                RatePlanData dsRatePlans = new RatePlanFacade().GetRatePlanByIdHotel(hotelId.ToString(), idioma: 1, IncluirPaquetesSegmentoK: 1, incluirNetRatesPlan: 1, idAsociacion: -1, DeleteFilter: 1, getPromos: false);
+                RatePlanData dsRatePlansPromos = new RatePlanFacade().GetRatePlanByIdHotel(hotelId.ToString(), idioma: 1, IncluirPaquetesSegmentoK: 1, incluirNetRatesPlan: 1, idAsociacion: -1, DeleteFilter: 1, getPromos: true);
+
+
+                var activeRatePlans = dsRatePlans.Tables[RatePlanData.RATEPLAN_TABLE].Select().ToList();
+
+                string filterPromosDates = "((FechaFin IS NOT NULL AND FechaFin>= '" + DateTime.Now.Date.ToString() + "') OR (FechaFin IS NULL AND PromoEndDate >= '" + DateTime.Now.Date.ToString() + "'))";
+                var activeRatePlansPromos = dsRatePlansPromos.Tables[RatePlanData.RATEPLAN_TABLE].Select(filterPromosDates).ToList(); //Validar si no hay promociones en request response y log
+
+
+                #endregion
+
+                #region Init RestrictionParser
+                RestrictionsParser.Init(companyId);
+                #endregion
+
+                #region LockGral
+
+                List<XDocument> lockGralPrioritySoapRQ = new List<XDocument>(); //Irian todos lo request de Promos y no Promos
+
+                var lockGral = dbContext.spGetLockGralByHotel(hotelId).ToList();
+
+                var availStatusMessagesLockGralNoPromos = RestrictionsParser.ToAvailStatusMessages(lockGral, activeRooms, activeRatePlans);
+
+                List<XElement> lockGralNoPromosHotelAvailNotifRQList = HotelAvailNotifRQ.CreateHotelAvailNotifRQList(availStatusMessagesLockGralNoPromos);
+
+                foreach(XElement lockGralNoPromosHotelAvailNotifRQ in lockGralNoPromosHotelAvailNotifRQList)
+                {
+                    var lockGralNoPromosSoapRQ = Soap.CreateSoapRequestXml(lockGralNoPromosHotelAvailNotifRQ);
+                    lockGralPrioritySoapRQ.Add(lockGralNoPromosSoapRQ);
+                }
+
+                if (activeRatePlansPromos.Count > 0)
+                {
+                    var availStatusMessagesLockGralPromos = RestrictionsParser.ToAvailStatusMessages(lockGral, activeRooms, activeRatePlansPromos);
+                    List<XElement> lockGralPromosHotelAvailNotifRQList = HotelAvailNotifRQ.CreateHotelAvailNotifRQList(availStatusMessagesLockGralPromos);
+
+                    foreach(XElement lockGralPromosHotelAvailNotifRQ in lockGralPromosHotelAvailNotifRQList)
+                    {
+                        var lockGralPromosSoapRQ = Soap.CreateSoapRequestXml(lockGralPromosHotelAvailNotifRQ);
+                        lockGralPrioritySoapRQ.Add(lockGralPromosSoapRQ);
+                    }
+
+                }
+
+                #endregion
+
+                #region LockRoomType
+
+                List<XDocument> lockRoomTypesPrioritySoapRQ = new List<XDocument>(); //Irian todos lo request
+
+                var lockRoomTypes = dbContext.spGetLockRoomTypesByHotel(hotelId).ToList();
+
+                var availStatusMessagesLockRoomTypes = RestrictionsParser.ToAvailStatusMessages(lockRoomTypes);
+
+                List<XElement> lockRoomTypeHotelAvailNotifRQList = HotelAvailNotifRQ.CreateHotelAvailNotifRQList(availStatusMessagesLockRoomTypes);
+
+                foreach(XElement lockRoomTypeHotelAvailNotifRQ in lockRoomTypeHotelAvailNotifRQList)
+                {
+                    //Request LockRoomType
+                    var lockRoomTypeSoapRQ = Soap.CreateSoapRequestXml(lockRoomTypeHotelAvailNotifRQ);
+
+                    lockRoomTypesPrioritySoapRQ.Add(lockRoomTypeSoapRQ);
+                }
+
+                #endregion
+
+                #region LockRatePlan
+
+                List<XDocument> lockRatePlanPrioritySoapRQ = new List<XDocument>(); //aqui irian los requests
+
+                var lockRatePlans = dbContext.spGetLockRatePlansByHotel(hotelId).ToList();
+
+                var availStatusMessagesLockRatePlans = RestrictionsParser.ToAvailStatusMessages(activeRooms, lockRatePlans);
+
+                List<XElement> lockRatePlanHotelAvailNotifRQList = HotelAvailNotifRQ.CreateHotelAvailNotifRQList(availStatusMessagesLockRatePlans);
+
+                foreach (XElement lockRatePlanHotelAvailNotifRQ in lockRatePlanHotelAvailNotifRQList)
+                {
+                    //Request LockRatePlan
+                    var lockRatePlanSoapRQ = Soap.CreateSoapRequestXml(lockRatePlanHotelAvailNotifRQ);
+
+                    lockRatePlanPrioritySoapRQ.Add(lockRatePlanSoapRQ);
+                }
+
+                #endregion
+
+                #region Crear Prioridad Request
+                int priorityLockRoomType = Convert.ToInt32(ConfigurationManager.AppSettings["PriorityLockRoomTypes"]); //2
+                int priorityratePlanLock = Convert.ToInt32(ConfigurationManager.AppSettings["PriorityLockRatePlans"]); // 1
+                int priorityLockGral = Convert.ToInt32(ConfigurationManager.AppSettings["PriorityLockGral"]); //3
+
+                int size = 3;
+
+                List<List<XDocument>> priorityRequests = new List<List<XDocument>>(size);
+
+                //Init
+                for (int i = 0; i < size; i++)
+                {
+                    priorityRequests.Add(null);
+                }
+
+
+                if (lockRoomTypes.Count > 0) priorityRequests[priorityLockRoomType - 1] = lockRoomTypesPrioritySoapRQ;
+                if (lockRatePlans.Count > 0) priorityRequests[priorityratePlanLock - 1] = lockRatePlanPrioritySoapRQ;
+                if (lockGral.Count > 0) priorityRequests[priorityLockGral - 1] = lockGralPrioritySoapRQ;
+
+                #endregion
+
+                #region Request
+
+                string url = ConfigurationManager.AppSettings["confluxApiUrl"] + "pms/ota/restriction/update";
+                var uri = new Uri(url);
+
+                int index = 0;
+
+                foreach (var priorityRequest in priorityRequests)
+                {
+                    Restriction restriction = new Restriction();
+
+                    if (priorityRequest != null)
+                    {
+                        foreach (var soapRequest in priorityRequest)
+                        {
+                            System.Xml.Linq.XElement otaRS = null;
+                            HttpContent httpContent = new StringContent(soapRequest.ToString());
+
+                            using (var client = new HttpClient())
+                            {
+                                client.Timeout = TimeSpan.FromMinutes(50);
+                                var response = client.PostAsync(uri, httpContent).Result;
+
+                                string result = response.Content.ReadAsStringAsync().Result; //regresa un xml
+
+                                otaRS = HotelAvailNotifRS.ParseHotelAvailNotifRS(result); //Cambiar
+
+                            }
+
+                            //Repuesta API
+                            restriction.Xml.Add(otaRS.ToString());
+                            restriction.XmlRequest.Add(soapRequest.ToString());
+
+                            restriction.IsSuccess = HotelAvailNotifRS.IsSuccessRequest(otaRS);
+
+                        }
+
+                        if ((index + 1) == priorityLockGral)
+                        {
+                            restriction.Type = Enum.RestrictionEnum.LockGral;
+                        }
+                        else if ((index + 1) == priorityratePlanLock)
+                        {
+                            restriction.Type = Enum.RestrictionEnum.LockRatePlan;
+                        }
+                        else if ((index + 1) == priorityLockRoomType)
+                        {
+                            restriction.Type = Enum.RestrictionEnum.LockRoomType;
+                        }
+
+                        res.Restrictions.Add(restriction);
+
+                    }
+
+                    index++;
+
+                }
+
+                res.IsSuccess = true;
+
+
+                #endregion
+
+            }
+            catch (Exception ex)
+            {
+                res.IsSuccess = false;
+                res.Error = new KeyValuePair<string, string>("448", ex.Message);
+
+                var errorsElement = new System.Xml.Linq.XElement("Errors");
+                var errorElementProperty = new System.Xml.Linq.XElement("Error");
+                errorElementProperty.Add(
+                    new System.Xml.Linq.XAttribute("Type", "3"),
+                    new System.Xml.Linq.XAttribute("Code", "448"),
+                    new System.Xml.Linq.XText(ex.Message));
+
+                errorsElement.Add(errorElementProperty);
+
+                res.Xml = errorsElement.ToString();
+            }
+
+            return res;
+
+        }
+
+
+
 
         public RestrictionResponse UpdateRestriction(XDocument document, RestrictionEnum restrictionEnum)
         {
