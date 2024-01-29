@@ -57,8 +57,12 @@ Namespace API.Controllers
 
             End If
 
+            Dim index As Integer = 1
+
             For Each request As APIServices.Conflux.Models.Rates.Response.Rate In result.Rates
-                Log("Sincronizar Tarifas Conflux con el hotel: ", request.Xml, hotelId, request.XmlRequest)
+                Dim note As String = String.Format("Sincronizar request numero {0} Tarifas Conflux con el hotel: ", (index))
+                Log(note, request.Xml, hotelId, request.XmlRequest)
+                index += 1
             Next
 
             Dim toObject As Object = result
@@ -81,20 +85,26 @@ Namespace API.Controllers
                 For Each restriction As Restriction In result.Restrictions
                     Select Case restriction.Type
                         Case RestrictionEnum.LockGral
-                            For index As Integer = 0 To restriction.Xml.Count() Step 1
+                            Dim index As Integer = 0
+                            While index < restriction.Xml.Count()
                                 Dim note As String = String.Format("Sincronizar request numero {0} LockGral Conflux con el hotel: ", (index + 1))
                                 Log(note, restriction.Xml(index).ToString(), hotelId, requestXMl:=restriction.XmlRequest(index).ToString())
-                            Next
+                                index += 1
+                            End While
                         Case RestrictionEnum.LockRatePlan
-                            For index As Integer = 0 To restriction.Xml.Count() Step 1
+                            Dim index As Integer = 0
+                            While index < restriction.Xml.Count()
                                 Dim note As String = String.Format("Sincronizar request numero {0} LockRatePlan Conflux con el hotel: ", (index + 1))
                                 Log(note, restriction.Xml(index).ToString(), hotelId, requestXMl:=restriction.XmlRequest(index).ToString())
-                            Next
+                                index += 1
+                            End While
                         Case RestrictionEnum.LockRoomType
-                            For index As Integer = 0 To restriction.Xml.Count() Step 1
+                            Dim index As Integer = 0
+                            While index < restriction.Xml.Count()
                                 Dim note As String = String.Format("Sincronizar request numero {0} LockRoomtype Conflux con el hotel: ", (index + 1))
                                 Log(note, restriction.Xml(index).ToString(), hotelId, requestXMl:=restriction.XmlRequest(index).ToString())
-                            Next
+                                index += 1
+                            End While
                     End Select
                 Next
             End If

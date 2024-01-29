@@ -168,7 +168,7 @@ namespace APIServices.Xml.OTA.Request.Rates
         {
             List<XElement> rateAmountMessagesListElements = new List<XElement>();
 
-            int limitBytesMessage = 900000000;
+            int limitBytesMessage = 80000;
             int currentBytesMessages = 0;
             XNamespace blank = XNamespace.Get(@"http://www.opentravel.org/OTA/2003/05");
             XElement rateAmountMessagesXml = null;
