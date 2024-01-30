@@ -23,6 +23,7 @@ Partial Class ctrRatePlan
     Protected WithEvents hotelPayment As System.Web.UI.WebControls.CheckBox
     Protected WithEvents portalMovil As System.Web.UI.WebControls.CheckBox
     Protected WithEvents onlyCC As System.Web.UI.WebControls.CheckBox
+    Public WithEvents msgGHC_Title As System.Web.UI.WebControls.Label
 
     Protected WithEvents ctrPortal1 As ctrPortal
     '''Protected WithEvents trPortal As System.Web.UI.HtmlControls.HtmlTableRow
@@ -838,10 +839,6 @@ Partial Class ctrRatePlan
     '    End With
     'End Function
 
-    Private Sub onlyCC_On_Checked_Change(ByVal sender As Object, ByVal e As System.EventArgs) Handles onlyCC.CheckedChanged
-
-    End Sub
-
     Private Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.PreRender
         loadResources()
         If Me.edicion Then
@@ -1273,5 +1270,8 @@ Partial Class ctrRatePlan
         cmbMonedas.Items.Insert(0, New ListItem("", "-1"))
     End Sub
 
-
+    Protected Sub onlyCC_CheckedChanged(sender As Object, e As EventArgs) Handles onlyCC.CheckedChanged
+        msgGHC_Title.Text = "Se selecciono Exclusivo Call Center"
+        Me.FindControl("msgGoogleHC").Visible = True
+    End Sub
 End Class

@@ -4,7 +4,44 @@
 
 <script src="../Pages/Scripts/jquery.min.js" type="text/javascript"></script>
 
+<script type="text/javascript">
+    // Get the modal
+    var initGoogleChecks = function () {
 
+        $('#<%= Me.portalMovil.ClientId %>').change(function () {
+            document.getElementById('msgGoogleHC').style.display = "block";
+        });
+
+        $('#<%= Me.onlyCC.ClientId %>').change(function () {
+            document.getElementById('msgGoogleHC').style.display = "block";
+        });
+
+    }
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks on <span> (x), close the modal
+    var closeModal = function () {
+        document.getElementById('msgGoogleHC').style.display = "none";
+    }
+
+    var showModal = function () {
+        document.getElementById('msgGoogleHC').style.display = "block";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+        if (event.target == document.getElementById('onlyCC') || event.target == document.getElementById('portalMovil')) {
+            showModal();
+        }
+
+        if (event.target == document.getElementById('msgGoogleHC')) {
+            closeModal();
+        }
+    }
+
+</script>
 
 <script type="text/javascript">
     
@@ -272,16 +309,11 @@
         } --%>
     }
 
-
-
-
     <%--$(document).ready(function() {
         $('#<%= Me.txtDescripcion.ClientId %> textarea').change(function() {
             descriptionWasChanged = true;
         });
     });--%>
-        
-        
         
     $(document).ready( function() {
         var options = new Array();
@@ -409,7 +441,7 @@
     <div class="modal-content">
         <div class="modal-header">
             <span class="close" onclick="closeModal()">&times;</span>
-            <h2>Se ah seleccionado: Es Movil / Exclusivo Call Center</h2>
+            <h2 id="msgGHC_Title">Seleccion de opcion para Google Hotel Center</h2>
         </div>
         <div class="modal-body">
             <h4 class="msg">Actualmente esta característica solo aplicará para el envío de información hacía Google Hotel Center. Posteriormente se implementarán validaciones que aplicarán en Call Center y Motor de reservaciones de Internet Power Hotel.</h4>
@@ -485,8 +517,8 @@
 
                 <span id="spanHotelPayment">
                     <asp:CheckBox ID="hotelPayment" CssClass="clslabel" runat="server" Text="Hotel Payment"></asp:CheckBox>
-                    <asp:CheckBox ID="portalMovil" CssClass="clslabel" runat="server" Text="Its movil"></asp:CheckBox>
-                    <asp:CheckBox ID="onlyCC" CssClass="clslabel" runat="server" Text="Call Center Exclusive"></asp:CheckBox>
+                    <asp:CheckBox ID="portalMovil" CssClass="clslabel" runat="server" Text="Its movil" ></asp:CheckBox>
+                    <asp:CheckBox ID="onlyCC" CssClass="clslabel" runat="server" Text="Call Center Exclusive" ></asp:CheckBox>
                 </span>
             </td>
         </tr>
@@ -830,7 +862,6 @@
             <td colspan="3">
                 <uc1:ctrPortal ID="CtrPortal1" runat="server"></uc1:ctrPortal>
             </td>
-
         </tr>
 
 
@@ -938,7 +969,7 @@
 
 	
 </script>
-
+<%  Response.Write("<script>  initGoogleChecks();</script>")%>
 <%  Response.Write("<script>  showRowPromotion('" & chkPortal.ClientID & "','" & chkUnipantalla.ClientID & "','" & trPorcUni.ClientID & "');</script>")%>
 <%  Response.Write("<script>  onCheckBoxesClick('" & chkGDS.ClientID & "','" & trGDSApply.ClientID & "','" & trPorcGDS.ClientID & "');</script>")%>
 <%  Response.Write("<script>  showRowPortal('" & chkUnipantalla.ClientID & "','" & chkPortal.ClientID & "','" & trPorcPortal.ClientID & "');</script>")%>
