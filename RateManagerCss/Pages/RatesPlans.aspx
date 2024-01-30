@@ -184,35 +184,6 @@
 </script>
 
 <body bottommargin="0" leftmargin="0" rightmargin="0" topmargin="0" ms_positioning="FlowLayout">
-    <script type="text/javascript">
-        // Get the modal
-        var modal = document.getElementById('msgGoogleHC');
-
-        // Get the <span> element that closes the modal
-        var span = document.getElementsByClassName("close")[0];
-
-        // When the user clicks the button, open the modal 
-        var openModal = function (id, msg, title) {
-            modal.style.display = "block";
-            document.getElementById('txtObjDelete').value = id;
-            $(".modal-body .msg").text(msg);
-            $(".modal-header h2").text(title);
-        }
-
-        // When the user clicks on <span> (x), close the modal
-        var closeModal = function () {
-            modal.style.display = "none";
-        }
-
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function (event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        }
-
-    </script>
-
 
     <iframe id="gToday:normal:agenda.js" style="z-index: 999; left: -500px; position: absolute; top: -500px"
         name="gToday:normal:agenda.js" src='<%=GeRequestApplicationPath(string.concat("/Calendar/",portalculture.getculture().Name.Substring(0, 2).ToLower(),"/ipopeng2.htm" )) %>'
