@@ -1270,8 +1270,4 @@ Partial Class ctrRatePlan
         cmbMonedas.Items.Insert(0, New ListItem("", "-1"))
     End Sub
 
-    Protected Sub onlyCC_CheckedChanged(sender As Object, e As EventArgs) Handles onlyCC.CheckedChanged
-        msgGHC_Title.Text = "Se selecciono Exclusivo Call Center"
-        Me.FindControl("msgGoogleHC").Visible = True
-    End Sub
 End Class
