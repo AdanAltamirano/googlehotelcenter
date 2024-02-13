@@ -414,218 +414,218 @@ namespace APIServices.Conflux
 
         }
 
-        public RestrictionResponse UpdateRestrictions(int hotelId, int companyId)
-        {
-            RestrictionResponse res = new RestrictionResponse();
+        //public RestrictionResponse UpdateRestrictions(int hotelId, int companyId)
+        //{
+        //    RestrictionResponse res = new RestrictionResponse();
 
-            try
-            {
+        //    try
+        //    {
 
-                //Armar Requests
+        //        //Armar Requests
 
-                #region Habitaciones
-                RoomsHotelData ds = new RoomFacade().getAllRooms(hotelId, 1);
-                var activeRooms = ds.Tables[RoomsHotelData.TBL_ROOM_HOTEL].Select("eliminada=false").ToList();
-                #endregion
+        //        #region Habitaciones
+        //        RoomsHotelData ds = new RoomFacade().getAllRooms(hotelId, 1);
+        //        var activeRooms = ds.Tables[RoomsHotelData.TBL_ROOM_HOTEL].Select("eliminada=false").ToList();
+        //        #endregion
 
-                #region Planes Tarifarios
-                RatePlanData dsRatePlans = new RatePlanFacade().GetRatePlanByIdHotel(hotelId.ToString(), idioma: 1, IncluirPaquetesSegmentoK: 1, incluirNetRatesPlan: 1, idAsociacion: -1, DeleteFilter: 1, getPromos: false);
-                RatePlanData dsRatePlansPromos = new RatePlanFacade().GetRatePlanByIdHotel(hotelId.ToString(), idioma: 1, IncluirPaquetesSegmentoK: 1, incluirNetRatesPlan: 1, idAsociacion: -1, DeleteFilter: 1, getPromos: true);
-
-
-                var activeRatePlans = dsRatePlans.Tables[RatePlanData.RATEPLAN_TABLE].Select().ToList();
-
-                string filterPromosDates = "((FechaFin IS NOT NULL AND FechaFin>= '" + DateTime.Now.Date.ToString() + "') OR (FechaFin IS NULL AND PromoEndDate >= '" + DateTime.Now.Date.ToString() + "'))";
-                var activeRatePlansPromos = dsRatePlansPromos.Tables[RatePlanData.RATEPLAN_TABLE].Select(filterPromosDates).ToList(); //Validar si no hay promociones en request response y log
+        //        #region Planes Tarifarios
+        //        RatePlanData dsRatePlans = new RatePlanFacade().GetRatePlanByIdHotel(hotelId.ToString(), idioma: 1, IncluirPaquetesSegmentoK: 1, incluirNetRatesPlan: 1, idAsociacion: -1, DeleteFilter: 1, getPromos: false);
+        //        RatePlanData dsRatePlansPromos = new RatePlanFacade().GetRatePlanByIdHotel(hotelId.ToString(), idioma: 1, IncluirPaquetesSegmentoK: 1, incluirNetRatesPlan: 1, idAsociacion: -1, DeleteFilter: 1, getPromos: true);
 
 
-                #endregion
+        //        var activeRatePlans = dsRatePlans.Tables[RatePlanData.RATEPLAN_TABLE].Select().ToList();
 
-                #region Init RestrictionParser
-                RestrictionsParser.Init(companyId);
-                #endregion
-
-                #region LockGral
-
-                var lockGral = dbContext.spGetLockGralByHotel(hotelId).ToList();
-
-                var availStatusMessagesLockGralNoPromos = RestrictionsParser.ToAvailStatusMessages(lockGral, activeRooms, activeRatePlans);
-                var lockGralNoPromosHotelAvailNotifRQ = HotelAvailNotifRQ.CreateHotelAvailNotifRQ(availStatusMessagesLockGralNoPromos);
-                var lockGralNoPromosSoapRQ = Soap.CreateSoapRequestXml(lockGralNoPromosHotelAvailNotifRQ);
-
-                List<XDocument> lockGralPrioritySoapRQ = new List<XDocument>();
-                lockGralPrioritySoapRQ.Add(lockGralNoPromosSoapRQ);
-
-                if (activeRatePlansPromos.Count > 0)
-                {
-                    var availStatusMessagesLockGralPromos = RestrictionsParser.ToAvailStatusMessages(lockGral, activeRooms, activeRatePlansPromos);
-                    var lockGralPromosHotelAvailNotifRQ = HotelAvailNotifRQ.CreateHotelAvailNotifRQ(availStatusMessagesLockGralPromos);
-
-                    var lockGralPromosSoapRQ = Soap.CreateSoapRequestXml(lockGralPromosHotelAvailNotifRQ);
-                    lockGralPrioritySoapRQ.Add(lockGralPromosSoapRQ);
-                }
-
-                #endregion
-
-                #region LockRoomType
-                var lockRoomTypes = dbContext.spGetLockRoomTypesByHotel(hotelId).ToList();
-
-                var availStatusMessagesLockRoomTypes = RestrictionsParser.ToAvailStatusMessages(lockRoomTypes);
-
-                var lockRoomTypeHotelAvailNotifRQ = HotelAvailNotifRQ.CreateHotelAvailNotifRQ(availStatusMessagesLockRoomTypes);
-
-                //Request LockRoomType
-                var lockRoomTypeSoapRQ = Soap.CreateSoapRequestXml(lockRoomTypeHotelAvailNotifRQ);
-
-                List<XDocument> lockRoomTypesPrioritySoapRQ = new List<XDocument>();
-                lockRoomTypesPrioritySoapRQ.Add(lockRoomTypeSoapRQ);
-
-                #endregion
-
-                #region LockRatePlan
-
-                var lockRatePlans = dbContext.spGetLockRatePlansByHotel(hotelId).ToList();
-
-                var availStatusMessagesLockRatePlans = RestrictionsParser.ToAvailStatusMessages(activeRooms, lockRatePlans);
-
-                var lockRatePlanHotelAvailNotifRQ = HotelAvailNotifRQ.CreateHotelAvailNotifRQ(availStatusMessagesLockRatePlans);
-
-                //Request LockRatePlan
-                var lockRatePlanSoapRQ = Soap.CreateSoapRequestXml(lockRatePlanHotelAvailNotifRQ);
-
-                List<XDocument> lockRatePlanPrioritySoapRQ = new List<XDocument>(); //aqui irian los diferentes requests
-                lockRatePlanPrioritySoapRQ.Add(lockRatePlanSoapRQ);
-
-                #endregion
+        //        string filterPromosDates = "((FechaFin IS NOT NULL AND FechaFin>= '" + DateTime.Now.Date.ToString() + "') OR (FechaFin IS NULL AND PromoEndDate >= '" + DateTime.Now.Date.ToString() + "'))";
+        //        var activeRatePlansPromos = dsRatePlansPromos.Tables[RatePlanData.RATEPLAN_TABLE].Select(filterPromosDates).ToList(); //Validar si no hay promociones en request response y log
 
 
-                #region Crear Prioridad Request
-                int priorityLockRoomType = Convert.ToInt32(ConfigurationManager.AppSettings["PriorityLockRoomTypes"]); //2
-                int priorityratePlanLock = Convert.ToInt32(ConfigurationManager.AppSettings["PriorityLockRatePlans"]); // 1
-                int priorityLockGral = Convert.ToInt32(ConfigurationManager.AppSettings["PriorityLockGral"]); //3
+        //        #endregion
 
-                int size = 3;
+        //        #region Init RestrictionParser
+        //        RestrictionsParser.Init(companyId);
+        //        #endregion
 
-                //if (lockGral.Count > 0) size++;
-                //if (lockRatePlans.Count > 0) size++;
-                //if (lockRoomTypes.Count > 0) size++;
+        //        #region LockGral
 
-                List<List<XDocument>> priorityRequests = new List<List<XDocument>>(size);
+        //        var lockGral = dbContext.spGetLockGralByHotel(hotelId).ToList();
 
-                //Init
-                for (int i = 0; i < size; i++)
-                {
-                    priorityRequests.Add(null);
-                }
+        //        var availStatusMessagesLockGralNoPromos = RestrictionsParser.ToAvailStatusMessages(lockGral, activeRooms, activeRatePlans);
+        //        var lockGralNoPromosHotelAvailNotifRQ = HotelAvailNotifRQ.CreateHotelAvailNotifRQ(availStatusMessagesLockGralNoPromos);
+        //        var lockGralNoPromosSoapRQ = Soap.CreateSoapRequestXml(lockGralNoPromosHotelAvailNotifRQ);
+
+        //        List<XDocument> lockGralPrioritySoapRQ = new List<XDocument>();
+        //        lockGralPrioritySoapRQ.Add(lockGralNoPromosSoapRQ);
+
+        //        if (activeRatePlansPromos.Count > 0)
+        //        {
+        //            var availStatusMessagesLockGralPromos = RestrictionsParser.ToAvailStatusMessages(lockGral, activeRooms, activeRatePlansPromos);
+        //            var lockGralPromosHotelAvailNotifRQ = HotelAvailNotifRQ.CreateHotelAvailNotifRQ(availStatusMessagesLockGralPromos);
+
+        //            var lockGralPromosSoapRQ = Soap.CreateSoapRequestXml(lockGralPromosHotelAvailNotifRQ);
+        //            lockGralPrioritySoapRQ.Add(lockGralPromosSoapRQ);
+        //        }
+
+        //        #endregion
+
+        //        #region LockRoomType
+        //        var lockRoomTypes = dbContext.spGetLockRoomTypesByHotel(hotelId).ToList();
+
+        //        var availStatusMessagesLockRoomTypes = RestrictionsParser.ToAvailStatusMessages(lockRoomTypes);
+
+        //        var lockRoomTypeHotelAvailNotifRQ = HotelAvailNotifRQ.CreateHotelAvailNotifRQ(availStatusMessagesLockRoomTypes);
+
+        //        //Request LockRoomType
+        //        var lockRoomTypeSoapRQ = Soap.CreateSoapRequestXml(lockRoomTypeHotelAvailNotifRQ);
+
+        //        List<XDocument> lockRoomTypesPrioritySoapRQ = new List<XDocument>();
+        //        lockRoomTypesPrioritySoapRQ.Add(lockRoomTypeSoapRQ);
+
+        //        #endregion
+
+        //        #region LockRatePlan
+
+        //        var lockRatePlans = dbContext.spGetLockRatePlansByHotel(hotelId).ToList();
+
+        //        var availStatusMessagesLockRatePlans = RestrictionsParser.ToAvailStatusMessages(activeRooms, lockRatePlans);
+
+        //        var lockRatePlanHotelAvailNotifRQ = HotelAvailNotifRQ.CreateHotelAvailNotifRQ(availStatusMessagesLockRatePlans);
+
+        //        //Request LockRatePlan
+        //        var lockRatePlanSoapRQ = Soap.CreateSoapRequestXml(lockRatePlanHotelAvailNotifRQ);
+
+        //        List<XDocument> lockRatePlanPrioritySoapRQ = new List<XDocument>(); //aqui irian los diferentes requests
+        //        lockRatePlanPrioritySoapRQ.Add(lockRatePlanSoapRQ);
+
+        //        #endregion
 
 
-                if (lockRoomTypes.Count > 0) priorityRequests[priorityLockRoomType - 1] = lockRoomTypesPrioritySoapRQ;
-                if (lockRatePlans.Count > 0) priorityRequests[priorityratePlanLock - 1] = lockRatePlanPrioritySoapRQ;
-                if (lockGral.Count > 0) priorityRequests[priorityLockGral - 1] = lockGralPrioritySoapRQ;
+        //        #region Crear Prioridad Request
+        //        int priorityLockRoomType = Convert.ToInt32(ConfigurationManager.AppSettings["PriorityLockRoomTypes"]); //2
+        //        int priorityratePlanLock = Convert.ToInt32(ConfigurationManager.AppSettings["PriorityLockRatePlans"]); // 1
+        //        int priorityLockGral = Convert.ToInt32(ConfigurationManager.AppSettings["PriorityLockGral"]); //3
+
+        //        int size = 3;
+
+        //        //if (lockGral.Count > 0) size++;
+        //        //if (lockRatePlans.Count > 0) size++;
+        //        //if (lockRoomTypes.Count > 0) size++;
+
+        //        List<List<XDocument>> priorityRequests = new List<List<XDocument>>(size);
+
+        //        //Init
+        //        for (int i = 0; i < size; i++)
+        //        {
+        //            priorityRequests.Add(null);
+        //        }
+
+
+        //        if (lockRoomTypes.Count > 0) priorityRequests[priorityLockRoomType - 1] = lockRoomTypesPrioritySoapRQ;
+        //        if (lockRatePlans.Count > 0) priorityRequests[priorityratePlanLock - 1] = lockRatePlanPrioritySoapRQ;
+        //        if (lockGral.Count > 0) priorityRequests[priorityLockGral - 1] = lockGralPrioritySoapRQ;
                 
 
-                string url = ConfigurationManager.AppSettings["confluxApiUrl"] + "pms/ota/restriction/update"; 
-                var uri = new Uri(url);
+        //        string url = ConfigurationManager.AppSettings["confluxApiUrl"] + "pms/ota/restriction/update"; 
+        //        var uri = new Uri(url);
 
-                /***
-                 * NOTA: Request Index se usa para el request de LockGral
-                 * porque manda dos request, uno para cuando es no promociones y otro para cuando son promociones
-                 * los demas por ahora mandan uno.
-                */
+        //        /***
+        //         * NOTA: Request Index se usa para el request de LockGral
+        //         * porque manda dos request, uno para cuando es no promociones y otro para cuando son promociones
+        //         * los demas por ahora mandan uno.
+        //        */
 
-                int requestIndex = 0;
-                int index = 0;
+        //        int requestIndex = 0;
+        //        int index = 0;
 
-                foreach (var priorityRequest in priorityRequests)
-                {
-                    Restriction restriction = new Restriction();
+        //        foreach (var priorityRequest in priorityRequests)
+        //        {
+        //            Restriction restriction = new Restriction();
 
-                    if (priorityRequest != null) 
-                    { 
+        //            if (priorityRequest != null) 
+        //            { 
 
-                        foreach (var soapRequest in priorityRequest)
-                        {
-                            //Request
+        //                foreach (var soapRequest in priorityRequest)
+        //                {
+        //                    //Request
 
-                            System.Xml.Linq.XElement otaRS = null;
-                            HttpContent httpContent = new StringContent(soapRequest.ToString());
+        //                    System.Xml.Linq.XElement otaRS = null;
+        //                    HttpContent httpContent = new StringContent(soapRequest.ToString());
 
-                            using (var client = new HttpClient())
-                            {
+        //                    using (var client = new HttpClient())
+        //                    {
 
-                                client.Timeout = TimeSpan.FromMinutes(50);
-                                var response = client.PostAsync(uri, httpContent).Result;
+        //                        client.Timeout = TimeSpan.FromMinutes(50);
+        //                        var response = client.PostAsync(uri, httpContent).Result;
 
-                                string result = response.Content.ReadAsStringAsync().Result; //regresa un xml
+        //                        string result = response.Content.ReadAsStringAsync().Result; //regresa un xml
 
-                                otaRS = HotelAvailNotifRS.ParseHotelAvailNotifRS(result); //Cambiar
+        //                        otaRS = HotelAvailNotifRS.ParseHotelAvailNotifRS(result); //Cambiar
 
-                            }
+        //                    }
 
-                            //Repuesta API
-                            restriction.Xml.Add(otaRS.ToString());
-                            restriction.XmlRequest.Add(soapRequest.ToString());
+        //                    //Repuesta API
+        //                    restriction.Xml.Add(otaRS.ToString());
+        //                    restriction.XmlRequest.Add(soapRequest.ToString());
 
-                            if (requestIndex == 0)
-                            {
-                                restriction.IsSuccess = HotelAvailNotifRS.IsSuccessRequest(otaRS);
-                            }
+        //                    if (requestIndex == 0)
+        //                    {
+        //                        restriction.IsSuccess = HotelAvailNotifRS.IsSuccessRequest(otaRS);
+        //                    }
 
-                            if (requestIndex == 1)
-                            {
-                                restriction.IsSuccessPromo = HotelAvailNotifRS.IsSuccessRequest(otaRS);
-                            }
+        //                    if (requestIndex == 1)
+        //                    {
+        //                        restriction.IsSuccessPromo = HotelAvailNotifRS.IsSuccessRequest(otaRS);
+        //                    }
 
-                            requestIndex++;
+        //                    requestIndex++;
 
-                        }
+        //                }
 
-                        if ((index + 1) == priorityLockGral)
-                        {
-                            restriction.Type = Enum.RestrictionEnum.LockGral;
-                        }
-                        else if ((index + 1) == priorityratePlanLock)
-                        {
-                            restriction.Type = Enum.RestrictionEnum.LockRatePlan;
-                        }
-                        else if ((index + 1) == priorityLockRoomType)
-                        {
-                            restriction.Type = Enum.RestrictionEnum.LockRoomType;
-                        }
+        //                if ((index + 1) == priorityLockGral)
+        //                {
+        //                    restriction.Type = Enum.RestrictionEnum.LockGral;
+        //                }
+        //                else if ((index + 1) == priorityratePlanLock)
+        //                {
+        //                    restriction.Type = Enum.RestrictionEnum.LockRatePlan;
+        //                }
+        //                else if ((index + 1) == priorityLockRoomType)
+        //                {
+        //                    restriction.Type = Enum.RestrictionEnum.LockRoomType;
+        //                }
 
-                        res.Restrictions.Add(restriction);
+        //                res.Restrictions.Add(restriction);
 
-                        requestIndex = 0;
+        //                requestIndex = 0;
                         
-                    }
+        //            }
 
-                    index++;
+        //            index++;
 
-                }
+        //        }
 
-                res.IsSuccess = true;
-            }
-            catch(Exception ex)
-            {
-                res.IsSuccess = false;
-                res.Error = new KeyValuePair<string, string>("448", ex.Message);
+        //        res.IsSuccess = true;
+        //    }
+        //    catch(Exception ex)
+        //    {
+        //        res.IsSuccess = false;
+        //        res.Error = new KeyValuePair<string, string>("448", ex.Message);
 
-                var errorsElement = new System.Xml.Linq.XElement("Errors");
-                var errorElementProperty = new System.Xml.Linq.XElement("Error");
-                errorElementProperty.Add(
-                    new System.Xml.Linq.XAttribute("Type", "3"),
-                    new System.Xml.Linq.XAttribute("Code", "448"),
-                    new System.Xml.Linq.XText(ex.Message));
+        //        var errorsElement = new System.Xml.Linq.XElement("Errors");
+        //        var errorElementProperty = new System.Xml.Linq.XElement("Error");
+        //        errorElementProperty.Add(
+        //            new System.Xml.Linq.XAttribute("Type", "3"),
+        //            new System.Xml.Linq.XAttribute("Code", "448"),
+        //            new System.Xml.Linq.XText(ex.Message));
 
-                errorsElement.Add(errorElementProperty);
+        //        errorsElement.Add(errorElementProperty);
 
-                res.Xml = errorsElement.ToString();
-            }
+        //        res.Xml = errorsElement.ToString();
+        //    }
 
-            #endregion
+        //    #endregion
 
-            return res;
-        }
+        //    return res;
+        //}
 
         public RestrictionResponse UpdateRestrictionsGeneral(int hotelId, int companyId)
         {
@@ -645,9 +645,12 @@ namespace APIServices.Conflux
 
                 var activeRatePlans = dsRatePlans.Tables[RatePlanData.RATEPLAN_TABLE].Select().ToList();
 
+                Helpers.Restriction.RestrictionHelper.RemoveRatePlansNoValids(ref activeRatePlans);
+
+
                 string filterPromosDates = "((FechaFin IS NOT NULL AND FechaFin>= '" + DateTime.Now.Date.ToString() + "') OR (FechaFin IS NULL AND PromoEndDate >= '" + DateTime.Now.Date.ToString() + "'))";
                 var activeRatePlansPromos = dsRatePlansPromos.Tables[RatePlanData.RATEPLAN_TABLE].Select(filterPromosDates).ToList(); //Validar si no hay promociones en request response y log
-
+                
 
                 #endregion
 
@@ -673,10 +676,20 @@ namespace APIServices.Conflux
 
                 if (activeRatePlansPromos.Count > 0)
                 {
-                    var availStatusMessagesLockGralPromos = RestrictionsParser.ToAvailStatusMessages(lockGral, activeRooms, activeRatePlansPromos);
+                    //var availStatusMessagesLockGralPromos = RestrictionsParser.ToAvailStatusMessages(lockGral, activeRooms, activeRatePlansPromos);
+                    //List<XElement> lockGralPromosHotelAvailNotifRQList = HotelAvailNotifRQ.CreateHotelAvailNotifRQList(availStatusMessagesLockGralPromos);
+
+                    //foreach (XElement lockGralPromosHotelAvailNotifRQ in lockGralPromosHotelAvailNotifRQList)
+                    //{
+                    //    var lockGralPromosSoapRQ = Soap.CreateSoapRequestXml(lockGralPromosHotelAvailNotifRQ);
+                    //    lockGralPrioritySoapRQ.Add(lockGralPromosSoapRQ);
+                    //}
+
+                    var availStatusMessagesLockGralPromos = RestrictionsParser.ToAvailStatusMessages(hotelId,lockGral,activeRooms, activeRatePlans, activeRatePlansPromos);
+
                     List<XElement> lockGralPromosHotelAvailNotifRQList = HotelAvailNotifRQ.CreateHotelAvailNotifRQList(availStatusMessagesLockGralPromos);
 
-                    foreach(XElement lockGralPromosHotelAvailNotifRQ in lockGralPromosHotelAvailNotifRQList)
+                    foreach (XElement lockGralPromosHotelAvailNotifRQ in lockGralPromosHotelAvailNotifRQList)
                     {
                         var lockGralPromosSoapRQ = Soap.CreateSoapRequestXml(lockGralPromosHotelAvailNotifRQ);
                         lockGralPrioritySoapRQ.Add(lockGralPromosSoapRQ);
@@ -704,6 +717,25 @@ namespace APIServices.Conflux
                     lockRoomTypesPrioritySoapRQ.Add(lockRoomTypeSoapRQ);
                 }
 
+                //Promociones
+
+                if(activeRatePlansPromos.Count > 0)
+                {
+                    var activeRatePlansLockRoomTypes = lockRoomTypes.Select(lrt => lrt.RatePlanId).Distinct().ToList();
+
+                    var availStatusMessagesLockRoomTypesPromos = RestrictionsParser.ToAvailStatusMessages(hotelId, lockRoomTypes, activeRatePlansLockRoomTypes, activeRatePlansPromos);
+
+                    List<XElement> lockRoomTypePromosHotelAvailNotifRQList = HotelAvailNotifRQ.CreateHotelAvailNotifRQList(availStatusMessagesLockRoomTypesPromos);
+
+                    foreach (XElement lockroomTypePromosHotelAvailNotifRQ in lockRoomTypePromosHotelAvailNotifRQList)
+                    {
+                        var lockRoomTypePromosSoapRQ = Soap.CreateSoapRequestXml(lockroomTypePromosHotelAvailNotifRQ);
+                        lockRoomTypesPrioritySoapRQ.Add(lockRoomTypePromosSoapRQ);
+                    }
+
+                }
+
+
                 #endregion
 
                 #region LockRatePlan
@@ -723,6 +755,24 @@ namespace APIServices.Conflux
 
                     lockRatePlanPrioritySoapRQ.Add(lockRatePlanSoapRQ);
                 }
+
+                //Promociones
+
+                if(activeRatePlansPromos.Count > 0)
+                {
+                    var activeRatePlansLockRatePlan = lockRatePlans.Select(lrt => lrt.RatePlanId).Distinct().ToList();
+
+                    var availStatusMessagesLockRatePlanPromos = RestrictionsParser.ToAvailStatusMessages(hotelId, lockRatePlans, activeRooms, activeRatePlansLockRatePlan, activeRatePlansPromos);
+
+                    List<XElement> lockRatePlanPromosHotelAvailNotifRQList = HotelAvailNotifRQ.CreateHotelAvailNotifRQList(availStatusMessagesLockRatePlanPromos);
+
+                    foreach (XElement lockRatePlanPromosHotelAvailNotifRQ in lockRatePlanPromosHotelAvailNotifRQList)
+                    {
+                        var lockRatePlanPromosSoapRQ = Soap.CreateSoapRequestXml(lockRatePlanPromosHotelAvailNotifRQ);
+                        lockRatePlanPrioritySoapRQ.Add(lockRatePlanPromosSoapRQ);
+                    }
+                }
+
 
                 #endregion
 

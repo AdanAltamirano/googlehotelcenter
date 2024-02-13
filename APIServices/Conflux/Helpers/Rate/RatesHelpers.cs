@@ -12,7 +12,7 @@ namespace APIServices.Conflux.Helpers.Rate
     public static partial class RatesHelpers
     {
         private static bool? PlusTax { get; set; }
-        private static decimal? Tax { get; set; }
+        public static decimal? Tax { get; set; }
         public static void Init(bool? plusTax, decimal? tax)
         {
             PlusTax = plusTax;

@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Configuration;
+using System.Data;
 using System.Collections.Generic;
 using APIServices.Models;
 using APIServices.Conflux.OTA.Models.Restrictions;
+
 namespace APIServices.Conflux.Helpers.Restriction
 {
     public static class RestrictionHelper
@@ -95,7 +98,32 @@ namespace APIServices.Conflux.Helpers.Restriction
             return new string(applyDays);
         }
 
+        public static void RemoveRatePlansNoValids(ref List<DataRow> activeRatePlans)
+        {
+            string[] splitSegmentsNoRates = ConfigurationManager.AppSettings["segmentsNoRates"].Split(',');
 
+            char[] segmentsNoRates = string.Concat(splitSegmentsNoRates).ToCharArray();
+
+            List<DataRow> activeRatePlansTemp = new List<DataRow>();
+
+            foreach (DataRow row in activeRatePlans)
+            {
+                var segment = row.ItemArray[1].ToString();
+                var isMobileRate = bool.Parse(row.ItemArray[40].ToString());
+                var isCallCenterOnly = bool.Parse(row.ItemArray[41].ToString());
+
+                if (isMobileRate || isCallCenterOnly || segment.IndexOfAny(segmentsNoRates) > -1)
+                {                    
+                }
+                else
+                {
+                    activeRatePlansTemp.Add(row);
+                }
+            }
+
+            activeRatePlans = activeRatePlansTemp;
+
+        }
 
         public static List<spGetLockRatePlansByHotel_Result> CreateLockRatePlansByHotel(List<Tuple<DateTime,DateTime>> dates, string status, string rateplanId)
         {

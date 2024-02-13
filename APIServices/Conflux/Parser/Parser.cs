@@ -169,6 +169,7 @@ namespace APIServices.Conflux.Parser
                     var diff = vDayRate.EndDate.Date - starDate.Date;
                     var endDate = diff.TotalDays > 1096 ? starDate.AddYears(3) : vDayRate.EndDate.Date;
 
+                    Rate rateException = new Rate();
 
                     Rate rate = new Rate();
                     rate.StartDate = starDate.Date.ToString("yyyyMMdd");//revisar el formato
@@ -187,6 +188,29 @@ namespace APIServices.Conflux.Parser
                         rate.ApplySun = vDayRate.PromoDays[6] == 'Y' ? true : false;
                     }
 
+                    rate.BaseGuestAmounts = RatesHelpers.UpdateBaseGuestAmountPricesWithTaxesAndDiscounts(vDayRate, prices, currentRate);
+                    rate.AdditionalGuestAmounts = RatesHelpers.UpdateAdditionalGuestAmountPrices(prices); // Ver si llevan impuestos y descuento los extra
+
+                    if (pricesException.Count > 0)
+                    {
+                        rateException.HasPriceException = true;
+                        rateException.StartDate = starDate.Date.ToString("yyyyMMdd");
+                        rateException.EndDate = endDate.Date.ToString("yyyyMMdd");
+
+                        rateException.ApplyMon = vDayRate.ExceptionMap[0] == 'Y' ? true : false;
+                        rateException.ApplyTue = vDayRate.ExceptionMap[1] == 'Y' ? true : false;
+                        rateException.ApplyWed = vDayRate.ExceptionMap[2] == 'Y' ? true : false;
+                        rateException.ApplyThu = vDayRate.ExceptionMap[3] == 'Y' ? true : false;
+                        rateException.ApplyFri = vDayRate.ExceptionMap[4] == 'Y' ? true : false;
+                        rateException.ApplySat = vDayRate.ExceptionMap[5] == 'Y' ? true : false;
+                        rateException.ApplySun = vDayRate.ExceptionMap[6] == 'Y' ? true : false;
+
+                        rateException.BaseGuestAmounts = RatesHelpers.UpdateBaseGuestAmountPricesWithTaxesAndDiscounts(vDayRate, pricesException, currentRate);
+
+                    }
+
+
+
                     //Ver si es habitacion vinculada y actualizar precios
                     vLinkedRoomTypes linkedRoom = null;
 
@@ -199,10 +223,22 @@ namespace APIServices.Conflux.Parser
 
                         if (linkedRoom != null)
                         {
-                            RatesHelpers.UpdatePricesLinkedRoom(linkedRoom, ref prices);
-                            RatesHelpers.UpdatePricesLinkedRoom(linkedRoom, ref pricesException);
-                        }
+                            var tempBaseGuestAmounts = rate.BaseGuestAmounts;
+                            var tempAdditionalGuestAmounts = rate.AdditionalGuestAmounts;
 
+                            RatesHelpers.UpdatePricesLinkedRoom(linkedRoom, ref tempBaseGuestAmounts, RatesHelpers.Tax);
+                            RatesHelpers.UpdatePricesLinkedRoom(linkedRoom, ref tempAdditionalGuestAmounts);
+
+                            rate.BaseGuestAmounts = tempBaseGuestAmounts;
+                            rate.AdditionalGuestAmounts = tempAdditionalGuestAmounts;
+
+                            var tempExceptionBaseGuestAmounts = rateException.BaseGuestAmounts;
+
+                            RatesHelpers.UpdatePricesLinkedRoom(linkedRoom, ref tempExceptionBaseGuestAmounts, RatesHelpers.Tax);
+
+                            rateException.BaseGuestAmounts = tempExceptionBaseGuestAmounts;
+
+                        }
 
                     }
 
@@ -237,45 +273,37 @@ namespace APIServices.Conflux.Parser
 
                         if (linkedRatePlan != null)
                         {
-                            RatesHelpers.UpdatePricesLinkedRatePlan(linkedRatePlan, ref prices);
-                            RatesHelpers.UpdatePricesLinkedRatePlan(linkedRatePlan, ref pricesException);
+                            var tempBaseGuestAmounts = rate.BaseGuestAmounts;
+                            var tempAdditionalGuestAmounts = rate.AdditionalGuestAmounts;
+
+                            RatesHelpers.UpdatePricesLinkedRatePlan(linkedRatePlan, ref tempBaseGuestAmounts, RatesHelpers.Tax);
+                            RatesHelpers.UpdatePricesLinkedRatePlan(linkedRatePlan, ref tempAdditionalGuestAmounts);
+
+                            rate.BaseGuestAmounts = tempBaseGuestAmounts;
+                            rate.AdditionalGuestAmounts = tempAdditionalGuestAmounts;
+
+                            var tempExceptionBaseGuestAmounts = rateException.BaseGuestAmounts;
+
+                            RatesHelpers.UpdatePricesLinkedRatePlan(linkedRatePlan, ref tempExceptionBaseGuestAmounts, RatesHelpers.Tax);
+
+                            rateException.BaseGuestAmounts = tempExceptionBaseGuestAmounts;
                         }
 
                     }
 
 
-                    rate.BaseGuestAmounts = RatesHelpers.UpdateBaseGuestAmountPricesWithTaxesAndDiscounts(vDayRate, prices, currentRate);
-                    rate.AdditionalGuestAmounts = RatesHelpers.UpdateAdditionalGuestAmountPrices(prices); // Ver si llevan impuestos y descuento los extra
 
                     rates.Add(rate);
 
-                    //Precios Excepciones
-                    if (pricesException.Count > 0)
-                    {
-                        Rate rateException = new Rate();
-                        rateException.HasPriceException = true;
-                        rateException.StartDate = starDate.Date.ToString("yyyyMMdd");
-                        rateException.EndDate = endDate.Date.ToString("yyyyMMdd");
+                    if (rateException.BaseGuestAmounts.Count() > 0
+                        && (rateException.ApplyMon ||
+                        rateException.ApplyTue ||
+                        rateException.ApplyWed ||
+                        rateException.ApplyThu ||
+                        rateException.ApplyFri ||
+                        rateException.ApplySat ||
+                        rateException.ApplySun)) { rates.Add(rateException); }
 
-                        rateException.ApplyMon = vDayRate.ExceptionMap[0] == 'Y' ? true : false;
-                        rateException.ApplyTue = vDayRate.ExceptionMap[1] == 'Y' ? true : false;
-                        rateException.ApplyWed = vDayRate.ExceptionMap[2] == 'Y' ? true : false;
-                        rateException.ApplyThu = vDayRate.ExceptionMap[3] == 'Y' ? true : false;
-                        rateException.ApplyFri = vDayRate.ExceptionMap[4] == 'Y' ? true : false;
-                        rateException.ApplySat = vDayRate.ExceptionMap[5] == 'Y' ? true : false;
-                        rateException.ApplySun = vDayRate.ExceptionMap[6] == 'Y' ? true : false;
-
-                        rateException.BaseGuestAmounts = RatesHelpers.UpdateBaseGuestAmountPricesWithTaxesAndDiscounts(vDayRate, pricesException, currentRate);
-
-                        if (rateException.BaseGuestAmounts.Count() > 0
-                            && (rateException.ApplyMon ||
-                            rateException.ApplyTue ||
-                            rateException.ApplyWed ||
-                            rateException.ApplyThu ||
-                            rateException.ApplyFri ||
-                            rateException.ApplySat ||
-                            rateException.ApplySun)) { rates.Add(rateException); }
-                    }
 
                     rateAmountMessage.statusApplicationControl = statusApplicationControl;
                     rateAmountMessage.Rates = rates;
@@ -312,6 +340,7 @@ namespace APIServices.Conflux.Parser
                     var diff = vDayRate.EndDate.Date - starDate.Date;
                     var endDate = diff.TotalDays > 1096 ? starDate.AddYears(3) : vDayRate.EndDate.Date;
 
+                    Rate rateException = new Rate();
 
                     Rate rate = new Rate();
                     rate.TypeRate = TypeRateEnum.RoomRatePromotion;
@@ -341,6 +370,29 @@ namespace APIServices.Conflux.Parser
                         rate.ApplySun = vDayRate.ApplyDayMap[6] == 'Y' ? true : false;
                     }
 
+                    rate.BaseGuestAmounts = RatesHelpers.UpdateBaseGuestAmountPricesWithTaxesAndDiscounts(vDayRate, prices, currentRate);
+                    rate.AdditionalGuestAmounts = RatesHelpers.UpdateAdditionalGuestAmountPrices(prices); // Ver si llevan impuestos y descuento los extra
+
+                    //Precios Excepciones
+                    if (pricesException.Count > 0)
+                    {
+                        rateException.HasPriceException = true;
+                        rateException.StartDate = starDate.Date.ToString("yyyyMMdd");
+                        rateException.EndDate = endDate.Date.ToString("yyyyMMdd");
+
+                        rateException.ApplyMon = vDayRate.ExceptionMap[0] == 'Y' ? true : false;
+                        rateException.ApplyTue = vDayRate.ExceptionMap[1] == 'Y' ? true : false;
+                        rateException.ApplyWed = vDayRate.ExceptionMap[2] == 'Y' ? true : false;
+                        rateException.ApplyThu = vDayRate.ExceptionMap[3] == 'Y' ? true : false;
+                        rateException.ApplyFri = vDayRate.ExceptionMap[4] == 'Y' ? true : false;
+                        rateException.ApplySat = vDayRate.ExceptionMap[5] == 'Y' ? true : false;
+                        rateException.ApplySun = vDayRate.ExceptionMap[6] == 'Y' ? true : false;
+
+                        rateException.BaseGuestAmounts = RatesHelpers.UpdateBaseGuestAmountPricesWithTaxesAndDiscounts(vDayRate, pricesException, currentRate);
+                    }
+
+
+
                     //Ver si es habitacion vinculada y actualizar precios
                     vLinkedRoomTypes linkedRoom = null;
 
@@ -353,8 +405,21 @@ namespace APIServices.Conflux.Parser
 
                         if (linkedRoom != null)
                         {
-                            RatesHelpers.UpdatePricesLinkedRoom(linkedRoom, ref prices);
-                            RatesHelpers.UpdatePricesLinkedRoom(linkedRoom, ref pricesException);
+                            var tempBaseGuestAmounts = rate.BaseGuestAmounts;
+                            var tempAdditionalGuestAmounts = rate.AdditionalGuestAmounts;
+
+                            RatesHelpers.UpdatePricesLinkedRoom(linkedRoom, ref tempBaseGuestAmounts, RatesHelpers.Tax);
+                            RatesHelpers.UpdatePricesLinkedRoom(linkedRoom, ref tempAdditionalGuestAmounts);
+
+                            rate.BaseGuestAmounts = tempBaseGuestAmounts;
+                            rate.AdditionalGuestAmounts = tempAdditionalGuestAmounts;
+
+                            var tempExceptionBaseGuestAmounts = rateException.BaseGuestAmounts;
+
+                            RatesHelpers.UpdatePricesLinkedRoom(linkedRoom, ref tempExceptionBaseGuestAmounts, RatesHelpers.Tax);
+
+                            rateException.BaseGuestAmounts = tempExceptionBaseGuestAmounts;
+
                         }
                     }
 
@@ -389,45 +454,37 @@ namespace APIServices.Conflux.Parser
 
                         if (linkedRatePlan != null)
                         {
-                            RatesHelpers.UpdatePricesLinkedRatePlan(linkedRatePlan, ref prices);
-                            RatesHelpers.UpdatePricesLinkedRatePlan(linkedRatePlan, ref pricesException);
+                            var tempBaseGuestAmounts = rate.BaseGuestAmounts;
+                            var tempAdditionalGuestAmounts = rate.AdditionalGuestAmounts;
+
+                            RatesHelpers.UpdatePricesLinkedRatePlan(linkedRatePlan, ref tempBaseGuestAmounts, RatesHelpers.Tax);
+                            RatesHelpers.UpdatePricesLinkedRatePlan(linkedRatePlan, ref tempAdditionalGuestAmounts);
+
+                            rate.BaseGuestAmounts = tempBaseGuestAmounts;
+                            rate.AdditionalGuestAmounts = tempAdditionalGuestAmounts;
+
+                            var tempExceptionBaseGuestAmounts = rateException.BaseGuestAmounts;
+
+                            RatesHelpers.UpdatePricesLinkedRatePlan(linkedRatePlan, ref tempExceptionBaseGuestAmounts, RatesHelpers.Tax);
+
+                            rateException.BaseGuestAmounts = tempExceptionBaseGuestAmounts;
+
                         }
 
                     }
 
 
-                    rate.BaseGuestAmounts = RatesHelpers.UpdateBaseGuestAmountPricesWithTaxesAndDiscounts(vDayRate, prices, currentRate);
-                    rate.AdditionalGuestAmounts = RatesHelpers.UpdateAdditionalGuestAmountPrices(prices); // Ver si llevan impuestos y descuento los extra
-
                     rates.Add(rate);
 
-                    //Precios Excepciones
-                    if (pricesException.Count > 0)
-                    {
-                        Rate rateException = new Rate();
-                        rateException.HasPriceException = true;
-                        rateException.StartDate = starDate.Date.ToString("yyyyMMdd");
-                        rateException.EndDate = endDate.Date.ToString("yyyyMMdd");
+                    if (rateException.BaseGuestAmounts.Count() > 0
+                        && (rateException.ApplyMon ||
+                        rateException.ApplyTue ||
+                        rateException.ApplyWed ||
+                        rateException.ApplyThu ||
+                        rateException.ApplyFri ||
+                        rateException.ApplySat ||
+                        rateException.ApplySun)) { rates.Add(rateException); }
 
-                        rateException.ApplyMon = vDayRate.ExceptionMap[0] == 'Y' ? true : false;
-                        rateException.ApplyTue = vDayRate.ExceptionMap[1] == 'Y' ? true : false;
-                        rateException.ApplyWed = vDayRate.ExceptionMap[2] == 'Y' ? true : false;
-                        rateException.ApplyThu = vDayRate.ExceptionMap[3] == 'Y' ? true : false;
-                        rateException.ApplyFri = vDayRate.ExceptionMap[4] == 'Y' ? true : false;
-                        rateException.ApplySat = vDayRate.ExceptionMap[5] == 'Y' ? true : false;
-                        rateException.ApplySun = vDayRate.ExceptionMap[6] == 'Y' ? true : false;
-
-                        rateException.BaseGuestAmounts = RatesHelpers.UpdateBaseGuestAmountPricesWithTaxesAndDiscounts(vDayRate, pricesException, currentRate);
-
-                        if (rateException.BaseGuestAmounts.Count() > 0
-                            && (rateException.ApplyMon ||
-                            rateException.ApplyTue ||
-                            rateException.ApplyWed ||
-                            rateException.ApplyThu ||
-                            rateException.ApplyFri ||
-                            rateException.ApplySat ||
-                            rateException.ApplySun)) { rates.Add(rateException); }
-                    }
 
                     rateAmountMessage.statusApplicationControl = statusApplicationControl;
                     rateAmountMessage.Rates = rates;
@@ -469,6 +526,8 @@ namespace APIServices.Conflux.Parser
                     var diff = vDayRate.EndDate.Date - starDate.Date;
                     var endDate = diff.TotalDays > 1096 ? starDate.AddYears(3) : vDayRate.EndDate.Date;
 
+                    Rate rateException = new Rate();
+
                     Rate rate = new Rate();
                     rate.StartDate = starDate.Date.ToString("yyyyMMdd");
                     rate.EndDate = endDate.Date.ToString("yyyyMMdd");
@@ -486,6 +545,34 @@ namespace APIServices.Conflux.Parser
                         rate.ApplySun = vDayRate.PromoDays[6] == 'Y' ? true : false;
                     }
 
+                    //Se va usar para la cantidad maxima de adultos y ninios
+                    spGetCurrentRatesByHotel_Result4 roomCapactity = new spGetCurrentRatesByHotel_Result4()
+                    {
+                        MaxAdults = room.MaxAdultsOccupancy,
+                        MaxChildren = room.MaxChildrenOccupancy
+                    };
+
+                    rate.BaseGuestAmounts = RatesHelpers.UpdateBaseGuestAmountPricesWithTaxesAndDiscounts(vDayRate, prices, roomCapactity);
+                    rate.AdditionalGuestAmounts = RatesHelpers.UpdateAdditionalGuestAmountPrices(prices); // Ver si llevan impuestos y descuento los extra
+
+
+                    if (pricesException.Count > 0)
+                    {
+                        rateException.HasPriceException = true;
+                        rateException.StartDate = starDate.Date.ToString("yyyyMMdd");
+                        rateException.EndDate = endDate.Date.ToString("yyyyMMdd");
+
+                        rateException.ApplyMon = vDayRate.ExceptionMap[0] == 'Y' ? true : false;
+                        rateException.ApplyTue = vDayRate.ExceptionMap[1] == 'Y' ? true : false;
+                        rateException.ApplyWed = vDayRate.ExceptionMap[2] == 'Y' ? true : false;
+                        rateException.ApplyThu = vDayRate.ExceptionMap[3] == 'Y' ? true : false;
+                        rateException.ApplyFri = vDayRate.ExceptionMap[4] == 'Y' ? true : false;
+                        rateException.ApplySat = vDayRate.ExceptionMap[5] == 'Y' ? true : false;
+                        rateException.ApplySun = vDayRate.ExceptionMap[6] == 'Y' ? true : false;
+
+                        rateException.BaseGuestAmounts = RatesHelpers.UpdateBaseGuestAmountPricesWithTaxesAndDiscounts(vDayRate, pricesException, roomCapactity);
+                    }
+
                     //Ver si es habitacion vinculada y actualizar precios
                     vLinkedRoomTypes linkedRoom = null;
 
@@ -497,8 +584,22 @@ namespace APIServices.Conflux.Parser
 
                         if (linkedRoom != null)
                         {
-                            RatesHelpers.UpdatePricesLinkedRoom(linkedRoom, ref prices);
-                            RatesHelpers.UpdatePricesLinkedRoom(linkedRoom, ref pricesException);
+
+                            var tempBaseGuestAmounts = rate.BaseGuestAmounts;
+                            var tempAdditionalGuestAmounts = rate.AdditionalGuestAmounts;
+
+                            RatesHelpers.UpdatePricesLinkedRoom(linkedRoom, ref tempBaseGuestAmounts, RatesHelpers.Tax);
+                            RatesHelpers.UpdatePricesLinkedRoom(linkedRoom, ref tempAdditionalGuestAmounts);
+
+                            rate.BaseGuestAmounts = tempBaseGuestAmounts;
+                            rate.AdditionalGuestAmounts = tempAdditionalGuestAmounts;
+
+                            var tempExceptionBaseGuestAmounts = rateException.BaseGuestAmounts;
+
+                            RatesHelpers.UpdatePricesLinkedRoom(linkedRoom, ref tempExceptionBaseGuestAmounts, RatesHelpers.Tax);
+
+                            rateException.BaseGuestAmounts = tempExceptionBaseGuestAmounts;
+
                         }
 
                     }
@@ -528,52 +629,37 @@ namespace APIServices.Conflux.Parser
 
                         if (linkedRatePlan != null)
                         {
-                            RatesHelpers.UpdatePricesLinkedRatePlan(linkedRatePlan, ref prices);
-                            RatesHelpers.UpdatePricesLinkedRatePlan(linkedRatePlan, ref pricesException);
+                            var tempBaseGuestAmounts = rate.BaseGuestAmounts;
+                            var tempAdditionalGuestAmounts = rate.AdditionalGuestAmounts;
+
+                            RatesHelpers.UpdatePricesLinkedRatePlan(linkedRatePlan, ref tempBaseGuestAmounts, RatesHelpers.Tax);
+                            RatesHelpers.UpdatePricesLinkedRatePlan(linkedRatePlan, ref tempAdditionalGuestAmounts);
+
+                            rate.BaseGuestAmounts = tempBaseGuestAmounts;
+                            rate.AdditionalGuestAmounts = tempAdditionalGuestAmounts;
+
+                            var tempExceptionBaseGuestAmounts = rateException.BaseGuestAmounts;
+
+                            RatesHelpers.UpdatePricesLinkedRatePlan(linkedRatePlan, ref tempExceptionBaseGuestAmounts, RatesHelpers.Tax);
+
+                            rateException.BaseGuestAmounts = tempExceptionBaseGuestAmounts;
+
                         }
 
                     }
 
-                    //Se va usar para la cantidad maxima de adultos y ninios
-                    spGetCurrentRatesByHotel_Result4 roomCapactity = new spGetCurrentRatesByHotel_Result4()
-                    {
-                        MaxAdults = room.MaxAdultsOccupancy,
-                        MaxChildren = room.MaxChildrenOccupancy
-                    };
+                    if (rateException.BaseGuestAmounts.Count() > 0
+                        && (rateException.ApplyMon ||
+                        rateException.ApplyTue ||
+                        rateException.ApplyWed ||
+                        rateException.ApplyThu ||
+                        rateException.ApplyFri ||
+                        rateException.ApplySat ||
+                        rateException.ApplySun)) { rates.Add(rateException); }
 
-                    rate.BaseGuestAmounts = RatesHelpers.UpdateBaseGuestAmountPricesWithTaxesAndDiscounts(vDayRate, prices, roomCapactity);
-                    rate.AdditionalGuestAmounts = RatesHelpers.UpdateAdditionalGuestAmountPrices(prices); // Ver si llevan impuestos y descuento los extra
 
                     rates.Add(rate);
 
-                    //Precios Excepciones
-                    if (pricesException.Count > 0)
-                    {
-                        Rate rateException = new Rate();
-                        rateException.HasPriceException = true;
-                        rateException.StartDate = starDate.Date.ToString("yyyyMMdd");
-                        rateException.EndDate = endDate.Date.ToString("yyyyMMdd");
-
-                        rateException.ApplyMon = vDayRate.ExceptionMap[0] == 'Y' ? true : false;
-                        rateException.ApplyTue = vDayRate.ExceptionMap[1] == 'Y' ? true : false;
-                        rateException.ApplyWed = vDayRate.ExceptionMap[2] == 'Y' ? true : false;
-                        rateException.ApplyThu = vDayRate.ExceptionMap[3] == 'Y' ? true : false;
-                        rateException.ApplyFri = vDayRate.ExceptionMap[4] == 'Y' ? true : false;
-                        rateException.ApplySat = vDayRate.ExceptionMap[5] == 'Y' ? true : false;
-                        rateException.ApplySun = vDayRate.ExceptionMap[6] == 'Y' ? true : false;
-
-                        rateException.BaseGuestAmounts = RatesHelpers.UpdateBaseGuestAmountPricesWithTaxesAndDiscounts(vDayRate, pricesException, roomCapactity);
-
-                        if (rateException.BaseGuestAmounts.Count() > 0
-                            && (rateException.ApplyMon ||
-                            rateException.ApplyTue ||
-                            rateException.ApplyWed ||
-                            rateException.ApplyThu ||
-                            rateException.ApplyFri ||
-                            rateException.ApplySat ||
-                            rateException.ApplySun)) { rates.Add(rateException); }
-
-                    }
 
                     rateAmountMessage.statusApplicationControl = statusApplicationControl;
                     rateAmountMessage.Rates = rates;
@@ -609,6 +695,8 @@ namespace APIServices.Conflux.Parser
                     var diff = vDayRate.EndDate.Date - startDate.Date;
                     var endDate = diff.TotalDays > 1096 ? startDate.AddYears(3) : vDayRate.EndDate.Date;
 
+                    Rate rateException = new Rate();
+
                     Rate rate = new Rate();
                     rate.TypeRate = TypeRateEnum.RoomRatePromotion;
                     rate.StartDate = startDate.Date.ToString("yyyyMMdd");
@@ -637,6 +725,37 @@ namespace APIServices.Conflux.Parser
                         rate.ApplySun = vDayRate.ApplyDayMap[6] == 'Y' ? true : false;
                     }
 
+                    //Se va usar para la cantidad maxima de adultos y ninios
+                    spGetCurrentRatesByHotel_Result4 roomCapacity = new spGetCurrentRatesByHotel_Result4()
+                    {
+                        MaxAdults = room.MaxAdultsOccupancy,
+                        MaxChildren = room.MaxChildrenOccupancy
+                    };
+
+
+                    rate.BaseGuestAmounts = RatesHelpers.UpdateBaseGuestAmountPricesWithTaxesAndDiscounts(vDayRate, prices, roomCapacity);
+                    rate.AdditionalGuestAmounts = RatesHelpers.UpdateAdditionalGuestAmountPrices(prices);
+
+                    if (pricesException.Count > 0)
+                    {
+                        rateException.HasPriceException = true;
+                        rateException.StartDate = startDate.Date.ToString("yyyyMMdd");
+                        rateException.EndDate = endDate.Date.ToString("yyyyMMdd");
+
+                        rateException.ApplyMon = vDayRate.ExceptionMap[0] == 'Y' ? true : false;
+                        rateException.ApplyTue = vDayRate.ExceptionMap[1] == 'Y' ? true : false;
+                        rateException.ApplyWed = vDayRate.ExceptionMap[2] == 'Y' ? true : false;
+                        rateException.ApplyThu = vDayRate.ExceptionMap[3] == 'Y' ? true : false;
+                        rateException.ApplyFri = vDayRate.ExceptionMap[4] == 'Y' ? true : false;
+                        rateException.ApplySat = vDayRate.ExceptionMap[5] == 'Y' ? true : false;
+                        rateException.ApplySun = vDayRate.ExceptionMap[6] == 'Y' ? true : false;
+
+                        rateException.BaseGuestAmounts = RatesHelpers.UpdateBaseGuestAmountPricesWithTaxesAndDiscounts(vDayRate, pricesException, roomCapacity);
+
+                    }
+
+
+
                     //Ver si es habitacion vinculada y actualizar precios
                     vLinkedRoomTypes linkedRoom = null;
 
@@ -648,8 +767,21 @@ namespace APIServices.Conflux.Parser
 
                         if (linkedRoom != null)
                         {
-                            RatesHelpers.UpdatePricesLinkedRoom(linkedRoom, ref prices);
-                            RatesHelpers.UpdatePricesLinkedRoom(linkedRoom, ref pricesException);
+                            var tempBaseGuestAmounts = rate.BaseGuestAmounts;
+                            var tempAdditionalGuestAmounts = rate.AdditionalGuestAmounts;
+
+                            RatesHelpers.UpdatePricesLinkedRoom(linkedRoom, ref tempBaseGuestAmounts, RatesHelpers.Tax);
+                            RatesHelpers.UpdatePricesLinkedRoom(linkedRoom, ref tempAdditionalGuestAmounts);
+
+                            rate.BaseGuestAmounts = tempBaseGuestAmounts;
+                            rate.AdditionalGuestAmounts = tempAdditionalGuestAmounts;
+
+                            var tempExceptionBaseGuestAmounts = rateException.BaseGuestAmounts;
+
+                            RatesHelpers.UpdatePricesLinkedRoom(linkedRoom, ref tempExceptionBaseGuestAmounts, RatesHelpers.Tax);
+
+                            rateException.BaseGuestAmounts = tempExceptionBaseGuestAmounts;
+
                         }
                     }
 
@@ -685,53 +817,37 @@ namespace APIServices.Conflux.Parser
 
                         if (linkedRatePlan != null)
                         {
-                            RatesHelpers.UpdatePricesLinkedRatePlan(linkedRatePlan, ref prices);
-                            RatesHelpers.UpdatePricesLinkedRatePlan(linkedRatePlan, ref pricesException);
+
+                            var tempBaseGuestAmounts = rate.BaseGuestAmounts;
+                            var tempAdditionalGuestAmounts = rate.AdditionalGuestAmounts;
+
+                            RatesHelpers.UpdatePricesLinkedRatePlan(linkedRatePlan, ref tempBaseGuestAmounts, RatesHelpers.Tax);
+                            RatesHelpers.UpdatePricesLinkedRatePlan(linkedRatePlan, ref tempAdditionalGuestAmounts);
+
+                            rate.BaseGuestAmounts = tempBaseGuestAmounts;
+                            rate.AdditionalGuestAmounts = tempAdditionalGuestAmounts;
+
+                            var tempExceptionBaseGuestAmounts = rateException.BaseGuestAmounts;
+
+                            RatesHelpers.UpdatePricesLinkedRatePlan(linkedRatePlan, ref tempExceptionBaseGuestAmounts, RatesHelpers.Tax);
+
+                            rateException.BaseGuestAmounts = tempExceptionBaseGuestAmounts;
+
+
                         }
 
                     }
 
-                    //Se va usar para la cantidad maxima de adultos y ninios
-                    spGetCurrentRatesByHotel_Result4 roomCapacity = new spGetCurrentRatesByHotel_Result4()
-                    {
-                        MaxAdults = room.MaxAdultsOccupancy,
-                        MaxChildren = room.MaxChildrenOccupancy
-                    };
-
-
-                    rate.BaseGuestAmounts = RatesHelpers.UpdateBaseGuestAmountPricesWithTaxesAndDiscounts(vDayRate, prices, roomCapacity);
-                    rate.AdditionalGuestAmounts = RatesHelpers.UpdateAdditionalGuestAmountPrices(prices);
+                    if (rateException.BaseGuestAmounts.Count() > 0
+                        && (rateException.ApplyMon ||
+                        rateException.ApplyTue ||
+                        rateException.ApplyWed ||
+                        rateException.ApplyThu ||
+                        rateException.ApplyFri ||
+                        rateException.ApplySat ||
+                        rateException.ApplySun)) { rates.Add(rateException); }
 
                     rates.Add(rate);
-
-                    //Precios Excepciones
-                    if (pricesException.Count > 0)
-                    {
-                        Rate rateException = new Rate();
-                        rateException.HasPriceException = true;
-                        rateException.StartDate = startDate.Date.ToString("yyyyMMdd");
-                        rateException.EndDate = endDate.Date.ToString("yyyyMMdd");
-
-                        rateException.ApplyMon = vDayRate.ExceptionMap[0] == 'Y' ? true : false;
-                        rateException.ApplyTue = vDayRate.ExceptionMap[1] == 'Y' ? true : false;
-                        rateException.ApplyWed = vDayRate.ExceptionMap[2] == 'Y' ? true : false;
-                        rateException.ApplyThu = vDayRate.ExceptionMap[3] == 'Y' ? true : false;
-                        rateException.ApplyFri = vDayRate.ExceptionMap[4] == 'Y' ? true : false;
-                        rateException.ApplySat = vDayRate.ExceptionMap[5] == 'Y' ? true : false;
-                        rateException.ApplySun = vDayRate.ExceptionMap[6] == 'Y' ? true : false;
-
-                        rateException.BaseGuestAmounts = RatesHelpers.UpdateBaseGuestAmountPricesWithTaxesAndDiscounts(vDayRate, pricesException, roomCapacity);
-
-                        if (rateException.BaseGuestAmounts.Count() > 0
-                            && (rateException.ApplyMon ||
-                            rateException.ApplyTue ||
-                            rateException.ApplyWed ||
-                            rateException.ApplyThu ||
-                            rateException.ApplyFri ||
-                            rateException.ApplySat ||
-                            rateException.ApplySun)) { rates.Add(rateException); }
-
-                    }
 
                     rateAmountMessage.statusApplicationControl = statusApplicationControl;
                     rateAmountMessage.Rates = rates;

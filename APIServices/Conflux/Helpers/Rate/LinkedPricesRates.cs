@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using APIServices.Models;
 using APIServices.Conflux.Enum;
-
+using APIServices.Conflux.OTA.Models.Rates;
+using System;
 
 namespace APIServices.Conflux.Helpers.Rate
 {
@@ -33,6 +34,53 @@ namespace APIServices.Conflux.Helpers.Rate
 
         }
 
+        public static void UpdatePricesLinkedRoom(vLinkedRoomTypes linkedRoom, ref List<BaseGuestAmount> baseGuestAmounts, decimal? hotelTax = null)
+        {
+            foreach (var baseGuestAmount in baseGuestAmounts)
+            {
+                int personType = Convert.ToInt32(baseGuestAmount.AgeQualifyingCode);
+                int quantity = Convert.ToInt32(baseGuestAmount.NumberOfGuests);
+
+                if (baseGuestAmount.AmountAfterTax > 0) baseGuestAmount.AmountAfterTax = UpdatePriceByQuantityLinkedRoom(quantity, baseGuestAmount.AmountAfterTax, linkedRoom);
+                if (baseGuestAmount.AmountBeforeTax > 0) 
+                {
+
+                    var taxes = (RatesHelpers.Tax / 100) + 1;
+
+                    decimal amtBeforeTax = decimal.Round(Convert.ToDecimal(baseGuestAmount.AmountAfterTax / taxes),2);
+
+                    baseGuestAmount.AmountBeforeTax = amtBeforeTax;
+                }
+            }
+        }
+
+        public static void UpdatePricesLinkedRoom(vLinkedRoomTypes linkedRoom, ref List<AdditionalGuestAmount> additionalGuestAmounts)
+        {
+            foreach (var additionalGuestAmount in additionalGuestAmounts)
+            {
+                int personType = Convert.ToInt32(additionalGuestAmount.AgeQualifyingCode);
+
+                if (personType == 10)
+                {
+                    if (additionalGuestAmount.Amount > 0)
+                    {
+                        var tempAmount = UpdatePrice(additionalGuestAmount.Amount, linkedRoom.ExtraAdultRatio, linkedRoom.ExtraAdultOffset);
+                        additionalGuestAmount.Amount = (decimal)tempAmount;
+                    }
+                }
+                else if (personType == 8 || personType == 9)
+                {
+                    if (additionalGuestAmount.Amount > 0)
+                    {
+                        var tempAmount = UpdatePrice(additionalGuestAmount.Amount, linkedRoom.ExtraChildRatio, linkedRoom.ExtraChildOffset);
+                        additionalGuestAmount.Amount = (decimal)tempAmount;
+                    }
+                }
+
+            }
+        }
+
+
         public static void UpdatePricesLinkedRatePlan(vLinkedRatePlans linkedRatePlan, ref List<spGetPricesByRate_Result> prices)
         {
             foreach (var price in prices)
@@ -55,6 +103,54 @@ namespace APIServices.Conflux.Helpers.Rate
                 }
             }
         }
+
+        public static void UpdatePricesLinkedRatePlan(vLinkedRatePlans linkedRatePlan, ref List<BaseGuestAmount> baseGuestAmounts, decimal? hotelTax = null)
+        {
+            foreach(var baseGuestAmount in baseGuestAmounts)
+            {
+                int personType = Convert.ToInt32(baseGuestAmount.AgeQualifyingCode);
+                int quantity = Convert.ToInt32(baseGuestAmount.NumberOfGuests);
+
+                if (baseGuestAmount.AmountAfterTax > 0) baseGuestAmount.AmountAfterTax = UpdatePriceByQuantityLinkedRatePlan(quantity, baseGuestAmount.AmountAfterTax, linkedRatePlan);
+                if (baseGuestAmount.AmountBeforeTax > 0) 
+                {
+                    var taxes = (RatesHelpers.Tax / 100) + 1;
+
+                    decimal amtBeforeTax = decimal.Round(Convert.ToDecimal(baseGuestAmount.AmountAfterTax / taxes), 2);
+
+                    baseGuestAmount.AmountBeforeTax = amtBeforeTax;
+                }
+            }
+        }
+
+        public static void UpdatePricesLinkedRatePlan(vLinkedRatePlans linkedRatePlan, ref List<AdditionalGuestAmount> additionalGuestAmounts)
+        {
+            foreach (var additionalGuestAmount in additionalGuestAmounts)
+            {
+                int personType = Convert.ToInt32(additionalGuestAmount.AgeQualifyingCode);
+
+                if(personType == 10)
+                {
+                    if (additionalGuestAmount.Amount > 0)
+                    {
+                        var tempAmount = UpdatePrice(additionalGuestAmount.Amount, linkedRatePlan.ExtraAdultRatio, linkedRatePlan.ExtraAdultOffset);
+                        additionalGuestAmount.Amount = (decimal) tempAmount;
+                    }
+                }
+                else if(personType == 8 || personType == 9)
+                {
+                    if (additionalGuestAmount.Amount > 0)
+                    {
+                        var tempAmount = UpdatePrice(additionalGuestAmount.Amount, linkedRatePlan.ExtraChildRatio, linkedRatePlan.ExtraChildOffset);
+                        additionalGuestAmount.Amount = (decimal)tempAmount;
+                    }
+                }
+
+            }
+        }
+
+
+
         #endregion
 
         #region Tarifas Excepciones
@@ -112,7 +208,7 @@ namespace APIServices.Conflux.Helpers.Rate
 
         #region Calcular Precios por Cantidad
 
-        private static decimal? UpdatePriceByQuantityLinkedRoom(int? quantity ,decimal? price, vLinkedRoomTypes linkedRoom)
+        private static decimal? UpdatePriceByQuantityLinkedRoom(int? quantity ,decimal? price, vLinkedRoomTypes linkedRoom, int hotelTax = 0)
         {
             decimal? updatedPrice = 0;
 
