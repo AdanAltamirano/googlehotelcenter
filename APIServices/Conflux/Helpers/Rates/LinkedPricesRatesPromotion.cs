@@ -4,7 +4,7 @@ using APIServices.Conflux.Enum;
 
 
 
-namespace APIServices.Conflux.Helpers.Rate
+namespace APIServices.Conflux.Helpers.Rates
 {
     public static partial class RatesHelpers
     {

@@ -40,5 +40,7 @@ namespace APIServices.Models
         public int Language { get; set; }
         public bool IsMobileRate { get; set; }
         public bool IsCallCenterOnly { get; set; }
+        public Nullable<System.DateTime> PromoStartDateBookingWindow { get; set; }
+        public Nullable<System.DateTime> PromoEndDateBookingWindow { get; set; }
     }
 }

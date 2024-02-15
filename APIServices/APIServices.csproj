@@ -114,9 +114,10 @@
     <Compile Include="Conflux\Enum\RestrictionEnum.cs" />
     <Compile Include="Conflux\Enum\TypeRateEnum.cs" />
     <Compile Include="Conflux\Helpers\RatesHelpers.cs" />
-    <Compile Include="Conflux\Helpers\Rate\LinkedPricesRates.cs" />
-    <Compile Include="Conflux\Helpers\Rate\LinkedPricesRatesPromotion.cs" />
-    <Compile Include="Conflux\Helpers\Rate\RatesHelpers.cs" />
+    <Compile Include="Conflux\Helpers\Rates\LinkedPricesRates.cs" />
+    <Compile Include="Conflux\Helpers\Rates\LinkedPricesRatesPromotion.cs" />
+    <Compile Include="Conflux\Helpers\Rates\RateAmountMessage.cs" />
+    <Compile Include="Conflux\Helpers\Rates\RatesHelpers.cs" />
     <Compile Include="Conflux\Helpers\Restriction\RestrictionHelper.cs" />
     <Compile Include="Conflux\Models\OTA\Rates\AdditionalGuestAmount.cs" />
     <Compile Include="Conflux\Models\OTA\Rates\BaseGuestAmount.cs" />
@@ -418,7 +419,6 @@
   <ItemGroup>
     <EntityDeploy Include="Models\OzHoteles.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>OzHoteles.Designer.cs</LastGenOutput>
     </EntityDeploy>
   </ItemGroup>
   <ItemGroup>

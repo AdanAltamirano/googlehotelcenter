@@ -256,7 +256,7 @@ Partial Class FaresCatalogueNR
                     Dim lblEndDateNoFormat As Label = room.FindControl("lblEndDateNoFormat")
                     Dim startDate As DateTime = Convert.ToDateTime(lblStartDateNoFormat.Text)
                     Dim endDate As DateTime = Convert.ToDateTime(lblEndDateNoFormat.Text)
-                    Dim vDayRates As List(Of vDayRates) = Helpers.Rate.RatesHelpers.GetVDayRate(iFareIdTemp, startDate, endDate)
+                    Dim vDayRates As List(Of vDayRates) = Helpers.Rates.RatesHelpers.GetVDayRate(iFareIdTemp, startDate, endDate)
 
                     With New FaresSystem
                         If .DeleteFares(iFareIdTemp) Then
@@ -767,7 +767,7 @@ Partial Class FaresCatalogueNR
                         Dim auxFareId As Integer = 0
                         Dim vDayRates As List(Of vDayRates) = Nothing
                         If Editando Then
-                            vDayRates = Helpers.Rate.RatesHelpers.GetVDayRate(CtrRateAplication1.m_iFareId, CtrRateAplication1.m_StartDateFareId, CtrRateAplication1.m_EndDateFareId)
+                            vDayRates = Helpers.Rates.RatesHelpers.GetVDayRate(CtrRateAplication1.m_iFareId, CtrRateAplication1.m_StartDateFareId, CtrRateAplication1.m_EndDateFareId)
                         End If
 
                         If CtrRateAplication1.AddFare(idroom, CtrRateAplication1.m_iFareId, f1, f2, chLast, rpLast, f1Last, f2Last, ddlRooms.SelectedItem.Text, publish, (bPorOcupacion = 1), lstFare, scorreo) = True Then

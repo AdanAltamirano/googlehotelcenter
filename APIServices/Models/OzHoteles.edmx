@@ -635,21 +635,16 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vDayRates' no tiene definida n
           <Property Name="Language" Type="int" Nullable="false" />
           <Property Name="IsMobileRate" Type="bit" Nullable="false" />
           <Property Name="IsCallCenterOnly" Type="bit" Nullable="false" />
+          <Property Name="PromoStartDateBookingWindow" Type="smalldatetime" />
+          <Property Name="PromoEndDateBookingWindow" Type="smalldatetime" />
         </EntityType>
         <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'OzHoteles.dbo.vDayRatesExceptions' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vDayRatesExceptions">
           <Key>
-            
             <PropertyRef Name="NoDeparturesMap" />
-            
-            
-            
-            
             <PropertyRef Name="Currency" />
             <PropertyRef Name="IsPromotion" />
-            
-            
             <PropertyRef Name="RateId" />
             <PropertyRef Name="HotelId" />
             <PropertyRef Name="RoomId" />
@@ -686,6 +681,8 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vDayRatesExceptions' no tiene 
           <Property Name="Language" Type="int" Nullable="false" />
           <Property Name="IsMobileRate" Type="bit" Nullable="false" />
           <Property Name="IsCallCenterOnly" Type="bit" Nullable="false" />
+          <Property Name="PromoStartDateBookingWindow" Type="smalldatetime" />
+          <Property Name="PromoEndDateBookingWindow" Type="smalldatetime" />
         </EntityType>
         <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'OzHoteles.dbo.vHotelActives' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
@@ -1416,7 +1413,9 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
     [vDayRates].[IsPromotion] AS [IsPromotion], 
     [vDayRates].[Language] AS [Language], 
     [vDayRates].[IsMobileRate] AS [IsMobileRate], 
-    [vDayRates].[IsCallCenterOnly] AS [IsCallCenterOnly]
+    [vDayRates].[IsCallCenterOnly] AS [IsCallCenterOnly], 
+    [vDayRates].[PromoStartDateBookingWindow] AS [PromoStartDateBookingWindow], 
+    [vDayRates].[PromoEndDateBookingWindow] AS [PromoEndDateBookingWindow]
     FROM [dbo].[vDayRates] AS [vDayRates]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vDayRatesExceptions" EntityType="Self.vDayRatesExceptions" store:Type="Views" store:Schema="dbo">
@@ -1447,7 +1446,9 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
     [vDayRatesExceptions].[IsPromotion] AS [IsPromotion], 
     [vDayRatesExceptions].[Language] AS [Language], 
     [vDayRatesExceptions].[IsMobileRate] AS [IsMobileRate], 
-    [vDayRatesExceptions].[IsCallCenterOnly] AS [IsCallCenterOnly]
+    [vDayRatesExceptions].[IsCallCenterOnly] AS [IsCallCenterOnly], 
+    [vDayRatesExceptions].[PromoStartDateBookingWindow] AS [PromoStartDateBookingWindow], 
+    [vDayRatesExceptions].[PromoEndDateBookingWindow] AS [PromoEndDateBookingWindow]
     FROM [dbo].[vDayRatesExceptions] AS [vDayRatesExceptions]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vHotelActives" EntityType="Self.vHotelActives" store:Type="Views" store:Schema="dbo">
@@ -1980,12 +1981,12 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <FunctionImport Name="spGetLockGralByHotel" ReturnType="Collection(Models.spGetLockGralByHotel_Result)">
           <Parameter Name="hotelId" Mode="In" Type="Int32" />
           </FunctionImport>
-          <EntitySet Name="vDayRates" EntityType="Models.vDayRates" />
-          <EntitySet Name="vDayRatesExceptions" EntityType="Models.vDayRatesExceptions" />
           <FunctionImport Name="spGetPromosByRatePlan" ReturnType="Collection(Models.spGetPromosByRatePlan_Result)">
             <Parameter Name="idHotel" Mode="In" Type="Int32" />
             <Parameter Name="ratePlan" Mode="In" Type="String" />
           </FunctionImport>
+          <EntitySet Name="vDayRates" EntityType="Models.vDayRates" />
+          <EntitySet Name="vDayRatesExceptions" EntityType="Models.vDayRatesExceptions" />
         </EntityContainer>
         <EntityType Name="RatesPlan">
           <Key>
@@ -3361,6 +3362,12 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <Property Type="Byte" Name="MinDays" Nullable="true" />
           <Property Type="Byte" Name="MaxDays" Nullable="true" />
         </ComplexType>
+        <ComplexType Name="spGetPromosByRatePlan_Result">
+          <Property Type="Int32" Name="IdPromocion_RatePlan" Nullable="false" />
+          <Property Type="String" Name="IdPromocion" Nullable="false" MaxLength="4" />
+          <Property Type="String" Name="IdRatePlan" Nullable="false" MaxLength="4" />
+          <Property Type="Int32" Name="IdHotel" Nullable="false" />
+        </ComplexType>
         <EntityType Name="vDayRates">
           <Key>
             <PropertyRef Name="Segment" />
@@ -3403,6 +3410,8 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <Property Name="Language" Type="Int32" Nullable="false" />
           <Property Name="IsMobileRate" Type="Boolean" Nullable="false" />
           <Property Name="IsCallCenterOnly" Type="Boolean" Nullable="false" />
+          <Property Name="PromoStartDateBookingWindow" Type="DateTime" Precision="0" />
+          <Property Name="PromoEndDateBookingWindow" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="vDayRatesExceptions">
           <Key>
@@ -3445,13 +3454,9 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <Property Name="Language" Type="Int32" Nullable="false" />
           <Property Name="IsMobileRate" Type="Boolean" Nullable="false" />
           <Property Name="IsCallCenterOnly" Type="Boolean" Nullable="false" />
+          <Property Name="PromoStartDateBookingWindow" Type="DateTime" Precision="0" />
+          <Property Name="PromoEndDateBookingWindow" Type="DateTime" Precision="0" />
         </EntityType>
-        <ComplexType Name="spGetPromosByRatePlan_Result">
-          <Property Type="Int32" Name="IdPromocion_RatePlan" Nullable="false" />
-          <Property Type="String" Name="IdPromocion" Nullable="false" MaxLength="4" />
-          <Property Type="String" Name="IdRatePlan" Nullable="false" MaxLength="4" />
-          <Property Type="Int32" Name="IdHotel" Nullable="false" />
-        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4667,9 +4672,21 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetPromosByRatePlan" FunctionName="Models.Store.spGetPromosByRatePlan">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Models.spGetPromosByRatePlan_Result">
+                <ScalarProperty Name="IdPromocion_RatePlan" ColumnName="IdPromocion_RatePlan" />
+                <ScalarProperty Name="IdPromocion" ColumnName="IdPromocion" />
+                <ScalarProperty Name="IdRatePlan" ColumnName="IdRatePlan" />
+                <ScalarProperty Name="IdHotel" ColumnName="IdHotel" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <EntitySetMapping Name="vDayRates">
             <EntityTypeMapping TypeName="Models.vDayRates">
               <MappingFragment StoreEntitySet="vDayRates">
+                <ScalarProperty Name="PromoEndDateBookingWindow" ColumnName="PromoEndDateBookingWindow" />
+                <ScalarProperty Name="PromoStartDateBookingWindow" ColumnName="PromoStartDateBookingWindow" />
                 <ScalarProperty Name="IsCallCenterOnly" ColumnName="IsCallCenterOnly" />
                 <ScalarProperty Name="IsMobileRate" ColumnName="IsMobileRate" />
                 <ScalarProperty Name="Language" ColumnName="Language" />
@@ -4702,6 +4719,8 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <EntitySetMapping Name="vDayRatesExceptions">
             <EntityTypeMapping TypeName="Models.vDayRatesExceptions">
               <MappingFragment StoreEntitySet="vDayRatesExceptions">
+                <ScalarProperty Name="PromoEndDateBookingWindow" ColumnName="PromoEndDateBookingWindow" />
+                <ScalarProperty Name="PromoStartDateBookingWindow" ColumnName="PromoStartDateBookingWindow" />
                 <ScalarProperty Name="IsCallCenterOnly" ColumnName="IsCallCenterOnly" />
                 <ScalarProperty Name="IsMobileRate" ColumnName="IsMobileRate" />
                 <ScalarProperty Name="Language" ColumnName="Language" />
@@ -4732,16 +4751,6 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="spGetPromosByRatePlan" FunctionName="Models.Store.spGetPromosByRatePlan">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="Models.spGetPromosByRatePlan_Result">
-                <ScalarProperty Name="IdPromocion_RatePlan" ColumnName="IdPromocion_RatePlan" />
-                <ScalarProperty Name="IdPromocion" ColumnName="IdPromocion" />
-                <ScalarProperty Name="IdRatePlan" ColumnName="IdRatePlan" />
-                <ScalarProperty Name="IdHotel" ColumnName="IdHotel" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

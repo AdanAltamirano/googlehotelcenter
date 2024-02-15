@@ -222,7 +222,7 @@ Partial Public Class FaresCataloguePromoNR
                     Dim lblEndDateNoFormat As Label = room.FindControl("lblEndDateNoFormat")
                     Dim startDate As DateTime = Convert.ToDateTime(lblStartDateNoFormat.Text)
                     Dim endDate As DateTime = Convert.ToDateTime(lblEndDateNoFormat.Text)
-                    Dim vDayRates As List(Of vDayRatesExceptions) = Helpers.Rate.RatesHelpers.GetVDayRateException(iFareIdTemp, startDate, endDate)
+                    Dim vDayRates As List(Of vDayRatesExceptions) = Helpers.Rates.RatesHelpers.GetVDayRateException(iFareIdTemp, startDate, endDate)
                     With New FaresExcFacade
                         If .DeleteFares(iFareIdTemp) Then
                             Me.guardalog("/Pages/FaresCataloguePromoNR.aspx", PaginaBase.acciones.Eliminar, "Se eliminó la tarifa de la habitación " & room.Cells(dgcolumns.codigohabitacion).Text & " de la fecha " & room.Cells(dgcolumns.FechaInicia).Text & " a la fecha " & room.Cells(dgcolumns.FechaFinaliza).Text & " con el rateplan " & labelTemp.Text)
@@ -707,7 +707,7 @@ Partial Public Class FaresCataloguePromoNR
                         Dim auxFareId As Integer = 0
                         Dim vDayRates As List(Of vDayRatesExceptions) = Nothing
                         If Editando Then
-                            vDayRates = Helpers.Rate.RatesHelpers.GetVDayRateException(ctrRateAplicationNRpromo1.m_iFareId, ctrRateAplicationNRpromo1.m_StartDateFareId, ctrRateAplicationNRpromo1.m_EndDateFareId)
+                            vDayRates = Helpers.Rates.RatesHelpers.GetVDayRateException(ctrRateAplicationNRpromo1.m_iFareId, ctrRateAplicationNRpromo1.m_StartDateFareId, ctrRateAplicationNRpromo1.m_EndDateFareId)
                         End If
 
                         If ctrRateAplicationNRpromo1.AddFare(idroom, ctrRateAplicationNRpromo1.m_iFareId, f1, f2, chLast, rpLast, f1Last, f2Last, ddlRooms.SelectedItem.Text, publish, (bPorOcupacion = 1), lstFare, scorreos) = True Then

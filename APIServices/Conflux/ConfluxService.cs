@@ -135,10 +135,10 @@ namespace APIServices.Conflux
                 switch (typeRate)
                 {
                     case TypeRateEnum.RoomRate:
-                        rates = APIServices.Conflux.Helpers.Rate.RatesHelpers.GetVDayRate(rateId, startDate, endDate);
+                        rates = APIServices.Conflux.Helpers.Rates.RatesHelpers.GetVDayRate(rateId, startDate, endDate);
                         break;
                     case TypeRateEnum.RoomRatePromotion:
-                        ratesExceptions = APIServices.Conflux.Helpers.Rate.RatesHelpers.GetVDayRateException(rateId, startDate, endDate);
+                        ratesExceptions = APIServices.Conflux.Helpers.Rates.RatesHelpers.GetVDayRateException(rateId, startDate, endDate);
                         break;
                 }
 
@@ -208,10 +208,10 @@ namespace APIServices.Conflux
                 switch (typeRate)
                 {
                     case TypeRateEnum.RoomRate:
-                        rates = APIServices.Conflux.Helpers.Rate.RatesHelpers.GetVDayRate(hotelId, ratePlanId);
+                        rates = APIServices.Conflux.Helpers.Rates.RatesHelpers.GetVDayRate(hotelId, ratePlanId);
                         break;
                     case TypeRateEnum.RoomRatePromotion:
-                       ratesExceptions = APIServices.Conflux.Helpers.Rate.RatesHelpers.GetVDayRateException(hotelId, ratePlanId);
+                       ratesExceptions = APIServices.Conflux.Helpers.Rates.RatesHelpers.GetVDayRateException(hotelId, ratePlanId);
                         break;
                 }
 
@@ -281,10 +281,10 @@ namespace APIServices.Conflux
                 switch (typeRate)
                 {
                     case TypeRateEnum.RoomRate:
-                        rates = APIServices.Conflux.Helpers.Rate.RatesHelpers.GetVDayRatePromotion(hotelId, ratePlanId);
+                        rates = APIServices.Conflux.Helpers.Rates.RatesHelpers.GetVDayRatePromotion(hotelId, ratePlanId);
                         break;
                     case TypeRateEnum.RoomRatePromotion:
-                        ratesExceptions = APIServices.Conflux.Helpers.Rate.RatesHelpers.GetVDayRatePromotionException(hotelId, ratePlanId);
+                        ratesExceptions = APIServices.Conflux.Helpers.Rates.RatesHelpers.GetVDayRatePromotionException(hotelId, ratePlanId);
                         break;
                 }
 

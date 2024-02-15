@@ -48,7 +48,7 @@
         <EntityTypeShape EntityType="Models.vHotelActives" Width="1.5" PointX="11.375" PointY="20.75" />
         <EntityTypeShape EntityType="Models.vLinkedRoomTypes" Width="1.5" PointX="13.375" PointY="20.75" />
         <EntityTypeShape EntityType="Models.vLinkedRatePlans" Width="1.5" PointX="15.375" PointY="20.75" />
-        <EntityTypeShape EntityType="Models.vDayRates" Width="1.5" PointX="21.5" PointY="17" />
+        <EntityTypeShape EntityType="Models.vDayRates" Width="1.5" PointX="21.625" PointY="17" />
         <EntityTypeShape EntityType="Models.vDayRatesExceptions" Width="1.5" PointX="23.75" PointY="17" />
         </Diagram>
     </edmx:Diagrams>
