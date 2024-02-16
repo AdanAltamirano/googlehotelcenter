@@ -114,9 +114,10 @@
     <Compile Include="Conflux\Enum\RestrictionEnum.cs" />
     <Compile Include="Conflux\Enum\TypeRateEnum.cs" />
     <Compile Include="Conflux\Helpers\RatesHelpers.cs" />
-    <Compile Include="Conflux\Helpers\Rate\LinkedPricesRates.cs" />
-    <Compile Include="Conflux\Helpers\Rate\LinkedPricesRatesPromotion.cs" />
-    <Compile Include="Conflux\Helpers\Rate\RatesHelpers.cs" />
+    <Compile Include="Conflux\Helpers\Rates\LinkedPricesRates.cs" />
+    <Compile Include="Conflux\Helpers\Rates\LinkedPricesRatesPromotion.cs" />
+    <Compile Include="Conflux\Helpers\Rates\RateAmountMessage.cs" />
+    <Compile Include="Conflux\Helpers\Rates\RatesHelpers.cs" />
     <Compile Include="Conflux\Helpers\Restriction\RestrictionHelper.cs" />
     <Compile Include="Conflux\Models\OTA\Rates\AdditionalGuestAmount.cs" />
     <Compile Include="Conflux\Models\OTA\Rates\BaseGuestAmount.cs" />
@@ -129,19 +130,25 @@
     <Compile Include="Conflux\Models\OTA\Restrictions\LengthOfStay.cs" />
     <Compile Include="Conflux\Models\OTA\Restrictions\RestrictionStatus.cs" />
     <Compile Include="Conflux\Models\OTA\Restrictions\StatusApplicationControl.cs" />
+    <Compile Include="Conflux\Models\RatePlan\RatePlan.cs" />
+    <Compile Include="Conflux\Models\RatePlan\Response\RatePlanResponse.cs" />
     <Compile Include="Conflux\Models\Rates\Promo.cs" />
     <Compile Include="Conflux\Models\Rates\RatePrice.cs" />
+    <Compile Include="Conflux\Models\Rates\Response\Rate.cs" />
     <Compile Include="Conflux\Models\Rates\Response\RateResponse.cs" />
     <Compile Include="Conflux\Models\Restrictions\Response\Restriction.cs" />
     <Compile Include="Conflux\Models\Restrictions\Response\RestrictionResponse.cs" />
     <Compile Include="Conflux\Models\User\Response\UserReponse.cs" />
     <Compile Include="Conflux\Models\User\User.cs" />
     <Compile Include="Conflux\Parser\Parser.cs" />
+    <Compile Include="Conflux\Parser\RatePlan\RatePlanParser.cs" />
     <Compile Include="Conflux\Parser\Restriction\RestrictionsParser.cs" />
     <Compile Include="Currency\CurrencyService.cs" />
     <Compile Include="Dictionary.cs" />
     <Compile Include="Extension\ConfigurationExtensions.cs" />
     <Compile Include="F2GService.cs" />
+    <Compile Include="Helpers\Reservation\ReservationHelper.cs" />
+    <Compile Include="Helpers\Room\RoomHelper.cs" />
     <Compile Include="HotelConfigurationService.cs" />
     <Compile Include="HotelService.cs" />
     <Compile Include="Models\AplicacionPortal.cs">
@@ -300,6 +307,9 @@
     <Compile Include="Models\spGetPricesByRate_Result.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\spGetPromosByRatePlan_Result.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\spReservationLog_Result.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
@@ -395,7 +405,11 @@
     <Compile Include="ReservationService.cs" />
     <Compile Include="RoomsClosureService.cs" />
     <Compile Include="RoomsService.cs" />
+    <Compile Include="Service\HotelVerse\HotelVerseService.cs" />
+    <Compile Include="Service\HotelVerse\Models\Record.cs" />
+    <Compile Include="Service\HotelVerse\Models\Response\ResponseRequest.cs" />
     <Compile Include="Utilities.cs" />
+    <Compile Include="Xml\OTA\Request\RatePlan\HotelRatePlanRQ.cs" />
     <Compile Include="Xml\OTA\Request\Rates\HotelRateAmountNotifRQ.cs" />
     <Compile Include="Xml\OTA\Request\Rates\HotelRateAmountNotifRS.cs" />
     <Compile Include="Xml\OTA\Request\Restrictions\HotelAvailNotifRQ.cs" />
@@ -405,7 +419,6 @@
   <ItemGroup>
     <EntityDeploy Include="Models\OzHoteles.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>OzHoteles.Designer.cs</LastGenOutput>
     </EntityDeploy>
   </ItemGroup>
   <ItemGroup>

@@ -14,6 +14,11 @@ Imports XCrypt
 Imports PortalLibraries
 Imports Newtonsoft.Json
 Imports Newtonsoft.Json.Linq
+Imports RateManager.Utitlities.XML
+Imports APIServices.Models
+Imports APIServices.Helpers.Reservation
+Imports APIServices.Service.HotelVerse
+Imports APIServices.Service.HotelVerse.Models.Response
 
 Partial Class ReservationDetails
     Inherits PaginaBase
@@ -602,10 +607,10 @@ Partial Class ReservationDetails
                         'If (dPrecio <> dImporte) Then
                         sHtmlRate &= String.Format("<tr><td>{0}</td> <td style='padding-left:6px;'>{1} {2}</td></tr> ",
                                                         sDias, FCurrency(dImporte, 2), IIf(dImporte > 0, money, ""))
-                            dPrecio = dImporte
-                            sDias = ""
-                            sHab = ""
-                            sComa = ""
+                        dPrecio = dImporte
+                        sDias = ""
+                        sHab = ""
+                        sComa = ""
                         'End If
                     End If
                 Next
@@ -2117,6 +2122,22 @@ Partial Class ReservationDetails
                                 .sendReservation(WSHotelRules.ZunPSMws.Estados.eliminar)
                             End With
                         End If
+                    End If
+
+
+                    'HotelVerse
+
+                    Dim reservation As Reservaciones = ReservationHelper.GetReservation(CType(idReservacion, Integer))
+
+                    If reservation.idAgencia IsNot Nothing And reservation.idAgencia = 211 Then
+
+                        Dim response As ResponseRequest = HotelVerseService.CancelReservation(reservation.RecordLocator)
+
+                        Dim xml As String = XmlUtilitie.ToXmlString(response)
+
+                        Me.guardalog("/HotelAdministrator/Pages/ReservationDetails.aspx?qs=" & idReservacion, PaginaBase.acciones.Eliminar, "Cancelo la reservacion Hotel Verse: " & idReservacion, peticion:="", datos:="", datosDespues:=xml)
+
+
                     End If
 
                     Return True

@@ -6,11 +6,15 @@ Imports NinjAPI.Common
 Imports RateManager.API.Helpers
 Imports RateManager.API.Models
 Imports RateManager.PaginaBase
+Imports RateManager.Utitlities.Hotel
 Imports Portal.General.Common.Data
 Imports Portal.General.Facade
 Imports Portal.General.DataAccess
 Imports Portal.Hotel.Common.Data
 Imports Portal.Hotel.Facade
+Imports APIServices.Conflux
+Imports APIServices.Conflux.Enum
+Imports APIServices.Conflux.Models.Rates.Response
 
 Namespace API.Controllers
     <RoutePrefix("api/hotels/{HotelId:int}/rates")>
@@ -18,6 +22,7 @@ Namespace API.Controllers
         Inherits ShurikenController
 
         Public Service As New RatesService
+        Public ConfluxService As New ConfluxService()
 
         'GET api/hotels/1/rates
         <Route(""), HttpGet>
@@ -43,6 +48,41 @@ Namespace API.Controllers
 
             If result.Key = 1 Then
 
+                Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
+                Dim isEnabledGoogleRequest As Boolean = HotelUtilitie.IsEnableGoogleRequest(info.Hotel)
+
+                If logRates IsNot Nothing And logRates.Count > 0 Then
+                    If isEnabledGoogleRequest Then
+                        Dim updatedRates As IEnumerable(Of Tarifas) = logRates.Distinct()
+
+                        Try
+                            For Each rate As Tarifas In updatedRates
+
+                                Dim res As RateResponse = ConfluxService.UpdateRate(rate.idTarifa, rate.FechaInicia, rate.FechaFinaliza, HotelId, info.Empresa, TypeRateEnum.RoomRate)
+
+                                Log(hotelId:=RQ.HotelId, action:=acciones.Sincronizar, room:="", startDate:=Nothing, endDate:=Nothing, rateCode:="", xml:=res.Xml, dataXml:=res.RequestXML, note:="Tarifa enviada a Conflux")
+
+                            Next
+
+                        Catch ex As Exception
+
+                            Dim errorsElement As New System.Xml.Linq.XElement("Errors")
+                            Dim errorElementProperty As New System.Xml.Linq.XElement("Error")
+
+                            errorElementProperty.Add(
+                            New System.Xml.Linq.XAttribute("Type", "3"),
+                            New System.Xml.Linq.XAttribute("Code", "448"),
+                            New System.Xml.Linq.XText(ex.Message)
+                        )
+
+                            errorsElement.Add(errorElementProperty)
+
+                            Log(RQ.HotelId, acciones.Sincronizar, "", Nothing, Nothing, "", xml:=errorsElement.ToString(), note:="No se pudo enviar la tarifa a Conflux")
+
+                        End Try
+                    End If
+                End If
+
                 Try
                     'Guardar Log
                     If logRates IsNot Nothing And logRates.Count > 0 Then
@@ -50,7 +90,9 @@ Namespace API.Controllers
 
                             Dim xml As String = CreateXml(serviceRQ.RoomCode, serviceRQ.RoomName, rate)
 
-                            Log(RQ.HotelId, acciones.Crear, serviceRQ.RoomCode, rate.FechaInicia, rate.FechaFinaliza, rate.idrateplan, xml)
+                            Dim msg As String = "Se creó la tarifa de la habitación " & serviceRQ.RoomCode & " de la fecha " & rate.FechaInicia.ToString("MM/dd/yyyy") & " a la fecha " & rate.FechaFinaliza.ToString("MM/dd/yyyy") & " con el rateplan " & rate.idrateplan
+
+                            Log(RQ.HotelId, acciones.Crear, serviceRQ.RoomCode, rate.FechaInicia, rate.FechaFinaliza, rate.idrateplan, xml, note:=msg)
 
                         Next
                     End If
@@ -79,6 +121,43 @@ Namespace API.Controllers
             Dim result As KeyValuePair(Of String, String) = Service.AddRate(serviceRQ, logRates)
 
             If result.Key = 1 Then
+
+
+                Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
+                Dim isEnabledGoogleRequest As Boolean = HotelUtilitie.IsEnableGoogleRequest(info.Hotel)
+
+                If logRates IsNot Nothing And logRates.Count > 0 Then
+                    If isEnabledGoogleRequest Then
+                        Try
+
+                            Dim updatedRateDay As IEnumerable(Of Tarifas) = logRates.Where(Function(t) t.FechaInicia = RQ.StartDate And t.FechaFinaliza = RQ.EndDate).Distinct()
+
+                            For Each rate As Tarifas In updatedRateDay
+
+                                Dim res As RateResponse = ConfluxService.UpdateRate(rate.idTarifa, rate.FechaInicia, rate.FechaFinaliza, HotelId, info.Empresa, TypeRateEnum.RoomRate)
+
+                                Log(hotelId:=RQ.HotelId, action:=acciones.Sincronizar, room:="", startDate:=Nothing, endDate:=Nothing, rateCode:="", xml:=res.Xml, dataXml:=res.RequestXML, note:="Tarifa enviada a Conflux")
+
+                            Next
+
+                        Catch ex As Exception
+
+                            Dim errorsElement As New System.Xml.Linq.XElement("Errors")
+                            Dim errorElementProperty As New System.Xml.Linq.XElement("Error")
+
+                            errorElementProperty.Add(
+                            New System.Xml.Linq.XAttribute("Type", "3"),
+                            New System.Xml.Linq.XAttribute("Code", "448"),
+                            New System.Xml.Linq.XText(ex.Message)
+                        )
+
+                            errorsElement.Add(errorElementProperty)
+
+                            Log(RQ.HotelId, acciones.Sincronizar, HotelId, "", Nothing, Nothing, xml:=errorsElement.ToString(), note:="No se pudo enviar la tarifa a Conflux")
+                        End Try
+                    End If
+                End If
+
                 Try
                     'Guardar Log
                     If logRates IsNot Nothing And logRates.Count > 0 Then
@@ -86,7 +165,9 @@ Namespace API.Controllers
 
                             Dim xml As String = CreateXml(serviceRQ.RoomCode, serviceRQ.RoomName, rate)
 
-                            Log(RQ.HotelId, acciones.Crear, serviceRQ.RoomCode, rate.FechaInicia, rate.FechaFinaliza, rate.idrateplan, xml)
+                            Dim msg As String = "Se creó la tarifa de la habitación " & serviceRQ.RoomCode & " de la fecha " & rate.FechaInicia.ToString("MM/dd/yyyy") & " a la fecha " & rate.FechaFinaliza.ToString("MM/dd/yyyy") & " con el rateplan " & rate.idrateplan
+
+                            Log(RQ.HotelId, acciones.Crear, serviceRQ.RoomCode, rate.FechaInicia, rate.FechaFinaliza, rate.idrateplan, xml, note:=msg)
 
                         Next
                     End If
@@ -266,16 +347,18 @@ Namespace API.Controllers
             Return Week
         End Function
 
-        Private Sub Log(ByVal hotelId As Integer, ByVal action As acciones, ByVal room As String, ByVal startDate As Date, ByVal endDate As Date, ByVal rateCode As String, ByVal xml As String)
+        Private Sub Log(ByVal hotelId As Integer, ByVal action As acciones, ByVal room As String, ByVal startDate As Date, ByVal endDate As Date, ByVal rateCode As String, ByVal xml As String, Optional ByVal dataXml As String = "", Optional ByVal note As String = "")
 
-            Dim msg As String = ""
-            Select Case action
-                Case acciones.Crear
-                    msg = "Se creó la tarifa de la habitación " & room & " de la fecha " & startDate.ToString("MM/dd/yyyy") & " a la fecha " & endDate.ToString("MM/dd/yyyy") & " con el rateplan " & rateCode
-            End Select
+            'Dim msg As String = ""
+            'Select Case action
+            '    Case acciones.Crear
+            '        msg = "Se creó la tarifa de la habitación " & room & " de la fecha " & startDate.ToString("MM/dd/yyyy") & " a la fecha " & endDate.ToString("MM/dd/yyyy") & " con el rateplan " & rateCode
+            'End Select
+
+
 
             With (New PaginaBase)
-                .guardalog(pagina:="/rate-manager-ui/dist/rates-admin.aspx", action:=action, nota:=msg, peticion:="", datos:="", datosDespues:=xml, hotelId:=hotelId)
+                .guardalog(pagina:="/rate-manager-ui/dist/rates-admin.aspx", action:=action, nota:=note, peticion:="", datos:=dataXml, datosDespues:=xml, hotelId:=hotelId)
             End With
         End Sub
 

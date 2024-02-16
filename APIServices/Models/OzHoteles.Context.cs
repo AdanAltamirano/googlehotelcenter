@@ -63,10 +63,10 @@ namespace APIServices.Models
         public virtual DbSet<vReservationLog> vReservationLog { get; set; }
         public virtual DbSet<vReservationDetails> vReservationDetails { get; set; }
         public virtual DbSet<vHotelActives> vHotelActives { get; set; }
-        public virtual DbSet<vDayRates> vDayRates { get; set; }
-        public virtual DbSet<vDayRatesExceptions> vDayRatesExceptions { get; set; }
         public virtual DbSet<vLinkedRoomTypes> vLinkedRoomTypes { get; set; }
         public virtual DbSet<vLinkedRatePlans> vLinkedRatePlans { get; set; }
+        public virtual DbSet<vDayRates> vDayRates { get; set; }
+        public virtual DbSet<vDayRatesExceptions> vDayRatesExceptions { get; set; }
     
         public virtual int spReservationCancel(Nullable<int> idReservacion, string noConfCancelGalileo, string noCancelacion, string txCode, Nullable<bool> statusConf, string systemCode, string travelAgencyName, string voucher, string wizcomPassOn, string wizcomSequenceNumber, string motivoCancelacion, Nullable<bool> cancelWithError, string sessionId, Nullable<int> iduser)
         {
@@ -459,6 +459,19 @@ namespace APIServices.Models
                 new ObjectParameter("hotelId", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetLockGralByHotel_Result>("spGetLockGralByHotel", hotelIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetPromosByRatePlan_Result> spGetPromosByRatePlan(Nullable<int> idHotel, string ratePlan)
+        {
+            var idHotelParameter = idHotel.HasValue ?
+                new ObjectParameter("idHotel", idHotel) :
+                new ObjectParameter("idHotel", typeof(int));
+    
+            var ratePlanParameter = ratePlan != null ?
+                new ObjectParameter("ratePlan", ratePlan) :
+                new ObjectParameter("ratePlan", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetPromosByRatePlan_Result>("spGetPromosByRatePlan", idHotelParameter, ratePlanParameter);
         }
     }
 }

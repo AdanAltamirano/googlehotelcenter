@@ -3641,6 +3641,8 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Utilities\Email\EmailUtilitie.vb" />
+    <Compile Include="Utilities\Hotel\HotelUtilitie.vb" />
+    <Compile Include="Utilities\XML\XmlUtilitie.vb" />
     <Compile Include="Web References\RulesWebService\Reference.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

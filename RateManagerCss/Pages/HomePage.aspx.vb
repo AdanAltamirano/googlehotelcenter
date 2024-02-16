@@ -7,6 +7,7 @@ Imports System
 Imports System.Text
 Imports System.IO
 Imports APIServices.Xml.Soap
+Imports RateManager.Utitlities.Hotel
 
 Partial Class HomePage
     Inherits PaginaBase
@@ -732,6 +733,9 @@ Partial Class HomePage
         Dim hr As Boolean
         dsBefore = (New RoomsInventoryFacade).getInventoryByDate_Data(tipoCuarto, inicio, fin)
 
+        Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
+        Dim isEnabledGoogleRequest As Boolean = HotelUtilitie.IsEnableGoogleRequest(info.Hotel)
+
         If (cInfoActual.IsHouse) AndAlso Rooms > 1 Then
             Rooms = 1
         End If
@@ -745,9 +749,14 @@ Partial Class HomePage
                 dsTrans = ds
                 dsTrans.AcceptChanges()
 
-                If hr AndAlso cInfoActual.IsSingleImgInv Then
+                'If hr AndAlso cInfoActual.IsSingleImgInv Then
+                '    TwoWayUpdate(ds)
+                'End If
+
+                If isEnabledGoogleRequest Then
                     TwoWayUpdate(ds)
                 End If
+
 
                 Return hr
             End With
@@ -773,7 +782,11 @@ Partial Class HomePage
                     dr.AcceptChanges()
                     dr(ds.FLD_STATUS) = dr(ds.FLD_STATUS)
 
-                    If hr AndAlso cInfoActual.IsSingleImgInv Then
+                    'If hr AndAlso cInfoActual.IsSingleImgInv Then
+                    '    TwoWayUpdate(ds)
+                    'End If
+
+                    If isEnabledGoogleRequest Then
                         TwoWayUpdate(ds)
                     End If
 
@@ -904,7 +917,14 @@ Partial Class HomePage
             End If
         Next
 
-        TwoWayUpdate(ds)
+        Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
+        Dim isEnabledGoogleRequest As Boolean = HotelUtilitie.IsEnableGoogleRequest(info.Hotel)
+
+        If isEnabledGoogleRequest Then
+            TwoWayUpdate(ds)
+        End If
+
+        'TwoWayUpdate(ds)
 
     End Sub
 

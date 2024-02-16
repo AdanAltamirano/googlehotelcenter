@@ -19,6 +19,7 @@ namespace APIServices.Models
         public int RoomId { get; set; }
         public string RatePlanId { get; set; }
         public string RatePlanName { get; set; }
+        public string Segment { get; set; }
         public System.DateTime StartDate { get; set; }
         public System.DateTime EndDate { get; set; }
         public string PromoDays { get; set; }
@@ -37,5 +38,9 @@ namespace APIServices.Models
         public string ParentRatePlanId { get; set; }
         public bool IsPromotion { get; set; }
         public int Language { get; set; }
+        public bool IsMobileRate { get; set; }
+        public bool IsCallCenterOnly { get; set; }
+        public Nullable<System.DateTime> PromoStartDateBookingWindow { get; set; }
+        public Nullable<System.DateTime> PromoEndDateBookingWindow { get; set; }
     }
 }

@@ -4,6 +4,14 @@ Imports Portal.General.Facade
 Imports Portal.General.DataAccess
 Imports Newtonsoft.Json
 Imports Newtonsoft.Json.Linq
+Imports APIServices.Models
+Imports APIServices.Conflux
+Imports APIServices.Conflux.Enum
+Imports APIServices.Conflux.OTA.Models.Rates
+Imports APIServices.Conflux.Models.Rates.Response
+Imports APIServices.Conflux.Models.RatePlan.Response
+Imports RateManager.Utitlities.Hotel
+
 
 Partial Class ctrRatePlan
     Inherits UserControlBase
@@ -390,6 +398,8 @@ Partial Class ctrRatePlan
             Return 5
         End If
 
+        'Solo se va usar para revisar si hubo un cambio de descuento, si hay cambio se enviaria el request a google
+        Dim totalPromotionBeforeEdition As String = Nothing
 
         If Me.edicion Then
             Dim dsRatePlan As RatePlanData
@@ -397,13 +407,19 @@ Partial Class ctrRatePlan
                 dsRatePlan = .GetDataRatePlan(Me.txtRateCode.Text.Trim, Me.m_iHotelId)
             End With
 
+            If dsRatePlan IsNot Nothing AndAlso dsRatePlan.Tables.Count > 0 AndAlso dsRatePlan.Tables(dsRatePlan.RATEPLAN_TABLE).Rows.Count > 0 Then
+                With dsRatePlan.Tables(dsRatePlan.RATEPLAN_TABLE).Rows(0)
+                    totalPromotionBeforeEdition = .Item(dsRatePlan.FIELD_DESCPROMOTION).ToString()
+                End With
+            End If
+
             If dsRatePlan IsNot Nothing AndAlso dsRatePlan.Tables.Count > 0 AndAlso dsRatePlan.Tables(dsRatePlan.RATEPLAN_TABLE).Rows.Count > 0 AndAlso dsRatePlan.Tables(dsRatePlan.RATEPLAN_TABLE).Rows(0)("onAgreement") AndAlso dsRatePlan.Tables(dsRatePlan.RATEPLAN_TABLE).Rows(0)(dsRatePlan.FIELD_SEGMENT).ToString() <> Me.ddlSegmentos.SelectedValue Then
                 Return 11
             End If
 
         End If
 
-        Dim dsRate As New RatePlanData
+        Dim dsRate As New RatePlanData 'Para Guardar
         Dim Rp As RatePlanData
         Dim rRate As DataRow
         Dim val As Boolean
@@ -678,6 +694,19 @@ Partial Class ctrRatePlan
 
                     Me.strError.Value = strError
 
+                    'Google Nuevo RatePlan
+
+                    Dim confluxService As New ConfluxService()
+                    Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
+                    Dim isEnabledGoogleRequest As Boolean = HotelUtilitie.IsEnableGoogleRequest(info.Hotel)
+
+                    Dim pgBase As PaginaBase = New PaginaBase()
+
+                    If isEnabledGoogleRequest Then
+                        Dim res As RatePlanResponse = confluxService.InsertRatePlan(info.Hotel, info.Empresa, Me.txtRateCode.Text, Me.txtShortDescription.GetES(), Me.txtDescripcion.GetES(), "ES")
+                        pgBase.guardalog("/Pages/RatesPlans.aspx", pgBase.acciones.Sincronizar, "Sincronizar Nuevo RatePlan ctrRatePlan", "", res.RequestXML, res.Response, info.Hotel)
+                    End If
+
                     ClearData()
                     clearConfDealData()
 
@@ -751,6 +780,42 @@ Partial Class ctrRatePlan
                     End If
 
                     Me.strError.Value = strError
+
+                    'Google
+
+                    Dim confluxService As New ConfluxService()
+                    Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
+                    Dim isEnabledGoogleRequest As Boolean = HotelUtilitie.IsEnableGoogleRequest(info.Hotel)
+
+                    Dim pgBase As PaginaBase = New PaginaBase()
+
+                    If isEnabledGoogleRequest Then
+
+
+                        If totalPromotionBeforeEdition <> "" And txtDescProm.Text = "" Then
+                            Dim res As RateResponse = confluxService.UpdateRate(info.Hotel, info.Empresa, IdRatePlan, TypeRateEnum.RoomRate)
+                            pgBase.guardalog("/Pages/RatesPlans.aspx", pgBase.acciones.Sincronizar, "Sincronizar ctrRatePlan", "", res.RequestXML, res.Xml, info.Hotel)
+
+                            Dim resPromotion As RateResponse = confluxService.UpdateRate(info.Hotel, info.Empresa, IdRatePlan, TypeRateEnum.RoomRatePromotion)
+                            pgBase.guardalog("/Pages/RatesPlans.aspx", pgBase.acciones.Sincronizar, "Sincronizar ctrRatePlan", "", resPromotion.RequestXML, resPromotion.Xml, info.Hotel)
+                        ElseIf totalPromotionBeforeEdition <> "" And txtDescProm.Text <> "" Then
+                            If CDbl(totalPromotionBeforeEdition) <> CDbl(txtDescProm.Text) Then
+                                Dim res As RateResponse = confluxService.UpdateRate(info.Hotel, info.Empresa, IdRatePlan, TypeRateEnum.RoomRate)
+                                pgBase.guardalog("/Pages/RatesPlans.aspx", pgBase.acciones.Sincronizar, "Sincronizar ctrRatePlan", "", res.RequestXML, res.Xml, info.Hotel)
+
+                                Dim resPromotion As RateResponse = confluxService.UpdateRate(info.Hotel, info.Empresa, IdRatePlan, TypeRateEnum.RoomRatePromotion)
+                                pgBase.guardalog("/Pages/RatesPlans.aspx", pgBase.acciones.Sincronizar, "Sincronizar ctrRatePlan", "", resPromotion.RequestXML, resPromotion.Xml, info.Hotel)
+                            End If
+                        ElseIf totalPromotionBeforeEdition = "" And txtDescProm.Text <> "" Then
+                            Dim res As RateResponse = confluxService.UpdateRate(info.Hotel, info.Empresa, IdRatePlan, TypeRateEnum.RoomRate)
+                            pgBase.guardalog("/Pages/RatesPlans.aspx", pgBase.acciones.Sincronizar, "Sincronizar ctrRatePlan", "", res.RequestXML, res.Xml, info.Hotel)
+
+                            Dim resPromotion As RateResponse = confluxService.UpdateRate(info.Hotel, info.Empresa, IdRatePlan, TypeRateEnum.RoomRatePromotion)
+                            pgBase.guardalog("/Pages/RatesPlans.aspx", pgBase.acciones.Sincronizar, "Sincronizar ctrRatePlan", "", resPromotion.RequestXML, resPromotion.Xml, info.Hotel)
+                        End If
+                    End If
+
+
 
                     ClearData()
 

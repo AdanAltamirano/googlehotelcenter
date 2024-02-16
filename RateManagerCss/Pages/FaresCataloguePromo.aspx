@@ -461,6 +461,16 @@
                 <asp:BoundColumn DataField="rateportal" Visible="False"></asp:BoundColumn>
                 <asp:BoundColumn DataField="rateUnip" Visible="False"></asp:BoundColumn>
                 <asp:BoundColumn DataField="rateADS" Visible="False"></asp:BoundColumn>
+                <asp:TemplateColumn Visible="false">
+                    <ItemTemplate>
+                        <asp:Label ID="lblStartDateNoFormat" runat="server"></asp:Label>
+                    </ItemTemplate>
+                </asp:TemplateColumn>
+                <asp:TemplateColumn Visible="false">
+                    <ItemTemplate>
+                        <asp:Label ID="lblEndDateNoFormat" runat="server"></asp:Label>
+                    </ItemTemplate>
+                </asp:TemplateColumn>
                 <asp:TemplateColumn HeaderText="Eliminar">
                     <ItemTemplate>
                         <asp:CheckBox ID="deleteCheckbox" AutoPostBack="False" runat="server" OnClick="ShowDeleteButtonRates()"/>

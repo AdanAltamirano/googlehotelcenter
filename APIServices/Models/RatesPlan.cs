@@ -57,6 +57,8 @@ namespace APIServices.Models
         public Nullable<bool> DaysFreeType { get; set; }
         public Nullable<int> DiscountLevel { get; set; }
         public Nullable<bool> IsCombinablePromotion { get; set; }
+        public Nullable<bool> IsMobileRate { get; set; }
+        public Nullable<bool> IsCallCenterOnly { get; set; }
     
         public virtual Hoteles Hoteles { get; set; }
         public virtual RatesPlanRules RatesPlanRules { get; set; }

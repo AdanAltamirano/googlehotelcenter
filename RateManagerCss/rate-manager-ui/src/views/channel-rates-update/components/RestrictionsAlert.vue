@@ -6,9 +6,6 @@
             <b-alert class="mt-3" :variant="Variant(restriction.isSuccess)" show>
                 {{$t('Restriction General')}} {{IsSuccess(restriction.isSuccess)}}
             </b-alert>
-            <b-alert v-if="restriction.xml.length == 2" class="mt-3" :variant="Variant(restriction.isSuccessPromo)" show>
-                {{$t('Restriction Promos')}} {{IsSuccess(restriction.isSuccessPromo)}}
-            </b-alert>
         </template>
         <!-- 2 LockRatePlan -->
         <template v-if="restriction.type == 2">
@@ -35,7 +32,7 @@ export default {
     },
     methods:{
         IsSuccess(isSuccess){
-            let res = isSuccess? this.$t("Updated") : this.$t("Fail")
+            let res = isSuccess? this.$t("Updated") : this.$t("One or more requests were not successful. Check logs.")
             return res;
         },
         Variant(isSuccess){

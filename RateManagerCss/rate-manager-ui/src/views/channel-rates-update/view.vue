@@ -10,13 +10,16 @@
                     <loading style="display:block !important;" :active="true" :is-full-page="false" color="#007bff"></loading>
                 </div>
                 <div else class="mt-4">
-                    <b-button class="mt-1" v-if="showButton" variant="primary" @click="updateRates()">
+                    <b-button :disabled="!isEnabledGoogleRequest" class="mt-1" v-if="showButton" variant="primary" @click="updateRates()">
                         {{$t('Update Rates')}}
                     </b-button>
                 </div>
                 <div class="mt-3">
-                    <label style="color:#dc3545;">
+                    <label v-if="isEnabledGoogleRequest" style="color:#dc3545;">
                         {{$t("This operation make take a few minutes")}}
+                    </label>
+                    <label v-else-if="!isEnabledGoogleRequest" style="color:#dc3545;">
+                        {{$t("Enable Google Prices in Content / General Information")}}
                     </label>
                 </div>
             </div>
@@ -29,13 +32,16 @@
                     <loading style="display:block !important;" :active="true" :is-full-page="false" color="#007bff"></loading>
                 </div>
                 <div else class="mt-4">
-                    <b-button class="mt-1" v-if="showButtonRestrictions" variant="primary" @click="updateRestrictions()">
+                    <b-button :disabled="!isEnabledGoogleRequest" class="mt-1" v-if="showButtonRestrictions" variant="primary" @click="updateRestrictions()">
                         {{$t('Update Closures')}}
                     </b-button>
                 </div>
                 <div class="mt-3">
-                    <label style="color:#dc3545;">
+                    <label v-if="isEnabledGoogleRequest" style="color:#dc3545;">
                         {{$t("This operation make take a few minutes")}}
+                    </label>
+                     <label v-else-if="!isEnabledGoogleRequest" style="color:#dc3545;">
+                        {{$t("Enable Google Prices in Content / General Information")}}
                     </label>
                 </div>
             </div>
@@ -63,8 +69,12 @@ export default {
             callApi: false,
             callApiRestrictions: false,
             showButton: true,
-            showButtonRestrictions: true
+            showButtonRestrictions: true,
+            isEnabledGoogleRequest: this.$appConfig.google.isEnabledGoogleRequest === 0 ? false : true
         }
+    },
+    mounted(){
+        console.log(this.isEnabledGoogleRequest);
     },
     methods:{
         updateRates(){

@@ -13,14 +13,14 @@
                         <b-button variant="link" class="ml-1 p-0 align-baseline" @click="reactivate"><i class="fas fa-pen fa-1x-c"></i></b-button>
                     </template>
                     <template v-else-if="!pms.status && pms.failedAttempts < 3" >
-                        <strong>{{ $t('Waiting to be confirmed') }}</strong>
+                        <strong>{{ $t('Waiting to be collected') }}</strong>
                     </template>
                     <template v-else-if="pms.status">
-                        <strong>{{ $t('Reservation confirmed') }}</strong>
+                        <strong>{{ $t('Reservation Collected') }}</strong>
                     </template>
                 </div>
                 <div v-else>
-                    <strong>{{(!pms.status ? $t('Waiting to be confirmed') : $t('Reservation confirmed'))}}</strong>
+                    <strong>{{(!pms.status ? $t('Waiting to be collected') : $t('Reservation Collected'))}}</strong>
                 </div>
                 <div>
                     <strong>{{$t('Status')}}:</strong>

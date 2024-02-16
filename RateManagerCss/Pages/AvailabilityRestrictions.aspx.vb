@@ -6,6 +6,18 @@ Imports Portal.General.Common.Data
 
 Imports System.IO
 Imports System.Text
+Imports System.Xml.Linq
+
+Imports APIServices.Models
+Imports APIServices.Conflux
+Imports APIServices.Conflux.Enum
+Imports APIServices.Conflux.Helpers.Restriction
+Imports APIServices.Conflux.Parser.Restriction
+Imports APIServices.Conflux.Models.Restrictions.Response
+Imports APIServices.Xml.Soap
+Imports APIServices.Xml.OTA.Request.Restrictions
+Imports RateManager.Utitlities.Hotel
+Imports APIServices.Conflux.OTA.Models.Restrictions
 
 Partial Class AvailabilityRestrictions
     Inherits PaginaBase
@@ -16,35 +28,35 @@ Partial Class AvailabilityRestrictions
     End Enum
     Private Property SelectedMes() As Integer
         Get
-            Return viewstate("SelectedMes")
+            Return ViewState("SelectedMes")
         End Get
         Set(ByVal Value As Integer)
-            viewstate("SelectedMes") = Value
+            ViewState("SelectedMes") = Value
         End Set
     End Property
 
     Private Property SelectedYear() As String
         Get
-            Return viewstate("SelectedYear")
+            Return ViewState("SelectedYear")
         End Get
         Set(ByVal Value As String)
-            viewstate("SelectedYear") = Value
+            ViewState("SelectedYear") = Value
         End Set
     End Property
     Private Property StatusHotel() As String
         Get
-            Return viewstate("_SH")
+            Return ViewState("_SH")
         End Get
         Set(ByVal Value As String)
-            viewstate("_SH") = Value
+            ViewState("_SH") = Value
         End Set
     End Property
     Private Property ratesplans() As String
         Get
-            Return viewstate("_ratesplans")
+            Return ViewState("_ratesplans")
         End Get
         Set(ByVal Value As String)
-            viewstate("_ratesplans") = Value
+            ViewState("_ratesplans") = Value
         End Set
     End Property
 
@@ -219,8 +231,8 @@ Partial Class AvailabilityRestrictions
     End Sub
 
     Public Function getFunctionShow() As String
-        Return "javascript:if (evalDates()) { " & _
-             CtlMensajes1.getShow(Me.btnSave.ClientID, "", PortalCulture.GetString("00608")) & _
+        Return "javascript:if (evalDates()) { " &
+             CtlMensajes1.getShow(Me.btnSave.ClientID, "", PortalCulture.GetString("00608")) &
                  "}else{var o; alert(o); o=document.getElementById('" & Me.btnSave.ClientID & "'); o.click();}  "
 
     End Function
@@ -951,6 +963,24 @@ Partial Class AvailabilityRestrictions
             '    End If
             'End If
 
+            Dim confluxService As New ConfluxService()
+            Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
+            Dim isEnabledGoogleRequest As Boolean = HotelUtilitie.IsEnableGoogleRequest(info.Hotel)
+
+            Dim roomsByHotel As RoomsHotelData = New RoomFacade().getAllRooms(info.Hotel, 1)
+            Dim activeRooms As List(Of DataRow) = roomsByHotel.Tables(RoomsHotelData.TBL_ROOM_HOTEL).Select("eliminada=false").ToList()
+
+            Dim startDate, endDate As Date
+            startDate = CDate(Me.txtInicio.Text)
+            endDate = CDate(Me.txtFinal.Text)
+
+            Dim apply As String = Me.GetAplyWeek()
+            Dim applyDays As String = RestrictionHelper.ToDayOfWeek(apply)
+            Dim dates As List(Of Tuple(Of Date, Date)) = RestrictionHelper.GetActiveDates(startDate, endDate, applyDays)
+
+            RestrictionsParser.Init(info.Empresa)
+
+
             Dim banSelecccion As Boolean = RbdRatePlan.Checked
             If RbdHotel.Checked = True Then
                 If chkOnRequest.Checked Then
@@ -970,10 +1000,70 @@ Partial Class AvailabilityRestrictions
                 If chkApplyAllPlan.Checked AndAlso RbdHotel.Checked Then
                     For Each r As ListItem In ddlRateplans.Items
                         closeRateplan(nota, r.Value, False, splan:=r.Text)
+                        'closeRateplan(nota, r.Value, False, splan:=r.Text, hotelId:=info.Hotel, dates:=dates, confluxService:=confluxService, isEnabledGoogleRequest:=isEnabledGoogleRequest, activeRooms:=activeRooms, restrictionType:=RestrictionEnum.LockGral)
                     Next
                 End If
+
+                'Google
+
+
+                If isEnabledGoogleRequest Then
+
+                    Dim dsRatePlans As RatePlanData = New RatePlanFacade().GetRatePlanByIdHotel(info.Hotel.ToString(), idioma:=1, IncluirPaquetesSegmentoK:=1, incluirNetRatesPlan:=1, idAsociacion:=-1, DeleteFilter:=1)
+                    Dim dsRatePlansPromos As RatePlanData = New RatePlanFacade().GetRatePlanByIdHotel(info.Hotel.ToString(), idioma:=1, IncluirPaquetesSegmentoK:=1, incluirNetRatesPlan:=1, idAsociacion:=-1, DeleteFilter:=1, getPromos:=True)
+
+
+                    Dim activeRatePlans = dsRatePlans.Tables(RatePlanData.RATEPLAN_TABLE).Select().ToList()
+
+                    Dim filterPromosDates As String = "((FechaFin IS NOT NULL AND FechaFin>= '" + DateTime.Now.Date.ToString() + "') OR (FechaFin IS NULL AND PromoEndDate >= '" + DateTime.Now.Date.ToString() + "'))"
+                    Dim activeRatePlansPromos = dsRatePlansPromos.Tables(RatePlanData.RATEPLAN_TABLE).Select(filterPromosDates).ToList()
+
+                    Dim lockGral As List(Of spGetLockGralByHotel_Result) = New List(Of spGetLockGralByHotel_Result)
+
+                    For Each [date] As Tuple(Of Date, Date) In dates
+
+                        Dim tempLock As spGetLockGralByHotel_Result = New spGetLockGralByHotel_Result
+                        tempLock.StartDate = [date].Item1
+                        tempLock.EndDate = [date].Item2
+                        tempLock.Status = ddlStatus.SelectedValue
+                        lockGral.Add(tempLock)
+                    Next
+
+
+                    RequestLockGralGoogle(lockGral, activeRooms, activeRatePlans, confluxService)
+                    RequestLockGralPromosGoogle(lockGral, activeRooms, activeRatePlansPromos, confluxService)
+
+                End If
+
             Else
                 closeRateplan(nota, splan:=ddlRateplans.SelectedItem.Text)
+                'closeRateplan(nota, splan:=ddlRateplans.SelectedItem.Text, hotelId:=info.Hotel, dates:=dates, confluxService:=confluxService, isEnabledGoogleRequest:=isEnabledGoogleRequest, activeRooms:=activeRooms, restrictionType:=RestrictionEnum.LockRatePlan)
+
+                If isEnabledGoogleRequest Then
+                    Dim dsRatePlansPromos As RatePlanData = New RatePlanFacade().GetRatePlanByIdHotel(info.Hotel.ToString(), idioma:=1, IncluirPaquetesSegmentoK:=1, incluirNetRatesPlan:=1, idAsociacion:=-1, DeleteFilter:=1, getPromos:=True)
+                    Dim filterPromosDates As String = "((FechaFin IS NOT NULL AND FechaFin>= '" + DateTime.Now.Date.ToString() + "') OR (FechaFin IS NULL AND PromoEndDate >= '" + DateTime.Now.Date.ToString() + "'))"
+                    Dim activeRatePlansPromos As List(Of DataRow) = dsRatePlansPromos.Tables(RatePlanData.RATEPLAN_TABLE).Select(filterPromosDates).ToList()
+
+                    Dim promos As List(Of spGetPromosByRatePlan_Result) = HotelUtilitie.GetPromosByRatePlan(info.Hotel, ddlRateplans.SelectedValue)
+
+                    Dim validPromosList As List(Of DataRow) = GetValidPromos(activeRatePlansPromos, promos)
+
+                    'Solo se usa el Modelo
+                    Dim lockPromos As List(Of spGetLockGralByHotel_Result) = New List(Of spGetLockGralByHotel_Result)
+
+                    For Each [date] As Tuple(Of Date, Date) In dates
+
+                        Dim tempLock As spGetLockGralByHotel_Result = New spGetLockGralByHotel_Result
+                        tempLock.StartDate = [date].Item1
+                        tempLock.EndDate = [date].Item2
+                        tempLock.Status = ddlStatus.SelectedValue
+                        lockPromos.Add(tempLock)
+                    Next
+
+                    RequestLockRatePlanGoogle(ddlStatus.SelectedValue, ddlRateplans.SelectedValue, dates, activeRooms, confluxService)
+                    RequestLockRatePlanPromosGoogle(lockPromos, activeRooms, validPromosList, confluxService)
+
+                End If
             End If
             iniCtrl()
         End If
@@ -1014,7 +1104,9 @@ Partial Class AvailabilityRestrictions
         End If
     End Sub
 
-    Private Function closeRateplan(ByVal nota As String, Optional ByVal RatePlan As String = "", Optional ByVal loadStatusRateplan As Boolean = True, Optional ByVal splan As String = "") As Boolean
+    Private Function closeRateplan(ByVal nota As String, Optional ByVal RatePlan As String = "", Optional ByVal loadStatusRateplan As Boolean = True, Optional ByVal splan As String = "",
+                                   Optional ByVal hotelId As Integer = 0, Optional ByVal dates As List(Of Tuple(Of Date, Date)) = Nothing, Optional ByVal confluxService As ConfluxService = Nothing, Optional ByVal isEnabledGoogleRequest As Boolean = False,
+                                   Optional ByVal activeRooms As List(Of DataRow) = Nothing, Optional ByVal restrictionType As RestrictionEnum = Nothing) As Boolean
         Dim ds As lockRatePlanData
         Dim strError As String
         Dim sDatosDespues As String
@@ -1098,7 +1190,7 @@ Partial Class AvailabilityRestrictions
             copyrowRP(modrow, modrow, CDate(Me.txtInicio.Text), CDate(Me.txtFinal.Text), dstrans, False, applyModRowWeek:=True)
 
         End If
-      
+
 
         Dim sDatoCorreo As String = ""
         Dim sReference As String = ""
@@ -1122,6 +1214,58 @@ Partial Class AvailabilityRestrictions
                         sDatoCorreo = (New Util.Utility).GeneraCorreoXslt(sDatos, sDatosDespues)
                         Me.guardalog("/Pages/AvailabilityRestrictions.aspx", PaginaBase.acciones.Modificar, "Se modificó el rateplan " & splan & " con los siguientes datos: " & nota, "Update status by rate plan", sDatos, sDatosDespues, sDatoCorreo)
                     End If
+
+                    'Try
+
+                    '    If isEnabledGoogleRequest Then
+
+                    '        Dim status As String = CType(dstrans.Tables(dstrans.TABLE_LockRatePlan).Rows(0).Item(lockRatePlanData.FIELD_StatusAvailability), String)
+                    '        Dim ratePlanId As String = CType(dstrans.Tables(dstrans.TABLE_LockRatePlan).Rows(0).Item(lockRatePlanData.FIELD_RatePlan), String)
+
+                    '        Dim lockRatePlans As List(Of spGetLockRatePlansByHotel_Result) = RestrictionHelper.CreateLockRatePlansByHotel(dates, status, ratePlanId)
+
+                    '        Dim availStatusMessagesLockRatePlans = RestrictionsParser.ToAvailStatusMessages(activeRooms, lockRatePlans)
+
+                    '        Dim lockRatePlanHotelAvailNotifRQ = HotelAvailNotifRQ.CreateHotelAvailNotifRQ(availStatusMessagesLockRatePlans)
+
+                    '        Dim lockRatePlanSoapRQ As XDocument = Soap.CreateSoapRequestXml(lockRatePlanHotelAvailNotifRQ)
+
+                    '        Dim restrictionResponse As RestrictionResponse = confluxService.UpdateRestriction(lockRatePlanSoapRQ, restrictionType)
+
+
+                    '        If Not restrictionResponse.IsSuccess Then
+
+                    '            If restrictionType = RestrictionEnum.LockGral Then
+                    '                MyBase.WriteLog(restrictionResponse.Xml, "LockGral")
+                    '            ElseIf restrictionType = RestrictionEnum.LockRatePlan Then
+                    '                MyBase.WriteLog(restrictionResponse.Xml, "LockRatePlan")
+                    '            End If
+
+                    '        ElseIf restrictionResponse.IsSuccess Then
+                    '            For Each restriction As Restriction In restrictionResponse.Restrictions
+                    '                Select Case restriction.Type
+                    '                    Case RestrictionEnum.LockRatePlan
+                    '                        MyBase.WriteLog(restriction.XmlRequest(0).ToString(), "LockRatePlan")
+                    '                        MyBase.WriteLog(restriction.Xml(0).ToString(), "LockRatePlan")
+                    '                    Case RestrictionEnum.LockGral
+                    '                        MyBase.WriteLog(restriction.XmlRequest(0).ToString(), "LockGral")
+                    '                        MyBase.WriteLog(restriction.Xml(0).ToString(), "LockGral")
+                    '                End Select
+                    '            Next
+
+                    '        End If
+
+                    '    End If 'Termina Google
+
+                    'Catch ex As Exception
+
+                    '    If restrictionType = RestrictionEnum.LockGral Then
+                    '        MyBase.WriteLog(ex.Message, "LockGral")
+                    '    ElseIf restrictionType = RestrictionEnum.LockRatePlan Then
+                    '        MyBase.WriteLog(ex.Message, "LockRatePlan")
+                    '    End If
+                    'End Try
+
                 End If
             End If
         End With
@@ -1850,9 +1994,9 @@ Partial Class AvailabilityRestrictions
                             'Dim _d As Date = New Date(_year, _month, CInt(.InnerText))
                             Dim _d As Date = New Date(_year, _month, CInt(((row - 1) * 7) - FirstDay + col + 2))
 
-                            drRatePlanDate = dt.Select( _
+                            drRatePlanDate = dt.Select(
                                 " fecha =#" & _d.ToString("M/dd/yy") & "#")
-                            
+
                             Dim flagStatus As eStatus
                             If drRatePlanDate.Length > 0 Then
 
@@ -1915,7 +2059,7 @@ Partial Class AvailabilityRestrictions
             If ddlStatus.Items.Count > 0 Then
                 ddlStatus.SelectedIndex = 0
             End If
-           
+
             chkMindays.Checked = False
             chkMaxDays.Checked = False
             chkAdvBook.Checked = False
@@ -1941,7 +2085,7 @@ Partial Class AvailabilityRestrictions
         End Try
         Dim algo As String
 
-        
+
     End Sub
 
     Private Sub LinkButton1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
@@ -1956,5 +2100,165 @@ Partial Class AvailabilityRestrictions
         'Page.RegisterStartupScript("UrlScriptShow", "<script type='text/javascript'>" & Script & ";</script>")
 
     End Sub
+
+#Region "Google"
+
+    Public Sub RequestLockGralGoogle(ByVal lockGral As List(Of spGetLockGralByHotel_Result), ByVal activeRooms As List(Of DataRow), ByVal activeRatePlans As List(Of DataRow), ByVal confluxService As ConfluxService)
+
+        Try
+
+            Dim availStatusMessagesLockGralNoPromos As AvailStatusMessages = RestrictionsParser.ToAvailStatusMessages(lockGral, activeRooms, activeRatePlans)
+            Dim lockGralNoPromosHotelAvailNotifRQ As XElement = HotelAvailNotifRQ.CreateHotelAvailNotifRQ(availStatusMessagesLockGralNoPromos)
+            Dim lockGralNoPromosSoapRQ As XDocument = Soap.CreateSoapRequestXml(lockGralNoPromosHotelAvailNotifRQ)
+
+            Dim restrictionResponse As RestrictionResponse = confluxService.UpdateRestriction(lockGralNoPromosSoapRQ, restrictionEnum:=RestrictionEnum.LockGral)
+
+            If Not restrictionResponse.IsSuccess Then
+                MyBase.WriteLog(restrictionResponse.Xml, "LockGral")
+            ElseIf restrictionResponse.IsSuccess Then
+                For Each restriction As Restriction In restrictionResponse.Restrictions
+                    Select Case restriction.Type
+                        Case RestrictionEnum.LockGral
+                            MyBase.WriteLog(restriction.XmlRequest(0).ToString(), "LockGral")
+                            MyBase.WriteLog(restriction.Xml(0).ToString(), "LockGral")
+                    End Select
+                Next
+            End If
+        Catch ex As Exception
+            MyBase.WriteLog(ex.Message, "LockGral")
+        End Try
+
+    End Sub
+
+    Public Sub RequestLockGralPromosGoogle(ByVal lockGral As List(Of spGetLockGralByHotel_Result), ByVal activeRooms As List(Of DataRow), ByVal activeRatePlansPromos As List(Of DataRow), ByVal confluxService As ConfluxService)
+
+        Try
+
+            If activeRatePlansPromos.Count > 0 Then
+                Dim availStatusMessagesLockGralPromos As AvailStatusMessages = RestrictionsParser.ToAvailStatusMessages(lockGral, activeRooms, activeRatePlansPromos)
+                Dim lockGralPromosHotelAvailNotifRQ As XElement = HotelAvailNotifRQ.CreateHotelAvailNotifRQ(availStatusMessagesLockGralPromos)
+
+                Dim lockGralPromosSoapRQ As XDocument = Soap.CreateSoapRequestXml(lockGralPromosHotelAvailNotifRQ)
+
+                Dim restrictionResponsePromos As RestrictionResponse = confluxService.UpdateRestriction(lockGralPromosSoapRQ, restrictionEnum:=RestrictionEnum.LockGral)
+
+                If Not restrictionResponsePromos.IsSuccess Then
+                    MyBase.WriteLog(restrictionResponsePromos.Xml, "LockGralPromos")
+                ElseIf restrictionResponsePromos.IsSuccess Then
+                    For Each restriction As Restriction In restrictionResponsePromos.Restrictions
+                        Select Case restriction.Type
+                            Case RestrictionEnum.LockGral
+                                MyBase.WriteLog(restriction.XmlRequest(0).ToString(), "LockGralPromos")
+                                MyBase.WriteLog(restriction.Xml(0).ToString(), "LockGralPromos")
+                        End Select
+                    Next
+                End If
+
+            End If
+
+        Catch ex As Exception
+            MyBase.WriteLog(ex.Message, "LockGralPromos")
+        End Try
+
+    End Sub
+
+    Public Sub RequestLockRatePlanGoogle(ByVal status As String, ByVal ratePlanId As String, ByVal dates As List(Of Tuple(Of Date, Date)), ByVal activeRooms As List(Of DataRow), ByVal confluxService As ConfluxService)
+
+        Try
+
+            Dim lockRatePlans As List(Of spGetLockRatePlansByHotel_Result) = RestrictionHelper.CreateLockRatePlansByHotel(dates, status, ratePlanId)
+
+            Dim availStatusMessagesLockRatePlans = RestrictionsParser.ToAvailStatusMessages(activeRooms, lockRatePlans)
+
+            Dim lockRatePlanHotelAvailNotifRQ = HotelAvailNotifRQ.CreateHotelAvailNotifRQ(availStatusMessagesLockRatePlans)
+
+            Dim lockRatePlanSoapRQ As XDocument = Soap.CreateSoapRequestXml(lockRatePlanHotelAvailNotifRQ)
+
+            Dim restrictionResponse As RestrictionResponse = confluxService.UpdateRestriction(lockRatePlanSoapRQ, RestrictionEnum.LockRatePlan)
+
+            If Not restrictionResponse.IsSuccess Then
+                MyBase.WriteLog(restrictionResponse.Xml, "LockRatePlan")
+            ElseIf restrictionResponse.IsSuccess Then
+                For Each restriction As Restriction In restrictionResponse.Restrictions
+                    Select Case restriction.Type
+                        Case RestrictionEnum.LockRatePlan
+                            MyBase.WriteLog(restriction.XmlRequest(0).ToString(), "LockRatePlan")
+                            MyBase.WriteLog(restriction.Xml(0).ToString(), "LockRatePlan")
+                    End Select
+                Next
+
+            End If
+        Catch ex As Exception
+            MyBase.WriteLog(ex.Message, "LockRatePlan")
+        End Try
+
+
+    End Sub
+
+    Public Sub RequestLockRatePlanPromosGoogle(ByVal lockGral As List(Of spGetLockGralByHotel_Result), ByVal activeRooms As List(Of DataRow), ByVal activeRatePlansPromos As List(Of DataRow), ByVal confluxService As ConfluxService)
+        Try
+
+            If activeRatePlansPromos.Count > 0 Then
+                Dim availStatusMessagesLockGralPromos As AvailStatusMessages = RestrictionsParser.ToAvailStatusMessages(lockGral, activeRooms, activeRatePlansPromos)
+                Dim lockGralPromosHotelAvailNotifRQ As XElement = HotelAvailNotifRQ.CreateHotelAvailNotifRQ(availStatusMessagesLockGralPromos)
+
+                Dim lockGralPromosSoapRQ As XDocument = Soap.CreateSoapRequestXml(lockGralPromosHotelAvailNotifRQ)
+
+                Dim restrictionResponsePromos As RestrictionResponse = confluxService.UpdateRestriction(lockGralPromosSoapRQ, restrictionEnum:=RestrictionEnum.LockRatePlan)
+
+                If Not restrictionResponsePromos.IsSuccess Then
+                    MyBase.WriteLog(restrictionResponsePromos.Xml, "LockRatePlanPromos")
+                ElseIf restrictionResponsePromos.IsSuccess Then
+                    For Each restriction As Restriction In restrictionResponsePromos.Restrictions
+                        Select Case restriction.Type
+                            Case RestrictionEnum.LockGral
+                                MyBase.WriteLog(restriction.XmlRequest(0).ToString(), "LockRatePlanPromos")
+                                MyBase.WriteLog(restriction.Xml(0).ToString(), "LockRatePlanPromos")
+                        End Select
+                    Next
+                End If
+
+            End If
+
+        Catch ex As Exception
+            MyBase.WriteLog(ex.Message, "LockRatePlanPromos")
+        End Try
+    End Sub
+
+
+    Private Function GetValidPromos(ByVal activeRatePlansPromos As List(Of DataRow), ByVal promos As List(Of spGetPromosByRatePlan_Result)) As List(Of DataRow)
+
+        Dim validPromos As List(Of DataRow) = New List(Of DataRow)
+
+        Dim dsRatePlans As RatePlanData = New RatePlanData
+
+        Dim dt As DataTable = dsRatePlans.Tables(RatePlanData.RATEPLAN_TABLE)
+
+        For Each activeRatePlanPromo As DataRow In activeRatePlansPromos
+
+            For Each promo As spGetPromosByRatePlan_Result In promos
+
+                If promo.IdPromocion = activeRatePlanPromo.ItemArray(0).ToString() Then
+
+                    Dim tempData As DataRow = dt.NewRow()
+
+                    With tempData
+                        .Item(RatePlanData.FIELD_IDRATEPLAN) = promo.IdPromocion
+                    End With
+
+                    validPromos.Add(tempData)
+
+                End If
+
+            Next
+
+        Next
+
+        Return validPromos
+
+    End Function
+
+#End Region
+
 
 End Class

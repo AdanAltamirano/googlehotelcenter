@@ -127,6 +127,8 @@ export default {
     'Deposit has been confirmed' : 'El depósito se ha confirmado',
     'Deposit has not been confirmed' : 'El depósito no se ha confirmado',
     'Ecotax' : 'Ecotasa',
+    'Reservation Collected' : 'Reserva Recolectada',
+    'Waiting to be collected' : 'Pendiente de Recolectar',
     'Reactivate PMS ?' : '¿ Reactivar PMS ?',
     'Maximun attempts reached' : 'Número de intentos arrebasados',
     'Pms updated' : 'Se ha actualizado el pms',

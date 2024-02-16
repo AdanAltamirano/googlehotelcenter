@@ -270,6 +270,10 @@ Partial Class Hotel
 
                 Me.txtEcotasaSrc.Value = Me.txtEcotasa.Text
 
+                If Not .IsNull(dsHotel.FIELD_ENABLE_GOOGLE) Then
+                    chkEnableGoogle.Checked = .Item(dsHotel.FIELD_ENABLE_GOOGLE)
+                End If
+
 
                 Dim sFecha As String
                 sFecha = IIf(.IsNull(dsHotel.FIELD_FECHAAPERTURA), "", .Item(dsHotel.FIELD_FECHAAPERTURA))
@@ -781,6 +785,8 @@ Partial Class Hotel
                     .Item(dsHotel.FIELD_ECOTASA) = 0
                 End If
 
+                .Item(dsHotel.FIELD_ENABLE_GOOGLE) = Me.chkEnableGoogle.Checked
+
             End With
 
             LoadDsImpuesto(ds)
@@ -1047,6 +1053,11 @@ Partial Class Hotel
             chkSingleImgInv.Visible = True
             chkPushNotif.Visible = True
             lblPushNotif.Visible = True
+
+            lblEnableGoogle.Text = PortalCulture.GetString("01670", True)
+            lblEnableGoogle.Visible = True
+
+            chkEnableGoogle.Visible = True
         End If
     End Sub
 

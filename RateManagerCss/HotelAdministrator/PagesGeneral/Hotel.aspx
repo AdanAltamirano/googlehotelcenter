@@ -258,8 +258,12 @@
                         </td>
                     </tr>
                     <tr>
-                       <td style="height:16px" align="right"></td>
-                       <td style="height:16px" align="left"></td>
+                       <td style="height:16px" align="right">
+                           <asp:Label ID="lblEnableGoogle" runat="server" CssClass="clsLabel" Visible="false">Enable Google Hotel Center: </asp:Label>
+                       </td>
+                       <td style="height:16px" align="left">
+                           <asp:CheckBox ID="chkEnableGoogle" runat="server" CssClass="clsLabel" Visible="false"></asp:CheckBox>
+                       </td>
                        <td style="height:16px" align="right">
                             <asp:Label ID="lblEcotasa" runat="server" CssClass="clsLabel" Visible="true">ECOTASA $:</asp:Label>
                        </td>

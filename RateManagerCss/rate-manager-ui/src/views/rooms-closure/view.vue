@@ -83,7 +83,7 @@
                         v-model="datesSave"
                         class="form-control p-0"
                         mode="range"
-                        :min-date="minDate"
+                        :min-date="new Date()"
                         :popover="{placement:'',visibility: 'click' }"
                         :columns="2"
                         :masks="{input: 'DD/MMM/YYYY'}">

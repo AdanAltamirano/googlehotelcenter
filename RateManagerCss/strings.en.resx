@@ -8919,4 +8919,7 @@
   <data name="msgSelectOneHotel" xml:space="preserve">
     <value>Invalid Search</value>
   </data>
+  <data name="01670" xml:space="preserve">
+    <value>Google Prices</value>
+  </data>
 </root>

@@ -33,6 +33,31 @@ namespace APIServices.Xml.OTA.Request.Restrictions
             return otaHotelAvailNotifRQ;
         }
 
+        public static List<XElement> CreateHotelAvailNotifRQList(AvailStatusMessages availStatusMessages)
+        {
+            List<XElement> otaHotelAvailNotifRQList = new List<XElement>();
+
+            List<XElement> hotelAvailNotifRQXmlList = GetAvailStatusMessages(availStatusMessages.HotelCode, availStatusMessages.AvailStatusMessageList);
+
+            foreach(XElement hotelAvailNotifRQXml in hotelAvailNotifRQXmlList)
+            {
+                XElement otaHotelAvailNotifRQ = new XElement("OTA_HotelAvailNotifRQ",
+                    new XAttribute(XNamespace.Xmlns + "xsi", xsi),
+                    new XAttribute(XNamespace.Xmlns + "xsd", xsd),
+                    new XAttribute("EchoToken", Guid.NewGuid()),
+                    new XAttribute("Version", "1"));
+
+                XElement pos = GetPOS();
+
+                otaHotelAvailNotifRQ.Add(pos, hotelAvailNotifRQXml);
+
+                otaHotelAvailNotifRQList.Add(otaHotelAvailNotifRQ);
+            }
+
+            return otaHotelAvailNotifRQList;
+        }
+
+
         private static XElement GetPOS()
         {
             XElement pos = new XElement("POS");
@@ -61,8 +86,12 @@ namespace APIServices.Xml.OTA.Request.Restrictions
             {
                 XElement availStatusMessageXml = new XElement(blank + "AvailStatusMessage");
 
+                var start = availStatusMessage.StatusApplicationControl.Start.Date < DateTime.Now.Date ? 
+                    DateTime.Now.Date: 
+                    availStatusMessage.StatusApplicationControl.Start;
+
                 XElement statusApplicationControl = new XElement(blank + "StatusApplicationControl",
-                    new XAttribute("Start", availStatusMessage.StatusApplicationControl.Start.ToString("yyyyMMdd")),
+                    new XAttribute("Start", start.ToString("yyyyMMdd")),
                     new XAttribute("End", availStatusMessage.StatusApplicationControl.End.ToString("yyyyMMdd")),
                     new XAttribute("RatePlanCode", availStatusMessage.StatusApplicationControl.RatePlanCode),
                     new XAttribute("InvTypeCode", availStatusMessage.StatusApplicationControl.InvTypeCode));
@@ -100,5 +129,96 @@ namespace APIServices.Xml.OTA.Request.Restrictions
             return availStatusMessagesXml;
 
         }
+
+
+        private static List<XElement> GetAvailStatusMessages(int hotelCode, List<AvailStatusMessage> availStatusMessagesList)
+        {
+            List<XElement> availStatusMessagesListElements = new List<XElement>();
+
+            int limitBytesMessage = 80000;
+            int currentBytesMessages = 0;
+            XNamespace blank = XNamespace.Get(@"http://www.opentravel.org/OTA/2003/05");
+            XElement availStatusMessagesXml = null;
+
+            int index = 0;
+
+            while (index < availStatusMessagesList.Count)
+            {
+                //Nuevo RateAmountMessages
+                if (currentBytesMessages == 0 && availStatusMessagesXml == null)
+                {
+                    availStatusMessagesXml = new XElement(blank + "AvailStatusMessages",
+                        new XAttribute("xmlns", blank.NamespaceName),
+                        new XAttribute("HotelCode", hotelCode));
+                }
+
+                XElement availStatusMessageXml = new XElement(blank + "AvailStatusMessage");
+
+                var start = availStatusMessagesList[index].StatusApplicationControl.Start.Date < DateTime.Now.Date ?
+                    DateTime.Now.Date :
+                    availStatusMessagesList[index].StatusApplicationControl.Start;
+
+                XElement statusApplicationControl = new XElement(blank + "StatusApplicationControl",
+                    new XAttribute("Start", start.ToString("yyyyMMdd")),
+                    new XAttribute("End", availStatusMessagesList[index].StatusApplicationControl.End.ToString("yyyyMMdd")),
+                    new XAttribute("RatePlanCode", availStatusMessagesList[index].StatusApplicationControl.RatePlanCode),
+                    new XAttribute("InvTypeCode", availStatusMessagesList[index].StatusApplicationControl.InvTypeCode));
+
+                XElement restrictionStatus = new XElement(blank + "RestrictionStatus",
+                    new XAttribute("Status", availStatusMessagesList[index].RestrictionStatus.Status));
+
+                if (!string.IsNullOrEmpty(availStatusMessagesList[index].RestrictionStatus.Restriction))
+                {
+                    restrictionStatus.Add(new XAttribute("Restriction", availStatusMessagesList[index].RestrictionStatus.Restriction));
+                }
+
+                availStatusMessageXml.Add(statusApplicationControl, restrictionStatus);
+
+                if (availStatusMessagesList[index].LengthsOfStay.Count > 0)
+                {
+                    XElement lengthsOfStay = new XElement(blank + "LengthsOfStay");
+
+                    foreach (var stay in availStatusMessagesList[index].LengthsOfStay)
+                    {
+                        XElement lengthOfStay = new XElement(blank + "LengthOfStay",
+                            new XAttribute("MinMaxMessageType", stay.MinMaxMessageType),
+                            new XAttribute("Time", stay.Time.ToString()));
+
+                        lengthsOfStay.Add(lengthOfStay);
+                    }
+
+                    availStatusMessageXml.Add(lengthsOfStay);
+                }
+
+                //Calcular Bytes del mensaje
+
+                var availStatusMessageByteSize = System.Text.ASCIIEncoding.Unicode.GetByteCount(availStatusMessageXml.ToString());
+                currentBytesMessages += availStatusMessageByteSize;
+
+                if (currentBytesMessages < limitBytesMessage)
+                {
+                    availStatusMessagesXml.Add(availStatusMessageXml); //Nodo Padre
+                    index++;
+                }
+                else
+                {
+                    availStatusMessagesListElements.Add(availStatusMessagesXml);
+                    currentBytesMessages = 0;
+                    availStatusMessagesXml = null;
+                }
+
+            }
+
+            if (availStatusMessagesXml != null)
+            {
+                availStatusMessagesListElements.Add(availStatusMessagesXml);
+            }
+
+            return availStatusMessagesListElements;
+
+        }
+
+
+
     }
 }
