@@ -2,7 +2,6 @@ Imports Portal.Hotel.DataAccess
 Imports Portal.General.DataAccess
 Imports System.Data.SqlClient
 Imports System.Configuration.ConfigurationManager
-Imports Microsoft.Office.Interop
 Imports System.Net.Http
 Imports System.IO
 Imports ClosedXML.Excel
@@ -201,10 +200,10 @@ Partial Class PmsCoincidences
 
     Public Function CreatePMSDataDoc(ByVal subtitle As String, ByVal table As DataTable)
 
-        Dim excellApp As New Excel.Application()
+        Dim excellApp As New Microsoft.Office.Interop.Excel.Application()
 
-        Dim workBook As Excel.Workbook = excellApp.Workbooks.Add()
-        Dim workSheet As Excel.Worksheet = CType(workBook.Sheets(1), Excel.Worksheet)
+        Dim workBook As Microsoft.Office.Interop.Excel.Workbook = excellApp.Workbooks.Add()
+        Dim workSheet As Microsoft.Office.Interop.Excel.Worksheet = CType(workBook.Sheets(1), Microsoft.Office.Interop.Excel.Worksheet)
 
         ' Encabezados
         Dim tColumns As Integer = table.Columns.Count
@@ -213,9 +212,9 @@ Partial Class PmsCoincidences
         Next
 
         If subtitle.Equals("RatePlans") Then
-            Dim rangeH As Excel.Range = workSheet.Range("H1").EntireColumn
-            Dim rangeI As Excel.Range = workSheet.Range("I1").EntireColumn
-            Dim rangeL As Excel.Range = workSheet.Range("L1").EntireColumn
+            Dim rangeH As Microsoft.Office.Interop.Excel.Range = workSheet.Range("H1").EntireColumn
+            Dim rangeI As Microsoft.Office.Interop.Excel.Range = workSheet.Range("I1").EntireColumn
+            Dim rangeL As Microsoft.Office.Interop.Excel.Range = workSheet.Range("L1").EntireColumn
 
             ' Establece formato "Texto" para columnas de hora (Ej. 20:00)
             rangeH.NumberFormat = "@"
