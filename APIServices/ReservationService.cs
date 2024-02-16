@@ -328,9 +328,9 @@ namespace APIServices
 
                     totalPerRoom += (double)((price.price * nights) + (price.extraPrice * nights));
 
-                    double extraPriceNR = price.extraPriceNR == null ? 0 : (double)price.extraPriceNR;
+                    double extraPriceNR = price.extraPriceNR == null ? 0 : (double)(price.extraPriceNR);
 
-                    totalPerRoomNetRate += (price.priceNR == null)? 0 :(double)(price.priceNR * nights) + (extraPriceNR);
+                    totalPerRoomNetRate += (price.priceNR == null)? 0 :(double)(price.priceNR * nights) + (extraPriceNR * nights);
 
                     priceDetails.Add(new RoomPriceDetails
                     {
