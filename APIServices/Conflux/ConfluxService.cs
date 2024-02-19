@@ -123,82 +123,83 @@ namespace APIServices.Conflux
             return response;
         }
 
-        public RateResponse UpdateRate(int rateId,DateTime startDate, DateTime endDate, int hotelId ,int companyId, TypeRateEnum typeRate)
+        //public RateResponse UpdateRate(int rateId,DateTime startDate, DateTime endDate, int hotelId ,int companyId, TypeRateEnum typeRate)
+        //{
+        //    RateResponse res = new RateResponse();
+
+        //    try
+        //    {
+        //        List<vDayRates> rates = null;
+        //        List<vDayRatesExceptions> ratesExceptions = null;
+
+        //        switch (typeRate)
+        //        {
+        //            case TypeRateEnum.RoomRate:
+        //                rates = APIServices.Conflux.Helpers.Rates.RatesHelpers.GetVDayRate(rateId, startDate, endDate);
+        //                break;
+        //            case TypeRateEnum.RoomRatePromotion:
+        //                ratesExceptions = APIServices.Conflux.Helpers.Rates.RatesHelpers.GetVDayRateException(rateId, startDate, endDate);
+        //                break;
+        //        }
+
+        //        var hotel = dbContext.Hoteles.First(h => h.idHotel == hotelId);
+
+        //        var rateAmountMessages = Parser.Parser.ToRateAmountMessages(rates, ratesExceptions, companyId, hotel.PlusTax, hotel.Impuesto, typeRate);
+
+        //        var xml = HotelRateAmountNotifRQ.CreateHotelRateAmountNotifRQ(rateAmountMessages);
+
+        //        var soapRequest = Soap.CreateSoapRequestXml(xml);
+
+        //        HttpContent httpContent = new StringContent(soapRequest.ToString());
+
+        //        string url = ConfigurationManager.AppSettings["confluxApiUrl"] + "pms/ota/rates/update";
+
+        //        var uri = new Uri(url);
+
+        //        System.Xml.Linq.XElement otaRS = null;
+
+        //        using (var client = new HttpClient())
+        //        {
+
+        //            client.Timeout = TimeSpan.FromMinutes(50);
+        //            var response = client.PostAsync(uri, httpContent).Result;
+
+        //            string result = response.Content.ReadAsStringAsync().Result; //regresa un xml
+
+        //            otaRS = HotelRateAmountNotifRS.ParseHotelRateAmountNotifRS(result);
+        //        }
+
+        //        res.Xml = otaRS.ToString();
+        //        res.RequestXML = soapRequest.ToString();
+        //        res.IsSuccess = HotelRateAmountNotifRS.IsSuccessRequest(otaRS);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        res.IsSuccess = false;
+        //        res.Error = new KeyValuePair<string, string>("448", ex.Message);
+
+        //        var errorsElement = new System.Xml.Linq.XElement("Errors");
+        //        var errorElementProperty = new System.Xml.Linq.XElement("Error");
+        //        errorElementProperty.Add(
+        //            new System.Xml.Linq.XAttribute("Type", "3"),
+        //            new System.Xml.Linq.XAttribute("Code", "448"),
+        //            new System.Xml.Linq.XText(ex.Message));
+
+        //        errorsElement.Add(errorElementProperty);
+
+        //        res.Xml = errorsElement.ToString();
+
+        //    }
+
+        //    return res;
+        //}
+
+        public Tuple<RateResponse, RateResponse> UpdateRate(int hotelId, int companyId, string ratePlanId ,TypeRateEnum typeRate)
         {
-            RateResponse res = new RateResponse();
+            RateResponse rateResponse = new RateResponse();
+            RateResponse deleteRateResponse = null;
 
-            try
-            {
-                List<vDayRates> rates = null;
-                List<vDayRatesExceptions> ratesExceptions = null;
-
-                switch (typeRate)
-                {
-                    case TypeRateEnum.RoomRate:
-                        rates = APIServices.Conflux.Helpers.Rates.RatesHelpers.GetVDayRate(rateId, startDate, endDate);
-                        break;
-                    case TypeRateEnum.RoomRatePromotion:
-                        ratesExceptions = APIServices.Conflux.Helpers.Rates.RatesHelpers.GetVDayRateException(rateId, startDate, endDate);
-                        break;
-                }
-
-                var hotel = dbContext.Hoteles.First(h => h.idHotel == hotelId);
-
-                var rateAmountMessages = Parser.Parser.ToRateAmountMessages(rates, ratesExceptions, companyId, hotel.PlusTax, hotel.Impuesto, typeRate);
-
-                var xml = HotelRateAmountNotifRQ.CreateHotelRateAmountNotifRQ(rateAmountMessages);
-
-                var soapRequest = Soap.CreateSoapRequestXml(xml);
-
-                HttpContent httpContent = new StringContent(soapRequest.ToString());
-
-                string url = ConfigurationManager.AppSettings["confluxApiUrl"] + "pms/ota/rates/update";
-
-                var uri = new Uri(url);
-
-                System.Xml.Linq.XElement otaRS = null;
-
-                using (var client = new HttpClient())
-                {
-
-                    client.Timeout = TimeSpan.FromMinutes(50);
-                    var response = client.PostAsync(uri, httpContent).Result;
-
-                    string result = response.Content.ReadAsStringAsync().Result; //regresa un xml
-
-                    otaRS = HotelRateAmountNotifRS.ParseHotelRateAmountNotifRS(result);
-                }
-
-                res.Xml = otaRS.ToString();
-                res.RequestXML = soapRequest.ToString();
-                res.IsSuccess = HotelRateAmountNotifRS.IsSuccessRequest(otaRS);
-            }
-            catch (Exception ex)
-            {
-                res.IsSuccess = false;
-                res.Error = new KeyValuePair<string, string>("448", ex.Message);
-
-                var errorsElement = new System.Xml.Linq.XElement("Errors");
-                var errorElementProperty = new System.Xml.Linq.XElement("Error");
-                errorElementProperty.Add(
-                    new System.Xml.Linq.XAttribute("Type", "3"),
-                    new System.Xml.Linq.XAttribute("Code", "448"),
-                    new System.Xml.Linq.XText(ex.Message));
-
-                errorsElement.Add(errorElementProperty);
-
-                res.Xml = errorsElement.ToString();
-
-            }
-
-
-
-            return res;
-        }
-
-        public RateResponse UpdateRate(int hotelId, int companyId, string ratePlanId ,TypeRateEnum typeRate)
-        {
-            RateResponse res = new RateResponse();
+            RateAmountMessages deleteRateAmountMessages = new RateAmountMessages();
 
             try
             {
@@ -217,7 +218,7 @@ namespace APIServices.Conflux
 
                 var hotel = dbContext.Hoteles.First(h => h.idHotel == hotelId);
 
-                var rateAmountMessages = Parser.Parser.ToRateAmountMessages(rates, ratesExceptions, companyId, hotel.PlusTax, hotel.Impuesto, typeRate);
+                var rateAmountMessages = Parser.Parser.ToRateAmountMessages(rates, ratesExceptions, companyId, hotel.PlusTax, hotel.Impuesto, typeRate, ref deleteRateAmountMessages);
 
                 var xml = HotelRateAmountNotifRQ.CreateHotelRateAmountNotifRQ(rateAmountMessages);
 
@@ -242,14 +243,14 @@ namespace APIServices.Conflux
                     otaRS = HotelRateAmountNotifRS.ParseHotelRateAmountNotifRS(result);
                 }
 
-                res.Xml = otaRS.ToString();
-                res.RequestXML = soapRequest.ToString();
-                res.IsSuccess = HotelRateAmountNotifRS.IsSuccessRequest(otaRS);
+                rateResponse.Xml = otaRS.ToString();
+                rateResponse.RequestXML = soapRequest.ToString();
+                rateResponse.IsSuccess = HotelRateAmountNotifRS.IsSuccessRequest(otaRS);
             }
             catch (Exception ex)
             {
-                res.IsSuccess = false;
-                res.Error = new KeyValuePair<string, string>("448", ex.Message);
+                rateResponse.IsSuccess = false;
+                rateResponse.Error = new KeyValuePair<string, string>("448", ex.Message);
 
                 var errorsElement = new System.Xml.Linq.XElement("Errors");
                 var errorElementProperty = new System.Xml.Linq.XElement("Error");
@@ -260,18 +261,21 @@ namespace APIServices.Conflux
 
                 errorsElement.Add(errorElementProperty);
 
-                res.Xml = errorsElement.ToString();
+                rateResponse.Xml = errorsElement.ToString();
 
             }
 
+            if (deleteRateAmountMessages.RateAmountMessagesList.Count > 0) deleteRateResponse = DeleteRates(deleteRateAmountMessages);
 
-
-            return res;
+            return new Tuple<RateResponse, RateResponse>(rateResponse, deleteRateResponse);
         }
 
-        public RateResponse UpdateRatePromotion(int hotelId, int companyId, string ratePlanId, TypeRateEnum typeRate)
+        public Tuple<RateResponse,RateResponse> UpdateRatePromotion(int hotelId, int companyId, string ratePlanId, TypeRateEnum typeRate)
         {
-            RateResponse res = new RateResponse();
+            RateResponse rateResponse = new RateResponse();
+            RateResponse deleteRateResponse = null;
+
+            RateAmountMessages deleteRateAmountMessages = new RateAmountMessages();
 
             try
             {
@@ -290,7 +294,7 @@ namespace APIServices.Conflux
 
                 var hotel = dbContext.Hoteles.First(h => h.idHotel == hotelId);
 
-                var rateAmountMessages = Parser.Parser.ToRateAmountMessages(rates, ratesExceptions, companyId, hotel.PlusTax, hotel.Impuesto, typeRate);
+                var rateAmountMessages = Parser.Parser.ToRateAmountMessages(rates, ratesExceptions, companyId, hotel.PlusTax, hotel.Impuesto, typeRate, ref deleteRateAmountMessages);
 
                 var xml = HotelRateAmountNotifRQ.CreateHotelRateAmountNotifRQ(rateAmountMessages);
 
@@ -315,14 +319,14 @@ namespace APIServices.Conflux
                     otaRS = HotelRateAmountNotifRS.ParseHotelRateAmountNotifRS(result);
                 }
 
-                res.Xml = otaRS.ToString();
-                res.RequestXML = soapRequest.ToString();
-                res.IsSuccess = HotelRateAmountNotifRS.IsSuccessRequest(otaRS);
+                rateResponse.Xml = otaRS.ToString();
+                rateResponse.RequestXML = soapRequest.ToString();
+                rateResponse.IsSuccess = HotelRateAmountNotifRS.IsSuccessRequest(otaRS);
             }
             catch (Exception ex)
             {
-                res.IsSuccess = false;
-                res.Error = new KeyValuePair<string, string>("448", ex.Message);
+                rateResponse.IsSuccess = false;
+                rateResponse.Error = new KeyValuePair<string, string>("448", ex.Message);
 
                 var errorsElement = new System.Xml.Linq.XElement("Errors");
                 var errorElementProperty = new System.Xml.Linq.XElement("Error");
@@ -333,17 +337,105 @@ namespace APIServices.Conflux
 
                 errorsElement.Add(errorElementProperty);
 
-                res.Xml = errorsElement.ToString();
+                rateResponse.Xml = errorsElement.ToString();
 
             }
 
-            return res;
+            if (deleteRateAmountMessages.RateAmountMessagesList.Count > 0) deleteRateResponse = DeleteRates(deleteRateAmountMessages);
 
+            return new Tuple<RateResponse, RateResponse>(rateResponse, deleteRateResponse);
         }
 
-        public RateResponse UpdateRates(int hotelId, int companyId)
+        public Tuple<RateResponse, RateResponse> UpdateRate(int rateId, DateTime startDate, DateTime endDate, int hotelId, int companyId, TypeRateEnum typeRate)
         {
             RateResponse rateResponse = new RateResponse();
+            RateResponse deleteRateResponse = null;
+
+            RateAmountMessages deleteRateAmountMessages = new RateAmountMessages();
+
+            try
+            {
+                List<vDayRates> rates = null;
+                List<vDayRatesExceptions> ratesExceptions = null;
+
+                switch (typeRate)
+                {
+                    case TypeRateEnum.RoomRate:
+                        rates = APIServices.Conflux.Helpers.Rates.RatesHelpers.GetVDayRate(rateId, startDate, endDate);
+                        break;
+                    case TypeRateEnum.RoomRatePromotion:
+                        ratesExceptions = APIServices.Conflux.Helpers.Rates.RatesHelpers.GetVDayRateException(rateId, startDate, endDate);
+                        break;
+                }
+
+                var hotel = dbContext.Hoteles.First(h => h.idHotel == hotelId);
+
+                var rateAmountMessages = Parser.Parser.ToRateAmountMessages(rates, ratesExceptions, companyId, hotel.PlusTax, hotel.Impuesto, typeRate, ref deleteRateAmountMessages);
+
+                var xml = HotelRateAmountNotifRQ.CreateHotelRateAmountNotifRQ(rateAmountMessages);
+
+                var soapRequest = Soap.CreateSoapRequestXml(xml);
+
+                HttpContent httpContent = new StringContent(soapRequest.ToString());
+
+                string url = ConfigurationManager.AppSettings["confluxApiUrl"] + "pms/ota/rates/update";
+
+                var uri = new Uri(url);
+
+                System.Xml.Linq.XElement otaRS = null;
+
+                using (var client = new HttpClient())
+                {
+
+                    client.Timeout = TimeSpan.FromMinutes(50);
+                    var response = client.PostAsync(uri, httpContent).Result;
+
+                    string result = response.Content.ReadAsStringAsync().Result; //regresa un xml
+
+                    otaRS = HotelRateAmountNotifRS.ParseHotelRateAmountNotifRS(result);
+                }
+
+                rateResponse.Xml = otaRS.ToString();
+                rateResponse.RequestXML = soapRequest.ToString();
+                rateResponse.IsSuccess = HotelRateAmountNotifRS.IsSuccessRequest(otaRS);
+
+
+            }
+            catch (Exception ex)
+            {
+                rateResponse.IsSuccess = false;
+                rateResponse.Error = new KeyValuePair<string, string>("448", ex.Message);
+
+                var errorsElement = new System.Xml.Linq.XElement("Errors");
+                var errorElementProperty = new System.Xml.Linq.XElement("Error");
+                errorElementProperty.Add(
+                    new System.Xml.Linq.XAttribute("Type", "3"),
+                    new System.Xml.Linq.XAttribute("Code", "448"),
+                    new System.Xml.Linq.XText(ex.Message));
+
+                errorsElement.Add(errorElementProperty);
+
+                rateResponse.Xml = errorsElement.ToString();
+
+            }
+
+            if (deleteRateAmountMessages.RateAmountMessagesList.Count > 0) deleteRateResponse = DeleteRates(deleteRateAmountMessages);
+
+            return new Tuple<RateResponse, RateResponse>(rateResponse,deleteRateResponse);
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="hotelId"></param>
+        /// <param name="companyId"></param>
+        /// <returns>First Param RatesToUpdate, Second Param RatesToDelete</returns>
+        public Tuple<RateResponse,RateResponse> UpdateRates(int hotelId, int companyId)
+        {
+            RateResponse rateResponse = new RateResponse();
+
+            RateAmountMessages deleteRateAmountMessages = new RateAmountMessages();
 
             try
             {
@@ -351,7 +443,7 @@ namespace APIServices.Conflux
 
                 var hotel = dbContext.Hoteles.First(h => h.idHotel == hotelId);
 
-                var rateAmountMessages = Parser.Parser.ToRateAmountMessages(currentRates, companyId, hotel.PlusTax, hotel.Impuesto);
+                var rateAmountMessages = Parser.Parser.ToRateAmountMessages(currentRates, companyId, hotel.PlusTax, hotel.Impuesto, ref deleteRateAmountMessages);
 
                 var xmlList = HotelRateAmountNotifRQ.CreateHotelRateAmountNotifRQList(rateAmountMessages);
 
@@ -409,8 +501,11 @@ namespace APIServices.Conflux
 
             }
 
+            RateResponse deleteRateResponse = null;
 
-            return rateResponse;
+            if (deleteRateAmountMessages.RateAmountMessagesList.Count > 0) deleteRateResponse = DeleteRates(deleteRateAmountMessages);
+
+            return new Tuple<RateResponse,RateResponse>(rateResponse, deleteRateResponse);
 
         }
 
@@ -882,9 +977,6 @@ namespace APIServices.Conflux
             return res;
 
         }
-
-
-
 
         public RestrictionResponse UpdateRestriction(XDocument document, RestrictionEnum restrictionEnum)
         {

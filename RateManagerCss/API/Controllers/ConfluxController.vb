@@ -47,25 +47,35 @@ Namespace API.Controllers
 
             Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
 
-            Dim result As RateResponse = ConfluxService.UpdateRates(hotelId, info.Empresa)
+            Dim result As Tuple(Of RateResponse, RateResponse) = ConfluxService.UpdateRates(hotelId, info.Empresa)
 
-            If Not result.IsSuccess Then
+            Dim ratesToUpdate As RateResponse = result.Item1
+            Dim ratesToDelete As RateResponse = result.Item2
 
-                Log("Sincronizar Tarifas Conflux con el hotel: ", result.Xml, hotelId, String.Empty)
+            If Not ratesToUpdate.IsSuccess Then
 
-                Return BadRequest(result.Error)
+                Log("Sincronizar Tarifas Conflux con el hotel: ", ratesToUpdate.Xml, hotelId, String.Empty)
+
+                Return BadRequest(ratesToUpdate.Error)
 
             End If
 
             Dim index As Integer = 1
 
-            For Each request As APIServices.Conflux.Models.Rates.Response.Rate In result.Rates
+            For Each request As APIServices.Conflux.Models.Rates.Response.Rate In ratesToUpdate.Rates
                 Dim note As String = String.Format("Sincronizar request numero {0} Tarifas Conflux con el hotel: ", (index))
                 Log(note, request.Xml, hotelId, request.XmlRequest)
                 index += 1
             Next
 
-            Dim toObject As Object = result
+            Dim toObject As Object = ratesToUpdate
+
+            'Log Delete
+            If result.Item2 IsNot Nothing Then
+                Dim noteDelete As String = String.Format("Eliminar Tarifas Conflux con el hotel: {0}", hotelId)
+                Log(noteDelete, ratesToDelete.Xml, hotelId, ratesToDelete.RequestXML)
+            End If
+
 
             Return Ok(toObject)
 

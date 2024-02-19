@@ -797,16 +797,28 @@ Partial Class FaresCatalogue
                                         '    End If
                                         'End If
 
-                                        Dim res As RateResponse = confluxService.UpdateRate(auxFareId, f1, f2, info.Hotel, info.Empresa, TypeRateEnum.RoomRate)
+                                        Dim res As Tuple(Of RateResponse, RateResponse) = confluxService.UpdateRate(auxFareId, f1, f2, info.Hotel, info.Empresa, TypeRateEnum.RoomRate)
 
-                                        Me.guardalog("/Pages/FaresCatalogue.aspx", acciones.Sincronizar, "Tarifa enviada a Conflux", "", res.RequestXML, res.Xml, info.Hotel)
+                                        Me.guardalog("/Pages/FaresCatalogue.aspx", acciones.Sincronizar, "Tarifa enviada a Conflux", "", res.Item1.RequestXML, res.Item1.Xml, info.Hotel)
+
+                                        'Delete Log
+                                        If res.Item2 IsNot Nothing Then
+                                            Me.guardalog("/Pages/FaresCatalogue.aspx", acciones.Eliminar, "Eliminar tarifas Conflux", "", res.Item2.RequestXML, res.Item1.Xml, info.Hotel)
+                                        End If
+
 
                                     Else
 
-                                            'Actualizar
-                                            Dim res As RateResponse = confluxService.UpdateRate(auxFareId, f1, f2, info.Hotel, info.Empresa, TypeRateEnum.RoomRate)
+                                        'Actualizar
+                                        Dim res As Tuple(Of RateResponse, RateResponse) = confluxService.UpdateRate(auxFareId, f1, f2, info.Hotel, info.Empresa, TypeRateEnum.RoomRate)
 
-                                        Me.guardalog("/Pages/FaresCatalogue.aspx", acciones.Sincronizar, "Tarifa enviada a Conflux", "", res.RequestXML, res.Xml, info.Hotel)
+                                        Me.guardalog("/Pages/FaresCatalogue.aspx", acciones.Sincronizar, "Tarifa enviada a Conflux", "", res.Item1.RequestXML, res.Item1.Xml, info.Hotel)
+
+                                        'Delete Log
+                                        If res.Item2 IsNot Nothing Then
+                                            Me.guardalog("/Pages/FaresCatalogue.aspx", acciones.Eliminar, "Eliminar tarifas Conflux", "", res.Item2.RequestXML, res.Item1.Xml, info.Hotel)
+                                        End If
+
 
                                     End If
 

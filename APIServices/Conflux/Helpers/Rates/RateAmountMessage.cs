@@ -571,5 +571,79 @@ namespace APIServices.Conflux.Helpers.Rates
 
         #endregion
 
+        #region Delete
+        //General Tarifa Normal
+        public static RateAmountMessage CreateDeleteRateAmountMessage(spGetCurrentRatesByHotel_Result4 currentRate, vDayRates vDayRate)
+        {
+            RateAmountMessage rateAmountMessage = new RateAmountMessage();
+
+            rateAmountMessage.statusApplicationControl = new StatusApplicationControl { RatePlanCode = vDayRate.RatePlanId, InvTypeCode = currentRate.RoomCode ?? "" };
+
+            List<Rate> rates = new List<Rate>();
+
+            Rate rate = new Rate()
+            {
+                StartDate = vDayRate.StartDate.ToString("yyyyMMdd"),
+                EndDate = vDayRate.EndDate.ToString("yyyyMMdd")
+            };
+
+            rates.Add(rate);
+
+            rateAmountMessage.Rates = rates;
+
+
+            return rateAmountMessage;
+        }
+
+        //General Tarifa Promocion
+        public static RateAmountMessage CreateDeleteRateAmountMessage(spGetCurrentRatesByHotel_Result4 currentRate, vDayRatesExceptions vDayRate)
+        {
+            RateAmountMessage rateAmountMessage = new RateAmountMessage();
+
+            rateAmountMessage.statusApplicationControl = new StatusApplicationControl { RatePlanCode = vDayRate.RatePlanId, InvTypeCode = currentRate.RoomCode ?? "" };
+
+            List<Rate> rates = new List<Rate>();
+
+            Rate rate = new Rate()
+            {
+                StartDate = vDayRate.StartDate.ToString("yyyyMMdd"),
+                EndDate = vDayRate.EndDate.ToString("yyyyMMdd")
+            };
+
+            rates.Add(rate);
+
+            rateAmountMessage.Rates = rates;
+
+
+            return rateAmountMessage;
+        }
+
+        //Por Tarifa Normal
+        public static RateAmountMessage CreateDeleteRateAmountMessage(vDayRates vDayRate)
+        {
+            RateAmountMessage rateAmountMessage = new RateAmountMessage();
+            var room = RoomHelper.GetRoom(vDayRate.RoomId);
+
+            rateAmountMessage.statusApplicationControl = new StatusApplicationControl { RatePlanCode = vDayRate.RatePlanId, InvTypeCode = room.Code ?? "" };
+
+            List<Rate> rates = new List<Rate>();
+
+            Rate rate = new Rate()
+            {
+                StartDate = vDayRate.StartDate.ToString("yyyyMMdd"),
+                EndDate = vDayRate.EndDate.ToString("yyyyMMdd")
+            };
+
+            rates.Add(rate);
+
+            rateAmountMessage.Rates = rates;
+
+
+            return rateAmountMessage;
+
+        }
+
+        #endregion
+
     }
 }

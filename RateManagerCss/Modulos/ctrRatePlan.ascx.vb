@@ -789,25 +789,54 @@ Partial Class ctrRatePlan
 
 
                         If totalPromotionBeforeEdition <> "" And txtDescProm.Text = "" Then
-                            Dim res As RateResponse = confluxService.UpdateRate(info.Hotel, info.Empresa, IdRatePlan, TypeRateEnum.RoomRate)
-                            pgBase.guardalog("/Pages/RatesPlans.aspx", pgBase.acciones.Sincronizar, "Sincronizar ctrRatePlan", "", res.RequestXML, res.Xml, info.Hotel)
+                            Dim res As Tuple(Of RateResponse, RateResponse) = confluxService.UpdateRate(info.Hotel, info.Empresa, IdRatePlan, TypeRateEnum.RoomRate)
+                            pgBase.guardalog("/Pages/RatesPlans.aspx", pgBase.acciones.Sincronizar, "Sincronizar ctrRatePlan", "", res.Item1.RequestXML, res.Item1.Xml, info.Hotel)
 
-                            Dim resPromotion As RateResponse = confluxService.UpdateRate(info.Hotel, info.Empresa, IdRatePlan, TypeRateEnum.RoomRatePromotion)
-                            pgBase.guardalog("/Pages/RatesPlans.aspx", pgBase.acciones.Sincronizar, "Sincronizar ctrRatePlan", "", resPromotion.RequestXML, resPromotion.Xml, info.Hotel)
+                            If res.Item2 IsNot Nothing Then
+                                pgBase.guardalog("/Pages/RatesPlans.aspx", pgBase.acciones.Eliminar, "Eliminar ctrRatePlan", "", res.Item2.RequestXML, res.Item2.Xml, info.Hotel)
+                            End If
+
+
+                            Dim resPromotion As Tuple(Of RateResponse, RateResponse) = confluxService.UpdateRate(info.Hotel, info.Empresa, IdRatePlan, TypeRateEnum.RoomRatePromotion)
+                            pgBase.guardalog("/Pages/RatesPlans.aspx", pgBase.acciones.Sincronizar, "Sincronizar ctrRatePlan", "", resPromotion.Item1.RequestXML, resPromotion.Item1.Xml, info.Hotel)
+
+                            If resPromotion.Item2 IsNot Nothing Then
+                                pgBase.guardalog("/Pages/RatesPlans.aspx", pgBase.acciones.Eliminar, "Eliminar ctrRatePlan", "", resPromotion.Item2.RequestXML, resPromotion.Item2.Xml, info.Hotel)
+                            End If
+
                         ElseIf totalPromotionBeforeEdition <> "" And txtDescProm.Text <> "" Then
                             If CDbl(totalPromotionBeforeEdition) <> CDbl(txtDescProm.Text) Then
-                                Dim res As RateResponse = confluxService.UpdateRate(info.Hotel, info.Empresa, IdRatePlan, TypeRateEnum.RoomRate)
-                                pgBase.guardalog("/Pages/RatesPlans.aspx", pgBase.acciones.Sincronizar, "Sincronizar ctrRatePlan", "", res.RequestXML, res.Xml, info.Hotel)
+                                Dim res As Tuple(Of RateResponse, RateResponse) = confluxService.UpdateRate(info.Hotel, info.Empresa, IdRatePlan, TypeRateEnum.RoomRate)
+                                pgBase.guardalog("/Pages/RatesPlans.aspx", pgBase.acciones.Sincronizar, "Sincronizar ctrRatePlan", "", res.Item1.RequestXML, res.Item1.Xml, info.Hotel)
 
-                                Dim resPromotion As RateResponse = confluxService.UpdateRate(info.Hotel, info.Empresa, IdRatePlan, TypeRateEnum.RoomRatePromotion)
-                                pgBase.guardalog("/Pages/RatesPlans.aspx", pgBase.acciones.Sincronizar, "Sincronizar ctrRatePlan", "", resPromotion.RequestXML, resPromotion.Xml, info.Hotel)
+                                If res.Item2 IsNot Nothing Then
+                                    pgBase.guardalog("/Pages/RatesPlans.aspx", pgBase.acciones.Eliminar, "Eliminar ctrRatePlan", "", res.Item2.RequestXML, res.Item2.Xml, info.Hotel)
+                                End If
+
+
+                                Dim resPromotion As Tuple(Of RateResponse, RateResponse) = confluxService.UpdateRate(info.Hotel, info.Empresa, IdRatePlan, TypeRateEnum.RoomRatePromotion)
+                                pgBase.guardalog("/Pages/RatesPlans.aspx", pgBase.acciones.Sincronizar, "Sincronizar ctrRatePlan", "", resPromotion.Item1.RequestXML, resPromotion.Item1.Xml, info.Hotel)
+
+                                If resPromotion.Item2 IsNot Nothing Then
+                                    pgBase.guardalog("/Pages/RatesPlans.aspx", pgBase.acciones.Eliminar, "Eliminar ctrRatePlan", "", resPromotion.Item2.RequestXML, resPromotion.Item2.Xml, info.Hotel)
+                                End If
+
                             End If
                         ElseIf totalPromotionBeforeEdition = "" And txtDescProm.Text <> "" Then
-                            Dim res As RateResponse = confluxService.UpdateRate(info.Hotel, info.Empresa, IdRatePlan, TypeRateEnum.RoomRate)
-                            pgBase.guardalog("/Pages/RatesPlans.aspx", pgBase.acciones.Sincronizar, "Sincronizar ctrRatePlan", "", res.RequestXML, res.Xml, info.Hotel)
+                            Dim res As Tuple(Of RateResponse, RateResponse) = confluxService.UpdateRate(info.Hotel, info.Empresa, IdRatePlan, TypeRateEnum.RoomRate)
+                            pgBase.guardalog("/Pages/RatesPlans.aspx", pgBase.acciones.Sincronizar, "Sincronizar ctrRatePlan", "", res.Item1.RequestXML, res.Item1.Xml, info.Hotel)
 
-                            Dim resPromotion As RateResponse = confluxService.UpdateRate(info.Hotel, info.Empresa, IdRatePlan, TypeRateEnum.RoomRatePromotion)
-                            pgBase.guardalog("/Pages/RatesPlans.aspx", pgBase.acciones.Sincronizar, "Sincronizar ctrRatePlan", "", resPromotion.RequestXML, resPromotion.Xml, info.Hotel)
+                            If res.Item2 IsNot Nothing Then
+                                pgBase.guardalog("/Pages/RatesPlans.aspx", pgBase.acciones.Eliminar, "Eliminar ctrRatePlan", "", res.Item2.RequestXML, res.Item2.Xml, info.Hotel)
+                            End If
+
+                            Dim resPromotion As Tuple(Of RateResponse, RateResponse) = confluxService.UpdateRate(info.Hotel, info.Empresa, IdRatePlan, TypeRateEnum.RoomRatePromotion)
+                            pgBase.guardalog("/Pages/RatesPlans.aspx", pgBase.acciones.Sincronizar, "Sincronizar ctrRatePlan", "", resPromotion.Item2.RequestXML, resPromotion.Item2.Xml, info.Hotel)
+
+                            If resPromotion.Item2 IsNot Nothing Then
+                                pgBase.guardalog("/Pages/RatesPlans.aspx", pgBase.acciones.Eliminar, "Eliminar ctrRatePlan", "", resPromotion.Item2.RequestXML, resPromotion.Item2.Xml, info.Hotel)
+                            End If
+
                         End If
                     End If
 

@@ -15,12 +15,16 @@ namespace APIServices.Conflux.Parser
     public static class Parser
     {
         //General
-        public static RateAmountMessages ToRateAmountMessages(List<spGetCurrentRatesByHotel_Result4> currentRates, int companyId, bool? plusTax, decimal? tax)
+        public static RateAmountMessages ToRateAmountMessages(List<spGetCurrentRatesByHotel_Result4> currentRates, int companyId, bool? plusTax, decimal? tax, ref RateAmountMessages deleteRateAmountMessages)
         {
             RateAmountMessages rateAmountMessages = new RateAmountMessages();
 
             rateAmountMessages.HotelCode = companyId;
             rateAmountMessages.RateAmountMessagesList = new List<RateAmountMessage>();
+
+            deleteRateAmountMessages.HotelCode = companyId;
+            deleteRateAmountMessages.RateAmountMessagesList = new List<RateAmountMessage>();
+
 
             RatesHelpers.Init(plusTax, tax);
 
@@ -31,11 +35,11 @@ namespace APIServices.Conflux.Parser
                 {
                     case (int) TypeRateEnum.RoomRate:
 
-                        RoomRateMessages(currentRate, ref rateAmountMessages);
+                        RoomRateMessages(currentRate, ref rateAmountMessages, ref deleteRateAmountMessages);
 
                         break;
                     case (int)TypeRateEnum.RoomRatePromotion:
-                        RoomRatePromotionMessages(currentRate, ref rateAmountMessages);
+                        RoomRatePromotionMessages(currentRate, ref rateAmountMessages, ref deleteRateAmountMessages);
                         break;
 
                 }
@@ -46,12 +50,15 @@ namespace APIServices.Conflux.Parser
         }
         
         //Por Tarifa
-        public static RateAmountMessages ToRateAmountMessages(List<vDayRates> rates,List<vDayRatesExceptions> ratesExceptions, int companyId, bool? plusTax, decimal? tax, TypeRateEnum typeRate)
+        public static RateAmountMessages ToRateAmountMessages(List<vDayRates> rates,List<vDayRatesExceptions> ratesExceptions, int companyId, bool? plusTax, decimal? tax, TypeRateEnum typeRate, ref RateAmountMessages deleteRateAmountMessages)
         {
             RateAmountMessages rateAmountMessages = new RateAmountMessages();
 
             rateAmountMessages.HotelCode = companyId;
             rateAmountMessages.RateAmountMessagesList = new List<RateAmountMessage>();
+
+            deleteRateAmountMessages.HotelCode = companyId;
+            deleteRateAmountMessages.RateAmountMessagesList = new List<RateAmountMessage>();
 
             RatesHelpers.Init(plusTax, tax);
             //Para Tarifa Promociones ver si se tiene que poner condicion para diferenciar
@@ -60,7 +67,7 @@ namespace APIServices.Conflux.Parser
             {
                 case TypeRateEnum.RoomRate:
 
-                    RoomRateMessages(rates, ref rateAmountMessages);
+                    RoomRateMessages(rates, ref rateAmountMessages, ref deleteRateAmountMessages);
 
                     break;
                 case TypeRateEnum.RoomRatePromotion:
@@ -495,7 +502,7 @@ namespace APIServices.Conflux.Parser
 
         //}
 
-        public static void RoomRateMessages(spGetCurrentRatesByHotel_Result4 currentRate, ref RateAmountMessages rateAmountMessages)
+        public static void RoomRateMessages(spGetCurrentRatesByHotel_Result4 currentRate, ref RateAmountMessages rateAmountMessages, ref RateAmountMessages deleteRateAmountMessages)
         {
             string[] splitSegmentsNoRates = ConfigurationManager.AppSettings["segmentsNoRates"].Split(',');
 
@@ -518,6 +525,12 @@ namespace APIServices.Conflux.Parser
 
                                 rateAmountMessages.RateAmountMessagesList.Add(rateAmountMessage);
                             }
+                            else
+                            {
+                                //Delete
+                                RateAmountMessage rateAmountMessageToDelete = RatesHelpers.CreateDeleteRateAmountMessage(currentRate,vDayRate);
+                                deleteRateAmountMessages.RateAmountMessagesList.Add(rateAmountMessageToDelete);
+                            }
                         }
                         else
                         {
@@ -536,7 +549,7 @@ namespace APIServices.Conflux.Parser
             }
         }
 
-        public static void RoomRatePromotionMessages(spGetCurrentRatesByHotel_Result4 currentRate, ref RateAmountMessages rateAmountMessages)
+        public static void RoomRatePromotionMessages(spGetCurrentRatesByHotel_Result4 currentRate, ref RateAmountMessages rateAmountMessages, ref RateAmountMessages deleteRateAmountMessages)
         {
             string[] splitSegmentsNoRates = ConfigurationManager.AppSettings["segmentsNoRates"].Split(',');
 
@@ -559,6 +572,12 @@ namespace APIServices.Conflux.Parser
                                 RateAmountMessage rateAmountMessage = RatesHelpers.CreateRateAmountMessage(currentRate, vDayRate);
 
                                 rateAmountMessages.RateAmountMessagesList.Add(rateAmountMessage);
+                            }
+                            else
+                            {
+                                //Delete
+                                RateAmountMessage rateAmountMessageToDelete = RatesHelpers.CreateDeleteRateAmountMessage(currentRate, vDayRate);
+                                deleteRateAmountMessages.RateAmountMessagesList.Add(rateAmountMessageToDelete);
                             }
                         }
                         else
@@ -944,7 +963,7 @@ namespace APIServices.Conflux.Parser
 
         //}
 
-        public static void RoomRateMessages(List<vDayRates> vDayRates, ref RateAmountMessages rateAmountMessages)
+        public static void RoomRateMessages(List<vDayRates> vDayRates, ref RateAmountMessages rateAmountMessages, ref RateAmountMessages deleteRateAmountMesages)
         {
             string[] splitSegmentsNoRates = ConfigurationManager.AppSettings["segmentsNoRates"].Split(',');
 
@@ -965,6 +984,11 @@ namespace APIServices.Conflux.Parser
                                 RateAmountMessage rateAmountMessage = RatesHelpers.CreateRateAmountMessage(vDayRate);
 
                                 rateAmountMessages.RateAmountMessagesList.Add(rateAmountMessage);
+                            }
+                            else
+                            {
+                                RateAmountMessage deleteRateAmountMessage = RatesHelpers.CreateDeleteRateAmountMessage(vDayRate);
+                                deleteRateAmountMesages.RateAmountMessagesList.Add(deleteRateAmountMessage);
                             }
                         }
                         else

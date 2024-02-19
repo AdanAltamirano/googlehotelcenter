@@ -609,11 +609,22 @@ Public Class Promotions
                     'Me.txtPromoDiscount.Text = .Item(dsRatePlan.FIELD_DESCPROMOTION).ToString
 
                     If isEnabledGoogleRequest Then
-                        Dim res As RateResponse = confluxService.UpdateRatePromotion(info.Hotel, info.Empresa, IdRatePlan, TypeRateEnum.RoomRate)
-                        CType(Me.Page, PaginaBase).guardalog("/HotelAdministrator/Pages/Promotions.aspx", CType(Me.Page, PaginaBase).acciones.Sincronizar, "Sincronizar Modificacion Promotions", "", res.RequestXML, res.Xml, info.Hotel)
+                        Dim res As Tuple(Of RateResponse, RateResponse) = confluxService.UpdateRatePromotion(info.Hotel, info.Empresa, IdRatePlan, TypeRateEnum.RoomRate)
+                        CType(Me.Page, PaginaBase).guardalog("/HotelAdministrator/Pages/Promotions.aspx", CType(Me.Page, PaginaBase).acciones.Sincronizar, "Sincronizar Modificacion Promotions", "", res.Item1.RequestXML, res.Item1.Xml, info.Hotel)
 
-                        Dim resPromotion As RateResponse = confluxService.UpdateRatePromotion(info.Hotel, info.Empresa, IdRatePlan, TypeRateEnum.RoomRatePromotion)
-                        CType(Me.Page, PaginaBase).guardalog("/HotelAdministrator/Pages/Promotions.aspx", CType(Me.Page, PaginaBase).acciones.Sincronizar, "Sincronizar Modificacion Promotions", "", resPromotion.RequestXML, resPromotion.Xml, info.Hotel)
+                        'Delete Log
+                        If res.Item2 IsNot Nothing Then
+                            CType(Me.Page, PaginaBase).guardalog("/HotelAdministrator/Pages/Promotions.aspx", CType(Me.Page, PaginaBase).acciones.Eliminar, "Eliminar Modificacion Promotions", "", res.Item2.RequestXML, res.Item2.Xml, info.Hotel)
+                        End If
+
+                        Dim resPromotion As Tuple(Of RateResponse, RateResponse) = confluxService.UpdateRatePromotion(info.Hotel, info.Empresa, IdRatePlan, TypeRateEnum.RoomRatePromotion)
+                        CType(Me.Page, PaginaBase).guardalog("/HotelAdministrator/Pages/Promotions.aspx", CType(Me.Page, PaginaBase).acciones.Sincronizar, "Sincronizar Modificacion Promotions", "", resPromotion.Item1.RequestXML, resPromotion.Item1.Xml, info.Hotel)
+
+                        'Delete Log
+                        If resPromotion.Item2 IsNot Nothing Then
+                            CType(Me.Page, PaginaBase).guardalog("/HotelAdministrator/Pages/Promotions.aspx", CType(Me.Page, PaginaBase).acciones.Eliminar, "Eliminar Modificacion Promotions", "", resPromotion.Item2.RequestXML, resPromotion.Item2.Xml, info.Hotel)
+                        End If
+
                         'If totalPromotionDiscountBeforeEdition <> "" And txtPromoDiscount.Text = "" Then
                         '    Dim res As RateResponse = confluxService.UpdateRatePromotion(info.Hotel, info.Empresa, IdRatePlan, TypeRateEnum.RoomRate)
                         '    CType(Me.Page, PaginaBase).guardalog("/HotelAdministrator/Pages/Promotions.aspx", CType(Me.Page, PaginaBase).acciones.Sincronizar, "Sincronizar Promotions", "", res.RequestXML, res.Xml, info.Hotel)

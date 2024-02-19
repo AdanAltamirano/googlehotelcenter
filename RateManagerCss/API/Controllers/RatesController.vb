@@ -58,9 +58,15 @@ Namespace API.Controllers
                         Try
                             For Each rate As Tarifas In updatedRates
 
-                                Dim res As RateResponse = ConfluxService.UpdateRate(rate.idTarifa, rate.FechaInicia, rate.FechaFinaliza, HotelId, info.Empresa, TypeRateEnum.RoomRate)
+                                Dim res As Tuple(Of RateResponse, RateResponse) = ConfluxService.UpdateRate(rate.idTarifa, rate.FechaInicia, rate.FechaFinaliza, HotelId, info.Empresa, TypeRateEnum.RoomRate)
 
-                                Log(hotelId:=RQ.HotelId, action:=acciones.Sincronizar, room:="", startDate:=Nothing, endDate:=Nothing, rateCode:="", xml:=res.Xml, dataXml:=res.RequestXML, note:="Tarifa enviada a Conflux")
+                                Log(hotelId:=RQ.HotelId, action:=acciones.Sincronizar, room:="", startDate:=Nothing, endDate:=Nothing, rateCode:="", xml:=res.Item1.Xml, dataXml:=res.Item1.RequestXML, note:="Tarifa enviada a Conflux")
+
+                                'Delete Log
+                                If res.Item2 IsNot Nothing Then
+                                    Log(hotelId:=RQ.HotelId, action:=acciones.Eliminar, room:="", startDate:=Nothing, endDate:=Nothing, rateCode:="", xml:=res.Item2.Xml, dataXml:=res.Item2.RequestXML, note:="Tarifa enviada para eliminar a Conflux")
+                                End If
+
 
                             Next
 
@@ -134,9 +140,14 @@ Namespace API.Controllers
 
                             For Each rate As Tarifas In updatedRateDay
 
-                                Dim res As RateResponse = ConfluxService.UpdateRate(rate.idTarifa, rate.FechaInicia, rate.FechaFinaliza, HotelId, info.Empresa, TypeRateEnum.RoomRate)
+                                Dim res As Tuple(Of RateResponse, RateResponse) = ConfluxService.UpdateRate(rate.idTarifa, rate.FechaInicia, rate.FechaFinaliza, HotelId, info.Empresa, TypeRateEnum.RoomRate)
 
-                                Log(hotelId:=RQ.HotelId, action:=acciones.Sincronizar, room:="", startDate:=Nothing, endDate:=Nothing, rateCode:="", xml:=res.Xml, dataXml:=res.RequestXML, note:="Tarifa enviada a Conflux")
+                                Log(hotelId:=RQ.HotelId, action:=acciones.Sincronizar, room:="", startDate:=Nothing, endDate:=Nothing, rateCode:="", xml:=res.Item1.Xml, dataXml:=res.Item1.RequestXML, note:="Tarifa enviada a Conflux")
+
+                                'Delete Log
+                                If res.Item2 IsNot Nothing Then
+                                    Log(hotelId:=RQ.HotelId, action:=acciones.Eliminar, room:="", startDate:=Nothing, endDate:=Nothing, rateCode:="", xml:=res.Item2.Xml, dataXml:=res.Item2.RequestXML, note:="Tarifa enviada para eliminar a Conflux")
+                                End If
 
                             Next
 

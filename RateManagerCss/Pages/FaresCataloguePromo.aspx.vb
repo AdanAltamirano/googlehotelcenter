@@ -742,9 +742,14 @@ Partial Public Class FaresCataloguePromo
                                     'End If
 
                                     'Actualizar
-                                    Dim res As RateResponse = confluxService.UpdateRate(auxFareId, f1, f2, info.Hotel, info.Empresa, TypeRateEnum.RoomRatePromotion)
+                                    Dim res As Tuple(Of RateResponse, RateResponse) = confluxService.UpdateRate(auxFareId, f1, f2, info.Hotel, info.Empresa, TypeRateEnum.RoomRatePromotion)
 
-                                    Me.guardalog("/Pages/FaresCataloguePromo.aspx", acciones.Sincronizar, "Tarifa enviada a Conflux", "", res.RequestXML, res.Xml, info.Hotel)
+                                    Me.guardalog("/Pages/FaresCataloguePromo.aspx", acciones.Sincronizar, "Tarifa enviada a Conflux", "", res.Item1.RequestXML, res.Item1.Xml, info.Hotel)
+
+                                    'Delete Log
+                                    If res.Item2 IsNot Nothing Then
+                                        Me.guardalog("/Pages/FaresCataloguePromo.aspx", acciones.Eliminar, "Eliminar tarifas Conflux", "", res.Item2.RequestXML, res.Item1.Xml, info.Hotel)
+                                    End If
 
                                 Catch ex As Exception
 
