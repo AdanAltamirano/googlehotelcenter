@@ -600,12 +600,12 @@ Partial Class ctrRatePlan
             'End If
 
             If Me.ddlSegmentos.SelectedValue.ToString.ToUpper = "N" Then
-                .Item(dsRate.FIELD_ACCESSCODE) = Me.txtAccessCode.Text
-                .Item(dsRate.FIELD_CD) = Me.txtCD.Text
+                .Item(dsRate.FIELD_ACCESSCODE) = Me.txtAccessCode.Text.Trim()
+                .Item(dsRate.FIELD_CD) = Me.txtCD.Text.Trim()
             ElseIf Me.ddlSegmentos.SelectedValue.ToString.ToUpper = "C" Then
                 If Me.txtAccessCode.Text.Trim <> "" OrElse Me.txtCD.Text.Trim <> "" Then
-                    .Item(dsRate.FIELD_ACCESSCODE) = Me.txtAccessCode.Text
-                    .Item(dsRate.FIELD_CD) = Me.txtCD.Text
+                    .Item(dsRate.FIELD_ACCESSCODE) = Me.txtAccessCode.Text.Trim()
+                    .Item(dsRate.FIELD_CD) = Me.txtCD.Text.Trim()
                 End If
             End If
 

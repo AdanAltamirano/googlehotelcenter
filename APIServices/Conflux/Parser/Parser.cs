@@ -83,32 +83,39 @@ namespace APIServices.Conflux.Parser
         //Invividual
         public static void ToRateAmountMessagesDelete(List<vDayRates> vDayRates, List<vDayRatesExceptions> ratesExceptions, TypeRateEnum typeRate, ref List<RateAmountMessage> rateAmountMessages)
         {
-           
+            string[] splitSegmentsNoRates = ConfigurationManager.AppSettings["segmentsNoRates"].Split(',');
+
+            char[] segmentsNoRates = string.Concat(splitSegmentsNoRates).ToCharArray();
+
             switch (typeRate)
             {
                 case TypeRateEnum.RoomRate:
 
                     foreach(var vDayRate in vDayRates)
                     {
-                        var room = RoomHelper.GetRoom(vDayRate.RoomId);
-
-                        RateAmountMessage rateAmountMessage = new RateAmountMessage();
-                        rateAmountMessage.statusApplicationControl = new StatusApplicationControl { RatePlanCode = vDayRate.RatePlanId, InvTypeCode = room.Code ?? "" };
-
-                        List<Rate> rates = new List<Rate>();
-
-                        Rate rate = new Rate() 
+                        if (vDayRate.Segment.IndexOfAny(segmentsNoRates) == -1 && (!vDayRate.IsMobileRate && !vDayRate.IsCallCenterOnly))
                         {
-                            StartDate = vDayRate.StartDate.ToString("yyyyMMdd"),
-                            EndDate = vDayRate.EndDate.ToString("yyyyMMdd")
-                        };
 
-                        rates.Add(rate);
+                            var room = RoomHelper.GetRoom(vDayRate.RoomId);
 
-                        rateAmountMessage.Rates = rates;
+                            RateAmountMessage rateAmountMessage = new RateAmountMessage();
+                            rateAmountMessage.statusApplicationControl = new StatusApplicationControl { RatePlanCode = vDayRate.RatePlanId, InvTypeCode = room.Code ?? "" };
+
+                            List<Rate> rates = new List<Rate>();
+
+                            Rate rate = new Rate()
+                            {
+                                StartDate = vDayRate.StartDate.ToString("yyyyMMdd"),
+                                EndDate = vDayRate.EndDate.ToString("yyyyMMdd")
+                            };
+
+                            rates.Add(rate);
+
+                            rateAmountMessage.Rates = rates;
 
 
-                        rateAmountMessages.Add(rateAmountMessage);
+                            rateAmountMessages.Add(rateAmountMessage);
+                        }
 
                     }
                    
@@ -117,25 +124,29 @@ namespace APIServices.Conflux.Parser
 
                     foreach (var vDayRate in ratesExceptions)
                     {
-                        var room = RoomHelper.GetRoom(vDayRate.RoomId);
-
-                        RateAmountMessage rateAmountMessage = new RateAmountMessage();
-                        rateAmountMessage.statusApplicationControl = new StatusApplicationControl { RatePlanCode = vDayRate.RatePlanId, InvTypeCode = room.Code ?? "" };
-
-                        List<Rate> rates = new List<Rate>();
-
-                        Rate rate = new Rate()
+                        if (vDayRate.Segment.IndexOfAny(segmentsNoRates) == -1 && (!vDayRate.IsMobileRate && !vDayRate.IsCallCenterOnly))
                         {
-                            StartDate = vDayRate.StartDate.ToString("yyyyMMdd"),
-                            EndDate = vDayRate.EndDate.ToString("yyyyMMdd")
-                        };
 
-                        rates.Add(rate);
+                            var room = RoomHelper.GetRoom(vDayRate.RoomId);
 
-                        rateAmountMessage.Rates = rates;
+                            RateAmountMessage rateAmountMessage = new RateAmountMessage();
+                            rateAmountMessage.statusApplicationControl = new StatusApplicationControl { RatePlanCode = vDayRate.RatePlanId, InvTypeCode = room.Code ?? "" };
+
+                            List<Rate> rates = new List<Rate>();
+
+                            Rate rate = new Rate()
+                            {
+                                StartDate = vDayRate.StartDate.ToString("yyyyMMdd"),
+                                EndDate = vDayRate.EndDate.ToString("yyyyMMdd")
+                            };
+
+                            rates.Add(rate);
+
+                            rateAmountMessage.Rates = rates;
 
 
-                        rateAmountMessages.Add(rateAmountMessage);
+                            rateAmountMessages.Add(rateAmountMessage);
+                        }
 
                     }
 

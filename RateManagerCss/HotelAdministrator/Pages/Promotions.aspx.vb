@@ -9,6 +9,7 @@ Imports APIServices.Conflux.OTA.Models.Rates
 Imports APIServices.Conflux.Models.Rates.Response
 Imports APIServices.Conflux.Models.RatePlan.Response
 Imports RateManager.Utitlities.Hotel
+Imports APIServices.Models
 
 Public Class Promotions
     Inherits PaginaBase
@@ -758,7 +759,7 @@ Public Class Promotions
                 End If
 
                 Trace.Write("HotelPayment antes")
-                
+
                 Trace.Write("HotelPayment despues")
                 If Not .IsNull(dsRatePlan.FIELD_IDDICSHORTDESC) Then
                     idShortDesc = .Item(dsRatePlan.FIELD_IDDICSHORTDESC)
@@ -1113,10 +1114,24 @@ Public Class Promotions
         ElseIf e.CommandName = "Delete" Then
             Cerror = 0
 
+            Dim ratePlanId As String = grid.DataKeys(e.Item.ItemIndex).ToString()
+            Dim confluxService As New ConfluxService()
+            Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
+            Dim isEnabledGoogleRequest As Boolean = HotelUtilitie.IsEnableGoogleRequest(info.Hotel)
+
+            Dim vDayRatesPromotion As List(Of vDayRates) = New List(Of vDayRates)()
+            Dim vDayRatesPromotionException As List(Of vDayRatesExceptions) = New List(Of vDayRatesExceptions)()
+
+            If isEnabledGoogleRequest Then
+                vDayRatesPromotion = Helpers.Rates.RatesHelpers.GetVDayRatePromotion(info.Hotel, ratePlanId)
+                vDayRatesPromotionException = Helpers.Rates.RatesHelpers.GetVDayRatePromotionException(info.Hotel, ratePlanId)
+            End If
+
 
             With New RatePlanFacade
-                If .LogicDeleteRatePlan(Me.cInfoActual.Hotel, grid.DataKeys(e.Item.ItemIndex)) Then
 
+
+                If .LogicDeleteRatePlan(Me.cInfoActual.Hotel, grid.DataKeys(e.Item.ItemIndex)) Then
                     Me.guardalog("/Pages/RatesPlans.aspx", PaginaBase.acciones.Eliminar, "Eliminó el rateplan con el id " & Me.grid.Items(e.Item.ItemIndex).Cells(dgcolumns.idrateplan).Text & " y el codigo de tarifa " & Me.grid.Items(e.Item.ItemIndex).Cells(dgcolumns.codigotarifa).Text)
                     If grid.CurrentPageIndex > 0 And grid.Items.Count = 1 Then
                         grid.CurrentPageIndex = ((grid.CurrentPageIndex * grid.PageSize) \ grid.PageSize) - 1
@@ -1125,6 +1140,17 @@ Public Class Promotions
                     Me.grid.SelectedIndex = -1
                     ClearData()
                     MostrarCmdNew(True)
+
+                    'Google Request
+
+                    If isEnabledGoogleRequest Then
+
+                        RequestPromotionsDeleteGoogle(vDayRatesPromotion, info.Empresa, info.Hotel, confluxService)
+                        RequestPromotionsExceptionsDeleteGoogle(vDayRatesPromotionException, info.Empresa, info.Hotel, confluxService)
+
+                    End If
+
+
                 Else
                     Cerror = 6
                 End If
@@ -1132,11 +1158,40 @@ Public Class Promotions
         ElseIf e.CommandName = "Active" Then
             With New RatePlanFacade
                 If .LogicActiveRatePlan(Me.cInfoActual.Hotel, grid.DataKeys(e.Item.ItemIndex)) Then
+                    Dim ratePlanId As String = grid.DataKeys(e.Item.ItemIndex).ToString()
                     ClearData()
                     LoadGridRatePlans(ctrlAutoComplete1.GetFilter)
                     Me.grid.SelectedIndex = -1
-                    
+
                     MostrarCmdNew(True)
+
+                    'Google Request
+
+                    Dim confluxService As New ConfluxService()
+                    Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
+                    Dim isEnabledGoogleRequest As Boolean = HotelUtilitie.IsEnableGoogleRequest(info.Hotel)
+
+                    If isEnabledGoogleRequest Then
+
+                        Dim res As Tuple(Of RateResponse, RateResponse) = confluxService.UpdateRatePromotion(info.Hotel, info.Empresa, ratePlanId, TypeRateEnum.RoomRate)
+                        CType(Me.Page, PaginaBase).guardalog("/HotelAdministrator/Pages/Promotions.aspx", CType(Me.Page, PaginaBase).acciones.Sincronizar, "Sincronizar Modificacion Promotions", "", res.Item1.RequestXML, res.Item1.Xml, info.Hotel)
+
+                        'Delete Log
+                        If res.Item2 IsNot Nothing Then
+                            CType(Me.Page, PaginaBase).guardalog("/HotelAdministrator/Pages/Promotions.aspx", CType(Me.Page, PaginaBase).acciones.Eliminar, "Eliminar Modificacion Promotions", "", res.Item2.RequestXML, res.Item2.Xml, info.Hotel)
+                        End If
+
+                        Dim resPromotion As Tuple(Of RateResponse, RateResponse) = confluxService.UpdateRatePromotion(info.Hotel, info.Empresa, IdRatePlan, TypeRateEnum.RoomRatePromotion)
+                        CType(Me.Page, PaginaBase).guardalog("/HotelAdministrator/Pages/Promotions.aspx", CType(Me.Page, PaginaBase).acciones.Sincronizar, "Sincronizar Modificacion Promotions", "", resPromotion.Item1.RequestXML, resPromotion.Item1.Xml, info.Hotel)
+
+                        'Delete Log
+                        If resPromotion.Item2 IsNot Nothing Then
+                            CType(Me.Page, PaginaBase).guardalog("/HotelAdministrator/Pages/Promotions.aspx", CType(Me.Page, PaginaBase).acciones.Eliminar, "Eliminar Modificacion Promotions", "", resPromotion.Item2.RequestXML, resPromotion.Item2.Xml, info.Hotel)
+                        End If
+
+
+                    End If
+
                 End If
             End With
         End If
@@ -1176,7 +1231,7 @@ Public Class Promotions
                 LK = e.Item.Cells(dgcolumns.eliminar).FindControl("lnkEliminar")
                 LK.Text = PortalCulture.GetString("01521")
                 LK.Attributes.Add("onClick", "javascript:openModal('" & LK2.ClientID & "', '" & PortalCulture.GetString("01649") & "','" & PortalCulture.GetString("01651") & "')")
-                
+
                 If e.Item.Cells(dgcolumns.principalSegmentRac).Text.ToUpper = "TRUE" Then
                     LK.Enabled = False
                 End If
@@ -1420,26 +1475,26 @@ Public Class Promotions
             ds.AcceptChanges()
             ds.Tables(RatesPlanRulesData.TABLE_RATEPLANRULES).Rows(0).Item(RatesPlanRulesData.FIELD_IDRULE) = Me.IdRule
             Try
-            With New RatesPlanRulesFacade
-                sw = .Update(ds)
-                If sw Then
-                    sData = Util.Utility.GetXml(ds.TABLE_RATEPLANRULES, "UpdateRatesPlanRules", ds)
-                    CType(Me.Page, PaginaBase).guardalog("/Pages/RatePlansRules.aspx", If(publish, PaginaBase.acciones.Publicar, PaginaBase.acciones.Modificar), "Se modificó la regla " & txtCancelPolicyDescription.Text, "", sDataPrev, sData)
+                With New RatesPlanRulesFacade
+                    sw = .Update(ds)
+                    If sw Then
+                        sData = Util.Utility.GetXml(ds.TABLE_RATEPLANRULES, "UpdateRatesPlanRules", ds)
+                        CType(Me.Page, PaginaBase).guardalog("/Pages/RatePlansRules.aspx", If(publish, PaginaBase.acciones.Publicar, PaginaBase.acciones.Modificar), "Se modificó la regla " & txtCancelPolicyDescription.Text, "", sDataPrev, sData)
 
-                    If Not dr.IsNull(RatesPlanRulesData.FIELD_idDiccionarioPoliticaCancelacionReview) Then
-                        txtCancelPoliciesPreview.Update(dr.Item(RatesPlanRulesData.FIELD_idDiccionarioPoliticaCancelacionReview), publish)
+                        If Not dr.IsNull(RatesPlanRulesData.FIELD_idDiccionarioPoliticaCancelacionReview) Then
+                            txtCancelPoliciesPreview.Update(dr.Item(RatesPlanRulesData.FIELD_idDiccionarioPoliticaCancelacionReview), publish)
+                        End If
+
+                        If Not dr.IsNull(RatesPlanRulesData.FIELD_idDiccionarioPoliticaCancelacionFull) Then
+                            txtCancelPoliciesFull.Update(dr.Item(RatesPlanRulesData.FIELD_idDiccionarioPoliticaCancelacionFull), publish)
+                        End If
+                        If Me.txtCancelPoliciesPreview.HasChanges OrElse Me.txtCancelPoliciesFull.HasChanges Then 'OrElse Me.txtGuaranteePolicy.HasChanges OrElse Me.txtPolicyCreditCard.HasChanges Then
+                            CType(Me.Page, PaginaBase).NotifyContentModification("Regla de plan tarifario " & txtCancelPolicyDescription.Text, "Reglas De Plan Tarifario")
+                        End If
+
                     End If
 
-                    If Not dr.IsNull(RatesPlanRulesData.FIELD_idDiccionarioPoliticaCancelacionFull) Then
-                        txtCancelPoliciesFull.Update(dr.Item(RatesPlanRulesData.FIELD_idDiccionarioPoliticaCancelacionFull), publish)
-                    End If
-                    If Me.txtCancelPoliciesPreview.HasChanges OrElse Me.txtCancelPoliciesFull.HasChanges Then 'OrElse Me.txtGuaranteePolicy.HasChanges OrElse Me.txtPolicyCreditCard.HasChanges Then
-                        CType(Me.Page, PaginaBase).NotifyContentModification("Regla de plan tarifario " & txtCancelPolicyDescription.Text, "Reglas De Plan Tarifario")
-                    End If
-
-                End If
-
-                Return sw
+                    Return sw
                 End With
             Catch ex As Exception
                 lblError.Visible = True
@@ -1667,5 +1722,70 @@ Public Class Promotions
         End If
         Return filter
     End Function
+
+    Private Sub RequestPromotionsDeleteGoogle(ByVal vDayRatesPromotions As List(Of vDayRates), ByVal empresa As Integer, ByVal hotel As Integer, ByVal confluxService As ConfluxService)
+        If vDayRatesPromotions.Count > 0 Then
+            Dim rateAmountMessages As RateAmountMessages = New RateAmountMessages()
+
+            rateAmountMessages.HotelCode = empresa
+            rateAmountMessages.RateAmountMessagesList = New List(Of OTA.Models.Rates.RateAmountMessage)
+
+            Parser.Parser.ToRateAmountMessagesDelete(vDayRatesPromotions, Nothing, TypeRateEnum.RoomRate, rateAmountMessages.RateAmountMessagesList)
+
+            Try
+
+                Dim res As RateResponse = confluxService.DeleteRates(rateAmountMessages)
+                Me.guardalog("/HotelAdministrator/Pages/Promotions.aspx", acciones.Eliminar, "Eliminar promociones tarifas Conflux", "", res.RequestXML, res.Xml, hotel)
+
+            Catch ex As Exception
+
+                Dim errorsElement As New System.Xml.Linq.XElement("Errors")
+                Dim errorElementProperty As New System.Xml.Linq.XElement("Error")
+
+                errorElementProperty.Add(
+                New System.Xml.Linq.XAttribute("Type", "3"),
+                New System.Xml.Linq.XAttribute("Code", "448"),
+                New System.Xml.Linq.XText(ex.Message)
+            )
+
+                errorsElement.Add(errorElementProperty)
+
+                Me.guardalog("/HotelAdministrator/Pages/Promotions.aspx", acciones.Eliminar, "Error al eliminar promociones tarifas Conflux", "", "", errorsElement.ToString(), hotel)
+            End Try
+        End If
+    End Sub
+
+    Private Sub RequestPromotionsExceptionsDeleteGoogle(ByVal vDayRatesPromotionExceptions As List(Of vDayRatesExceptions), ByVal empresa As Integer, ByVal hotel As Integer, ByVal confluxService As ConfluxService)
+        If vDayRatesPromotionExceptions.Count > 0 Then
+
+            Dim rateAmountMessages As RateAmountMessages = New RateAmountMessages()
+
+            rateAmountMessages.HotelCode = empresa
+            rateAmountMessages.RateAmountMessagesList = New List(Of OTA.Models.Rates.RateAmountMessage)
+
+            Parser.Parser.ToRateAmountMessagesDelete(Nothing, vDayRatesPromotionExceptions, TypeRateEnum.RoomRate, rateAmountMessages.RateAmountMessagesList)
+
+            Try
+
+                Dim res As RateResponse = confluxService.DeleteRates(rateAmountMessages)
+                Me.guardalog("/HotelAdministrator/Pages/Promotions.aspx", acciones.Eliminar, "Eliminar promociones tarifas Conflux", "", res.RequestXML, res.Xml, hotel)
+
+            Catch ex As Exception
+
+                Dim errorsElement As New System.Xml.Linq.XElement("Errors")
+                Dim errorElementProperty As New System.Xml.Linq.XElement("Error")
+
+                errorElementProperty.Add(
+                    New System.Xml.Linq.XAttribute("Type", "3"),
+                    New System.Xml.Linq.XAttribute("Code", "448"),
+                    New System.Xml.Linq.XText(ex.Message)
+                )
+
+                errorsElement.Add(errorElementProperty)
+
+                Me.guardalog("/HotelAdministrator/Pages/Promotions.aspx", acciones.Eliminar, "Error al eliminar promociones tarifas Conflux", "", "", errorsElement.ToString(), hotel)
+            End Try
+        End If
+    End Sub
 
 End Class
