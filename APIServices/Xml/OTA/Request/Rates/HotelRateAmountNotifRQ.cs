@@ -124,7 +124,8 @@ namespace APIServices.Xml.OTA.Request.Rates
                                 new XAttribute("AmountBeforeTax", baseGuestAmount.AmountBeforeTax),
                                 new XAttribute("AmountAfterTax", baseGuestAmount.AmountAfterTax),
                                 new XAttribute("NumberOfGuests", baseGuestAmount.NumberOfGuests),
-                                new XAttribute("AgeQualifyingCode", baseGuestAmount.AgeQualifyingCode));
+                                new XAttribute("AgeQualifyingCode", baseGuestAmount.AgeQualifyingCode),
+                                new XAttribute("CurrencyCode", baseGuestAmount.CurrencyCode));
 
                             baseGuestAmounts.Add(baseGuestAmountXml);
 
@@ -224,7 +225,8 @@ namespace APIServices.Xml.OTA.Request.Rates
                                 new XAttribute("AmountBeforeTax", baseGuestAmount.AmountBeforeTax),
                                 new XAttribute("AmountAfterTax", baseGuestAmount.AmountAfterTax),
                                 new XAttribute("NumberOfGuests", baseGuestAmount.NumberOfGuests),
-                                new XAttribute("AgeQualifyingCode", baseGuestAmount.AgeQualifyingCode));
+                                new XAttribute("AgeQualifyingCode", baseGuestAmount.AgeQualifyingCode),
+                                new XAttribute("CurrencyCode", baseGuestAmount.CurrencyCode));
 
                             baseGuestAmounts.Add(baseGuestAmountXml);
 
