@@ -138,6 +138,9 @@
     <Compile Include="Conflux\Models\Rates\Response\RateResponse.cs" />
     <Compile Include="Conflux\Models\Restrictions\Response\Restriction.cs" />
     <Compile Include="Conflux\Models\Restrictions\Response\RestrictionResponse.cs" />
+    <Compile Include="Conflux\Models\Restrictions\Restriction.cs" />
+    <Compile Include="Conflux\Models\Restrictions\Room\Response\RoomResponse.cs" />
+    <Compile Include="Conflux\Models\Restrictions\Room\RoomData.cs" />
     <Compile Include="Conflux\Models\User\Response\UserReponse.cs" />
     <Compile Include="Conflux\Models\User\User.cs" />
     <Compile Include="Conflux\Parser\Parser.cs" />

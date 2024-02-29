@@ -13,7 +13,8 @@ using APIServices.Conflux.OTA.Models.Rates;
 using APIServices.Conflux.Models.Rates.Response;
 using APIServices.Conflux.Models.Restrictions.Response;
 using APIServices.Conflux.Models.RatePlan.Response;
-    using APIServices.Conflux.Parser.RatePlan;
+using APIServices.Conflux.Models.Restrictions.Room.Response;
+using APIServices.Conflux.Parser.RatePlan;
 using APIServices.Conflux.Parser.Restriction;
 using APIServices.Xml.Soap;
 using APIServices.Xml.OTA.Request.Rates;
@@ -23,6 +24,7 @@ using Portal.General.Facade;
 using Portal.Hotel.Facade;
 using Portal.Hotel.Common.Data;
 using Portal.General.Common.Data;
+
 
 
 namespace APIServices.Conflux
@@ -85,6 +87,7 @@ namespace APIServices.Conflux
         public RatePlanResponse InsertRatePlan(int hotelId, int companyId,string ratePlanId, string ratePlanName, string ratePlanDesc, string language = "ES")
         {
             RatePlanResponse response = new RatePlanResponse();
+            string googleChannelId = ConfigurationManager.AppSettings["GoogleChannelID"];
 
             try
             {
@@ -97,7 +100,7 @@ namespace APIServices.Conflux
 
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-                string endPoint = string.Format("properties/{0}/rateplans", companyId);
+                string endPoint = string.Format("properties/{0}/rateplans", googleChannelId);
 
                 HttpRequestMessage request = new HttpRequestMessage(new HttpMethod("PATCH"),endPoint);
                 request.Content = new StringContent(soapRequest.ToString());
@@ -122,6 +125,49 @@ namespace APIServices.Conflux
 
             return response;
         }
+
+        public RoomResponse InsertRoom(int companyId, Models.Restrictions.Room.RoomData roomData)
+        {
+            RoomResponse response = new RoomResponse();
+            string googleChannelId = ConfigurationManager.AppSettings["GoogleChannelID"];
+
+            try
+            {
+                var transaction = RestrictionsParser.ToTransaction(companyId, roomData);
+
+                var xml = HotelRatePlanRQ.CreateHotelRoomInsertRQ(transaction);
+
+                var soapRequest = Soap.CreateSoapRequestXml(xml);
+
+                string endPoint = string.Format("properties/{0}/rooms", googleChannelId);
+
+                HttpRequestMessage request = new HttpRequestMessage(new HttpMethod("PATCH"), endPoint);
+                request.Content = new StringContent(soapRequest.ToString());
+
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(ConfigurationManager.AppSettings["confluxApiUrl"].ToString());
+
+                    var responseRequest = client.SendAsync(request).Result;
+
+                    response.StatusCode = (int)responseRequest.StatusCode;
+                    response.Response = responseRequest.Content.ReadAsStringAsync().Result;
+                    response.RequestXML = soapRequest.ToString();
+
+                }
+
+
+            }
+            catch(Exception ex)
+            {
+                response.StatusCode = 500;
+                response.Response = ex.Message;
+            }
+
+            return response;
+
+        }
+
 
         //public RateResponse UpdateRate(int rateId,DateTime startDate, DateTime endDate, int hotelId ,int companyId, TypeRateEnum typeRate)
         //{

@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Xml.Linq;
-using APIServices.Conflux.Models.RatePlan;
 
 namespace APIServices.Xml.OTA.Request.RatePlan
 {
     public static class HotelRatePlanRQ
     {
-        public static XElement CreateHotelRatePlanInsertRQ(Transaction transaction)
+        public static XElement CreateHotelRatePlanInsertRQ(Conflux.Models.RatePlan.Transaction transaction)
         {
             XElement transactionRQ = new XElement("Transaction",
                 new XAttribute("timestamp", transaction.TimeStamp));
@@ -27,7 +26,28 @@ namespace APIServices.Xml.OTA.Request.RatePlan
 
         }
 
-        private static XElement GetPackageData(PackageData packageData)
+        public static XElement CreateHotelRoomInsertRQ(Conflux.Models.Restrictions.Transaction transaction)
+        {
+            XElement transactionRQ = new XElement("Transaction",
+                new XAttribute("timestamp", transaction.TimeStamp));
+
+            XElement propertyDataSet = new XElement("PropertyDataSet",
+                new XAttribute("action", "delta"));
+
+            XElement property = new XElement("Property",
+                new XText(transaction.PropertyDataSet.Property.ToString()));
+
+            XElement roomData = GetRoomData(transaction.PropertyDataSet.RoomData);
+
+            propertyDataSet.Add(property, roomData);
+            transactionRQ.Add(propertyDataSet);
+
+            return transactionRQ;
+
+        }
+
+
+        private static XElement GetPackageData(Conflux.Models.RatePlan.PackageData packageData)
         {
             XElement packageDataEl= new XElement("PackageData");
 
@@ -82,6 +102,78 @@ namespace APIServices.Xml.OTA.Request.RatePlan
 
 
         }
+
+        private static XElement GetRoomData(Conflux.Models.Restrictions.RoomData roomData)
+        {
+            XElement roomDataEl = new XElement("RoomData");
+
+            XElement roomIdEl = new XElement("RoomID",
+                new XText(roomData.RoomID));
+
+            XElement nameEl = new XElement("Name",
+                new XElement("Text", new XAttribute("text", roomData.Name.Text.Txt),
+                    new XAttribute("language", roomData.Name.Text.Language)
+                    )
+                );
+
+            XElement descriptionEl = new XElement("Description",
+                new XElement("Text", new XAttribute("text", roomData.Description.Text.Txt),
+                    new XAttribute("language", roomData.Description.Text.Language)
+                    )
+                );
+
+            XElement capacityEl = new XElement("Capacity",
+                new XText(roomData.Capacity.ToString()));
+
+            XElement adultCapacityEl = new XElement("AdultCapacity",
+                new XText(roomData.AdultCapacity.ToString()));
+
+            XElement occupancySettingsEl = new XElement("OccupancySettings",
+                new XElement("MinOccupancy", new XText(roomData.OccupancySettings.MinOccupancy.ToString())),
+                new XElement("MinAge", new XText(roomData.OccupancySettings.MingAge.ToString()))
+                );
+
+            XElement photoEl = new XElement("PhotoURL",
+                new XElement("Caption",
+                    new XElement("Text", new XAttribute("text", roomData.PhotoUrl.Caption.Text.Txt),
+                    new XAttribute("language", roomData.PhotoUrl.Caption.Text.Language))
+                ),
+                new XElement("URL",new XText(roomData.PhotoUrl.URL))
+            );
+
+            XElement roomFeaturesEl = new XElement("RoomFeatures",
+                new XElement("JapaneseHotelRoomStyle", new XText(roomData.RoomFeatures.JapaneseHotelRoomsStyle)),
+                GetBeds(roomData),
+                new XElement("Roomsharing", new XText(roomData.RoomFeatures.RoomSharing)),
+                new XElement("Smoking", new XText(roomData.RoomFeatures.Smoking)),
+                new XElement("BathAndToilet", new XAttribute("relation",roomData.RoomFeatures.BathAndToilet.Relation),
+                    new XElement("Bath", new XAttribute("bathtub", roomData.RoomFeatures.BathAndToilet.Bath.Bathtub.ToString().ToLower()), new XAttribute("shower", roomData.RoomFeatures.BathAndToilet.Bath.Shower.ToString().ToLower())),
+                    new XElement("Toilet", new XAttribute("electronic_bidet", roomData.RoomFeatures.BathAndToilet.Toliet.ElectronicBidet.ToString().ToLower()))
+                )
+            );
+
+            roomDataEl.Add(roomIdEl, nameEl, descriptionEl, capacityEl, adultCapacityEl, occupancySettingsEl, photoEl, roomFeaturesEl);
+
+
+
+            return roomDataEl;
+        }
+
+        private static XElement GetBeds(Conflux.Models.Restrictions.RoomData roomData)
+        {
+            XElement bedsEl = new XElement("Beds");
+
+            foreach(var bed in roomData.RoomFeatures.Beds)
+            {
+                XElement _bed = new XElement("Bed", new XAttribute("size", bed.Size));
+
+                bedsEl.Add(_bed);
+            }
+
+            return bedsEl;
+
+        }
+
 
     }
 }

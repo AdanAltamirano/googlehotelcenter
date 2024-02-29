@@ -6,6 +6,11 @@ Imports System.Drawing
 Imports System.Drawing.Drawing2D
 Imports System.Drawing.Imaging
 Imports System.Data.SqlClient
+Imports APIServices.Models
+Imports APIServices.Conflux
+Imports APIServices.Conflux.Models.Restrictions.Room
+Imports APIServices.Conflux.Models.Restrictions.Room.Response
+Imports RateManager.Utitlities.Hotel
 
 
 
@@ -364,6 +369,9 @@ Partial Class ctrlRooms
     End Function
 
     Public Function SaveRoom(ByRef Er As Integer, ByVal publish As Boolean) As Boolean
+
+        Dim roomData As RoomData = New RoomData()
+
         Dim rooms As RoomsHotelData
         Dim RoomCode As String
         Dim sdataPrev As String
@@ -386,25 +394,33 @@ Partial Class ctrlRooms
                 If ImgFileOpen.Value <> "" Then
                     If IsValidIMG(ImgFileOpen) Then
                         cvImagen.IsValid = True
-                        SaveRoom = _
-                        .createRoom(Me.lstRoomType.SelectedValue, _
-                           Me.idHotel, _
-                           Me.txtNumberRooms.Text, _
-                           Me.lstPeoplesInRoom.SelectedValue, _
-                           Me.lstPeoplesExtras.SelectedValue, _
-                           Me.lstNumberAdults.SelectedValue, _
-                           Me.lstNumberChildrens.SelectedValue, _
-                           Me.mlDescriptionRoom.textodefault, _
-                           mlNameRoom.textodefault, _
-                           RoomCode, 0, 0, Me.ddlMaxAdultRoll.SelectedValue, _
-                            Me.ddlMaxChildRoll.SelectedValue, Me.ddlMaxCribRoll.SelectedValue, _
-                            CDbl(Val(Me.txtPriceAdultRoll.Text)), CDbl(Val(Me.txtPriceChildRoll.Text)), CInt(Val(Me.txtPriceCribRoll.Text)), _
+                        SaveRoom =
+                        .createRoom(Me.lstRoomType.SelectedValue,
+                           Me.idHotel,
+                           Me.txtNumberRooms.Text,
+                           Me.lstPeoplesInRoom.SelectedValue,
+                           Me.lstPeoplesExtras.SelectedValue,
+                           Me.lstNumberAdults.SelectedValue,
+                           Me.lstNumberChildrens.SelectedValue,
+                           Me.mlDescriptionRoom.textodefault,
+                           mlNameRoom.textodefault,
+                           RoomCode, 0, 0, Me.ddlMaxAdultRoll.SelectedValue,
+                            Me.ddlMaxChildRoll.SelectedValue, Me.ddlMaxCribRoll.SelectedValue,
+                            CDbl(Val(Me.txtPriceAdultRoll.Text)), CDbl(Val(Me.txtPriceChildRoll.Text)), CInt(Val(Me.txtPriceCribRoll.Text)),
                            rooms, Me.txtOrden.Text, lstMinNumberAdults.SelectedValue)
                         'si se inserto el registro, entonces  se procede a subir la imagen 
                         If SaveRoom Then
                             mlDescriptionRoom.Update(rooms.Tables(RoomsHotelData.TBL_ROOM_HOTEL).Rows(0)(RoomsHotelData.FLD_ID_DESCRIPTION), publish)
                             mlNameRoom.Update(rooms.Tables(RoomsHotelData.TBL_ROOM_HOTEL).Rows(0)(RoomsHotelData.FLD_ID_NOMBRE), publish)
                             saveImage(rooms.Tables(0).Rows(0).Item("idTipoHabitacion_Hotel"), ImgFileOpen)
+
+                            'Google Room Data
+                            roomData.RoomID = RoomCode
+                            roomData.RoomName = mlNameRoom.textodefault
+                            roomData.RoomDescription = Me.mlDescriptionRoom.textodefault
+                            roomData.Capacity = CType(Me.lstPeoplesInRoom.SelectedValue, Integer)
+                            roomData.AdultCapcity = CType(Me.lstNumberAdults.SelectedValue, Integer)
+
                         End If
                     Else
                         cvImagen.IsValid = False
@@ -412,23 +428,30 @@ Partial Class ctrlRooms
                         Er = 1
                     End If
                 Else
-                    SaveRoom = _
-                    .createRoom(Me.lstRoomType.SelectedValue, _
-                       Me.idHotel, _
-                       Me.txtNumberRooms.Text, _
-                       Me.lstPeoplesInRoom.SelectedValue, _
-                       Me.lstPeoplesExtras.SelectedValue, _
-                       Me.lstNumberAdults.SelectedValue, _
-                       Me.lstNumberChildrens.SelectedValue, _
-                       Me.mlDescriptionRoom.textodefault, _
-                       mlNameRoom.textodefault, _
-                       RoomCode, 0, 0, Me.ddlMaxAdultRoll.SelectedValue, _
-                            Me.ddlMaxChildRoll.SelectedValue, Me.ddlMaxCribRoll.SelectedValue, _
-                        CDbl(Val(Me.txtPriceAdultRoll.Text)), CDbl(Val(Me.txtPriceChildRoll.Text)), CInt(Val(Me.txtPriceCribRoll.Text)), _
+                    SaveRoom =
+                    .createRoom(Me.lstRoomType.SelectedValue,
+                       Me.idHotel,
+                       Me.txtNumberRooms.Text,
+                       Me.lstPeoplesInRoom.SelectedValue, _ 'Capacity
+                       Me.lstPeoplesExtras.SelectedValue,
+                       Me.lstNumberAdults.SelectedValue, 'AdultCapacity
+                       Me.lstNumberChildrens.SelectedValue,
+                       Me.mlDescriptionRoom.textodefault,
+                       mlNameRoom.textodefault,
+                       RoomCode, 0, 0, Me.ddlMaxAdultRoll.SelectedValue,
+                            Me.ddlMaxChildRoll.SelectedValue, Me.ddlMaxCribRoll.SelectedValue,
+                        CDbl(Val(Me.txtPriceAdultRoll.Text)), CDbl(Val(Me.txtPriceChildRoll.Text)), CInt(Val(Me.txtPriceCribRoll.Text)),
                        rooms, Me.txtOrden.Text, lstMinNumberAdults.SelectedValue)
                     If SaveRoom Then
                         mlDescriptionRoom.Update(rooms.Tables(RoomsHotelData.TBL_ROOM_HOTEL).Rows(0)(RoomsHotelData.FLD_ID_DESCRIPTION), publish)
                         mlNameRoom.Update(rooms.Tables(RoomsHotelData.TBL_ROOM_HOTEL).Rows(0)(RoomsHotelData.FLD_ID_NOMBRE), publish)
+
+                        'Google Room Data
+                        roomData.RoomID = RoomCode
+                        roomData.RoomName = mlNameRoom.textodefault
+                        roomData.RoomDescription = Me.mlDescriptionRoom.textodefault
+                        roomData.Capacity = CType(Me.lstPeoplesInRoom.SelectedValue, Integer)
+                        roomData.AdultCapcity = CType(Me.lstNumberAdults.SelectedValue, Integer)
                     End If
                 End If
             End With
@@ -438,6 +461,11 @@ Partial Class ctrlRooms
                 Me.newRoom()
                 Me.idRoom = rooms.Tables(RoomsHotelData.TBL_ROOM_HOTEL).Rows(0).Item(RoomsHotelData.FLD_ID_ROOM_HOTEL)
                 'CType(Me.Page, PaginaBase).guardalog("/Pages/Rooms.aspx", PaginaBase.acciones.Modificar, "Se modificó la habitación " & grid.Items(grid.SelectedIndex).Cells(columns.Tipo).Text & " - " & grid.Items(grid.SelectedIndex).Cells(columns.nameroom).Text & " de el hotel " & Me.cInfoActual.HotelName)
+
+                'Google Request
+
+                SendRoomGoogle(roomData)
+
                 Return SaveRoom
             End If
         Else    'Update
@@ -449,20 +477,20 @@ Partial Class ctrlRooms
                         'TODO: Se debe de checar el cambio de max adults ect etc
                         'Para modificar las reglas de habitacion (Eliminar reglas que no cumplan con el nuevo criterio)
                         'Y enviar un mensaje al usuario
-                        SaveRoom = _
-                        .updateRoom(Me.idRoom, _
-                           Me.lstRoomType.SelectedValue, _
-                           Me.idHotel, _
-                           Me.txtNumberRooms.Text, _
-                           Me.lstPeoplesInRoom.SelectedValue, _
-                           Me.lstPeoplesExtras.SelectedValue, _
-                           Me.lstNumberAdults.SelectedValue, _
-                           Me.lstNumberChildrens.SelectedValue, _
-                           Me.mlDescriptionRoom.textodefault, _
-                           mlNameRoom.textodefault, _
-                         "", 0, 0, Me.ddlMaxAdultRoll.SelectedValue, _
-                            Me.ddlMaxChildRoll.SelectedValue, Me.ddlMaxCribRoll.SelectedValue, _
-                        CDbl(Val(Me.txtPriceAdultRoll.Text)), CDbl(Val(Me.txtPriceChildRoll.Text)), CInt(Val(Me.txtPriceCribRoll.Text)), _
+                        SaveRoom =
+                        .updateRoom(Me.idRoom,
+                           Me.lstRoomType.SelectedValue,
+                           Me.idHotel,
+                           Me.txtNumberRooms.Text,
+                           Me.lstPeoplesInRoom.SelectedValue,
+                           Me.lstPeoplesExtras.SelectedValue,
+                           Me.lstNumberAdults.SelectedValue,
+                           Me.lstNumberChildrens.SelectedValue,
+                           Me.mlDescriptionRoom.textodefault,
+                           mlNameRoom.textodefault,
+                         "", 0, 0, Me.ddlMaxAdultRoll.SelectedValue,
+                            Me.ddlMaxChildRoll.SelectedValue, Me.ddlMaxCribRoll.SelectedValue,
+                        CDbl(Val(Me.txtPriceAdultRoll.Text)), CDbl(Val(Me.txtPriceChildRoll.Text)), CInt(Val(Me.txtPriceCribRoll.Text)),
                            rooms, Me.txtOrden.Text, lstMinNumberAdults.SelectedValue, False)
                         If SaveRoom Then
                             mlDescriptionRoom.Update(rooms.Tables(RoomsHotelData.TBL_ROOM_HOTEL).Rows(0)(RoomsHotelData.FLD_ID_DESCRIPTION), publish)
@@ -476,20 +504,20 @@ Partial Class ctrlRooms
                         Er = 1
                     End If
                 Else
-                    SaveRoom = _
-                    .updateRoom(Me.idRoom, _
-                     Me.lstRoomType.SelectedValue, _
-                     Me.idHotel, _
-                     Me.txtNumberRooms.Text, _
-                     Me.lstPeoplesInRoom.SelectedValue, _
-                     Me.lstPeoplesExtras.SelectedValue, _
-                     Me.lstNumberAdults.SelectedValue, _
-                     Me.lstNumberChildrens.SelectedValue, _
-                     Me.mlDescriptionRoom.textodefault, _
-                     mlNameRoom.textodefault, _
-                    "", 0, 0, Me.ddlMaxAdultRoll.SelectedValue, _
-                            Me.ddlMaxChildRoll.SelectedValue, Me.ddlMaxCribRoll.SelectedValue, _
-                        CDbl(Val(Me.txtPriceAdultRoll.Text)), CDbl(Val(Me.txtPriceChildRoll.Text)), CInt(Val(Me.txtPriceCribRoll.Text)), _
+                    SaveRoom =
+                    .updateRoom(Me.idRoom,
+                     Me.lstRoomType.SelectedValue,
+                     Me.idHotel,
+                     Me.txtNumberRooms.Text,
+                     Me.lstPeoplesInRoom.SelectedValue,
+                     Me.lstPeoplesExtras.SelectedValue,
+                     Me.lstNumberAdults.SelectedValue,
+                     Me.lstNumberChildrens.SelectedValue,
+                     Me.mlDescriptionRoom.textodefault,
+                     mlNameRoom.textodefault,
+                    "", 0, 0, Me.ddlMaxAdultRoll.SelectedValue,
+                            Me.ddlMaxChildRoll.SelectedValue, Me.ddlMaxCribRoll.SelectedValue,
+                        CDbl(Val(Me.txtPriceAdultRoll.Text)), CDbl(Val(Me.txtPriceChildRoll.Text)), CInt(Val(Me.txtPriceCribRoll.Text)),
                      rooms, Me.txtOrden.Text, lstMinNumberAdults.SelectedValue, False)
 
                     If SaveRoom Then
@@ -753,6 +781,29 @@ Partial Class ctrlRooms
     Private Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.PreRender
         loadResources()
     End Sub
+
+#Region "Google"
+
+    Private Sub SendRoomGoogle(ByVal roomData As RoomData)
+
+        Dim confluxService As New ConfluxService()
+        Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
+        Dim isEnabledGoogleRequest As Boolean = HotelUtilitie.IsEnableGoogleRequest(info.Hotel)
+
+        If isEnabledGoogleRequest Then
+
+            Dim res As RoomResponse = confluxService.InsertRoom(info.Empresa, roomData)
+
+            Dim note As String = String.Format("Crear habitacion {0} en conflux para el hotel {1}", roomData.RoomID, info.Hotel)
+
+            CType(Me.Page, PaginaBase).guardalog("/Pages/Rooms.aspx", PaginaBase.acciones.Crear, note, "", res.RequestXML, res.Response)
+
+        End If
+
+    End Sub
+
+#End Region
+
 
 End Class
 

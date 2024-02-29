@@ -4,7 +4,9 @@ using System.Linq;
 using System.Collections.Generic;
 using APIServices.Models;
 using APIServices.Conflux.Helpers.Restriction;
+using APIServices.Conflux.Models.Restrictions;
 using APIServices.Conflux.OTA.Models.Restrictions;
+
 
 namespace APIServices.Conflux.Parser.Restriction
 {
@@ -15,6 +17,96 @@ namespace APIServices.Conflux.Parser.Restriction
         public static void Init(int hotelCode)
         {
             HotelCode = hotelCode;
+        }
+
+        public static Transaction ToTransaction(int propertyId, Models.Restrictions.Room.RoomData roomData)
+        {
+            Transaction transaction = new Transaction()
+            {
+                TimeStamp = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fffffffK")
+            };
+
+            PropertyDataSet propertyDataSet = new PropertyDataSet();
+            propertyDataSet.Property = propertyId;
+
+            RoomData _roomData = new RoomData();
+
+            _roomData.RoomID = roomData.RoomID;
+
+            _roomData.Name = new Name()
+            {
+                Text = new Text() 
+                {
+                    Txt = roomData.RoomName,
+                    Language = roomData.Language
+                }
+            };
+
+            _roomData.Description = new Description()
+            {
+                Text = new Text()
+                {
+                    Txt = roomData.RoomDescription,
+                    Language = roomData.Language
+                }
+            };
+
+            _roomData.Capacity = roomData.Capacity;
+            _roomData.AdultCapacity = roomData.AdultCapcity;
+
+            _roomData.OccupancySettings = new OccupancySettings()
+            {
+                MinOccupancy = roomData.MinOccupancy,
+                MingAge = roomData.MinAge
+            };
+
+            _roomData.PhotoUrl = new PhotoUrl()
+            {
+                Caption = new Caption()
+                {
+                    Text = new Text()
+                    {
+                        Txt = "Room Photo",
+                        Language = roomData.Language
+                    }
+                },
+                URL = roomData.PhotoUrl
+            };
+
+            _roomData.RoomFeatures = new RoomFeatures()
+            {
+                JapaneseHotelRoomsStyle = roomData.JapaneseHotelRoomStyle,
+
+                Beds = new List<Bed>()
+                { 
+                    new Bed()
+                    { 
+                        Size = roomData.BedSize
+                    }
+                },
+
+                RoomSharing = roomData.RoomSharing,
+                Smoking = roomData.Smoking,
+
+                BathAndToilet = new BathAndToilet()
+                { 
+                    Relation = roomData.BathAndToilet.Relation,
+                    Bath = new Bath()
+                    {
+                        Bathtub = roomData.BathAndToilet.Bath.Bathtub,
+                        Shower = roomData.BathAndToilet.Bath.Shower
+                    },
+                    Toliet = new Toilet()
+                    { 
+                        ElectronicBidet = roomData.BathAndToilet.Toliet.ElectronicBidet
+                    }
+                }
+            };
+
+            propertyDataSet.RoomData = _roomData;
+            transaction.PropertyDataSet = propertyDataSet;
+
+            return transaction;
         }
 
         public static AvailStatusMessages ToAvailStatusMessages(List<spGetLockRoomTypesByHotel_Result> lockRoomTypesList)
