@@ -4,6 +4,7 @@
     {
         LockGral = 1,
         LockRatePlan = 2,
-        LockRoomType = 3
+        LockRoomType = 3,
+        LockRate = 4
     }
 }

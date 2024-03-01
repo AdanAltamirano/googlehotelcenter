@@ -161,6 +161,13 @@ namespace APIServices.Xml.OTA.Request.Restrictions
                 XElement statusApplicationControl = new XElement(blank + "StatusApplicationControl",
                     new XAttribute("Start", start.ToString("yyyyMMdd")),
                     new XAttribute("End", availStatusMessagesList[index].StatusApplicationControl.End.ToString("yyyyMMdd")),
+                    new XAttribute("Mon", availStatusMessagesList[index].StatusApplicationControl.ApplyMon),
+                    new XAttribute("Tue", availStatusMessagesList[index].StatusApplicationControl.ApplyMon),
+                    new XAttribute("Weds", availStatusMessagesList[index].StatusApplicationControl.ApplyWed),
+                    new XAttribute("Thur", availStatusMessagesList[index].StatusApplicationControl.ApplyThu),
+                    new XAttribute("Fri", availStatusMessagesList[index].StatusApplicationControl.ApplyFri),
+                    new XAttribute("Sat", availStatusMessagesList[index].StatusApplicationControl.ApplySat),
+                    new XAttribute("Sun", availStatusMessagesList[index].StatusApplicationControl.ApplySun),
                     new XAttribute("RatePlanCode", availStatusMessagesList[index].StatusApplicationControl.RatePlanCode),
                     new XAttribute("InvTypeCode", availStatusMessagesList[index].StatusApplicationControl.InvTypeCode));
 

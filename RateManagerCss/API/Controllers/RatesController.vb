@@ -1,4 +1,5 @@
-﻿Imports System.Web.Http
+﻿Imports System.Xml.Linq
+Imports System.Web.Http
 Imports APIServices
 Imports APIServices.Models
 Imports NinjAPI
@@ -15,6 +16,7 @@ Imports Portal.Hotel.Facade
 Imports APIServices.Conflux
 Imports APIServices.Conflux.Enum
 Imports APIServices.Conflux.Models.Rates.Response
+Imports APIServices.Conflux.Parser.Restriction
 
 Namespace API.Controllers
     <RoutePrefix("api/hotels/{HotelId:int}/rates")>
@@ -53,9 +55,13 @@ Namespace API.Controllers
 
                 If logRates IsNot Nothing And logRates.Count > 0 Then
                     If isEnabledGoogleRequest Then
+
                         Dim updatedRates As IEnumerable(Of Tarifas) = logRates.Distinct()
 
                         Try
+
+                            Dim pgBase As PaginaBase = New PaginaBase()
+
                             For Each rate As Tarifas In updatedRates
 
                                 Dim res As Tuple(Of RateResponse, RateResponse) = ConfluxService.UpdateRate(rate.idTarifa, rate.FechaInicia, rate.FechaFinaliza, HotelId, info.Empresa, TypeRateEnum.RoomRate)
@@ -66,6 +72,9 @@ Namespace API.Controllers
                                 If res.Item2 IsNot Nothing Then
                                     Log(hotelId:=RQ.HotelId, action:=acciones.Eliminar, room:="", startDate:=Nothing, endDate:=Nothing, rateCode:="", xml:=res.Item2.Xml, dataXml:=res.Item2.RequestXML, note:="Tarifa enviada para eliminar a Conflux")
                                 End If
+
+                                'Cierres Google Tarifa
+                                SendClosureByRateGoogle(rate.idTarifa, rate.FechaInicia, rate.FechaFinaliza, ConfluxService, info, pgBase)
 
 
                             Next
@@ -134,7 +143,9 @@ Namespace API.Controllers
 
                 If logRates IsNot Nothing And logRates.Count > 0 Then
                     If isEnabledGoogleRequest Then
+
                         Try
+                            Dim pgBase As PaginaBase = New PaginaBase()
 
                             Dim updatedRateDay As IEnumerable(Of Tarifas) = logRates.Where(Function(t) t.FechaInicia = RQ.StartDate And t.FechaFinaliza = RQ.EndDate).Distinct()
 
@@ -148,6 +159,9 @@ Namespace API.Controllers
                                 If res.Item2 IsNot Nothing Then
                                     Log(hotelId:=RQ.HotelId, action:=acciones.Eliminar, room:="", startDate:=Nothing, endDate:=Nothing, rateCode:="", xml:=res.Item2.Xml, dataXml:=res.Item2.RequestXML, note:="Tarifa enviada para eliminar a Conflux")
                                 End If
+
+                                'Cierres Google Tarifa
+                                SendClosureByRateGoogle(rate.idTarifa, rate.FechaInicia, rate.FechaFinaliza, ConfluxService, info, pgBase)
 
                             Next
 
@@ -426,6 +440,44 @@ Namespace API.Controllers
 
             Return xml
         End Function
+
+        Private Sub SendClosureByRateGoogle(ByVal rateId As Integer, ByVal startDate As Date, ByVal endDate As Date, ByVal confluxService As ConfluxService, ByVal info As companyInfo, ByVal pgBase As PaginaBase)
+
+            Dim requests As List(Of XDocument) = New List(Of XDocument)
+
+            Dim vDayRatesForClosure As List(Of vDayRates) = Conflux.Helpers.Rates.RatesHelpers.GetVDayRate(rateId, startDate, endDate)
+
+            RestrictionsParser.Init(info.Empresa)
+
+            Dim availStatusMessages As OTA.Models.Restrictions.AvailStatusMessages = RestrictionsParser.ToAvailStatusMessages(vDayRatesForClosure, "N")
+
+            Dim availStatusMessagesList As List(Of XElement) = Xml.OTA.Request.Restrictions.HotelAvailNotifRQ.CreateHotelAvailNotifRQList(availStatusMessages) 'Meter los dias en el request para google
+
+            For Each availStatusMessage As XElement In availStatusMessagesList
+                'Request 
+                Dim xmlRequest As XDocument = Xml.Soap.Soap.CreateSoapRequestXml(availStatusMessage)
+                requests.Add(xmlRequest)
+            Next
+
+            Dim restrictionResponseList As List(Of Conflux.Models.Restrictions.Response.RestrictionResponse) = New List(Of Conflux.Models.Restrictions.Response.RestrictionResponse)
+
+            For Each request As XDocument In requests
+                Dim response As Conflux.Models.Restrictions.Response.RestrictionResponse = confluxService.UpdateRestriction(request, RestrictionEnum.LockRate)
+                restrictionResponseList.Add(response)
+            Next
+
+            For Each response As Conflux.Models.Restrictions.Response.RestrictionResponse In restrictionResponseList
+
+                If response.IsSuccess Then
+                    pgBase.WriteLog(response.Restrictions(0).XmlRequest(0).ToString(), "LockRate")
+                    pgBase.WriteLog(response.Restrictions(0).Xml(0).ToString(), "LockRate")
+                Else
+                    pgBase.WriteLog(response.Xml.ToString(), "LockRate")
+                End If
+
+            Next
+
+        End Sub
 
     End Class
 End Namespace

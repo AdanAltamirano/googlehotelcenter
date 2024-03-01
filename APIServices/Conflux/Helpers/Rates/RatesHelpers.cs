@@ -34,6 +34,7 @@ namespace APIServices.Conflux.Helpers.Rates
                     && dr.EndDate <= endDate
                     && dr.EndDate >= startDate
                     && dr.Language == 1)
+                    .AsNoTracking()
                     .OrderBy(vdr => vdr.StartDate)
                     .ToList();
             }
@@ -53,6 +54,7 @@ namespace APIServices.Conflux.Helpers.Rates
                     && dr.EndDate <= endDate
                     && dr.EndDate >= startDate
                     && dr.Language == 1)
+                    .AsNoTracking()
                     .OrderBy(vdr => vdr.StartDate)
                     .ToList();
             }

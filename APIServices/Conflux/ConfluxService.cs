@@ -1031,6 +1031,48 @@ namespace APIServices.Conflux
 
         }
 
+        public RestrictionResponse UpdateRestrictionsRates(int hotelId, int companyId)
+        {
+            RestrictionResponse res = new RestrictionResponse();
+
+            try
+            {
+
+                var currentRates = dbContext.spGetCurrentRatesByHotel(hotelId).ToList();
+
+                #region Init RestrictionParser
+                RestrictionsParser.Init(companyId);
+                #endregion
+
+                var availStatusMessages = RestrictionsParser.ToAvailStatusMessages(currentRates);
+
+
+
+
+
+            }
+            catch (Exception ex)
+            {
+                res.IsSuccess = false;
+                res.Error = new KeyValuePair<string, string>("448", ex.Message);
+
+                var errorsElement = new System.Xml.Linq.XElement("Errors");
+                var errorElementProperty = new System.Xml.Linq.XElement("Error");
+                errorElementProperty.Add(
+                    new System.Xml.Linq.XAttribute("Type", "3"),
+                    new System.Xml.Linq.XAttribute("Code", "448"),
+                    new System.Xml.Linq.XText(ex.Message));
+
+                errorsElement.Add(errorElementProperty);
+
+                res.Xml = errorsElement.ToString();
+
+            }
+
+            return res;
+        }
+
+
         public RestrictionResponse UpdateRestriction(XDocument document, RestrictionEnum restrictionEnum)
         {
             RestrictionResponse res = new RestrictionResponse();

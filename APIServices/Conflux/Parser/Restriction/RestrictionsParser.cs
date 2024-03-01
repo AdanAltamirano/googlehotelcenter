@@ -3,6 +3,8 @@ using System.Data;
 using System.Linq;
 using System.Collections.Generic;
 using APIServices.Models;
+using APIServices.Helpers.Room;
+using APIServices.Conflux.Enum;
 using APIServices.Conflux.Helpers.Restriction;
 using APIServices.Conflux.Models.Restrictions;
 using APIServices.Conflux.OTA.Models.Restrictions;
@@ -107,6 +109,36 @@ namespace APIServices.Conflux.Parser.Restriction
             transaction.PropertyDataSet = propertyDataSet;
 
             return transaction;
+        }
+
+        public static AvailStatusMessages ToAvailStatusMessages(List<spGetCurrentRatesByHotel_Result4> currentRates)
+        {
+            AvailStatusMessages availStatusMessages = new AvailStatusMessages()
+            {
+                HotelCode = HotelCode,
+                AvailStatusMessageList = new List<AvailStatusMessage>()
+            };
+
+            foreach (var currentRate in currentRates)
+            {
+
+                switch (currentRate.TypeRate)
+                {
+                    case (int)TypeRateEnum.RoomRate:
+
+                        //RoomRateClosure(currentRate, ref availStatusMessages.AvailStatusMessageList);
+
+                        break;
+                    case (int)TypeRateEnum.RoomRatePromotion:
+                        //RoomRatePromotionMessages(currentRate, ref rateAmountMessages, ref deleteRateAmountMessages);
+                        break;
+
+                }
+            }
+
+
+
+            return availStatusMessages;
         }
 
         public static AvailStatusMessages ToAvailStatusMessages(List<spGetLockRoomTypesByHotel_Result> lockRoomTypesList)
@@ -236,7 +268,6 @@ namespace APIServices.Conflux.Parser.Restriction
             return availStatusMessages;
 
         }
-
 
         public static AvailStatusMessages ToAvailStatusMessages(List<spGetLockGralByHotel_Result> locksGral ,List<DataRow> rooms, List<DataRow> ratePlans)
         {
@@ -557,5 +588,93 @@ namespace APIServices.Conflux.Parser.Restriction
             return availStatusMessages;
 
         }
+
+        public static AvailStatusMessages ToAvailStatusMessages(List<vDayRates> vDayRates, string status)
+        {
+            AvailStatusMessages availStatusMessages = new AvailStatusMessages()
+            {
+                HotelCode = HotelCode,
+                AvailStatusMessageList = new List<AvailStatusMessage>()
+            };
+
+            foreach(vDayRates vDayRate in vDayRates)
+            {
+
+                var starDate = ((DateTime)vDayRate.StartDate).Date < DateTime.Now.Date ? DateTime.Now.Date : ((DateTime)vDayRate.StartDate).Date;
+                var diff = ((DateTime)vDayRate.EndDate).Date - starDate.Date;
+                var endDate = diff.TotalDays > 1096 ? starDate.AddYears(3) : ((DateTime)vDayRate.EndDate).Date;
+
+                var room = RoomHelper.GetRoom(vDayRate.RoomId);
+
+                AvailStatusMessage availStatusMessage = new AvailStatusMessage();
+                availStatusMessage.StatusApplicationControl = new StatusApplicationControl()
+                {
+                    Start = starDate,
+                    End = endDate,
+                    InvTypeCode = room.Code ?? "",
+                    RatePlanCode = vDayRate.RatePlanId,
+                    ApplyMon = vDayRate.NoArrivalsMap[0] == 'Y' ? true : false,
+                    ApplyTue = vDayRate.NoArrivalsMap[1] == 'Y' ? true : false,
+                    ApplyWed = vDayRate.NoArrivalsMap[2] == 'Y' ? true : false,
+                    ApplyThu = vDayRate.NoArrivalsMap[3] == 'Y' ? true : false,
+                    ApplyFri = vDayRate.NoArrivalsMap[4] == 'Y' ? true : false,
+                    ApplySat = vDayRate.NoArrivalsMap[5] == 'Y' ? true : false,
+                    ApplySun = vDayRate.NoArrivalsMap[6] == 'Y' ? true : false
+                };
+
+                availStatusMessage.RestrictionStatus = RestrictionHelper.GetRestrictionStatus(status);
+
+                availStatusMessages.AvailStatusMessageList.Add(availStatusMessage);
+            }
+
+            return availStatusMessages;
+
+        }
+
+        public static AvailStatusMessages ToAvailStatusMessages(List<vDayRatesExceptions> vDayRates, string status)
+        {
+            AvailStatusMessages availStatusMessages = new AvailStatusMessages()
+            {
+                HotelCode = HotelCode,
+                AvailStatusMessageList = new List<AvailStatusMessage>()
+            };
+
+            foreach (vDayRatesExceptions vDayRate in vDayRates)
+            {
+
+                var starDate = ((DateTime)vDayRate.StartDate).Date < DateTime.Now.Date ? DateTime.Now.Date : ((DateTime)vDayRate.StartDate).Date;
+                var diff = ((DateTime)vDayRate.EndDate).Date - starDate.Date;
+                var endDate = diff.TotalDays > 1096 ? starDate.AddYears(3) : ((DateTime)vDayRate.EndDate).Date;
+
+                var room = RoomHelper.GetRoom(vDayRate.RoomId);
+
+                AvailStatusMessage availStatusMessage = new AvailStatusMessage();
+                availStatusMessage.StatusApplicationControl = new StatusApplicationControl()
+                {
+                    Start = starDate,
+                    End = endDate,
+                    InvTypeCode = room.Code ?? "",
+                    RatePlanCode = vDayRate.RatePlanId,
+                    ApplyMon = vDayRate.NoArrivalsMap[0] == 'Y' ? true : false,
+                    ApplyTue = vDayRate.NoArrivalsMap[1] == 'Y' ? true : false,
+                    ApplyWed = vDayRate.NoArrivalsMap[2] == 'Y' ? true : false,
+                    ApplyThu = vDayRate.NoArrivalsMap[3] == 'Y' ? true : false,
+                    ApplyFri = vDayRate.NoArrivalsMap[4] == 'Y' ? true : false,
+                    ApplySat = vDayRate.NoArrivalsMap[5] == 'Y' ? true : false,
+                    ApplySun = vDayRate.NoArrivalsMap[6] == 'Y' ? true : false
+                };
+
+                availStatusMessage.RestrictionStatus = RestrictionHelper.GetRestrictionStatus(status);
+
+                availStatusMessages.AvailStatusMessageList.Add(availStatusMessage);
+            }
+
+            return availStatusMessages;
+
+        }
+
+        #region RoomRateClosure
+        #endregion
+
     }
 }

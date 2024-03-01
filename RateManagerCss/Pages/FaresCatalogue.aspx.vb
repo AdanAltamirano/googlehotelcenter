@@ -1,5 +1,6 @@
 Imports System.Collections.Generic
 Imports System.Runtime.Serialization
+Imports System.Xml.Linq
 Imports Portal.Hotel.Common.Data
 Imports Portal.Hotel.Facade
 Imports APIServices.Models
@@ -7,9 +8,8 @@ Imports APIServices.Conflux
 Imports APIServices.Conflux.Enum
 Imports APIServices.Conflux.OTA.Models.Rates
 Imports APIServices.Conflux.Models.Rates.Response
+Imports APIServices.Conflux.Parser.Restriction
 Imports RateManager.Utitlities.Hotel
-
-
 Partial Class FaresCatalogue
     Inherits PaginaBase
     Enum dgcolumns
@@ -807,6 +807,9 @@ Partial Class FaresCatalogue
                                         End If
 
 
+                                        'Cierre
+                                        SendClosureByRateGoogle(auxFareId, f1, f2, confluxService, info)
+
                                     Else
 
                                         'Actualizar
@@ -819,6 +822,9 @@ Partial Class FaresCatalogue
                                             Me.guardalog("/Pages/FaresCatalogue.aspx", acciones.Eliminar, "Eliminar tarifas Conflux", "", res.Item2.RequestXML, res.Item1.Xml, info.Hotel)
                                         End If
 
+
+                                        'Cierre
+                                        SendClosureByRateGoogle(auxFareId, f1, f2, confluxService, info)
 
                                     End If
 
@@ -951,6 +957,44 @@ Partial Class FaresCatalogue
 
         fares = GetRoomFares()
         'CtrRateAplication1.AddFare(fares.
+    End Sub
+
+    Private Sub SendClosureByRateGoogle(ByVal rateId As Integer, ByVal startDate As Date, ByVal endDate As Date, ByVal confluxService As ConfluxService, ByVal info As companyInfo)
+
+        Dim requests As List(Of XDocument) = New List(Of XDocument)
+
+        Dim vDayRatesForClosure As List(Of vDayRates) = Helpers.Rates.RatesHelpers.GetVDayRate(rateId, startDate, endDate)
+
+        RestrictionsParser.Init(info.Empresa)
+
+        Dim availStatusMessages As OTA.Models.Restrictions.AvailStatusMessages = RestrictionsParser.ToAvailStatusMessages(vDayRatesForClosure, "N")
+
+        Dim availStatusMessagesList As List(Of XElement) = APIServices.Xml.OTA.Request.Restrictions.HotelAvailNotifRQ.CreateHotelAvailNotifRQList(availStatusMessages) 'Meter los dias en el request para google
+
+        For Each availStatusMessage As XElement In availStatusMessagesList
+            'Request 
+            Dim xmlRequest As XDocument = APIServices.Xml.Soap.Soap.CreateSoapRequestXml(availStatusMessage)
+            requests.Add(xmlRequest)
+        Next
+
+        Dim restrictionResponseList As List(Of Models.Restrictions.Response.RestrictionResponse) = New List(Of Models.Restrictions.Response.RestrictionResponse)
+
+        For Each request As XDocument In requests
+            Dim response As Models.Restrictions.Response.RestrictionResponse = confluxService.UpdateRestriction(request, RestrictionEnum.LockRate)
+            restrictionResponseList.Add(response)
+        Next
+
+        For Each response As Models.Restrictions.Response.RestrictionResponse In restrictionResponseList
+
+            If response.IsSuccess Then
+                Me.WriteLog(response.Restrictions(0).XmlRequest(0).ToString(), "LockRate")
+                Me.WriteLog(response.Restrictions(0).Xml(0).ToString(), "LockRate")
+            Else
+                Me.WriteLog(response.Xml.ToString(), "LockRate")
+            End If
+
+        Next
+
     End Sub
 
 End Class
