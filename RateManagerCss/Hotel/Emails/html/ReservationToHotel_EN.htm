@@ -1,214 +1,607 @@
-<html>
+﻿<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en" style="background:#f3f3f3!important">
+
 <head>
-    [LINKCSS]
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Reservation Summary</title>
+    <link rel="shortcut icon" href="https://crs.univisit.com/ratemanager/favicon.ico">
+    <style>
+        @media only screen {
+            html {
+                min-height: 100%;
+                background: #f3f3f3;
+            }
+        }
+        
+        @media only screen and (max-width:596px) {
+            .small-float-center {
+                margin: 0 auto !important;
+                float: none !important;
+                text-align: center !important;
+            }
+        }
+        
+        @media only screen and (max-width:596px) {
+            table.body img {
+                width: auto;
+                height: auto;
+            }
+            table.body center {
+                min-width: 0 !important;
+            }
+            table.body .container {
+                width: 95% !important;
+            }
+            table.body .columns {
+                height: auto !important;
+                -moz-box-sizing: border-box;
+                -webkit-box-sizing: border-box;
+                box-sizing: border-box;
+                padding-left: 16px !important;
+                padding-right: 16px !important;
+            }
+            table.body .columns .columns {
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+            }
+            table.body .collapse .columns {
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+            }
+            th.small-6 {
+                display: inline-block !important;
+                width: 50% !important;
+            }
+            th.small-12 {
+                display: inline-block !important;
+                width: 100% !important;
+            }
+            .columns th.small-12 {
+                display: block !important;
+                width: 100% !important;
+            }
+            table.menu {
+                width: 100% !important;
+            }
+            table.menu td,
+            table.menu th {
+                width: auto !important;
+                display: inline-block !important;
+            }
+            table.menu.vertical td,
+            table.menu.vertical th {
+                display: block !important;
+            }
+            table.menu[align=center] {
+                width: auto !important;
+            }
+        }
+    </style>
 </head>
-<body>
-    <table width="525" align="left" cellpadding="0" cellspacing="0" class="main" id="Table1">
-        <tr>
-            <td class="header" colspan="3" height="52">
-                [HEADER]
-                <p>
-                    <b>[INFODEPOSITO]</b></p>
-                <p>
-                    <b><span style="color: #1F497D">[INFODEPOSITOAPPLY]</span></b></p>
-                <p>
-                    <br />
-                    <b>RESERVATION DETAILS</b>
-                    <br>
-                    [HOTEL_NOMBRE]
-                </p>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="3">
-                <table width="100%" id="Table2">
-                    <tr>
-                        <td class="rgHeader" valign="top" width="100">
-                            <p>
-                                Reservation ID:
-                            </p>
-                        </td>
-                        <td class="lfHeader" valign="top">
-                            <p>
-                                [ID_RESERVACION]</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="rgHeader" valign="top">
-                            Status:
-                        </td>
-                        <td class="lfHeader" valign="top">
-                            [STATUS]
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="rgHeader" valign="top">
-                            <p>
-                                Reserved on:</p>
-                        </td>
-                        <td class="lfHeader" valign="top">
-                            <p>
-                                [REGDATE]</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="rgHeader" valign="top">
-                            Client:
-                        </td>
-                        <td class="lfHeader" valign="top">
-                            [CONTACTO]
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="rgHeader" valign="top">
-                            Email:
-                        </td>
-                        <td class="lfHeader" valign="top">
-                            [EMAIL_CONTACTO]
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="3" valign="top">
-            </td>
-        </tr>
-        <tr>
-            <td colspan="3" valign="top">
-                [AGENCYINFO]
-            </td>
-        </tr>
-        <tr>
-            <td colspan="3" valign="top">
-                <br>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="3" valign="top" class="stbSection">
-                <p>
-                    DETAILS</p>
-            </td>
-        </tr>
-        <tr>
-            <td rowspan="2" valign="top" class="dsHotels">
-                <p>
-                    [HOTEL_NOMBRE]<br>
-                    [HOTEL_DIRECCION]<br>
-                    <span>[HOTEL_CIUDAD],[HOTEL_PAIS]</span></p>
-            </td>
-            <td width="132" valign="top" class="titleDate">
-                <p>
-                    Arrival date:</p>
-            </td>
-            <td width="131" valign="top" class="titleDate">
-                <p>
-                    Departure date:</p>
-            </td>
-        </tr>
-        <tr>
-            <td width="132" valign="top" class="date">
-                <p>
-                    [CHECKIN]</p>
-            </td>
-            <td width="131" valign="top" class="date">
-                <p>
-                    [CHECKOUT]</p>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="3" valign="top" class="subDetails">
-                <br>
-                <p>
-                    ROOM INFORMATION</p>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="3" valign="top" class="rsDetails">
-                <table width="100%" border="0" cellspacing="0" cellpadding="0" id="Table3">
-                    <tr class="main">
-                        <td width="50%" valign="top" class="rsDetails">
-                            <p>
-                                [ADULTOS] Adult(s),&nbsp;&nbsp;&nbsp;[NINIOS] Children</p>
-                            <p>
-                                <b>Room type:</b><br>
-                                [HABITACIONES]<br>
-                                [NOCHES] Night(s)</p>
-                        </td>
-                        <td valign="top">
-                            <!-- ini -->
-                            [ROOMDETAILS]
-                            <!-- end -->
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="3" valign="top" class="subDetails">
-                <br>
-                <p>
-                    RATES INFORMATION</p>
-            </td>
-        </tr>
-        <tr>
-            <td class="subDetails" valign="top" colspan="3">
-                <table width="99%" align="center" cellpadding="0" cellspacing="0" id="Table4">
-                    <tr>
-                        <td width="50%" class="sbRates subtitle" valign="top">
-                            <p>
-                                Total rate:</p>
-                        </td>
-                        <td class="sbRates subtitle">
-                            <p>
-                                Credit card</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td valign="top">
-                            <table class="rsTotal" cellspacing="0" cellpadding="0" width="100%" border="0" id="Table5">
-                                <tr>
-                                    <td class="txtSubTotal" valign="top" align="right" width="30%">
-                                        [TEXTOTAR]
-                                    </td>
-                                    <td class="numSubTotal" valign="top" width="70%">
-                                        [VALORESTAR]
-                                    </td>
-                                    <td valign="top">
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                        <td class="creditCard" valign="top">
-                            <p>
-                                [TARJETACREDITO]
-                            </p>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="3" valign="top" align="right" class="rsEstanciaTotal">
-                <p>
-                    Estimated Total: <b>[ESTANCIATOTAL]</b></p>
-                <br>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="3" valign="top" class="footerCard">
-                [CALCULODETAIL]
-            </td>
-        </tr>
-        <tr>
-            <td colspan="3" valign="top">
-            </td>
-        </tr>
-        <tr>
-            <td colspan="3" valign="top" class="footerCard">
-                [FOOTER]
+
+<body style="-moz-box-sizing:border-box;-ms-text-size-adjust:100%;-webkit-box-sizing:border-box;-webkit-text-size-adjust:100%;Margin:0;background:#f3f3f3!important;box-sizing:border-box;color:#0a0a0a;font-family:'Source Sans Pro',sans-serif!important;font-size:16px;font-weight:400;line-height:1.3;margin:0;min-width:100%;padding:0;text-align:left;width:100%!important">
+    <span class="preheader" style="color:#f3f3f3;display:none!important;font-size:1px;line-height:1px;max-height:0;max-width:0;mso-hide:all!important;opacity:0;overflow:hidden;visibility:hidden"></span>
+    <table class="body" style="Margin:0;background:#f3f3f3!important;border-collapse:collapse;border-spacing:0;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;height:100%;line-height:1.3;margin:0;padding:0;text-align:left;vertical-align:top;width:100%">
+        <tr style="padding:0;text-align:left;vertical-align:top">
+            <td class="center" align="center" valign="top" style="-moz-hyphens:auto;-webkit-hyphens:auto;Margin:0;border-collapse:collapse!important;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;hyphens:auto;line-height:1.3;margin:0;padding:0;text-align:left;vertical-align:top;word-wrap:break-word">
+                <center data-parsed style="min-width:580px;width:100%">
+                    <table align="center" class="wrapper header float-center" style="Margin:0 auto;background:#f3f3f3;border-collapse:collapse;border-spacing:0;float:none;margin:0 auto;padding:0;text-align:center;vertical-align:top;width:100%">
+                        <tr style="padding:0;text-align:left;vertical-align:top">
+                            <td class="wrapper-inner" style="-moz-hyphens:auto;-webkit-hyphens:auto;Margin:0;border-collapse:collapse!important;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;hyphens:auto;line-height:1.3;margin:0;padding:20px;text-align:left;vertical-align:top;word-wrap:break-word">
+                                <table align="center" class="container" style="Margin:0 auto;background:0 0;border-collapse:collapse;border-spacing:0;margin:0 auto;padding:0;text-align:inherit;vertical-align:top;width:580px">
+                                    <tbody>
+                                        <tr style="padding:0;text-align:left;vertical-align:top">
+                                            <td style="-moz-hyphens:auto;-webkit-hyphens:auto;Margin:0;border-collapse:collapse!important;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;hyphens:auto;line-height:1.3;margin:0;padding:0;text-align:left;vertical-align:top;word-wrap:break-word">
+                                                <table class="row collapse" style="border-collapse:collapse;border-spacing:0;display:table;padding:0;position:relative;text-align:left;vertical-align:top;width:100%">
+                                                    <tbody>
+                                                        <tr style="padding:0;text-align:left;vertical-align:top">
+                                                            <th class="small-6 large-6 columns first" style="Margin:0 auto;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0 auto;padding:0;padding-bottom:0;padding-left:0;padding-right:0;text-align:left;width:298px">
+                                                                <table style="border-collapse:collapse;border-spacing:0;padding:0;text-align:left;vertical-align:top;width:100%">
+                                                                    <tr style="padding:0;text-align:left;vertical-align:top">
+                                                                        <th style="Margin:0;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left">
+                                                                            <img src="https://crs.univisit.com/RateManager/Includes/Imagenes/logo-internetpowerhotel.png" style="-ms-interpolation-mode:bicubic;clear:both;display:block;max-width:100%;outline:0;text-decoration:none;width:auto;" alt="internetpower">
+                                                                        </th>
+                                                                    </tr>
+                                                                </table>
+                                                            </th>
+
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                    <table align="center" class="container float-center" style="Margin:0 auto;background:#fefefe;border-collapse:collapse;border-spacing:0;float:none;margin:0 auto;padding:0;text-align:center;vertical-align:top;width:580px">
+                        <tbody>
+                            <tr style="padding:0;text-align:left;vertical-align:top">
+                                <td style="-moz-hyphens:auto;-webkit-hyphens:auto;Margin:0;border-collapse:collapse!important;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;hyphens:auto;line-height:1.3;margin:0;padding:0;text-align:left;vertical-align:top;word-wrap:break-word">
+                                    <table class="spacer" style="border-collapse:collapse;border-spacing:0;padding:0;text-align:left;vertical-align:top;width:100%">
+                                        <tbody>
+                                            <tr style="padding:0;text-align:left;vertical-align:top">
+                                                <td height="16px" style="-moz-hyphens:auto;-webkit-hyphens:auto;Margin:0;border-collapse:collapse!important;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;hyphens:auto;line-height:16px;margin:0;mso-line-height-rule:exactly;padding:0;text-align:left;vertical-align:top;word-wrap:break-word">
+                                                    &#xA0;
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <table class="row" style="border-collapse:collapse;border-spacing:0;display:table;padding:0;position:relative;text-align:left;vertical-align:top;width:100%">
+                                        <tbody>
+                                            <tr style="padding:0;text-align:left;vertical-align:top">
+                                                <th class="small-12 large-12 columns first last" style="Margin:0 auto;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0 auto;padding:0;padding-bottom:16px;padding-left:16px;padding-right:16px;text-align:left;width:564px">
+                                                    <table style="border-collapse:collapse;border-spacing:0;padding:0;text-align:left;vertical-align:top;width:100%">
+                                                        <tr style="padding:0;text-align:left;vertical-align:top">
+                                                            <th style="Margin:0;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left">
+                                                                <table class="callout" style="Margin-bottom:16px;border-collapse:collapse;border-spacing:0;margin-bottom:16px;padding:0;text-align:left;vertical-align:top;width:100%">
+                                                                    <tr style="padding:0;text-align:left;vertical-align:top">
+                                                                        <th class="callout-inner success" style="Margin:0;color:#fefefe;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:10px;text-align:left;width:100%">
+                                                                            <p class="text-center" style="Margin:0;Margin-bottom:10px;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0;text-align:center">
+                                                                                <img src="https://img.icons8.com/color/96/000000/reservation.png">
+                                                                            </p>
+                                                                            <p class="text-center" style="Margin:0;Margin-bottom:10px;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:22px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0;text-align:center">
+                                                                                <b>Reservation Summary</b>
+                                                                                <br>
+                                                                                <b>[HOTEL_NOMBRE]</b>
+                                                                            </p>
+                                                                        </th>
+                                                                        <th class="expander" style="Margin:0;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0!important;text-align:left;visibility:hidden;width:0">
+                                                                        </th>
+                                                                    </tr>
+                                                                </table>
+                                                                <h2 style="Margin:0;Margin-bottom:10px;color: #10467a !important;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;/* font-size:34px; */font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0;text-align:left;word-wrap:normal;">
+                                                                    <strong><i>RESERVATION DETAILS</i></strong>
+                                                                </h2>
+                                                            </th>
+                                                        </tr>
+                                                    </table>
+                                                </th>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <!-- <hr>
+                                    <table class="spacer" style="border-collapse:collapse;border-spacing:0;padding:0;text-align:left;vertical-align:top;width:100%">
+                                        <tbody>
+                                            <tr style="padding:0;text-align:left;vertical-align:top">
+                                                <td height="16px" style="-moz-hyphens:auto;-webkit-hyphens:auto;Margin:0;border-collapse:collapse!important;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;hyphens:auto;line-height:16px;margin:0;mso-line-height-rule:exactly;padding:0;text-align:left;vertical-align:top;word-wrap:break-word">
+                                                    &nbsp;</td>
+                                            </tr>
+                                        </tbody>
+                                    </table> -->
+                                    <table class="row" style="border-collapse:collapse;border-spacing:0;display:table;padding:0;position:relative;text-align:left;vertical-align:top;width:100%">
+                                        <tbody>
+                                            <tr style="padding:0;text-align:left;vertical-align:top">
+                                                <th class="small-12 large-6 columns first" style="Margin:0 auto;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0 auto;padding:0;padding-bottom:16px;padding-left:16px;padding-right:8px;text-align:left;width:274px">
+                                                    <table style="border-collapse:collapse;border-spacing:0;padding:0;text-align:left;vertical-align:top;width:100%">
+                                                        <tr style="padding:0;text-align:left;vertical-align:top">
+                                                            <th style="Margin:0;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left">
+                                                                <p style="Margin:0;Margin-bottom:10px;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0;text-align:left">
+                                                                    <b>Reservation ID: </b>[ID_RESERVACION]
+                                                                </p>
+                                                                <p style="Margin:0;Margin-bottom:10px;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0;text-align:left">
+                                                                    <b>Status: </b>[STATUS]
+                                                                </p>
+                                                                <p style="Margin:0;Margin-bottom:10px;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0;text-align:left">
+                                                                    <b>Reserved On: </b>[REGDATE]
+                                                                </p>
+                                                                <p style="Margin:0;Margin-bottom:10px;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0;text-align:left">
+                                                                    <b>Client: </b>[CONTACTO]
+                                                                </p>
+                                                                <p style="Margin:0;Margin-bottom:10px;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0;text-align:left">
+                                                                    <b>Email: </b><a href="mailto:[EMAIL_CONTACTO]" target="_blank">[EMAIL_CONTACTO]</a>
+                                                                </p>
+                                                            </th>
+                                                        </tr>
+                                                    </table>
+                                                </th>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <!-- <hr> -->
+                                    <table class="spacer" style="border-collapse:collapse;border-spacing:0;padding:0;text-align:left;vertical-align:top;width:100%">
+                                        <tbody>
+                                            <tr style="padding:0;text-align:left;vertical-align:top">
+                                                <td height="16px" style="-moz-hyphens:auto;-webkit-hyphens:auto;Margin:0;border-collapse:collapse!important;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;hyphens:auto;line-height:16px;margin:0;mso-line-height-rule:exactly;padding:0;text-align:left;vertical-align:top;word-wrap:break-word">
+                                                    &nbsp;
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <!--Domicilio y Fechas-->
+                                    <table class="row" style="border-collapse:collapse;border-spacing:0;display:table;padding:0;position:relative;text-align:left;vertical-align:top;width:100%">
+                                        <tbody>
+                                            <tr style="padding:0;text-align:left;vertical-align:top">
+                                                <th class="small-12 large-12 columns first last" style="Margin:0 auto;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0 auto;padding:0;padding-bottom:16px;padding-left:16px;padding-right:16px;text-align:left;width:564px">
+                                                    <table style="border-collapse:collapse;border-spacing:0;padding:0;text-align:left;vertical-align:top;width:100%">
+                                                        <tbody>
+                                                            <tr style="padding:0;text-align:left;vertical-align:top">
+                                                                <th style="Margin:0;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left">
+                                                                    <h4 style="Margin:0;Margin-bottom:10px;color: #10467a !important;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;/* font-size:34px; */font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0;text-align:left;word-wrap:normal;">
+                                                                        <strong><i>RESERVATION INFO</i></strong>
+                                                                    </h4>
+                                                                </th>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </th>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <!-- Hotel y direccion -->
+                                    <table class="row" style="border-collapse:collapse;border-spacing:0;display:table;padding:0;position:relative;text-align:left;vertical-align:top;width:100%">
+                                        <tbody>
+                                            <tr style="padding:0;text-align:left;vertical-align:top">
+                                                <th class="small-12 large-12 columns first last" style="Margin:0 auto;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0 auto;padding:0;padding-bottom:16px;padding-left:16px;padding-right:16px;text-align:left;width:564px">
+                                                    <table style="border-collapse:collapse;border-spacing:0;padding:0;text-align:left;vertical-align:top;width:100%">
+                                                        <tbody>
+                                                            <tr style="padding:0;text-align:left;vertical-align:top">
+                                                                <strong>[HOTEL_NOMBRE]</strong>
+                                                                <br /> [HOTEL_DIRECCION], [HOTEL_CIUDAD], [HOTEL_PAIS]
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </th>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <!-- Fechas -->
+                                    <table class="row" style="border-collapse:collapse;border-spacing:0;display:table;margin-left: 1%;position:relative;text-align:left;vertical-align:top;width:100%">
+                                        <tbody>
+                                            <tr style="padding:0;text-align:left;vertical-align:top">
+                                                <th style="Margin:0;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left">
+                                                    <div style="width: 95%;background-color: #fff; background-clip: border-box;border: 1px solid rgba(0,0,0,.125);border-radius: .25rem;">
+                                                        <div style="text-align:center; background-color:#10467a !important; color:white; padding:10px 10px;">
+                                                            Arrival date
+                                                        </div>
+                                                        <div style="text-align:center; color:gray; padding:10px 10px;;">
+                                                            <!--<small>[MESLLEGADADETALLES]</small>-->
+                                                            <h2>[CHECKIN]</h2>
+                                                            <!--<small>[ANOLLEGADADETALLES]</small>-->
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                                <th style="Margin:0;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left">
+                                                    <div style="width: 95%;background-color: #fff; background-clip: border-box;border: 1px solid rgba(0,0,0,.125);border-radius: .25rem;">
+                                                        <div style="text-align:center; background-color:#dc3545 !important; color:white; padding:10px 10px;">
+                                                            Departure date
+                                                        </div>
+                                                        <div style="text-align:center; color:gray; padding:10px 10px;;">
+                                                            <!--<small>[MESSALIDADETALLES]</small>-->
+                                                            <h2>[CHECKOUT]</h2>
+                                                            <!--<small>[ANOSALIDADETALLES]</small>-->
+                                                        </div>
+                                                    </div>
+
+
+                                                </th>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <hr>
+                                    <!-- Spacer -->
+                                    <table class="spacer" style="border-collapse:collapse;border-spacing:0;padding:0;text-align:left;vertical-align:top;width:100%">
+                                        <tbody>
+                                            <tr style="padding:0;text-align:left;vertical-align:top">
+                                                <td height="16px" style="-moz-hyphens:auto;-webkit-hyphens:auto;Margin:0;border-collapse:collapse!important;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;hyphens:auto;line-height:16px;margin:0;mso-line-height-rule:exactly;padding:0;text-align:left;vertical-align:top;word-wrap:break-word">
+                                                    &nbsp;
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <!--Información de habitación-->
+                                    <table class="row" style="border-collapse:collapse;border-spacing:0;display:table;padding:0;position:relative;text-align:left;vertical-align:top;width:100%">
+                                        <tbody>
+                                            <tr style="padding:0;text-align:left;vertical-align:top">
+                                                <th class="small-12 large-12 columns first last" style="Margin:0 auto;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0 auto;padding:0;padding-bottom:16px;padding-left:16px;padding-right:16px;text-align:left;width:564px">
+                                                    <table style="border-collapse:collapse;border-spacing:0;padding:0;text-align:left;vertical-align:top;width:100%">
+                                                        <tbody>
+                                                            <tr style="padding:0;text-align:left;vertical-align:top">
+                                                                <th style="Margin:0;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left">
+                                                                    <h4 style="Margin:0;Margin-bottom:10px;color: #10467a !important;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;/* font-size:34px; */font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0;text-align:left;word-wrap:normal;">
+                                                                        <strong><i>ROOM INFORMATION</i></strong>
+                                                                    </h4>
+                                                                </th>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </th>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <table class="row" style="border-collapse:collapse;border-spacing:0;display:table;padding:0;position:relative;text-align:left;vertical-align:top;width:100%">
+                                        <tbody>
+                                            <tr style="padding:0;text-align:left;vertical-align:top">
+                                                <th class="small-12 large-12 columns first last" style="Margin:0 auto;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0 auto;padding:0;padding-bottom:16px;padding-left:16px;padding-right:16px;text-align:left;width:564px">
+                                                    <table style="border-collapse:collapse;border-spacing:0;padding:0;text-align:left;vertical-align:top;width:100%">
+                                                        <b>[HABITACIONES], [NOCHES] Night(s)</b>
+                                                        <p>[ADULTOS] Adult(s), [NINIOS] Children</p>
+                                                        <p>Rate Plan Name: [RATEPLANNAME]</p>
+                                                        <p>Rate Plan Description: [RATEPLANDESCRIPTION]</p>
+                                                        [ROOMDETAILS]
+                                                    </table>
+                                                </th>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <!--Termina Informacion de habitación-->
+                                    <hr>
+                                    <table class="spacer" style="border-collapse:collapse;border-spacing:0;padding:0;text-align:left;vertical-align:top;width:100%">
+                                        <tbody>
+                                            <tr style="padding:0;text-align:left;vertical-align:top">
+                                                <td height="16px" style="-moz-hyphens:auto;-webkit-hyphens:auto;Margin:0;border-collapse:collapse!important;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;hyphens:auto;line-height:16px;margin:0;mso-line-height-rule:exactly;padding:0;text-align:left;vertical-align:top;word-wrap:break-word">
+                                                    &nbsp;
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <!--Informacion de tarifas-->
+                                    <table class="row" style="border-collapse:collapse;border-spacing:0;display:table;padding:0;position:relative;text-align:left;vertical-align:top;width:100%">
+                                        <tbody>
+                                            <tr style="padding:0;text-align:left;vertical-align:top">
+                                                <th class="small-12 large-12 columns first last" style="Margin:0 auto;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0 auto;padding:0;padding-bottom:16px;padding-left:16px;padding-right:16px;text-align:left;width:564px">
+                                                    <table style="border-collapse:collapse;border-spacing:0;padding:0;text-align:left;vertical-align:top;width:100%">
+                                                        <tbody>
+                                                            <tr style="padding:0;text-align:left;vertical-align:top">
+                                                                <th style="Margin:0;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left">
+                                                                    <h4 style="Margin:0;Margin-bottom:10px;color: #10467a !important;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;/* font-size:34px; */font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0;text-align:left;word-wrap:normal;">
+                                                                        <strong>
+                                                                            <i>
+                                                                                RATES INFORMATION
+                                                                            </i>
+                                                                        </strong>
+                                                                    </h4>
+                                                                </th>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </th>
+                                                <th class="small-12 large-12 columns first last" style="Margin:0 auto;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0 auto;padding:0;padding-bottom:16px;padding-left:16px;padding-right:16px;text-align:left;width:564px">
+                                                    <table style="border-collapse:collapse;border-spacing:0;padding:0;text-align:left;vertical-align:top;width:100%">
+                                                        <tbody>
+                                                            <tr style="padding:0;text-align:left;vertical-align:top">
+                                                                <th style="Margin:0;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left">
+                                                                    <h4 style="Margin:0;Margin-bottom:10px;color: #10467a !important;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;/* font-size:34px; */font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0;text-align:left;word-wrap:normal;">
+                                                                        <strong>
+                                                                            <i>
+                                                                                PAYMENT INFORMATION
+                                                                            </i>
+                                                                        </strong>
+                                                                    </h4>
+                                                                </th>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </th>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <table class="row" style="border-collapse:collapse;border-spacing:0;display:table;padding:0;position:relative;text-align:left;vertical-align:top;width:100%">
+                                        <tbody>
+                                            <tr style="padding:0;text-align:left;vertical-align:top">
+                                                <th class="small-12 large-12 columns first last" style="Margin:0 auto;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0 auto;padding:0;padding-bottom:16px;padding-left:16px;padding-right:16px;text-align:left;width:564px">
+                                                    <table style="border-collapse:collapse;border-spacing:0;padding:0;text-align:left;vertical-align:top;width:100%">
+                                                        <tr style="padding:0;text-align:left;vertical-align:top">
+                                                            <th style="Margin:0;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left">
+                                                                <p style="Margin:0;Margin-bottom:10px;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0;text-align:left">
+                                                                    <b>Total Rate: </b>
+                                                                    <br /> [TEXTOTAR] [VALORESTAR]
+                                                                </p>
+
+                                                                <p style="Margin:0;Margin-bottom:10px;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0;text-align:left">
+                                                                    <b>Total: </b>
+                                                                    <br /> [ESTANCIATOTAL]
+                                                                </p>
+
+                                                                <p style="Margin:0;Margin-bottom:10px;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0;text-align:left">
+                                                                    [CALCULODETAIL]
+                                                                </p>
+
+                                                                <!--
+                                                                <p style="Margin:0;Margin-bottom:10px;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0;text-align:left">
+                                                                    Por favor de click aquí <a href="[ENLACE]" style="color:#15c;">
+                                                                        para ver su
+                                                                        reservación
+                                                                    </a>
+                                                                </p>
+                                                                -->
+                                                            </th>
+                                                        </tr>
+                                                    </table>
+                                                </th>
+
+                                                <th class="small-12 large-12 columns first last" style="Margin:0 auto;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0 auto;padding:0;padding-bottom:16px;padding-left:16px;padding-right:16px;text-align:left;width:564px">
+                                                    <table style="border-collapse:collapse;border-spacing:0;padding:0;text-align:left;vertical-align:top;width:100%">
+                                                        <tr style="padding:0;text-align:left;vertical-align:top">
+                                                            <th style="Margin:0;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left">
+                                                                <p style="Margin:0;Margin-bottom:10px;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0;text-align:left">
+                                                                    Credit Card
+                                                                    <br /> [TARJETACREDITO]
+                                                                    <br /> [PAYPALTXID]
+                                                                </p>
+                                                            </th>
+                                                        </tr>
+                                                    </table>
+                                                </th>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <p class="text-center" style="Margin:0;Margin-bottom:10px;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;margin:0;margin-bottom:10px;padding:0;text-align:center">
+                                        [LINKRESERVATION]
+                                        <br />
+                                    </p>
+
+                                    <hr>
+                                    <table class="spacer" style="border-collapse:collapse;border-spacing:0;padding:0;text-align:left;vertical-align:top;width:100%">
+                                        <tbody>
+                                            <tr style="padding:0;text-align:left;vertical-align:top">
+                                                <td height="16px" style="-moz-hyphens:auto;-webkit-hyphens:auto;Margin:0;border-collapse:collapse!important;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;hyphens:auto;line-height:16px;margin:0;mso-line-height-rule:exactly;padding:0;text-align:left;vertical-align:top;word-wrap:break-word">
+                                                    &nbsp;
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <!-- Termina Informacion de tarifas-->
+
+                                    <!--politicas-->
+                                    <table class="row" style="border-collapse:collapse;border-spacing:0;display:table;padding:0;position:relative;text-align:left;vertical-align:top;width:100%">
+                                        <tbody>
+                                            <tr style="padding:0;text-align:left;vertical-align:top">
+                                                <th class="small-12 large-12 columns first last" style="Margin:0 auto;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0 auto;padding:0;padding-bottom:16px;padding-left:16px;padding-right:16px;text-align:left;width:564px">
+                                                    <table style="border-collapse:collapse;border-spacing:0;padding:0;text-align:left;vertical-align:top;width:100%">
+                                                        <tbody>
+                                                            <tr style="padding:0;text-align:left;vertical-align:top">
+                                                                <th style="Margin:0;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left">
+                                                                    <h4 style="Margin:0;Margin-bottom:10px;color: #10467a !important;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;/* font-size:34px; */font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0;text-align:left;word-wrap:normal;">
+                                                                        <strong>
+                                                                            <i>
+                                                                                RESERVATION POLICIES
+                                                                            </i>
+                                                                        </strong>
+                                                                    </h4>
+                                                                </th>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </th>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <table class="row" style="border-collapse:collapse;border-spacing:0;display:table;padding:0;position:relative;text-align:left;vertical-align:top;width:100%">
+                                        <tbody>
+                                            <tr style="padding:0;text-align:left;vertical-align:top">
+                                                <th class="small-12 large-12 columns first last" style="Margin:0 auto;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0 auto;padding:0;padding-bottom:16px;padding-left:16px;padding-right:16px;text-align:left;width:564px">
+                                                    <table style="border-collapse:collapse;border-spacing:0;padding:0;text-align:left;vertical-align:top;width:100%">
+                                                        <tr style="padding:0;text-align:left;vertical-align:top">
+                                                            <th style="Margin:0;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left">
+                                                                <div style="background-color: #fff;background-clip: border-box;border: 1px solid rgba(0,0,0,.125);border-radius: .25rem; width: 100%;">
+                                                                    [RATEPLANPOLICIES]
+                                                                    <br />
+                                                                    <br />
+                                                                    <b>Support information</b>
+                                                                    <br />
+                                                                    <p>México: (+52) 612 175 0860</p>
+                                                                    <!--
+                                                                    <div style="color:#6c757d !important;font-size:18px;
+                                                                        padding: 2px 16px; padding: .75rem 1.25rem;
+                                                                        margin-bottom: 0; background-color:
+                                                                        rgba(0,0,0,.03);
+                                                                        border-bottom: 1px solid rgba(0,0,0,.125);">
+                                                                        Politícas del hotel
+                                                                    </div>
+                                                                    <div style="padding: 1.25rem; padding: 2px 16px;">
+                                                                        <address style="font-size:16px; font-style:normal; line-height:1.5em;">
+                                                                            <strong>Políticas de cancelación:</strong>
+                                                                            [POLITICASHOTELCANCELACION]
+                                                                            <br />
+                                                                            <strong>Políticas de garantia:</strong>
+                                                                            [POLITICASHOTELGARANTIA]
+                                                                            <br />
+                                                                            <strong>Políticas de tarjeta de
+                                                                                crédito:</strong>
+                                                                            [POLITICASHOTELTARJETA]
+                                                                        </address>
+                                                                    </div>
+                                                                    -->
+                                                                </div>
+                                                            </th>
+                                                        </tr>
+                                                        <!--
+                                                        <tr style="padding:0;text-align:left;vertical-align:top">
+                                                            <td height="16px" style="-moz-hyphens:auto;-webkit-hyphens:auto;Margin:0;border-collapse:collapse!important;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;hyphens:auto;line-height:16px;margin:0;mso-line-height-rule:exactly;padding:0;text-align:left;vertical-align:top;word-wrap:break-word">
+                                                                &nbsp;
+                                                            </td>
+                                                        </tr>
+                                                        <tr style="padding:0;text-align:left;vertical-align:top">
+                                                            <th style="Margin:0;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left">
+                                                                <div style="background-color: #fff;background-clip: border-box;border: 1px solid rgba(0,0,0,.125);border-radius: .25rem; width: 100%;">
+                                                                    <div style="color:#6c757d !important;font-size:18px;
+                                                                        padding: 2px 16px; padding: .75rem 1.25rem;
+                                                                        margin-bottom: 0; background-color:
+                                                                        rgba(0,0,0,.03);
+                                                                        border-bottom: 1px solid rgba(0,0,0,.125);">
+                                                                        Politícas del plan tarifario
+                                                                    </div>
+                                                                    <div style="padding: 1.25rem; padding: 2px 16px;">
+                                                                        <address style="font-size:16px; font-style:normal; line-height:1.5em;">
+                                                                            <strong>Políticas de cancelación:</strong>
+                                                                            [POLITICASPLANCANCELACION]
+                                                                            <br />
+                                                                            <strong>Políticas de garantia:</strong>
+                                                                            [POLITICASPLANGARANTIA]
+                                                                            <br />
+                                                                            <strong>Políticas de tarjeta de
+                                                                                crédito:</strong>
+                                                                            [POLITICASPLANTARJETA]
+                                                                        </address>
+                                                                    </div>
+                                                                </div>
+                                                            </th>
+                                                        </tr>
+                                                        <tr style="padding:0;text-align:left;vertical-align:top">
+                                                            <td height="16px" style="-moz-hyphens:auto;-webkit-hyphens:auto;Margin:0;border-collapse:collapse!important;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;hyphens:auto;line-height:16px;margin:0;mso-line-height-rule:exactly;padding:0;text-align:left;vertical-align:top;word-wrap:break-word">
+                                                                &nbsp;
+                                                            </td>
+                                                        </tr>
+                                                        -->
+                                                    </table>
+                                                </th>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <!--Termina politicas-->
+                                    <hr>
+                                    <table class="wrapper secondary" align="center" style="background:#f3f3f3;border-collapse:collapse;border-spacing:0;padding:0;text-align:left;vertical-align:top;width:100%">
+                                        <tr style="padding:0;text-align:left;vertical-align:top">
+                                            <td class="wrapper-inner" style="-moz-hyphens:auto;-webkit-hyphens:auto;Margin:0;border-collapse:collapse!important;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;hyphens:auto;line-height:1.3;margin:0;padding:0;text-align:left;vertical-align:top;word-wrap:break-word">
+                                                <table class="spacer" style="border-collapse:collapse;border-spacing:0;padding:0;text-align:left;vertical-align:top;width:100%">
+                                                    <tbody>
+                                                        <tr style="padding:0;text-align:left;vertical-align:top">
+                                                            <td height="16px" style="-moz-hyphens:auto;-webkit-hyphens:auto;Margin:0;border-collapse:collapse!important;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;hyphens:auto;line-height:16px;margin:0;mso-line-height-rule:exactly;padding:0;text-align:left;vertical-align:top;word-wrap:break-word">
+                                                                &#xA0;
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <table class="row footer" style="border-collapse:collapse;border-spacing:0;display:table;padding:0;position:relative;text-align:left;vertical-align:top;width:100%">
+                                                    <tbody>
+                                                        <tr style="padding:0;text-align:left;vertical-align:top">
+                                                            <th class="small-12 large-12 columns first last" style="Margin:0 auto;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0 auto;padding:0;padding-bottom:16px;padding-left:16px;padding-right:16px;text-align:left;width:564px">
+                                                                <table style="border-collapse:collapse;border-spacing:0;padding:0;text-align:left;vertical-align:top;width:100%">
+                                                                    <tr style="padding:0;text-align:left;vertical-align:top">
+                                                                        <th style="Margin:0;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left">
+                                                                            <p style="Margin:0;Margin-bottom:10px;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0;text-align:left">
+                                                                                This email was automatically created by
+                                                                                <a href="https://www.InternetPowerHotel.com" style="Margin:0;color:#2199e8;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left;text-decoration:none">InternetPowerHotel.com</a>,
+                                                                                a response is not required. If you require technical support, you can do so through reservaciones@internetpowerhotel.com
+                                                                            </p>
+                                                                        </th>
+                                                                        <th class="expander" style="Margin:0;color:#0a0a0a;font-family:'Source Sans Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0!important;text-align:left;visibility:hidden;width:0">
+                                                                        </th>
+                                                                    </tr>
+                                                                </table>
+                                                            </th>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </center>
             </td>
         </tr>
     </table>
+    <!-- prevent Gmail on iOS font size manipulation -->
+    <div style="display:none;white-space:nowrap;font:15px courier;line-height:0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</div>
 </body>
+
 </html>

@@ -90,7 +90,26 @@ Namespace API.Controllers
 
             'Cierres de Tarifas
 
-            ConfluxService.UpdateRestrictionsRates(hotelId, info.Empresa)
+            Dim ratesClosure As RestrictionResponse = ConfluxService.UpdateRestrictionsRates(hotelId, info.Empresa)
+
+
+            If Not ratesClosure.IsSuccess Then
+                Log("Sincronizar Restricciones Tarifas Conflux con el hotel: ", result.Xml, hotelId)
+            ElseIf ratesClosure.IsSuccess Then
+                For Each restriction As Restriction In ratesClosure.Restrictions
+                    Select Case restriction.Type
+                        Case RestrictionEnum.LockRate
+                            Dim index As Integer = 0
+                            While index < restriction.Xml.Count()
+                                Dim note As String = String.Format("Sincronizar request numero {0} LockRate(Cierre de Tarifa) Conflux con el hotel: ", (index + 1))
+                                Log(note, restriction.Xml(index).ToString(), hotelId, requestXMl:=restriction.XmlRequest(index).ToString())
+                                index = index + 1
+                            End While
+                    End Select
+                Next
+            End If
+
+
 
             If Not result.IsSuccess Then
                 Log("Sincronizar Restricciones Conflux con el hotel: ", result.Xml, hotelId)

@@ -500,6 +500,7 @@ namespace APIServices.Conflux
 
                 var xmlList = HotelRateAmountNotifRQ.CreateHotelRateAmountNotifRQList(rateAmountMessages);
 
+
                 foreach (XElement xml in xmlList)
                 {
                     Models.Rates.Response.Rate res = new Models.Rates.Response.Rate();
@@ -1037,6 +1038,7 @@ namespace APIServices.Conflux
 
             try
             {
+                List<XDocument> lockRatesSoapRQ = new List<XDocument>(); //aqui irian los requests
 
                 var currentRates = dbContext.spGetCurrentRatesByHotel(hotelId).ToList();
 
@@ -1046,9 +1048,53 @@ namespace APIServices.Conflux
 
                 var availStatusMessages = RestrictionsParser.ToAvailStatusMessages(currentRates);
 
+                List<XElement> lockRateHotelAvailNotifRQList = HotelAvailNotifRQ.CreateHotelAvailNotifRQList(availStatusMessages);
 
+                foreach (XElement lockRateHotelAvailNotifRQ in lockRateHotelAvailNotifRQList)
+                {
+                    //Request LockRate
+                    var lockRateSoapRQ = Soap.CreateSoapRequestXml(lockRateHotelAvailNotifRQ);
 
+                    lockRatesSoapRQ.Add(lockRateSoapRQ);
+                }
 
+                #region Request
+
+                string url = ConfigurationManager.AppSettings["confluxApiUrl"] + "pms/ota/restriction/update";
+                var uri = new Uri(url);
+
+                Restriction restriction = new Restriction();
+
+                foreach (var soapRequest in lockRatesSoapRQ)
+                {
+                    System.Xml.Linq.XElement otaRS = null;
+                    HttpContent httpContent = new StringContent(soapRequest.ToString());
+
+                    using (var client = new HttpClient())
+                    {
+                        client.Timeout = TimeSpan.FromMinutes(50);
+                        var response = client.PostAsync(uri, httpContent).Result;
+
+                        string result = response.Content.ReadAsStringAsync().Result; //regresa un xml
+
+                        otaRS = HotelAvailNotifRS.ParseHotelAvailNotifRS(result); //Cambiar
+
+                    }
+
+                    //Repuesta API
+                    restriction.Xml.Add(otaRS.ToString());
+                    restriction.XmlRequest.Add(soapRequest.ToString());
+
+                    restriction.IsSuccess = HotelAvailNotifRS.IsSuccessRequest(otaRS);
+
+                    restriction.Type = Enum.RestrictionEnum.LockRate;
+
+                    res.Restrictions.Add(restriction);
+                }
+
+                res.IsSuccess = true;
+
+                #endregion
 
             }
             catch (Exception ex)

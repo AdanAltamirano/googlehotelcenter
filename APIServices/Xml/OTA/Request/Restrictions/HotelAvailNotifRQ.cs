@@ -90,11 +90,41 @@ namespace APIServices.Xml.OTA.Request.Restrictions
                     DateTime.Now.Date: 
                     availStatusMessage.StatusApplicationControl.Start;
 
-                XElement statusApplicationControl = new XElement(blank + "StatusApplicationControl",
-                    new XAttribute("Start", start.ToString("yyyyMMdd")),
-                    new XAttribute("End", availStatusMessage.StatusApplicationControl.End.ToString("yyyyMMdd")),
-                    new XAttribute("RatePlanCode", availStatusMessage.StatusApplicationControl.RatePlanCode),
-                    new XAttribute("InvTypeCode", availStatusMessage.StatusApplicationControl.InvTypeCode));
+                XElement statusApplicationControl = null;
+
+                if (availStatusMessage.StatusApplicationControl.ApplyMon ||
+                    availStatusMessage.StatusApplicationControl.ApplyTue ||
+                    availStatusMessage.StatusApplicationControl.ApplyWed ||
+                    availStatusMessage.StatusApplicationControl.ApplyThu ||
+                    availStatusMessage.StatusApplicationControl.ApplyFri ||
+                    availStatusMessage.StatusApplicationControl.ApplySat ||
+                    availStatusMessage.StatusApplicationControl.ApplySun)
+                {
+                    statusApplicationControl = new XElement(blank + "StatusApplicationControl",
+                        new XAttribute("Start", start.ToString("yyyyMMdd")),
+                        new XAttribute("End", availStatusMessage.StatusApplicationControl.End.ToString("yyyyMMdd")),
+                        new XAttribute("Mon", availStatusMessage.StatusApplicationControl.ApplyMon),
+                        new XAttribute("Tue", availStatusMessage.StatusApplicationControl.ApplyTue),
+                        new XAttribute("Weds", availStatusMessage.StatusApplicationControl.ApplyWed),
+                        new XAttribute("Thur", availStatusMessage.StatusApplicationControl.ApplyThu),
+                        new XAttribute("Fri", availStatusMessage.StatusApplicationControl.ApplyFri),
+                        new XAttribute("Sat", availStatusMessage.StatusApplicationControl.ApplySat),
+                        new XAttribute("Sun", availStatusMessage.StatusApplicationControl.ApplySun),
+                        new XAttribute("RatePlanCode", availStatusMessage.StatusApplicationControl.RatePlanCode),
+                        new XAttribute("InvTypeCode", availStatusMessage.StatusApplicationControl.InvTypeCode));
+
+
+                }
+                else
+                {
+                    statusApplicationControl = new XElement(blank + "StatusApplicationControl",
+                        new XAttribute("Start", start.ToString("yyyyMMdd")),
+                        new XAttribute("End", availStatusMessage.StatusApplicationControl.End.ToString("yyyyMMdd")),
+                        new XAttribute("RatePlanCode", availStatusMessage.StatusApplicationControl.RatePlanCode),
+                        new XAttribute("InvTypeCode", availStatusMessage.StatusApplicationControl.InvTypeCode));
+
+                }
+
 
                 XElement restrictionStatus = new XElement(blank + "RestrictionStatus",
                     new XAttribute("Status", availStatusMessage.RestrictionStatus.Status));
@@ -158,18 +188,40 @@ namespace APIServices.Xml.OTA.Request.Restrictions
                     DateTime.Now.Date :
                     availStatusMessagesList[index].StatusApplicationControl.Start;
 
-                XElement statusApplicationControl = new XElement(blank + "StatusApplicationControl",
-                    new XAttribute("Start", start.ToString("yyyyMMdd")),
-                    new XAttribute("End", availStatusMessagesList[index].StatusApplicationControl.End.ToString("yyyyMMdd")),
-                    new XAttribute("Mon", availStatusMessagesList[index].StatusApplicationControl.ApplyMon),
-                    new XAttribute("Tue", availStatusMessagesList[index].StatusApplicationControl.ApplyMon),
-                    new XAttribute("Weds", availStatusMessagesList[index].StatusApplicationControl.ApplyWed),
-                    new XAttribute("Thur", availStatusMessagesList[index].StatusApplicationControl.ApplyThu),
-                    new XAttribute("Fri", availStatusMessagesList[index].StatusApplicationControl.ApplyFri),
-                    new XAttribute("Sat", availStatusMessagesList[index].StatusApplicationControl.ApplySat),
-                    new XAttribute("Sun", availStatusMessagesList[index].StatusApplicationControl.ApplySun),
-                    new XAttribute("RatePlanCode", availStatusMessagesList[index].StatusApplicationControl.RatePlanCode),
-                    new XAttribute("InvTypeCode", availStatusMessagesList[index].StatusApplicationControl.InvTypeCode));
+                XElement statusApplicationControl = null;
+
+                if (availStatusMessagesList[index].StatusApplicationControl.ApplyMon ||
+                    availStatusMessagesList[index].StatusApplicationControl.ApplyTue ||
+                    availStatusMessagesList[index].StatusApplicationControl.ApplyWed ||
+                    availStatusMessagesList[index].StatusApplicationControl.ApplyThu ||
+                    availStatusMessagesList[index].StatusApplicationControl.ApplyFri ||
+                    availStatusMessagesList[index].StatusApplicationControl.ApplySat ||
+                    availStatusMessagesList[index].StatusApplicationControl.ApplySun )
+                {
+
+                    statusApplicationControl = new XElement(blank + "StatusApplicationControl",
+                        new XAttribute("Start", start.ToString("yyyyMMdd")),
+                        new XAttribute("End", availStatusMessagesList[index].StatusApplicationControl.End.ToString("yyyyMMdd")),
+                        new XAttribute("Mon", availStatusMessagesList[index].StatusApplicationControl.ApplyMon),
+                        new XAttribute("Tue", availStatusMessagesList[index].StatusApplicationControl.ApplyTue),
+                        new XAttribute("Weds", availStatusMessagesList[index].StatusApplicationControl.ApplyWed),
+                        new XAttribute("Thur", availStatusMessagesList[index].StatusApplicationControl.ApplyThu),
+                        new XAttribute("Fri", availStatusMessagesList[index].StatusApplicationControl.ApplyFri),
+                        new XAttribute("Sat", availStatusMessagesList[index].StatusApplicationControl.ApplySat),
+                        new XAttribute("Sun", availStatusMessagesList[index].StatusApplicationControl.ApplySun),
+                        new XAttribute("RatePlanCode", availStatusMessagesList[index].StatusApplicationControl.RatePlanCode),
+                        new XAttribute("InvTypeCode", availStatusMessagesList[index].StatusApplicationControl.InvTypeCode));
+                }
+                else
+                {
+                    statusApplicationControl = new XElement(blank + "StatusApplicationControl",
+                        new XAttribute("Start", start.ToString("yyyyMMdd")),
+                        new XAttribute("End", availStatusMessagesList[index].StatusApplicationControl.End.ToString("yyyyMMdd")),
+                        new XAttribute("RatePlanCode", availStatusMessagesList[index].StatusApplicationControl.RatePlanCode),
+                        new XAttribute("InvTypeCode", availStatusMessagesList[index].StatusApplicationControl.InvTypeCode));
+
+                }
+
 
                 XElement restrictionStatus = new XElement(blank + "RestrictionStatus",
                     new XAttribute("Status", availStatusMessagesList[index].RestrictionStatus.Status));

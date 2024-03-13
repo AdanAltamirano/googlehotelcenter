@@ -75,7 +75,8 @@ Namespace Utitlities.Email
                         End If
                     End If
                     With New Miscelaneos.SendHotelEmails
-                        .sendCustomerEmailReservation(xml, idioma, False)
+                        '.sendCustomerEmailReservation(xml, idioma, isDeposit:=False)
+                        .SendEmailtoAlHotel(xml, idioma)
                     End With
 
                     isSent = True

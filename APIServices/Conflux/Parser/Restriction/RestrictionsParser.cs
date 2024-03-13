@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Collections.Generic;
 using APIServices.Models;
 using APIServices.Helpers.Room;
 using APIServices.Conflux.Enum;
+using APIServices.Conflux.Helpers.Rates;
 using APIServices.Conflux.Helpers.Restriction;
 using APIServices.Conflux.Models.Restrictions;
 using APIServices.Conflux.OTA.Models.Restrictions;
@@ -126,17 +128,15 @@ namespace APIServices.Conflux.Parser.Restriction
                 {
                     case (int)TypeRateEnum.RoomRate:
 
-                        //RoomRateClosure(currentRate, ref availStatusMessages.AvailStatusMessageList);
+                        RoomRateClosure(currentRate, ref availStatusMessages);
 
                         break;
                     case (int)TypeRateEnum.RoomRatePromotion:
-                        //RoomRatePromotionMessages(currentRate, ref rateAmountMessages, ref deleteRateAmountMessages);
+                        RoomRatePromotionClosure(currentRate, ref availStatusMessages);
                         break;
 
                 }
             }
-
-
 
             return availStatusMessages;
         }
@@ -589,8 +589,13 @@ namespace APIServices.Conflux.Parser.Restriction
 
         }
 
+        #region Tarifas
         public static AvailStatusMessages ToAvailStatusMessages(List<vDayRates> vDayRates, string status)
         {
+            string[] splitSegmentsNoRates = ConfigurationManager.AppSettings["segmentsNoRates"].Split(',');
+
+            char[] segmentsNoRates = string.Concat(splitSegmentsNoRates).ToCharArray();
+
             AvailStatusMessages availStatusMessages = new AvailStatusMessages()
             {
                 HotelCode = HotelCode,
@@ -600,31 +605,48 @@ namespace APIServices.Conflux.Parser.Restriction
             foreach(vDayRates vDayRate in vDayRates)
             {
 
-                var starDate = ((DateTime)vDayRate.StartDate).Date < DateTime.Now.Date ? DateTime.Now.Date : ((DateTime)vDayRate.StartDate).Date;
-                var diff = ((DateTime)vDayRate.EndDate).Date - starDate.Date;
-                var endDate = diff.TotalDays > 1096 ? starDate.AddYears(3) : ((DateTime)vDayRate.EndDate).Date;
-
-                var room = RoomHelper.GetRoom(vDayRate.RoomId);
-
-                AvailStatusMessage availStatusMessage = new AvailStatusMessage();
-                availStatusMessage.StatusApplicationControl = new StatusApplicationControl()
+                if (vDayRate.NoArrivalsMap[0] == 'Y' ||
+                    vDayRate.NoArrivalsMap[1] == 'Y' ||
+                    vDayRate.NoArrivalsMap[2] == 'Y' ||
+                    vDayRate.NoArrivalsMap[3] == 'Y' ||
+                    vDayRate.NoArrivalsMap[4] == 'Y' ||
+                    vDayRate.NoArrivalsMap[5] == 'Y' ||
+                    vDayRate.NoArrivalsMap[6] == 'Y')
                 {
-                    Start = starDate,
-                    End = endDate,
-                    InvTypeCode = room.Code ?? "",
-                    RatePlanCode = vDayRate.RatePlanId,
-                    ApplyMon = vDayRate.NoArrivalsMap[0] == 'Y' ? true : false,
-                    ApplyTue = vDayRate.NoArrivalsMap[1] == 'Y' ? true : false,
-                    ApplyWed = vDayRate.NoArrivalsMap[2] == 'Y' ? true : false,
-                    ApplyThu = vDayRate.NoArrivalsMap[3] == 'Y' ? true : false,
-                    ApplyFri = vDayRate.NoArrivalsMap[4] == 'Y' ? true : false,
-                    ApplySat = vDayRate.NoArrivalsMap[5] == 'Y' ? true : false,
-                    ApplySun = vDayRate.NoArrivalsMap[6] == 'Y' ? true : false
-                };
 
-                availStatusMessage.RestrictionStatus = RestrictionHelper.GetRestrictionStatus(status);
 
-                availStatusMessages.AvailStatusMessageList.Add(availStatusMessage);
+                    if (vDayRate.Segment.IndexOfAny(segmentsNoRates) == -1 && (!vDayRate.IsMobileRate && !vDayRate.IsCallCenterOnly))
+                    {
+                        if (vDayRate.IsPromotion)
+                        {
+                            if (vDayRate.PromoStartDateBookingWindow != null && vDayRate.PromoEndDateBookingWindow != null)
+                            {
+                                if (DateTime.Now.Date >= vDayRate.PromoStartDateBookingWindow && DateTime.Now.Date <= vDayRate.PromoEndDateBookingWindow)
+                                {
+
+                                    var availStatusMessage = RestrictionHelper.CreateAvailStatusMessage(vDayRate, status);
+
+                                    availStatusMessages.AvailStatusMessageList.Add(availStatusMessage);
+
+                                }
+                            }
+                            else
+                            {
+                                var availStatusMessage = RestrictionHelper.CreateAvailStatusMessage(vDayRate, status);
+
+                                availStatusMessages.AvailStatusMessageList.Add(availStatusMessage);
+                            }
+                        }
+                        else
+                        {
+
+                            var availStatusMessage = RestrictionHelper.CreateAvailStatusMessage(vDayRate, status);
+
+                            availStatusMessages.AvailStatusMessageList.Add(availStatusMessage);
+
+                        }
+                    }
+                }
             }
 
             return availStatusMessages;
@@ -633,6 +655,10 @@ namespace APIServices.Conflux.Parser.Restriction
 
         public static AvailStatusMessages ToAvailStatusMessages(List<vDayRatesExceptions> vDayRates, string status)
         {
+            string[] splitSegmentsNoRates = ConfigurationManager.AppSettings["segmentsNoRates"].Split(',');
+
+            char[] segmentsNoRates = string.Concat(splitSegmentsNoRates).ToCharArray();
+
             AvailStatusMessages availStatusMessages = new AvailStatusMessages()
             {
                 HotelCode = HotelCode,
@@ -642,31 +668,44 @@ namespace APIServices.Conflux.Parser.Restriction
             foreach (vDayRatesExceptions vDayRate in vDayRates)
             {
 
-                var starDate = ((DateTime)vDayRate.StartDate).Date < DateTime.Now.Date ? DateTime.Now.Date : ((DateTime)vDayRate.StartDate).Date;
-                var diff = ((DateTime)vDayRate.EndDate).Date - starDate.Date;
-                var endDate = diff.TotalDays > 1096 ? starDate.AddYears(3) : ((DateTime)vDayRate.EndDate).Date;
-
-                var room = RoomHelper.GetRoom(vDayRate.RoomId);
-
-                AvailStatusMessage availStatusMessage = new AvailStatusMessage();
-                availStatusMessage.StatusApplicationControl = new StatusApplicationControl()
+                if (vDayRate.NoArrivalsMap[0] == 'Y' ||
+                    vDayRate.NoArrivalsMap[1] == 'Y' ||
+                    vDayRate.NoArrivalsMap[2] == 'Y' ||
+                    vDayRate.NoArrivalsMap[3] == 'Y' ||
+                    vDayRate.NoArrivalsMap[4] == 'Y' ||
+                    vDayRate.NoArrivalsMap[5] == 'Y' ||
+                    vDayRate.NoArrivalsMap[6] == 'Y')
                 {
-                    Start = starDate,
-                    End = endDate,
-                    InvTypeCode = room.Code ?? "",
-                    RatePlanCode = vDayRate.RatePlanId,
-                    ApplyMon = vDayRate.NoArrivalsMap[0] == 'Y' ? true : false,
-                    ApplyTue = vDayRate.NoArrivalsMap[1] == 'Y' ? true : false,
-                    ApplyWed = vDayRate.NoArrivalsMap[2] == 'Y' ? true : false,
-                    ApplyThu = vDayRate.NoArrivalsMap[3] == 'Y' ? true : false,
-                    ApplyFri = vDayRate.NoArrivalsMap[4] == 'Y' ? true : false,
-                    ApplySat = vDayRate.NoArrivalsMap[5] == 'Y' ? true : false,
-                    ApplySun = vDayRate.NoArrivalsMap[6] == 'Y' ? true : false
-                };
 
-                availStatusMessage.RestrictionStatus = RestrictionHelper.GetRestrictionStatus(status);
+                    if (vDayRate.Segment.IndexOfAny(segmentsNoRates) == -1 && (!vDayRate.IsMobileRate && !vDayRate.IsCallCenterOnly))
+                    {
+                        if (vDayRate.IsPromotion)
+                        {
+                            if (vDayRate.PromoStartDateBookingWindow != null && vDayRate.PromoEndDateBookingWindow != null)
+                            {
+                                if (DateTime.Now.Date >= vDayRate.PromoStartDateBookingWindow && DateTime.Now.Date <= vDayRate.PromoEndDateBookingWindow)
+                                {
+                                    var availStatusMessage = RestrictionHelper.CreateAvailStatusMessage(vDayRate, status);
 
-                availStatusMessages.AvailStatusMessageList.Add(availStatusMessage);
+                                    availStatusMessages.AvailStatusMessageList.Add(availStatusMessage);
+                                }
+                            }
+                            else
+                            {
+                                var availStatusMessage = RestrictionHelper.CreateAvailStatusMessage(vDayRate, status);
+
+                                availStatusMessages.AvailStatusMessageList.Add(availStatusMessage);
+                            }
+                        }
+                        else
+                        {
+                            var availStatusMessage = RestrictionHelper.CreateAvailStatusMessage(vDayRate, status);
+
+                            availStatusMessages.AvailStatusMessageList.Add(availStatusMessage);
+                        }
+
+                    }
+                }
             }
 
             return availStatusMessages;
@@ -674,6 +713,116 @@ namespace APIServices.Conflux.Parser.Restriction
         }
 
         #region RoomRateClosure
+
+        private static void RoomRateClosure(spGetCurrentRatesByHotel_Result4 currentRate, ref AvailStatusMessages availStatusMessageList)
+        {
+            string[] splitSegmentsNoRates = ConfigurationManager.AppSettings["segmentsNoRates"].Split(',');
+
+            char[] segmentsNoRates = string.Concat(splitSegmentsNoRates).ToCharArray();
+
+            List<vDayRates> vDayRates = RatesHelpers.GetVDayRate(currentRate);
+
+            foreach (var vDayRate in vDayRates)
+            {
+                if (vDayRate.NoArrivalsMap[0] == 'Y' ||
+                    vDayRate.NoArrivalsMap[1] == 'Y' ||
+                    vDayRate.NoArrivalsMap[2] == 'Y' ||
+                    vDayRate.NoArrivalsMap[3] == 'Y' ||
+                    vDayRate.NoArrivalsMap[4] == 'Y' ||
+                    vDayRate.NoArrivalsMap[5] == 'Y' ||
+                    vDayRate.NoArrivalsMap[6] == 'Y')
+                {
+
+                    if (vDayRate.Segment.IndexOfAny(segmentsNoRates) == -1 && (!vDayRate.IsMobileRate && !vDayRate.IsCallCenterOnly))
+                    {
+                        if (vDayRate.IsPromotion)
+                        {
+                            if (vDayRate.PromoStartDateBookingWindow != null && vDayRate.PromoEndDateBookingWindow != null)
+                            {
+                                if (DateTime.Now.Date >= vDayRate.PromoStartDateBookingWindow && DateTime.Now.Date <= vDayRate.PromoEndDateBookingWindow)
+                                {
+                                    var availStatusMessage = RestrictionHelper.CreateAvailStatusMessage(vDayRate, "N");
+
+                                    availStatusMessageList.AvailStatusMessageList.Add(availStatusMessage);
+                                }
+                            }
+                            else
+                            {
+                                var availStatusMessage = RestrictionHelper.CreateAvailStatusMessage(vDayRate, "N");
+
+                                availStatusMessageList.AvailStatusMessageList.Add(availStatusMessage);
+                            }
+                        }
+                        else
+                        {
+                            var availStatusMessage = RestrictionHelper.CreateAvailStatusMessage(vDayRate, "N");
+
+                            availStatusMessageList.AvailStatusMessageList.Add(availStatusMessage);
+                        }
+
+                    }
+                }
+            }
+        }
+
+        #endregion
+
+        #region RoomRatePromotionClosure
+
+        private static void RoomRatePromotionClosure(spGetCurrentRatesByHotel_Result4 currentRate, ref AvailStatusMessages availStatusMessageList)
+        {
+            string[] splitSegmentsNoRates = ConfigurationManager.AppSettings["segmentsNoRates"].Split(',');
+
+            char[] segmentsNoRates = string.Concat(splitSegmentsNoRates).ToCharArray();
+
+            List<vDayRatesExceptions> vDayRates = RatesHelpers.GetVDayRateException(currentRate);
+
+            foreach (var vDayRate in vDayRates)
+            {
+                if (vDayRate.NoArrivalsMap[0] == 'Y' ||
+                    vDayRate.NoArrivalsMap[1] == 'Y' ||
+                    vDayRate.NoArrivalsMap[2] == 'Y' ||
+                    vDayRate.NoArrivalsMap[3] == 'Y' ||
+                    vDayRate.NoArrivalsMap[4] == 'Y' ||
+                    vDayRate.NoArrivalsMap[5] == 'Y' ||
+                    vDayRate.NoArrivalsMap[6] == 'Y')
+                {
+
+                    if (vDayRate.Segment.IndexOfAny(segmentsNoRates) == -1 && (!vDayRate.IsMobileRate && !vDayRate.IsCallCenterOnly))
+                    {
+                        if (vDayRate.IsPromotion)
+                        {
+                            if (vDayRate.PromoStartDateBookingWindow != null && vDayRate.PromoEndDateBookingWindow != null)
+                            {
+                                if (DateTime.Now.Date >= vDayRate.PromoStartDateBookingWindow && DateTime.Now.Date <= vDayRate.PromoEndDateBookingWindow)
+                                {
+                                    var availStatusMessage = RestrictionHelper.CreateAvailStatusMessage(vDayRate, "N");
+
+                                    availStatusMessageList.AvailStatusMessageList.Add(availStatusMessage);
+                                }
+                            }
+                            else
+                            {
+                                var availStatusMessage = RestrictionHelper.CreateAvailStatusMessage(vDayRate, "N");
+
+                                availStatusMessageList.AvailStatusMessageList.Add(availStatusMessage);
+                            }
+                        }
+                        else
+                        {
+                            var availStatusMessage = RestrictionHelper.CreateAvailStatusMessage(vDayRate, "N");
+
+                            availStatusMessageList.AvailStatusMessageList.Add(availStatusMessage);
+                        }
+                    }
+                }
+            }
+
+        }
+
+        #endregion
+
+
         #endregion
 
     }

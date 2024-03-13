@@ -118,6 +118,7 @@
     <Compile Include="Conflux\Helpers\Rates\LinkedPricesRatesPromotion.cs" />
     <Compile Include="Conflux\Helpers\Rates\RateAmountMessage.cs" />
     <Compile Include="Conflux\Helpers\Rates\RatesHelpers.cs" />
+    <Compile Include="Conflux\Helpers\Restriction\AvailStatusMessage.cs" />
     <Compile Include="Conflux\Helpers\Restriction\RestrictionHelper.cs" />
     <Compile Include="Conflux\Models\OTA\Rates\AdditionalGuestAmount.cs" />
     <Compile Include="Conflux\Models\OTA\Rates\BaseGuestAmount.cs" />
