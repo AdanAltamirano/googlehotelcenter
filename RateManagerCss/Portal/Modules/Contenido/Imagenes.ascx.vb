@@ -47,27 +47,27 @@ Partial Class Imagenes
     End Property
     Public Property Nota() As String
         Get
-            Return viewstate("_nota")
+            Return ViewState("_nota")
         End Get
         Set(ByVal Value As String)
-            viewstate("_nota") = Value
+            ViewState("_nota") = Value
         End Set
     End Property
     Public Property Pagina() As String
         Get
-            Return viewstate("_pagina")
+            Return ViewState("_pagina")
         End Get
         Set(ByVal Value As String)
-            viewstate("_pagina") = Value
+            ViewState("_pagina") = Value
         End Set
     End Property
 
     Public Property IsImgHeader() As Boolean
         Get
-            Return viewstate("_IsImgHeader")
+            Return ViewState("_IsImgHeader")
         End Get
         Set(ByVal Value As Boolean)
-            viewstate("_IsImgHeader") = Value
+            ViewState("_IsImgHeader") = Value
         End Set
     End Property
 
@@ -78,7 +78,7 @@ Partial Class Imagenes
     Public Event GetImgPath(ByVal strUrl As String)
     Public Event HideIMGComponent(ByVal Visible As Boolean)
 
-	Private showdlg As Boolean
+    Private showdlg As Boolean
 
     Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         showdlg = False

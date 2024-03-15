@@ -11,13 +11,14 @@ Imports APIServices.Conflux
 Imports APIServices.Conflux.Models.Restrictions.Room
 Imports APIServices.Conflux.Models.Restrictions.Room.Response
 Imports RateManager.Utitlities.Hotel
+Imports Contenido.presentacion
 
 
 
 Imports System.Configuration.ConfigurationManager
 
 Partial Class ctrlRooms
-	Inherits System.Web.UI.UserControl
+    Inherits System.Web.UI.UserControl
 
 
 
@@ -39,7 +40,6 @@ Partial Class ctrlRooms
     Protected WithEvents lnkFaresCatalogue As System.Web.UI.WebControls.LinkButton
     Protected WithEvents lnkLinkRooms As System.Web.UI.WebControls.LinkButton
     Protected WithEvents Label1 As System.Web.UI.WebControls.Label
-
 
 
     'NOTA: el Diseñador de Web Forms necesita la siguiente declaración del marcador de posición.
@@ -128,7 +128,6 @@ Partial Class ctrlRooms
     Protected mlNameRoom As CtrlIdioma
     Protected mlDescriptionRoom As CtrlIdiomaRFCk
 
-
     Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         'Introducir aquí el código de usuario para inicializar la página
         'Registramos el script de validacion de cliente  
@@ -154,6 +153,12 @@ Partial Class ctrlRooms
         Me.ddlMaxCribRoll.Attributes.Add("onChange", "javascript:ShowPrice('" & Me.ddlMaxCribRoll.ClientID & "', '" & divPriceCrib.ClientID & "','" & Me.txtPriceCribRoll.ClientID & "','txtDiv3','" & Me.lblPriceCribRoll.ClientID & "','" & Me.divlabelPrice.ClientID & "')")
         Me.lstRoomType.Attributes.Add("onChange", "javascript:ShowName('" & lstRoomType.ClientID & "','" & mlNameRoom.ReturnNameTxtEn & "','" & mlNameRoom.ReturnNameTxtEs & "','" & Me.iSpanishDesc.ClientID & "','" & Me.iEnglishDesc.ClientID & "')")
         'btnfile.Attributes.Add("onclick", "javascript:saveImg('" & Me.lblfile.ClientID & "')")
+
+        If Not IsPostBack Then
+            ctrlImgRooms.IdEmpresa = Me.idCompany
+            ctrlImgRooms.ModeView = Opciones.ViewMode.Edit
+            ctrlImgRooms.IdIdioma = PortalCulture.GetIDCulture
+        End If
 
     End Sub
 
@@ -346,6 +351,9 @@ Partial Class ctrlRooms
                 End If
             End With
 
+            ctrlImgRooms.IdTypeRoomHotel = idRoomHotel
+            ctrlImgRooms.LoadImagesByRoomHotel(ctrlImgRooms.IdTypeRoomHotel)
+
 
         End With
         'Catch e As Exception
@@ -452,6 +460,7 @@ Partial Class ctrlRooms
                         roomData.RoomDescription = Me.mlDescriptionRoom.textodefault
                         roomData.Capacity = CType(Me.lstPeoplesInRoom.SelectedValue, Integer)
                         roomData.AdultCapcity = CType(Me.lstNumberAdults.SelectedValue, Integer)
+
                     End If
                 End If
             End With
@@ -461,6 +470,11 @@ Partial Class ctrlRooms
                 Me.newRoom()
                 Me.idRoom = rooms.Tables(RoomsHotelData.TBL_ROOM_HOTEL).Rows(0).Item(RoomsHotelData.FLD_ID_ROOM_HOTEL)
                 'CType(Me.Page, PaginaBase).guardalog("/Pages/Rooms.aspx", PaginaBase.acciones.Modificar, "Se modificó la habitación " & grid.Items(grid.SelectedIndex).Cells(columns.Tipo).Text & " - " & grid.Items(grid.SelectedIndex).Cells(columns.nameroom).Text & " de el hotel " & Me.cInfoActual.HotelName)
+
+                'Guardar Imagenes
+
+                Me.ctrlImgRooms.SaveImages()
+
 
                 'Google Request
 
@@ -529,6 +543,11 @@ Partial Class ctrlRooms
 
                         mlDescriptionRoom.Update(idDictionryDesc, publish)
                         mlNameRoom.Update(idDictionryName, publish)
+
+                        'Guardar Imagenes
+
+                        Me.ctrlImgRooms.SaveImages()
+
                     End If
                 End If
             End With

@@ -1,24 +1,24 @@
-'------------------------------------------------------------------------------
-' <generado autom·ticamente>
-'     Este cÛdigo fue generado por una herramienta.
+Ôªø'------------------------------------------------------------------------------
+' <generado autom√°ticamente>
+'     Este c√≥digo fue generado por una herramienta.
 '
-'     Los cambios en este archivo podrÌan causar un comportamiento incorrecto y se perder·n si
-'     se vuelve a generar el cÛdigo. 
-' </generado autom·ticamente>
+'     Los cambios en este archivo podr√≠an causar un comportamiento incorrecto y se perder√°n si
+'     se vuelve a generar el c√≥digo. 
+' </generado autom√°ticamente>
 '------------------------------------------------------------------------------
 
 Option Strict On
 Option Explicit On
 
 
-Partial Public Class Photo
+Partial Public Class ctrlImagesRooms
 
     '''<summary>
     '''Control lblTitle.
     '''</summary>
     '''<remarks>
-    '''Campo generado autom·ticamente.
-    '''Para modificarlo, mueva la declaraciÛn del campo del archivo del diseÒador al archivo de cÛdigo subyacente.
+    '''Campo generado autom√°ticamente.
+    '''Para modificarlo, mueva la declaraci√≥n del campo del archivo del dise√±ador al archivo de c√≥digo subyacente.
     '''</remarks>
     Protected WithEvents lblTitle As Global.System.Web.UI.WebControls.Label
 
@@ -26,8 +26,8 @@ Partial Public Class Photo
     '''Control lblfiles.
     '''</summary>
     '''<remarks>
-    '''Campo generado autom·ticamente.
-    '''Para modificarlo, mueva la declaraciÛn del campo del archivo del diseÒador al archivo de cÛdigo subyacente.
+    '''Campo generado autom√°ticamente.
+    '''Para modificarlo, mueva la declaraci√≥n del campo del archivo del dise√±ador al archivo de c√≥digo subyacente.
     '''</remarks>
     Protected WithEvents lblfiles As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
@@ -35,8 +35,8 @@ Partial Public Class Photo
     '''Control attach1.
     '''</summary>
     '''<remarks>
-    '''Campo generado autom·ticamente.
-    '''Para modificarlo, mueva la declaraciÛn del campo del archivo del diseÒador al archivo de cÛdigo subyacente.
+    '''Campo generado autom√°ticamente.
+    '''Para modificarlo, mueva la declaraci√≥n del campo del archivo del dise√±ador al archivo de c√≥digo subyacente.
     '''</remarks>
     Protected WithEvents attach1 As Global.System.Web.UI.HtmlControls.HtmlInputFile
 
@@ -44,8 +44,8 @@ Partial Public Class Photo
     '''Control attach2.
     '''</summary>
     '''<remarks>
-    '''Campo generado autom·ticamente.
-    '''Para modificarlo, mueva la declaraciÛn del campo del archivo del diseÒador al archivo de cÛdigo subyacente.
+    '''Campo generado autom√°ticamente.
+    '''Para modificarlo, mueva la declaraci√≥n del campo del archivo del dise√±ador al archivo de c√≥digo subyacente.
     '''</remarks>
     Protected WithEvents attach2 As Global.System.Web.UI.HtmlControls.HtmlInputFile
 
@@ -53,8 +53,8 @@ Partial Public Class Photo
     '''Control attach3.
     '''</summary>
     '''<remarks>
-    '''Campo generado autom·ticamente.
-    '''Para modificarlo, mueva la declaraciÛn del campo del archivo del diseÒador al archivo de cÛdigo subyacente.
+    '''Campo generado autom√°ticamente.
+    '''Para modificarlo, mueva la declaraci√≥n del campo del archivo del dise√±ador al archivo de c√≥digo subyacente.
     '''</remarks>
     Protected WithEvents attach3 As Global.System.Web.UI.HtmlControls.HtmlInputFile
 
@@ -62,8 +62,8 @@ Partial Public Class Photo
     '''Control attach4.
     '''</summary>
     '''<remarks>
-    '''Campo generado autom·ticamente.
-    '''Para modificarlo, mueva la declaraciÛn del campo del archivo del diseÒador al archivo de cÛdigo subyacente.
+    '''Campo generado autom√°ticamente.
+    '''Para modificarlo, mueva la declaraci√≥n del campo del archivo del dise√±ador al archivo de c√≥digo subyacente.
     '''</remarks>
     Protected WithEvents attach4 As Global.System.Web.UI.HtmlControls.HtmlInputFile
 
@@ -71,8 +71,8 @@ Partial Public Class Photo
     '''Control attach5.
     '''</summary>
     '''<remarks>
-    '''Campo generado autom·ticamente.
-    '''Para modificarlo, mueva la declaraciÛn del campo del archivo del diseÒador al archivo de cÛdigo subyacente.
+    '''Campo generado autom√°ticamente.
+    '''Para modificarlo, mueva la declaraci√≥n del campo del archivo del dise√±ador al archivo de c√≥digo subyacente.
     '''</remarks>
     Protected WithEvents attach5 As Global.System.Web.UI.HtmlControls.HtmlInputFile
 
@@ -80,8 +80,8 @@ Partial Public Class Photo
     '''Control attach6.
     '''</summary>
     '''<remarks>
-    '''Campo generado autom·ticamente.
-    '''Para modificarlo, mueva la declaraciÛn del campo del archivo del diseÒador al archivo de cÛdigo subyacente.
+    '''Campo generado autom√°ticamente.
+    '''Para modificarlo, mueva la declaraci√≥n del campo del archivo del dise√±ador al archivo de c√≥digo subyacente.
     '''</remarks>
     Protected WithEvents attach6 As Global.System.Web.UI.HtmlControls.HtmlInputFile
 
@@ -89,8 +89,8 @@ Partial Public Class Photo
     '''Control attach7.
     '''</summary>
     '''<remarks>
-    '''Campo generado autom·ticamente.
-    '''Para modificarlo, mueva la declaraciÛn del campo del archivo del diseÒador al archivo de cÛdigo subyacente.
+    '''Campo generado autom√°ticamente.
+    '''Para modificarlo, mueva la declaraci√≥n del campo del archivo del dise√±ador al archivo de c√≥digo subyacente.
     '''</remarks>
     Protected WithEvents attach7 As Global.System.Web.UI.HtmlControls.HtmlInputFile
 
@@ -98,8 +98,8 @@ Partial Public Class Photo
     '''Control attach8.
     '''</summary>
     '''<remarks>
-    '''Campo generado autom·ticamente.
-    '''Para modificarlo, mueva la declaraciÛn del campo del archivo del diseÒador al archivo de cÛdigo subyacente.
+    '''Campo generado autom√°ticamente.
+    '''Para modificarlo, mueva la declaraci√≥n del campo del archivo del dise√±ador al archivo de c√≥digo subyacente.
     '''</remarks>
     Protected WithEvents attach8 As Global.System.Web.UI.HtmlControls.HtmlInputFile
 
@@ -107,8 +107,8 @@ Partial Public Class Photo
     '''Control attach9.
     '''</summary>
     '''<remarks>
-    '''Campo generado autom·ticamente.
-    '''Para modificarlo, mueva la declaraciÛn del campo del archivo del diseÒador al archivo de cÛdigo subyacente.
+    '''Campo generado autom√°ticamente.
+    '''Para modificarlo, mueva la declaraci√≥n del campo del archivo del dise√±ador al archivo de c√≥digo subyacente.
     '''</remarks>
     Protected WithEvents attach9 As Global.System.Web.UI.HtmlControls.HtmlInputFile
 
@@ -116,8 +116,8 @@ Partial Public Class Photo
     '''Control attach10.
     '''</summary>
     '''<remarks>
-    '''Campo generado autom·ticamente.
-    '''Para modificarlo, mueva la declaraciÛn del campo del archivo del diseÒador al archivo de cÛdigo subyacente.
+    '''Campo generado autom√°ticamente.
+    '''Para modificarlo, mueva la declaraci√≥n del campo del archivo del dise√±ador al archivo de c√≥digo subyacente.
     '''</remarks>
     Protected WithEvents attach10 As Global.System.Web.UI.HtmlControls.HtmlInputFile
 
@@ -125,8 +125,8 @@ Partial Public Class Photo
     '''Control btnAttach.
     '''</summary>
     '''<remarks>
-    '''Campo generado autom·ticamente.
-    '''Para modificarlo, mueva la declaraciÛn del campo del archivo del diseÒador al archivo de cÛdigo subyacente.
+    '''Campo generado autom√°ticamente.
+    '''Para modificarlo, mueva la declaraci√≥n del campo del archivo del dise√±ador al archivo de c√≥digo subyacente.
     '''</remarks>
     Protected WithEvents btnAttach As Global.System.Web.UI.WebControls.Button
 
@@ -134,8 +134,8 @@ Partial Public Class Photo
     '''Control lblDescTips.
     '''</summary>
     '''<remarks>
-    '''Campo generado autom·ticamente.
-    '''Para modificarlo, mueva la declaraciÛn del campo del archivo del diseÒador al archivo de cÛdigo subyacente.
+    '''Campo generado autom√°ticamente.
+    '''Para modificarlo, mueva la declaraci√≥n del campo del archivo del dise√±ador al archivo de c√≥digo subyacente.
     '''</remarks>
     Protected WithEvents lblDescTips As Global.System.Web.UI.WebControls.Label
 
@@ -143,8 +143,8 @@ Partial Public Class Photo
     '''Control lblMoreImages.
     '''</summary>
     '''<remarks>
-    '''Campo generado autom·ticamente.
-    '''Para modificarlo, mueva la declaraciÛn del campo del archivo del diseÒador al archivo de cÛdigo subyacente.
+    '''Campo generado autom√°ticamente.
+    '''Para modificarlo, mueva la declaraci√≥n del campo del archivo del dise√±ador al archivo de c√≥digo subyacente.
     '''</remarks>
     Protected WithEvents lblMoreImages As Global.System.Web.UI.WebControls.Label
 
@@ -152,8 +152,8 @@ Partial Public Class Photo
     '''Control lblMensajeImagen.
     '''</summary>
     '''<remarks>
-    '''Campo generado autom·ticamente.
-    '''Para modificarlo, mueva la declaraciÛn del campo del archivo del diseÒador al archivo de cÛdigo subyacente.
+    '''Campo generado autom√°ticamente.
+    '''Para modificarlo, mueva la declaraci√≥n del campo del archivo del dise√±ador al archivo de c√≥digo subyacente.
     '''</remarks>
     Protected WithEvents lblMensajeImagen As Global.System.Web.UI.WebControls.Label
 
@@ -161,8 +161,8 @@ Partial Public Class Photo
     '''Control lblImagesTips.
     '''</summary>
     '''<remarks>
-    '''Campo generado autom·ticamente.
-    '''Para modificarlo, mueva la declaraciÛn del campo del archivo del diseÒador al archivo de cÛdigo subyacente.
+    '''Campo generado autom√°ticamente.
+    '''Para modificarlo, mueva la declaraci√≥n del campo del archivo del dise√±ador al archivo de c√≥digo subyacente.
     '''</remarks>
     Protected WithEvents lblImagesTips As Global.System.Web.UI.WebControls.Label
 
@@ -170,8 +170,8 @@ Partial Public Class Photo
     '''Control tblThumbnails.
     '''</summary>
     '''<remarks>
-    '''Campo generado autom·ticamente.
-    '''Para modificarlo, mueva la declaraciÛn del campo del archivo del diseÒador al archivo de cÛdigo subyacente.
+    '''Campo generado autom√°ticamente.
+    '''Para modificarlo, mueva la declaraci√≥n del campo del archivo del dise√±ador al archivo de c√≥digo subyacente.
     '''</remarks>
     Protected WithEvents tblThumbnails As Global.System.Web.UI.WebControls.Table
 End Class

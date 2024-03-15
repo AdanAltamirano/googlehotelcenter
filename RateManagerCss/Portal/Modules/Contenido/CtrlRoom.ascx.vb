@@ -36,6 +36,7 @@ Partial Class CtrlRoom
     Private Const IMAGE As String = "Rooms_ImageRoom"
 
     Private Sub cargatodo()
+
         Dim strPath As String
         'Me.CargaContenido(TITLE, Me.lblTitle, Opciones.TipoControl.Label, Me.ctrlTitle, Nothing, Nothing, False, False, True, False, False)
         Me.CargaContenido(DESCRIPTION, Me.lblDescription, Opciones.TipoControl.Label, Me.ctrlLinkDescription, Nothing, Nothing, False, False, True, False, False)
@@ -50,16 +51,13 @@ Partial Class CtrlRoom
         Me.ctrlLinkDescription.NoPaso = "2."
         Me.ctrlLinkDescription.Texto = PortalCulture.GetString("A00676") '"Presione el Icono del lapiz para cambiar el El texto"
 
-
-
-
         'Me.lnkMoreInfo.Text = PortalCulture.GetString("A00018")
 
         If MyBase.ModeView = Opciones.ViewMode.Edit Then
             If Me.lblDescription.Text.Trim = "" Then
                 Me.lblDescription.Text = "[ " & PortalCulture.GetString("A00708") & " ]"
             End If
-            
+
             strPath = Me.imgRoom.ImageUrl
 
             If strPath = vbNullString Then
