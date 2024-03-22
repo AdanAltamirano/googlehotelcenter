@@ -1,5 +1,6 @@
 ﻿Imports Contenido.Comun
 Imports Contenido.presentacion
+Imports RateManager.Utitlities.Contenido
 Imports System.Configuration.ConfigurationManager
 
 Public Class ctrlImagesRooms
@@ -26,11 +27,20 @@ Public Class ctrlImagesRooms
         End Set
     End Property
 
-    Private Property IdElement() As String
+    Public Property CodeRoomTypeHotel() As String
+        Get
+            Return ViewState("CodeRoomTypeHotelCtrlImages")
+        End Get
+        Set(value As String)
+            ViewState("CodeRoomTypeHotelCtrlImages") = value
+        End Set
+    End Property
+
+    Private Property IdElementModule() As Integer
         Get
             Return ViewState("IdElementImagesRoomHotel")
         End Get
-        Set(value As String)
+        Set(value As Integer)
             ViewState("IdElementImagesRoomHotel") = value
         End Set
     End Property
@@ -42,17 +52,37 @@ Public Class ctrlImagesRooms
         End Get
     End Property
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Public Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
-        If IsPostBack Then
-            Dim test As String = "test"
-        End If
+        'If IsPostBack Then
+        '    Dim eventArgument As String = Request.Params("__EVENTARGUMENT")
+        '    Dim eventTarget As String = Request.Params("__EVENTTARGET")
+        'End If
 
         If Not IsPostBack Then
             MyBase.IdModulo = CType(AppSettings("idCtrlImagesRooms"), Integer)
+            Me.IdElementModule = ContenidoUtilitie.GetIdElementByModule(MyBase.IdModulo)
+            Me.lblTitle.Text = PortalCulture.GetString("01671") 'Galeria
+            Me.lblfiles.InnerText = PortalCulture.GetString("01672") 'Agregar Imagenes
         End If
 
         If Me.ModeView <> Opciones.ViewMode.gView Then
+        End If
+
+        If IsPostBack Then
+            LoadImagesByRoomHotel(IdTypeRoomHotel, CodeRoomTypeHotel)
+        End If
+
+    End Sub
+
+    Protected Overrides Sub Render(ByVal writer As System.Web.UI.HtmlTextWriter)
+        MyBase.Render(writer)
+        If HasContent Then
+            If firstImage = "" And defaultImage <> "" Then
+                writer.Write(defaultImage)
+            ElseIf firstImage <> "" Then
+                writer.Write(firstImage)
+            End If
         End If
     End Sub
 
@@ -117,7 +147,7 @@ Public Class ctrlImagesRooms
                                 Dim dataRow As DataRow
                                 With New presentacionContenido
                                     contenido = .GetContenidoById(idcont, Me.IdIdioma)
-                                    If .CreateContenido(CType(Me.IdElement, Integer), CType(Me.Page, PaginaBase).cInfoActual.Empresa, Me.IdIdioma, Val(New Unit(70).Value), Val(New Unit(70).Value), "", "", addedImageDirection, contenido) Then
+                                    If .CreateContenido(CType(Me.IdElementModule, Integer), CType(Me.Page, PaginaBase).cInfoActual.Empresa, Me.IdIdioma, Val(New Unit(70).Value), Val(New Unit(70).Value), "", "", addedImageDirection, contenido) Then
                                         dataRow = contenido.Tables(ComunContenido.CONTENIDO_IDIOMA_TABLA).NewRow
                                         contenido.Tables(ComunContenido.CONTENIDO_IDIOMA_TABLA).Rows.Add(dataRow)
                                         dataRow.Item(ComunContenido.PKIDCONTENIDO_FIELD) = contenido.Tables(ComunContenido.CONTENIDO_IDIOMA_TABLA).Rows(0).Item(ComunContenido.PKIDCONTENIDO_FIELD)
@@ -159,7 +189,7 @@ Public Class ctrlImagesRooms
 
     End Sub
 
-    Public Sub LoadImagesByRoomHotel(ByVal idTypeRoomHotel As Integer)
+    Public Sub LoadImagesByRoomHotel(ByVal idTypeRoomHotel As Integer, ByVal codeTypeRoomHotel As String)
 
         Me.tblThumbnails.Rows.Clear()
 
@@ -200,17 +230,6 @@ Public Class ctrlImagesRooms
         contcel = 0
         maximoGaleria = 0
 
-        'For Each row In rows
-        '    If Not row.IsNull(ComunContenido.PKIDCONTENIDO_FIELD) Then
-        '        idcont = row(ComunContenido.PKIDCONTENIDO_FIELD)
-        '    End If
-
-        '    If Not row.IsNull(ComunElementos.PKIDElemento_FIELD) Then
-        '        idElemento = row.Item(ComunElementos.PKIDElemento_FIELD)
-        '        idelem = row.Item(ComunElementos.PKIDElemento_FIELD)
-        '    End If
-        'Next
-
         For Each row In rows
             If Not row.IsNull(ComunContenido.PKIDCONTENIDO_FIELD) Then
                 maximoGaleria += 1
@@ -228,9 +247,13 @@ Public Class ctrlImagesRooms
                 Dim lnkChange As New CambiarContenido
                 'Dim lnkDelete As New EliminarContenido
                 lnkChange = LoadControl(GeRequestApplicationPath("/portal/modules/contenido/CambiarContenido.ascx"))
+                lnkChange.EditButton.Visible = False
+                lnkChange.EliminaContenido = False
+                lnkChange.DeleteButtonByIdContent.Visible = True
                 lnkChange.idContenido = row(ComunContenido.PKIDCONTENIDO_FIELD)
+                lnkChange.IdTypeRoomHotelChangeContent = idTypeRoomHotel
+                lnkChange.CodeTypeRoomHotelChangeContent = codeTypeRoomHotel
                 idcont = row(ComunContenido.PKIDCONTENIDO_FIELD)
-                lnkChange.EliminaContenido = True
                 'Cargamos el contenido de la imagen
                 CargaContenido(row, imgThumbnail, TipoControl.Imagen, lnkChange, Nothing, Nothing, True, False, True, False, False)
                 lnkChange.RConte = True
@@ -358,6 +381,12 @@ Public Class ctrlImagesRooms
 
     End Sub
 
+    Private Sub Page_ChangeContenido(ByVal sender As Object, ByVal e As ArgsConte) Handles MyBase.ChangeContenido
+
+        'TODO: Cheacar
+
+
+    End Sub
 
 
 End Class

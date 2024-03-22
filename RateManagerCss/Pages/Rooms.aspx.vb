@@ -131,19 +131,34 @@ Partial Class Rooms
 
     Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load, Me.Load
 
-
         'Introducir aquí el código de usuario para inicializar la página
         If Not MyBase.IsHotelSelected Then MyBase.redirectTo(PaginaBase.pages.Home)
         CtrlRooms1.idHotel = MyBase.cInfoActual.Hotel
         CtrlRooms1.idCompany = MyBase.cInfoActual.Empresa
         Me.lblError.Visible = False
         Me.lblDeleteError.Visible = False
-        If Not IsPostBack Then            
+        If Not IsPostBack Then
             LoadRooms("")
-            TipoEdicion = Edicion.NoEdicion
-            Editando = False
             Me.grid.SelectedIndex = -1
-            MostrarCmdNew(True)
+            'Refrescar la pagina cuando se elimine una foto, el redirecto lo hace CambiarContenido.ascx.vb
+            If Request.QueryString("idroomTypeHotel") IsNot Nothing And Request.QueryString("codeRoomTypeHotel") IsNot Nothing Then
+                idRoom = CType(Request.QueryString("idroomTypeHotel"), Integer)
+                Habitacion = Request.QueryString("codeRoomTypeHotel")
+                TipoEdicion = Edicion.Rooms
+                Editando = True
+                MostrarCmdNew(False)
+            Else
+                TipoEdicion = Edicion.NoEdicion
+                Editando = False
+                MostrarCmdNew(True)
+                divContenedor.Style("display") = "none"
+            End If
+
+            'LoadRooms("")
+            'TipoEdicion = Edicion.NoEdicion
+            'Editando = False
+            'Me.grid.SelectedIndex = -1
+            'MostrarCmdNew(True)
 
             ddlFilter.Items.Clear()
             ddlFilter.Items.Add(New ListItem(PortalCulture.GetString("01541"), 1))
@@ -151,11 +166,19 @@ Partial Class Rooms
             ddlFilter.Items.Add(New ListItem(PortalCulture.GetString("01543"), -1))
         End If
 
-        divContenedor.Style("display") = "none"
+        If IsPostBack Then
+            Dim ctrlName As String = Page.Request.Params.Get("__EVENTTARGET")
+            If ctrlName = "ddlFilter" Then
+                Reset()
+                MostrarCmdNew(True)
+                divContenedor.Style("display") = "none"
+            End If
+        End If
+
+        'divContenedor.Style("display") = "none"
         'If (MostarDivContenedor) Then divContenedor.Style("display") = "block"
         'btnMostarDivContenedor.Visible = Not MostarDivContenedor
         cmdNew.Attributes.Add("onclick", String.Format("javascript:FireShow('{0}','{1}',{2});", divContenedor.ClientID, cmdNew.ClientID, "true"))
-
 
         Me.ResizefrmPrincipal()
     End Sub
@@ -163,9 +186,9 @@ Partial Class Rooms
     Private Sub LoadRooms(ByVal sFiltro As String)
         With CtrlRooms1
             If ddlFilter.SelectedIndex = 0 Then
-                sFiltro = "eliminada=false " & sFiltro
+                sFiltro = IIf(sFiltro = String.Empty, "eliminada=false", "eliminada=false and " & sFiltro)
             ElseIf ddlFilter.SelectedIndex = 1 Then
-                sFiltro = "eliminada=true " & sFiltro
+                sFiltro = IIf(sFiltro = String.Empty, "eliminada=true", "eliminada=true and " & sFiltro)
             End If
             grid.DataSource = .getAllRooms(sFiltro)
             CType(grid.Columns(columns.idRoomType), BoundColumn).DataField = RoomsHotelData.FLD_ID_ROOM_HOTEL
@@ -190,7 +213,18 @@ Partial Class Rooms
     End Sub
 
     Private Sub btnNuevo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNuevo.Click
+        'idRoom = 0
+        'Habitacion = String.Empty
+        'Me.grid.SelectedIndex = -1
+        'CtrlRooms1.newRoom()
+        'TipoEdicion = Edicion.NoEdicion
+        'Editando = False
+        Reset()
+    End Sub
+
+    Private Sub Reset()
         idRoom = 0
+        Habitacion = String.Empty
         Me.grid.SelectedIndex = -1
         CtrlRooms1.newRoom()
         TipoEdicion = Edicion.NoEdicion
@@ -242,6 +276,7 @@ Partial Class Rooms
         TipoEdicion = Edicion.NoEdicion
         Editando = False
         Me.idRoom = 0
+        Me.Habitacion = String.Empty
         CtrlRooms1.newRoom()
 
         'btnOcultarDivContenedor_Click(Nothing, Nothing)
@@ -315,19 +350,20 @@ Partial Class Rooms
         Dim elimina As Boolean
         Try
             idRoom = Integer.Parse(e.Item.Cells(0).Text)
+            Me.Habitacion = e.Item.Cells(1).Text
             elimina = If(e.Item.Cells(columns.eliminada).Text.ToString.ToLower.Trim = "true", True, False)
             grid.SelectedIndex = e.Item.ItemIndex
         Catch ex As Exception
             Return
         End Try
-        CtrlRooms1.loadRoom(idRoom)
+        CtrlRooms1.loadRoom(idRoom, Me.Habitacion)
         Select Case e.CommandName
             Case "Select"
                 TipoEdicion = Edicion.Rooms
 
                 If Not editar = False Then
                     Me.Editando = True
-                    Me.Habitacion = e.Item.Cells(1).Text
+                    'Me.Habitacion = e.Item.Cells(1).Text
                 Else
                     Me.btnGuardar.Enabled = False
                 End If
@@ -360,9 +396,9 @@ Partial Class Rooms
                 btnOcultarDivContenedor_Click(Nothing, Nothing)
         End Select
     End Sub
-    Private Sub showRoom(ByVal idRooms As Integer)
+    Private Sub showRoom(ByVal idRooms As Integer, ByVal roomCode As String)
         Me.PanelRooms.Visible = True
-        CtrlRooms1.loadRoom(idRooms)
+        CtrlRooms1.loadRoom(idRooms, roomCode)
     End Sub
 
 
@@ -422,16 +458,13 @@ Partial Class Rooms
         lblTitleForm.Text = PortalCulture.GetString("00048")
         btnNuevo.Text = PortalCulture.GetString("00102")
 
-
-
-
         btnGuardar.Text = PortalCulture.GetString("00008")
 
         If Editando Then
             lblMsg.Text = PortalCulture.GetString("00054") & " - [ " & Me.Habitacion & " ]"
             Select Case TipoEdicion
                 Case Edicion.Rooms
-                    MyClass.showRoom(idRoom)
+                    MyClass.showRoom(idRoom, Habitacion)
 
             End Select
         Else
@@ -471,6 +504,10 @@ Partial Class Rooms
                 CType(Me.Page, PaginaBase).Habilitaboton(permisos.Rooms, lnkdel, "D")
             End If
         Next
+
+        'MyClass.showRoom(23652)
+        'divContenedor.Style.Add("display", "block")
+
     End Sub
     Private Sub lnkFaresCatalogue_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Response.Redirect(GeRequestApplicationPath(String.Concat("/Pages/FaresRoom.aspx?Room=", CtrlRooms1.idRoom)))
@@ -565,6 +602,9 @@ Partial Class Rooms
 #End Region
 
     Private Sub ctrlAutoComplete1_onSendFilter(ByVal id As String, ByVal descripcion As String) Handles ctrlAutoComplete1.OnSendFilter
+        Reset()
+        MostrarCmdNew(True)
+        divContenedor.Style("display") = "none"
         grid.CurrentPageIndex = 0
     End Sub
 

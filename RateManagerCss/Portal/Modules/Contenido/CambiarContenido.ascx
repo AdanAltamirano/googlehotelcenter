@@ -25,6 +25,9 @@
 <asp:ImageButton ID="ImageButton2" runat="server" ImageUrl="../../../Images/delete.gif"
     ToolTip="Delete Content" Visible="False"></asp:ImageButton><asp:Label ID="lblTexto"
         runat="server" CssClass="clslabel"></asp:Label><br />
+<asp:ImageButton ID="ImageButton3" runat="server" ImageUrl="../../../Images/delete.gif"
+    ToolTip="Delete Content" Visible="False"></asp:ImageButton><asp:Label ID="lblTexto1"
+        runat="server" CssClass="clslabel"></asp:Label><br />
 <asp:Panel ID="pEdit" Style="position: absolute; float:left; left:2%" runat="server" CssClass="BordeWin"
     Visible="False" BackColor="white" Width="700px">
     <table id="Separa" cellspacing="1" cellpadding="1" width="100%">

@@ -1,5 +1,5 @@
 Partial Class PhotoInformation
-    Inherits Paginabase
+    Inherits PaginaBase
     Protected WithEvents Photo1 As Photo
 #Region " Código generado por el Diseñador de Web Forms "
 

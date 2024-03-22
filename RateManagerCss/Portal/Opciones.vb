@@ -265,7 +265,7 @@ Public Class Opciones
         If Me.IdEmpresa >= 0 Then
             With New PresentacionOpciones
                 'dt es global
-                dt = .GetContenidoTipoHabitacionHotel(Me.IdIdioma, Me.IdModulo, IdEmpresa, def, idTipoHabitacionHotel)
+                dt = .GetContenidoTipoHabitacionHotel(Me.IdIdioma, 94, IdEmpresa, def, idTipoHabitacionHotel)
             End With
         End If
     End Sub

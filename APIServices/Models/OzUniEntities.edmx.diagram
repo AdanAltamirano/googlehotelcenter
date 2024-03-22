@@ -9,6 +9,7 @@
         <EntityTypeShape EntityType="OzUniModel.AplicacionPortal" Width="1.5" PointX="3.375" PointY="0.75" />
         <EntityTypeShape EntityType="OzUniModel.Ciudades" Width="1.5" PointX="3.375" PointY="3.75" />
         <EntityTypeShape EntityType="OzUniModel.Moneda" Width="1.5" PointX="0.75" PointY="4.75" />
+        <EntityTypeShape EntityType="OzUniModel.Elementos" Width="1.5" PointX="5.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

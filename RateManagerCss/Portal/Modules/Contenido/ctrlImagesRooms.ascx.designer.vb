@@ -149,15 +149,6 @@ Partial Public Class ctrlImagesRooms
     Protected WithEvents lblMoreImages As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
-    '''Control lblMensajeImagen.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents lblMensajeImagen As Global.System.Web.UI.WebControls.Label
-
-    '''<summary>
     '''Control lblImagesTips.
     '''</summary>
     '''<remarks>

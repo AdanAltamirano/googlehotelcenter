@@ -31,6 +31,7 @@ namespace APIServices.Models
         public virtual DbSet<AplicacionPortal> AplicacionPortal { get; set; }
         public virtual DbSet<Ciudades> Ciudades { get; set; }
         public virtual DbSet<Moneda> Monedas { get; set; }
+        public virtual DbSet<Elementos> Elementos { get; set; }
     
         public virtual ObjectResult<GetHotelsByCorporateId_Result> GetHotelsByCorporateId(Nullable<int> corporateId)
         {

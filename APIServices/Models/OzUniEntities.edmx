@@ -31,6 +31,19 @@
           <Property Name="Distancia" Type="decimal" Precision="18" Scale="2" />
           <Property Name="RatioSearch" Type="int" />
         </EntityType>
+        <EntityType Name="Elementos">
+          <Key>
+            <PropertyRef Name="IdElemento" />
+          </Key>
+          <Property Name="IdElemento" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="IdTipo" Type="int" Nullable="false" />
+          <Property Name="IdModulo" Type="int" Nullable="false" />
+          <Property Name="Status" Type="tinyint" />
+          <Property Name="idGrupo" Type="int" />
+          <Property Name="GrupoTipo" Type="tinyint" />
+          <Property Name="GrupoMax" Type="tinyint" />
+        </EntityType>
         <EntityType Name="Monedas">
           <Key>
             <PropertyRef Name="idMoneda" />
@@ -72,6 +85,7 @@
         <EntityContainer Name="OzUniModelStoreContainer">
           <EntitySet Name="AplicacionPortal" EntityType="Self.AplicacionPortal" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Ciudades" EntityType="Self.Ciudades" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Elementos" EntityType="Self.Elementos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Monedas" EntityType="Self.Monedas" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Portales" EntityType="Self.Portales" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
@@ -109,6 +123,7 @@
             <Parameter Name="password" Mode="In" Type="String" />
             <Parameter Name="addToHotelPms" Mode="In" Type="Boolean" />
           </FunctionImport>
+          <EntitySet Name="Elementos" EntityType="OzUniModel.Elementos" />
         </EntityContainer>
         <EntityType Name="AplicacionPortal">
           <Key>
@@ -154,6 +169,19 @@
           <Property Name="TipoCambio" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="IdDiccionario" Type="Int32" />
           <Property Name="FechaActualizacion" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Elementos">
+          <Key>
+            <PropertyRef Name="IdElemento" />
+          </Key>
+          <Property Name="IdElemento" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="IdTipo" Type="Int32" Nullable="false" />
+          <Property Name="IdModulo" Type="Int32" Nullable="false" />
+          <Property Name="Status" Type="Byte" />
+          <Property Name="idGrupo" Type="Int32" />
+          <Property Name="GrupoTipo" Type="Byte" />
+          <Property Name="GrupoMax" Type="Byte" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -230,6 +258,20 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="spCreateUserConfigurationConectivity" FunctionName="OzUniModel.Store.spCreateUserConfigurationConectivity" />
+          <EntitySetMapping Name="Elementos">
+            <EntityTypeMapping TypeName="OzUniModel.Elementos">
+              <MappingFragment StoreEntitySet="Elementos">
+                <ScalarProperty Name="GrupoMax" ColumnName="GrupoMax" />
+                <ScalarProperty Name="GrupoTipo" ColumnName="GrupoTipo" />
+                <ScalarProperty Name="idGrupo" ColumnName="idGrupo" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="IdModulo" ColumnName="IdModulo" />
+                <ScalarProperty Name="IdTipo" ColumnName="IdTipo" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="IdElemento" ColumnName="IdElemento" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -9,7 +9,7 @@
 	</tr>
 	<tr>
 		<td width="100%" colSpan="2">
-			<asp:label id="lblTitle" runat="server" EnableViewState="False" CssClass="clsdarklabel">Hotel photos</asp:label>
+			<asp:label id="lblTitle" runat="server" EnableViewState="False" CssClass="clsdarklabel"></asp:label>
 		</td>
 	</tr>
 	<tr width="100%">
@@ -24,7 +24,7 @@
 			<table id="Table1" height="10" cellSpacing="1" cellPadding="1" width="100%" border="0">
 				<tr class="dgitem">
 					<td align="center" colSpan="2">
-						<span class="bookingNormalLabel" id="lblfiles" runat="server">Add files</span>
+						<span class="bookingNormalLabel" id="lblfiles" runat="server"></span>
 					</td>
 				</tr>
 				<tr>
@@ -45,7 +45,7 @@
 				</tr>
 				<tr>
 					<td align="center" colSpan="2">
-						<asp:button id="btnAttach" runat="server" CssClass="button" Text="Attach"></asp:button>
+						<asp:button id="btnAttach" runat="server" CssClass="button" Text="Attach" Visible="false"></asp:button>
 					</td>
 				</tr>
 				<tr>
@@ -70,7 +70,7 @@
 	<TR>
 		<TD align="left" colSpan="2">
 			<asp:label id="lblMoreImages" Visible="False" runat="server" CssClass="clslabel">Agregar imagenes:</asp:label>
-			<asp:label id="lblMensajeImagen" runat="server">Maximo de Imagenes</asp:label>
+			<%--<asp:label id="lblMensajeImagen" runat="server">Maximo de Imagenes</asp:label>--%>
 			<asp:label id="lblImagesTips" Visible="False" runat="server" CssClass="clslabel" Width="100%"></asp:label>
 			<asp:table id="tblThumbnails" runat="server" CssClass="link"></asp:table>
 

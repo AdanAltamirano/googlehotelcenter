@@ -8922,4 +8922,10 @@
   <data name="01670" xml:space="preserve">
     <value>Google Prices</value>
   </data>
+  <data name="01671" xml:space="preserve">
+    <value>Gallery</value>
+  </data>
+  <data name="01672" xml:space="preserve">
+    <value>Add Images</value>
+  </data>
 </root>

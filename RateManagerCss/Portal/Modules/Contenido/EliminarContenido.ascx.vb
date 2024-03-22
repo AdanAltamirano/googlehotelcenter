@@ -40,23 +40,28 @@ Partial Class EliminarContenido
         End Set
     End Property
 
-    Public Property text() As String
-        Get
-            Return lnkCambiar.Text
-        End Get
-        Set(ByVal Value As String)
-            lnkCambiar.Text = "Eliminar " & Value
-        End Set
-    End Property
+    'Public Property text() As String
+    '    Get
+    '        Return lnkCambiar.Text
+    '    End Get
+    '    Set(ByVal Value As String)
+    '        lnkCambiar.Text = "Eliminar " & Value
+    '    End Set
+    'End Property
+
+    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Dim test As String = ""
+    End Sub
+
 
     Public Sub OnChangeContenido(ByVal idcon As Long, ByVal idele As Long)
         Dim e As New ArgsConte(idcon, idele, False, False, False, False, False)
         RaiseEvent ChangeContenido(Me, e)
     End Sub
 
-    Private Sub lnkCambiar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lnkCambiar.Click
-        OnChangeContenido(Me.idContenido, Me.idElemento)
-    End Sub
+    'Private Sub lnkCambiar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lnkCambiar.Click
+    '    OnChangeContenido(Me.idContenido, Me.idElemento)
+    'End Sub
 
     Private Sub ImageButton1_Click(ByVal sender As System.Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles ImageButton1.Click
         OnChangeContenido(Me.idContenido, Me.idElemento)

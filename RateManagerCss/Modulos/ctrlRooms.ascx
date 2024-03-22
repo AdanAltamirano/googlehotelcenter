@@ -294,7 +294,7 @@
 		<td colSpan="4"></td>
 	</tr>
 	<tr>
-		<uc1:ctrlImagesRooms ID="ctrlImgRooms" runat="server"></uc1:ctrlImagesRooms>
+		<uc1:ctrlImagesRooms id="ctrlImgRooms1" runat="server"></uc1:ctrlImagesRooms>
 	</tr>
 </TABLE>
 <script>

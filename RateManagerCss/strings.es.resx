@@ -8928,4 +8928,10 @@
   <data name="01670" xml:space="preserve">
     <value>Precios Google</value>
   </data>
+  <data name="01671" xml:space="preserve">
+    <value>Galería</value>
+  </data>
+  <data name="01672" xml:space="preserve">
+    <value>Agregar  Imágenes</value>
+  </data>
 </root>
