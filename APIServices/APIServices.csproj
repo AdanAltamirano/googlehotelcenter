@@ -230,6 +230,11 @@
       <DependentUpon>OzHoteles.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\DTO\RatesByRatePlan.cs" />
+    <Compile Include="Models\OzHoteles1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OzHoteles.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Models\OzUniEntities.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -335,6 +340,9 @@
     <Compile Include="Models\TarjetasHotel.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\UsuarioHotel.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\vAdministrator.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
@@ -423,6 +431,7 @@
   <ItemGroup>
     <EntityDeploy Include="Models\OzHoteles.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>OzHoteles1.Designer.cs</LastGenOutput>
     </EntityDeploy>
   </ItemGroup>
   <ItemGroup>

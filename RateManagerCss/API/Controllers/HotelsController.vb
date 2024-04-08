@@ -8,7 +8,7 @@ Imports RateManager.API.Helpers
 Imports RateManager.PaginaBase
 
 Namespace API.Controllers
-    <RoutePrefix("api/hotels"), AuthorizeUser(Roles:="supervisor,userchain,hotelcompany,agencycompany")>
+    <RoutePrefix("api/hotels"), AuthorizeUser(Roles:="supervisor,userchain,hotelcompany,agencycompany,usuariohotel")>
     Public Class HotelsController
         Inherits ShurikenController
 

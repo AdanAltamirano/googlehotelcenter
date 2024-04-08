@@ -518,6 +518,17 @@
           <Property Name="Code" Type="char" MaxLength="2" />
           <Property Name="idRepl6" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
+        <EntityType Name="UsuarioHotel">
+          <Key>
+            <PropertyRef Name="iduser" />
+          </Key>
+          <Property Name="iduser" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="80" />
+          <Property Name="password" Type="nvarchar" MaxLength="24" />
+          <Property Name="idhotel" Type="int" Nullable="false" />
+          <Property Name="IdMainUser" Type="int" />
+          <Property Name="verDatosTarjeta" Type="bit" />
+        </EntityType>
         <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'OzHoteles.dbo.vAdministrator' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vAdministrator">
@@ -642,9 +653,16 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vDayRates' no tiene definida n
 advertencia 6002: La tabla o vista 'OzHoteles.dbo.vDayRatesExceptions' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vDayRatesExceptions">
           <Key>
+            
             <PropertyRef Name="NoDeparturesMap" />
+            
+            
+            
+            
             <PropertyRef Name="Currency" />
             <PropertyRef Name="IsPromotion" />
+            
+            
             <PropertyRef Name="RateId" />
             <PropertyRef Name="HotelId" />
             <PropertyRef Name="RoomId" />
@@ -1345,6 +1363,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <EntitySet Name="Tarifas" EntityType="Self.Tarifas" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TarifasRestricciones" EntityType="Self.TarifasRestricciones" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TarjetasHotel" EntityType="Self.TarjetasHotel" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UsuarioHotel" EntityType="Self.UsuarioHotel" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="vAdministrator" EntityType="Self.vAdministrator" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [vAdministrator].[UserId] AS [UserId], 
@@ -1987,6 +2006,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           </FunctionImport>
           <EntitySet Name="vDayRates" EntityType="Models.vDayRates" />
           <EntitySet Name="vDayRatesExceptions" EntityType="Models.vDayRatesExceptions" />
+          <EntitySet Name="UsuarioHotel" EntityType="Models.UsuarioHotel" />
         </EntityContainer>
         <EntityType Name="RatesPlan">
           <Key>
@@ -3457,6 +3477,17 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <Property Name="PromoStartDateBookingWindow" Type="DateTime" Precision="0" />
           <Property Name="PromoEndDateBookingWindow" Type="DateTime" Precision="0" />
         </EntityType>
+        <EntityType Name="UsuarioHotel">
+          <Key>
+            <PropertyRef Name="iduser" />
+          </Key>
+          <Property Name="iduser" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="password" Type="String" MaxLength="24" FixedLength="false" Unicode="true" />
+          <Property Name="idhotel" Type="Int32" Nullable="false" />
+          <Property Name="IdMainUser" Type="Int32" />
+          <Property Name="verDatosTarjeta" Type="Boolean" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4748,6 +4779,18 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
                 <ScalarProperty Name="RoomId" ColumnName="RoomId" />
                 <ScalarProperty Name="HotelId" ColumnName="HotelId" />
                 <ScalarProperty Name="RateId" ColumnName="RateId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UsuarioHotel">
+            <EntityTypeMapping TypeName="Models.UsuarioHotel">
+              <MappingFragment StoreEntitySet="UsuarioHotel">
+                <ScalarProperty Name="verDatosTarjeta" ColumnName="verDatosTarjeta" />
+                <ScalarProperty Name="IdMainUser" ColumnName="IdMainUser" />
+                <ScalarProperty Name="idhotel" ColumnName="idhotel" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="iduser" ColumnName="iduser" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

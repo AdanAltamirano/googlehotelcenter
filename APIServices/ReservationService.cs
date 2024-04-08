@@ -524,6 +524,7 @@ namespace APIServices
                         {
                             model.AllowsCancel = true;
                             model.AllowsReactivate = true;
+                            model.AllowsModify = true;
                         }
                         else if (isUserChain && source.Equals("POR") && idCorporatePortal != -1 && idCorporateUserChain == idCorporatePortal)
                         {

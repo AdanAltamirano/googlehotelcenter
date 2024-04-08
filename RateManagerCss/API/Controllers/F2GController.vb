@@ -9,7 +9,7 @@ Imports NinjAPI
 Imports RateManager.API.Helpers
 
 Namespace API.Controllers
-    <RoutePrefix("api/f2g"), AuthorizeUser(Roles:="supervisor,userchain,hotelcompany")>
+    <RoutePrefix("api/f2g"), AuthorizeUser(Roles:="supervisor,userchain,hotelcompany,usuariohotel")>
     Public Class F2GController
         Inherits ShurikenController
 

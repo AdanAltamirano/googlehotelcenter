@@ -29,6 +29,13 @@ Namespace API.Helpers
             Return rolesStr.Split(",").Select(Function(x) x.Trim().ToLower()).ToArray()
         End Function
 
+        Public Function GetUserFromOzHoteles(user As Integer) As UsuarioHotel
+            Using db As New OzHotelesEntities
+                Return db.UsuarioHotel.FirstOrDefault(Function(uh) uh.iduser = user)
+            End Using
+
+        End Function
+
         Public Function GetUserCorpId(userId As Integer) As Integer?
             Using db As New OzHotelesEntities
                 Return db.vAdministrator.FirstOrDefault(Function(a) a.UserId = userId AndAlso a.Type = 9)?.CorpId 'no se que es el tipo 9 TODO: crear un enum

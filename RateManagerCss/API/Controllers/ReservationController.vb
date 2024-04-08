@@ -24,7 +24,7 @@ Imports APIServices.Service.HotelVerse.Models.Response
 Imports APIServices.Service.HotelVerse
 
 Namespace API.Controller
-    <RoutePrefix("api/reservations"), AuthorizeUser(Roles:="supervisor,userchain,hotelcompany,agencycompany")>
+    <RoutePrefix("api/reservations"), AuthorizeUser(Roles:="supervisor,userchain,hotelcompany,agencycompany,usuariohotel")>
     Public Class ReservationController
         Inherits ShurikenController
 
@@ -54,6 +54,11 @@ Namespace API.Controller
 
             ElseIf roles.Contains("hotelcompany") Then
                 Dim hotels() As Integer = GetUserHotels(GetUserId().Value).Select(Function(h) h.HotelId).ToArray()
+                Return ReservationService.GetAll().Where(Function(h) hotels.Contains(h.HotelId) And h.Provider = "INTERNET POWER" And h.Status <> 4)
+            ElseIf roles.Contains("usuariohotel") Then
+
+                Dim userOzhoteles As UsuarioHotel = GetUserFromOzHoteles(GetUserId().Value)
+                Dim hotels() As Integer = GetUserHotels(userOzhoteles.IdMainUser).Select(Function(h) h.HotelId).ToArray()
                 Return ReservationService.GetAll().Where(Function(h) hotels.Contains(h.HotelId) And h.Provider = "INTERNET POWER" And h.Status <> 4)
             ElseIf roles.Contains("agencycompany") Then
                 Dim page As New PaginaBase
@@ -445,6 +450,10 @@ Namespace API.Controller
             Dim code As String = ReservationService.GetCode(10)
             HttpContext.Current.Session("code_cc") = code
 
+            Dim note As String = String.Format("Se solicitó información de tarjeta bancaria para la reserva {0}", reservationId)
+
+            Log(reservationId, acciones.Ver, nota:=note)
+
             Return Ok(New With {Key .success = SendVerificationCodeEmail(code, reservationId)})
         End Function
 
@@ -492,6 +501,8 @@ Namespace API.Controller
                     msg = String.Format("Reactivo la reserva #{0}", reservationId)
                 Case acciones.CrearDeposito
                     msg = String.Format("Creación de depósito para la reserva #{0}", reservationId)
+                Case acciones.Ver
+                    msg = nota
             End Select
             'pb.guardalog("/rate-manager-ui/dist/reservation-details.aspx?qs=" & reservationId, action, msg, "", oldData, currentData, hotelId)
             With (New PaginaBase)
