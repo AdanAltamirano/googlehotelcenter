@@ -19,5 +19,6 @@ export default {
     'User Pms' : 'Usuario Pms',
     'User to administrate' : 'Usuario para administrar',
     'System Error' : 'Error del Sistema',
-    'User already exists' : 'El usuario ya existe'
+    'User already exists' : 'El usuario ya existe',
+    'See Users' : 'Ver Usuarios'
 }

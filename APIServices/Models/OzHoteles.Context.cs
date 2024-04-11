@@ -68,6 +68,7 @@ namespace APIServices.Models
         public virtual DbSet<vDayRates> vDayRates { get; set; }
         public virtual DbSet<vDayRatesExceptions> vDayRatesExceptions { get; set; }
         public virtual DbSet<UsuarioHotel> UsuarioHotel { get; set; }
+        public virtual DbSet<vUsersConnectivity> vUsersConnectivity { get; set; }
     
         public virtual int spReservationCancel(Nullable<int> idReservacion, string noConfCancelGalileo, string noCancelacion, string txCode, Nullable<bool> statusConf, string systemCode, string travelAgencyName, string voucher, string wizcomPassOn, string wizcomSequenceNumber, string motivoCancelacion, Nullable<bool> cancelWithError, string sessionId, Nullable<int> iduser)
         {

@@ -35,6 +35,8 @@ namespace APIServices.Conflux
 
         public IQueryable<vHotelActives> GetHotels() => dbContext.vHotelActives.AsQueryable();
 
+        public IQueryable<vUsersConnectivity> GetUsersConnectivities() => dbContext.vUsersConnectivity.AsQueryable();
+
         public UserReponse CreateUser(User user)
         {
             UserReponse response = new UserReponse();

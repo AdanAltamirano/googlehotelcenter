@@ -1162,6 +1162,25 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <Property Name="Reserved" Type="int" />
           <Property Name="Available" Type="int" />
         </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="vUsersConnectivity">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="User" />
+            <PropertyRef Name="Password" />
+            <PropertyRef Name="CompanyId" />
+            <PropertyRef Name="Url" />
+            <PropertyRef Name="TypePms" />
+          </Key>
+          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="User" Type="nvarchar" MaxLength="75" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="75" Nullable="false" />
+          <Property Name="CompanyId" Type="int" Nullable="false" />
+          <Property Name="HotelId" Type="int" />
+          <Property Name="Url" Type="nvarchar" MaxLength="300" Nullable="false" />
+          <Property Name="TypePms" Type="smallint" Nullable="false" />
+        </EntityType>
         <Association Name="FK_Diccionario_Indice1">
           <End Role="Indice" Type="Self.Indice" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1802,6 +1821,17 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
     [vRoomInventory].[Available] AS [Available]
     FROM [dbo].[vRoomInventory] AS [vRoomInventory]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="vUsersConnectivity" EntityType="Self.vUsersConnectivity" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vUsersConnectivity].[UserId] AS [UserId], 
+    [vUsersConnectivity].[User] AS [User], 
+    [vUsersConnectivity].[Password] AS [Password], 
+    [vUsersConnectivity].[CompanyId] AS [CompanyId], 
+    [vUsersConnectivity].[HotelId] AS [HotelId], 
+    [vUsersConnectivity].[Url] AS [Url], 
+    [vUsersConnectivity].[TypePms] AS [TypePms]
+    FROM [dbo].[vUsersConnectivity] AS [vUsersConnectivity]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK_Diccionario_Indice1" Association="Self.FK_Diccionario_Indice1">
             <End Role="Indice" EntitySet="Indice" />
             <End Role="Diccionario" EntitySet="Diccionario" />
@@ -2007,6 +2037,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <EntitySet Name="vDayRates" EntityType="Models.vDayRates" />
           <EntitySet Name="vDayRatesExceptions" EntityType="Models.vDayRatesExceptions" />
           <EntitySet Name="UsuarioHotel" EntityType="Models.UsuarioHotel" />
+          <EntitySet Name="vUsersConnectivity" EntityType="Models.vUsersConnectivity" />
         </EntityContainer>
         <EntityType Name="RatesPlan">
           <Key>
@@ -3488,6 +3519,23 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <Property Name="IdMainUser" Type="Int32" />
           <Property Name="verDatosTarjeta" Type="Boolean" />
         </EntityType>
+        <EntityType Name="vUsersConnectivity">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="User" />
+            <PropertyRef Name="Password" />
+            <PropertyRef Name="CompanyId" />
+            <PropertyRef Name="Url" />
+            <PropertyRef Name="TypePms" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="User" Type="String" Nullable="false" MaxLength="75" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="75" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyId" Type="Int32" Nullable="false" />
+          <Property Name="HotelId" Type="Int32" />
+          <Property Name="Url" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="TypePms" Type="Int16" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4791,6 +4839,19 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
                 <ScalarProperty Name="password" ColumnName="password" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="iduser" ColumnName="iduser" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vUsersConnectivity">
+            <EntityTypeMapping TypeName="Models.vUsersConnectivity">
+              <MappingFragment StoreEntitySet="vUsersConnectivity">
+                <ScalarProperty Name="TypePms" ColumnName="TypePms" />
+                <ScalarProperty Name="Url" ColumnName="Url" />
+                <ScalarProperty Name="HotelId" ColumnName="HotelId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="User" ColumnName="User" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

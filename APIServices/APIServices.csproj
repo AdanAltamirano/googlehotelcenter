@@ -409,6 +409,9 @@
     <Compile Include="Models\vRoomInventory.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\vUsersConnectivity.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
     <Compile Include="PortalsService.cs" />
     <Compile Include="PromotionsService.cs" />
     <Compile Include="RatesPlanService.cs" />

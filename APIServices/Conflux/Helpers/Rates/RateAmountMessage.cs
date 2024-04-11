@@ -581,9 +581,11 @@ namespace APIServices.Conflux.Helpers.Rates
 
             List<Rate> rates = new List<Rate>();
 
+            var starDate = vDayRate.StartDate.Date < DateTime.Now.Date ? DateTime.Now.Date : vDayRate.StartDate.Date;
+
             Rate rate = new Rate()
             {
-                StartDate = vDayRate.StartDate.ToString("yyyyMMdd"),
+                StartDate = starDate.ToString("yyyyMMdd"),
                 EndDate = vDayRate.EndDate.ToString("yyyyMMdd")
             };
 
@@ -604,9 +606,11 @@ namespace APIServices.Conflux.Helpers.Rates
 
             List<Rate> rates = new List<Rate>();
 
+            var starDate = vDayRate.StartDate.Date < DateTime.Now.Date ? DateTime.Now.Date : vDayRate.StartDate.Date;
+
             Rate rate = new Rate()
             {
-                StartDate = vDayRate.StartDate.ToString("yyyyMMdd"),
+                StartDate = starDate.ToString("yyyyMMdd"),
                 EndDate = vDayRate.EndDate.ToString("yyyyMMdd")
             };
 
@@ -628,9 +632,11 @@ namespace APIServices.Conflux.Helpers.Rates
 
             List<Rate> rates = new List<Rate>();
 
+            var starDate = vDayRate.StartDate.Date < DateTime.Now.Date ? DateTime.Now.Date : vDayRate.StartDate.Date;
+
             Rate rate = new Rate()
             {
-                StartDate = vDayRate.StartDate.ToString("yyyyMMdd"),
+                StartDate = starDate.ToString("yyyyMMdd"),
                 EndDate = vDayRate.EndDate.ToString("yyyyMMdd")
             };
 

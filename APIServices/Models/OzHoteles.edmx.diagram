@@ -51,6 +51,7 @@
         <EntityTypeShape EntityType="Models.vDayRates" Width="1.5" PointX="21.625" PointY="17" />
         <EntityTypeShape EntityType="Models.vDayRatesExceptions" Width="1.5" PointX="23.75" PointY="17" />
         <EntityTypeShape EntityType="Models.UsuarioHotel" Width="1.5" PointX="5.375" PointY="0.75" />
+        <EntityTypeShape EntityType="Models.vUsersConnectivity" Width="1.5" PointX="7.375" PointY="0.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

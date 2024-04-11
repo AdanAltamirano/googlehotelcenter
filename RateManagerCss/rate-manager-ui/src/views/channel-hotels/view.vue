@@ -34,18 +34,16 @@
           :newProperties="properties">
           <!-- Custom User Channel -->
           <template v-slot:cell(userChannel)="{item}">       
-            <b-button variant="link" @click="ToggleRowDetails(item,true,false)">{{$t('Add User Channel')}}</b-button>
+            <b-button variant="link" @click="ToggleRowDetails(item,true,false)">{{$t('Add User Pms')}}</b-button>
           </template>
           <!-- Custom User PMS -->
           <template v-slot:cell(userPms)="{item}">       
-            <b-button variant="link" @click="ToggleRowDetails(item,false,true)">{{$t('Add User Pms')}}</b-button>
+            <b-button variant="link" @click="ToggleRowDetails(item,false,true)">{{$t('Add User Channel')}}</b-button>
           </template>
-
           <template v-slot:row-details="{item}">
             <template v-if="item.isChannelUser">
               <create-user
-                :label="$t('User Channel')"
-                :description="$t('User to do requests')" 
+                :label="$t('User Pms')"                
                 :companyId="item.companyId"
                 :hotelId="item.id"
                 :isLoading="item.isLoading"
@@ -57,8 +55,7 @@
             </template>
             <template v-else-if="item.isPmsUser">
               <create-user
-                :label="$t('User Pms')"
-                :description="$t('User to administrate')" 
+                :label="$t('User Channel')"
                 :companyId="item.companyId"
                 :hotelId="item.id"
                 :isLoading="item.isLoading"
@@ -68,6 +65,13 @@
                 :addToHotelPms="false">
               </create-user>
             </template>
+          </template>
+          <!-- Custom UsersConnecitivies -->
+          <template v-slot:cell(usersConnectivities)="{item}">
+            <b-button variant="link" 
+            :href="$appConfig.basePath + '/rate-manager-ui/dist/users-connectivities-list.aspx?hotel=' + item.id">
+            {{$t('See Users')}}
+            </b-button>
           </template> 
         </data-table>
     </b-container>
@@ -115,6 +119,10 @@ export default {
           {
             key:'userPms',
             label:''
+          },
+          {
+            key:'usersConnectivities',
+            label: this.$t("See Users")
           }
         ],
         itemPerPage:10,    

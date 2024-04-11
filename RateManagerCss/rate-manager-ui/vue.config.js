@@ -108,6 +108,12 @@ module.exports = {
             filename:'channel-hotels.aspx',
             chunks:['node_vendors','commons','channel_hotels']
         },
+        users_connectivities: {
+            entry : 'src/views/users-connectivities/main.js',
+            template: 'public/users-connectivities-list.aspx',
+            filename: 'users-connectivities-list.aspx',
+            chunks: ['node_vendors','commons','users_connectivities']
+        }
         /* hotel_list: {
             entry: 'src/views/hotel-list/main.js',
             template: 'public/hotel-list.aspx',

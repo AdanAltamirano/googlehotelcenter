@@ -24,6 +24,11 @@ Namespace API.Controllers
             Return ConfluxService.GetHotels()
         End Function
 
+        <Route("users/connectivity"), HttpGet, Queryable>
+        Public Function GetUserConnectivities() As IQueryable(Of vUsersConnectivity)
+            Return ConfluxService.GetUsersConnectivities()
+        End Function
+
         <Route("create/user"), HttpPost>
         Public Function CreateUser(<FromBody> user As User) As HttpResponseMessage
 
