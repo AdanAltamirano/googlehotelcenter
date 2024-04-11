@@ -27,7 +27,10 @@
 		<td colSpan="2"></td>
 	</tr>
 	<TR>
-		<TD width="100%" colSpan="2"><uc1:cambiarcontenido id="lnkChangeTitle" Visible="False" runat="server"></uc1:cambiarcontenido><asp:label id="lblTitle" runat="server" EnableViewState="False" CssClass="clsdarklabel">Hotel photos</asp:label></TD>
+		<TD width="100%" colSpan="2">
+<%--			<uc1:cambiarcontenido id="lnkChangeTitle" Visible="False" runat="server"></uc1:cambiarcontenido>--%>
+			<asp:label id="lblTitle" runat="server" EnableViewState="False" CssClass="clsdarklabel">Hotel photos</asp:label>
+		</TD>
 	</TR>
 	<TR width="100%">
 		<TD><IMG class="label" id="ZoomImage" onerror="javascript:this.style.display='none'" src=""
@@ -77,6 +80,13 @@
 		</TD>
 	</TR>
 	<TR>
-		<TD align="left" colSpan="2"><asp:label id="lblMoreImages" Visible="False" runat="server" CssClass="clslabel">Agregar imagenes:</asp:label><uc1:agregarcontenido id="lnkAdd" runat="server"></uc1:agregarcontenido><asp:label id="lblMensajeImagen" runat="server">Maximo de Imagenes</asp:label><asp:label id="lblImagesTips" Visible="False" runat="server" CssClass="clslabel" Width="100%"></asp:label><asp:table id="tblThumbnails" runat="server" CssClass="link"></asp:table></TD>
+		<TD align="left" colSpan="2">
+			<asp:label id="lblMoreImages" Visible="False" runat="server" CssClass="clslabel">Agregar imagenes:</asp:label>
+			<%--<uc1:agregarcontenido id="lnkAdd" runat="server"></uc1:agregarcontenido>--%>
+			<asp:label id="lblMensajeImagen" runat="server">Maximo de Imagenes</asp:label>
+			<asp:label id="lblImagesTips" Visible="False" runat="server" CssClass="clslabel" Width="100%"></asp:label>
+			<asp:table id="tblThumbnails" runat="server" CssClass="link"></asp:table>
+
+		</TD>
 	</TR>
 	<asp:linkbutton CssClass="dgLink" runat=server></asp:linkbutton></TABLE>

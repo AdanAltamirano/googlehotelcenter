@@ -3,6 +3,9 @@
 <%@ Register TagPrefix="uc1" TagName="CtrlIdioma" Src="CtrlIdioma.ascx" %>
 <%@ Register TagPrefix="uc1" TagName="CtrlIdiomaRFCK" Src="CtrlIdiomaRFCk.ascx" %>
 <%@ Register TagPrefix="uc1" TagName="ctrlLanguageDictionary" Src="ctrlLanguageDictionary.ascx" %>
+
+<%@ Register TagPrefix="uc1" TagName="ctrlImagesRooms" Src="../Portal/Modules/Contenido/ctrlImagesRooms.ascx" %>
+
 <input id="iSpanishDesc" runat="server" type="hidden"> <input id="iEnglishDesc" runat="server" type="hidden" NAME="Hidden1">
 <TABLE id="Table5" class="Form1" cellSpacing="0" cellPadding="0"  border="0" width=100%>
 	<tr>
@@ -260,6 +263,9 @@
 	<TR>
 		<TD align="center" colSpan="4" height="10"></TD>
 	</TR>
+	<tr>
+		 
+	</tr>
 	<TR>
 		<TD class="dgitem" align="center" colSpan="4"><asp:label id="lblDescription" runat="server" CssClass="clslabel" EnableViewState="False">Descripción para la habitación:</asp:label></TD>
 	</TR>
@@ -286,6 +292,9 @@
 	<% end If %>
 	<tr>
 		<td colSpan="4"></td>
+	</tr>
+	<tr>
+		<uc1:ctrlImagesRooms id="ctrlImgRooms1" runat="server"></uc1:ctrlImagesRooms>
 	</tr>
 </TABLE>
 <script>

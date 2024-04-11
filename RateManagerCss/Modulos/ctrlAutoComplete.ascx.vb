@@ -64,6 +64,7 @@
         inpuFilter.Value = sFiltro
         RaiseEvent OnSendFilter(Me.idCliente.Value, sFiltro)
         idCliente.Value = "0"
+
     End Sub
 
 End Class

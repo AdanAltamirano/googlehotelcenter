@@ -11,13 +11,14 @@ Imports APIServices.Conflux
 Imports APIServices.Conflux.Models.Restrictions.Room
 Imports APIServices.Conflux.Models.Restrictions.Room.Response
 Imports RateManager.Utitlities.Hotel
+Imports Contenido.presentacion
 
 
 
 Imports System.Configuration.ConfigurationManager
 
 Partial Class ctrlRooms
-	Inherits System.Web.UI.UserControl
+    Inherits System.Web.UI.UserControl
 
 
 
@@ -39,7 +40,6 @@ Partial Class ctrlRooms
     Protected WithEvents lnkFaresCatalogue As System.Web.UI.WebControls.LinkButton
     Protected WithEvents lnkLinkRooms As System.Web.UI.WebControls.LinkButton
     Protected WithEvents Label1 As System.Web.UI.WebControls.Label
-
 
 
     'NOTA: el Diseñador de Web Forms necesita la siguiente declaración del marcador de posición.
@@ -127,7 +127,7 @@ Partial Class ctrlRooms
 
     Protected mlNameRoom As CtrlIdioma
     Protected mlDescriptionRoom As CtrlIdiomaRFCk
-
+    Protected WithEvents ctrlImgRooms1 As ctrlImagesRooms
 
     Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         'Introducir aquí el código de usuario para inicializar la página
@@ -154,6 +154,12 @@ Partial Class ctrlRooms
         Me.ddlMaxCribRoll.Attributes.Add("onChange", "javascript:ShowPrice('" & Me.ddlMaxCribRoll.ClientID & "', '" & divPriceCrib.ClientID & "','" & Me.txtPriceCribRoll.ClientID & "','txtDiv3','" & Me.lblPriceCribRoll.ClientID & "','" & Me.divlabelPrice.ClientID & "')")
         Me.lstRoomType.Attributes.Add("onChange", "javascript:ShowName('" & lstRoomType.ClientID & "','" & mlNameRoom.ReturnNameTxtEn & "','" & mlNameRoom.ReturnNameTxtEs & "','" & Me.iSpanishDesc.ClientID & "','" & Me.iEnglishDesc.ClientID & "')")
         'btnfile.Attributes.Add("onclick", "javascript:saveImg('" & Me.lblfile.ClientID & "')")
+
+        If Not IsPostBack Then
+            ctrlImgRooms1.IdEmpresa = Me.idCompany
+            ctrlImgRooms1.ModeView = Opciones.ViewMode.Edit
+            ctrlImgRooms1.IdIdioma = PortalCulture.GetIDCulture
+        End If
 
     End Sub
 
@@ -249,7 +255,7 @@ Partial Class ctrlRooms
         Return Util.Utility.GetXml(room.TBL_ROOM_HOTEL, "UpdateRooms", room)
     End Function
 
-    Public Function loadRoom(ByVal idRoomHotel As Integer) As Boolean
+    Public Function loadRoom(ByVal idRoomHotel As Integer, ByVal codeRoom As String) As Boolean
         loadRoom = True
         'Try
         newRoom()
@@ -345,6 +351,10 @@ Partial Class ctrlRooms
                     Me.txtPriceCribRoll.Text = .Item(RoomsHotelData.FLD_PriceCribRoll)
                 End If
             End With
+
+            ctrlImgRooms1.IdTypeRoomHotel = idRoomHotel
+            ctrlImgRooms1.CodeRoomTypeHotel = codeRoom
+            ctrlImgRooms1.LoadImagesByRoomHotel(ctrlImgRooms1.IdTypeRoomHotel, ctrlImgRooms1.CodeRoomTypeHotel)
 
 
         End With
@@ -452,6 +462,7 @@ Partial Class ctrlRooms
                         roomData.RoomDescription = Me.mlDescriptionRoom.textodefault
                         roomData.Capacity = CType(Me.lstPeoplesInRoom.SelectedValue, Integer)
                         roomData.AdultCapcity = CType(Me.lstNumberAdults.SelectedValue, Integer)
+
                     End If
                 End If
             End With
@@ -461,6 +472,12 @@ Partial Class ctrlRooms
                 Me.newRoom()
                 Me.idRoom = rooms.Tables(RoomsHotelData.TBL_ROOM_HOTEL).Rows(0).Item(RoomsHotelData.FLD_ID_ROOM_HOTEL)
                 'CType(Me.Page, PaginaBase).guardalog("/Pages/Rooms.aspx", PaginaBase.acciones.Modificar, "Se modificó la habitación " & grid.Items(grid.SelectedIndex).Cells(columns.Tipo).Text & " - " & grid.Items(grid.SelectedIndex).Cells(columns.nameroom).Text & " de el hotel " & Me.cInfoActual.HotelName)
+
+                'Guardar Imagenes cuando es una nueva habitacion
+
+                ctrlImgRooms1.IdTypeRoomHotel = rooms.Tables(RoomsHotelData.TBL_ROOM_HOTEL).Rows(0)(RoomsHotelData.FLD_ID_ROOM_HOTEL).ToString()
+                ctrlImgRooms1.SaveImages()
+
 
                 'Google Request
 
@@ -529,6 +546,9 @@ Partial Class ctrlRooms
 
                         mlDescriptionRoom.Update(idDictionryDesc, publish)
                         mlNameRoom.Update(idDictionryName, publish)
+
+                        'Guardar Imagenes cuando se actualiza una habitacion, aqui ya se cargo el idTypeRoomHotel
+                        ctrlImgRooms1.SaveImages()
                     End If
                 End If
             End With
@@ -632,6 +652,11 @@ Partial Class ctrlRooms
         Catch ex As Exception
         End Try
         'Me.lblfile.Value = ""
+
+        ctrlImgRooms1.IdTypeRoomHotel = 0
+        ctrlImgRooms1.CodeRoomTypeHotel = ""
+        ctrlImgRooms1.LoadImagesByRoomHotel(ctrlImgRooms1.IdTypeRoomHotel, ctrlImgRooms1.CodeRoomTypeHotel)
+
     End Function
 
     Public Function saveImage(ByVal IdImg As Integer, ByRef lblfileName As HtmlInputFile) As Boolean

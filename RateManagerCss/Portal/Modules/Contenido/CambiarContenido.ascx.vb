@@ -215,6 +215,42 @@ Partial Class CambiarContenido
         End Set
     End Property
 
+    Public ReadOnly Property EditButton() As ImageButton
+        Get
+            Return Me.ImageButton1
+        End Get
+    End Property
+
+    Public ReadOnly Property DeleteButtonAllContent() As ImageButton
+        Get
+            Return Me.ImageButton2
+        End Get
+    End Property
+
+    Public ReadOnly Property DeleteButtonByIdContent() As ImageButton
+        Get
+            Return Me.ImageButton3
+        End Get
+    End Property
+
+    Public Property IdTypeRoomHotelChangeContent() As Integer
+        Get
+            Return ViewState("IdTypeRoomHotelChangeContent")
+        End Get
+        Set(value As Integer)
+            ViewState("IdTypeRoomHotelChangeContent") = value
+        End Set
+    End Property
+
+    Public Property CodeTypeRoomHotelChangeContent() As String
+        Get
+            Return ViewState("CodeTypeRoomHotelChangeContent")
+        End Get
+        Set(value As String)
+            ViewState("CodeTypeRoomHotelChangeContent") = value
+        End Set
+    End Property
+
 #End Region
 
     Public Sub OnChangeContenido(ByVal idcon As Long, ByVal idele As Long)
@@ -449,6 +485,20 @@ Partial Class CambiarContenido
             pEdit.Visible = False
             'elemento.Visible = True
             OnChangeContenido(Me.idContenido, Me.idElemento)
+        End If
+    End Sub
+
+    Private Sub ImageButton3_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles ImageButton3.Click
+        If Me.idContenido > 0 Then
+            EditConte.IdCon = Me.idContenido
+            EditConte.IdEle = Me.idElemento
+            EditConte.DeleteContenidoByIdContenido()
+
+            Dim queryString As String = String.Format("?idroomTypeHotel={0}&codeRoomTypeHotel={1}", Me.IdTypeRoomHotelChangeContent, Me.CodeTypeRoomHotelChangeContent) ' Que siempre elimine el querysTring y revisar los parametros
+
+            Dim redirectUrl As String = Request.Path & queryString
+
+            Response.Redirect(redirectUrl)
         End If
     End Sub
 

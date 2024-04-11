@@ -247,14 +247,14 @@ Partial Class Photo
         Next
 
         If idElemento > 0 Then
-            lnkAdd.idElemento = idElemento
-            lnkAdd.Rwidth = False
-            lnkAdd.RHeight = False
-            lnkAdd.RConte = True
-            lnkAdd.RArch = True
-            lnkAdd.ididioma = Me.IdIdioma
-            lnkAdd.IdEmpresa = Me.IdEmpresa
-            AddHandler lnkAdd.ChangeContenido, AddressOf MyBase.SeleccionaContenido
+            'lnkAdd.idElemento = idElemento
+            'lnkAdd.Rwidth = False
+            'lnkAdd.RHeight = False
+            'lnkAdd.RConte = True
+            'lnkAdd.RArch = True
+            'lnkAdd.ididioma = Me.IdIdioma
+            'lnkAdd.IdEmpresa = Me.IdEmpresa
+            'AddHandler lnkAdd.ChangeContenido, AddressOf MyBase.SeleccionaContenido
         End If
 
         If Me.ModeView <> ViewMode.Edit Then
@@ -275,7 +275,7 @@ Partial Class Photo
             desHabilitarAttach(True, True, True, True, True, True, True, True, True, True)
         Else
             lblMensajeImagen.Visible = False
-            lnkAdd.Visible = True
+            'lnkAdd.Visible = True
             btnAttach.Enabled = True
             imagenDisponible = AppSettings("maximoGaleria") - maximoGaleria
 
@@ -350,11 +350,11 @@ Partial Class Photo
 
     Private Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.PreRender
         Me.lblTitle.Text = PortalCulture.GetString("A00714")
-        Me.lnkChangeTitle.NoPaso = "1."
-        Me.lnkChangeTitle.Texto = PortalCulture.GetString("A00674")    ' "Presione el Icono del lapiz para cambiar el Titulo"
+        'Me.lnkChangeTitle.NoPaso = "1."
+        'Me.lnkChangeTitle.Texto = PortalCulture.GetString("A00674")    ' "Presione el Icono del lapiz para cambiar el Titulo"
 
-        Me.lnkAdd.NoPaso = ""
-        Me.lnkAdd.Texto = PortalCulture.GetString("A00677")    '"Presione el Icono del lapiz para cambiar el El texto"
+        'Me.lnkAdd.NoPaso = ""
+        'Me.lnkAdd.Texto = PortalCulture.GetString("A00677")    '"Presione el Icono del lapiz para cambiar el El texto"
         btnAttach.Text = PortalCulture.GetString("A00153")
         Me.lblfiles.InnerText = PortalCulture.GetString("00588")
 

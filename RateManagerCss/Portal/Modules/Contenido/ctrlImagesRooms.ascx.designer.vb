@@ -11,131 +11,158 @@ Option Strict On
 Option Explicit On
 
 
-Partial Public Class ctrlAutoComplete
+Partial Public Class ctrlImagesRooms
 
     '''<summary>
-    '''Control autocomplete.
+    '''Control lblTitle.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents autocomplete As Global.System.Web.UI.HtmlControls.HtmlInputText
+    Protected WithEvents lblTitle As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
-    '''Control ImgSaveSearch.
+    '''Control lblfiles.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents ImgSaveSearch As Global.System.Web.UI.WebControls.ImageButton
+    Protected WithEvents lblfiles As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
     '''<summary>
-    '''Control idCliente.
+    '''Control attach1.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents idCliente As Global.System.Web.UI.HtmlControls.HtmlInputHidden
+    Protected WithEvents attach1 As Global.System.Web.UI.HtmlControls.HtmlInputFile
 
     '''<summary>
-    '''Control lnkSearch.
+    '''Control attach2.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents lnkSearch As Global.System.Web.UI.WebControls.HyperLink
+    Protected WithEvents attach2 As Global.System.Web.UI.HtmlControls.HtmlInputFile
 
     '''<summary>
-    '''Control lnkCancel.
+    '''Control attach3.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents lnkCancel As Global.System.Web.UI.WebControls.HyperLink
+    Protected WithEvents attach3 As Global.System.Web.UI.HtmlControls.HtmlInputFile
 
     '''<summary>
-    '''Control lnkFilter.
+    '''Control attach4.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents lnkFilter As Global.System.Web.UI.WebControls.HyperLink
+    Protected WithEvents attach4 As Global.System.Web.UI.HtmlControls.HtmlInputFile
 
     '''<summary>
-    '''Control idAutocompleteFilter.
+    '''Control attach5.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents idAutocompleteFilter As Global.System.Web.UI.HtmlControls.HtmlInputHidden
+    Protected WithEvents attach5 As Global.System.Web.UI.HtmlControls.HtmlInputFile
 
     '''<summary>
-    '''Control inpuFilter.
+    '''Control attach6.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents inpuFilter As Global.System.Web.UI.HtmlControls.HtmlInputHidden
+    Protected WithEvents attach6 As Global.System.Web.UI.HtmlControls.HtmlInputFile
 
     '''<summary>
-    '''Control DivRadioButtons.
+    '''Control attach7.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents DivRadioButtons As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents attach7 As Global.System.Web.UI.HtmlControls.HtmlInputFile
 
     '''<summary>
-    '''Control rb1.
+    '''Control attach8.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents rb1 As Global.System.Web.UI.WebControls.RadioButton
+    Protected WithEvents attach8 As Global.System.Web.UI.HtmlControls.HtmlInputFile
 
     '''<summary>
-    '''Control lblRb1.
+    '''Control attach9.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents lblRb1 As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents attach9 As Global.System.Web.UI.HtmlControls.HtmlInputFile
 
     '''<summary>
-    '''Control rb2.
+    '''Control attach10.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents rb2 As Global.System.Web.UI.WebControls.RadioButton
+    Protected WithEvents attach10 As Global.System.Web.UI.HtmlControls.HtmlInputFile
 
     '''<summary>
-    '''Control lblRb2.
+    '''Control btnAttach.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents lblRb2 As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents btnAttach As Global.System.Web.UI.WebControls.Button
 
     '''<summary>
-    '''Control spanHeader.
+    '''Control lblDescTips.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents spanHeader As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents lblDescTips As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control lblMoreImages.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblMoreImages As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control lblImagesTips.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblImagesTips As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control tblThumbnails.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents tblThumbnails As Global.System.Web.UI.WebControls.Table
 End Class

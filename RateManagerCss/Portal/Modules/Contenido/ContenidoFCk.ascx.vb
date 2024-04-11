@@ -760,6 +760,17 @@ Partial Class ContenidoFCk
         End If
     End Sub
 
+    Public Sub DeleteContenidoByIdContenido()
+        If Me.IdCon > 0 Then
+            With New presentacionContenido
+                If Not .DeleteIdContenidoHotelRoom(Me.IdCon, AppSettings("Albums_Dir")) Then
+
+                End If
+            End With
+        End If
+    End Sub
+
+
     Private Sub CargaEmpresaRubro()
         ImgControl.IdEmpresa = Me.IdEmp
         imgControlDef.IsImgHeader = Me.IsImgHeader

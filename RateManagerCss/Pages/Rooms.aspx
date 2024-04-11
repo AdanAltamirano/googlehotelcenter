@@ -8,6 +8,7 @@
 <%@ Register TagPrefix="uc1" TagName="ctlMensajes" Src="../Modulos/ctlMensajes.ascx" %>
 <%@ Register TagPrefix="uc1" TagName="ctrlRooms" Src="../Modulos/ctrlRooms.ascx" %>
 <%@ Register src="../Modulos/ctrlAutoComplete.ascx" tagname="ctrlAutoComplete" tagprefix="uc2" %>
+<%@ Register TagPrefix="uc1" TagName="ctrlImagesRooms" Src="../Portal/Modules/Contenido/ctrlImagesRooms.ascx" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
 <head>
@@ -154,16 +155,17 @@
                                     <td class="tdContent">
                                         <asp:Panel ID="PanelRooms" runat="server" HorizontalAlign="Center">
                                             <uc1:ctrlRooms ID="CtrlRooms1" runat="server"></uc1:ctrlRooms>
+                                            <br />
                                             <asp:Button ID="btnNuevo" runat="server" Width="85px" CssClass="Button" Text="Nuevo"
                                                 CausesValidation="False" Style="display: none"></asp:Button>
                                             
                                             <%  If Me.IsSupervisor Then
                                                     Me.btnPublicar.Text = RateManager.PortalCulture.GetString("01364")
                                             %>
-                                            <asp:Button ID="btnPublicar" runat="server" Width="85px" CssClass="Button" Text="Publicar"  CausesValidation =true >
+                                            <asp:Button ID="btnPublicar" runat="server" Width="85px" CssClass="Button" Text="Publicar"  CausesValidation="true">
                                             </asp:Button>
                                             <% End If%>
-                                            <asp:Button ID="btnGuardar" runat="server" Width="85px" CssClass="Button" Text="Guardar" CausesValidation =true >
+                                            <asp:Button ID="btnGuardar" runat="server" Width="85px" CssClass="Button" Text="Guardar" CausesValidation="true">
                                             </asp:Button>
                                             <asp:Button ID="btnOcultarDivContenedor" runat="server" Width="85px" CssClass="Button"
                                                 Text="Cancelar" CausesValidation="False"></asp:Button>

@@ -193,6 +193,9 @@
     <Compile Include="Models\DTO\RoomInventoryInfo.cs" />
     <Compile Include="Models\DTO\RoomsClosureModel.cs" />
     <Compile Include="Models\DTO\UpdateRateRequest.cs" />
+    <Compile Include="Models\Elementos.cs">
+      <DependentUpon>OzUniEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\GetAllF2GCode_Result.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
