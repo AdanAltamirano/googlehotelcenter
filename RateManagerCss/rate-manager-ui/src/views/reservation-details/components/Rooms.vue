@@ -108,7 +108,9 @@
                 <br />
               </template>
               {{$t('Preferences')}}:
-              <strong>{{room.preferences}}</strong>
+              <div class="alert alert-info">
+                <strong>{{room.preferences}}</strong>
+              </div>
             </address>
           </b-col>
         </b-row>

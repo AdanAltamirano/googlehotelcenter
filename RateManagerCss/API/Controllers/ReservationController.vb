@@ -138,6 +138,16 @@ Namespace API.Controller
                 Dim responseHotelCompnay As New HttpResponseMessage
                 responseHotelCompnay = ReservationService.GetExcel(queryResultHotelCompany)
                 Return responseHotelCompnay
+            ElseIf roles.Contains("usuariohotel") Then
+                Dim userOzhoteles As UsuarioHotel = GetUserFromOzHoteles(GetUserId().Value)
+                Dim hotels() As Integer = GetUserHotels(userOzhoteles.IdMainUser).Select(Function(h) h.HotelId).ToArray()
+                Dim queryParser = New QueryParser()
+                Dim _queryUserHotel As QueryData = queryParser.CreateAndValidateQuery(ActionContext, "reservationId", GetType(vReservation))
+                Dim queryResultUserHotel As IQueryable(Of vReservation)
+                queryResultUserHotel = _queryUserHotel.ApplyTo(ReservationService.GetAll().Where(Function(h) hotels.Contains(h.HotelId) And h.Provider = "INTERNET POWER"))
+                Dim responseHotelUser As New HttpResponseMessage
+                responseHotelUser = ReservationService.GetExcel(queryResultUserHotel)
+                Return responseHotelUser
             End If
             Dim parser = New QueryParser()
             Dim _query As QueryData = parser.CreateAndValidateQuery(ActionContext, "reservationId", GetType(vReservation))

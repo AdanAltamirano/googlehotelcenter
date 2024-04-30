@@ -37,6 +37,11 @@ Namespace API.Controllers
             ElseIf userRoles.Contains("hotelcompany") Then
                 Dim hotels() As Integer = UserDataHelper.GetUserHotels(GetUserId().Value).Select(Function(h) h.HotelId).ToArray()
                 Return HotelService.GetAll().Where(Function(h) hotels.Contains(h.Id) And h.Provider = "INTERNET POWER")
+            ElseIf userRoles.Contains("usuariohotel") Then
+
+                Dim userOzhoteles As UsuarioHotel = GetUserFromOzHoteles(GetUserId().Value)
+                Dim hotels() As Integer = GetUserHotels(userOzhoteles.IdMainUser).Select(Function(h) h.HotelId).ToArray()
+                Return HotelService.GetAll().Where(Function(h) hotels.Contains(h.Id) And h.Provider = "INTERNET POWER")
             End If
 
             'regresa vacio cualquier caso extra

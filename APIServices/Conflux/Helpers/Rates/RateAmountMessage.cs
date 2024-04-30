@@ -30,7 +30,18 @@ namespace APIServices.Conflux.Helpers.Rates
 
             List<Rate> rates = new List<Rate>();
 
-            var starDate = vDayRate.StartDate.Date < DateTime.Now.Date ? DateTime.Now.Date : vDayRate.StartDate.Date;
+            DateTime starDate = vDayRate.StartDate.Date;
+
+            if (vDayRate.StartDate.Date > vDayRate.EndDate.Date && vDayRate.EndDate.Date >= DateTime.Now.Date)
+            {
+                starDate = DateTime.Now.Date;
+            }
+            else if(vDayRate.StartDate.Date < DateTime.Now.Date)
+            {
+                starDate = DateTime.Now.Date;
+            }
+
+            //var starDate = vDayRate.StartDate.Date < DateTime.Now.Date ? DateTime.Now.Date : vDayRate.StartDate.Date; 01 07 2024
             var diff = vDayRate.EndDate.Date - starDate.Date;
             var endDate = diff.TotalDays > 1096 ? starDate.AddYears(3) : vDayRate.EndDate.Date;
 
@@ -161,7 +172,18 @@ namespace APIServices.Conflux.Helpers.Rates
 
             List<Rate> rates = new List<Rate>();
 
-            var starDate = vDayRate.StartDate.Date < DateTime.Now.Date ? DateTime.Now.Date : vDayRate.StartDate.Date;
+            DateTime starDate = vDayRate.StartDate.Date;
+
+            if (vDayRate.StartDate.Date > vDayRate.EndDate.Date && vDayRate.EndDate.Date >= DateTime.Now.Date)
+            {
+                starDate = DateTime.Now.Date;
+            }
+            else if (vDayRate.StartDate.Date < DateTime.Now.Date)
+            {
+                starDate = DateTime.Now.Date;
+            }
+
+            //var starDate = vDayRate.StartDate.Date < DateTime.Now.Date ? DateTime.Now.Date : vDayRate.StartDate.Date;
             var diff = vDayRate.EndDate.Date - starDate.Date;
             var endDate = diff.TotalDays > 1096 ? starDate.AddYears(3) : vDayRate.EndDate.Date;
 
@@ -305,7 +327,18 @@ namespace APIServices.Conflux.Helpers.Rates
 
             List<Rate> rates = new List<Rate>();
 
-            var starDate = vDayRate.StartDate.Date < DateTime.Now.Date ? DateTime.Now.Date : vDayRate.StartDate.Date;
+            DateTime starDate = vDayRate.StartDate.Date;
+
+            if (vDayRate.StartDate.Date > vDayRate.EndDate.Date && vDayRate.EndDate.Date >= DateTime.Now.Date)
+            {
+                starDate = DateTime.Now.Date;
+            }
+            else if (vDayRate.StartDate.Date < DateTime.Now.Date)
+            {
+                starDate = DateTime.Now.Date;
+            }
+
+            //var starDate = vDayRate.StartDate.Date < DateTime.Now.Date ? DateTime.Now.Date : vDayRate.StartDate.Date;
             var diff = vDayRate.EndDate.Date - starDate.Date;
             var endDate = diff.TotalDays > 1096 ? starDate.AddYears(3) : vDayRate.EndDate.Date;
 
@@ -435,7 +468,18 @@ namespace APIServices.Conflux.Helpers.Rates
 
             List<Rate> rates = new List<Rate>();
 
-            var startDate = vDayRate.StartDate.Date < DateTime.Now.Date ? DateTime.Now.Date : vDayRate.StartDate.Date;
+            DateTime startDate = vDayRate.StartDate.Date;
+
+            if (vDayRate.StartDate.Date > vDayRate.EndDate.Date && vDayRate.EndDate.Date >= DateTime.Now.Date)
+            {
+                startDate = DateTime.Now.Date;
+            }
+            else if (vDayRate.StartDate.Date < DateTime.Now.Date)
+            {
+                startDate = DateTime.Now.Date;
+            }
+
+            //var startDate = vDayRate.StartDate.Date < DateTime.Now.Date ? DateTime.Now.Date : vDayRate.StartDate.Date;
             var diff = vDayRate.EndDate.Date - startDate.Date;
             var endDate = diff.TotalDays > 1096 ? startDate.AddYears(3) : vDayRate.EndDate.Date;
 
@@ -581,7 +625,18 @@ namespace APIServices.Conflux.Helpers.Rates
 
             List<Rate> rates = new List<Rate>();
 
-            var starDate = vDayRate.StartDate.Date < DateTime.Now.Date ? DateTime.Now.Date : vDayRate.StartDate.Date;
+            DateTime starDate = vDayRate.StartDate.Date;
+
+            if (vDayRate.StartDate.Date > vDayRate.EndDate.Date && vDayRate.EndDate.Date >= DateTime.Now.Date)
+            {
+                starDate = DateTime.Now.Date;
+            }
+            else if (vDayRate.StartDate.Date < DateTime.Now.Date)
+            {
+                starDate = DateTime.Now.Date;
+            }
+
+            //var starDate = vDayRate.StartDate.Date < DateTime.Now.Date ? DateTime.Now.Date : vDayRate.StartDate.Date;
 
             Rate rate = new Rate()
             {
@@ -606,7 +661,18 @@ namespace APIServices.Conflux.Helpers.Rates
 
             List<Rate> rates = new List<Rate>();
 
-            var starDate = vDayRate.StartDate.Date < DateTime.Now.Date ? DateTime.Now.Date : vDayRate.StartDate.Date;
+            DateTime starDate = vDayRate.StartDate.Date;
+
+            if (vDayRate.StartDate.Date > vDayRate.EndDate.Date && vDayRate.EndDate.Date >= DateTime.Now.Date)
+            {
+                starDate = DateTime.Now.Date;
+            }
+            else if (vDayRate.StartDate.Date < DateTime.Now.Date)
+            {
+                starDate = DateTime.Now.Date;
+            }
+
+            //var starDate = vDayRate.StartDate.Date < DateTime.Now.Date ? DateTime.Now.Date : vDayRate.StartDate.Date;
 
             Rate rate = new Rate()
             {
@@ -632,7 +698,18 @@ namespace APIServices.Conflux.Helpers.Rates
 
             List<Rate> rates = new List<Rate>();
 
-            var starDate = vDayRate.StartDate.Date < DateTime.Now.Date ? DateTime.Now.Date : vDayRate.StartDate.Date;
+            DateTime starDate = vDayRate.StartDate.Date;
+
+            if (vDayRate.StartDate.Date > vDayRate.EndDate.Date && vDayRate.EndDate.Date >= DateTime.Now.Date)
+            {
+                starDate = DateTime.Now.Date;
+            }
+            else if (vDayRate.StartDate.Date < DateTime.Now.Date)
+            {
+                starDate = DateTime.Now.Date;
+            }
+
+            //var starDate = vDayRate.StartDate.Date < DateTime.Now.Date ? DateTime.Now.Date : vDayRate.StartDate.Date;
 
             Rate rate = new Rate()
             {

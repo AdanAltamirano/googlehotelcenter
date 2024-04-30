@@ -106,7 +106,7 @@
                                     <b-form-select v-model="agent" :options="agents"></b-form-select>
                                 </b-form-group>
                             </b-col>
-                            <b-col md="4" v-if="isSupervisor">
+                            <b-col md="4">
                                 <b-form-group v-if="hotels.length > 0">
                                     <template slot="label">
                                         <div class="d-flex">
