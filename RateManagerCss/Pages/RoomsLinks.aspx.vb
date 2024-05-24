@@ -81,7 +81,7 @@ Partial Class RoomsLinks
         Me.btnCancel.Text = PortalCulture.GetString("00009")
         Me.dgLinks.PagerStyle.PrevPageText = "<< " & PortalCulture.GetString("00010")
         Me.dgLinks.PagerStyle.NextPageText = PortalCulture.GetString("00011") & " >>"
-        Me.lblError.Text = PortalCulture.GetString("00125")
+        'Me.lblError.Text = PortalCulture.GetString("00125")
         dgLinks.Columns(dgColumns.offset).HeaderText = PortalCulture.GetString("00422")
         dgLinks.Columns(dgColumns.ratio).HeaderText = PortalCulture.GetString("00421")
         dgLinks.Columns(dgColumns.roundamount).HeaderText = PortalCulture.GetString("00042")
@@ -153,14 +153,36 @@ Partial Class RoomsLinks
         If Not Page.IsValid Then Return
         lblError.Visible = False
         If CtrRoomLink1.Editar OrElse Not CtrRoomLink1.samelink Then
-            If CtrRoomLink1.SaveLinks() Then
-                Me.dgLinks.SelectedIndex = -1
-                CtrRoomLink1.cleardata()
-                loadLinks()
-                MostrarCmdNew(True)
+
+            If Not CtrRoomLink1.Editar Then
+                If CtrRoomLink1.RoomTargetHasRates() Then
+                    Me.lblError.Text = PortalCulture.GetString("01673")
+                    Me.lblError.Visible = True
+                Else
+
+                    If CtrRoomLink1.SaveLinks() Then
+                        Me.dgLinks.SelectedIndex = -1
+                        CtrRoomLink1.cleardata()
+                        loadLinks()
+                        MostrarCmdNew(True)
+                    Else
+                        Me.lblError.Text = PortalCulture.GetString("00125")
+                        Me.lblError.Visible = True
+                    End If
+
+                End If
             Else
-                Me.lblError.Visible = True
+                If CtrRoomLink1.SaveLinks() Then
+                    Me.dgLinks.SelectedIndex = -1
+                    CtrRoomLink1.cleardata()
+                    loadLinks()
+                    MostrarCmdNew(True)
+                Else
+                    Me.lblError.Text = PortalCulture.GetString("00125")
+                    Me.lblError.Visible = True
+                End If
             End If
+
         Else
             MostrarCmdNew(False)
         End If

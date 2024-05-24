@@ -141,23 +141,70 @@ Partial Class RatePlansLinks
         Dim isNetRateDif As Boolean = False
 
         If CtrRatePlanLink1.Editar OrElse Not CtrRatePlanLink1.samelink Then
-            If CtrRatePlanLink1.SaveLinks(isNetRateDif) Then
-                CtrRatePlanLink1.cleardata()
-                dglinks.SelectedIndex = -1
-                loadLinks()
-                'ScriptManager.RegisterStartupScript(Me.Page, Me.GetType(), "ShowInfo", "ShowNewInfo(0);", True)
 
-                MostrarCmdNew(True)
-            Else
-                If isNetRateDif Then
-                    lblError.Text = PortalCulture.GetString("01263")
+            If Not CtrRatePlanLink1.Editar Then
+                If CtrRatePlanLink1.RatePlanTargetHasRates() Then
+                    lblError.Text = PortalCulture.GetString("01674")
+                    lblError.Visible = True
                 Else
-                    lblError.Text = PortalCulture.GetString("01174")
+                    If CtrRatePlanLink1.SaveLinks(isNetRateDif) Then
+                        CtrRatePlanLink1.cleardata()
+                        dglinks.SelectedIndex = -1
+                        loadLinks()
+                        'ScriptManager.RegisterStartupScript(Me.Page, Me.GetType(), "ShowInfo", "ShowNewInfo(0);", True)
+
+                        MostrarCmdNew(True)
+                    Else
+                        If isNetRateDif Then
+                            lblError.Text = PortalCulture.GetString("01263")
+                        Else
+                            lblError.Text = PortalCulture.GetString("01174")
+                        End If
+
+                        Me.lblError.Visible = True
+                        'ScriptManager.RegisterStartupScript(Me.Page, Me.GetType(), "ShowInfo", "ShowNewInfo(1);", True)
+                    End If
                 End If
 
-                Me.lblError.Visible = True
-                'ScriptManager.RegisterStartupScript(Me.Page, Me.GetType(), "ShowInfo", "ShowNewInfo(1);", True)
+            Else
+                If CtrRatePlanLink1.SaveLinks(isNetRateDif) Then
+                    CtrRatePlanLink1.cleardata()
+                    dglinks.SelectedIndex = -1
+                    loadLinks()
+                    'ScriptManager.RegisterStartupScript(Me.Page, Me.GetType(), "ShowInfo", "ShowNewInfo(0);", True)
+
+                    MostrarCmdNew(True)
+                Else
+                    If isNetRateDif Then
+                        lblError.Text = PortalCulture.GetString("01263")
+                    Else
+                        lblError.Text = PortalCulture.GetString("01174")
+                    End If
+
+                    Me.lblError.Visible = True
+                    'ScriptManager.RegisterStartupScript(Me.Page, Me.GetType(), "ShowInfo", "ShowNewInfo(1);", True)
+                End If
             End If
+
+
+            'If CtrRatePlanLink1.SaveLinks(isNetRateDif) Then
+            '    CtrRatePlanLink1.cleardata()
+            '    dglinks.SelectedIndex = -1
+            '    loadLinks()
+            '    'ScriptManager.RegisterStartupScript(Me.Page, Me.GetType(), "ShowInfo", "ShowNewInfo(0);", True)
+
+            '    MostrarCmdNew(True)
+            'Else
+            '    If isNetRateDif Then
+            '        lblError.Text = PortalCulture.GetString("01263")
+            '    Else
+            '        lblError.Text = PortalCulture.GetString("01174")
+            '    End If
+
+            '    Me.lblError.Visible = True
+            '    'ScriptManager.RegisterStartupScript(Me.Page, Me.GetType(), "ShowInfo", "ShowNewInfo(1);", True)
+            'End If
+
         Else
             'ScriptManager.RegisterStartupScript(Me.Page, Me.GetType(), "ShowInfo", "ShowNewInfo(1);", True)
         End If

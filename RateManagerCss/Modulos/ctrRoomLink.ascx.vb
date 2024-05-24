@@ -2,6 +2,8 @@ Imports Portal.Hotel.Common.Data
 Imports Portal.Hotel.Facade
 Imports Portal.General.Common.Data
 Imports Portal.General.Facade
+Imports APIServices.Helpers.Rate
+
 Partial Class ctrRoomLink
     Inherits System.Web.UI.UserControl
 
@@ -23,11 +25,11 @@ Partial Class ctrRoomLink
     'End Property
     Public Property Editar() As Boolean
         Get
-            Return viewstate("Edit")
+            Return ViewState("Edit")
         End Get
         Set(ByVal Value As Boolean)
-            viewstate("Edit") = Value
-            If viewstate("Edit") = True Then
+            ViewState("Edit") = Value
+            If ViewState("Edit") = True Then
                 txtTarget.Visible = True
                 Me.ddlRoomTarget.Visible = False
             Else
@@ -38,10 +40,10 @@ Partial Class ctrRoomLink
     End Property
     Private Property TargetEdit() As Integer
         Get
-            Return viewstate("_TargetEdit")
+            Return ViewState("_TargetEdit")
         End Get
         Set(ByVal Value As Integer)
-            viewstate("_TargetEdit") = Value
+            ViewState("_TargetEdit") = Value
         End Set
     End Property
 
@@ -85,7 +87,7 @@ Partial Class ctrRoomLink
             Return ViewState("me_hotel")
         End Get
         Set(ByVal Value As Integer)
-            VIEWSTATE("me_hotel") = Value
+            ViewState("me_hotel") = Value
         End Set
     End Property
     Public ReadOnly Property samelink() As Boolean
@@ -104,7 +106,7 @@ Partial Class ctrRoomLink
             Return ViewState("_TargetC")
         End Get
         Set(ByVal Value As String)
-            VIEWSTATE("_TargetC") = Value
+            ViewState("_TargetC") = Value
         End Set
     End Property
     Public Property Sourcecode() As String
@@ -112,7 +114,7 @@ Partial Class ctrRoomLink
             Return ViewState("_SourceC")
         End Get
         Set(ByVal Value As String)
-            VIEWSTATE("_SourceC") = Value
+            ViewState("_SourceC") = Value
         End Set
     End Property
 
@@ -304,6 +306,11 @@ Partial Class ctrRoomLink
                 Return False
             End With
         End If
+    End Function
+
+
+    Public Function RoomTargetHasRates() As Boolean
+        Return RateHelper.RoomHasRates(Me.m_iHotelId, CInt(Me.ddlRoomTarget.SelectedValue))
     End Function
 
     Public Sub loadlink(ByVal Target As Integer)

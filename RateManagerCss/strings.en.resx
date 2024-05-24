@@ -8928,4 +8928,10 @@
   <data name="01672" xml:space="preserve">
     <value>Add Images</value>
   </data>
+  <data name="01673" xml:space="preserve">
+    <value>The room you are trying to link has rates charged. It is necessary to delete them before making the link.</value>
+  </data>
+  <data name="01674" xml:space="preserve">
+    <value>The rate plan you are trying to link has charged rates. It is necessary to remove them before making the link.</value>
+  </data>
 </root>

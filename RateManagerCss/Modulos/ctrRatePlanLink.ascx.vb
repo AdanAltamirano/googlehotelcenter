@@ -2,16 +2,18 @@ Imports Portal.Hotel.Common.Data
 Imports Portal.Hotel.Facade
 Imports Portal.General.Common.Data
 Imports Portal.General.Facade
+Imports APIServices.Helpers.Rate
+
 Partial Class ctrRatePlanLink
     Inherits System.Web.UI.UserControl
 
     Public Property Editar() As Boolean
         Get
-            Return viewstate("Edit")
+            Return ViewState("Edit")
         End Get
         Set(ByVal Value As Boolean)
-            viewstate("Edit") = Value
-            If viewstate("Edit") = True Then
+            ViewState("Edit") = Value
+            If ViewState("Edit") = True Then
                 txtTarget.Visible = True
                 Me.ddlRatePlanTarget.Visible = False
             Else
@@ -26,16 +28,16 @@ Partial Class ctrRatePlanLink
             Return ViewState("me_hotel")
         End Get
         Set(ByVal Value As Integer)
-            VIEWSTATE("me_hotel") = Value
+            ViewState("me_hotel") = Value
         End Set
     End Property
-    
+
     Public Property Target() As String
         Get
             Return If(ViewState("_Target") Is Nothing, "", ViewState("_Target"))
         End Get
         Set(ByVal Value As String)
-            VIEWSTATE("_Target") = Value
+            ViewState("_Target") = Value
         End Set
     End Property
 
@@ -53,7 +55,7 @@ Partial Class ctrRatePlanLink
             Return ViewState("_TargetC")
         End Get
         Set(ByVal Value As String)
-            VIEWSTATE("_TargetC") = Value
+            ViewState("_TargetC") = Value
         End Set
     End Property
     Public Property Sourcecode() As String
@@ -61,7 +63,7 @@ Partial Class ctrRatePlanLink
             Return ViewState("_SourceC")
         End Get
         Set(ByVal Value As String)
-            VIEWSTATE("_SourceC") = Value
+            ViewState("_SourceC") = Value
         End Set
     End Property
 
@@ -201,7 +203,7 @@ Partial Class ctrRatePlanLink
         Me.lblERatePlanTarget.Text = PortalCulture.GetString("00483", True)
 
         lblOthersOcupation.Text = PortalCulture.GetString("00044", True)
-       
+
         RVOnePersonOffset.ErrorMessage = PortalCulture.GetString("00045")
         RVTwoPersonOffset.ErrorMessage = PortalCulture.GetString("00045")
         RVExtraAdultOffset.ErrorMessage = PortalCulture.GetString("00045")
@@ -372,6 +374,10 @@ Partial Class ctrRatePlanLink
             End If
 
         End If
+    End Function
+
+    Public Function RatePlanTargetHasRates() As Boolean
+        Return RateHelper.RatePlanHasRates(Me.m_iHotelId, Me.ddlRatePlanTarget.SelectedValue)
     End Function
 
     Public Sub loadlink(ByVal Target As String)

@@ -151,6 +151,7 @@
     <Compile Include="Dictionary.cs" />
     <Compile Include="Extension\ConfigurationExtensions.cs" />
     <Compile Include="F2GService.cs" />
+    <Compile Include="Helpers\Rate\RateHelper.cs" />
     <Compile Include="Helpers\Reservation\ReservationHelper.cs" />
     <Compile Include="Helpers\Room\RoomHelper.cs" />
     <Compile Include="HotelConfigurationService.cs" />
