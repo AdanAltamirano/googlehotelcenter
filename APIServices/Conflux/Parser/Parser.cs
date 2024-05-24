@@ -15,7 +15,7 @@ namespace APIServices.Conflux.Parser
     public static class Parser
     {
         //General
-        public static RateAmountMessages ToRateAmountMessages(List<spGetCurrentRatesByHotel_Result4> currentRates, int companyId, bool? plusTax, decimal? tax, string currency, ref RateAmountMessages deleteRateAmountMessages)
+        public static RateAmountMessages ToRateAmountMessages(List<spGetCurrentRatesByHotel_Result4> currentRates,int hotelId , int companyId, bool? plusTax, decimal? tax, string currency, ref RateAmountMessages deleteRateAmountMessages)
         {
 
             RateAmountMessages rateAmountMessages = new RateAmountMessages();
@@ -27,7 +27,7 @@ namespace APIServices.Conflux.Parser
             deleteRateAmountMessages.RateAmountMessagesList = new List<RateAmountMessage>();
 
 
-            RatesHelpers.Init(plusTax, tax,currency);
+            RatesHelpers.Init(hotelId,plusTax, tax,currency);
 
             foreach (var currentRate in currentRates)
             {
@@ -51,7 +51,7 @@ namespace APIServices.Conflux.Parser
         }
         
         //Por Tarifa
-        public static RateAmountMessages ToRateAmountMessages(List<vDayRates> rates,List<vDayRatesExceptions> ratesExceptions, int companyId, bool? plusTax, decimal? tax, string currency, TypeRateEnum typeRate, ref RateAmountMessages deleteRateAmountMessages)
+        public static RateAmountMessages ToRateAmountMessages(List<vDayRates> rates,List<vDayRatesExceptions> ratesExceptions,int hotelId, int companyId, bool? plusTax, decimal? tax, string currency, TypeRateEnum typeRate, ref RateAmountMessages deleteRateAmountMessages)
         {
             RateAmountMessages rateAmountMessages = new RateAmountMessages();
 
@@ -61,7 +61,7 @@ namespace APIServices.Conflux.Parser
             deleteRateAmountMessages.HotelCode = companyId;
             deleteRateAmountMessages.RateAmountMessagesList = new List<RateAmountMessage>();
 
-            RatesHelpers.Init(plusTax, tax, currency);
+            RatesHelpers.Init(hotelId, plusTax, tax, currency);
             //Para Tarifa Promociones ver si se tiene que poner condicion para diferenciar
 
             switch (typeRate)

@@ -14,8 +14,10 @@ namespace APIServices.Conflux.Helpers.Rates
         private static bool? PlusTax { get; set; }
         public static decimal? Tax { get; set; }
         public static string Currency { get; set; }
-        public static void Init(bool? plusTax, decimal? tax,string currency)
+        public static int HotelId { get; set; }
+        public static void Init(int hotelId, bool? plusTax, decimal? tax,string currency)
         {
+            HotelId = hotelId;
             PlusTax = plusTax;
             Tax = tax;
             Currency = currency;
@@ -484,8 +486,7 @@ namespace APIServices.Conflux.Helpers.Rates
                             AmountBeforeTax = amountBeforeTax,
                             AmountAfterTax = price.Price,
                             NumberOfGuests = price.Quantity.ToString(),
-                            AgeQualifyingCode = price.PersonType,
-                            CurrencyCode = Currency
+                            AgeQualifyingCode = price.PersonType
                         };
 
                         baseGuestAmounts.Add(baseGuestAmount);
@@ -506,8 +507,7 @@ namespace APIServices.Conflux.Helpers.Rates
                             AmountBeforeTax = amountBeforeTaxChild,
                             AmountAfterTax = priceChild.Price,
                             NumberOfGuests = priceChild.Quantity.ToString(),
-                            AgeQualifyingCode = priceChild.PersonType,
-                            CurrencyCode = Currency
+                            AgeQualifyingCode = priceChild.PersonType
                         };
 
                         BaseGuestAmount baseGuestAmountTeeneger = new BaseGuestAmount()
@@ -515,8 +515,7 @@ namespace APIServices.Conflux.Helpers.Rates
                             AmountBeforeTax = amountBeforeTaxTeeneger,
                             AmountAfterTax = priceTeeneger.Price,
                             NumberOfGuests = priceTeeneger.Quantity.ToString(),
-                            AgeQualifyingCode = priceTeeneger.PersonType,
-                            CurrencyCode = Currency
+                            AgeQualifyingCode = priceTeeneger.PersonType
                         };
 
                         baseGuestAmounts.Add(baseGuestAmountChild);
@@ -561,8 +560,7 @@ namespace APIServices.Conflux.Helpers.Rates
                             AmountBeforeTax = price.Price,
                             AmountAfterTax = amountAfterTax,
                             NumberOfGuests = price.Quantity.ToString(),
-                            AgeQualifyingCode = price.PersonType,
-                            CurrencyCode = Currency
+                            AgeQualifyingCode = price.PersonType
                         };
 
                         baseGuestAmounts.Add(baseGuestAmount);
@@ -583,8 +581,7 @@ namespace APIServices.Conflux.Helpers.Rates
                             AmountBeforeTax = priceChild.Price,
                             AmountAfterTax = amountAfterTaxChild,
                             NumberOfGuests = priceChild.Quantity.ToString(),
-                            AgeQualifyingCode = priceChild.PersonType,
-                            CurrencyCode = Currency
+                            AgeQualifyingCode = priceChild.PersonType
                         };
 
                         BaseGuestAmount baseGuestAmountTeeneger = new BaseGuestAmount()
@@ -592,8 +589,7 @@ namespace APIServices.Conflux.Helpers.Rates
                             AmountBeforeTax = priceTeeneger.Price,
                             AmountAfterTax = amountAfterTaxTeeneger,
                             NumberOfGuests = priceTeeneger.Quantity.ToString(),
-                            AgeQualifyingCode = priceTeeneger.PersonType,
-                            CurrencyCode = Currency
+                            AgeQualifyingCode = priceTeeneger.PersonType
                         };
 
                         baseGuestAmounts.Add(baseGuestAmountChild);
@@ -654,8 +650,7 @@ namespace APIServices.Conflux.Helpers.Rates
                                 AmountBeforeTax = amountBeforeTax,
                                 AmountAfterTax = price.Price,
                                 NumberOfGuests = price.Quantity.ToString(),
-                                AgeQualifyingCode = price.PersonType,
-                                CurrencyCode = Currency
+                                AgeQualifyingCode = price.PersonType
                             };
 
                             baseGuestAmounts.Add(baseGuestAmount);
@@ -679,8 +674,7 @@ namespace APIServices.Conflux.Helpers.Rates
                                 AmountBeforeTax = amountBeforeTaxChild,
                                 AmountAfterTax = priceChild.Price,
                                 NumberOfGuests = priceChild.Quantity.ToString(),
-                                AgeQualifyingCode = priceChild.PersonType,
-                                CurrencyCode = Currency
+                                AgeQualifyingCode = priceChild.PersonType
                             };
 
                             baseGuestAmounts.Add(baseGuestAmountChild);
@@ -695,8 +689,7 @@ namespace APIServices.Conflux.Helpers.Rates
                                 AmountBeforeTax = amountBeforeTaxTeeneger,
                                 AmountAfterTax = priceTeeneger.Price,
                                 NumberOfGuests = priceTeeneger.Quantity.ToString(),
-                                AgeQualifyingCode = priceTeeneger.PersonType,
-                                CurrencyCode = Currency
+                                AgeQualifyingCode = priceTeeneger.PersonType
                             };
 
                             baseGuestAmounts.Add(baseGuestAmountTeeneger);
@@ -743,8 +736,7 @@ namespace APIServices.Conflux.Helpers.Rates
                                 AmountBeforeTax = price.Price,
                                 AmountAfterTax = amountAfterTax,
                                 NumberOfGuests = price.Quantity.ToString(),
-                                AgeQualifyingCode = price.PersonType,
-                                CurrencyCode = Currency
+                                AgeQualifyingCode = price.PersonType
                             };
 
                             baseGuestAmounts.Add(baseGuestAmount);
@@ -765,8 +757,7 @@ namespace APIServices.Conflux.Helpers.Rates
                                 AmountBeforeTax = priceChild.Price,
                                 AmountAfterTax = amountAfterTaxChild,
                                 NumberOfGuests = priceChild.Quantity.ToString(),
-                                AgeQualifyingCode = priceChild.PersonType,
-                                CurrencyCode = Currency
+                                AgeQualifyingCode = priceChild.PersonType
                             };
 
                             baseGuestAmounts.Add(baseGuestAmountChild);
@@ -780,8 +771,7 @@ namespace APIServices.Conflux.Helpers.Rates
                                 AmountBeforeTax = priceTeeneger.Price,
                                 AmountAfterTax = amountAfterTaxTeeneger,
                                 NumberOfGuests = priceTeeneger.Quantity.ToString(),
-                                AgeQualifyingCode = priceTeeneger.PersonType,
-                                CurrencyCode = Currency
+                                AgeQualifyingCode = priceTeeneger.PersonType
                             };
 
 
@@ -940,8 +930,7 @@ namespace APIServices.Conflux.Helpers.Rates
                             AmountBeforeTax = amountBeforeTax,
                             AmountAfterTax = price.Price,
                             NumberOfGuests = price.Quantity.ToString(),
-                            AgeQualifyingCode = price.PersonType,
-                            CurrencyCode = Currency
+                            AgeQualifyingCode = price.PersonType                            
                         };
 
                         baseGuestAmounts.Add(baseGuestAmount);
@@ -962,8 +951,7 @@ namespace APIServices.Conflux.Helpers.Rates
                             AmountBeforeTax = amountBeforeTaxChild,
                             AmountAfterTax = priceChild.Price,
                             NumberOfGuests = priceChild.Quantity.ToString(),
-                            AgeQualifyingCode = priceChild.PersonType,
-                            CurrencyCode = Currency
+                            AgeQualifyingCode = priceChild.PersonType
                         };
 
                         BaseGuestAmount baseGuestAmountTeeneger = new BaseGuestAmount()
@@ -971,8 +959,7 @@ namespace APIServices.Conflux.Helpers.Rates
                             AmountBeforeTax = amountBeforeTaxTeeneger,
                             AmountAfterTax = priceTeeneger.Price,
                             NumberOfGuests = priceTeeneger.Quantity.ToString(),
-                            AgeQualifyingCode = priceTeeneger.PersonType,
-                            CurrencyCode = Currency
+                            AgeQualifyingCode = priceTeeneger.PersonType
                         };
 
                         baseGuestAmounts.Add(baseGuestAmountChild);
@@ -998,8 +985,7 @@ namespace APIServices.Conflux.Helpers.Rates
                             AmountBeforeTax = price.Price,
                             AmountAfterTax = amountAfterTax,
                             NumberOfGuests = price.Quantity.ToString(),
-                            AgeQualifyingCode = price.PersonType,
-                            CurrencyCode = Currency
+                            AgeQualifyingCode = price.PersonType
                         };
 
                         baseGuestAmounts.Add(baseGuestAmount);
@@ -1020,8 +1006,7 @@ namespace APIServices.Conflux.Helpers.Rates
                             AmountBeforeTax = priceChild.Price,
                             AmountAfterTax = amountAfterTaxChild,
                             NumberOfGuests = priceChild.Quantity.ToString(),
-                            AgeQualifyingCode = priceChild.PersonType,
-                            CurrencyCode = Currency
+                            AgeQualifyingCode = priceChild.PersonType
                         };
 
                         BaseGuestAmount baseGuestAmountTeeneger = new BaseGuestAmount()
@@ -1029,8 +1014,7 @@ namespace APIServices.Conflux.Helpers.Rates
                             AmountBeforeTax = priceTeeneger.Price,
                             AmountAfterTax = amountAfterTaxTeeneger,
                             NumberOfGuests = priceTeeneger.Quantity.ToString(),
-                            AgeQualifyingCode = priceTeeneger.PersonType,
-                            CurrencyCode = Currency
+                            AgeQualifyingCode = priceTeeneger.PersonType
                         };
 
                         baseGuestAmounts.Add(baseGuestAmountChild);
@@ -1164,8 +1148,7 @@ namespace APIServices.Conflux.Helpers.Rates
                             AmountBeforeTax = amountBeforeTax,
                             AmountAfterTax = price.Price,
                             NumberOfGuests = price.Quantity.ToString(),
-                            AgeQualifyingCode = price.PersonType,
-                            CurrencyCode = Currency
+                            AgeQualifyingCode = price.PersonType
                         };
 
                         baseGuestAmounts.Add(baseGuestAmount);
@@ -1186,8 +1169,7 @@ namespace APIServices.Conflux.Helpers.Rates
                             AmountBeforeTax = amountBeforeTaxChild,
                             AmountAfterTax = priceChild.Price,
                             NumberOfGuests = priceChild.Quantity.ToString(),
-                            AgeQualifyingCode = priceChild.PersonType,
-                            CurrencyCode = Currency
+                            AgeQualifyingCode = priceChild.PersonType
                         };
 
                         BaseGuestAmount baseGuestAmountTeeneger = new BaseGuestAmount()
@@ -1195,8 +1177,7 @@ namespace APIServices.Conflux.Helpers.Rates
                             AmountBeforeTax = amountBeforeTaxTeeneger,
                             AmountAfterTax = priceTeeneger.Price,
                             NumberOfGuests = priceTeeneger.Quantity.ToString(),
-                            AgeQualifyingCode = priceTeeneger.PersonType,
-                            CurrencyCode = Currency
+                            AgeQualifyingCode = priceTeeneger.PersonType
                         };
 
                         baseGuestAmounts.Add(baseGuestAmountChild);
@@ -1219,8 +1200,7 @@ namespace APIServices.Conflux.Helpers.Rates
                             AmountBeforeTax = price.Price,
                             AmountAfterTax = amountAfterTax,
                             NumberOfGuests = price.Quantity.ToString(),
-                            AgeQualifyingCode = price.PersonType,
-                            CurrencyCode = Currency
+                            AgeQualifyingCode = price.PersonType
                         };
 
                         baseGuestAmounts.Add(baseGuestAmount);
@@ -1241,8 +1221,7 @@ namespace APIServices.Conflux.Helpers.Rates
                             AmountBeforeTax = priceChild.Price,
                             AmountAfterTax = amountAfterTaxChild,
                             NumberOfGuests = priceChild.Quantity.ToString(),
-                            AgeQualifyingCode = priceChild.PersonType,
-                            CurrencyCode = Currency
+                            AgeQualifyingCode = priceChild.PersonType
                         };
 
                         BaseGuestAmount baseGuestAmountTeeneger = new BaseGuestAmount()
@@ -1250,8 +1229,7 @@ namespace APIServices.Conflux.Helpers.Rates
                             AmountBeforeTax = priceTeeneger.Price,
                             AmountAfterTax = amountAfterTaxTeeneger,
                             NumberOfGuests = priceTeeneger.Quantity.ToString(),
-                            AgeQualifyingCode = priceTeeneger.PersonType,
-                            CurrencyCode = Currency
+                            AgeQualifyingCode = priceTeeneger.PersonType
                         };
 
                         baseGuestAmounts.Add(baseGuestAmountChild);

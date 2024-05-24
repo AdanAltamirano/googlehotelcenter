@@ -47,6 +47,7 @@ namespace APIServices.Conflux.Helpers.Rates
 
 
             Rate rate = new Rate();
+            rate.CurrencyCode = RatesHelpers.Currency;
             rate.StartDate = starDate.Date.ToString("yyyyMMdd");//revisar el formato
             rate.EndDate = endDate.Date.ToString("yyyyMMdd");
 
@@ -96,13 +97,13 @@ namespace APIServices.Conflux.Helpers.Rates
                     if (vDayRate.IsPromotion)
                     {
                         linkedRatePlan = ozHoteles.vLinkedRatePlans
-                            .Where(lrr => lrr.TargetRatePlan == vDayRate.ParentRatePlanId)
+                            .Where(lrr => lrr.IdHotel == RatesHelpers.HotelId && lrr.TargetRatePlan == vDayRate.ParentRatePlanId)
                             .FirstOrDefault();
                     }
                     else
                     {
                         linkedRatePlan = ozHoteles.vLinkedRatePlans
-                            .Where(lrr => lrr.SourceRatePlan == vDayRate.ParentRatePlanId && lrr.TargetRatePlan == vDayRate.RatePlanId)
+                            .Where(lrr => lrr.IdHotel == RatesHelpers.HotelId && lrr.SourceRatePlan == vDayRate.ParentRatePlanId && lrr.TargetRatePlan == vDayRate.RatePlanId)
                             .FirstOrDefault();
                     }
 
@@ -189,6 +190,7 @@ namespace APIServices.Conflux.Helpers.Rates
 
 
             Rate rate = new Rate();
+            rate.CurrencyCode = RatesHelpers.Currency;
             rate.TypeRate = TypeRateEnum.RoomRatePromotion;
             rate.StartDate = starDate.Date.ToString("yyyyMMdd");
             rate.EndDate = endDate.Date.ToString("yyyyMMdd");
@@ -246,13 +248,13 @@ namespace APIServices.Conflux.Helpers.Rates
                     if (vDayRate.IsPromotion)
                     {
                         linkedRatePlan = ozHoteles.vLinkedRatePlans
-                            .Where(lrr => lrr.TargetRatePlan == vDayRate.ParentRatePlanId)
+                            .Where(lrr => lrr.IdHotel == RatesHelpers.HotelId &&  lrr.TargetRatePlan == vDayRate.ParentRatePlanId)
                             .FirstOrDefault();
                     }
                     else
                     {
                         linkedRatePlan = ozHoteles.vLinkedRatePlans
-                            .Where(lrr => lrr.SourceRatePlan == vDayRate.ParentRatePlanId && lrr.TargetRatePlan == vDayRate.RatePlanId)
+                            .Where(lrr => lrr.IdHotel == RatesHelpers.HotelId && lrr.SourceRatePlan == vDayRate.ParentRatePlanId && lrr.TargetRatePlan == vDayRate.RatePlanId)
                             .FirstOrDefault();
                     }
 
@@ -343,6 +345,7 @@ namespace APIServices.Conflux.Helpers.Rates
             var endDate = diff.TotalDays > 1096 ? starDate.AddYears(3) : vDayRate.EndDate.Date;
 
             Rate rate = new Rate();
+            rate.CurrencyCode = RatesHelpers.Currency;
             rate.StartDate = starDate.Date.ToString("yyyyMMdd");
             rate.EndDate = endDate.Date.ToString("yyyyMMdd");
 
@@ -388,13 +391,13 @@ namespace APIServices.Conflux.Helpers.Rates
                     if (vDayRate.IsPromotion)
                     {
                         linkedRatePlan = ozHoteles.vLinkedRatePlans
-                            .Where(lrr => lrr.TargetRatePlan == vDayRate.ParentRatePlanId)
+                            .Where(lrr => lrr.IdHotel == RatesHelpers.HotelId && lrr.TargetRatePlan == vDayRate.ParentRatePlanId)
                             .FirstOrDefault();
                     }
                     else
                     {
                         linkedRatePlan = ozHoteles.vLinkedRatePlans
-                            .Where(lrr => lrr.SourceRatePlan == vDayRate.ParentRatePlanId && lrr.TargetRatePlan == vDayRate.RatePlanId)
+                            .Where(lrr => lrr.IdHotel == RatesHelpers.HotelId && lrr.SourceRatePlan == vDayRate.ParentRatePlanId && lrr.TargetRatePlan == vDayRate.RatePlanId)
                             .FirstOrDefault();
                     }
                 }
@@ -484,6 +487,7 @@ namespace APIServices.Conflux.Helpers.Rates
             var endDate = diff.TotalDays > 1096 ? startDate.AddYears(3) : vDayRate.EndDate.Date;
 
             Rate rate = new Rate();
+            rate.CurrencyCode = RatesHelpers.Currency;
             rate.TypeRate = TypeRateEnum.RoomRatePromotion;
             rate.StartDate = startDate.Date.ToString("yyyyMMdd");
             rate.EndDate = endDate.Date.ToString("yyyyMMdd");
@@ -540,13 +544,13 @@ namespace APIServices.Conflux.Helpers.Rates
                     if (vDayRate.IsPromotion)
                     {
                         linkedRatePlan = ozHoteles.vLinkedRatePlans
-                            .Where(lrr => lrr.TargetRatePlan == vDayRate.ParentRatePlanId)
+                            .Where(lrr => lrr.IdHotel == RatesHelpers.HotelId && lrr.TargetRatePlan == vDayRate.ParentRatePlanId)
                             .FirstOrDefault();
                     }
                     else
                     {
                         linkedRatePlan = ozHoteles.vLinkedRatePlans
-                            .Where(lrr => lrr.SourceRatePlan == vDayRate.ParentRatePlanId && lrr.TargetRatePlan == vDayRate.RatePlanId)
+                            .Where(lrr => lrr.IdHotel == RatesHelpers.HotelId && lrr.SourceRatePlan == vDayRate.ParentRatePlanId && lrr.TargetRatePlan == vDayRate.RatePlanId)
                             .FirstOrDefault();
                     }
 

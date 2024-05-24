@@ -544,45 +544,36 @@ namespace APIServices.Conflux.Parser.Restriction
                 AvailStatusMessageList = new List<AvailStatusMessage>()
             };
 
-
-            foreach (var lockRateplan in locksRatePlan)
+            foreach(var lockRatePlan in locksRatePlan)
             {
-
-                foreach (var room in rooms)
+                if (promosRatePlanDictionary.ContainsKey(lockRatePlan.RatePlanId))
                 {
-                    foreach (var rateplan in ratePlans)
+                    foreach(var room in rooms)
                     {
-                        string ratePlanId = rateplan;
+                        var starDate = ((DateTime)lockRatePlan.StartDate).Date < DateTime.Now.Date ? DateTime.Now.Date : ((DateTime)lockRatePlan.StartDate).Date;
+                        var diff = ((DateTime)lockRatePlan.EndDate).Date - starDate.Date;
+                        var endDate = diff.TotalDays > 1096 ? starDate.AddYears(3) : ((DateTime)lockRatePlan.EndDate).Date;
 
-                        if (promosRatePlanDictionary.ContainsKey(ratePlanId))
+                        List<string> promoIdListTemp = promosRatePlanDictionary[lockRatePlan.RatePlanId];
+
+                        foreach (var promoId in promoIdListTemp)
                         {
-
-                            var starDate = ((DateTime)lockRateplan.StartDate).Date < DateTime.Now.Date ? DateTime.Now.Date : ((DateTime)lockRateplan.StartDate).Date;
-                            var diff = ((DateTime)lockRateplan.EndDate).Date - starDate.Date;
-                            var endDate = diff.TotalDays > 1096 ? starDate.AddYears(3) : ((DateTime)lockRateplan.EndDate).Date;
-
-                            List<string> promoIdListTemp = promosRatePlanDictionary[ratePlanId];
-
-                            foreach (var promoId in promoIdListTemp)
+                            AvailStatusMessage availStatusMessage = new AvailStatusMessage();
+                            availStatusMessage.StatusApplicationControl = new StatusApplicationControl()
                             {
-                                AvailStatusMessage availStatusMessage = new AvailStatusMessage();
-                                availStatusMessage.StatusApplicationControl = new StatusApplicationControl()
-                                {
-                                    Start = starDate.Date,
-                                    End = endDate.Date,
-                                    InvTypeCode = room.ItemArray[22].ToString() ?? "",
-                                    RatePlanCode = promoId + ratePlanId
-                                };
+                                Start = starDate.Date,
+                                End = endDate.Date,
+                                InvTypeCode = room.ItemArray[22].ToString() ?? "",
+                                RatePlanCode = promoId + lockRatePlan.RatePlanId
+                            };
 
-                                availStatusMessage.RestrictionStatus = RestrictionHelper.GetRestrictionStatus(lockRateplan.Status);
+                            availStatusMessage.RestrictionStatus = RestrictionHelper.GetRestrictionStatus(lockRatePlan.Status);
 
-                                availStatusMessages.AvailStatusMessageList.Add(availStatusMessage);
-                            }
+                            availStatusMessages.AvailStatusMessageList.Add(availStatusMessage);
                         }
 
                     }
                 }
-
             }
 
             return availStatusMessages;

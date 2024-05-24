@@ -98,7 +98,8 @@ namespace APIServices.Xml.OTA.Request.Rates
                 {
                     XElement ratesXml = new XElement(blank + "Rate",
                         new XAttribute("Start", rate.StartDate),
-                        new XAttribute("End", rate.EndDate));
+                        new XAttribute("End", rate.EndDate),
+                        new XAttribute("CurrencyCode", rate.CurrencyCode));
 
                     if (rate.IsPromotion || rate.HasPriceException || rate.TypeRate == Conflux.Enum.TypeRateEnum.RoomRatePromotion)
                     {
@@ -124,8 +125,7 @@ namespace APIServices.Xml.OTA.Request.Rates
                                 new XAttribute("AmountBeforeTax", baseGuestAmount.AmountBeforeTax),
                                 new XAttribute("AmountAfterTax", baseGuestAmount.AmountAfterTax),
                                 new XAttribute("NumberOfGuests", baseGuestAmount.NumberOfGuests),
-                                new XAttribute("AgeQualifyingCode", baseGuestAmount.AgeQualifyingCode),
-                                new XAttribute("CurrencyCode", baseGuestAmount.CurrencyCode));
+                                new XAttribute("AgeQualifyingCode", baseGuestAmount.AgeQualifyingCode));
 
                             baseGuestAmounts.Add(baseGuestAmountXml);
 
@@ -197,9 +197,10 @@ namespace APIServices.Xml.OTA.Request.Rates
 
                 foreach (Rate rate in rateAmountMessagesList[index].Rates)
                 {
-                    XElement ratesXml = new XElement(blank + "Rate",
+                    XElement ratesXml = new XElement(blank + "Rate",                        
                         new XAttribute("Start", rate.StartDate),
-                        new XAttribute("End", rate.EndDate));
+                        new XAttribute("End", rate.EndDate),
+                        new XAttribute("CurrencyCode", rate.CurrencyCode));
 
                     if (rate.IsPromotion || rate.HasPriceException || rate.TypeRate == Conflux.Enum.TypeRateEnum.RoomRatePromotion)
                     {
@@ -225,8 +226,7 @@ namespace APIServices.Xml.OTA.Request.Rates
                                 new XAttribute("AmountBeforeTax", baseGuestAmount.AmountBeforeTax),
                                 new XAttribute("AmountAfterTax", baseGuestAmount.AmountAfterTax),
                                 new XAttribute("NumberOfGuests", baseGuestAmount.NumberOfGuests),
-                                new XAttribute("AgeQualifyingCode", baseGuestAmount.AgeQualifyingCode),
-                                new XAttribute("CurrencyCode", baseGuestAmount.CurrencyCode));
+                                new XAttribute("AgeQualifyingCode", baseGuestAmount.AgeQualifyingCode));
 
                             baseGuestAmounts.Add(baseGuestAmountXml);
 

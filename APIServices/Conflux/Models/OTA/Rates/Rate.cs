@@ -10,6 +10,7 @@ namespace APIServices.Conflux.OTA.Models.Rates
         public TypeRateEnum TypeRate { get; set; }
         public string StartDate { get; set; }
         public string EndDate { get; set; }
+        public string CurrencyCode { get; set; }
         public List<BaseGuestAmount> BaseGuestAmounts { get; set; }
         public List<AdditionalGuestAmount> AdditionalGuestAmounts { get; set; }      
         public bool ApplyMon { get; set; }

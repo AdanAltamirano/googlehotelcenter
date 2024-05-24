@@ -12,6 +12,6 @@ namespace APIServices.Conflux.OTA.Models.Rates
         public decimal? AmountAfterTax { get; set; }
         public string NumberOfGuests { get; set; }
         public int? AgeQualifyingCode { get; set; }
-        public string CurrencyCode { get; set; }
+        //public string CurrencyCode { get; set; }
     }
 }

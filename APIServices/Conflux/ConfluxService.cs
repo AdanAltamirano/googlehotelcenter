@@ -268,7 +268,7 @@ namespace APIServices.Conflux
 
                 var hotelBasicInfo = dbContext.vHotelBasicInfo.FirstOrDefault(vh => vh.Id == hotelId);
 
-                var rateAmountMessages = Parser.Parser.ToRateAmountMessages(rates, ratesExceptions, companyId, hotel.PlusTax, hotel.Impuesto,hotelBasicInfo.Currency, typeRate, ref deleteRateAmountMessages);
+                var rateAmountMessages = Parser.Parser.ToRateAmountMessages(rates, ratesExceptions, hotelId ,companyId, hotel.PlusTax, hotel.Impuesto,hotelBasicInfo.Currency, typeRate, ref deleteRateAmountMessages);
 
                 var xml = HotelRateAmountNotifRQ.CreateHotelRateAmountNotifRQ(rateAmountMessages);
 
@@ -346,7 +346,7 @@ namespace APIServices.Conflux
 
                 var hotelBasicInfo = dbContext.vHotelBasicInfo.FirstOrDefault(vh => vh.Id == hotelId);
 
-                var rateAmountMessages = Parser.Parser.ToRateAmountMessages(rates, ratesExceptions, companyId, hotel.PlusTax, hotel.Impuesto, hotelBasicInfo.Currency, typeRate, ref deleteRateAmountMessages);
+                var rateAmountMessages = Parser.Parser.ToRateAmountMessages(rates, ratesExceptions, hotelId ,companyId, hotel.PlusTax, hotel.Impuesto, hotelBasicInfo.Currency, typeRate, ref deleteRateAmountMessages);
 
                 var xml = HotelRateAmountNotifRQ.CreateHotelRateAmountNotifRQ(rateAmountMessages);
 
@@ -424,7 +424,7 @@ namespace APIServices.Conflux
 
                 var hotelBasicInfo = dbContext.vHotelBasicInfo.FirstOrDefault(vh => vh.Id == hotelId);
 
-                var rateAmountMessages = Parser.Parser.ToRateAmountMessages(rates, ratesExceptions, companyId, hotel.PlusTax, hotel.Impuesto, hotelBasicInfo.Currency, typeRate, ref deleteRateAmountMessages);
+                var rateAmountMessages = Parser.Parser.ToRateAmountMessages(rates, ratesExceptions, hotelId, companyId, hotel.PlusTax, hotel.Impuesto, hotelBasicInfo.Currency, typeRate, ref deleteRateAmountMessages);
 
                 var xml = HotelRateAmountNotifRQ.CreateHotelRateAmountNotifRQ(rateAmountMessages);
 
@@ -498,7 +498,7 @@ namespace APIServices.Conflux
                 var hotel = dbContext.Hoteles.First(h => h.idHotel == hotelId);
                 var hotelBasicInfo = dbContext.vHotelBasicInfo.FirstOrDefault(vh => vh.Id == hotelId);
 
-                var rateAmountMessages = Parser.Parser.ToRateAmountMessages(currentRates, companyId, hotel.PlusTax, hotel.Impuesto, hotelBasicInfo.Currency, ref deleteRateAmountMessages);
+                var rateAmountMessages = Parser.Parser.ToRateAmountMessages(currentRates, hotelId, companyId, hotel.PlusTax, hotel.Impuesto, hotelBasicInfo.Currency, ref deleteRateAmountMessages);
 
                 var xmlList = HotelRateAmountNotifRQ.CreateHotelRateAmountNotifRQList(rateAmountMessages);
 
