@@ -130,6 +130,7 @@ namespace APIServices.Conflux.Helpers.Rates
             if (pricesException.Count > 0)
             {
                 Rate rateException = new Rate();
+                rate.CurrencyCode = RatesHelpers.Currency;
                 rateException.HasPriceException = true;
                 rateException.StartDate = starDate.Date.ToString("yyyyMMdd");
                 rateException.EndDate = endDate.Date.ToString("yyyyMMdd");
@@ -282,6 +283,7 @@ namespace APIServices.Conflux.Helpers.Rates
             if (pricesException.Count > 0)
             {
                 Rate rateException = new Rate();
+                rate.CurrencyCode = RatesHelpers.Currency;
                 rateException.HasPriceException = true;
                 rateException.StartDate = starDate.Date.ToString("yyyyMMdd");
                 rateException.EndDate = endDate.Date.ToString("yyyyMMdd");
@@ -426,6 +428,7 @@ namespace APIServices.Conflux.Helpers.Rates
             if (pricesException.Count > 0)
             {
                 Rate rateException = new Rate();
+                rate.CurrencyCode = RatesHelpers.Currency;
                 rateException.HasPriceException = true;
                 rateException.StartDate = starDate.Date.ToString("yyyyMMdd");
                 rateException.EndDate = endDate.Date.ToString("yyyyMMdd");
@@ -586,6 +589,7 @@ namespace APIServices.Conflux.Helpers.Rates
             if (pricesException.Count > 0)
             {
                 Rate rateException = new Rate();
+                rate.CurrencyCode = RatesHelpers.Currency;
                 rateException.HasPriceException = true;
                 rateException.StartDate = startDate.Date.ToString("yyyyMMdd");
                 rateException.EndDate = endDate.Date.ToString("yyyyMMdd");
