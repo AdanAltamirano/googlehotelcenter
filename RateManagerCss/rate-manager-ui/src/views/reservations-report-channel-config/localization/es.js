@@ -1,0 +1,25 @@
+export default {
+    'Registered Channels': 'Canales Registrados',
+    'Insert channel name' : 'Inserte un nombre para el canal',
+    'Channel name' : 'Nombre del canal',
+    'Search' : 'Buscar',
+    'Add new' : 'Añadir nuevo',
+
+    'Refresh table' : 'Actualizar tabla',
+    'Name' : 'Nombre',
+    'Company Id' : 'Empresa Id',
+    'Corporate' : 'Corporativo',
+    'Add User Channel' : 'Agregar Usuario Channel',
+    'Add User Pms' : 'Agregar Usuario Pms',
+    'Enter username' : 'Ingresar usuario',
+    'Enter password' : 'Ingresar contraseña',
+    'Save' : 'Guardar',
+    'User created' : 'Usuario creado',
+    'Error creating user' : 'Error al crear el usuario',
+    'User Channel' : 'Usuario Channel',
+    'User to do requests' : 'Usuario para hacer peticiones',
+    'User Pms' : 'Usuario Pms',
+    'User to administrate' : 'Usuario para administrar',
+    'System Error' : 'Error del Sistema',
+    'User already exists' : 'El usuario ya existe'
+}

@@ -1536,6 +1536,7 @@
     <Compile Include="API\Controllers\ReservationController.vb" />
     <Compile Include="API\Controllers\RoomsClosureController.vb" />
     <Compile Include="API\Controllers\RoomsController.vb" />
+    <Compile Include="API\Controllers\UtilsController.vb" />
     <Compile Include="API\Helpers\Date+Extensions.vb" />
     <Compile Include="API\Helpers\Email.vb" />
     <Compile Include="API\Helpers\HttpRequestMessage+Extensions.vb" />

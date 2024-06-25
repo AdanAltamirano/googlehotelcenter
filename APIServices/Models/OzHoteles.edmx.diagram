@@ -5,51 +5,53 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="fa57533aba3a4716a6b5cc2f30621586" Name="Diagram1" ZoomLevel="71">
-        <EntityTypeShape EntityType="Models.RatesPlan" Width="1.5" PointX="0.75" PointY="5.75" />
-        <EntityTypeShape EntityType="Models.Tarifas" Width="1.5" PointX="3" PointY="3.25" />
-        <EntityTypeShape EntityType="Models.TarifasRestricciones" Width="1.5" PointX="7.625" PointY="10.125" />
+        <EntityTypeShape EntityType="Models.RatesPlan" Width="1.5" PointX="0.75" PointY="4.5" IsExpanded="false" />
+        <EntityTypeShape EntityType="Models.Tarifas" Width="1.5" PointX="13" PointY="2.875" IsExpanded="false" />
+        <EntityTypeShape EntityType="Models.TarifasRestricciones" Width="1.5" PointX="4.25" PointY="7.375" IsExpanded="true" />
         <AssociationConnector Association="Models.Tarifas_Tarifas_Planes_FK1" />
-        <EntityTypeShape EntityType="Models.Diccionario" Width="1.5" PointX="13.625" PointY="3.875" />
-        <EntityTypeShape EntityType="Models.Indice" Width="1.5" PointX="11.375" PointY="4.125" />
+        <EntityTypeShape EntityType="Models.Diccionario" Width="1.5" PointX="6" PointY="2.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="Models.Indice" Width="1.5" PointX="4.25" PointY="3" IsExpanded="false" />
         <AssociationConnector Association="Models.FK_Diccionario_Indice1" />
-        <EntityTypeShape EntityType="Models.vRoomInventory" Width="1.5" PointX="7.75" PointY="6.75" />
-        <EntityTypeShape EntityType="Models.ContratosNR" Width="1.5" PointX="10.375" PointY="0.75" />
-        <EntityTypeShape EntityType="Models.vHotelByUser" Width="1.5" PointX="12.375" PointY="0.75" />
-        <EntityTypeShape EntityType="Models.vAdministrator" Width="1.5" PointX="3.375" PointY="0.75" />
-        <EntityTypeShape EntityType="Models.vDayRateDetail" Width="1.5" PointX="0.75" PointY="0.75" />
-        <EntityTypeShape EntityType="Models.vPermissions" Width="1.5" PointX="14.375" PointY="0.75" />
-        <EntityTypeShape EntityType="Models.Hoteles" Width="1.5" PointX="0.75" PointY="43.5" />
+        <EntityTypeShape EntityType="Models.vRoomInventory" Width="1.5" PointX="4.25" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Models.ContratosNR" Width="1.5" PointX="4.25" PointY="0.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="Models.vHotelByUser" Width="1.5" PointX="6" PointY="0.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="Models.vAdministrator" Width="1.5" PointX="13" PointY="0.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="Models.vDayRateDetail" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="Models.vPermissions" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="Models.Hoteles" Width="1.5" PointX="2.5" PointY="0.75" IsExpanded="false" />
         <AssociationConnector Association="Models.FK_RatesPlan_Hoteles" />
-        <EntityTypeShape EntityType="Models.Corporativos" Width="1.5" PointX="17.5" PointY="9.625" />
-        <EntityTypeShape EntityType="Models.TarjetasHotel" Width="1.5" PointX="9.375" PointY="15.75" />
-        <EntityTypeShape EntityType="Models.PrepagoRatesPlan" Width="1.5" PointX="17.5" PointY="13.5" />
-        <EntityTypeShape EntityType="Models.vReservationPayments" Width="1.5" PointX="12.375" PointY="10.75" />
-        <EntityTypeShape EntityType="Models.LockRoomTypes" Width="1.5" PointX="16.375" PointY="0.75" />
-        <EntityTypeShape EntityType="Models.Promociones_RatePlan" Width="1.5" PointX="17.375" PointY="4.75" />
-        <EntityTypeShape EntityType="Models.Promociones_TipoHabitacionHotel" Width="1.5" PointX="13.375" PointY="17.75" />
-        <EntityTypeShape EntityType="Models.ratesPlanDeal" Width="1.5" PointX="15.375" PointY="17.75" />
-        <EntityTypeShape EntityType="Models.RatesPlanRules" Width="1.5" PointX="0.75" PointY="25.375" />
+        <EntityTypeShape EntityType="Models.Corporativos" Width="1.5" PointX="17.5" PointY="9.625" IsExpanded="false" />
+        <EntityTypeShape EntityType="Models.TarjetasHotel" Width="1.5" PointX="7.75" PointY="12.125" IsExpanded="false" />
+        <EntityTypeShape EntityType="Models.PrepagoRatesPlan" Width="1.5" PointX="17.5" PointY="13.5" IsExpanded="false" />
+        <EntityTypeShape EntityType="Models.vReservationPayments" Width="1.5" PointX="7.75" PointY="8.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Models.LockRoomTypes" Width="1.5" PointX="7.75" PointY="2.375" IsExpanded="false" />
+        <EntityTypeShape EntityType="Models.Promociones_RatePlan" Width="1.5" PointX="11.25" PointY="9.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Models.Promociones_TipoHabitacionHotel" Width="1.5" PointX="9.5" PointY="14.375" IsExpanded="false" />
+        <EntityTypeShape EntityType="Models.ratesPlanDeal" Width="1.5" PointX="15.375" PointY="17.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="Models.RatesPlanRules" Width="1.5" PointX="0.75" PointY="18.25" IsExpanded="false" />
         <AssociationConnector Association="Models.FK_RatesPlan_RatesPlanRules" />
-        <EntityTypeShape EntityType="Models.vAgencies" Width="1.5" PointX="17.375" PointY="16.75" />
-        <EntityTypeShape EntityType="Models.Reservaciones" Width="1.5" PointX="7.375" PointY="18.75" />
-        <EntityTypeShape EntityType="Models.ReservationsDeposits" Width="1.5" PointX="9.625" PointY="27.875" />
+        <EntityTypeShape EntityType="Models.vAgencies" Width="1.5" PointX="17.375" PointY="16.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="Models.Reservaciones" Width="1.5" PointX="6" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Models.ReservationsDeposits" Width="1.5" PointX="9.5" PointY="20.25" IsExpanded="false" />
         <AssociationConnector Association="Models.FK_ReservationsDeposits_Reservaciones" />
-        <EntityTypeShape EntityType="Models.vAgents" Width="1.5" PointX="19.375" PointY="16.75" />
-        <EntityTypeShape EntityType="Models.vReservationRoomDetails" Width="1.5" PointX="9.375" PointY="18.75" />
-        <EntityTypeShape EntityType="Models.vHotelRoom" Width="1.5" PointX="14.375" PointY="9.75" />
-        <EntityTypeShape EntityType="Models.vPromotions" Width="1.5" PointX="19.375" PointY="19.75" />
-        <EntityTypeShape EntityType="Models.VReservationRoomPriceDetails" Width="1.5" PointX="0.75" PointY="16.75" />
-        <EntityTypeShape EntityType="Models.vHotelPlan" Width="1.5" PointX="0.75" PointY="20.75" />
-        <EntityTypeShape EntityType="Models.vHotelBasicInfo" Width="1.5" PointX="10.375" PointY="6.75" />
-        <EntityTypeShape EntityType="Models.vReservation" Width="1.5" PointX="19.75" PointY="0.75" />
-        <EntityTypeShape EntityType="Models.Reservaciones_Movimientos_Log" Width="1.5" PointX="20.375" PointY="10.75" />
-        <EntityTypeShape EntityType="Models.vReservationLog" Width="1.5" PointX="20.375" PointY="6.75" />
-        <EntityTypeShape EntityType="Models.vReservationDetails" Width="1.5" PointX="3.375" PointY="14.75" />
-        <EntityTypeShape EntityType="Models.vHotelActives" Width="1.5" PointX="11.375" PointY="20.75" />
-        <EntityTypeShape EntityType="Models.vLinkedRoomTypes" Width="1.5" PointX="13.375" PointY="20.75" />
-        <EntityTypeShape EntityType="Models.vLinkedRatePlans" Width="1.5" PointX="15.375" PointY="20.75" />
-        <EntityTypeShape EntityType="Models.vDayRates" Width="1.5" PointX="21.625" PointY="17" />
-        <EntityTypeShape EntityType="Models.vDayRatesExceptions" Width="1.5" PointX="23.75" PointY="17" />
+        <EntityTypeShape EntityType="Models.vAgents" Width="1.5" PointX="19.375" PointY="16.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="Models.vReservationRoomDetails" Width="1.5" PointX="7.75" PointY="14" IsExpanded="false" />
+        <EntityTypeShape EntityType="Models.vHotelRoom" Width="1.5" PointX="9.5" PointY="9.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Models.vPromotions" Width="1.5" PointX="11.25" PointY="0.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="Models.VReservationRoomPriceDetails" Width="1.5" PointX="11.25" PointY="11.25" IsExpanded="false" />
+        <EntityTypeShape EntityType="Models.vHotelPlan" Width="1.5" PointX="0.75" PointY="14.875" IsExpanded="false" />
+        <EntityTypeShape EntityType="Models.vHotelBasicInfo" Width="1.5" PointX="7.75" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Models.vReservation" Width="1.5" PointX="9.5" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Models.Reservaciones_Movimientos_Log" Width="1.5" PointX="20.375" PointY="10.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="Models.vReservationLog" Width="1.5" PointX="9.5" PointY="6.375" IsExpanded="false" />
+        <EntityTypeShape EntityType="Models.vReservationDetails" Width="1.5" PointX="4.25" PointY="12.125" IsExpanded="false" />
+        <EntityTypeShape EntityType="Models.vHotelActives" Width="1.5" PointX="7.75" PointY="19.5" IsExpanded="false" />
+        <EntityTypeShape EntityType="Models.vLinkedRoomTypes" Width="1.5" PointX="9.5" PointY="16.375" IsExpanded="false" />
+        <EntityTypeShape EntityType="Models.vLinkedRatePlans" Width="1.5" PointX="15.375" PointY="20.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="Models.vDayRates" Width="1.5" PointX="21.625" PointY="17" IsExpanded="false" />
+        <EntityTypeShape EntityType="Models.vDayRatesExceptions" Width="1.5" PointX="23.75" PointY="17" IsExpanded="false" />
+        <EntityTypeShape EntityType="Models.Canales" Width="1.5" PointX="14.875" PointY="3" />
+        <EntityTypeShape EntityType="Models.vHotelChannel" Width="1.5" PointX="14.875" PointY="5.25" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

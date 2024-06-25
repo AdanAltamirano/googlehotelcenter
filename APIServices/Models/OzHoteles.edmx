@@ -5,6 +5,13 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="Models.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Canales">
+          <Key>
+            <PropertyRef Name="idCanal" />
+          </Key>
+          <Property Name="idCanal" Type="int" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="60" />
+        </EntityType>
         <EntityType Name="ContratosNR">
           <Key>
             <PropertyRef Name="idContrato" />
@@ -642,9 +649,16 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vDayRates' no tiene definida n
 advertencia 6002: La tabla o vista 'OzHoteles.dbo.vDayRatesExceptions' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vDayRatesExceptions">
           <Key>
+            
             <PropertyRef Name="NoDeparturesMap" />
+            
+            
+            
+            
             <PropertyRef Name="Currency" />
             <PropertyRef Name="IsPromotion" />
+            
+            
             <PropertyRef Name="RateId" />
             <PropertyRef Name="HotelId" />
             <PropertyRef Name="RoomId" />
@@ -742,6 +756,17 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vHotelByUser' no tiene definid
           <Property Name="CompanyId" Type="int" Nullable="false" />
           <Property Name="HotelId" Type="int" Nullable="false" />
           <Property Name="HotelName" Type="nvarchar" MaxLength="180" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'OzHoteles.dbo.vHotelChannel' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="vHotelChannel">
+          <Key>
+            <PropertyRef Name="idCanal" />
+          </Key>
+          <Property Name="idHotel" Type="int" />
+          <Property Name="idCanal" Type="int" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="60" />
+          <Property Name="Comision" Type="int" />
         </EntityType>
         <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'OzHoteles.dbo.vHotelPlan' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
@@ -918,6 +943,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vReservation' no tiene definid
             <PropertyRef Name="AgencyId" />
             <PropertyRef Name="Agency" />
             <PropertyRef Name="AgencyUserId" />
+            
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="ConfirmNumber" Type="nvarchar" MaxLength="24" Nullable="false" />
@@ -926,8 +952,10 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vReservation' no tiene definid
           <Property Name="ReservationDate" Type="smalldatetime" Nullable="false" />
           <Property Name="CheckIn" Type="smalldatetime" Nullable="false" />
           <Property Name="CheckOut" Type="smalldatetime" Nullable="false" />
+          <Property Name="Nigths" Type="int" />
           <Property Name="Client" Type="nvarchar" MaxLength="161" />
           <Property Name="Status" Type="tinyint" Nullable="false" />
+          <Property Name="Guests" Type="int" />
           <Property Name="RoomCount" Type="int" />
           <Property Name="CompanyId" Type="int" />
           <Property Name="Source" Type="nvarchar" MaxLength="4" />
@@ -936,6 +964,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vReservation' no tiene definid
           <Property Name="AgencyUserId" Type="int" Nullable="false" />
           <Property Name="Portal" Type="nvarchar" MaxLength="80" />
           <Property Name="Total" Type="nvarchar" MaxLength="44" />
+          <Property Name="Tax" Type="smallmoney" Nullable="false" />
           <Property Name="Provider" Type="varchar" MaxLength="14" />
           <Property Name="CorporateId" Type="int" />
           <Property Name="PaymentMethod" Type="nvarchar" MaxLength="20" />
@@ -1327,6 +1356,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <Parameter Name="action" Type="int" Mode="In" />
         </Function>
         <EntityContainer Name="ModelsStoreContainer">
+          <EntitySet Name="Canales" EntityType="Self.Canales" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ContratosNR" EntityType="Self.ContratosNR" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Corporativos" EntityType="Self.Corporativos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Diccionario" EntityType="Self.Diccionario" Schema="dbo" store:Type="Tables" />
@@ -1489,6 +1519,14 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
     [vHotelByUser].[HotelName] AS [HotelName]
     FROM [dbo].[vHotelByUser] AS [vHotelByUser]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="vHotelChannel" EntityType="Self.vHotelChannel" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vHotelChannel].[idHotel] AS [idHotel], 
+    [vHotelChannel].[idCanal] AS [idCanal], 
+    [vHotelChannel].[Nombre] AS [Nombre], 
+    [vHotelChannel].[Comision] AS [Comision]
+    FROM [dbo].[vHotelChannel] AS [vHotelChannel]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="vHotelPlan" EntityType="Self.vHotelPlan" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [vHotelPlan].[Code] AS [Code], 
@@ -1621,8 +1659,10 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
     [vReservation].[ReservationDate] AS [ReservationDate], 
     [vReservation].[CheckIn] AS [CheckIn], 
     [vReservation].[CheckOut] AS [CheckOut], 
+    [vReservation].[Nigths] AS [Nigths], 
     [vReservation].[Client] AS [Client], 
     [vReservation].[Status] AS [Status], 
+    [vReservation].[Guests] AS [Guests], 
     [vReservation].[RoomCount] AS [RoomCount], 
     [vReservation].[CompanyId] AS [CompanyId], 
     [vReservation].[Source] AS [Source], 
@@ -1631,6 +1671,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
     [vReservation].[AgencyUserId] AS [AgencyUserId], 
     [vReservation].[Portal] AS [Portal], 
     [vReservation].[Total] AS [Total], 
+    [vReservation].[Tax] AS [Tax], 
     [vReservation].[Provider] AS [Provider], 
     [vReservation].[CorporateId] AS [CorporateId], 
     [vReservation].[PaymentMethod] AS [PaymentMethod]
@@ -1987,6 +2028,8 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           </FunctionImport>
           <EntitySet Name="vDayRates" EntityType="Models.vDayRates" />
           <EntitySet Name="vDayRatesExceptions" EntityType="Models.vDayRatesExceptions" />
+          <EntitySet Name="Canales" EntityType="Models.Canales" />
+          <EntitySet Name="vHotelChannel" EntityType="Models.vHotelChannel" />
         </EntityContainer>
         <EntityType Name="RatesPlan">
           <Key>
@@ -3009,6 +3052,9 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <Property Name="Provider" Type="String" MaxLength="14" FixedLength="false" Unicode="false" />
           <Property Name="CorporateId" Type="Int32" />
           <Property Name="PaymentMethod" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Nigths" Type="Int32" />
+          <Property Name="Guests" Type="Int32" />
+          <Property Name="Tax" Type="Decimal" Nullable="false" Precision="10" Scale="4" />
         </EntityType>
         <EntityType Name="Reservaciones_Movimientos_Log">
           <Key>
@@ -3456,6 +3502,22 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <Property Name="IsCallCenterOnly" Type="Boolean" Nullable="false" />
           <Property Name="PromoStartDateBookingWindow" Type="DateTime" Precision="0" />
           <Property Name="PromoEndDateBookingWindow" Type="DateTime" Precision="0" />
+        </EntityType>
+        <EntityType Name="Canales">
+          <Key>
+            <PropertyRef Name="idCanal" />
+          </Key>
+          <Property Name="idCanal" Type="Int32" Nullable="false" />
+          <Property Name="nombre" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="vHotelChannel">
+          <Key>
+            <PropertyRef Name="idCanal" />
+          </Key>
+          <Property Name="idHotel" Type="Int32" />
+          <Property Name="idCanal" Type="Int32" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="Comision" Type="Int32" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -4378,6 +4440,9 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <EntitySetMapping Name="vReservation">
             <EntityTypeMapping TypeName="Models.vReservation">
               <MappingFragment StoreEntitySet="vReservation">
+                <ScalarProperty Name="Tax" ColumnName="Tax" />
+                <ScalarProperty Name="Guests" ColumnName="Guests" />
+                <ScalarProperty Name="Nigths" ColumnName="Nigths" />
                 <ScalarProperty Name="PaymentMethod" ColumnName="PaymentMethod" />
                 <ScalarProperty Name="CorporateId" ColumnName="CorporateId" />
                 <ScalarProperty Name="Provider" ColumnName="Provider" />
@@ -4748,6 +4813,24 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
                 <ScalarProperty Name="RoomId" ColumnName="RoomId" />
                 <ScalarProperty Name="HotelId" ColumnName="HotelId" />
                 <ScalarProperty Name="RateId" ColumnName="RateId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Canales">
+            <EntityTypeMapping TypeName="Models.Canales">
+              <MappingFragment StoreEntitySet="Canales">
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="idCanal" ColumnName="idCanal" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vHotelChannel">
+            <EntityTypeMapping TypeName="Models.vHotelChannel">
+              <MappingFragment StoreEntitySet="vHotelChannel">
+                <ScalarProperty Name="Comision" ColumnName="Comision" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="idCanal" ColumnName="idCanal" />
+                <ScalarProperty Name="idHotel" ColumnName="idHotel" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

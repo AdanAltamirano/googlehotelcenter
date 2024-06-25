@@ -19,6 +19,8 @@ const excel = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations/excel{?f
 const corporate = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations/corporate`);
 const agencies = Vue.resource(`${process.env.VUE_APP_API_URL}/agencies`);
 const agents = Vue.resource(`${process.env.VUE_APP_API_URL}/agencies/agents`);
+//const channels = Vue.resource(`${process.env.VUE_APP_API_URL}/utils/channels/{idHotel}`);
+const channels = Vue.resource(`${process.env.VUE_APP_API_URL}/utils/channels/{idHotel}`);
 
 const reservationHistoryLog = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations/{reservationId}/history/log`);
 
@@ -130,5 +132,13 @@ export default {
     },
     GetAgents(){
         return agents.get();
+    },
+    GetChannels(){
+        return channels.get();
+    },
+    GetHotelChannels(idHotel){
+        return channels.get({
+            idHotel
+        });
     }
 };
