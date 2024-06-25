@@ -444,7 +444,8 @@ Public Class Promotions
                                     'Enviar a google
                                     If isEnabledGoogleRequest Then
                                         Dim promotionRatePlanId As String = Me.txtPromotionCode.Text & plan.Value
-                                        Dim res As RatePlanResponse = confluxService.InsertRatePlan(info.Hotel, info.Empresa, promotionRatePlanId, Me.txtPromoName.GetES(), Me.txtPromoDescription.GetES(), "ES")
+                                        Dim ratePlanNameId As String = plan.Value & "-" & Me.txtPromoName.GetES()
+                                        Dim res As RatePlanResponse = confluxService.InsertRatePlan(info.Hotel, info.Empresa, promotionRatePlanId, ratePlanNameId, Me.txtPromoDescription.GetES(), "ES")
                                         CType(Me.Page, PaginaBase).guardalog("/Pages/Promotions.aspx", CType(Me.Page, PaginaBase).acciones.Sincronizar, "Sincronizar Nuevo  Codigo de Promocion con RatePlan", "", res.RequestXML, res.Response, info.Hotel)
                                     End If
                                 End If
@@ -554,7 +555,8 @@ Public Class Promotions
                                 Else
                                     If isEnabledGoogleRequest Then
                                         Dim promotionRatePlanId As String = Me.txtPromotionCode.Text & plan.Value
-                                        Dim res As RatePlanResponse = confluxService.InsertRatePlan(info.Hotel, info.Empresa, promotionRatePlanId, Me.txtPromoName.GetES(), Me.txtPromoDescription.GetES(), "ES")
+                                        Dim ratePlanNameId As String = plan.Value & "-" & Me.txtPromoName.GetES()
+                                        Dim res As RatePlanResponse = confluxService.InsertRatePlan(info.Hotel, info.Empresa, promotionRatePlanId, ratePlanNameId, Me.txtPromoDescription.GetES(), "ES")
                                         CType(Me.Page, PaginaBase).guardalog("/Pages/Promotions.aspx", CType(Me.Page, PaginaBase).acciones.Sincronizar, "Sincronizar Modificacion Codigo de Promocion con RatePlan", "", res.RequestXML, res.Response, info.Hotel)
                                     End If
                                 End If
