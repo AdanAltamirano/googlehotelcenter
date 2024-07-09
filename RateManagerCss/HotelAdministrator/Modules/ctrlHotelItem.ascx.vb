@@ -4,6 +4,7 @@ Partial Public Class ctrlHotelItem
     Inherits System.Web.UI.UserControl
 
     Dim _company As Integer = -1
+    Private Const KEY_IDHOTEL As String = "idHotel"
     Public Property Moneda() As String
         Get
             Return lblCurrency.Text
@@ -37,8 +38,43 @@ Partial Public Class ctrlHotelItem
         End Set
     End Property
 
+    Public Property idHotel() As Integer
+        Get
+            If ViewState.Item(KEY_IDHOTEL) Is Nothing Then
+                Return 0
+            Else
+                Return ViewState.Item(KEY_IDHOTEL)
+            End If
+        End Get
+        Set(ByVal Value As Integer)
+            ViewState.Add(KEY_IDHOTEL, Value)
+        End Set
+    End Property
+
+    Public Property idCompany() As Integer
+        Get
+            If ViewState.Item("idCompany") Is Nothing Then
+                Return 0
+            Else
+                Return ViewState.Item("idCompany")
+            End If
+        End Get
+        Set(ByVal Value As Integer)
+            ViewState.Add("idCompany", Value)
+        End Set
+    End Property
+
+
+    Protected WithEvents ctrlImgHotelItem1 As ctrlImagesHotelItem
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+
+        If Not IsPostBack Then
+            ctrlImgHotelItem1.IdEmpresa = Me.idCompany
+            ctrlImgHotelItem1.ModeView = Opciones.ViewMode.Edit
+            ctrlImgHotelItem1.IdIdioma = PortalCulture.GetIDCulture
+        End If
+
 
     End Sub
 
@@ -63,8 +99,21 @@ Partial Public Class ctrlHotelItem
                 drow.AcceptChanges()
                 drow.SetModified()
                 res = .UpdateHotelItem(ds)
+
+                If res Then
+                    ctrlImgHotelItem1.SaveImages()
+                End If
+
             Else
+                'NUEVO ITEM
                 res = .InsertHotelItem(ds)
+
+                If res Then
+                    'Guardar Imagenes
+                    ctrlImgHotelItem1.IdHotelItem = ds.Tables(HotelItemData.HOTELITEM_TABLE).Rows(0)(HotelItemData.FIELD_IDHOTELITEM).ToString()
+                    ctrlImgHotelItem1.SaveImages()
+                End If
+
             End If
         End With
 
@@ -94,6 +143,12 @@ Partial Public Class ctrlHotelItem
                     txtPrice.Text = .Tables(HOTELITEM_TABLE)(0)(FIELD_PRICE)
                 End If
 
+                ctrlImgHotelItem1.IdEmpresa = Me.idCompany
+                ctrlImgHotelItem1.ModeView = Opciones.ViewMode.Edit
+                ctrlImgHotelItem1.IdIdioma = PortalCulture.GetIDCulture
+
+                ctrlImgHotelItem1.IdHotelItem = CType(IDHotelItem, String)
+                ctrlImgHotelItem1.LoadImagesByHotelItem(CType(ctrlImgHotelItem1.IdHotelItem, Integer))
 
                 Return 1
             Else
@@ -109,11 +164,18 @@ Partial Public Class ctrlHotelItem
         With New Portal.General.Facade.HotelItemFacade()
             If .DeleteHotelItem(id) Then
                 'lblMsg.Text = "Metodo de pago eliminado"
+
+                Dim path As String = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) & ConfigurationManager.AppSettings("Albums_Dir") & "\" & ConfigurationManager.AppSettings("idRubro") & "\" & Me.idCompany & "\" & "Item\" & id
+
+                If IO.Directory.Exists(path) Then
+                    IO.Directory.Delete(path, True)
+                End If
+
                 ResetForm()
-                Return 1
-            Else
-                'lblMsg.Text = "No se pudo eliminar el metodo de pago"
-                Return -4
+                    Return 1
+                Else
+                    'lblMsg.Text = "No se pudo eliminar el metodo de pago"
+                    Return -4
             End If
         End With
 
@@ -122,10 +184,12 @@ Partial Public Class ctrlHotelItem
     End Function
 
     Public Function ResetForm()
+
         txtDescription.Text = String.Empty
         txtName.Text = String.Empty
         txtPrice.Text = String.Empty
-
+        ctrlImgHotelItem1.IdHotelItem = "0"
+        ctrlImgHotelItem1.LoadImagesByHotelItem(CType(ctrlImgHotelItem1.IdHotelItem, Integer))
         IsEdit = False
     End Function
 

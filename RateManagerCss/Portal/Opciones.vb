@@ -280,6 +280,30 @@ Public Class Opciones
         Return dr
     End Function
 
+    Public Sub GetImagesHotelitem(ByVal IdEmpresa As Long, ByVal idHotelItem As Integer)
+        Dim def As String
+        def = AppSettings("LanguageDefault").ToString
+
+        If Me.IdEmpresa >= 0 Then
+            With New PresentacionOpciones
+                'dt es global
+                dt = .GetContenidoHotelItem(Me.IdIdioma, 1094, IdEmpresa, def, idHotelItem)
+            End With
+        End If
+    End Sub
+
+
+    Public Function GetContenidoImagesHotelItem(ByVal NombreEle As String, ByVal idHotelItem As Integer) As DataRow()
+        Dim dr() As DataRow = Nothing
+
+        GetImagesHotelItem(Me.IdEmpresa, idHotelItem)
+        If dt.Rows.Count > 0 Then
+            dr = dt.Select(" Nombre = '" & NombreEle & "'")
+        End If
+        Return dr
+    End Function
+
+
     ''funcion para obtener el elemento de una coleccion de datarows
     Public Function Contenido(ByVal NombreEle As String) As DataRow()
         Dim dr() As DataRow = Nothing

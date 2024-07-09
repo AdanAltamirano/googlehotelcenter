@@ -68,6 +68,24 @@ Partial Public Class CambiarContenido
     Protected WithEvents lblTexto1 As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
+    '''Control ImageButton4.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents ImageButton4 As Global.System.Web.UI.WebControls.ImageButton
+
+    '''<summary>
+    '''Control Label1.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents Label1 As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
     '''Control pEdit.
     '''</summary>
     '''<remarks>
