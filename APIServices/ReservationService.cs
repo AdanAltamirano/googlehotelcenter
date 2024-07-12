@@ -257,7 +257,10 @@ namespace APIServices
                 model.TotalDetails.Currency = details.currency;
                 model.TotalDetails.Commission = Convert.ToDouble((details.IsNetRateUV ? (details.total - details.totalNetRate > 0)? details.total - details.totalNetRate : 0 : 0));
 
+                GetHotelItemReservation(ref model, reservationId);
+
                 Permissions(ref model, isSupervisor, isUserChain, isUsuarioHotelAssociation, idCorporateUserChain, idCorporatePortal, idAsociationPb, idAsociation);
+
             }
 
             return model;
@@ -412,6 +415,71 @@ namespace APIServices
                 };
             }
         }
+
+
+        List<spGetReservationHotelItem_Result> GetHotelItemReservation(int reservationId)
+        {
+            return dbContext.spGetReservationHotelItem(reservationId).ToList();
+        }
+
+        Contenido GetImageHotelItemReservation(int idHotelItem)
+        {
+            Contenido contenido = null;
+
+            using(OzUniEntities ozUniEntities = new OzUniEntities())
+            {
+                List<HotelItem_Contenido> hotelItemContenidoList = new List<HotelItem_Contenido>();
+
+                hotelItemContenidoList = ozUniEntities.HotelItem_Contenido.Where(hic => hic.IdHotelItem == idHotelItem).ToList();
+
+                if(hotelItemContenidoList.Count > 0)
+                {
+                    int idContenidoTemp = hotelItemContenidoList[0].IdContenido;
+
+                    contenido = ozUniEntities.Contenido.FirstOrDefault(c => c.IdContenido == idContenidoTemp);
+                }
+
+            }
+
+            return contenido;
+        }
+
+        void GetHotelItemReservation(ref ReservationDetailsModel model, int reservationId)
+        {
+            List<spGetReservationHotelItem_Result> hotelItemList = GetHotelItemReservation(reservationId);
+
+            foreach (spGetReservationHotelItem_Result hotelItem in hotelItemList)
+            {
+                string img = string.Empty;
+                Contenido contenido = GetImageHotelItemReservation(hotelItem.idHotelItem);
+
+                if (contenido != null)
+                {
+                    img = ConfigurationManager.AppSettings["Albums_url"].Replace("Albums", "") + contenido.Archivo + "_M";
+                }
+
+
+                HotelItem hotelItemTemp = new HotelItem()
+                {
+                    HotelItemReservationId = hotelItem.idReservaciones_HotelItems,
+                    ReservationId = hotelItem.idReservacion,
+                    Name = hotelItem.Name,
+                    Description = hotelItem.Description,
+                    Img = img,
+                    Price = hotelItem.Price,
+                    CurrencyId = hotelItem.idMoneda,
+                    CurrencyName = hotelItem.Nombre,
+                    Symbol = hotelItem.Signo,
+                    Abbreviation = hotelItem.Abreviatura,
+                    Code = hotelItem.Codigo,
+                    ExchangeRate = hotelItem.TipoCambio
+                };
+
+                model.ReservationItemsDetails.Add(hotelItemTemp);
+            }
+
+        }
+
 
 
         #endregion

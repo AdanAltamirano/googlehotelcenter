@@ -167,5 +167,7 @@ export default {
     'Deposited to' : 'Depositado a',
     'Send confimation email?' : '¿Enviar correo de confirmación?',
     'Send confimation email' : 'Enviar correo de confirmación',
-    'There are no records' : 'No hay movimientos'
+    'There are no records' : 'No hay movimientos',
+    'Extras' : 'Extras',
+    'Description' : 'Descripción'
 }

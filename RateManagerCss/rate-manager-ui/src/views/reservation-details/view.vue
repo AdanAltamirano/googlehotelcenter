@@ -22,6 +22,12 @@
               <rooms :isNetRate="result.isNetRateUV" :ratePlan="result.ratePlan" :rooms="result.roomDetails"></rooms>
             </b-col>
           </b-row>
+          <b-row class="mt-3" v-if="result.reservationItemsDetails.length > 0" >
+            <b-col md="8">
+              <hotel-items :items="result.reservationItemsDetails"></hotel-items>
+            </b-col>
+            <b-col md="4"></b-col>
+          </b-row>
           <b-row v-if="result.policyDetails" class="pt-3">
             <b-col>
               <policies :result="result"></policies>
@@ -159,6 +165,7 @@ import ReservationService from "../../api/reservation-service";
 import Actions from "./components/Actions.vue";
 import GeneralInfo from "./components/GeneralInfo.vue";
 import Rooms from "./components/Rooms.vue";
+import HotelItems from "./components/HotelItems.vue";
 import Policies from "./components/Policies.vue";
 import PaymentMethods from "./components/PaymentMethods.vue";
 import Pms from "./components/Pms/Pms.vue";
@@ -171,6 +178,7 @@ export default {
     Actions,
     GeneralInfo,
     Rooms,
+    HotelItems,
     Policies,
     PaymentMethods,
     Pms

@@ -103,7 +103,7 @@
                             CommandName="Edit">Editar</asp:LinkButton>
                     </ItemTemplate>
                 </asp:TemplateColumn>
-                <asp:TemplateColumn HeaderText="Eliminar">
+                <asp:TemplateColumn HeaderText="Eliminar" Visible="false">
                     <HeaderStyle ></HeaderStyle>
                     <ItemStyle></ItemStyle>
                     <ItemTemplate>
