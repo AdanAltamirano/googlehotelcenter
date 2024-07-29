@@ -43,6 +43,15 @@
           <Property Name="Texto" Type="nvarchar" MaxLength="4000" Nullable="false" />
           <Property Name="idRepl1" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
+        <EntityType Name="HotelCanales">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idHotel" Type="int" />
+          <Property Name="idCanal" Type="int" />
+          <Property Name="Comision" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="Hoteles">
           <Key>
             <PropertyRef Name="idHotel" />
@@ -1173,6 +1182,30 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <Property Name="Reserved" Type="int" />
           <Property Name="Available" Type="int" />
         </EntityType>
+        <Association Name="FK__HotelCana__idCan__55B662FE">
+          <End Role="Canales" Type="Self.Canales" Multiplicity="0..1" />
+          <End Role="HotelCanales" Type="Self.HotelCanales" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Canales">
+              <PropertyRef Name="idCanal" />
+            </Principal>
+            <Dependent Role="HotelCanales">
+              <PropertyRef Name="idCanal" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__HotelCana__idHot__54C23EC5">
+          <End Role="Hoteles" Type="Self.Hoteles" Multiplicity="0..1" />
+          <End Role="HotelCanales" Type="Self.HotelCanales" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Hoteles">
+              <PropertyRef Name="idHotel" />
+            </Principal>
+            <Dependent Role="HotelCanales">
+              <PropertyRef Name="idHotel" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Diccionario_Indice1">
           <End Role="Indice" Type="Self.Indice" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1360,6 +1393,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <EntitySet Name="ContratosNR" EntityType="Self.ContratosNR" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Corporativos" EntityType="Self.Corporativos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Diccionario" EntityType="Self.Diccionario" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HotelCanales" EntityType="Self.HotelCanales" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Hoteles" EntityType="Self.Hoteles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Indice" EntityType="Self.Indice" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LockRoomTypes" EntityType="Self.LockRoomTypes" Schema="dbo" store:Type="Tables" />
@@ -1824,6 +1858,14 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
     [vRoomInventory].[Available] AS [Available]
     FROM [dbo].[vRoomInventory] AS [vRoomInventory]</DefiningQuery>
           </EntitySet>
+          <AssociationSet Name="FK__HotelCana__idCan__55B662FE" Association="Self.FK__HotelCana__idCan__55B662FE">
+            <End Role="Canales" EntitySet="Canales" />
+            <End Role="HotelCanales" EntitySet="HotelCanales" />
+          </AssociationSet>
+          <AssociationSet Name="FK__HotelCana__idHot__54C23EC5" Association="Self.FK__HotelCana__idHot__54C23EC5">
+            <End Role="Hoteles" EntitySet="Hoteles" />
+            <End Role="HotelCanales" EntitySet="HotelCanales" />
+          </AssociationSet>
           <AssociationSet Name="FK_Diccionario_Indice1" Association="Self.FK_Diccionario_Indice1">
             <End Role="Indice" EntitySet="Indice" />
             <End Role="Diccionario" EntitySet="Diccionario" />
@@ -2030,7 +2072,16 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <EntitySet Name="vDayRatesExceptions" EntityType="Models.vDayRatesExceptions" />
           <EntitySet Name="Canales" EntityType="Models.Canales" />
           <EntitySet Name="vHotelChannel" EntityType="Models.vHotelChannel" />
-        </EntityContainer>
+          <EntitySet Name="HotelCanales" EntityType="Models.HotelCanales" />
+          <AssociationSet Name="FK__HotelCana__idCan__55B662FE" Association="Models.FK__HotelCana__idCan__55B662FE">
+            <End Role="Canales" EntitySet="Canales" />
+            <End Role="HotelCanales" EntitySet="HotelCanales" />
+          </AssociationSet>
+          <AssociationSet Name="FK__HotelCana__idHot__54C23EC5" Association="Models.FK__HotelCana__idHot__54C23EC5">
+            <End Role="Hoteles" EntitySet="Hoteles" />
+            <End Role="HotelCanales" EntitySet="HotelCanales" />
+          </AssociationSet>
+          </EntityContainer>
         <EntityType Name="RatesPlan">
           <Key>
             <PropertyRef Name="idRatePlan" />
@@ -2394,6 +2445,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <Property Name="Ecotasa" Type="Decimal" Precision="10" Scale="4" />
           <Property Name="noDepartures" Type="String" MaxLength="7" FixedLength="false" Unicode="true" />
           <Property Name="EnableGoogle" Type="Boolean" />
+          <NavigationProperty Name="HotelCanales" Relationship="Models.FK__HotelCana__idHot__54C23EC5" FromRole="Hoteles" ToRole="HotelCanales" />
         </EntityType>
         <Association Name="FK_RatesPlan_Hoteles">
           <End Type="Models.Hoteles" Role="Hoteles" Multiplicity="1" />
@@ -3519,7 +3571,41 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
           <Property Name="Nombre" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
           <Property Name="Comision" Type="Int32" />
         </EntityType>
-      </Schema>
+        <EntityType Name="HotelCanales">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idHotel" Type="Int32" />
+          <Property Name="idCanal" Type="Int32" />
+          <Property Name="Comision" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Hoteles" Relationship="Models.FK__HotelCana__idHot__54C23EC5" FromRole="HotelCanales" ToRole="Hoteles" />
+        </EntityType>
+        <Association Name="FK__HotelCana__idCan__55B662FE">
+          <End Type="Models.Canales" Role="Canales" Multiplicity="0..1" />
+          <End Type="Models.HotelCanales" Role="HotelCanales" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Canales">
+              <PropertyRef Name="idCanal" />
+            </Principal>
+            <Dependent Role="HotelCanales">
+              <PropertyRef Name="idCanal" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__HotelCana__idHot__54C23EC5">
+          <End Type="Models.Hoteles" Role="Hoteles" Multiplicity="0..1" />
+          <End Type="Models.HotelCanales" Role="HotelCanales" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Hoteles">
+              <PropertyRef Name="idHotel" />
+            </Principal>
+            <Dependent Role="HotelCanales">
+              <PropertyRef Name="idHotel" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -4834,6 +4920,16 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="HotelCanales">
+            <EntityTypeMapping TypeName="Models.HotelCanales">
+              <MappingFragment StoreEntitySet="HotelCanales">
+                <ScalarProperty Name="Comision" ColumnName="Comision" />
+                <ScalarProperty Name="idCanal" ColumnName="idCanal" />
+                <ScalarProperty Name="idHotel" ColumnName="idHotel" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -4849,7 +4945,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRoomInventory' no tiene defin
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
         <DesignerProperty Name="EnablePluralization" Value="false" />
-        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
       </DesignerInfoPropertySet>

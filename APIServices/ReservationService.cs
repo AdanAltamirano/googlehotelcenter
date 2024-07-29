@@ -15,7 +15,6 @@ using APIServices.Models.DTO.Reservation.Pms.Response;
 using OfficeOpenXml;
 using PortalLibraries;
 
-
 namespace APIServices
 {
     public class ReservationService
@@ -23,7 +22,7 @@ namespace APIServices
         public OzHotelesEntities dbContext = new OzHotelesEntities();
 
         public IQueryable<vReservation> GetAll() => dbContext.vReservation.AsQueryable();
-           
+
         //obtiene todos los corporativos
         public IQueryable<Corporativos> GetCorporate() => dbContext.Corporativos.AsQueryable();
 
@@ -33,9 +32,58 @@ namespace APIServices
                 .Where(x => x.HotelId == hotelId);
         }
 
-        #region excel
-        public HttpResponseMessage GetExcel(IQueryable<vReservation> query)
+        private double getCleanTotal(String Total) {
+            return double.Parse(Regex.Match(Total, @"(\d+(\.\d+)?)|(\.\d+)").Value);
+        }
+
+        private double getTotalTax(Excel.ReservationList reservation)
+        { // Impuestos
+            return getCleanTotal(reservation.Total) - getSubtotal(reservation);
+        }
+
+        private double getSubtotal(Excel.ReservationList reservation) {
+            if (reservation.Tax > 0)
+            {
+                return getCleanTotal(reservation.Total) / (1 + (double.Parse(reservation.Tax.ToString()) / 100));
+            }
+            else
+            {
+                return getCleanTotal(reservation.Total);
+            }
+        }
+
+        private double getAverageRate(Excel.ReservationList reservation)
         {
+            return getSubtotal(reservation) / double.Parse((reservation.Nigths * reservation.RoomCount).ToString());
+        }
+
+        private double getComission(Excel.ReservationList reservation, List<vHotelChannel> hotelChannels)
+        {
+            double result = 0;
+            if (hotelChannels != null) {
+                vHotelChannel channelPortalsIP = hotelChannels.Where(x => x.idCanal == 1).FirstOrDefault();
+                if (reservation.Origin.Contains("-") && channelPortalsIP != null)
+                {
+                    result = getCleanTotal(reservation.Total) * (double.Parse((channelPortalsIP.Comision).ToString()) / 100);
+                }
+                else {
+                    vHotelChannel channel = hotelChannels.Where(x => Regex.Replace(reservation.Origin, @"\s+", "").ToUpper().Contains(Regex.Replace(x.Nombre.ToUpper(), @"\s+", ""))).FirstOrDefault();
+                    
+                    if (channel != null)
+                    {
+                        result = getCleanTotal(reservation.Total) * (double.Parse((channel.Comision).ToString()) / 100);
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        #region excel
+        public HttpResponseMessage GetExcel(IQueryable<vReservation> query, String ExcelTittle = "", List<vHotelChannel> hotelChannels = null)
+        {
+            string docTittle = String.IsNullOrWhiteSpace(ExcelTittle) ? "reservaciones" : ExcelTittle;
+
             var result = query.Select(r => new Excel.ReservationList
             {
                 NoReservation = r.ConfirmNumber,
@@ -49,13 +97,17 @@ namespace APIServices
                 PaymentMethod = r.PaymentMethod,
                 Total = r.Total,
                 Status = (r.Status == 1) ? "Reservado" : (r.Status == 3) ? "Cancelado" : "En proceso",
+                Guests = r.Guests,
+                Nigths = r.Nigths,
+                RoomCount = r.RoomCount,
+                Tax = r.Tax
             }).ToList();
-
 
             MemoryStream file = new MemoryStream();
             var excelPackage = new ExcelPackage(file);
 
-            ExcelWorksheet excelWorksheet = excelPackage.Workbook.Worksheets.Add("reservaciones");
+            ExcelWorksheet excelWorksheet = excelPackage.Workbook.Worksheets.Add(docTittle);
+
             //add the headers
             excelWorksheet.Cells[1, 1].Value = "#";
             excelWorksheet.Cells[1, 2].Value = "Hotel";
@@ -63,16 +115,31 @@ namespace APIServices
             excelWorksheet.Cells[1, 4].Value = "Fecha de reservación";
             excelWorksheet.Cells[1, 5].Value = "Fecha de llegada";
             excelWorksheet.Cells[1, 6].Value = "Fecha de salida";
-            excelWorksheet.Cells[1, 7].Value = "Origen";
-            excelWorksheet.Cells[1, 8].Value = "Corporativo";
-            excelWorksheet.Cells[1, 9].Value = "Forma de Pagó";
-            excelWorksheet.Cells[1, 10].Value = "Total";
-            excelWorksheet.Cells[1, 11].Value = "Status";
 
-            
+            if (String.IsNullOrWhiteSpace(ExcelTittle))
+            {
+                excelWorksheet.Cells[1, 7].Value = "Origen";
+                excelWorksheet.Cells[1, 8].Value = "Corporativo";
+                excelWorksheet.Cells[1, 9].Value = "Forma de Pagó";
+                excelWorksheet.Cells[1, 10].Value = "Total";
+                excelWorksheet.Cells[1, 11].Value = "Status";
+            }
+            else {
+                // Reporte - reservas y comisiones
+                excelWorksheet.Cells[1, 7].Value = "Huespedes";
+                excelWorksheet.Cells[1, 8].Value = "Noches";
+                excelWorksheet.Cells[1, 9].Value = "Habitaciones";
+                excelWorksheet.Cells[1, 10].Value = "Canal"; // Origen
+                excelWorksheet.Cells[1, 11].Value = "Tarifa";
+                excelWorksheet.Cells[1, 12].Value = "Subtotal";
+                excelWorksheet.Cells[1, 13].Value = "Impuestos";
+                excelWorksheet.Cells[1, 14].Value = "Comision";
+                excelWorksheet.Cells[1, 15].Value = "Total";
+                excelWorksheet.Cells[1, 16].Value = "Status";
+            }
 
             //Add some items...
-          
+
             int row = 2;
 
             for(int i = 0; i < result.Count; i++)
@@ -85,21 +152,42 @@ namespace APIServices
                 excelWorksheet.Cells["D" + rowNumber].Value = result.ElementAt(i).Date.ToString("dd/MM/yyyy");
                 excelWorksheet.Cells["E" + rowNumber].Value = result.ElementAt(i).CheckIn.ToString("dd/MM/yyyy");
                 excelWorksheet.Cells["F" + rowNumber].Value = result.ElementAt(i).CheckOut.ToString("dd/MM/yyyy");
-                excelWorksheet.Cells["G" + rowNumber].Value = result.ElementAt(i).Origin;
-                excelWorksheet.Cells["H" + rowNumber].Value = result.ElementAt(i).Corporate;
-                excelWorksheet.Cells["I" + rowNumber].Value = result.ElementAt(i).PaymentMethod;
-                excelWorksheet.Cells["J" + rowNumber].Value = result.ElementAt(i).Total;
-                excelWorksheet.Cells["K" + rowNumber].Value = result.ElementAt(i).Status;
+                
+
+                if (String.IsNullOrWhiteSpace(ExcelTittle))
+                {
+                    excelWorksheet.Cells["G" + rowNumber].Value = result.ElementAt(i).Origin;
+                    excelWorksheet.Cells["H" + rowNumber].Value = result.ElementAt(i).Corporate;
+                    excelWorksheet.Cells["I" + rowNumber].Value = result.ElementAt(i).PaymentMethod;
+                    excelWorksheet.Cells["J" + rowNumber].Value = result.ElementAt(i).Total;
+                    excelWorksheet.Cells["K" + rowNumber].Value = result.ElementAt(i).Status;
+
+                    excelWorksheet.Cells["A1:J" + row.ToString()].AutoFitColumns();
+                }
+                else {
+                    excelWorksheet.Cells["G" + rowNumber].Value = result.ElementAt(i).Guests;
+                    excelWorksheet.Cells["H" + rowNumber].Value = result.ElementAt(i).Nigths * result.ElementAt(i).RoomCount;
+                    excelWorksheet.Cells["I" + rowNumber].Value = result.ElementAt(i).RoomCount;
+                    excelWorksheet.Cells["J" + rowNumber].Value = result.ElementAt(i).Origin;
+                    excelWorksheet.Cells["K" + rowNumber].Value = Math.Round(getAverageRate(result.ElementAt(i)),2); // Tarifa Calcular
+                    excelWorksheet.Cells["L" + rowNumber].Value = Math.Round(getSubtotal(result.ElementAt(i)),2); // Subtotal Calcular
+                    excelWorksheet.Cells["M" + rowNumber].Value = Math.Round(getTotalTax(result.ElementAt(i)),2);
+                    excelWorksheet.Cells["N" + rowNumber].Value = Math.Round(getComission(result.ElementAt(i), hotelChannels),2); // Comision Calcular
+                    excelWorksheet.Cells["O" + rowNumber].Value = result.ElementAt(i).Total;
+                    excelWorksheet.Cells["P" + rowNumber].Value = result.ElementAt(i).Status;
+
+                    excelWorksheet.Cells["A1:O" + row.ToString()].AutoFitColumns();
+                }
+
                 row++;
             }
-            excelWorksheet.Cells["A1:J" + row.ToString()].AutoFitColumns();
 
             //excelWorksheet.Cells["A2"].Value = "12001";
             //excelWorksheet.Cells["B2"].Value = "Nails";
             //excelWorksheet.Cells["C2"].Value = "asdfasfd";
             //excelWorksheet.Cells["D2"].Value = 3.99;
 
-            excelPackage.Workbook.Properties.Title = "reservaciones";
+            excelPackage.Workbook.Properties.Title = docTittle;
             excelPackage.Workbook.Properties.Author = "Internet Power";
             excelPackage.Workbook.Properties.Company = "Internet Power";
 
@@ -111,7 +199,7 @@ namespace APIServices
             response.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
             response.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment")
             {
-                FileName = "reservaciones.xlsx"
+                FileName = docTittle + ".xls"
             };
 
             return response;
@@ -416,13 +504,6 @@ namespace APIServices
 
         #endregion
 
-
-
-
-
-
-
-
         #region credit card
 
         public CardDetails GetCreditCardDetails(int reservationId, bool isHotelCompany, int userId)
@@ -460,12 +541,6 @@ namespace APIServices
         }
 
         #endregion
-
-
-
-
-
-
 
         #region permisos para editar la reserva
         void Permissions(ref ReservationDetailsModel model, bool isSupervisor, bool isUserChain, bool isUsuarioHotelAssociation,
@@ -554,13 +629,6 @@ namespace APIServices
         }
         #endregion
 
-
-
-
-
-
-
-
         #region cancelar reserva
 
         public CancelBookingRS Cancel(vReservationDetails rsv, int userId, string reasonToCancel,bool isSupervisor)
@@ -616,11 +684,6 @@ namespace APIServices
         }
 
         #endregion
-
-
-
-
-
 
         #region modificar reserva
         public ModifyBookingRS Modify(int reservationId, ModifyBookingRQ req)
@@ -812,7 +875,6 @@ namespace APIServices
 
         #endregion
 
-
         #region deposito
             
         public ReservationDepositResponse DepositUpdate(ReservationDepositDTO depositDTO)
@@ -950,9 +1012,6 @@ namespace APIServices
 
 
         #endregion
-
-
-
 
         #region obtener template del correo
         public string GetTemplate(ReservationDetailsModel reservationDetails,string logoUrl)

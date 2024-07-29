@@ -66,6 +66,15 @@ Namespace API.Controller
             Return New vReservation() {}.AsQueryable()
         End Function
 
+        Public Function GetAllByHotel(HotelId As Integer) As IQueryable(Of vReservation)
+
+            Dim roles() As String = GetRoles()
+            If roles.Contains("hotelcompany") Or roles.Contains("hotelcompany") Then ' Not IsNothing(HotelId) AndAlso HotelId > 0 Then
+                Dim rList As List(Of vReservation) = ReservationService.GetAll().ToList
+                Return ReservationService.GetAll().Where(Function(h) h.HotelId = HotelId And h.Status <> 4)
+            End If
+
+        End Function
 
         'GET api/reservations/corporate
         <Route("corporate"), HttpGet>
@@ -78,6 +87,51 @@ Namespace API.Controller
         End Function
 
         'GET api/reservations/excel
+        <Route("namedExcel"), HttpGet>
+        Public Function GetNamedExcel() As HttpResponseMessage
+            Dim roles() As String = GetRoles()
+            If roles.Contains("supervisor") Then
+                Dim parserS = New QueryParser()
+                Dim _queryS As QueryData = parserS.CreateAndValidateQuery(ActionContext, "reservationId", GetType(vReservation))
+                Dim queryResultS As IQueryable(Of vReservation)
+
+                'Dim ExcelTittle = If(HttpContext.Current.Session("ExcelTittle") IsNot Nothing, HttpContext.Current.Session("ExcelTittle").ToString(), String.Empty)
+
+                queryResultS = _queryS.ApplyTo(ReservationService.GetAll())
+                Dim responseS As New HttpResponseMessage
+
+                Dim hChannels As List(Of vHotelChannel) = CType(HttpContext.Current.Session("HotelChannels"), List(Of vHotelChannel))
+
+                responseS = ReservationService.GetExcel(queryResultS, "Comissions-Report", hChannels)
+
+                'If String.IsNullOrWhiteSpace(ExcelTittle) Then
+                '    responseS = ReservationService.GetExcel(queryResultS)
+                'Else
+                '    responseS = ReservationService.GetNamedExcel(queryResultS, ExcelTittle)
+                'End If
+
+                Return responseS
+
+            ElseIf roles.Contains("hotelcompany") Then
+                Dim hotels() As Integer = GetUserHotels(GetUserId().Value).Select(Function(h) h.HotelId).ToArray()
+                Dim parserHotelCompany = New QueryParser()
+                Dim _queryHotelCompany As QueryData = parserHotelCompany.CreateAndValidateQuery(ActionContext, "reservationId", GetType(vReservation))
+                Dim queryResultHotelCompany As IQueryable(Of vReservation)
+                queryResultHotelCompany = _queryHotelCompany.ApplyTo(ReservationService.GetAll().Where(Function(h) hotels.Contains(h.HotelId) And h.Provider = "INTERNET POWER"))
+                Dim responseHotelCompnay As New HttpResponseMessage
+                responseHotelCompnay = ReservationService.GetExcel(queryResultHotelCompany, "Comissions-Report")
+                Return responseHotelCompnay
+            End If
+            Dim parser = New QueryParser()
+            Dim _query As QueryData = parser.CreateAndValidateQuery(ActionContext, "reservationId", GetType(vReservation))
+            Dim queryResult As IQueryable(Of vReservation)
+            queryResult = _query.ApplyTo(ReservationService.GetAll())
+            Dim response As New HttpResponseMessage
+            response = ReservationService.GetExcel(queryResult)
+            Return response
+        End Function
+
+        'GET api/reservations/excel
         <Route("excel"), HttpGet>
         Public Function GetExcel() As HttpResponseMessage
             Dim roles() As String = GetRoles()
@@ -85,9 +139,12 @@ Namespace API.Controller
                 Dim parserS = New QueryParser()
                 Dim _queryS As QueryData = parserS.CreateAndValidateQuery(ActionContext, "reservationId", GetType(vReservation))
                 Dim queryResultS As IQueryable(Of vReservation)
+
                 queryResultS = _queryS.ApplyTo(ReservationService.GetAll())
                 Dim responseS As New HttpResponseMessage
+
                 responseS = ReservationService.GetExcel(queryResultS)
+
                 Return responseS
             ElseIf roles.Contains("userchain") Then
                 Dim page As New PaginaBase
@@ -154,7 +211,6 @@ Namespace API.Controller
             Dim paginaBase As New PaginaBase
             Dim idCorporateUserChain As Integer = -1
             Dim idAsociationPb As Integer = 0
-
 
             Dim dsReservaciones As ReservaDatos
             Dim idHotel As Integer = 0
@@ -419,8 +475,6 @@ Namespace API.Controller
 
             Return Ok(result)
         End Function
-
-
 
         'POST api/reservations/1978/deposit
         <Route("{reservationId:int}/deposit"), HttpPost>

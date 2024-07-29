@@ -201,6 +201,9 @@
     <Compile Include="Models\GetMappedHotelsWithRatePlan_Result.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\HotelCanales.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Hoteles.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>

@@ -22,6 +22,10 @@ namespace APIServices.Models.DTO
             public string PaymentMethod { get; set; }
             public string Total { get; set; }
             public string Status { get; set; }
+            public Nullable<int> Nigths { get; set; }
+            public Nullable<int> Guests { get; set; }
+            public Nullable<int> RoomCount { get; set; }
+            public decimal Tax { get; set; }
         }
     }
 }

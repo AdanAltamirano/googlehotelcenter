@@ -1,6 +1,15 @@
 <template>
     <!-- eslint-disable -->
     <b-card no-body style="border:0px">
+        <!--
+        <b-modal id="modal-comissions" title="$t('Channel Comissions')">
+            <template>
+                <div>
+                    <b-table striped hover :items="hotelChannels" :fields="hotelChannelfields"></b-table>
+                </div>
+            </template>
+</b-modal>
+-->
         <b-row>
             <b-col md="3" class="my-1">
                 <b-form-group :description="$t('It has priority over advanced search')">
@@ -13,67 +22,76 @@
                         <b-button variant="primary" @click="search">{{ $t("Search") }}</b-button>
                     </b-col>
                     <b-col md="9">
-                        <b-button class="float-right" v-b-toggle.filter_content variant="link">{{ $t("Advanced Search") }}</b-button>
+                        <b-button class="float-right" v-b-toggle.filter_content variant="link">{{ $t("Advanced Search")
+                            }}</b-button>
                     </b-col>
                 </b-row>
             </b-col>
             <b-col md="3" class="my-1">
                 <b-row>
-                    <!--
-                    <b-col md="3">
-                        <b-button variant="primary" @click="search">{{ $t("Search") }}</b-button>
-                    </b-col>
-                    
-                    <b-link
-                    target="_blank"
-                    :href=" $appConfig.basePath + '/rate-manager-ui/dist/reservation-details.aspx?qs=' + data.item.id">
-                        <span v-tooltip="data.item.confirmNumber" class="d-block text-truncate" style="width:100px;">{{ data.item.confirmNumber }}</span>
-                    </b-link>
-                    -->
                     <b-col md="9">
-                        <b-button class="float-right" target="_blank" href="$appConfig.basePath + '/rate-manager-ui/dist/reservation-report-channel-config.aspx" variant="link">{{ $t("Channels Comissions") }}<b-icon icon="cash-coin"></b-icon></b-button>
+                        <b-button class="float-right" v-b-toggle.config_channel variant="link">{{ $t("Channel
+                            Comissions")
+                            }}</b-button>
                     </b-col>
                 </b-row>
             </b-col>
             <b-col md="3" class="my-1">
                 <b-row>
                     <b-col md="8">
-                        <b-button
-                        v-if="result.length > 0"
-                        @click="exportToExcel"
-                        style="background-color:green;float:right"
-                        variant="primary">
+                        <b-button v-if="result.length > 0" @click="exportToExcel"
+                            style="background-color:green;float:right" variant="primary">
                             <i class="fas fa-file-excel"></i> &nbsp;{{ $t("Export page") }}
                         </b-button>
                     </b-col>
                     <b-col md="4" style="margin-top:-1.9rem;">
                         <b-form-group :label="$t('items per page')">
-                            <b-form-select
-                            @change="changeItemsPerPage"
-                            class="float-right"
-                            v-model.number="itemPerPage"
-                            :options="itemsPerPage">
+                            <b-form-select @change="changeItemsPerPage" class="float-right" v-model.number="itemPerPage"
+                                :options="itemsPerPage">
                             </b-form-select>
                         </b-form-group>
                     </b-col>
                 </b-row>
             </b-col>
         </b-row>
-        <!--
         <b-row>
             <b-col md="12">
-                <b-colapse id="config_channel">
+                <b-collapse id="config_channel">
                     <b-card class="mt-3 bg-light">
                         <b-row>
-                            <b-form-group label="OTAS">
-                                <b-form-select v-model="channelConfig" :options="otas"></b-form-select>
-                            </b-form-group>
+                            <b-col md="3">
+                                <b-form-group :label="$t('Channel')">
+                                    <b-form-select v-model="hotelChannel"
+                                        :options="hotelChannelOptions"></b-form-select>
+                                </b-form-group>
+                            </b-col>
+                            <b-col md="3">
+                                <b-form-group :label="$t('Comission')">
+                                    <b-form-input v-model="channelComission" v-validate="required | numeric"
+                                        :placeholder="$t('Comission')" />
+                                </b-form-group>
+                            </b-col>
+                            <b-col md="3">
+                                <b-form-group>
+                                    <b-button v-if="channelComission > 0" variant="primary"
+                                        @click="SaveChannelComission">{{
+                                            $t("Save")
+                                        }}</b-button>
+                                </b-form-group>
+                            </b-col>
+                            <b-col md="3">
+                                <b-form-group>
+                                    <b-button id="btn_modal_comissions" v-if="hotelChannelOptions.length > 0"
+                                        v-on:click="showComissionsModal" variant="primary">{{ $t("Show Configured
+                                        Comissions")
+                                        }}</b-button>
+                                </b-form-group>
+                            </b-col>
                         </b-row>
                     </b-card>
-                </b-colapse>
+                </b-collapse>
             </b-col>
         </b-row>
-        -->
         <b-row>
             <b-col md="12">
                 <b-collapse id="filter_content">
@@ -88,13 +106,9 @@
                                 <b-form-group :label="$t('Date Range')">
                                     <b-input-group>
 
-                                        <v-date-picker
-                                        v-model="dates"
-                                        class="form-control p-0"
-                                        mode="range"
-                                        :min-date="minDate"
-                                        :popover="{ placement: 'bottom', visibility: 'click' }"
-                                        :columns="2">
+                                        <v-date-picker v-model="dates" class="form-control p-0" mode="range"
+                                            :min-date="minDate" :popover="{ placement: 'bottom', visibility: 'click' }"
+                                            :columns="2">
                                         </v-date-picker>
 
                                         <b-input-group-append>
@@ -109,7 +123,8 @@
                                 <b-form-group :label="$t('Status')">
                                     <b-form-checkbox-group v-model="checkStatus">
                                         <b-form-checkbox value="1">{{ $t('Reserved') }}</b-form-checkbox>
-                                        <b-form-checkbox value="4" v-if="isSupervisor">{{ $t('In process') }}</b-form-checkbox>
+                                        <b-form-checkbox value="4" v-if="isSupervisor">{{ $t('In process')
+                                            }}</b-form-checkbox>
                                         <b-form-checkbox value="3">{{ $t('Cancelled') }}</b-form-checkbox>
                                     </b-form-checkbox-group>
                                 </b-form-group>
@@ -136,7 +151,7 @@
                                 <b-form-group :label="$t('Agencies')">
                                     <b-form-select v-model="agency" :options="agencies"></b-form-select>
                                 </b-form-group>
-                                 <b-form-group v-show="agency != -1" :label="$t('Agents')">
+                                <b-form-group v-show="agency != -1" :label="$t('Agents')">
                                     <b-form-select v-model="agent" :options="agents"></b-form-select>
                                 </b-form-group>
                             </b-col>
@@ -145,37 +160,25 @@
                                     <template slot="label">
                                         <div class="d-flex">
                                             <span class="mr-2">{{ $t('Hotels') }}</span>
-                                            <b-form-checkbox v-if="corporates.length > 0" v-model="isCheckCorporate" switch>
+                                            <b-form-checkbox v-if="corporates.length > 0" v-model="isCheckCorporate"
+                                                switch>
                                                 <span>{{ $t('Corporate') }}</span>
                                             </b-form-checkbox>
                                         </div>
                                     </template>
 
                                     <!--hoteles-->
-                                    <multiselect
-                                    v-if="!isCheckCorporate"
-                                    v-model="hotel"
-                                    :custom-label="nameWithCorporate"
-                                    :options="hotels"
-                                    track-by="id"
-                                    :multiple="true"
-                                    :selectLabel="$t('select')"
-                                    :selectedLabel="''"
-                                    :deselectLabel="''"
-                                    :placeholder="$t('Search Hotel')">
+                                    <multiselect v-if="!isCheckCorporate" v-model="hotel"
+                                        :custom-label="nameWithCorporate" :options="hotels" track-by="id"
+                                        :multiple="true" :selectLabel="$t('select')" :selectedLabel="''"
+                                        :deselectLabel="''" :placeholder="$t('Search Hotel')">
                                     </multiselect>
 
                                     <!--corporativos-->
-                                    <multiselect v-if="isCheckCorporate"
-                                    label="nombreCorp"
-                                    v-model="corporate"
-                                    :options="corporates"
-                                    track-by="idCorporativo"
-                                    :multiple="true"
-                                    :selectLabel="$t('select')"
-                                    :selectedLabel="''"
-                                    :deselectLabel="''"
-                                    :placeholder="$t('Search Corporate')">
+                                    <multiselect v-if="isCheckCorporate" label="nombreCorp" v-model="corporate"
+                                        :options="corporates" track-by="idCorporativo" :multiple="true"
+                                        :selectLabel="$t('select')" :selectedLabel="''" :deselectLabel="''"
+                                        :placeholder="$t('Search Corporate')">
                                     </multiselect>
                                 </b-form-group>
                             </b-col>
@@ -183,19 +186,12 @@
                                 <b-form-group>
                                     <template slot="label">
                                         <div class="d-flex">
-                                            <span class="mr-2">{{ $t('Channels') }}</span>                                           
+                                            <span class="mr-2">{{ $t('Channels') }}</span>
                                         </div>
                                     </template>
-                                    <multiselect
-                                    track-by="text"
-                                    label="text"
-                                    v-model="channels"
-                                    :options="channelOpts"
-                                    :multiple="true"
-                                    :selectLabel="$t('select')"
-                                    :selectedLabel="''"
-                                    :deselectLabel="''"
-                                    :placeholder="$t('')">
+                                    <multiselect track-by="text" label="text" v-model="channels" :options="channelOpts"
+                                        :multiple="true" :selectLabel="$t('select')" :selectedLabel="''"
+                                        :deselectLabel="''" :placeholder="$t('')">
                                     </multiselect>
                                 </b-form-group>
                             </b-col>
@@ -205,19 +201,13 @@
                                 <b-form-group>
                                     <template slot="label">
                                         <div class="d-flex">
-                                            <span class="mr-2">{{ $t('Payment Way') }}</span>                                           
+                                            <span class="mr-2">{{ $t('Payment Way') }}</span>
                                         </div>
                                     </template>
-                                    <multiselect
-                                    track-by="paymentMethodId"
-                                    label="paymentMethod"
-                                    v-model="paymentMethod"
-                                    :options="paymentMethods"
-                                    :multiple="true"
-                                    :selectLabel="$t('select')"
-                                    :selectedLabel="''"
-                                    :deselectLabel="''"
-                                    :placeholder="$t('')">
+                                    <multiselect track-by="paymentMethodId" label="paymentMethod"
+                                        v-model="paymentMethod" :options="paymentMethods" :multiple="true"
+                                        :selectLabel="$t('select')" :selectedLabel="''" :deselectLabel="''"
+                                        :placeholder="$t('')">
                                     </multiselect>
                                 </b-form-group>
                             </b-col>
@@ -236,12 +226,13 @@
 </template>
 
 <script>
+
 import Multiselect from 'vue-multiselect';
 import HotelService from '../../../api/hotels-service';
 import ReservationService from '../../../api/reservation-service';
 
 export default {
-    name: 'advance-filter',
+    name: 'advance-report-filter',
     components: {
         Multiselect
     },
@@ -249,7 +240,9 @@ export default {
         this.getHotels();
         this.getAgencies();
         this.getChannels();
+        this.getHotelChannels();
         this.getAgents();
+
         this.$root.$on('queryString', array => {
             this.filterQueryString = array[0];
             this.formatQueryString = array[1];
@@ -295,38 +288,59 @@ export default {
             dates: null,
             noReservation: '',
             checkStatus: ['1'],
+            hotelChannel: '',
+            hotelChannels: [],
+            hotelChannelOptions: [],
+            channelComission: 0,
             channels: [],
+            hotelChannelfields: [
+                {
+                    key: 'idCanal',
+                    label: "#",
+                    sortable: false
+                },
+                {
+                    key: 'nombre',
+                    label: this.$t('Name'),
+                    sortable: false
+                },
+                {
+                    key: 'comision',
+                    label: this.$t('Comission'),
+                    sortable: true
+                }
+            ],
             typeDate: 'ReservationDate',
             clientName: '',
             source: 'ALL',
             hotel: [],
             hotels: [],
-            paymentMethod:[],
-            paymentMethods:[
-                {paymentMethodId : 'Deposito', paymentMethod: this.$t('Deposit')}, 
-                {paymentMethodId : 'Hotel', paymentMethod: 'Hotel'}, 
-                {paymentMethodId : 'Banamex', paymentMethod: 'Banamex'}, 
-                {paymentMethodId : 'Santander', paymentMethod: 'Santander'}, 
-                {paymentMethodId : 'DineroMail', paymentMethod: 'DineroMail'}, 
-                {paymentMethodId : 'Bancomer', paymentMethod: 'Bancomer'}, 
-                {paymentMethodId : 'Banorte', paymentMethod: 'Banorte'}, 
-                {paymentMethodId : 'AzubaPay', paymentMethod: 'AzubaPay'}, 
-                {paymentMethodId : 'Bidaiondo', paymentMethod: 'Bidaiondo'}, 
-                {paymentMethodId : 'American Express', paymentMethod: 'American Express'}, 
-                {paymentMethodId : 'Paypal', paymentMethod: 'Paypal'}, 
-                {paymentMethodId : 'PayU', paymentMethod: 'PayU'}, 
-                {paymentMethodId : 'Conekta / OXXO', paymentMethod: 'Conekta / OXXO'}, 
-                {paymentMethodId : 'Amex', paymentMethod: 'Amex'},
-                {paymentMethodId : 'Banregio', paymentMethod: 'Banregio'} 
+            paymentMethod: [],
+            paymentMethods: [
+                { paymentMethodId: 'Deposito', paymentMethod: this.$t('Deposit') },
+                { paymentMethodId: 'Hotel', paymentMethod: 'Hotel' },
+                { paymentMethodId: 'Banamex', paymentMethod: 'Banamex' },
+                { paymentMethodId: 'Santander', paymentMethod: 'Santander' },
+                { paymentMethodId: 'DineroMail', paymentMethod: 'DineroMail' },
+                { paymentMethodId: 'Bancomer', paymentMethod: 'Bancomer' },
+                { paymentMethodId: 'Banorte', paymentMethod: 'Banorte' },
+                { paymentMethodId: 'AzubaPay', paymentMethod: 'AzubaPay' },
+                { paymentMethodId: 'Bidaiondo', paymentMethod: 'Bidaiondo' },
+                { paymentMethodId: 'American Express', paymentMethod: 'American Express' },
+                { paymentMethodId: 'Paypal', paymentMethod: 'Paypal' },
+                { paymentMethodId: 'PayU', paymentMethod: 'PayU' },
+                { paymentMethodId: 'Conekta / OXXO', paymentMethod: 'Conekta / OXXO' },
+                { paymentMethodId: 'Amex', paymentMethod: 'Amex' },
+                { paymentMethodId: 'Banregio', paymentMethod: 'Banregio' }
             ],
             ota: 'ALL',
             agency: -1,
             agencies: [],
             agent: -1,
-            agents:[],
-            agentsToFilter:[],
-            isAgencyCompany:(this.$appConfig.session.isAgencyCompany === 'True')? true : false,
-            isSupervisor:(this.$appConfig.session.isSupervisor === 'True')? true : false,
+            agents: [],
+            agentsToFilter: [],
+            isAgencyCompany: (this.$appConfig.session.isAgencyCompany === 'True') ? true : false,
+            isSupervisor: (this.$appConfig.session.isSupervisor === 'True') ? true : false,
             typeDates: [
                 { text: this.$t('Reservation date'), value: 'ReservationDate' },
                 { text: this.$t('Arrival date'), value: 'CheckIn' },
@@ -341,9 +355,10 @@ export default {
                 { text: 'GDS', value: 'WIZ' },
                 { text: 'ADS', value: 'ADS' },
                 { text: 'OTAS', value: 'IDS' },
-                { text: this.$t('Agency'), value: 'AGENCY'}
+                { text: this.$t('Agency'), value: 'AGENCY' }
             ],
-            channelOpts:[],
+            channelOpts: [],
+            hotelChannelOpts: [],
             otas: [
                 { text: `-- ${this.$t('All')} --`, value: 'ALL' },
                 { text: 'BestDay', value: 'BestDay' },
@@ -357,30 +372,46 @@ export default {
             isCheckCorporate: false
         };
     },
-    watch:{
-        agency:function(value){
+    watch: {
+        agency: function (value) {
             this.agents = [];
             this.agent = -1;
             // Si es != -1 Filtra los agentes por agencia
-            if(value != -1)
-            {
+            if (value != -1) {
                 this.agents.push({
                     text: this.$t('All'),
-                    value:-1
+                    value: -1
                 });
 
                 this.agentsToFilter.forEach(agentFilter => {
-                    if(agentFilter.agencyId === value){
+                    if (agentFilter.agencyId === value) {
                         this.agents.push({
                             text: `${agentFilter.name} ${agentFilter.lastName} - ${agentFilter.email}`,
                             value: agentFilter.userId
                         })
-                    }  
+                    }
                 });
 
                 this.agent = this.agents[0].value;
             }
         },
+        hotelChannel: function () {
+            //channelComission
+            console.log('Canal Seleccionado: ' + this.hotelChannel);
+
+            for (var x = 0; x < this.hotelChannels.length; x++) {
+                console.log('Comparando Canal: ' + this.hotelChannels[x].nombre + ' - Id: ' + this.hotelChannels[x].idCanal);
+                if (this.hotelChannels[x].idCanal == this.hotelChannel) {
+                    this.channelComission = this.hotelChannels[x].comision;
+
+                    console.log(this.hotelChannels[x].nombre + ' ' + this.hotelChannel);
+                    break;
+                    //return this.channelComission;
+                } else {
+                    this.channelComission = 0;
+                }
+            }
+        }
     },
     methods: {
         getHotels() {
@@ -390,16 +421,93 @@ export default {
                 console.log(response.body);*/
             });
         },
+        getHotelChannels() {
+            ReservationService.GetHotelChannels(this.$appConfig.session.hotelId).then(response => {
+                this.hotelChannels = response.body;
+
+                console.log('Canales configurados: ');
+                console.log(this.hotelChannels);
+            });
+        },
+        SaveChannelComission() {
+
+            if (this.hotelChannel > 0 && this.channelComission > 0 && this.channelComission <= 100) {
+                let newHotelChannel = {
+                    id: 0,
+                    idHotel: this.$appConfig.session.hotelId,
+                    idCanal: this.hotelChannel,
+                    Comision: this.channelComission
+                };
+
+                ReservationService.SaveChannelComission(newHotelChannel).then(response => {
+                    //console.log(response);
+
+                    switch (response.body) {
+                        case "SUCCESS_UPDATED":
+                            this.$appAlert({
+                                type: 'success',
+                                title: this.$t('Register updated successfully'),
+                                showCancelButton: true,
+                                showConfirmButton: false,
+                                cancelButtonText: this.$t("Close"),
+                                cancelButtonColor: "#d33",
+                                showConfirmButton: false,
+                                onClose: () => {
+                                    window.location.reload();
+                                }
+                            });
+                            break;
+                        case "SUCCESS_REGISTERED":
+                            this.$appAlert({
+                                type: 'success',
+                                title: this.$t('Register saved successfully'),
+                                showCancelButton: true,
+                                showConfirmButton: false,
+                                cancelButtonText: this.$t("Close"),
+                                cancelButtonColor: "#d33",
+                                showConfirmButton: false,
+                                onClose: () => {
+                                    window.location.reload();
+                                }
+                            });
+                            break;
+                        default:
+                            this.$appAlert({
+                                type: 'error',
+                                title: this.$t('Request error'),
+                                confirmButtonText: this.$t('Close'),
+                                confirmButtonColor: '#d33'
+                            });
+                            break;
+                    }
+                });
+
+                /*.catch(error => {
+
+                        let errorCode = error.body.errors[0].details[0].key;
+                        //this.errorResponse = this.ErrorMessage(errorCode);
+                        console.log(errorCode)
+
+                 });*/
+            }
+        },
         getChannels() {
             ReservationService.GetChannels().then(response => {
 
-                //console.log('Channels response');
-                //console.log(response.body);
+                console.log('Channels response');
+                console.log(response.body);
 
                 response.body.forEach(x => {
                     this.channelOpts.push({
                         text: x.nombre,
                         value: x.nombre
+                    })
+                });
+
+                response.body.forEach(x => {
+                    this.hotelChannelOptions.push({
+                        text: x.nombre,
+                        value: x.idCanal
                     })
                 });
             });
@@ -422,9 +530,8 @@ export default {
                 }
             });
         },
-        getAgents()
-        {
-            ReservationService.GetAgents().then(response =>{
+        getAgents() {
+            ReservationService.GetAgents().then(response => {
                 this.agentsToFilter = response.body;
             });
 
@@ -433,24 +540,25 @@ export default {
             this.$emit('search', this.getFilter());
         },
         exportToExcel() {
-            ReservationService.GetExcel(
+            ReservationService.GetNamedExcel(
                 this.filterQueryString,
                 this.formatQueryString,
                 this.perPageQueryString,
-                this.currentPageQueryString
+                this.currentPageQueryString,
+                "Comissions-Report"
             )
-            .then(res => {
-                console.log(res);
-                document.location.href = res.url;
-            })
-            .catch(err => {
-                this.$appAlert({
-                    type: 'error',
-                    title: this.$t('Can not export page'),
-                    confirmButtonText: this.$t('Exit'),
-                    confirmButtonColor: '#d33'
+                .then(res => {
+                    console.log(res);
+                    document.location.href = res.url;
+                })
+                .catch(err => {
+                    this.$appAlert({
+                        type: 'error',
+                        title: this.$t('Can not export page'),
+                        confirmButtonText: this.$t('Exit'),
+                        confirmButtonColor: '#d33'
+                    });
                 });
-            });
         },
         getFilter() {
             let filter = '';
@@ -465,11 +573,11 @@ export default {
             /* filtrar demas campos si estan disponibles */
             /* eslint-disable max-len */
 
-            if (this.dates != null){
+            if (this.dates != null) {
                 let dateEnd = new Date(this.dates.end);
                 dateEnd.setDate(dateEnd.getDate() + 1);
                 filter = `${this.typeDate} ge ${this.dateFormat(this.dates.start)} and ${this.typeDate} lt ${this.dateFormat(dateEnd)}`;
-                }
+            }
             if (this.checkStatus.length > 0) {
                 filter += this.and(filter);
                 this.checkStatus.forEach((value, index) => {
@@ -478,18 +586,17 @@ export default {
                 });
             }
             // Canales
-            if(this.channels.length > 0) {
+            if (this.channels.length > 0) {
                 filter += this.and(filter);
-                this.channels.forEach((value,index) => {
+                this.channels.forEach((value, index) => {
                     if (index > 0) filter += ' or ';
-                    filter += `portal lk ${value.value}`;
+                    filter += `portal lk ${value.text}`;
                 });
             }
 
             if (this.clientName !== '')
                 filter += `${this.and(filter)}Client lk ${this.clientName}`;
-            if (this.source !== 'ALL')
-            {
+            if (this.source !== 'ALL') {
                 let _source = this.source;
                 if (this.source === 'AGENCY') _source = 'POR';
                 filter += `${this.and(filter)}Source eq ${_source}`;
@@ -511,27 +618,24 @@ export default {
                 });
             }
 
-            if(this.paymentMethod.length > 0) {
+            if (this.paymentMethod.length > 0) {
                 filter += this.and(filter);
-                this.paymentMethod.forEach((value,index) => {
+                this.paymentMethod.forEach((value, index) => {
                     if (index > 0) filter += ' or ';
                     filter += `PaymentMethod lk ${value.paymentMethodId}`;
                 });
             }
 
-
-            if(this.source === 'AGENCY')
-            {
+            if (this.source === 'AGENCY') {
                 // Si se escogio una agencia
                 if (this.agency !== -1) {
-                   
+
                     //Si se escogio un agente
-                    if(this.agent !== -1)
-                    {
+                    if (this.agent !== -1) {
                         filter += `${this.and(filter)}AgencyId eq ${this.agency} and AgencyUserId eq ${this.agent}`;
                     }
                     // No se escogio agente
-                    else{
+                    else {
 
                         filter += `${this.and(filter)}AgencyId eq ${this.agency}`;
                     }
@@ -570,12 +674,70 @@ export default {
         changeItemsPerPage() {
             this.$emit('changeItems', this.itemPerPage);
         },
-        nameWithCorporate({name, corp}) {
-            
-            let noDots = (corp.includes(":"))? corp.split(":")[1]: corp;
+        nameWithCorporate({ name, corp }) {
+
+            let noDots = (corp.includes(":")) ? corp.split(":")[1] : corp;
 
             return name + (corp !== '' ? ` - [${noDots}]` : '');
+        },
+        showComissionsModal() {
+
+            if (hotelChannels.length > 0) {
+                var tcN = 0;
+                var tableBody = "";
+
+                this.hotelChannels.forEach(x => {
+                    tcN++;
+                    tableBody += "<tr><td>" + tcN + "</td>" + "<td>" + x.nombre + "</td><td>" + x.comision + "</td></tr>";
+                });
+
+                tableBody += "</table>"
+
+                var tableChannels = "<table role='table' aria-busy='false' aria-colcount='15' class='table b-table table-striped table-hover table-bordered table-sm'><tr><th>#</th><th>Nombre</th><th>Comision</th>";
+                tableChannels += tableBody;
+
+                this.$appAlert({
+                    type: '',
+                    title: this.$t('Channel Comissions'),
+                    html: tableChannels,
+                    showCancelButton: true,
+                    showConfirmButton: false,
+                    cancelButtonText: this.$t("Close"),
+                    cancelButtonColor: "#d33",
+                    showConfirmButton: false
+                });
+
+            } else {
+                this.$appAlert({
+                    type: 'warning',
+                    title: this.$t('Channel Comissions'),
+                    text: this.$t('There are no commissions set up yet.'),
+                    showCancelButton: true,
+                    showConfirmButton: false,
+                    cancelButtonText: this.$t("Close"),
+                    cancelButtonColor: "#d33",
+                    showConfirmButton: false
+                });
+            }
+
         }
+        /*
+        GetConfiguredComission() {
+            //channelComission
+            console.log('Canal Seleccionado: ' + this.hotelChannel);
+
+            for (var x = 0; x < this.hotelChannels.length; x++) {
+                if (this.hotelChannels[x].idcanal == this.hotelChannel) {
+                    this.channelComission = this.hotelChannels[x].comision;
+                    console.log(this.hotelChannels[x].nombre + ' ' + this.hotelChannel);
+                    break;
+                    //return this.channelComission;
+                }else{
+                    this.channelComission = 0;
+                }
+            }
+        }
+        */
     }
 };
 </script>

@@ -1,4 +1,5 @@
 ﻿Imports System.Net
+Imports System.Net.Http
 Imports System.Web.Http
 Imports System.Web.UI.WebControls
 Imports APIServices
@@ -14,6 +15,7 @@ Namespace API.Controller
         Inherits ShurikenController
 
         Public UtilsService As New UtilsService
+        Public HotelChannels As List(Of vHotelChannel)
 
         ' GET api/utils/channelsList
         <Route("channels"), HttpGet>
@@ -26,6 +28,17 @@ Namespace API.Controller
         <Route("channels/{idHotel:int}"), HttpGet>
         Public Function GetHotelChannels(ByVal idHotel As Integer) As List(Of vHotelChannel)
             Dim result As List(Of vHotelChannel) = UtilsService.GetHotelChannels(idHotel)
+            'HotelChannels = result
+            If result.Count > 0 Then
+                HttpContext.Current.Session("HotelChannels") = result
+            End If
+
+            Return result
+        End Function
+
+        <Route("hotelChannels/"), HttpPost>
+        Public Function SaveChannelComission(<FromBody> newHotelChannel As HotelCanales) As String
+            Dim result As String = UtilsService.SaveChannelComission(newHotelChannel.idHotel, newHotelChannel.idCanal, newHotelChannel.Comision)
             Return result
         End Function
 

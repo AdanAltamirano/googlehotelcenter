@@ -50,8 +50,11 @@
         <EntityTypeShape EntityType="Models.vLinkedRatePlans" Width="1.5" PointX="15.375" PointY="20.75" IsExpanded="false" />
         <EntityTypeShape EntityType="Models.vDayRates" Width="1.5" PointX="21.625" PointY="17" IsExpanded="false" />
         <EntityTypeShape EntityType="Models.vDayRatesExceptions" Width="1.5" PointX="23.75" PointY="17" IsExpanded="false" />
-        <EntityTypeShape EntityType="Models.Canales" Width="1.5" PointX="14.875" PointY="3" />
-        <EntityTypeShape EntityType="Models.vHotelChannel" Width="1.5" PointX="14.875" PointY="5.25" />
+        <EntityTypeShape EntityType="Models.Canales" Width="1.5" PointX="14.875" PointY="3.875" />
+        <EntityTypeShape EntityType="Models.vHotelChannel" Width="1.5" PointX="14.875" PointY="5.875" />
+        <EntityTypeShape EntityType="Models.HotelCanales" Width="1.5" PointX="14.875" PointY="1.25" />
+        <AssociationConnector Association="Models.FK__HotelCana__idCan__55B662FE" />
+        <AssociationConnector Association="Models.FK__HotelCana__idHot__54C23EC5" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
