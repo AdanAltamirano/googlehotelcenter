@@ -18,17 +18,31 @@
     }
 
     function ok(pnl1, pnl2) {
+        console.log(pnl1);
+        console.log(pnl2);
         var txt = document.getElementById('txtIdObj');
         var obj = document.getElementById(txt.value);
-        
+
+        console.log(navigator.userAgent.indexOf("Chrome"));
+
         if (navigator.userAgent.indexOf("Chrome") != -1) {
+            console.log("Aqui Entro");
             var fireOnThis = document.getElementById(txt.value);
-            var evObj = document.createEvent('MouseEvents');
-            evObj.initMouseEvent('click', true, true, window, 0, 0, 345, 7, 220, false, false, true, false, 0, null);
-            fireOnThis.dispatchEvent(evObj);
+            console.log(document.getElementById(txt.value));
+            //var evObj = document.createEvent('MouseEvents');
+            //evObj.initMouseEvent('click', true, true, window, 0, 0, 345, 7, 220, false, false, true, false, 0, null);
+            var evt = new MouseEvent("click", {
+                view: window,
+                bubbles: true,
+                cancelable: true,
+                clientX: 20,
+                /* whatever properties you want to give it */
+            });
+            fireOnThis.dispatchEvent(evt);
             return true;
         }
         else {
+            console.log("Aqui Entro Despues");
             document.getElementById(txt.value).click();
         }
         /*eval($('#' + $('#txtIdObj').val()).attr('onclick'));*/
