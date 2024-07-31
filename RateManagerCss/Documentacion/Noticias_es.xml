@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<News>
+	<New>
+		<DateNews>20080119</DateNews>
+		<DateNewsString>19-Ene-08</DateNewsString>
+		<TitleNews>Promociones y paquetes</TitleNews>
+		<Description>
+			<![CDATA[¡19-Ene-08 Promociones y paquetes! Ahora para ser reservados en Línea.]]>
+		</Description>
+		<Link>
+			<![CDATA[../Documentacion/PDF/Guia de promociones y paquetes.pdf]]> 
+		</Link>
+	</New>
+	<New>
+		<DateNews>20080111</DateNews>
+		<DateNewsString>11-ene-08</DateNewsString>
+		<TitleNews>Notificación de tarifas por comisiones 2008</TitleNews>
+		<Description>
+			<![CDATA[11-ene-08 Notificación de tarifas por comisiones 2008.]]>
+		</Description>
+		<Link>
+			<![CDATA[../Documentacion/PDF/Tarifascomisiones2008.pdf]]>
+		</Link>
+	</New>
+	<New>
+		<DateNews>20080119</DateNews>
+		<DateNewsString>19-January-08</DateNewsString>
+		<TitleNews>Promotions and pachages</TitleNews>
+		<Description>
+			<![CDATA[Ayuda para Conciliación y Pagos]]>
+		</Description>
+		<Link>
+			<![CDATA[../Documentacion/PDF/ConciliacionYPagos.pdf]]>
+		</Link>
+	</New>
+</News>

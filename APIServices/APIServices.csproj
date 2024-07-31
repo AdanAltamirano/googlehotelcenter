@@ -232,7 +232,7 @@
       <DependentUpon>OzHoteles.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\DTO\RatesByRatePlan.cs" />
-    <Compile Include="Models\OzHoteles1.Designer.cs">
+    <Compile Include="Models\OzHoteles.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>OzHoteles.edmx</DependentUpon>
@@ -434,7 +434,7 @@
   <ItemGroup>
     <EntityDeploy Include="Models\OzHoteles.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>OzHoteles1.Designer.cs</LastGenOutput>
+      <LastGenOutput>OzHoteles.Designer.cs</LastGenOutput>
     </EntityDeploy>
   </ItemGroup>
   <ItemGroup>
