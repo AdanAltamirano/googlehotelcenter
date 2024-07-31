@@ -160,6 +160,15 @@ Partial Class CambiarContenido
         End Set
     End Property
 
+    Public Property ContentType As String
+        Get
+            Return ViewState("CambiarContenidoContentType")
+        End Get
+        Set(value As String)
+            ViewState("CambiarContenidoContentType") = value
+        End Set
+    End Property
+
     Public Property NoPaso() As String
         Get
             Return Me.lblPaso.Text
@@ -233,6 +242,12 @@ Partial Class CambiarContenido
         End Get
     End Property
 
+    Public ReadOnly Property DeleteButtonIdContent() As ImageButton
+        Get
+            Return Me.ImageButton4
+        End Get
+    End Property
+
     Public Property IdTypeRoomHotelChangeContent() As Integer
         Get
             Return ViewState("IdTypeRoomHotelChangeContent")
@@ -250,6 +265,17 @@ Partial Class CambiarContenido
             ViewState("CodeTypeRoomHotelChangeContent") = value
         End Set
     End Property
+
+    Public Property IdTypeHotelItemChangeContent() As Integer
+        Get
+            Return ViewState("IdTypeHotelItemChangeContent")
+        End Get
+        Set(value As Integer)
+            ViewState("IdTypeHotelItemChangeContent") = value
+        End Set
+    End Property
+
+
 
 #End Region
 
@@ -501,6 +527,27 @@ Partial Class CambiarContenido
             Response.Redirect(redirectUrl)
         End If
     End Sub
+
+    Private Sub ImageButton4_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles ImageButton4.Click
+        If Me.idContenido > 0 Then
+            EditConte.IdCon = Me.idContenido
+            EditConte.IdEle = Me.idElemento
+
+            Select Case Me.ContentType
+                Case "HotelItem"
+                    EditConte.DeleteContenidoHotelItem()
+                    Dim queryString As String = String.Format("?idTypeHotelItem={0}", Me.IdTypeHotelItemChangeContent)
+
+                    Dim redirectUrl As String = Request.Path & queryString
+
+                    Response.Redirect(redirectUrl)
+                Case Else
+            End Select
+
+
+        End If
+    End Sub
+
 
     Public Property EditMode() As ShowModeType
         Get

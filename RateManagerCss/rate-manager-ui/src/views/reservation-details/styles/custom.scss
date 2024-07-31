@@ -99,6 +99,24 @@ address {
     border-top: 1px solid $color-light-gray;
 }
 
+.color-212529{
+    color: #212529;
+}
+
+.truncate-text {
+    text-overflow: ellipsis;  // this line adds the ellipsis
+    cursor: pointer;          // this changes the cursor 
+    word-break: break-all;
+    overflow:hidden;         // this hides the overflowing text
+    white-space: nowrap;
+}
+
+.truncate-text:hover {
+    overflow: visible; 
+    white-space: normal;
+    height:auto;
+}
+
 @media only screen and (min-width: 1280px) {
     .swal2-custom-popup {
         width: 40rem !important;

@@ -16,6 +16,8 @@ Partial Public Class HotelItem
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         If Not MyBase.IsHotelSelected Then MyBase.redirectTo(PaginaBase.pages.Home)
+        ctrlHotelItem1.idHotel = MyBase.cInfoActual.Hotel
+        ctrlHotelItem1.idCompany = MyBase.cInfoActual.Empresa
         Dim dsHotel As HotelDatos
         Dim dsEtiq As MonedaDatos
 
@@ -30,6 +32,13 @@ Partial Public Class HotelItem
                 ctrlHotelItem1.Visible = False
             End If
         End With
+
+        If Not IsPostBack Then
+            If Request.QueryString("idTypeHotelItem") IsNot Nothing Then
+                cmdNew.Style("display") = "none"
+                ctrlHotelItem1.LoadHotelItem(CType(Request.QueryString("idTypeHotelItem"), Integer), True)
+            End If
+        End If
 
     End Sub
 

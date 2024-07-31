@@ -31,6 +31,19 @@
           <Property Name="Distancia" Type="decimal" Precision="18" Scale="2" />
           <Property Name="RatioSearch" Type="int" />
         </EntityType>
+        <EntityType Name="Contenido">
+          <Key>
+            <PropertyRef Name="IdContenido" />
+          </Key>
+          <Property Name="IdContenido" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdEmpresa" Type="int" />
+          <Property Name="IdElemento" Type="int" Nullable="false" />
+          <Property Name="Width" Type="smallint" />
+          <Property Name="Height" Type="smallint" />
+          <Property Name="Descripcion" Type="ntext" />
+          <Property Name="Archivo" Type="nvarchar" MaxLength="250" />
+          <Property Name="URL" Type="nvarchar" MaxLength="250" />
+        </EntityType>
         <EntityType Name="Elementos">
           <Key>
             <PropertyRef Name="IdElemento" />
@@ -43,6 +56,14 @@
           <Property Name="idGrupo" Type="int" />
           <Property Name="GrupoTipo" Type="tinyint" />
           <Property Name="GrupoMax" Type="tinyint" />
+        </EntityType>
+        <EntityType Name="HotelItem_Contenido">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdContenido" Type="int" Nullable="false" />
+          <Property Name="IdHotelItem" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Monedas">
           <Key>
@@ -85,7 +106,9 @@
         <EntityContainer Name="OzUniModelStoreContainer">
           <EntitySet Name="AplicacionPortal" EntityType="Self.AplicacionPortal" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Ciudades" EntityType="Self.Ciudades" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Contenido" EntityType="Self.Contenido" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Elementos" EntityType="Self.Elementos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HotelItem_Contenido" EntityType="Self.HotelItem_Contenido" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Monedas" EntityType="Self.Monedas" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Portales" EntityType="Self.Portales" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
@@ -124,6 +147,8 @@
             <Parameter Name="addToHotelPms" Mode="In" Type="Boolean" />
           </FunctionImport>
           <EntitySet Name="Elementos" EntityType="OzUniModel.Elementos" />
+          <EntitySet Name="Contenido" EntityType="OzUniModel.Contenido" />
+          <EntitySet Name="HotelItem_Contenido" EntityType="OzUniModel.HotelItem_Contenido" />
         </EntityContainer>
         <EntityType Name="AplicacionPortal">
           <Key>
@@ -182,6 +207,27 @@
           <Property Name="idGrupo" Type="Int32" />
           <Property Name="GrupoTipo" Type="Byte" />
           <Property Name="GrupoMax" Type="Byte" />
+        </EntityType>
+        <EntityType Name="Contenido">
+          <Key>
+            <PropertyRef Name="IdContenido" />
+          </Key>
+          <Property Name="IdContenido" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdEmpresa" Type="Int32" />
+          <Property Name="IdElemento" Type="Int32" Nullable="false" />
+          <Property Name="Width" Type="Int16" />
+          <Property Name="Height" Type="Int16" />
+          <Property Name="Descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Archivo" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="URL" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="HotelItem_Contenido">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdContenido" Type="Int32" Nullable="false" />
+          <Property Name="IdHotelItem" Type="Int32" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -269,6 +315,29 @@
                 <ScalarProperty Name="IdTipo" ColumnName="IdTipo" />
                 <ScalarProperty Name="Nombre" ColumnName="Nombre" />
                 <ScalarProperty Name="IdElemento" ColumnName="IdElemento" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Contenido">
+            <EntityTypeMapping TypeName="OzUniModel.Contenido">
+              <MappingFragment StoreEntitySet="Contenido">
+                <ScalarProperty Name="URL" ColumnName="URL" />
+                <ScalarProperty Name="Archivo" ColumnName="Archivo" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Height" ColumnName="Height" />
+                <ScalarProperty Name="Width" ColumnName="Width" />
+                <ScalarProperty Name="IdElemento" ColumnName="IdElemento" />
+                <ScalarProperty Name="IdEmpresa" ColumnName="IdEmpresa" />
+                <ScalarProperty Name="IdContenido" ColumnName="IdContenido" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HotelItem_Contenido">
+            <EntityTypeMapping TypeName="OzUniModel.HotelItem_Contenido">
+              <MappingFragment StoreEntitySet="HotelItem_Contenido">
+                <ScalarProperty Name="IdHotelItem" ColumnName="IdHotelItem" />
+                <ScalarProperty Name="IdContenido" ColumnName="IdContenido" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

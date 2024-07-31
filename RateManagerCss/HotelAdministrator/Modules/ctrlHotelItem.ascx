@@ -1,4 +1,5 @@
 ﻿<%@ Control Language="vb" AutoEventWireup="false" CodeBehind="ctrlHotelItem.ascx.vb" Inherits="RateManager.ctrlHotelItem" %>
+<%@ Register TagPrefix="uc1" TagName="ctrlImagesHotelItem" Src="../../Portal/Modules/Contenido/ctrlImagesHotelItem.ascx" %>
 <script type="text/javascript" language="javascript">
     function CtrHotelItem_Clear() {
         $("#<%=txtName.ClientID %>").val("");
@@ -39,5 +40,8 @@
 			    <asp:RequiredFieldValidator ID="rfvPrice" ControlToValidate="txtPrice" runat="server" ErrorMessage="*"></asp:RequiredFieldValidator>
 		    </TD>
 		</TR>
+		<tr>
+			<uc1:ctrlImagesHotelItem id="ctrlImgHotelItem1" runat="server"></uc1:ctrlImagesHotelItem>
+		</tr>
 	</tbody>
 </table>

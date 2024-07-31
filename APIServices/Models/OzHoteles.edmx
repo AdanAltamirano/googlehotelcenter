@@ -936,6 +936,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vReservation' no tiene definid
             <PropertyRef Name="AgencyId" />
             <PropertyRef Name="Agency" />
             <PropertyRef Name="AgencyUserId" />
+            <PropertyRef Name="Tax" />
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="ConfirmNumber" Type="nvarchar" MaxLength="24" Nullable="false" />
@@ -944,8 +945,10 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vReservation' no tiene definid
           <Property Name="ReservationDate" Type="smalldatetime" Nullable="false" />
           <Property Name="CheckIn" Type="smalldatetime" Nullable="false" />
           <Property Name="CheckOut" Type="smalldatetime" Nullable="false" />
+          <Property Name="Nigths" Type="int" />
           <Property Name="Client" Type="nvarchar" MaxLength="161" />
           <Property Name="Status" Type="tinyint" Nullable="false" />
+          <Property Name="Guests" Type="int" />
           <Property Name="RoomCount" Type="int" />
           <Property Name="CompanyId" Type="int" />
           <Property Name="Source" Type="nvarchar" MaxLength="4" />
@@ -954,6 +957,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vReservation' no tiene definid
           <Property Name="AgencyUserId" Type="int" Nullable="false" />
           <Property Name="Portal" Type="nvarchar" MaxLength="80" />
           <Property Name="Total" Type="nvarchar" MaxLength="44" />
+          <Property Name="Tax" Type="smallmoney" Nullable="false" />
           <Property Name="Provider" Type="varchar" MaxLength="14" />
           <Property Name="CorporateId" Type="int" />
           <Property Name="PaymentMethod" Type="nvarchar" MaxLength="20" />
@@ -1294,6 +1298,9 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
         <Function Name="spGetPromosByRatePlan" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="idHotel" Type="int" Mode="In" />
           <Parameter Name="ratePlan" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="spGetReservationHotelItem" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idReservation" Type="int" Mode="In" />
         </Function>
         <Function Name="spModificarDetalleReservaciones" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="idDetalleReservacion" Type="int" Mode="In" />
@@ -1659,8 +1666,10 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
     [vReservation].[ReservationDate] AS [ReservationDate], 
     [vReservation].[CheckIn] AS [CheckIn], 
     [vReservation].[CheckOut] AS [CheckOut], 
+    [vReservation].[Nigths] AS [Nigths], 
     [vReservation].[Client] AS [Client], 
     [vReservation].[Status] AS [Status], 
+    [vReservation].[Guests] AS [Guests], 
     [vReservation].[RoomCount] AS [RoomCount], 
     [vReservation].[CompanyId] AS [CompanyId], 
     [vReservation].[Source] AS [Source], 
@@ -1669,6 +1678,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
     [vReservation].[AgencyUserId] AS [AgencyUserId], 
     [vReservation].[Portal] AS [Portal], 
     [vReservation].[Total] AS [Total], 
+    [vReservation].[Tax] AS [Tax], 
     [vReservation].[Provider] AS [Provider], 
     [vReservation].[CorporateId] AS [CorporateId], 
     [vReservation].[PaymentMethod] AS [PaymentMethod]
@@ -2038,6 +2048,9 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
           <EntitySet Name="vDayRatesExceptions" EntityType="Models.vDayRatesExceptions" />
           <EntitySet Name="UsuarioHotel" EntityType="Models.UsuarioHotel" />
           <EntitySet Name="vUsersConnectivity" EntityType="Models.vUsersConnectivity" />
+          <FunctionImport Name="spGetReservationHotelItem" ReturnType="Collection(Models.spGetReservationHotelItem_Result)">
+            <Parameter Name="idReservation" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="RatesPlan">
           <Key>
@@ -3039,6 +3052,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
             <PropertyRef Name="AgencyId" />
             <PropertyRef Name="Agency" />
             <PropertyRef Name="AgencyUserId" />
+            <PropertyRef Name="Tax" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" />
           <Property Name="ConfirmNumber" Type="String" Nullable="false" MaxLength="24" FixedLength="false" Unicode="true" />
@@ -3060,6 +3074,9 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
           <Property Name="Provider" Type="String" MaxLength="14" FixedLength="false" Unicode="false" />
           <Property Name="CorporateId" Type="Int32" />
           <Property Name="PaymentMethod" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Nigths" Type="Int32" />
+          <Property Name="Guests" Type="Int32" />
+          <Property Name="Tax" Type="Decimal" Nullable="false" Precision="10" Scale="4" />
         </EntityType>
         <EntityType Name="Reservaciones_Movimientos_Log">
           <Key>
@@ -3536,6 +3553,20 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
           <Property Name="Url" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="TypePms" Type="Int16" Nullable="false" />
         </EntityType>
+        <ComplexType Name="spGetReservationHotelItem_Result">
+          <Property Type="Int32" Name="idReservaciones_HotelItems" Nullable="false" />
+          <Property Type="Int32" Name="idHotelItem" Nullable="false" />
+          <Property Type="Int32" Name="idReservacion" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="500" />
+          <Property Type="Decimal" Name="Price" Nullable="false" Precision="19" />
+          <Property Type="Int32" Name="idMoneda" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="Signo" Nullable="true" MaxLength="2" />
+          <Property Type="String" Name="Abreviatura" Nullable="true" MaxLength="6" />
+          <Property Type="String" Name="Codigo" Nullable="true" MaxLength="3" />
+          <Property Type="Decimal" Name="TipoCambio" Nullable="true" Precision="19" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4457,6 +4488,9 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
           <EntitySetMapping Name="vReservation">
             <EntityTypeMapping TypeName="Models.vReservation">
               <MappingFragment StoreEntitySet="vReservation">
+                <ScalarProperty Name="Tax" ColumnName="Tax" />
+                <ScalarProperty Name="Guests" ColumnName="Guests" />
+                <ScalarProperty Name="Nigths" ColumnName="Nigths" />
                 <ScalarProperty Name="PaymentMethod" ColumnName="PaymentMethod" />
                 <ScalarProperty Name="CorporateId" ColumnName="CorporateId" />
                 <ScalarProperty Name="Provider" ColumnName="Provider" />
@@ -4855,6 +4889,24 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spGetReservationHotelItem" FunctionName="Models.Store.spGetReservationHotelItem">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Models.spGetReservationHotelItem_Result">
+                <ScalarProperty Name="idReservaciones_HotelItems" ColumnName="idReservaciones_HotelItems" />
+                <ScalarProperty Name="idHotelItem" ColumnName="idHotelItem" />
+                <ScalarProperty Name="idReservacion" ColumnName="idReservacion" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="idMoneda" ColumnName="idMoneda" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Signo" ColumnName="Signo" />
+                <ScalarProperty Name="Abreviatura" ColumnName="Abreviatura" />
+                <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+                <ScalarProperty Name="TipoCambio" ColumnName="TipoCambio" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -1399,6 +1399,7 @@
     <Content Include="Portal\Modules\Contenido\ctrlEvents.ascx" />
     <Content Include="Portal\Modules\Contenido\CtrlIdiomaFCk.ascx" />
     <Content Include="Portal\Modules\Contenido\ctrlImages.ascx" />
+    <Content Include="Portal\Modules\Contenido\ctrlImagesHotelItem.ascx" />
     <Content Include="Portal\Modules\Contenido\ctrlImagesRooms.ascx" />
     <Content Include="Portal\Modules\Contenido\CtrlPoliticas.ascx" />
     <Content Include="Portal\Modules\Contenido\CtrlRoom.ascx" />
@@ -1566,31 +1567,38 @@
     </Compile>
     <Compile Include="CallCenter\Booking.aspx.vb">
       <DependentUpon>Booking.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CallCenter\Polities.aspx.designer.vb">
       <DependentUpon>Polities.aspx</DependentUpon>
     </Compile>
     <Compile Include="CallCenter\Polities.aspx.vb">
       <DependentUpon>Polities.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="CallCenter\Reservation.vb" />
+    <Compile Include="CallCenter\Reservation.vb">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Casas\AmenidadesCasas.aspx.designer.vb">
       <DependentUpon>AmenidadesCasas.aspx</DependentUpon>
     </Compile>
     <Compile Include="Casas\AmenidadesCasas.aspx.vb">
       <DependentUpon>AmenidadesCasas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Casas\CategoriasCasas.aspx.designer.vb">
       <DependentUpon>CategoriasCasas.aspx</DependentUpon>
     </Compile>
     <Compile Include="Casas\CategoriasCasas.aspx.vb">
       <DependentUpon>CategoriasCasas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Casas\Convenios.aspx.designer.vb">
       <DependentUpon>Convenios.aspx</DependentUpon>
     </Compile>
     <Compile Include="Casas\Convenios.aspx.vb">
       <DependentUpon>Convenios.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Casas\Crud.ashx.vb">
       <DependentUpon>Crud.ashx</DependentUpon>
@@ -1601,21 +1609,25 @@
     </Compile>
     <Compile Include="Casas\RegistroCasas.aspx.vb">
       <DependentUpon>RegistroCasas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Casas\HousesCatalogue.aspx.designer.vb">
       <DependentUpon>HousesCatalogue.aspx</DependentUpon>
     </Compile>
     <Compile Include="Casas\HousesCatalogue.aspx.vb">
       <DependentUpon>HousesCatalogue.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Chat.aspx.designer.vb">
       <DependentUpon>Chat.aspx</DependentUpon>
     </Compile>
     <Compile Include="Chat.aspx.vb">
       <DependentUpon>Chat.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Default.aspx.vb">
       <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Default.aspx.designer.vb">
       <DependentUpon>Default.aspx</DependentUpon>
@@ -1625,6 +1637,7 @@
     </Compile>
     <Compile Include="ExportExcel\Reports.aspx.vb">
       <DependentUpon>Reports.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Data\ConfluxMapping.vb" />
     <Compile Include="HotelAdministrator\Data\HdrRetentionsConfig.ashx.vb">
@@ -1636,48 +1649,56 @@
     </Compile>
     <Compile Include="HotelAdministrator\Invoicing\Vouchers.aspx.vb">
       <DependentUpon>Vouchers.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\ExportExcellReportNBC.aspx.designer.vb">
       <DependentUpon>ExportExcellReportNBC.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\ExportExcellReportNBC.aspx.vb">
       <DependentUpon>ExportExcellReportNBC.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\IDSMapping.aspx.designer.vb">
       <DependentUpon>IDSMapping.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\IDSMapping.aspx.vb">
       <DependentUpon>IDSMapping.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\MapeoPlanesF2G.aspx.designer.vb">
       <DependentUpon>MapeoPlanesF2G.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\MapeoPlanesF2G.aspx.vb">
       <DependentUpon>MapeoPlanesF2G.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\Promotions.aspx.designer.vb">
       <DependentUpon>Promotions.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\Promotions.aspx.vb">
       <DependentUpon>Promotions.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\RetentionsConfig.aspx.designer.vb">
       <DependentUpon>RetentionsConfig.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\RetentionsConfig.aspx.vb">
       <DependentUpon>RetentionsConfig.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Hotel\Documentacion\Ayuda.aspx.designer.vb">
       <DependentUpon>Ayuda.aspx</DependentUpon>
     </Compile>
     <Compile Include="Hotel\Documentacion\Ayuda.aspx.vb">
       <DependentUpon>Ayuda.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Hotel\Documentacion\Noticias.aspx.designer.vb">
       <DependentUpon>Noticias.aspx</DependentUpon>
     </Compile>
     <Compile Include="Hotel\Documentacion\Noticias.aspx.vb">
       <DependentUpon>Noticias.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="dsReserv.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -1689,66 +1710,77 @@
     </Compile>
     <Compile Include="EditorFCk\Scripts\fckeditor\editor\filemanager\connectors\aspx\configFCK.ascx.vb">
       <DependentUpon>configFCK.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="EditorFCk\Scripts\fckeditor\editor\filemanager\connectors\aspx\connector.aspx.designer.vb">
       <DependentUpon>connector.aspx</DependentUpon>
     </Compile>
     <Compile Include="EditorFCk\Scripts\fckeditor\editor\filemanager\connectors\aspx\connector.aspx.vb">
       <DependentUpon>connector.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="EditorFCk\Scripts\fckeditor\editor\filemanager\connectors\aspx\upload.aspx.designer.vb">
       <DependentUpon>upload.aspx</DependentUpon>
     </Compile>
     <Compile Include="EditorFCk\Scripts\fckeditor\editor\filemanager\connectors\aspx\upload.aspx.vb">
       <DependentUpon>upload.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Invoicing\Modules\CtrPaymentMethod.ascx.designer.vb">
       <DependentUpon>CtrPaymentMethod.ascx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Invoicing\Modules\CtrPaymentMethod.ascx.vb">
       <DependentUpon>CtrPaymentMethod.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Invoicing\PaymentMethod\PaymentMethod.aspx.designer.vb">
       <DependentUpon>PaymentMethod.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Invoicing\PaymentMethod\PaymentMethod.aspx.vb">
       <DependentUpon>PaymentMethod.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Modules\CtrlActivityItinerary.ascx.designer.vb">
       <DependentUpon>CtrlActivityItinerary.ascx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Modules\CtrlActivityItinerary.ascx.vb">
       <DependentUpon>CtrlActivityItinerary.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Modules\ctrlHotelItem.ascx.designer.vb">
       <DependentUpon>ctrlHotelItem.ascx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Modules\ctrlHotelItem.ascx.vb">
       <DependentUpon>ctrlHotelItem.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Modules\CtrlHotelItinerary.ascx.designer.vb">
       <DependentUpon>CtrlHotelItinerary.ascx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Modules\CtrlHotelItinerary.ascx.vb">
       <DependentUpon>CtrlHotelItinerary.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Modules\ctrlReservationsQueryBeds.ascx.designer.vb">
       <DependentUpon>ctrlReservationsQueryBeds.ascx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Modules\ctrlReservationsQueryBeds.ascx.vb">
       <DependentUpon>ctrlReservationsQueryBeds.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Modules\ctrlReservationsQueryPackages.ascx.designer.vb">
       <DependentUpon>ctrlReservationsQueryPackages.ascx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Modules\ctrlReservationsQueryPackages.ascx.vb">
       <DependentUpon>ctrlReservationsQueryPackages.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Modules\ctrlReservationsQueryV2.ascx.designer.vb">
       <DependentUpon>ctrlReservationsQueryV2.ascx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Modules\ctrlReservationsQueryV2.ascx.vb">
       <DependentUpon>ctrlReservationsQueryV2.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\CExportExcell.vb" />
     <Compile Include="HotelAdministrator\Pages\DisplayItinerary.aspx.designer.vb">
@@ -1756,84 +1788,98 @@
     </Compile>
     <Compile Include="HotelAdministrator\Pages\DisplayItinerary.aspx.vb">
       <DependentUpon>DisplayItinerary.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\ExcelPackages.aspx.designer.vb">
       <DependentUpon>ExcelPackages.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\ExcelPackages.aspx.vb">
       <DependentUpon>ExcelPackages.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\ExcelWaitListReport.aspx.designer.vb">
       <DependentUpon>ExcelWaitListReport.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\ExcelWaitListReport.aspx.vb">
       <DependentUpon>ExcelWaitListReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\ExportToExcell.aspx.designer.vb">
       <DependentUpon>ExportToExcell.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\ExportToExcell.aspx.vb">
       <DependentUpon>ExportToExcell.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\HotelItem.aspx.designer.vb">
       <DependentUpon>HotelItem.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\HotelItem.aspx.vb">
       <DependentUpon>HotelItem.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\ReservationBeds.aspx.designer.vb">
       <DependentUpon>ReservationBeds.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\ReservationBeds.aspx.vb">
       <DependentUpon>ReservationBeds.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\ReservationDetailsV2.aspx.designer.vb">
       <DependentUpon>ReservationDetailsV2.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\ReservationDetailsV2.aspx.vb">
       <DependentUpon>ReservationDetailsV2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\ReservationPackages.aspx.designer.vb">
       <DependentUpon>ReservationPackages.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\ReservationPackages.aspx.vb">
       <DependentUpon>ReservationPackages.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\ReservationsV2.aspx.designer.vb">
       <DependentUpon>ReservationsV2.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\ReservationsV2.aspx.vb">
       <DependentUpon>ReservationsV2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\UserPermissionCards.aspx.designer.vb">
       <DependentUpon>UserPermissionCards.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\UserPermissionCards.aspx.vb">
       <DependentUpon>UserPermissionCards.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelBeds\Ciudades\DestinationFix.aspx.designer.vb">
       <DependentUpon>DestinationFix.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelBeds\Ciudades\DestinationFix.aspx.vb">
       <DependentUpon>DestinationFix.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelBeds\Ciudades\DestinationSkipped.aspx.designer.vb">
       <DependentUpon>DestinationSkipped.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelBeds\Ciudades\DestinationSkipped.aspx.vb">
       <DependentUpon>DestinationSkipped.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelBeds\Ciudades\HotelBeds.aspx.designer.vb">
       <DependentUpon>HotelBeds.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelBeds\Ciudades\HotelBeds.aspx.vb">
       <DependentUpon>HotelBeds.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelBeds\Ciudades\HotelBeds_ModifyDestination.aspx.designer.vb">
       <DependentUpon>HotelBeds_ModifyDestination.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelBeds\Ciudades\HotelBeds_ModifyDestination.aspx.vb">
       <DependentUpon>HotelBeds_ModifyDestination.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelBeds\HotelBedsDS.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -1846,18 +1892,21 @@
     </Compile>
     <Compile Include="HotelBeds\Hoteles\HotelBeds.aspx.vb">
       <DependentUpon>HotelBeds.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelBeds\Hoteles\HotelBeds_ModifyHotel.aspx.designer.vb">
       <DependentUpon>HotelBeds_ModifyHotel.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelBeds\Hoteles\HotelBeds_ModifyHotel.aspx.vb">
       <DependentUpon>HotelBeds_ModifyHotel.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelBeds\Hoteles\HotelFix.aspx.designer.vb">
       <DependentUpon>HotelFix.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelBeds\Hoteles\HotelFix.aspx.vb">
       <DependentUpon>HotelFix.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="IPRModel.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -1874,12 +1923,14 @@
     </Compile>
     <Compile Include="Modulos\ctrlAutoComplete.ascx.vb">
       <DependentUpon>ctrlAutoComplete.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\AvailabilityRestrictionsV2.aspx.designer.vb">
       <DependentUpon>AvailabilityRestrictionsV2.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\AvailabilityRestrictionsV2.aspx.vb">
       <DependentUpon>AvailabilityRestrictionsV2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\Classes\ClsAssingCountryRatePlan.vb" />
     <Compile Include="Pages\Classes\ClsRuWS.vb" />
@@ -1888,6 +1939,7 @@
     </Compile>
     <Compile Include="Pages\DataClientPermission.aspx.vb">
       <DependentUpon>DataClientPermission.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\Data\ExecutorServer.ashx.vb">
       <DependentUpon>ExecutorServer.ashx</DependentUpon>
@@ -1900,6 +1952,7 @@
     </Compile>
     <Compile Include="Pages\Groups.aspx.vb">
       <DependentUpon>Groups.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\LoadAvailabilityRestrictions.ashx.vb">
       <DependentUpon>LoadAvailabilityRestrictions.ashx</DependentUpon>
@@ -1909,396 +1962,470 @@
     </Compile>
     <Compile Include="Pages\NightsByChannelReport.aspx.vb">
       <DependentUpon>NightsByChannelReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\OnlinePaymentReservationProccesReport.aspx.designer.vb">
       <DependentUpon>OnlinePaymentReservationProccesReport.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\OnlinePaymentReservationProccesReport.aspx.vb">
       <DependentUpon>OnlinePaymentReservationProccesReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\RoomClosure.aspx.designer.vb">
       <DependentUpon>RoomClosure.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\RoomClosure.aspx.vb">
       <DependentUpon>RoomClosure.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\uvReport.aspx.designer.vb">
       <DependentUpon>uvReport.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\uvReport.aspx.vb">
       <DependentUpon>uvReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\AgenciasModulo.ascx.designer.vb">
       <DependentUpon>AgenciasModulo.ascx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\AgenciasModulo.ascx.vb">
       <DependentUpon>AgenciasModulo.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\AreaAttractionCCt.ascx.designer.vb">
       <DependentUpon>AreaAttractionCCt.ascx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\AreaAttractionCCt.ascx.vb">
       <DependentUpon>AreaAttractionCCt.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\CtrlDistanciasCCT.ascx.designer.vb">
       <DependentUpon>CtrlDistanciasCCT.ascx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\CtrlDistanciasCCT.ascx.vb">
       <DependentUpon>CtrlDistanciasCCT.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Portal\Modules\Contenido\ctrlImagesHotelItem.ascx.designer.vb">
+      <DependentUpon>ctrlImagesHotelItem.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Portal\Modules\Contenido\ctrlImagesHotelItem.ascx.vb">
+      <DependentUpon>ctrlImagesHotelItem.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\ctrlImagesRooms.ascx.designer.vb">
       <DependentUpon>ctrlImagesRooms.ascx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\ctrlImagesRooms.ascx.vb">
       <DependentUpon>ctrlImagesRooms.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\InfoAmenidadesCCT.ascx.designer.vb">
       <DependentUpon>InfoAmenidadesCCT.ascx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\InfoAmenidadesCCT.ascx.vb">
       <DependentUpon>InfoAmenidadesCCT.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\MapLocationCCT.ascx.designer.vb">
       <DependentUpon>MapLocationCCT.ascx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\MapLocationCCT.ascx.vb">
       <DependentUpon>MapLocationCCT.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Modules\ctrlMenuLeft.ascx.designer.vb">
       <DependentUpon>ctrlMenuLeft.ascx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Modules\ctrlMenuLeft.ascx.vb">
       <DependentUpon>ctrlMenuLeft.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Modules\ctrlMenuUl.ascx.designer.vb">
       <DependentUpon>ctrlMenuUl.ascx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Modules\ctrlMenuUl.ascx.vb">
       <DependentUpon>ctrlMenuUl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="home.aspx.designer.vb">
       <DependentUpon>home.aspx</DependentUpon>
     </Compile>
     <Compile Include="home.aspx.vb">
       <DependentUpon>home.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Global.asax.vb">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\clsGetAvail.vb" />
     <Compile Include="HotelAdministrator\Invoicing\Common\clsFormat.vb" />
-    <Compile Include="HotelAdministrator\Invoicing\Common\UserControlBase.vb" />
+    <Compile Include="HotelAdministrator\Invoicing\Common\UserControlBase.vb">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="HotelAdministrator\Invoicing\ConciliationSummary.aspx.designer.vb">
       <DependentUpon>ConciliationSummary.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Invoicing\ConciliationSummary.aspx.vb">
       <DependentUpon>ConciliationSummary.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Invoicing\InvoiceByPeriod.aspx.designer.vb">
       <DependentUpon>InvoiceByPeriod.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Invoicing\InvoiceByPeriod.aspx.vb">
       <DependentUpon>InvoiceByPeriod.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Invoicing\Invoices.aspx.designer.vb">
       <DependentUpon>Invoices.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Invoicing\Invoices.aspx.vb">
       <DependentUpon>Invoices.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Invoicing\InvoicesToConciliate.aspx.designer.vb">
       <DependentUpon>InvoicesToConciliate.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Invoicing\InvoicesToConciliate.aspx.vb">
       <DependentUpon>InvoicesToConciliate.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Invoicing\InvoiceToConciliateDetails.aspx.designer.vb">
       <DependentUpon>InvoiceToConciliateDetails.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Invoicing\InvoiceToConciliateDetails.aspx.vb">
       <DependentUpon>InvoiceToConciliateDetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Invoicing\Invoice\PrintInvoice.aspx.designer.vb">
       <DependentUpon>PrintInvoice.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Invoicing\Invoice\PrintInvoice.aspx.vb">
       <DependentUpon>PrintInvoice.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Invoicing\MainInvoicing.aspx.designer.vb">
       <DependentUpon>MainInvoicing.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Invoicing\MainInvoicing.aspx.vb">
       <DependentUpon>MainInvoicing.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Invoicing\Modules\HotelBalanceViewer.ascx.designer.vb">
       <DependentUpon>HotelBalanceViewer.ascx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Invoicing\Modules\HotelBalanceViewer.ascx.vb">
       <DependentUpon>HotelBalanceViewer.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Invoicing\Modules\HotelInvoiceDetailViewer.ascx.designer.vb">
       <DependentUpon>HotelInvoiceDetailViewer.ascx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Invoicing\Modules\HotelInvoiceDetailViewer.ascx.vb">
       <DependentUpon>HotelInvoiceDetailViewer.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Invoicing\Modules\HotelInvoiceViewer.ascx.designer.vb">
       <DependentUpon>HotelInvoiceViewer.ascx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Invoicing\Modules\HotelInvoiceViewer.ascx.vb">
       <DependentUpon>HotelInvoiceViewer.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Invoicing\Payment\HotelInvoiceDetails.aspx.designer.vb">
       <DependentUpon>HotelInvoiceDetails.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Invoicing\Payment\HotelInvoiceDetails.aspx.vb">
       <DependentUpon>HotelInvoiceDetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Invoicing\Payment\PaymentInvoicesSummary.aspx.designer.vb">
       <DependentUpon>PaymentInvoicesSummary.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Invoicing\Payment\PaymentInvoicesSummary.aspx.vb">
       <DependentUpon>PaymentInvoicesSummary.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Invoicing\Payment\PaymentRegistered.aspx.designer.vb">
       <DependentUpon>PaymentRegistered.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Invoicing\Payment\PaymentRegistered.aspx.vb">
       <DependentUpon>PaymentRegistered.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Invoicing\Payment\PaymentRegistration.aspx.designer.vb">
       <DependentUpon>PaymentRegistration.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Invoicing\Payment\PaymentRegistration.aspx.vb">
       <DependentUpon>PaymentRegistration.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Invoicing\Payment\PaymentsRegisteredByHotel.aspx.designer.vb">
       <DependentUpon>PaymentsRegisteredByHotel.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Invoicing\Payment\PaymentsRegisteredByHotel.aspx.vb">
       <DependentUpon>PaymentsRegisteredByHotel.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Invoicing\ReservationsNetRate.aspx.designer.vb">
       <DependentUpon>ReservationsNetRate.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Invoicing\ReservationsNetRate.aspx.vb">
       <DependentUpon>ReservationsNetRate.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Modules\ctrlDeposits.ascx.designer.vb">
       <DependentUpon>ctrlDeposits.ascx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Modules\ctrlDeposits.ascx.vb">
       <DependentUpon>ctrlDeposits.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Modules\ctrlPayments.ascx.designer.vb">
       <DependentUpon>ctrlPayments.ascx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Modules\ctrlPayments.ascx.vb">
       <DependentUpon>ctrlPayments.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Modules\ctrlReservationQueryDeposits.ascx.designer.vb">
       <DependentUpon>ctrlReservationQueryDeposits.ascx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Modules\ctrlReservationQueryDeposits.ascx.vb">
       <DependentUpon>ctrlReservationQueryDeposits.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Modules\ctrlReservationsNetRateQuery.ascx.designer.vb">
       <DependentUpon>ctrlReservationsNetRateQuery.ascx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Modules\ctrlReservationsNetRateQuery.ascx.vb">
       <DependentUpon>ctrlReservationsNetRateQuery.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Modules\ctrlReservationsQuery.ascx.designer.vb">
       <DependentUpon>ctrlReservationsQuery.ascx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Modules\ctrlReservationsQuery.ascx.vb">
       <DependentUpon>ctrlReservationsQuery.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Modules\ctrlRoomType.ascx.designer.vb">
       <DependentUpon>ctrlRoomType.ascx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Modules\ctrlRoomType.ascx.vb">
       <DependentUpon>ctrlRoomType.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\PagesGeneral\Hotel.aspx.designer.vb">
       <DependentUpon>Hotel.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\PagesGeneral\Hotel.aspx.vb">
       <DependentUpon>Hotel.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\PagesGeneral\HotelAsosiationActivitys.aspx.designer.vb">
       <DependentUpon>HotelAsosiationActivitys.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\PagesGeneral\HotelAsosiationActivitys.aspx.vb">
       <DependentUpon>HotelAsosiationActivitys.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\PagesGeneral\HotelAsosiationCars.aspx.designer.vb">
       <DependentUpon>HotelAsosiationCars.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\PagesGeneral\HotelAsosiationCars.aspx.vb">
       <DependentUpon>HotelAsosiationCars.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\PagesGeneral\HotelDineroMail.aspx.designer.vb">
       <DependentUpon>HotelDineroMail.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\PagesGeneral\HotelDineroMail.aspx.vb">
       <DependentUpon>HotelDineroMail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\PagesGeneral\RoomType.aspx.designer.vb">
       <DependentUpon>RoomType.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\PagesGeneral\RoomType.aspx.vb">
       <DependentUpon>RoomType.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\ClientList.aspx.designer.vb">
       <DependentUpon>ClientList.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\ClientList.aspx.vb">
       <DependentUpon>ClientList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\ConfirmReservas.aspx.designer.vb">
       <DependentUpon>ConfirmReservas.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\ConfirmReservas.aspx.vb">
       <DependentUpon>ConfirmReservas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Modulos\ctrlExceptionFares.ascx.designer.vb">
       <DependentUpon>ctrlExceptionFares.ascx</DependentUpon>
     </Compile>
     <Compile Include="Modulos\ctrlExceptionFares.ascx.vb">
       <DependentUpon>ctrlExceptionFares.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Modulos\ctrlExceptionFaresExc.ascx.designer.vb">
       <DependentUpon>ctrlExceptionFaresExc.ascx</DependentUpon>
     </Compile>
     <Compile Include="Modulos\ctrlExceptionFaresExc.ascx.vb">
       <DependentUpon>ctrlExceptionFaresExc.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Modulos\CtrlPlanFaresExcPromoNR.ascx.designer.vb">
       <DependentUpon>CtrlPlanFaresExcPromoNR.ascx</DependentUpon>
     </Compile>
     <Compile Include="Modulos\CtrlPlanFaresExcPromoNR.ascx.vb">
       <DependentUpon>CtrlPlanFaresExcPromoNR.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Modulos\ctrlPlanFaresPromoNR.ascx.designer.vb">
       <DependentUpon>ctrlPlanFaresPromoNR.ascx</DependentUpon>
     </Compile>
     <Compile Include="Modulos\ctrlPlanFaresPromoNR.ascx.vb">
       <DependentUpon>ctrlPlanFaresPromoNR.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Modulos\ctrRateAplicationExc.ascx.designer.vb">
       <DependentUpon>ctrRateAplicationExc.ascx</DependentUpon>
     </Compile>
     <Compile Include="Modulos\ctrRateAplicationExc.ascx.vb">
       <DependentUpon>ctrRateAplicationExc.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Modulos\ctrRateAplicationNRpromo.ascx.designer.vb">
       <DependentUpon>ctrRateAplicationNRpromo.ascx</DependentUpon>
     </Compile>
     <Compile Include="Modulos\ctrRateAplicationNRpromo.ascx.vb">
       <DependentUpon>ctrRateAplicationNRpromo.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\FaresCataloguePromo.aspx.designer.vb">
       <DependentUpon>FaresCataloguePromo.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\FaresCataloguePromo.aspx.vb">
       <DependentUpon>FaresCataloguePromo.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\FaresCataloguePromoNR.aspx.designer.vb">
       <DependentUpon>FaresCataloguePromoNR.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\FaresCataloguePromoNR.aspx.vb">
       <DependentUpon>FaresCataloguePromoNR.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\HotelPortal.aspx.designer.vb">
       <DependentUpon>HotelPortal.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\HotelPortal.aspx.vb">
       <DependentUpon>HotelPortal.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\MonedasHotel.aspx.designer.vb">
       <DependentUpon>MonedasHotel.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\MonedasHotel.aspx.vb">
       <DependentUpon>MonedasHotel.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Modules\ctrlMenuTap.ascx.designer.vb">
       <DependentUpon>ctrlMenuTap.ascx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Modules\ctrlMenuTap.ascx.vb">
       <DependentUpon>ctrlMenuTap.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\InfoPropiedadCCT.ascx.designer.vb">
       <DependentUpon>InfoPropiedadCCT.ascx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\InfoPropiedadCCT.ascx.vb">
       <DependentUpon>InfoPropiedadCCT.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Pages\GetLogoHotel.aspx.designer.vb">
       <DependentUpon>GetLogoHotel.aspx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Pages\GetLogoHotel.aspx.vb">
       <DependentUpon>GetLogoHotel.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Pages\LogDetalle.aspx.designer.vb">
       <DependentUpon>LogDetalle.aspx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Pages\LogDetalle.aspx.vb">
       <DependentUpon>LogDetalle.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Pages\LogReader.aspx.designer.vb">
       <DependentUpon>LogReader.aspx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Pages\LogReader.aspx.vb">
       <DependentUpon>LogReader.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Principal.Master.designer.vb">
       <DependentUpon>Principal.Master</DependentUpon>
     </Compile>
     <Compile Include="Principal.Master.vb">
       <DependentUpon>Principal.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Registro\AgencyAsociate.aspx.designer.vb">
       <DependentUpon>AgencyAsociate.aspx</DependentUpon>
     </Compile>
     <Compile Include="Registro\AgencyAsociate.aspx.vb">
       <DependentUpon>AgencyAsociate.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Registro\AgencyRegister.aspx.designer.vb">
       <DependentUpon>AgencyRegister.aspx</DependentUpon>
     </Compile>
     <Compile Include="Registro\AgencyRegister.aspx.vb">
       <DependentUpon>AgencyRegister.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Registro\AttractionInformationCCT.aspx.designer.vb">
       <DependentUpon>AttractionInformationCCT.aspx</DependentUpon>
     </Compile>
     <Compile Include="Registro\AttractionInformationCCT.aspx.vb">
       <DependentUpon>AttractionInformationCCT.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Registro\AmenitiesInformationCCT.aspx.designer.vb">
       <DependentUpon>AmenitiesInformationCCT.aspx</DependentUpon>
     </Compile>
     <Compile Include="Registro\AmenitiesInformationCCT.aspx.vb">
       <DependentUpon>AmenitiesInformationCCT.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Registro\DistancesCCT.aspx.designer.vb">
       <DependentUpon>DistancesCCT.aspx</DependentUpon>
     </Compile>
     <Compile Include="Registro\DistancesCCT.aspx.vb">
       <DependentUpon>DistancesCCT.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Registro\InformacionPropiedadCCT.aspx.designer.vb">
       <DependentUpon>InformacionPropiedadCCT.aspx</DependentUpon>
     </Compile>
     <Compile Include="Registro\InformacionPropiedadCCT.aspx.vb">
       <DependentUpon>InformacionPropiedadCCT.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Registro\MapLocationInformationCCT.aspx.designer.vb">
       <DependentUpon>MapLocationInformationCCT.aspx</DependentUpon>
     </Compile>
     <Compile Include="Registro\MapLocationInformationCCT.aspx.vb">
       <DependentUpon>MapLocationInformationCCT.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Servicios\WaitList.ashx.vb">
       <DependentUpon>WaitList.ashx</DependentUpon>
@@ -2308,144 +2435,168 @@
     </Compile>
     <Compile Include="HotelAdministrator\Pages\WaitListReport.aspx.vb">
       <DependentUpon>WaitListReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\Deposits.aspx.designer.vb">
       <DependentUpon>Deposits.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\Deposits.aspx.vb">
       <DependentUpon>Deposits.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\DisplayCarReservation.aspx.designer.vb">
       <DependentUpon>DisplayCarReservation.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\DisplayCarReservation.aspx.vb">
       <DependentUpon>DisplayCarReservation.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\ExportExcell.aspx.designer.vb">
       <DependentUpon>ExportExcell.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\ExportExcell.aspx.vb">
       <DependentUpon>ExportExcell.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\GeneratorScriptSeason.aspx.designer.vb">
       <DependentUpon>GeneratorScriptSeason.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\GeneratorScriptSeason.aspx.vb">
       <DependentUpon>GeneratorScriptSeason.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\HotelConfPayPal.aspx.designer.vb">
       <DependentUpon>HotelConfPayPal.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\HotelConfPayPal.aspx.vb">
       <DependentUpon>HotelConfPayPal.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\ModifyPassiveReservation.aspx.designer.vb">
       <DependentUpon>ModifyPassiveReservation.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\ModifyPassiveReservation.aspx.vb">
       <DependentUpon>ModifyPassiveReservation.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\NearAirports.aspx.designer.vb">
       <DependentUpon>NearAirports.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\NearAirports.aspx.vb">
       <DependentUpon>NearAirports.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\NearCities.aspx.designer.vb">
       <DependentUpon>NearCities.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\NearCities.aspx.vb">
       <DependentUpon>NearCities.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\NoConfirmReservas.aspx.designer.vb">
       <DependentUpon>NoConfirmReservas.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\NoConfirmReservas.aspx.vb">
       <DependentUpon>NoConfirmReservas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\PassiveBooking.aspx.designer.vb">
       <DependentUpon>PassiveBooking.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\PassiveBooking.aspx.vb">
       <DependentUpon>PassiveBooking.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\ReservationDetails.aspx.designer.vb">
       <DependentUpon>ReservationDetails.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\ReservationDetails.aspx.vb">
       <DependentUpon>ReservationDetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\Reservations.aspx.designer.vb">
       <DependentUpon>Reservations.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\Reservations.aspx.vb">
       <DependentUpon>Reservations.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\ReservationsReport.aspx.designer.vb">
       <DependentUpon>ReservationsReport.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\ReservationsReport.aspx.vb">
       <DependentUpon>ReservationsReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\TarjetasHotel.aspx.designer.vb">
       <DependentUpon>TarjetasHotel.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\TarjetasHotel.aspx.vb">
       <DependentUpon>TarjetasHotel.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\TicketDetail.aspx.designer.vb">
       <DependentUpon>TicketDetail.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\TicketDetail.aspx.vb">
       <DependentUpon>TicketDetail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\TicketList.aspx.designer.vb">
       <DependentUpon>TicketList.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\TicketList.aspx.vb">
       <DependentUpon>TicketList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\TicketRegister.aspx.designer.vb">
       <DependentUpon>TicketRegister.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\TicketRegister.aspx.vb">
       <DependentUpon>TicketRegister.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\TravelAgentCommision.aspx.designer.vb">
       <DependentUpon>TravelAgentCommision.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\TravelAgentCommision.aspx.vb">
       <DependentUpon>TravelAgentCommision.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\WaitList.aspx.designer.vb">
       <DependentUpon>WaitList.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Pages\WaitList.aspx.vb">
       <DependentUpon>WaitList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\Produccion\Reports.aspx.designer.vb">
       <DependentUpon>Reports.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\Produccion\Reports.aspx.vb">
       <DependentUpon>Reports.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\UniFlat\exportSubscribers.aspx.designer.vb">
       <DependentUpon>exportSubscribers.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\UniFlat\exportSubscribers.aspx.vb">
       <DependentUpon>exportSubscribers.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\UniFlat\SubscribersEmailList.aspx.designer.vb">
       <DependentUpon>SubscribersEmailList.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\UniFlat\SubscribersEmailList.aspx.vb">
       <DependentUpon>SubscribersEmailList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HotelAdministrator\UniFlat\UniFlatConfiguration.aspx.designer.vb">
       <DependentUpon>UniFlatConfiguration.aspx</DependentUpon>
     </Compile>
     <Compile Include="HotelAdministrator\UniFlat\UniFlatConfiguration.aspx.vb">
       <DependentUpon>UniFlatConfiguration.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="LanguageHandler.vb" />
     <Compile Include="ListDate\Date.ascx.designer.vb">
@@ -2453,6 +2604,7 @@
     </Compile>
     <Compile Include="ListDate\Date.ascx.vb">
       <DependentUpon>Date.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Logs\Config.vb" />
     <Compile Include="Logs\DataAccess.vb" />
@@ -2461,226 +2613,265 @@
     </Compile>
     <Compile Include="Logs\exporter.aspx.vb">
       <DependentUpon>exporter.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Logs\rsReport.aspx.designer.vb">
       <DependentUpon>rsReport.aspx</DependentUpon>
     </Compile>
     <Compile Include="Logs\rsReport.aspx.vb">
       <DependentUpon>rsReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Logs\seamless.aspx.designer.vb">
       <DependentUpon>seamless.aspx</DependentUpon>
     </Compile>
     <Compile Include="Logs\seamless.aspx.vb">
       <DependentUpon>seamless.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Modulos\ctlMensajeRuleConf.ascx.designer.vb">
       <DependentUpon>ctlMensajeRuleConf.ascx</DependentUpon>
     </Compile>
     <Compile Include="Modulos\ctlMensajeRuleConf.ascx.vb">
       <DependentUpon>ctlMensajeRuleConf.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Modulos\ctlMensajes.ascx.designer.vb">
       <DependentUpon>ctlMensajes.ascx</DependentUpon>
     </Compile>
     <Compile Include="Modulos\ctlMensajes.ascx.vb">
       <DependentUpon>ctlMensajes.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Modulos\CtlReservaMsj.ascx.designer.vb">
       <DependentUpon>CtlReservaMsj.ascx</DependentUpon>
     </Compile>
     <Compile Include="Modulos\CtlReservaMsj.ascx.vb">
       <DependentUpon>CtlReservaMsj.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Modulos\ctrHotelsUserChain.ascx.designer.vb">
       <DependentUpon>ctrHotelsUserChain.ascx</DependentUpon>
     </Compile>
     <Compile Include="Modulos\ctrHotelsUserChain.ascx.vb">
       <DependentUpon>ctrHotelsUserChain.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Modulos\ctrlAgencyRates.ascx.designer.vb">
       <DependentUpon>ctrlAgencyRates.ascx</DependentUpon>
     </Compile>
     <Compile Include="Modulos\ctrlAgencyRates.ascx.vb">
       <DependentUpon>ctrlAgencyRates.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Modulos\ctrlFaresExc.ascx.designer.vb">
       <DependentUpon>ctrlFaresExc.ascx</DependentUpon>
     </Compile>
     <Compile Include="Modulos\ctrlFaresExc.ascx.vb">
       <DependentUpon>ctrlFaresExc.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Modulos\ctrlHotelPlans.ascx.designer.vb">
       <DependentUpon>ctrlHotelPlans.ascx</DependentUpon>
     </Compile>
     <Compile Include="Modulos\ctrlHotelPlans.ascx.vb">
       <DependentUpon>ctrlHotelPlans.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Modulos\ctrlHP.ascx.designer.vb">
       <DependentUpon>ctrlHP.ascx</DependentUpon>
     </Compile>
     <Compile Include="Modulos\ctrlHP.ascx.vb">
       <DependentUpon>ctrlHP.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Modulos\CtrlIdioma.ascx.designer.vb">
       <DependentUpon>CtrlIdioma.ascx</DependentUpon>
     </Compile>
     <Compile Include="Modulos\CtrlIdioma.ascx.vb">
       <DependentUpon>CtrlIdioma.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Modulos\CtrlIdiomaPortalFCK.ascx.designer.vb">
       <DependentUpon>CtrlIdiomaPortalFCK.ascx</DependentUpon>
     </Compile>
     <Compile Include="Modulos\CtrlIdiomaPortalFCK.ascx.vb">
       <DependentUpon>CtrlIdiomaPortalFCK.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Modulos\CtrlIdiomaRFCk.ascx.designer.vb">
       <DependentUpon>CtrlIdiomaRFCk.ascx</DependentUpon>
     </Compile>
     <Compile Include="Modulos\CtrlIdiomaRFCk.ascx.vb">
       <DependentUpon>CtrlIdiomaRFCk.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Modulos\ctrLinckPackage.ascx.designer.vb">
       <DependentUpon>ctrLinckPackage.ascx</DependentUpon>
     </Compile>
     <Compile Include="Modulos\ctrLinckPackage.ascx.vb">
       <DependentUpon>ctrLinckPackage.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Modulos\ctrlLanguageButton.ascx.designer.vb">
       <DependentUpon>ctrlLanguageButton.ascx</DependentUpon>
     </Compile>
     <Compile Include="Modulos\ctrlLanguageButton.ascx.vb">
       <DependentUpon>ctrlLanguageButton.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Modulos\ctrlLanguageDictionary.ascx.designer.vb">
       <DependentUpon>ctrlLanguageDictionary.ascx</DependentUpon>
     </Compile>
     <Compile Include="Modulos\ctrlLanguageDictionary.ascx.vb">
       <DependentUpon>ctrlLanguageDictionary.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Modulos\ctrlMensajesControl.ascx.designer.vb">
       <DependentUpon>ctrlMensajesControl.ascx</DependentUpon>
     </Compile>
     <Compile Include="Modulos\ctrlMensajesControl.ascx.vb">
       <DependentUpon>ctrlMensajesControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Modulos\ctrlPackage.ascx.designer.vb">
       <DependentUpon>ctrlPackage.ascx</DependentUpon>
     </Compile>
     <Compile Include="Modulos\ctrlPackage.ascx.vb">
       <DependentUpon>ctrlPackage.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Modulos\CtrlPackageRubros.ascx.designer.vb">
       <DependentUpon>CtrlPackageRubros.ascx</DependentUpon>
     </Compile>
     <Compile Include="Modulos\CtrlPackageRubros.ascx.vb">
       <DependentUpon>CtrlPackageRubros.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Modulos\ctrlPlanFares.ascx.designer.vb">
       <DependentUpon>ctrlPlanFares.ascx</DependentUpon>
     </Compile>
     <Compile Include="Modulos\ctrlPlanFares.ascx.vb">
       <DependentUpon>ctrlPlanFares.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Modulos\CtrlPlanFaresExc.ascx.designer.vb">
       <DependentUpon>CtrlPlanFaresExc.ascx</DependentUpon>
     </Compile>
     <Compile Include="Modulos\CtrlPlanFaresExc.ascx.vb">
       <DependentUpon>CtrlPlanFaresExc.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Modulos\CtrlPlanFaresExcNR.ascx.designer.vb">
       <DependentUpon>CtrlPlanFaresExcNR.ascx</DependentUpon>
     </Compile>
     <Compile Include="Modulos\CtrlPlanFaresExcNR.ascx.vb">
       <DependentUpon>CtrlPlanFaresExcNR.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Modulos\CtrlPlanFaresExcPackage.ascx.designer.vb">
       <DependentUpon>CtrlPlanFaresExcPackage.ascx</DependentUpon>
     </Compile>
     <Compile Include="Modulos\CtrlPlanFaresExcPackage.ascx.vb">
       <DependentUpon>CtrlPlanFaresExcPackage.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Modulos\ctrlPlanFaresNR.ascx.designer.vb">
       <DependentUpon>ctrlPlanFaresNR.ascx</DependentUpon>
     </Compile>
     <Compile Include="Modulos\ctrlPlanFaresNR.ascx.vb">
       <DependentUpon>ctrlPlanFaresNR.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Modulos\ctrlRooms.ascx.designer.vb">
       <DependentUpon>ctrlRooms.ascx</DependentUpon>
     </Compile>
     <Compile Include="Modulos\ctrlRooms.ascx.vb">
       <DependentUpon>ctrlRooms.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Modulos\ctrPortal.ascx.designer.vb">
       <DependentUpon>ctrPortal.ascx</DependentUpon>
     </Compile>
     <Compile Include="Modulos\ctrPortal.ascx.vb">
       <DependentUpon>ctrPortal.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Modulos\ctrRateAplication.ascx.designer.vb">
       <DependentUpon>ctrRateAplication.ascx</DependentUpon>
     </Compile>
     <Compile Include="Modulos\ctrRateAplication.ascx.vb">
       <DependentUpon>ctrRateAplication.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Modulos\ctrRateAplicationNR.ascx.designer.vb">
       <DependentUpon>ctrRateAplicationNR.ascx</DependentUpon>
     </Compile>
     <Compile Include="Modulos\ctrRateAplicationNR.ascx.vb">
       <DependentUpon>ctrRateAplicationNR.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Modulos\ctrRateAplicationPackage.ascx.designer.vb">
       <DependentUpon>ctrRateAplicationPackage.ascx</DependentUpon>
     </Compile>
     <Compile Include="Modulos\ctrRateAplicationPackage.ascx.vb">
       <DependentUpon>ctrRateAplicationPackage.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Modulos\ctrRatePlan.ascx.designer.vb">
       <DependentUpon>ctrRatePlan.ascx</DependentUpon>
     </Compile>
     <Compile Include="Modulos\ctrRatePlan.ascx.vb">
       <DependentUpon>ctrRatePlan.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Modulos\CtrRatePlanContain.ascx.designer.vb">
       <DependentUpon>CtrRatePlanContain.ascx</DependentUpon>
     </Compile>
     <Compile Include="Modulos\CtrRatePlanContain.ascx.vb">
       <DependentUpon>CtrRatePlanContain.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Modulos\CtrRatePlanDineroMail.ascx.designer.vb">
       <DependentUpon>CtrRatePlanDineroMail.ascx</DependentUpon>
     </Compile>
     <Compile Include="Modulos\CtrRatePlanDineroMail.ascx.vb">
       <DependentUpon>CtrRatePlanDineroMail.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Modulos\ctrRatePlanLink.ascx.designer.vb">
       <DependentUpon>ctrRatePlanLink.ascx</DependentUpon>
     </Compile>
     <Compile Include="Modulos\ctrRatePlanLink.ascx.vb">
       <DependentUpon>ctrRatePlanLink.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Modulos\ctrRatePlanRules.ascx.designer.vb">
       <DependentUpon>ctrRatePlanRules.ascx</DependentUpon>
     </Compile>
     <Compile Include="Modulos\ctrRatePlanRules.ascx.vb">
       <DependentUpon>ctrRatePlanRules.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Modulos\ctrRoomLink.ascx.designer.vb">
       <DependentUpon>ctrRoomLink.ascx.vb</DependentUpon>
     </Compile>
-    <Compile Include="Modulos\ctrRoomLink.ascx.vb" />
+    <Compile Include="Modulos\ctrRoomLink.ascx.vb">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Modulos\ctrRoomRatePlan.ascx.designer.vb">
       <DependentUpon>ctrRoomRatePlan.ascx</DependentUpon>
     </Compile>
     <Compile Include="Modulos\ctrRoomRatePlan.ascx.vb">
       <DependentUpon>ctrRoomRatePlan.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Modulos\SearchAgency.ascx.designer.vb">
       <DependentUpon>SearchAgency.ascx</DependentUpon>
     </Compile>
     <Compile Include="Modulos\SearchAgency.ascx.vb">
       <DependentUpon>SearchAgency.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
@@ -2702,216 +2893,252 @@
     </Compile>
     <Compile Include="Pages\AgencyRates.aspx.vb">
       <DependentUpon>AgencyRates.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\AvailabilityRestrictions.aspx.designer.vb">
       <DependentUpon>AvailabilityRestrictions.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\AvailabilityRestrictions.aspx.vb">
       <DependentUpon>AvailabilityRestrictions.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\Canales.aspx.designer.vb">
       <DependentUpon>Canales.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\Canales.aspx.vb">
       <DependentUpon>Canales.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\Certificate.aspx.designer.vb">
       <DependentUpon>Certificate.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\Certificate.aspx.vb">
       <DependentUpon>Certificate.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\ConfigReportAvail.aspx.designer.vb">
       <DependentUpon>ConfigReportAvail.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\ConfigReportAvail.aspx.vb">
       <DependentUpon>ConfigReportAvail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\ContractNR.aspx.designer.vb">
       <DependentUpon>ContractNR.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\ContractNR.aspx.vb">
       <DependentUpon>ContractNR.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\Convenios.aspx.designer.vb">
       <DependentUpon>Convenios.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\Convenios.aspx.vb">
       <DependentUpon>Convenios.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\ConventionsMeetings.aspx.designer.vb">
       <DependentUpon>ConventionsMeetings.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\ConventionsMeetings.aspx.vb">
       <DependentUpon>ConventionsMeetings.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\DepositRatesPlan.aspx.designer.vb">
       <DependentUpon>DepositRatesPlan.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\DepositRatesPlan.aspx.vb">
       <DependentUpon>DepositRatesPlan.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\FaresCatalogue.aspx.designer.vb">
       <DependentUpon>FaresCatalogue.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\FaresCatalogue.aspx.vb">
       <DependentUpon>FaresCatalogue.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\FaresCatalogueException.aspx.designer.vb">
       <DependentUpon>FaresCatalogueException.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\FaresCatalogueException.aspx.vb">
       <DependentUpon>FaresCatalogueException.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\FaresCatalogueNR.aspx.designer.vb">
       <DependentUpon>FaresCatalogueNR.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\FaresCatalogueNR.aspx.vb">
       <DependentUpon>FaresCatalogueNR.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\FaresCopy.aspx.designer.vb">
       <DependentUpon>FaresCopy.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\FaresCopy.aspx.vb">
       <DependentUpon>FaresCopy.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\FaresRoom.aspx.designer.vb">
       <DependentUpon>FaresRoom.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\FaresRoom.aspx.vb">
       <DependentUpon>FaresRoom.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\HomePage.aspx.designer.vb">
       <DependentUpon>HomePage.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\HomePage.aspx.vb">
       <DependentUpon>HomePage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\HotelPlans.aspx.designer.vb">
       <DependentUpon>HotelPlans.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\HotelPlans.aspx.vb">
       <DependentUpon>HotelPlans.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\LoadAvailabilityRestrictions.aspx.designer.vb">
       <DependentUpon>LoadAvailabilityRestrictions.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\LoadAvailabilityRestrictions.aspx.vb">
       <DependentUpon>LoadAvailabilityRestrictions.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\LogHotelNoAvailable.aspx.designer.vb">
       <DependentUpon>LogHotelNoAvailable.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\LogHotelNoAvailable.aspx.vb">
       <DependentUpon>LogHotelNoAvailable.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\NoRatesReport.aspx.designer.vb">
       <DependentUpon>NoRatesReport.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\NoRatesReport.aspx.vb">
       <DependentUpon>NoRatesReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\NoticiasRSS.aspx.designer.vb">
       <DependentUpon>NoticiasRSS.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\NoticiasRSS.aspx.vb">
       <DependentUpon>NoticiasRSS.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\Package.aspx.designer.vb">
       <DependentUpon>Package.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\Package.aspx.vb">
       <DependentUpon>Package.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\PmsCoincidences.aspx.designer.vb">
       <DependentUpon>PmsCoincidences.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\PmsCoincidences.aspx.vb">
       <DependentUpon>PmsCoincidences.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\PrepagoRatesPlan.aspx.designer.vb">
       <DependentUpon>PrepagoRatesPlan.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\PrepagoRatesPlan.aspx.vb">
       <DependentUpon>PrepagoRatesPlan.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\PresentaAdeudo.aspx.designer.vb">
       <DependentUpon>PresentaAdeudo.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\PresentaAdeudo.aspx.vb">
       <DependentUpon>PresentaAdeudo.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\RateChart.aspx.designer.vb">
       <DependentUpon>RateChart.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\RateChart.aspx.vb">
       <DependentUpon>RateChart.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\RatePlanContentPortal.aspx.designer.vb">
       <DependentUpon>RatePlanContentPortal.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\RatePlanContentPortal.aspx.vb">
       <DependentUpon>RatePlanContentPortal.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\RatePlanInventory.aspx.designer.vb">
       <DependentUpon>RatePlanInventory.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\RatePlanInventory.aspx.vb">
       <DependentUpon>RatePlanInventory.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\RatePlansLinks.aspx.designer.vb">
       <DependentUpon>RatePlansLinks.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\RatePlansLinks.aspx.vb">
       <DependentUpon>RatePlansLinks.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\RatePlansRules.aspx.designer.vb">
       <DependentUpon>RatePlansRules.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\RatePlansRules.aspx.vb">
       <DependentUpon>RatePlansRules.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\RatesPlans.aspx.designer.vb">
       <DependentUpon>RatesPlans.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\RatesPlans.aspx.vb">
       <DependentUpon>RatesPlans.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\RatesPlansDineroMail.aspx.designer.vb">
       <DependentUpon>RatesPlansDineroMail.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\RatesPlansDineroMail.aspx.vb">
       <DependentUpon>RatesPlansDineroMail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\RedirectToRates.aspx.designer.vb">
       <DependentUpon>RedirectToRates.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\RedirectToRates.aspx.vb">
       <DependentUpon>RedirectToRates.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\ReportAvailXLS.aspx.designer.vb">
       <DependentUpon>ReportAvailXLS.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\ReportAvailXLS.aspx.vb">
       <DependentUpon>ReportAvailXLS.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\Rooms.aspx.designer.vb">
       <DependentUpon>Rooms.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\Rooms.aspx.vb">
       <DependentUpon>Rooms.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\RoomsAddImages.aspx.designer.vb">
       <DependentUpon>RoomsAddImages.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\RoomsAddImages.aspx.vb">
       <DependentUpon>RoomsAddImages.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\RoomsLinks.aspx.designer.vb">
       <DependentUpon>RoomsLinks.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\RoomsLinks.aspx.vb">
       <DependentUpon>RoomsLinks.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\RSS\GeneradorRSS.vb" />
     <Compile Include="Pages\RSS\RSS.aspx.designer.vb">
@@ -2919,243 +3146,287 @@
     </Compile>
     <Compile Include="Pages\RSS\RSS.aspx.vb">
       <DependentUpon>RSS.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\SegmentRoomsAvailability.aspx.designer.vb">
       <DependentUpon>SegmentRoomsAvailability.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\SegmentRoomsAvailability.aspx.vb">
       <DependentUpon>SegmentRoomsAvailability.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\SummaryCarReservation.aspx.designer.vb">
       <DependentUpon>SummaryCarReservation.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\SummaryCarReservation.aspx.vb">
       <DependentUpon>SummaryCarReservation.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\Users.aspx.designer.vb">
       <DependentUpon>Users.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\Users.aspx.vb">
       <DependentUpon>Users.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="PaginaBase.vb" />
-    <Compile Include="PaginaBasePss.vb" />
+    <Compile Include="PaginaBase.vb">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PaginaBasePss.vb">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="PortalCulture.vb" />
     <Compile Include="Portal\Modules\Contenido\Activities.ascx.designer.vb">
       <DependentUpon>Activities.ascx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\Activities.ascx.vb">
       <DependentUpon>Activities.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\AgregarContenido.ascx.designer.vb">
       <DependentUpon>AgregarContenido.ascx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\AgregarContenido.ascx.vb">
       <DependentUpon>AgregarContenido.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\AreaAttraction.ascx.designer.vb">
       <DependentUpon>AreaAttraction.ascx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\AreaAttraction.ascx.vb">
       <DependentUpon>AreaAttraction.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\CambiarContenido.ascx.designer.vb">
       <DependentUpon>CambiarContenido.ascx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\CambiarContenido.ascx.vb">
       <DependentUpon>CambiarContenido.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\Contenido.ascx.designer.vb">
       <DependentUpon>Contenido.ascx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\Contenido.ascx.vb">
       <DependentUpon>Contenido.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\ContenidoFCk.ascx.designer.vb">
       <DependentUpon>ContenidoFCk.ascx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\ContenidoFCk.ascx.vb">
       <DependentUpon>ContenidoFCk.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\ctlConstructorGramatical.ascx.designer.vb">
       <DependentUpon>ctlConstructorGramatical.ascx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\ctlConstructorGramatical.ascx.vb">
       <DependentUpon>ctlConstructorGramatical.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\CtlIdioma.ascx.designer.vb">
       <DependentUpon>CtlIdioma.ascx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\CtlIdioma.ascx.vb">
       <DependentUpon>CtlIdioma.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\ctlServices.ascx.designer.vb">
       <DependentUpon>ctlServices.ascx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\ctlServices.ascx.vb">
       <DependentUpon>ctlServices.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\ctrlActividades.ascx.designer.vb">
       <DependentUpon>ctrlActividades.ascx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\ctrlActividades.ascx.vb">
       <DependentUpon>ctrlActividades.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\CtrlAmenidades.ascx.designer.vb">
       <DependentUpon>CtrlAmenidades.ascx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\CtrlAmenidades.ascx.vb">
       <DependentUpon>CtrlAmenidades.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\ctrlAmenidadesCuarto.ascx.designer.vb">
       <DependentUpon>ctrlAmenidadesCuarto.ascx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\ctrlAmenidadesCuarto.ascx.vb">
       <DependentUpon>ctrlAmenidadesCuarto.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\ctrlAmenidadesCuartos.ascx.designer.vb">
       <DependentUpon>ctrlAmenidadesCuartos.ascx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\ctrlAmenidadesCuartos.ascx.vb">
       <DependentUpon>ctrlAmenidadesCuartos.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\ctrlAmenities.ascx.designer.vb">
       <DependentUpon>ctrlAmenities.ascx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\ctrlAmenities.ascx.vb">
       <DependentUpon>ctrlAmenities.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\ctrlEvents.ascx.designer.vb">
       <DependentUpon>ctrlEvents.ascx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\ctrlEvents.ascx.vb">
       <DependentUpon>ctrlEvents.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\CtrlIdiomaFCk.ascx.designer.vb">
       <DependentUpon>CtrlIdiomaFCk.ascx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\CtrlIdiomaFCk.ascx.vb">
       <DependentUpon>CtrlIdiomaFCk.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\ctrlImages.ascx.designer.vb">
       <DependentUpon>ctrlImages.ascx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\ctrlImages.ascx.vb">
       <DependentUpon>ctrlImages.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\CtrlPoliticas.ascx.designer.vb">
       <DependentUpon>CtrlPoliticas.ascx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\CtrlPoliticas.ascx.vb">
       <DependentUpon>CtrlPoliticas.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\CtrlRoom.ascx.designer.vb">
       <DependentUpon>CtrlRoom.ascx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\CtrlRoom.ascx.vb">
       <DependentUpon>CtrlRoom.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\ctrlTravelGuides.ascx.designer.vb">
       <DependentUpon>ctrlTravelGuides.ascx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\ctrlTravelGuides.ascx.vb">
       <DependentUpon>ctrlTravelGuides.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\EliminarContenido.ascx.designer.vb">
       <DependentUpon>EliminarContenido.ascx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\EliminarContenido.ascx.vb">
       <DependentUpon>EliminarContenido.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\EmpresaModulo.ascx.designer.vb">
       <DependentUpon>EmpresaModulo.ascx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\EmpresaModulo.ascx.vb">
       <DependentUpon>EmpresaModulo.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\Imagenes.ascx.designer.vb">
       <DependentUpon>Imagenes.ascx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\Imagenes.ascx.vb">
       <DependentUpon>Imagenes.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\InfoAmenidades.ascx.designer.vb">
       <DependentUpon>InfoAmenidades.ascx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\InfoAmenidades.ascx.vb">
       <DependentUpon>InfoAmenidades.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\InfoComidas.ascx.designer.vb">
       <DependentUpon>InfoComidas.ascx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\InfoComidas.ascx.vb">
       <DependentUpon>InfoComidas.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\InfoPropiedad.ascx.designer.vb">
       <DependentUpon>InfoPropiedad.ascx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\InfoPropiedad.ascx.vb">
       <DependentUpon>InfoPropiedad.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\MapLocation.ascx.designer.vb">
       <DependentUpon>MapLocation.ascx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\MapLocation.ascx.vb">
       <DependentUpon>MapLocation.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\Photo.ascx.designer.vb">
       <DependentUpon>Photo.ascx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\Photo.ascx.vb">
       <DependentUpon>Photo.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\PhotoRooms.ascx.designer.vb">
       <DependentUpon>PhotoRooms.ascx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\PhotoRooms.ascx.vb">
       <DependentUpon>PhotoRooms.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\Policies.ascx.designer.vb">
       <DependentUpon>Policies.ascx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\Policies.ascx.vb">
       <DependentUpon>Policies.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\RoomAmenities.ascx.designer.vb">
       <DependentUpon>RoomAmenities.ascx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Modules\Contenido\RoomAmenities.ascx.vb">
       <DependentUpon>RoomAmenities.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Modules\ctrlFooter.ascx.designer.vb">
       <DependentUpon>ctrlFooter.ascx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Modules\ctrlFooter.ascx.vb">
       <DependentUpon>ctrlFooter.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Modules\ctrlHeader.ascx.designer.vb">
       <DependentUpon>ctrlHeader.ascx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Modules\ctrlHeader.ascx.vb">
       <DependentUpon>ctrlHeader.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Modules\CtrlPreserveScrolls.ascx.designer.vb">
       <DependentUpon>CtrlPreserveScrolls.ascx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Modules\CtrlPreserveScrolls.ascx.vb">
       <DependentUpon>CtrlPreserveScrolls.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Modules\ctrlSearchCompany.ascx.designer.vb">
       <DependentUpon>ctrlSearchCompany.ascx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Modules\ctrlSearchCompany.ascx.vb">
       <DependentUpon>ctrlSearchCompany.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Modules\CtrMenu.ascx.designer.vb">
       <DependentUpon>CtrMenu.ascx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Modules\CtrMenu.ascx.vb">
       <DependentUpon>CtrMenu.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Opciones.vb" />
     <Compile Include="Portal\Pages\Home.aspx.designer.vb">
@@ -3163,24 +3434,28 @@
     </Compile>
     <Compile Include="Portal\Pages\Home.aspx.vb">
       <DependentUpon>Home.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Pages\LogReport.aspx.designer.vb">
       <DependentUpon>LogReport.aspx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Pages\LogReport.aspx.vb">
       <DependentUpon>LogReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Pages\Search.aspx.designer.vb">
       <DependentUpon>Search.aspx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Pages\Search.aspx.vb">
       <DependentUpon>Search.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\Pages\Welcome.aspx.designer.vb">
       <DependentUpon>Welcome.aspx</DependentUpon>
     </Compile>
     <Compile Include="Portal\Pages\Welcome.aspx.vb">
       <DependentUpon>Welcome.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Portal\PortalPartners1.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -3194,102 +3469,119 @@
     </Compile>
     <Compile Include="Registro\ActivitiesInformation.aspx.vb">
       <DependentUpon>ActivitiesInformation.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Registro\AmenitiesInformation.aspx.designer.vb">
       <DependentUpon>AmenitiesInformation.aspx</DependentUpon>
     </Compile>
     <Compile Include="Registro\AmenitiesInformation.aspx.vb">
       <DependentUpon>AmenitiesInformation.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Registro\AttractionInformation.aspx.designer.vb">
       <DependentUpon>AttractionInformation.aspx</DependentUpon>
     </Compile>
     <Compile Include="Registro\AttractionInformation.aspx.vb">
       <DependentUpon>AttractionInformation.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Registro\ChangeLogo.aspx.designer.vb">
       <DependentUpon>ChangeLogo.aspx</DependentUpon>
     </Compile>
     <Compile Include="Registro\ChangeLogo.aspx.vb">
       <DependentUpon>ChangeLogo.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Registro\CompanyRegister.aspx.designer.vb">
       <DependentUpon>CompanyRegister.aspx</DependentUpon>
     </Compile>
     <Compile Include="Registro\CompanyRegister.aspx.vb">
       <DependentUpon>CompanyRegister.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Registro\EventsInformation.aspx.designer.vb">
       <DependentUpon>EventsInformation.aspx</DependentUpon>
     </Compile>
     <Compile Include="Registro\EventsInformation.aspx.vb">
       <DependentUpon>EventsInformation.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Registro\FoodInformation.aspx.designer.vb">
       <DependentUpon>FoodInformation.aspx</DependentUpon>
     </Compile>
     <Compile Include="Registro\FoodInformation.aspx.vb">
       <DependentUpon>FoodInformation.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Registro\Imagenes.aspx.designer.vb">
       <DependentUpon>Imagenes.aspx</DependentUpon>
     </Compile>
     <Compile Include="Registro\Imagenes.aspx.vb">
       <DependentUpon>Imagenes.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Registro\InformacionPropiedad.aspx.designer.vb">
       <DependentUpon>InformacionPropiedad.aspx</DependentUpon>
     </Compile>
     <Compile Include="Registro\InformacionPropiedad.aspx.vb">
       <DependentUpon>InformacionPropiedad.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Registro\MapLocationInformation.aspx.designer.vb">
       <DependentUpon>MapLocationInformation.aspx</DependentUpon>
     </Compile>
     <Compile Include="Registro\MapLocationInformation.aspx.vb">
       <DependentUpon>MapLocationInformation.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Registro\PhotoInformation.aspx.designer.vb">
       <DependentUpon>PhotoInformation.aspx</DependentUpon>
     </Compile>
     <Compile Include="Registro\PhotoInformation.aspx.vb">
       <DependentUpon>PhotoInformation.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Registro\PoliciesInformation.aspx.designer.vb">
       <DependentUpon>PoliciesInformation.aspx</DependentUpon>
     </Compile>
     <Compile Include="Registro\PoliciesInformation.aspx.vb">
       <DependentUpon>PoliciesInformation.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Registro\RoomAmenitiesInformation.aspx.designer.vb">
       <DependentUpon>RoomAmenitiesInformation.aspx</DependentUpon>
     </Compile>
     <Compile Include="Registro\RoomAmenitiesInformation.aspx.vb">
       <DependentUpon>RoomAmenitiesInformation.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Registro\RoomsInformation.aspx.designer.vb">
       <DependentUpon>RoomsInformation.aspx</DependentUpon>
     </Compile>
     <Compile Include="Registro\RoomsInformation.aspx.vb">
       <DependentUpon>RoomsInformation.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Registro\SearchCompany.aspx.designer.vb">
       <DependentUpon>SearchCompany.aspx</DependentUpon>
     </Compile>
     <Compile Include="Registro\SearchCompany.aspx.vb">
       <DependentUpon>SearchCompany.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Registro\TravelsInformation.aspx.designer.vb">
       <DependentUpon>TravelsInformation.aspx</DependentUpon>
     </Compile>
     <Compile Include="Registro\TravelsInformation.aspx.vb">
       <DependentUpon>TravelsInformation.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Registro\UserAsociate.aspx.designer.vb">
       <DependentUpon>UserAsociate.aspx</DependentUpon>
     </Compile>
     <Compile Include="Registro\UserAsociate.aspx.vb">
       <DependentUpon>UserAsociate.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Security\cSecurity.vb" />
     <Compile Include="Security\cSessionTracking.vb" />
@@ -3298,24 +3590,28 @@
     </Compile>
     <Compile Include="Security\ctrlLogon.ascx.vb">
       <DependentUpon>ctrlLogon.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Security\ctrlPasswordReminder.ascx.designer.vb">
       <DependentUpon>ctrlPasswordReminder.ascx</DependentUpon>
     </Compile>
     <Compile Include="Security\ctrlPasswordReminder.ascx.vb">
       <DependentUpon>ctrlPasswordReminder.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Security\logon.aspx.designer.vb">
       <DependentUpon>logon.aspx</DependentUpon>
     </Compile>
     <Compile Include="Security\logon.aspx.vb">
       <DependentUpon>logon.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Security\passwordReminder.aspx.designer.vb">
       <DependentUpon>passwordReminder.aspx</DependentUpon>
     </Compile>
     <Compile Include="Security\passwordReminder.aspx.vb">
       <DependentUpon>passwordReminder.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Security\Tarjetas.vb" />
     <Compile Include="Security\unauthorized.aspx.designer.vb">
@@ -3323,28 +3619,34 @@
     </Compile>
     <Compile Include="Security\unauthorized.aspx.vb">
       <DependentUpon>unauthorized.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Servicios\LocationItems.ashx.vb">
       <DependentUpon>LocationItems.ashx</DependentUpon>
     </Compile>
-    <Compile Include="ucBase.vb" />
+    <Compile Include="ucBase.vb">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="unavailableSystem.aspx.designer.vb">
       <DependentUpon>unavailableSystem.aspx</DependentUpon>
     </Compile>
     <Compile Include="unavailableSystem.aspx.vb">
       <DependentUpon>unavailableSystem.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="User\ChangePassword.aspx.designer.vb">
       <DependentUpon>ChangePassword.aspx</DependentUpon>
     </Compile>
     <Compile Include="User\ChangePassword.aspx.vb">
       <DependentUpon>ChangePassword.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="User\ctrlChangePassword.ascx.designer.vb">
       <DependentUpon>ctrlChangePassword.ascx</DependentUpon>
     </Compile>
     <Compile Include="User\ctrlChangePassword.ascx.vb">
       <DependentUpon>ctrlChangePassword.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Utilities\Contenido\ContenidoUtilitie.vb" />
     <Compile Include="Utilities\Email\EmailUtilitie.vb" />
@@ -3370,6 +3672,7 @@
     </Compile>
     <Compile Include="WebForm1.aspx.vb">
       <DependentUpon>WebForm1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>

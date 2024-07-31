@@ -162,6 +162,9 @@
     <Compile Include="Models\Ciudades.cs">
       <DependentUpon>OzUniEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Contenido.cs">
+      <DependentUpon>OzUniEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Corporativos.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
@@ -208,6 +211,9 @@
     </Compile>
     <Compile Include="Models\Hoteles.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\HotelItem_Contenido.cs">
+      <DependentUpon>OzUniEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Indice.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
@@ -321,6 +327,9 @@
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\spGetPromosByRatePlan_Result.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\spGetReservationHotelItem_Result.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\spReservationLog_Result.cs">
