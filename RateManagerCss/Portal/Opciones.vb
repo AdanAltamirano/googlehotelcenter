@@ -287,7 +287,7 @@ Public Class Opciones
         If Me.IdEmpresa >= 0 Then
             With New PresentacionOpciones
                 'dt es global
-                dt = .GetContenidoHotelItem(Me.IdIdioma, 1094, IdEmpresa, def, idHotelItem)
+                dt = .GetContenidoHotelItem(Me.IdIdioma, CType(AppSettings("idCtrlImagesHotelItem"), Integer), IdEmpresa, def, idHotelItem) '1094
             End With
         End If
     End Sub
