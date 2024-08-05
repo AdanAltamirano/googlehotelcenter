@@ -59,6 +59,12 @@ module.exports = {
             filename: 'reservation-list.aspx',
             chunks: ['node_vendors','commons', 'reservation_list'],
         },
+        reservations_report: {
+            entry: 'src/views/reservations-report/main.js',
+            template: 'public/reservations-report.aspx',
+            filename: 'reservations-report.aspx',
+            chunks: ['node_vendors','commons', 'reservations_report'],
+        },
         reservation_details: {
             entry: 'src/views/reservation-details/main.js',
             template: 'public/reservation-details.aspx',

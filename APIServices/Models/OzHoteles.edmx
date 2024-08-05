@@ -5,6 +5,13 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="Models.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Canales">
+          <Key>
+            <PropertyRef Name="idCanal" />
+          </Key>
+          <Property Name="idCanal" Type="int" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="60" />
+        </EntityType>
         <EntityType Name="ContratosNR">
           <Key>
             <PropertyRef Name="idContrato" />
@@ -35,6 +42,15 @@
           <Property Name="IdIdioma" Type="int" Nullable="false" />
           <Property Name="Texto" Type="nvarchar" MaxLength="4000" Nullable="false" />
           <Property Name="idRepl1" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="HotelCanales">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idHotel" Type="int" />
+          <Property Name="idCanal" Type="int" />
+          <Property Name="Comision" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Hoteles">
           <Key>
@@ -762,6 +778,17 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vHotelByUser' no tiene definid
           <Property Name="HotelName" Type="nvarchar" MaxLength="180" />
         </EntityType>
         <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'OzHoteles.dbo.vHotelChannel' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="vHotelChannel">
+          <Key>
+            <PropertyRef Name="idCanal" />
+          </Key>
+          <Property Name="idHotel" Type="int" />
+          <Property Name="idCanal" Type="int" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="60" />
+          <Property Name="Comision" Type="int" />
+        </EntityType>
+        <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'OzHoteles.dbo.vHotelPlan' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vHotelPlan">
           <Key>
@@ -1185,6 +1212,30 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
           <Property Name="Url" Type="nvarchar" MaxLength="300" Nullable="false" />
           <Property Name="TypePms" Type="smallint" Nullable="false" />
         </EntityType>
+        <Association Name="FK__HotelCana__idCan__55B662FE">
+          <End Role="Canales" Type="Self.Canales" Multiplicity="0..1" />
+          <End Role="HotelCanales" Type="Self.HotelCanales" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Canales">
+              <PropertyRef Name="idCanal" />
+            </Principal>
+            <Dependent Role="HotelCanales">
+              <PropertyRef Name="idCanal" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__HotelCana__idHot__54C23EC5">
+          <End Role="Hoteles" Type="Self.Hoteles" Multiplicity="0..1" />
+          <End Role="HotelCanales" Type="Self.HotelCanales" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Hoteles">
+              <PropertyRef Name="idHotel" />
+            </Principal>
+            <Dependent Role="HotelCanales">
+              <PropertyRef Name="idHotel" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Diccionario_Indice1">
           <End Role="Indice" Type="Self.Indice" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1371,9 +1422,11 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
           <Parameter Name="action" Type="int" Mode="In" />
         </Function>
         <EntityContainer Name="ModelsStoreContainer">
+          <EntitySet Name="Canales" EntityType="Self.Canales" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ContratosNR" EntityType="Self.ContratosNR" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Corporativos" EntityType="Self.Corporativos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Diccionario" EntityType="Self.Diccionario" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HotelCanales" EntityType="Self.HotelCanales" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Hoteles" EntityType="Self.Hoteles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Indice" EntityType="Self.Indice" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LockRoomTypes" EntityType="Self.LockRoomTypes" Schema="dbo" store:Type="Tables" />
@@ -1533,6 +1586,14 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
     [vHotelByUser].[HotelId] AS [HotelId], 
     [vHotelByUser].[HotelName] AS [HotelName]
     FROM [dbo].[vHotelByUser] AS [vHotelByUser]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vHotelChannel" EntityType="Self.vHotelChannel" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vHotelChannel].[idHotel] AS [idHotel], 
+    [vHotelChannel].[idCanal] AS [idCanal], 
+    [vHotelChannel].[Nombre] AS [Nombre], 
+    [vHotelChannel].[Comision] AS [Comision]
+    FROM [dbo].[vHotelChannel] AS [vHotelChannel]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vHotelPlan" EntityType="Self.vHotelPlan" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -1842,6 +1903,14 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
     [vUsersConnectivity].[TypePms] AS [TypePms]
     FROM [dbo].[vUsersConnectivity] AS [vUsersConnectivity]</DefiningQuery>
           </EntitySet>
+          <AssociationSet Name="FK__HotelCana__idCan__55B662FE" Association="Self.FK__HotelCana__idCan__55B662FE">
+            <End Role="Canales" EntitySet="Canales" />
+            <End Role="HotelCanales" EntitySet="HotelCanales" />
+          </AssociationSet>
+          <AssociationSet Name="FK__HotelCana__idHot__54C23EC5" Association="Self.FK__HotelCana__idHot__54C23EC5">
+            <End Role="Hoteles" EntitySet="Hoteles" />
+            <End Role="HotelCanales" EntitySet="HotelCanales" />
+          </AssociationSet>
           <AssociationSet Name="FK_Diccionario_Indice1" Association="Self.FK_Diccionario_Indice1">
             <End Role="Indice" EntitySet="Indice" />
             <End Role="Diccionario" EntitySet="Diccionario" />
@@ -2046,6 +2115,17 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
           </FunctionImport>
           <EntitySet Name="vDayRates" EntityType="Models.vDayRates" />
           <EntitySet Name="vDayRatesExceptions" EntityType="Models.vDayRatesExceptions" />
+          <EntitySet Name="Canales" EntityType="Models.Canales" />
+          <EntitySet Name="vHotelChannel" EntityType="Models.vHotelChannel" />
+          <EntitySet Name="HotelCanales" EntityType="Models.HotelCanales" />
+          <AssociationSet Name="FK__HotelCana__idCan__55B662FE" Association="Models.FK__HotelCana__idCan__55B662FE">
+            <End Role="Canales" EntitySet="Canales" />
+            <End Role="HotelCanales" EntitySet="HotelCanales" />
+          </AssociationSet>
+          <AssociationSet Name="FK__HotelCana__idHot__54C23EC5" Association="Models.FK__HotelCana__idHot__54C23EC5">
+            <End Role="Hoteles" EntitySet="Hoteles" />
+            <End Role="HotelCanales" EntitySet="HotelCanales" />
+          </AssociationSet>
           <EntitySet Name="UsuarioHotel" EntityType="Models.UsuarioHotel" />
           <EntitySet Name="vUsersConnectivity" EntityType="Models.vUsersConnectivity" />
           <FunctionImport Name="spGetReservationHotelItem" ReturnType="Collection(Models.spGetReservationHotelItem_Result)">
@@ -2415,6 +2495,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
           <Property Name="Ecotasa" Type="Decimal" Precision="10" Scale="4" />
           <Property Name="noDepartures" Type="String" MaxLength="7" FixedLength="false" Unicode="true" />
           <Property Name="EnableGoogle" Type="Boolean" />
+          <NavigationProperty Name="HotelCanales" Relationship="Models.FK__HotelCana__idHot__54C23EC5" FromRole="Hoteles" ToRole="HotelCanales" />
         </EntityType>
         <Association Name="FK_RatesPlan_Hoteles">
           <End Type="Models.Hoteles" Role="Hoteles" Multiplicity="1" />
@@ -3567,7 +3648,57 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
           <Property Type="String" Name="Codigo" Nullable="true" MaxLength="3" />
           <Property Type="Decimal" Name="TipoCambio" Nullable="true" Precision="19" />
         </ComplexType>
-      </Schema>
+        <EntityType Name="Canales">
+          <Key>
+            <PropertyRef Name="idCanal" />
+          </Key>
+          <Property Name="idCanal" Type="Int32" Nullable="false" />
+          <Property Name="nombre" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="vHotelChannel">
+          <Key>
+            <PropertyRef Name="idCanal" />
+          </Key>
+          <Property Name="idHotel" Type="Int32" />
+          <Property Name="idCanal" Type="Int32" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="Comision" Type="Int32" />
+        </EntityType>
+        <EntityType Name="HotelCanales">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idHotel" Type="Int32" />
+          <Property Name="idCanal" Type="Int32" />
+          <Property Name="Comision" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Hoteles" Relationship="Models.FK__HotelCana__idHot__54C23EC5" FromRole="HotelCanales" ToRole="Hoteles" />
+        </EntityType>
+        <Association Name="FK__HotelCana__idCan__55B662FE">
+          <End Type="Models.Canales" Role="Canales" Multiplicity="0..1" />
+          <End Type="Models.HotelCanales" Role="HotelCanales" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Canales">
+              <PropertyRef Name="idCanal" />
+            </Principal>
+            <Dependent Role="HotelCanales">
+              <PropertyRef Name="idCanal" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__HotelCana__idHot__54C23EC5">
+          <End Type="Models.Hoteles" Role="Hoteles" Multiplicity="0..1" />
+          <End Type="Models.HotelCanales" Role="HotelCanales" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Hoteles">
+              <PropertyRef Name="idHotel" />
+            </Principal>
+            <Dependent Role="HotelCanales">
+              <PropertyRef Name="idHotel" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -4864,6 +4995,34 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Canales">
+            <EntityTypeMapping TypeName="Models.Canales">
+              <MappingFragment StoreEntitySet="Canales">
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="idCanal" ColumnName="idCanal" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vHotelChannel">
+            <EntityTypeMapping TypeName="Models.vHotelChannel">
+              <MappingFragment StoreEntitySet="vHotelChannel">
+                <ScalarProperty Name="Comision" ColumnName="Comision" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="idCanal" ColumnName="idCanal" />
+                <ScalarProperty Name="idHotel" ColumnName="idHotel" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HotelCanales">
+            <EntityTypeMapping TypeName="Models.HotelCanales">
+              <MappingFragment StoreEntitySet="HotelCanales">
+                <ScalarProperty Name="Comision" ColumnName="Comision" />
+                <ScalarProperty Name="idCanal" ColumnName="idCanal" />
+                <ScalarProperty Name="idHotel" ColumnName="idHotel" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="UsuarioHotel">
             <EntityTypeMapping TypeName="Models.UsuarioHotel">
               <MappingFragment StoreEntitySet="UsuarioHotel">
@@ -4922,7 +5081,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
         <DesignerProperty Name="EnablePluralization" Value="false" />
-        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
       </DesignerInfoPropertySet>

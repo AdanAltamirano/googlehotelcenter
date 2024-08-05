@@ -67,6 +67,9 @@ namespace APIServices.Models
         public virtual DbSet<vLinkedRatePlans> vLinkedRatePlans { get; set; }
         public virtual DbSet<vDayRates> vDayRates { get; set; }
         public virtual DbSet<vDayRatesExceptions> vDayRatesExceptions { get; set; }
+        public virtual DbSet<Canales> Canales { get; set; }
+        public virtual DbSet<vHotelChannel> vHotelChannel { get; set; }
+        public virtual DbSet<HotelCanales> HotelCanales { get; set; }
         public virtual DbSet<UsuarioHotel> UsuarioHotel { get; set; }
         public virtual DbSet<vUsersConnectivity> vUsersConnectivity { get; set; }
     

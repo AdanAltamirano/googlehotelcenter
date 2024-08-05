@@ -159,8 +159,14 @@
     <Compile Include="Models\AplicacionPortal.cs">
       <DependentUpon>OzUniEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Canales.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Ciudades.cs">
       <DependentUpon>OzUniEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ContratosNR.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Contenido.cs">
       <DependentUpon>OzUniEntities.tt</DependentUpon>
@@ -168,13 +174,13 @@
     <Compile Include="Models\Corporativos.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\DTO\CancelBooking.cs" />
-    <Compile Include="Models\ContratosNR.cs">
+    <Compile Include="Models\Corporativos.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Diccionario.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\DTO\CancelBooking.cs" />
     <Compile Include="Models\DTO\Currency\CurrencyDTO.cs" />
     <Compile Include="Models\DTO\DailyRate.cs" />
     <Compile Include="Models\DTO\DailyRateDetail.cs" />
@@ -209,6 +215,9 @@
     <Compile Include="Models\GetMappedHotelsWithRatePlan_Result.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\HotelCanales.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Hoteles.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
@@ -240,7 +249,7 @@
       <DependentUpon>OzHoteles.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\DTO\RatesByRatePlan.cs" />
-    <Compile Include="Models\OzHoteles1.Designer.cs">
+    <Compile Include="Models\OzHoteles.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>OzHoteles.edmx</DependentUpon>
@@ -383,6 +392,9 @@
     <Compile Include="Models\vHotelByUser.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\vHotelChannel.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\vHotelPlan.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
@@ -437,6 +449,7 @@
     <Compile Include="Service\HotelVerse\Models\Record.cs" />
     <Compile Include="Service\HotelVerse\Models\Response\ResponseRequest.cs" />
     <Compile Include="Utilities.cs" />
+    <Compile Include="UtilsService.cs" />
     <Compile Include="Xml\OTA\Request\RatePlan\HotelRatePlanRQ.cs" />
     <Compile Include="Xml\OTA\Request\Rates\HotelRateAmountNotifRQ.cs" />
     <Compile Include="Xml\OTA\Request\Rates\HotelRateAmountNotifRS.cs" />
@@ -447,7 +460,7 @@
   <ItemGroup>
     <EntityDeploy Include="Models\OzHoteles.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>OzHoteles1.Designer.cs</LastGenOutput>
+      <LastGenOutput>OzHoteles.Designer.cs</LastGenOutput>
     </EntityDeploy>
   </ItemGroup>
   <ItemGroup>
