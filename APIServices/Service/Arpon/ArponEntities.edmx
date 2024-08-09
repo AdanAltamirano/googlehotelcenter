@@ -1,0 +1,249 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="OzArpon.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="HotelIPH_Arpon">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdHotelIP" Type="nvarchar(max)" />
+          <Property Name="IdHotelArpon" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="RatePlansIPH_Arpon">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdRatePlanIP" Type="nvarchar(max)" />
+          <Property Name="IdRatePlanArpon" Type="nvarchar(max)" />
+          <Property Name="idHotelIP" Type="int" />
+        </EntityType>
+        <EntityType Name="RoomsIPH_Arpon">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdRoomIP" Type="nvarchar(max)" />
+          <Property Name="IdRoomArpon" Type="nvarchar(max)" />
+          <Property Name="idHotelIP" Type="int" />
+        </EntityType>
+        <EntityType Name="TipoHabitaciones_Hoteles">
+          <Key>
+            <PropertyRef Name="idTipoHabitacion_Hotel" />
+          </Key>
+          <Property Name="idTipoHabitacion_Hotel" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idTipoHabitacion" Type="int" Nullable="false" />
+          <Property Name="idHotel" Type="int" Nullable="false" />
+          <Property Name="HabitacionesExistentes" Type="int" Nullable="false" />
+          <Property Name="Personas" Type="tinyint" Nullable="false" />
+          <Property Name="PersonasExtras" Type="tinyint" Nullable="false" />
+          <Property Name="MaxAdultos" Type="tinyint" Nullable="false" />
+          <Property Name="MaxNinios" Type="tinyint" Nullable="false" />
+          <Property Name="idDiccionarioDescripcion" Type="int" Nullable="false" />
+          <Property Name="Descripcion" Type="ntext" Nullable="false" />
+          <Property Name="NombreHabitacion" Type="nvarchar" MaxLength="80" Nullable="false" />
+          <Property Name="idDiccionarioNombreHabitacion" Type="int" Nullable="false" />
+          <Property Name="CodigoHabitacion" Type="nvarchar" MaxLength="4" />
+          <Property Name="BaseOccupancy" Type="tinyint" />
+          <Property Name="MaxChildrenPerRoom" Type="tinyint" />
+          <Property Name="SingleBasePrice" Type="smallmoney" />
+          <Property Name="DoubleBasePrice" Type="smallmoney" />
+          <Property Name="TripleBasePrice" Type="smallmoney" />
+          <Property Name="QuadrupleBasePrice" Type="smallmoney" />
+          <Property Name="ChildBasePrice" Type="smallmoney" />
+          <Property Name="ExtraBasePrice" Type="smallmoney" />
+          <Property Name="NumberRoomsBase" Type="smallint" />
+          <Property Name="ExtraBeds" Type="tinyint" />
+          <Property Name="ExtraBedPrice" Type="tinyint" />
+          <Property Name="RollAwayAdult" Type="tinyint" />
+          <Property Name="RollAwayChild" Type="tinyint" />
+          <Property Name="RollAwayCrib" Type="tinyint" />
+          <Property Name="PriceRollAwayAdult" Type="smallmoney" />
+          <Property Name="PriceRollAwayChild" Type="smallmoney" />
+          <Property Name="PriceRollAwayCrib" Type="smallmoney" />
+          <Property Name="orden" Type="smallint" />
+          <Property Name="MinAdultos" Type="tinyint" />
+          <Property Name="Eliminada" Type="bit" />
+        </EntityType>
+        <EntityContainer Name="OzArponStoreContainer">
+          <EntitySet Name="HotelIPH_Arpon" EntityType="Self.HotelIPH_Arpon" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RatePlansIPH_Arpon" EntityType="Self.RatePlansIPH_Arpon" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RoomsIPH_Arpon" EntityType="Self.RoomsIPH_Arpon" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TipoHabitaciones_Hoteles" EntityType="Self.TipoHabitaciones_Hoteles" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="OzArpon" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="HotelIPH_Arpon">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdHotelIP" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IdHotelArpon" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="RatePlansIPH_Arpon">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdRatePlanIP" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IdRatePlanArpon" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="idHotelIP" Type="Int32" />
+        </EntityType>
+        <EntityType Name="RoomsIPH_Arpon">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdRoomIP" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IdRoomArpon" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="idHotelIP" Type="Int32" />
+        </EntityType>
+        <EntityContainer Name="ArponEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="HotelIPH_Arpon" EntityType="Self.HotelIPH_Arpon" />
+          <EntitySet Name="RatePlansIPH_Arpon" EntityType="Self.RatePlansIPH_Arpon" />
+          <EntitySet Name="RoomsIPH_Arpon" EntityType="Self.RoomsIPH_Arpon" />
+          <EntitySet Name="TipoHabitaciones_Hoteles" EntityType="OzArpon.TipoHabitaciones_Hoteles" />
+        </EntityContainer>
+        <EntityType Name="TipoHabitaciones_Hoteles">
+          <Key>
+            <PropertyRef Name="idTipoHabitacion_Hotel" />
+          </Key>
+          <Property Name="idTipoHabitacion_Hotel" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idTipoHabitacion" Type="Int32" Nullable="false" />
+          <Property Name="idHotel" Type="Int32" Nullable="false" />
+          <Property Name="HabitacionesExistentes" Type="Int32" Nullable="false" />
+          <Property Name="Personas" Type="Byte" Nullable="false" />
+          <Property Name="PersonasExtras" Type="Byte" Nullable="false" />
+          <Property Name="MaxAdultos" Type="Byte" Nullable="false" />
+          <Property Name="MaxNinios" Type="Byte" Nullable="false" />
+          <Property Name="idDiccionarioDescripcion" Type="Int32" Nullable="false" />
+          <Property Name="Descripcion" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="NombreHabitacion" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="idDiccionarioNombreHabitacion" Type="Int32" Nullable="false" />
+          <Property Name="CodigoHabitacion" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="BaseOccupancy" Type="Byte" />
+          <Property Name="MaxChildrenPerRoom" Type="Byte" />
+          <Property Name="SingleBasePrice" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="DoubleBasePrice" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="TripleBasePrice" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="QuadrupleBasePrice" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="ChildBasePrice" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="ExtraBasePrice" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="NumberRoomsBase" Type="Int16" />
+          <Property Name="ExtraBeds" Type="Byte" />
+          <Property Name="ExtraBedPrice" Type="Byte" />
+          <Property Name="RollAwayAdult" Type="Byte" />
+          <Property Name="RollAwayChild" Type="Byte" />
+          <Property Name="RollAwayCrib" Type="Byte" />
+          <Property Name="PriceRollAwayAdult" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="PriceRollAwayChild" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="PriceRollAwayCrib" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="orden" Type="Int16" />
+          <Property Name="MinAdultos" Type="Byte" />
+          <Property Name="Eliminada" Type="Boolean" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="OzArponStoreContainer" CdmEntityContainer="ArponEntities">
+          <EntitySetMapping Name="HotelIPH_Arpon">
+            <EntityTypeMapping TypeName="OzArpon.HotelIPH_Arpon">
+              <MappingFragment StoreEntitySet="HotelIPH_Arpon">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdHotelIP" ColumnName="IdHotelIP" />
+                <ScalarProperty Name="IdHotelArpon" ColumnName="IdHotelArpon" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RatePlansIPH_Arpon">
+            <EntityTypeMapping TypeName="OzArpon.RatePlansIPH_Arpon">
+              <MappingFragment StoreEntitySet="RatePlansIPH_Arpon">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdRatePlanIP" ColumnName="IdRatePlanIP" />
+                <ScalarProperty Name="IdRatePlanArpon" ColumnName="IdRatePlanArpon" />
+                <ScalarProperty Name="idHotelIP" ColumnName="idHotelIP" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RoomsIPH_Arpon">
+            <EntityTypeMapping TypeName="OzArpon.RoomsIPH_Arpon">
+              <MappingFragment StoreEntitySet="RoomsIPH_Arpon">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdRoomIP" ColumnName="IdRoomIP" />
+                <ScalarProperty Name="IdRoomArpon" ColumnName="IdRoomArpon" />
+                <ScalarProperty Name="idHotelIP" ColumnName="idHotelIP" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TipoHabitaciones_Hoteles">
+            <EntityTypeMapping TypeName="OzArpon.TipoHabitaciones_Hoteles">
+              <MappingFragment StoreEntitySet="TipoHabitaciones_Hoteles">
+                <ScalarProperty Name="Eliminada" ColumnName="Eliminada" />
+                <ScalarProperty Name="MinAdultos" ColumnName="MinAdultos" />
+                <ScalarProperty Name="orden" ColumnName="orden" />
+                <ScalarProperty Name="PriceRollAwayCrib" ColumnName="PriceRollAwayCrib" />
+                <ScalarProperty Name="PriceRollAwayChild" ColumnName="PriceRollAwayChild" />
+                <ScalarProperty Name="PriceRollAwayAdult" ColumnName="PriceRollAwayAdult" />
+                <ScalarProperty Name="RollAwayCrib" ColumnName="RollAwayCrib" />
+                <ScalarProperty Name="RollAwayChild" ColumnName="RollAwayChild" />
+                <ScalarProperty Name="RollAwayAdult" ColumnName="RollAwayAdult" />
+                <ScalarProperty Name="ExtraBedPrice" ColumnName="ExtraBedPrice" />
+                <ScalarProperty Name="ExtraBeds" ColumnName="ExtraBeds" />
+                <ScalarProperty Name="NumberRoomsBase" ColumnName="NumberRoomsBase" />
+                <ScalarProperty Name="ExtraBasePrice" ColumnName="ExtraBasePrice" />
+                <ScalarProperty Name="ChildBasePrice" ColumnName="ChildBasePrice" />
+                <ScalarProperty Name="QuadrupleBasePrice" ColumnName="QuadrupleBasePrice" />
+                <ScalarProperty Name="TripleBasePrice" ColumnName="TripleBasePrice" />
+                <ScalarProperty Name="DoubleBasePrice" ColumnName="DoubleBasePrice" />
+                <ScalarProperty Name="SingleBasePrice" ColumnName="SingleBasePrice" />
+                <ScalarProperty Name="MaxChildrenPerRoom" ColumnName="MaxChildrenPerRoom" />
+                <ScalarProperty Name="BaseOccupancy" ColumnName="BaseOccupancy" />
+                <ScalarProperty Name="CodigoHabitacion" ColumnName="CodigoHabitacion" />
+                <ScalarProperty Name="idDiccionarioNombreHabitacion" ColumnName="idDiccionarioNombreHabitacion" />
+                <ScalarProperty Name="NombreHabitacion" ColumnName="NombreHabitacion" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="idDiccionarioDescripcion" ColumnName="idDiccionarioDescripcion" />
+                <ScalarProperty Name="MaxNinios" ColumnName="MaxNinios" />
+                <ScalarProperty Name="MaxAdultos" ColumnName="MaxAdultos" />
+                <ScalarProperty Name="PersonasExtras" ColumnName="PersonasExtras" />
+                <ScalarProperty Name="Personas" ColumnName="Personas" />
+                <ScalarProperty Name="HabitacionesExistentes" ColumnName="HabitacionesExistentes" />
+                <ScalarProperty Name="idHotel" ColumnName="idHotel" />
+                <ScalarProperty Name="idTipoHabitacion" ColumnName="idTipoHabitacion" />
+                <ScalarProperty Name="idTipoHabitacion_Hotel" ColumnName="idTipoHabitacion_Hotel" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

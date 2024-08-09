@@ -59,12 +59,12 @@ module.exports = {
             filename: 'reservation-list.aspx',
             chunks: ['node_vendors','commons', 'reservation_list'],
         },
-        reservations_report: {
-            entry: 'src/views/reservations-report/main.js',
-            template: 'public/reservations-report.aspx',
-            filename: 'reservations-report.aspx',
-            chunks: ['node_vendors','commons', 'reservations_report'],
-        },
+        // reservations_report: {
+        //     entry: 'src/views/reservations-report/main.js',
+        //     template: 'public/reservations-report.aspx',
+        //     filename: 'reservations-report.aspx',
+        //     chunks: ['node_vendors','commons', 'reservations_report'],
+        // },
         reservation_details: {
             entry: 'src/views/reservation-details/main.js',
             template: 'public/reservation-details.aspx',
@@ -119,6 +119,12 @@ module.exports = {
             template: 'public/users-connectivities-list.aspx',
             filename: 'users-connectivities-list.aspx',
             chunks: ['node_vendors','commons','users_connectivities']
+        },
+        arpon: {
+            entry:'src/views/arpon/main.js',
+            template:'public/arpon.aspx',
+            filename:'arpon.aspx',
+            chunks:['node_vendors','commons','arpon']
         }
         /* hotel_list: {
             entry: 'src/views/hotel-list/main.js',
