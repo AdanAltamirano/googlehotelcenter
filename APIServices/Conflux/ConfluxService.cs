@@ -1187,7 +1187,7 @@ namespace APIServices.Conflux
 
             try
             {
-                var xml = HotelRateAmountNotifRQ.CreateHotelRateAmountNotifRQ(rateAmountMessages);
+                var xml = HotelRateAmountNotifRQ.CreateHotelRateAmountNotifRQDelete(rateAmountMessages);
 
                 var soapRequest = Soap.CreateSoapRequestXml(xml);
 

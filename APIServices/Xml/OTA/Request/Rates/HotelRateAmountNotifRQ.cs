@@ -288,6 +288,62 @@ namespace APIServices.Xml.OTA.Request.Rates
 
         }
 
+        //Delete
+
+        public static XElement CreateHotelRateAmountNotifRQDelete(RateAmountMessages rateAmountMessages)
+        {
+            XElement otaHotelRateAmountNotifRQ = new XElement("OTA_HotelRateAmountNotifRQ",
+               new XAttribute(XNamespace.Xmlns + "xsi", xsi),
+               new XAttribute(XNamespace.Xmlns + "xsd", xsd),
+               new XAttribute("EchoToken", Guid.NewGuid()),
+               new XAttribute("Version", "1"));
+
+            XElement pos = GetPOS();
+
+            XElement rateAmountMessagesXml = GetRateAmountMessagesDelete(rateAmountMessages);
+
+            otaHotelRateAmountNotifRQ.Add(pos, rateAmountMessagesXml);
+
+            return otaHotelRateAmountNotifRQ;
+        }
+
+        private static XElement GetRateAmountMessagesDelete(RateAmountMessages rateAmountMessages)
+        {
+
+            XNamespace blank = XNamespace.Get(@"http://www.opentravel.org/OTA/2003/05");
+
+            XElement rateAmountMessagesXml = new XElement(blank + "RateAmountMessages",
+                new XAttribute("xmlns", blank.NamespaceName),
+                new XAttribute("HotelCode", rateAmountMessages.HotelCode));
+
+            foreach (RateAmountMessage currentRate in rateAmountMessages.RateAmountMessagesList)
+            {
+                XElement rateAmountMessage = new XElement(blank + "RateAmountMessage");
+
+                XElement statusApplicationControl = new XElement(blank + "StatusApplicationControl",
+                    new XAttribute("RatePlanCode", currentRate.statusApplicationControl.RatePlanCode),
+                    new XAttribute("InvTypeCode", currentRate.statusApplicationControl.InvTypeCode));
+
+                XElement rates = new XElement(blank + "Rates");
+
+                foreach (Rate rate in currentRate.Rates)
+                {
+                    XElement ratesXml = new XElement(blank + "Rate",
+                        new XAttribute("Start", rate.StartDate),
+                        new XAttribute("End", rate.EndDate));
+                        
+                    rates.Add(ratesXml);
+                }
+
+                rateAmountMessage.Add(statusApplicationControl, rates);
+
+                rateAmountMessagesXml.Add(rateAmountMessage);
+            }
+
+            return rateAmountMessagesXml;
+
+        }
+
 
     }
 }
