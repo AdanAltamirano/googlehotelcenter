@@ -99,6 +99,10 @@ address {
     border-top: 1px solid $color-light-gray;
 }
 
+.h-fit-content {
+    height: fit-content !important;
+}
+
 @media only screen and (min-width: 1280px) {
     .swal2-custom-popup {
         width: 40rem !important;

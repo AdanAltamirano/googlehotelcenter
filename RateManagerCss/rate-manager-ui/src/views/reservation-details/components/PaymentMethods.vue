@@ -19,6 +19,10 @@
               </confirm-deposit>
             </div>
             <div>
+              {{$t('Bank')}}:
+              <strong>{{result.bankDepositDetails.bank}}</strong>
+            </div>
+            <div>
               {{$t('Reference')}}:
               <strong>{{result.bankDepositDetails.reference}}</strong>
             </div>
@@ -34,6 +38,7 @@
           </b-alert>
         </div>
         <!--FIN DEPOSITO BANCARIO-->
+
         <!--PAGO EN LINEA-->
         <div v-if="result.paymentWay == 1">
           <b-alert show v-if="result.paymentDetails.authorizationNumber.length <= 0 && result.paymentDetails.reference.length <= 0" variant="warning">
@@ -59,6 +64,7 @@
           </address>
         </div>
         <!--FIN PAGO EN LINEA-->
+
         <!--PAGO EN EL HOTEL-->
         <div v-if="result.paymentWay == 2">
           <address v-if="result.customer.cardDetails">
@@ -120,6 +126,54 @@
           </b-alert>
         </div>
         <!--FIN PAGO EN EL HOTEL-->
+
+        <!-- PAGO TEXTO CCT -->
+        <div v-if="result.paymentWay == 3">
+          {{$t('Information Payment')}}:
+          <strong>{{result.paymentInformation}}</strong>
+        </div>
+        <!-- -->
+
+        <!-- OTA -->
+        <div v-if="result.paymentWay == 5">
+          <address v-if="result.customer.cardDetails">
+            {{$t('Credit card')}}
+            <br />
+            <div v-if="!ccDetails.isSuccess" class="d-flex">
+              <span class="mt-2">
+                {{$t('Card number')}}:
+                <strong>{{result.customer.cardDetails.number}}</strong>
+              </span>
+              <b-button
+                v-if="result.customer.cardDetails.allowsShowCreditCardData"
+                class="text-info ml-auto"
+                @click="show_alertDatacard"
+                v-show="showBtn"
+                variant="link"
+              >{{$t('View card data')}}</b-button>
+            </div>
+            <div v-if="ccDetails.isSuccess">
+              <address class="mt-2">
+                {{$t('Name')}}:
+                <strong>{{ccDetails.owner}}</strong>
+                <br />
+                {{$t('Type')}}:
+                <strong>{{ccDetails.cardType}}</strong>
+                <br />
+                {{$t('Card number')}}:
+                <strong>{{ccDetails.number}}</strong>
+                <br />
+                {{$t('Expiration date')}}:
+                <strong>{{ccDetails.monthExpiration}}/{{ccDetails.yearExpiration}}</strong>
+                <br />
+                {{$t('Security code')}}:
+                <strong>{{ccDetails.cvv}}</strong>
+              </address>
+            </div>
+          </address>
+          <span v-else><strong>{{$t('No payment information')}}</strong></span>
+        </div>
+        <!-- FIN OTA -->
       </div>
     </div>
   </div>
@@ -195,6 +249,12 @@ export default {
           break;
         case 2:
           txt = this.$t("Payment at the hotel");
+          break;
+        case 3:
+          txt = this.$t("Call Center Other");
+          break;
+        case 4:
+          txt = this.result.portal;
           break;
       }
       return txt;

@@ -6,6 +6,7 @@ namespace APIServices.Models.DTO
     public class ReservationDetailsModel
     {
         public string ReservationNumber { get; set; }
+        public string ReservationNumberIDS { get; set; }
         public string CancellationNumber { get; set; }
         public string HotelName { get; set; }
         public string HotelEmail { get; set; }
@@ -26,6 +27,8 @@ namespace APIServices.Models.DTO
         public string RatePlan { get; set; }
         public string Source { get; set; }
         public string Portal { get; set; }
+        public string CollectedBy { get; set; } = string.Empty;
+        public string PaymentInformation { get; set; } = string.Empty;
         public bool IsNetRateUV { get; set; }
         public Pms Pms { get; set; }
         public CustomerDetails Customer { get; set; }
@@ -121,6 +124,7 @@ namespace APIServices.Models.DTO
     {
         public double Total { get; set; }
         public string Currency { get; set; }
+        public string Bank { get; set; }
         public string Reference { get; set; }
         public bool HasDebt { get; set; }
         public double Debt { get; set; }

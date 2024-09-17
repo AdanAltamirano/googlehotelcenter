@@ -140,6 +140,7 @@ namespace APIServices
             {
                 model.ReservationNumber = details.reservationNumber;
                 model.ReservationId = reservationId;
+                model.ReservationNumberIDS = details.reservationIdIDS;
                 model.CancellationNumber = details.cancellationNumber;
                 model.HotelName = details.hotelName;
                 model.HotelEmail = details.hotelEmail;
@@ -163,6 +164,8 @@ namespace APIServices
                 model.Portal = details.Portal;
                 model.IsNetRateUV = details.IsNetRateUV;
                 model.PaymentWay = details.paymentType;
+                model.CollectedBy = GetPayee(details.source, details.paymentType, details.IsNetRateUV, details.depositTarget);
+                model.PaymentInformation = details.paymentInformation;
                 model.Agency = details.agency;
                 model.AgencyUser = details.agencyUser;
                 model.RatePlanPromotion = details.ratePlanPromotion;
@@ -183,6 +186,7 @@ namespace APIServices
                     model.BankDepositDetails.Target = details.depositTarget;
                     model.BankDepositDetails.Total = Convert.ToDouble(totalDeposited); //(double)details.depositAmount;
                     model.BankDepositDetails.Currency = details.depositCurrency;
+                    model.BankDepositDetails.Bank = details.depositBank;
                     model.BankDepositDetails.Reference = details.depositReference;
                     model.BankDepositDetails.Debt = debt;
                     model.BankDepositDetails.HasDebt = hasDebt;
@@ -219,7 +223,7 @@ namespace APIServices
                     .FirstOrDefault(x => x.userId == userId)?.showCreditCard;
 
                 if (!string.IsNullOrEmpty(details.cardNumber))
-                {
+                {                    
                     string cc = crypto.DecryptString128Bit(details.cardNumber, crypto.PublicKey);
                     model.Customer.CardDetails.CardType = model.Customer.CardDetails.GetCardType(cc);
                     cc = (cc.Length > 0) ? $"XXXXXXXXXXXX{cc.Substring(cc.Length - 4)}" : "" ;
@@ -556,6 +560,40 @@ namespace APIServices
         #endregion
 
 
+        #region quien cobra
+        /**
+        * paymentType
+        * 0 = bank deposit
+        * 1 = online payment
+        * 2 = payment at the hotel
+        * 3 = CCT OTRA
+        * 4 = OTA
+        */
+        private string GetPayee(string source ,int? paymentType, bool isNetRate, string depositTarget)
+        {
+            string payee = string.Empty;
+
+            switch (paymentType)
+            {
+                case 0:
+                    payee = depositTarget;
+                    break;
+                case 1:
+
+                    payee = (isNetRate) ? "Internet Power Hotel" : "Hotel";
+
+                    break;
+                case 2:
+                    payee = "Hotel";
+                    break;
+                case 3:
+                    payee = "Hotel";
+                    break;
+            }          
+
+            return payee;
+        }
+        #endregion
 
 
 

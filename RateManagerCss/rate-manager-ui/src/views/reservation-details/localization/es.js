@@ -35,6 +35,7 @@ export default {
     'Credit card policies': 'Políticas de tarjeta de crédito',
     'Night(s)': 'Noche(s)',
     'Reservation number': 'Número de reservación',
+    'Confirmation Number' : 'No. Confirmación',
     Source: 'Fuente',
     'Cancellation number': 'Número de cancelación',
     'See reason for cancellation': 'Ver motivo de cancelación',
@@ -167,5 +168,10 @@ export default {
     'Deposited to' : 'Depositado a',
     'Send confimation email?' : '¿Enviar correo de confirmación?',
     'Send confimation email' : 'Enviar correo de confirmación',
-    'There are no records' : 'No hay movimientos'
+    'There are no records' : 'No hay movimientos',
+    'Bank' : 'Banco',
+    'Who Collects' : 'Quien Recolecta',
+    'No payment information' : 'No hay información de pago',
+    'Call Center Other' : 'Call Center Otro',
+    'Information Payment' : 'Información de pago'
 }

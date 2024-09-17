@@ -33,6 +33,9 @@
                         <br>
                         {{$t('Source')}}: <strong>{{result.portal}}</strong>
                         <br>
+                        <div v-if="result.source == 'IDS'">
+                            {{$t('Confirmation Number')}} IDS: <strong>{{result.reservationNumberIDS}}</strong>
+                        </div>
                         <div v-if="result.paymentWay === 0 && result.bankDepositDetails.hasDebt" class="alert alert-warning">
                             <span>{{$t('Total debt')}}: <strong>{{result.bankDepositDetails.debt | currency}} {{result.bankDepositDetails.currency}}</strong></span>
                         </div>

@@ -4,15 +4,20 @@
       <i class="fas fa-hotel fa-sm"></i>
       {{result.hotelName}} {{showCorporate}}
     </h4>
-    <b-button-toolbar v-if="showCancelButton || showModifyButton || showReactivateButton || showPrintButton" class="ml-auto">
-      <b-dropdown class="mx-1" right variant="primary" :text="$t('Options')">
-        <b-dropdown-item v-if="showModifyButton" @click="modify">{{$t('Modify')}}</b-dropdown-item>
-        <b-dropdown-item v-if="showCancelButton" @click="cancel">{{$t('Cancel')}}</b-dropdown-item>
-        <b-dropdown-item v-if="showReactivateButton" @click="reactivate">{{$t('Reactivate')}}</b-dropdown-item>
-        <b-dropdown-item v-if="showSendNotificationButton" @click="sendNotification">{{$t('Send confimation email')}}</b-dropdown-item>
-        <b-dropdown-item @click="print">{{$t('Print')}}</b-dropdown-item>
-      </b-dropdown>
-    </b-button-toolbar>
+    <div class="d-flex ml-auto">
+      <b-alert v-if="result.paymentWay != 4" class="" variant="info" show>
+        <b>{{$t('Who Collects')}}: {{result.collectedBy}}</b>
+      </b-alert>
+      <b-button-toolbar class="h-fit-content" v-if="showCancelButton || showModifyButton || showReactivateButton || showPrintButton">
+        <b-dropdown class="mx-1" right variant="primary" :text="$t('Options')">
+          <b-dropdown-item v-if="showModifyButton" @click="modify">{{$t('Modify')}}</b-dropdown-item>
+          <b-dropdown-item v-if="showCancelButton" @click="cancel">{{$t('Cancel')}}</b-dropdown-item>
+          <b-dropdown-item v-if="showReactivateButton" @click="reactivate">{{$t('Reactivate')}}</b-dropdown-item>
+          <b-dropdown-item v-if="showSendNotificationButton" @click="sendNotification">{{$t('Send confimation email')}}</b-dropdown-item>
+          <b-dropdown-item @click="print">{{$t('Print')}}</b-dropdown-item>
+        </b-dropdown>
+      </b-button-toolbar>
+    </div>
   </div>
 </template>
 <script>

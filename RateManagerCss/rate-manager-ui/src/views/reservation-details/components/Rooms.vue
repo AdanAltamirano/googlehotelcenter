@@ -37,7 +37,7 @@
                     >- {{$moment(price.checkOut).format('D MMM')}}</span>
                   </td>
                   <td>{{(price.price) | currency}} {{price.currency}}</td>
-                  <td>{{(price.extraPrice) | currency}} {{price.currency}}</td>
+                  <td v-if="price.extraPrice > 0">{{(price.extraPrice) | currency}} {{price.currency}}</td>
                 </tr>
                 <tr>
                   <td>Total</td>
@@ -65,8 +65,8 @@
                   <td v-if="isNetRate && !isSupervisor">{{(price.priceNR) | currency}} {{price.currency}}</td>
                   <td v-else>{{(price.price) | currency}} {{price.currency}}</td>
 
-                  <td v-if="isNetRate && !isSupervisor">{{(price.extraPriceNR) | currency}} {{price.currency}}</td>
-                  <td v-else>{{(price.extraPrice) | currency}} {{price.currency}}</td>
+                  <td v-if="isNetRate && !isSupervisor && price.extraPriceNR > 0">{{(price.extraPriceNR) | currency}} {{price.currency}}</td>
+                  <td v-else-if="price.extraPrice > 0">{{(price.extraPrice) | currency}} {{price.currency}}</td>
                 </tr>
                 <tr>
                   <td>Total</td>
