@@ -13,6 +13,7 @@ using APIServices.Models.DTO.Reservation.Deposit.Request;
 using APIServices.Models.DTO.Reservation.Deposit.Response;
 using APIServices.Models.DTO.Reservation.Pms.Response;
 using OfficeOpenXml;
+using APIServices.Conflux.Crypto;
 using PortalLibraries;
 
 
@@ -164,7 +165,7 @@ namespace APIServices
                 model.Portal = details.Portal;
                 model.IsNetRateUV = details.IsNetRateUV;
                 model.PaymentWay = details.paymentType;
-                model.CollectedBy = GetPayee(details.source, details.paymentType, details.IsNetRateUV, details.depositTarget);
+                model.CollectedBy = (details.paymentType == 4)? GetPayeeOTA(details.Portal.ToUpper(), details.cardNumber, details.cardCustomerName) : GetPayee(details.paymentType, details.IsNetRateUV, details.depositTarget);
                 model.PaymentInformation = details.paymentInformation;
                 model.Agency = details.agency;
                 model.AgencyUser = details.agencyUser;
@@ -223,12 +224,23 @@ namespace APIServices
                     .FirstOrDefault(x => x.userId == userId)?.showCreditCard;
 
                 if (!string.IsNullOrEmpty(details.cardNumber))
-                {                    
-                    string cc = crypto.DecryptString128Bit(details.cardNumber, crypto.PublicKey);
-                    model.Customer.CardDetails.CardType = model.Customer.CardDetails.GetCardType(cc);
-                    cc = (cc.Length > 0) ? $"XXXXXXXXXXXX{cc.Substring(cc.Length - 4)}" : "" ;
-                    model.Customer.CardDetails.Number = cc;
-                    model.Customer.CardDetails.IsSuccess = true;
+                {
+                    if (details.source.Equals("IDS"))
+                    {
+                        CardDetails otaCreditCard = ReadCreditCardNumberOTA(details);
+
+                        model.Customer.CardDetails = otaCreditCard;
+                    }
+                    else
+                    {
+                        string cc = crypto.DecryptString128Bit(details.cardNumber, crypto.PublicKey);
+                        model.Customer.CardDetails.CardType = model.Customer.CardDetails.GetCardType(cc);
+                        cc = (cc.Length > 0) ? $"XXXXXXXXXXXX{cc.Substring(cc.Length - 4)}" : "";
+                        model.Customer.CardDetails.Number = cc;
+                        model.Customer.CardDetails.IsSuccess = true;
+                        model.Customer.CardDetails.ShowBasicCreditCardData = true;
+                    }
+                    
                 }
                 if (isHotelCompany || (showCreditCard.HasValue ? showCreditCard.Value : false))
                     model.Customer.CardDetails.AllowsShowCreditCardData = true;
@@ -438,19 +450,27 @@ namespace APIServices
 
             if (details != null && (isHotelCompany || showCreditCard.Value))
             {
-                string cc = crypto.DecryptString128Bit(details.cardNumber, crypto.PublicKey);
-                string cvv = details.cardCvv;
-                if (Regex.IsMatch(details.cardCvv, "[A-Z]"))
-                    cvv = crypto.DecryptString128Bit(cvv, crypto.PublicKey);
 
-                result.Number = cc;
-                result.CardType = result.GetCardType(cc);
-                result.MonthExpiration = details.cardExpMonth;
-                result.YearExpiration = details.cardExpYear;
-                result.Owner = details.cardCustomerName;
-                result.Cvv = cvv;
-                result.IsSuccess = true;
-                result.AllowsShowCreditCardData = true;
+                if (!details.source.Equals("IDS"))
+                {
+                    string cc = crypto.DecryptString128Bit(details.cardNumber, crypto.PublicKey);
+                    string cvv = details.cardCvv;
+                    if (Regex.IsMatch(details.cardCvv, "[A-Z]"))
+                        cvv = crypto.DecryptString128Bit(cvv, crypto.PublicKey);
+
+                    result.Number = cc;
+                    result.CardType = result.GetCardType(cc);
+                    result.MonthExpiration = details.cardExpMonth;
+                    result.YearExpiration = details.cardExpYear;
+                    result.Owner = details.cardCustomerName;
+                    result.Cvv = cvv;
+                    result.IsSuccess = true;
+                    result.AllowsShowCreditCardData = true;
+                }
+                else if (details.source.Equals("IDS"))
+                {
+                    result = GetCreditCardDetailsOTA(details);
+                }
             }
             return result;
         }
@@ -461,6 +481,119 @@ namespace APIServices
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             return new string(Enumerable.Repeat(chars, length)
               .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
+        private CardDetails ReadCreditCardNumberOTA(vReservationDetails details)
+        {
+            CardDetails cardDetails = new CardDetails();
+
+            if (details.Portal.ToUpper().Contains("EXPEDIA"))
+            {
+                //Tarjeta de Cliente Viejito tiene doble encriptado uno en 128 y otro el de conflux
+                string cardNumberEncrypted = details.cardNumber;
+
+                if(!details.cardCustomerName.ToUpper().Contains("EXPEDIA"))
+                {
+                    cardNumberEncrypted = crypto.DecryptString128Bit(details.cardNumber, crypto.PublicKey);
+                }
+
+                string CC = string.Empty;
+                bool isDecryptedCC = ConfluxCrypto.Decrypt(cardNumberEncrypted, out CC);
+
+                if(isDecryptedCC)
+                {
+                    //Mostrar
+                    string CCHidden = (CC.Length > 0) ? $"XXXXXXXXXXXX{CC.Substring(CC.Length - 4)}" : "";
+
+                    cardDetails.Number = CCHidden;
+                    cardDetails.IsSuccess = true;
+                    cardDetails.CardType = cardDetails.GetCardType(CC);
+                    cardDetails.ShowBasicCreditCardData = true;
+                }
+            }
+            else if (details.Portal.ToUpper().Contains("BOOKING"))
+            {
+
+            }
+            else if (details.Portal.ToUpper().Contains("DESPEGAR"))
+            {
+
+            }
+            else if (details.Portal.ToUpper().Contains("BESTDAY"))
+            {
+
+            }
+            else if (details.Portal.ToUpper().Contains("HOTELBEDS"))
+            {
+
+            }
+            else if (details.Portal.ToUpper().Contains("PRICETRAVEL"))
+            {
+
+            }
+
+            return cardDetails;
+        }
+
+        private CardDetails GetCreditCardDetailsOTA(vReservationDetails details)
+        {
+            CardDetails cardDetails = new CardDetails();
+
+            if (details.Portal.ToUpper().Contains("EXPEDIA"))
+            {
+                //Tarjeta de Cliente Viejito tiene doble encriptado uno en 128 y otro el de conflux
+                string cardNumberEncrypted = details.cardNumber;
+                string cardCVVEncrypted = details.cardCvv;
+
+                if (!details.cardCustomerName.ToUpper().Contains("EXPEDIA"))
+                {
+                    cardNumberEncrypted = crypto.DecryptString128Bit(details.cardNumber, crypto.PublicKey);
+
+                    if (Regex.IsMatch(details.cardCvv, "[A-Z]"))
+                        cardCVVEncrypted = crypto.DecryptString128Bit(details.cardCvv, crypto.PublicKey);
+
+                }
+
+                string CC = string.Empty;
+                bool isDecryptedCC = ConfluxCrypto.Decrypt(cardNumberEncrypted, out CC);
+
+                string CVV = string.Empty;
+                bool isDecryptedCVV = ConfluxCrypto.Decrypt(cardCVVEncrypted, out CVV);
+
+                cardDetails.Number = CC;
+                cardDetails.Cvv = CVV;
+                cardDetails.CardType = cardDetails.GetCardType(CC);
+                cardDetails.MonthExpiration = details.cardExpMonth;
+                cardDetails.YearExpiration = details.cardExpYear;
+                cardDetails.Owner = details.cardCustomerName;
+                cardDetails.ShowBasicCreditCardData = true;
+                cardDetails.IsSuccess = true;
+                cardDetails.AllowsShowCreditCardData = true;
+
+            }
+            else if (details.Portal.ToUpper().Contains("BOOKING"))
+            {
+
+            }
+            else if (details.Portal.ToUpper().Contains("DESPEGAR"))
+            {
+
+            }
+            else if (details.Portal.ToUpper().Contains("BESTDAY"))
+            {
+
+            }
+            else if (details.Portal.ToUpper().Contains("HOTELBEDS"))
+            {
+
+            }
+            else if (details.Portal.ToUpper().Contains("PRICETRAVEL"))
+            {
+
+            }
+
+            return cardDetails;
+
         }
 
         #endregion
@@ -569,7 +702,7 @@ namespace APIServices
         * 3 = CCT OTRA
         * 4 = OTA
         */
-        private string GetPayee(string source ,int? paymentType, bool isNetRate, string depositTarget)
+        private string GetPayee(int? paymentType, bool isNetRate, string depositTarget)
         {
             string payee = string.Empty;
 
@@ -588,17 +721,47 @@ namespace APIServices
                     break;
                 case 3:
                     payee = "Hotel";
-                    break;
+                    break;               
             }          
 
             return payee;
         }
+
+        private string GetPayeeOTA(string portal, string cardNumber, string cardCustomerName)
+        {
+            string payee = string.Empty;
+
+
+            if (portal.Contains("EXPEDIA"))
+            {
+                if (!string.IsNullOrEmpty(cardCustomerName) && cardCustomerName.Contains("Expedia")) payee = "Expedia";
+                else payee = "Hotel";
+            }
+            else if(portal.Contains("BOOKING"))
+            {
+
+            }
+            else if (portal.Contains("DESPEGAR"))
+            {
+
+            }
+            else if (portal.Contains("BESTDAY"))
+            {
+
+            }
+            else if (portal.Contains("HOTELBEDS"))
+            {
+
+            }
+            else if (portal.Contains("PRICETRAVEL"))
+            {
+
+            }
+
+            return payee;
+        }
+
         #endregion
-
-
-
-
-
 
         #region cancelar reserva
 

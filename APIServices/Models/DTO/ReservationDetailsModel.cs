@@ -75,7 +75,8 @@ namespace APIServices.Models.DTO
     public class CardDetails
     {
         public bool IsSuccess { get; set; } = false;
-        public bool AllowsShowCreditCardData { get; set; } = false;
+        public bool AllowsShowCreditCardData { get; set; } = false; //Tiene que ver con permisos para ver la informacion desencryptada de la tarjeta
+        public bool ShowBasicCreditCardData { get; set; } = false; //Mostrar informacion basica de la tarjeta(solo el numero de tarjeta con 4 digitos visibles)
         public string CardType { get; set; } = null;
         public string Number { get; set; } = null;
         public string YearExpiration { get; set; } = null;

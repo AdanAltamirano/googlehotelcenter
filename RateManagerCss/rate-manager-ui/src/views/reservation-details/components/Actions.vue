@@ -5,7 +5,7 @@
       {{result.hotelName}} {{showCorporate}}
     </h4>
     <div class="d-flex ml-auto">
-      <b-alert v-if="result.paymentWay != 4" class="" variant="info" show>
+      <b-alert v-if="result.collectedBy.length > 0" class="" variant="info" show>
         <b>{{$t('Who Collects')}}: {{result.collectedBy}}</b>
       </b-alert>
       <b-button-toolbar class="h-fit-content" v-if="showCancelButton || showModifyButton || showReactivateButton || showPrintButton">

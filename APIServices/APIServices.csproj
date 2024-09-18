@@ -110,6 +110,7 @@
   <ItemGroup>
     <Compile Include="AgencyService.cs" />
     <Compile Include="Conflux\ConfluxService.cs" />
+    <Compile Include="Conflux\Crypto\ConfluxCrypto.cs" />
     <Compile Include="Conflux\Enum\PersonTypeEnum.cs" />
     <Compile Include="Conflux\Enum\RestrictionEnum.cs" />
     <Compile Include="Conflux\Enum\TypeRateEnum.cs" />
