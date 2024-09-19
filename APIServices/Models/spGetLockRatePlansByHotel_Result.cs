@@ -18,7 +18,8 @@ namespace APIServices.Models
         public string Status { get; set; }
         public Nullable<System.DateTime> StartDate { get; set; }
         public System.DateTime EndDate { get; set; }
-        public Nullable<byte> MinDays { get; set; }
-        public Nullable<byte> MaxDays { get; set; }
+        public byte MinDays { get; set; }
+        public byte MaxDays { get; set; }
+        public string ApplyWeek { get; set; }
     }
 }

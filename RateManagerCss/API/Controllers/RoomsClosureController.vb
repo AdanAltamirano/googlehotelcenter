@@ -94,6 +94,7 @@ Namespace API.Controller
 
                     nota &= " Status: " & GetStatus(roomClosureRQ.Status) & ". "
 
+                    'Para cierres LockRoomType Google se utiliza spGetLockRatePlansByHotel_Result como modelo
 
                     Try
                         If allRatePlans Then

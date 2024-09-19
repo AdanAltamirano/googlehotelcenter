@@ -445,24 +445,6 @@ namespace APIServices.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetLockRoomTypesByHotel_Result>("spGetLockRoomTypesByHotel", hotelIdParameter);
         }
     
-        public virtual ObjectResult<spGetLockRatePlansByHotel_Result> spGetLockRatePlansByHotel(Nullable<int> hotelId)
-        {
-            var hotelIdParameter = hotelId.HasValue ?
-                new ObjectParameter("hotelId", hotelId) :
-                new ObjectParameter("hotelId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetLockRatePlansByHotel_Result>("spGetLockRatePlansByHotel", hotelIdParameter);
-        }
-    
-        public virtual ObjectResult<spGetLockGralByHotel_Result> spGetLockGralByHotel(Nullable<int> hotelId)
-        {
-            var hotelIdParameter = hotelId.HasValue ?
-                new ObjectParameter("hotelId", hotelId) :
-                new ObjectParameter("hotelId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetLockGralByHotel_Result>("spGetLockGralByHotel", hotelIdParameter);
-        }
-    
         public virtual ObjectResult<spGetPromosByRatePlan_Result> spGetPromosByRatePlan(Nullable<int> idHotel, string ratePlan)
         {
             var idHotelParameter = idHotel.HasValue ?
@@ -474,6 +456,24 @@ namespace APIServices.Models
                 new ObjectParameter("ratePlan", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetPromosByRatePlan_Result>("spGetPromosByRatePlan", idHotelParameter, ratePlanParameter);
+        }
+    
+        public virtual ObjectResult<spGetLockGralByHotel_Result> spGetLockGralByHotel(Nullable<int> hotelId)
+        {
+            var hotelIdParameter = hotelId.HasValue ?
+                new ObjectParameter("hotelId", hotelId) :
+                new ObjectParameter("hotelId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetLockGralByHotel_Result>("spGetLockGralByHotel", hotelIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetLockRatePlansByHotel_Result> spGetLockRatePlansByHotel(Nullable<int> hotelId)
+        {
+            var hotelIdParameter = hotelId.HasValue ?
+                new ObjectParameter("hotelId", hotelId) :
+                new ObjectParameter("hotelId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetLockRatePlansByHotel_Result>("spGetLockRatePlansByHotel", hotelIdParameter);
         }
     }
 }
