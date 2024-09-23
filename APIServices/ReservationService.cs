@@ -1116,9 +1116,48 @@ namespace APIServices
 
         }
 
+        public ReservationPmsResponse PmsVerifyUpdate(int reservationId, Pms request)
+        {
+            ReservationPmsResponse response = new ReservationPmsResponse() { IsSuccess = false };
+
+            try
+            {
+                var reservation = dbContext.Reservaciones.FirstOrDefault(r => r.idReservacion == reservationId);
+
+                if (reservation != null)
+                {
+                    /***
+                        * true = Marcar como no verificada boton,  cambiaria el pms status en 0 y reiniciar el failed attempts
+                        * false =  verificar reservacion button ver pagina cambiar pms status en 1 y guardaria el pmscode
+                    */
+
+                    if (request.VerifyAction)
+                    {
+                        reservation.pmsStatus = request.Status;
+                        reservation.PmsFailedAttempts = 0;
+                    }
+                    else
+                    {
+                        reservation.pmsStatus = request.Status;
+                        reservation.pmscode = request.PmsCode;
+                    }
+
+                    dbContext.SaveChanges();
+
+                    response.IsSuccess = true;
+
+                }
 
 
+            }
+            catch (Exception ex)
+            {
 
+            }
+
+            return response;
+
+        }
 
         public bool PmsReactivate (int reservationId)
         {

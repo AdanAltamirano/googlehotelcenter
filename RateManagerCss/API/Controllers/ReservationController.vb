@@ -435,6 +435,37 @@ Namespace API.Controller
             Return Ok(result)
         End Function
 
+        'POST api/reservations/1978/pms/verify/update
+        <Route("{reservationId:int}/pms/verify/update"), HttpPost>
+        Public Function PmsVerifyUpdate(ByVal reservationId As Integer, <FromBody> request As Pms) As HttpResponseMessage
+
+            Dim details As vReservationDetails = ReservationService.GetReservation(reservationId)
+            Dim hotelId As Integer = details.hotelId
+            Dim pmsCodeBefore As String = details.pmsReservationNumber
+
+            Dim result As Object = ReservationService.PmsVerifyUpdate(reservationId, request)
+
+            'GuardarLog
+
+            If Not result.IsSuccess Then
+                Dim [error] As KeyValuePair(Of String, String) = New KeyValuePair(Of String, String)("0", "Error")
+                Return BadRequest([error])
+            End If
+
+            Dim page As String = "/HotelAdministrator/Pages/ConfirmReservas.aspx"
+            Dim nota As String = String.Empty
+
+            If request.VerifyAction Then
+                'Revisar con Chepe si tambien se va a quitar el codigo pms cuando el status sea 1
+                nota = "Quitó la confirmación con el codigo de pms " & pmsCodeBefore & " de la reservación " & reservationId
+                Logs(hotelId, reservationId, page, acciones.Modificar, nota)
+            Else
+                nota = "Confirmó la reservación con el código de pms " & request.PmsCode & " de la reservación " & reservationId
+                Logs(hotelId, reservationId, page, acciones.Modificar, nota)
+            End If
+
+            Return Ok(result)
+        End Function
 
 
         'POST api/reservations/1978/deposit
@@ -520,6 +551,14 @@ Namespace API.Controller
                            currentData, hotelId, noReservacion:=reservationId.ToString(), motivo:=motivo)
             End With
         End Sub
+
+        Sub Logs(ByVal hotelId As Integer, ByVal reservationId As Integer, ByVal page As String, ByVal action As acciones, Optional ByVal nota As String = "")
+
+            With (New PaginaBase)
+                .guardalog(hotelId, page, action, nota, reservationId.ToString())
+            End With
+        End Sub
+
         Function GetQuery(request As HttpRequestMessage, actionContext As Http.Controllers.HttpActionContext) As IQueryable
             Dim parser = New QueryParser()
             Dim _query As QueryData = parser.CreateAndValidateQuery(request, actionContext, "reservationId")

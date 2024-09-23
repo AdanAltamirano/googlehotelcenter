@@ -5,12 +5,12 @@
         {{$t('PMS Status')}}
     </h6>
     <b-collapse visible id="pms">
-        <b-alert show variant="secondary">
+					<b-alert show variant="secondary">
             <address>               
                 <div v-if="supervisor">
                     <template v-if="!pms.status && pms.failedAttempts === 3">
                         <strong>{{ $t('Maximun attempts reached') }}</strong>
-                        <b-button variant="link" class="ml-1 p-0 align-baseline" @click="reactivate"><i class="fas fa-pen fa-1x-c"></i></b-button>
+                        <b-button class="ml-1 p-1 align-baseline" @click="reactivate" variant="primary">{{$t('Send Again')}}</b-button>
                     </template>
                     <template v-else-if="!pms.status && pms.failedAttempts < 3" >
                         <strong>{{ $t('Waiting to be collected') }}</strong>
@@ -26,19 +26,29 @@
                     <strong>{{$t('Status')}}:</strong>
                     {{PmsStatus}}
                     <div class="d-inline-block">                   
-                        <pms-status v-if="supervisor" :reservationId="id"></pms-status>
+											<pms-status v-if="supervisor" :reservationId="id"></pms-status>
                     </div>
-                    <div v-if="supervisor">
+                    <!-- <div v-if="supervisor">
                         <strong>{{$t('Change only status')}}</strong>
                         <div class=" d-inline-block ml-1">
                             <pms-status-only v-if="supervisor" :reservationId="id"></pms-status-only>
                         </div>
-                    </div>                   
-                </div>                
-                <span v-if="pms.status">
-                    <strong>{{$t('Reservation number')}}:</strong>
-                    {{pms.reservationNumber}}
-                </span>
+                    </div>-->
+										<div>
+											<span v-if="pms.status">
+												<strong>{{$t('Reservation number')}}:</strong>
+												{{pms.reservationNumber}}
+                			</span>
+										</div>
+                    <div v-if="supervisor">
+											<b-button  v-tooltip="$t('With this action the reservation will be available to be downloaded for the pms')" 
+												v-if="pms.status" class="font-weight-bold mb-2" 
+												variant="primary" 
+												@click="saveNotVerified">{{$t('Check as not verified')}}
+											</b-button>
+											<pms-verify v-else-if="!pms.status" :reservationId="id"></pms-verify>
+                    </div>
+                </div>                               
             </address>
         </b-alert>
     </b-collapse>
@@ -49,6 +59,7 @@
 import ReservationService from '../../../../api/reservation-service';
 import PmsStatus from './Status/Status.vue';
 import PmsStatusOnly from './Status/StatusOnly.vue';
+import PmsVerify from './Status/Verify.vue';
 export default {
     props: {
         id: {
@@ -64,7 +75,8 @@ export default {
     },
     components: {
         PmsStatus,
-        PmsStatusOnly
+        PmsStatusOnly,
+				PmsVerify
     },
     created() {
     },
@@ -86,6 +98,40 @@ export default {
         }
     },
     methods: {
+				saveNotVerified() {
+					const request = {
+						status: false,
+						verifyAction: true
+					}
+
+					this.$swal.fire({
+						type: "info",
+						title: this.$t("Save ?"),
+						showCancelButton: true,
+						cancelButtonText: this.$t("Cancel"),
+						cancelButtonColor: "#d33",
+						confirmButtonColor: "#3085d6",
+						confirmButtonText: this.$t("Save"),
+						showLoaderOnConfirm: true,
+						preConfirm:async()=> {                           
+							return ReservationService.ReservationPmsVerifyUpdate(this.id, request)
+							.then(response => {
+									return {
+											response : response
+									}
+							})
+							.catch(error => {
+									return {
+											response: error
+									}
+							});
+						},
+						allowOutsideClick: () => !this.$swal.isLoading(),
+					}).then(result => {             
+						if(result.value.response.status === 200 && result.value.response.body.isSuccess) this.$swal.fire(this.success(this.$t('Saved')));
+						else this.$swal.fire(this.error(this.$t('Error')));               
+					});  	
+				},
         reactivate() {
             this.$swal.fire({
                 title:this.$t('Reactivate PMS ?'),

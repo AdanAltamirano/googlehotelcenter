@@ -205,6 +205,12 @@ namespace APIServices.Models.DTO
         public string Action { get; set; }
         public int? FailedAttempts { get; set; }
         public string ReservationNumber { get; set; }
+        public string PmsCode { get; set; }
+        /***
+         * 1 = Marcar como no verificada boton,  cambiaria el pms status en 0 y reiniciar el failed attempts
+         * 0 =  verificar reservacion button ver pagina cambiar pms status en 1 y guardaria el pmscode
+         */
+        public bool VerifyAction { get; set; } 
     }
 
 

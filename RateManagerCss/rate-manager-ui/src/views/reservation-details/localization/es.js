@@ -173,5 +173,13 @@ export default {
     'Who Collects' : 'Quien Recolecta',
     'No payment information' : 'No hay información de pago',
     'Call Center Other' : 'Call Center Otro',
-    'Information Payment' : 'Información de pago'
+    'Information Payment' : 'Información de pago',
+    'Check as not verified' : 'Marcar como no verifcada',
+    'Verified booking' : 'Verificar Reservación',
+    'Verification Code' : 'Código de Verificación',
+    'Code' : 'Código',
+    'Saved' : 'Guardado',
+    'Error' : 'Error',
+    'With this action the reservation will be available to be downloaded for the pms' : 'Con esta acción la reserva estara disponible para ser descargada para el pms',
+    'Send Again' : 'Enviar de Nuevo'
 }

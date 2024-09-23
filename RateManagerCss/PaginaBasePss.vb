@@ -604,6 +604,7 @@ Public Class PaginaBase
                 If cInfoActual.Hotel <> 0 Then
                     dr(LogData.FIELD_HOTEL) = cInfoActual.Hotel
                 End If
+
                 dr(LogData.FIELD_NOTA) = nota
 
                 Try
@@ -621,6 +622,41 @@ Public Class PaginaBase
 
         End Try
     End Sub
+
+    Public Sub guardalog(ByVal hotelId As Integer, ByVal pagina As String, ByVal action As acciones, ByVal nota As String, ByVal noReservacion As String)
+        Try
+
+            If ReadUserCookie.GetValue(0) <> "" Then
+                Dim ds As LogData = New LogData
+                Dim dr As DataRow = ds.Tables(LogData.TABLE_LOG).NewRow
+                dr(LogData.FIELD_USUARIO) = ReadUserCookie.GetValue(0)
+                dr(LogData.FIELD_PAGINA) = pagina
+                dr(LogData.FIELD_ACCION) = action
+                dr(LogData.FIELD_HOTEL) = hotelId
+                If Not String.IsNullOrEmpty(noReservacion) Then dr(LogData.FIELD_NORESERVACION) = noReservacion
+                dr(LogData.FIELD_NOTA) = nota
+
+                If UserIdentityName <> 0 Then
+                    dr(LogData.FIELD_IDUSUARIO) = UserIdentityName
+                End If
+
+                Try
+                    dr(LogData.FIELD_FECHA) = Now.ToString("MM/dd/yyyy") & " " & Now.ToLongTimeString
+                Catch
+                    dr(LogData.FIELD_FECHA) = Now.ToString & " " & Now.ToLongTimeString
+                End Try
+
+                ds.Tables(LogData.TABLE_LOG).Rows.Add(dr)
+                With New LogFacade
+                    .insertLog(ds)
+                End With
+            End If
+        Catch
+
+        End Try
+    End Sub
+
+
 
     Public Sub guardalog(ByVal pagina As String, ByVal action As acciones, ByVal nota As String, Optional ByVal hotelId As Integer = 0)
         Try
