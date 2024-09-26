@@ -54,12 +54,12 @@ Namespace API.Controller
 
             ElseIf roles.Contains("hotelcompany") Then
                 Dim hotels() As Integer = GetUserHotels(GetUserId().Value).Select(Function(h) h.HotelId).ToArray()
-                Return ReservationService.GetAll().Where(Function(h) hotels.Contains(h.HotelId) And h.Provider = "INTERNET POWER" And h.Status <> 4)
+                Return ReservationService.GetAll().Where(Function(h) hotels.Contains(h.HotelId) And h.Provider = "INTERNET POWER")
             ElseIf roles.Contains("usuariohotel") Then
 
                 Dim userOzhoteles As UsuarioHotel = GetUserFromOzHoteles(GetUserId().Value)
                 Dim hotels() As Integer = GetUserHotels(userOzhoteles.IdMainUser).Select(Function(h) h.HotelId).ToArray()
-                Return ReservationService.GetAll().Where(Function(h) hotels.Contains(h.HotelId) And h.Provider = "INTERNET POWER" And h.Status <> 4)
+                Return ReservationService.GetAll().Where(Function(h) hotels.Contains(h.HotelId) And h.Provider = "INTERNET POWER")
             ElseIf roles.Contains("agencycompany") Then
                 Dim page As New PaginaBase
                 If page.IsAgencyCompany Then

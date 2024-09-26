@@ -1133,6 +1133,7 @@ namespace APIServices
 
                     if (request.VerifyAction)
                     {
+                        reservation.pmscode = "";
                         reservation.pmsStatus = request.Status;
                         reservation.PmsFailedAttempts = 0;
                     }

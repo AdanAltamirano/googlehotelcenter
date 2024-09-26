@@ -29,7 +29,7 @@
           </b-row>
         </b-col>
         <b-col md="6">
-          <b-row v-if="result.paymentWay >= 0 && result.paymentWay != 4">
+          <b-row v-if="result.paymentWay >= 0">
             <b-col>
               <payment-methods :result="result" :reservationId="this.reservationId"></payment-methods>
             </b-col>

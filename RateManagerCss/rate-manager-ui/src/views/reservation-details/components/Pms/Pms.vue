@@ -34,19 +34,19 @@
                             <pms-status-only v-if="supervisor" :reservationId="id"></pms-status-only>
                         </div>
                     </div>-->
-										<div>
-											<span v-if="pms.status">
-												<strong>{{$t('Reservation number')}}:</strong>
-												{{pms.reservationNumber}}
-                			</span>
-										</div>
+                    <div>
+                        <span v-if="pms.status">
+                            <strong>{{$t('Reservation number')}}:</strong>
+                            {{pms.reservationNumber}}
+                        </span>
+                    </div>
                     <div v-if="supervisor">
-											<b-button  v-tooltip="$t('With this action the reservation will be available to be downloaded for the pms')" 
-												v-if="pms.status" class="font-weight-bold mb-2" 
-												variant="primary" 
-												@click="saveNotVerified">{{$t('Check as not verified')}}
-											</b-button>
-											<pms-verify v-else-if="!pms.status" :reservationId="id"></pms-verify>
+                        <b-button  v-tooltip="$t('With this action the reservation will be available to be downloaded for the pms')" 
+                            v-if="pms.status" class="font-weight-bold mb-2" 
+                            variant="primary" 
+                            @click="saveNotVerified">{{$t('Check as not verified')}}
+                        </b-button>
+                        <pms-verify v-else-if="!pms.status" :reservationId="id"></pms-verify>
                     </div>
                 </div>                               
             </address>
@@ -98,40 +98,40 @@ export default {
         }
     },
     methods: {
-				saveNotVerified() {
-					const request = {
-						status: false,
-						verifyAction: true
-					}
+        saveNotVerified() {
+            const request = {
+                status: false,
+                verifyAction: true
+            }
 
-					this.$swal.fire({
-						type: "info",
-						title: this.$t("Save ?"),
-						showCancelButton: true,
-						cancelButtonText: this.$t("Cancel"),
-						cancelButtonColor: "#d33",
-						confirmButtonColor: "#3085d6",
-						confirmButtonText: this.$t("Save"),
-						showLoaderOnConfirm: true,
-						preConfirm:async()=> {                           
-							return ReservationService.ReservationPmsVerifyUpdate(this.id, request)
-							.then(response => {
-									return {
-											response : response
-									}
-							})
-							.catch(error => {
-									return {
-											response: error
-									}
-							});
-						},
-						allowOutsideClick: () => !this.$swal.isLoading(),
-					}).then(result => {             
-						if(result.value.response.status === 200 && result.value.response.body.isSuccess) this.$swal.fire(this.success(this.$t('Saved')));
-						else this.$swal.fire(this.error(this.$t('Error')));               
-					});  	
-				},
+            this.$swal.fire({
+                type: "info",
+                title: this.$t("Save ?"),
+                showCancelButton: true,
+                cancelButtonText: this.$t("Cancel"),
+                cancelButtonColor: "#d33",
+                confirmButtonColor: "#3085d6",
+                confirmButtonText: this.$t("Save"),
+                showLoaderOnConfirm: true,
+                preConfirm:async()=> {                           
+                    return ReservationService.ReservationPmsVerifyUpdate(this.id, request)
+                    .then(response => {
+                            return {
+                                    response : response
+                            }
+                    })
+                    .catch(error => {
+                            return {
+                                    response: error
+                            }
+                    });
+                },
+                allowOutsideClick: () => !this.$swal.isLoading(),
+            }).then(result => {             
+                if(result.value.response.status === 200 && result.value.response.body.isSuccess) this.$swal.fire(this.success(this.$t('Saved')));
+                else this.$swal.fire(this.error(this.$t('Error')));               
+            });  	
+        },
         reactivate() {
             this.$swal.fire({
                 title:this.$t('Reactivate PMS ?'),
