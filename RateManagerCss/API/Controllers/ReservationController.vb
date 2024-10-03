@@ -14,6 +14,7 @@ Imports APIServices.Models.DTO
 Imports APIServices.Models.DTO.Reservation.Deposit.Request
 Imports APIServices.Models.DTO.Reservation.Deposit.Response
 Imports APIServices.Models.DTO.Reservation.Pms.Response
+Imports APIServices.Models.DTO.Log
 Imports RateManager.Utitlities.Email
 Imports System.Threading
 Imports Portal.General.Common.Data
@@ -203,6 +204,16 @@ Namespace API.Controller
 
             Return logs
         End Function
+
+        'Get api/reservations/1978/history/log/detail/CC/234242123 source ->CC,R
+        <Route("{reservationId:int}/history/log/detail/{source}/{idLog}"), HttpGet>
+        Public Function GetReservationHistoryLog(ByVal reservationId As Integer, ByVal source As String, ByVal idLog As String) As HttpResponseMessage
+
+            Dim result As ReservationDetailLog = ReservationService.GetModificationReservationDetailLog(reservationId, source, CType(idLog, Integer))
+
+            Return Request.CreateResponse(Net.HttpStatusCode.OK, result)
+        End Function
+
 
         'POST api/reservations/1978/cancel
         <Route("{reservationId:int}/cancel"), HttpPost>

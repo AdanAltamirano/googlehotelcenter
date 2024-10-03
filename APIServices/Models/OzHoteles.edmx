@@ -169,6 +169,23 @@
           <Property Name="EndDate" Type="smalldatetime" />
           <Property Name="idRepl4" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
+        <EntityType Name="Log">
+          <Key>
+            <PropertyRef Name="idLog" />
+          </Key>
+          <Property Name="usuario" Type="nvarchar" MaxLength="80" Nullable="false" />
+          <Property Name="fecha" Type="datetime" Nullable="false" />
+          <Property Name="pagina" Type="nvarchar" MaxLength="50" />
+          <Property Name="hotel" Type="int" />
+          <Property Name="accion" Type="tinyint" />
+          <Property Name="nota" Type="nvarchar" MaxLength="400" />
+          <Property Name="idLog" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="datos" Type="ntext" />
+          <Property Name="datosDespues" Type="ntext" />
+          <Property Name="idUsuario" Type="int" />
+          <Property Name="NoReservacion" Type="nvarchar" MaxLength="25" />
+          <Property Name="Motivo" Type="nvarchar(max)" />
+        </EntityType>
         <EntityType Name="PrepagoRatesPlan">
           <Key>
             <PropertyRef Name="IdPrepagoRatesPlan" />
@@ -1375,6 +1392,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
           <EntitySet Name="Hoteles" EntityType="Self.Hoteles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Indice" EntityType="Self.Indice" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LockRoomTypes" EntityType="Self.LockRoomTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Log" EntityType="Self.Log" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PrepagoRatesPlan" EntityType="Self.PrepagoRatesPlan" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Promociones_RatePlan" EntityType="Self.Promociones_RatePlan" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Promociones_TipoHabitacionHotel" EntityType="Self.Promociones_TipoHabitacionHotel" Schema="dbo" store:Type="Tables" />
@@ -2044,8 +2062,9 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
           <Parameter Name="hotelId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="spGetLockRatePlansByHotel" ReturnType="Collection(Models.spGetLockRatePlansByHotel_Result)">
-            <Parameter Name="hotelId" Mode="In" Type="Int32" />
+          <Parameter Name="hotelId" Mode="In" Type="Int32" />
           </FunctionImport>
+          <EntitySet Name="Log" EntityType="Models.Log" />
         </EntityContainer>
         <EntityType Name="RatesPlan">
           <Key>
@@ -3550,6 +3569,23 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
           <Property Type="Byte" Name="MaxDays" Nullable="false" />
           <Property Type="String" Name="ApplyWeek" Nullable="true" MaxLength="7" />
         </ComplexType>
+        <EntityType Name="Log">
+          <Key>
+            <PropertyRef Name="idLog" />
+          </Key>
+          <Property Name="usuario" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="fecha" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="pagina" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="hotel" Type="Int32" />
+          <Property Name="accion" Type="Byte" />
+          <Property Name="nota" Type="String" MaxLength="400" FixedLength="false" Unicode="true" />
+          <Property Name="idLog" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="datos" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="datosDespues" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="idUsuario" Type="Int32" />
+          <Property Name="NoReservacion" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="Motivo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4874,6 +4910,24 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="Log">
+            <EntityTypeMapping TypeName="Models.Log">
+              <MappingFragment StoreEntitySet="Log">
+                <ScalarProperty Name="Motivo" ColumnName="Motivo" />
+                <ScalarProperty Name="NoReservacion" ColumnName="NoReservacion" />
+                <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+                <ScalarProperty Name="datosDespues" ColumnName="datosDespues" />
+                <ScalarProperty Name="datos" ColumnName="datos" />
+                <ScalarProperty Name="idLog" ColumnName="idLog" />
+                <ScalarProperty Name="nota" ColumnName="nota" />
+                <ScalarProperty Name="accion" ColumnName="accion" />
+                <ScalarProperty Name="hotel" ColumnName="hotel" />
+                <ScalarProperty Name="pagina" ColumnName="pagina" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="usuario" ColumnName="usuario" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

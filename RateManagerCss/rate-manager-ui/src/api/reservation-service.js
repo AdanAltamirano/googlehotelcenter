@@ -22,6 +22,7 @@ const agencies = Vue.resource(`${process.env.VUE_APP_API_URL}/agencies`);
 const agents = Vue.resource(`${process.env.VUE_APP_API_URL}/agencies/agents`);
 
 const reservationHistoryLog = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations/{reservationId}/history/log`);
+const reservationDetailLog = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations/{reservationId}/history/log/detail/{source}/{idLog}`);
 
 export default {
     /**
@@ -48,6 +49,13 @@ export default {
     GetHistoryLog(reservationId) {
         return reservationHistoryLog.get({
             reservationId
+        });
+    },
+    GetDetailLog(reservationId,source,idLog){
+        return reservationDetailLog.get({
+            reservationId,
+            source,
+            idLog
         });
     },
     SendCode(reservationId) {

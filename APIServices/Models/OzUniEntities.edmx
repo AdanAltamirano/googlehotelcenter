@@ -72,6 +72,19 @@
           <Property Name="idAfiliate" Type="int" />
           <Property Name="idempresa" Type="int" />
         </EntityType>
+        <EntityType Name="uvcc_log">
+          <Key>
+            <PropertyRef Name="idLog" />
+          </Key>
+          <Property Name="idLog" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idOperador" Type="int" Nullable="false" />
+          <Property Name="noReservacion" Type="nvarchar" MaxLength="25" Nullable="false" />
+          <Property Name="Operation" Type="int" Nullable="false" />
+          <Property Name="Data_Before" Type="ntext" />
+          <Property Name="Data_After" Type="ntext" />
+          <Property Name="RegisterDate" Type="smalldatetime" />
+          <Property Name="Comments" Type="ntext" />
+        </EntityType>
         <Function Name="GetHotelsByCorporateId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="corporateId" Type="int" Mode="In" />
         </Function>
@@ -88,6 +101,7 @@
           <EntitySet Name="Elementos" EntityType="Self.Elementos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Monedas" EntityType="Self.Monedas" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Portales" EntityType="Self.Portales" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="uvcc_log" EntityType="Self.uvcc_log" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -124,6 +138,7 @@
             <Parameter Name="addToHotelPms" Mode="In" Type="Boolean" />
           </FunctionImport>
           <EntitySet Name="Elementos" EntityType="OzUniModel.Elementos" />
+          <EntitySet Name="uvcc_log" EntityType="OzUniModel.uvcc_log" />
         </EntityContainer>
         <EntityType Name="AplicacionPortal">
           <Key>
@@ -182,6 +197,19 @@
           <Property Name="idGrupo" Type="Int32" />
           <Property Name="GrupoTipo" Type="Byte" />
           <Property Name="GrupoMax" Type="Byte" />
+        </EntityType>
+        <EntityType Name="uvcc_log">
+          <Key>
+            <PropertyRef Name="idLog" />
+          </Key>
+          <Property Name="idLog" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idOperador" Type="Int32" Nullable="false" />
+          <Property Name="noReservacion" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="Operation" Type="Int32" Nullable="false" />
+          <Property Name="Data_Before" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Data_After" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="RegisterDate" Type="DateTime" Precision="0" />
+          <Property Name="Comments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -269,6 +297,20 @@
                 <ScalarProperty Name="IdTipo" ColumnName="IdTipo" />
                 <ScalarProperty Name="Nombre" ColumnName="Nombre" />
                 <ScalarProperty Name="IdElemento" ColumnName="IdElemento" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="uvcc_log">
+            <EntityTypeMapping TypeName="OzUniModel.uvcc_log">
+              <MappingFragment StoreEntitySet="uvcc_log">
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+                <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
+                <ScalarProperty Name="Data_After" ColumnName="Data_After" />
+                <ScalarProperty Name="Data_Before" ColumnName="Data_Before" />
+                <ScalarProperty Name="Operation" ColumnName="Operation" />
+                <ScalarProperty Name="noReservacion" ColumnName="noReservacion" />
+                <ScalarProperty Name="idOperador" ColumnName="idOperador" />
+                <ScalarProperty Name="idLog" ColumnName="idLog" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -4,12 +4,13 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="9760008cbc92405b864f5fba09e2b3e0" Name="Diagram1" ZoomLevel="52">
+      <Diagram DiagramId="9760008cbc92405b864f5fba09e2b3e0" Name="Diagram1" ZoomLevel="77">
         <EntityTypeShape EntityType="OzUniModel.Portales" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="OzUniModel.AplicacionPortal" Width="1.5" PointX="3.375" PointY="0.75" />
         <EntityTypeShape EntityType="OzUniModel.Ciudades" Width="1.5" PointX="3.375" PointY="3.75" />
         <EntityTypeShape EntityType="OzUniModel.Moneda" Width="1.5" PointX="0.75" PointY="4.75" />
         <EntityTypeShape EntityType="OzUniModel.Elementos" Width="1.5" PointX="5.375" PointY="0.75" />
+        <EntityTypeShape EntityType="OzUniModel.uvcc_log" Width="1.5" PointX="5.375" PointY="4.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

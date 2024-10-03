@@ -6,12 +6,14 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Text.RegularExpressions;
 using System.Net.Http;
+using System.Xml.Linq;
 using APIServices.Extension;
 using APIServices.Models;
 using APIServices.Models.DTO;
 using APIServices.Models.DTO.Reservation.Deposit.Request;
 using APIServices.Models.DTO.Reservation.Deposit.Response;
 using APIServices.Models.DTO.Reservation.Pms.Response;
+using APIServices.Models.DTO.Log;
 using OfficeOpenXml;
 using APIServices.Conflux.Crypto;
 using PortalLibraries;
@@ -1381,6 +1383,50 @@ namespace APIServices
                     transaction.Rollback();
                 }
             }
+        }
+
+        public ReservationDetailLog GetModificationReservationDetailLog(int reservationId,string source, int idLog)
+        {
+            ReservationDetailLog result = null;
+
+            switch (source)
+            {
+                case "R":
+                    Log log = dbContext.Log.FirstOrDefault(l => l.idLog == idLog);
+
+                    if(log != null)
+                    {
+                        XDocument dataBefore = XDocument.Parse(log.datos);
+                        XDocument dataAfter = XDocument.Parse(log.datosDespues);
+
+                        result =  Helpers.Reservation.ReservationHelper.ValidateReservationChangesCRS(dataBefore,dataAfter);
+                    }
+
+                 break;
+
+                case "CC":
+
+                    uvcc_log logCC = null;
+
+                    using(OzUniEntities ozUniEntities = new OzUniEntities())
+                    {
+                        logCC = ozUniEntities.uvcc_log.FirstOrDefault(l => l.idLog == idLog);
+                    }
+
+                    if(logCC != null)
+                    {
+                        XDocument dataBefore = XDocument.Parse(logCC.Data_Before);
+                        XDocument dataAfter = XDocument.Parse(logCC.Data_After);
+
+                        result = Helpers.Reservation.ReservationHelper.ValidateReservationChangesUVCC(dataBefore,dataAfter);
+                    }
+
+
+                break;
+            }
+
+            return result;
+
         }
 
 

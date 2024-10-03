@@ -35,6 +35,15 @@
         <b v-if="data.item.source == 'R'">RateManager</b>
         <b v-if="data.item.source == 'CC'">CallCenter</b>
       </template>
+      <template v-slot:cell(details)="data">
+        <b-button 
+        v-if="(data.item.source == 'R' && data.item.action == 1) 
+        || (data.item.source == 'CC' && data.item.action == 6)" 
+        variant="link"
+        @click="GetDetails()">
+          {{$t('Details')}}
+        </b-button>
+      </template>
     </b-table>
     <div class="d-flex">
       <span v-if="showResults">{{$t('Showing')}} {{$t('page')}} {{currentPage}} {{$t('of')}} {{totalPages}}</span>
@@ -86,6 +95,10 @@ export default {
         {
           key: 'reason',
           label: this.$t('Reason')
+        },
+        {
+          key:'details',
+          label: ''
         }
       ],
       items: [],
@@ -115,7 +128,18 @@ export default {
         if(this.totalRows > 0) showResults = true;
 
       });
-    }
+    },
+    GetDetails(){
+
+      this.$swal.fire({       
+        title: this.$t("Track Record"),
+        showCancelButton: true,
+        showConfirmButton:false,
+        cancelButtonText: this.$t("Close"),
+        cancelButtonColor: "#d33",      
+      }); 
+
+    },
   }
 }
 </script>
