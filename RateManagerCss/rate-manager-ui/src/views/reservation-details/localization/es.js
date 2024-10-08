@@ -12,6 +12,8 @@ export default {
     Hide: 'Ocultar',
     'Check in': 'Llegada',
     'Check out': 'Salida',
+    'Check In' : 'Fecha de Llegada',
+    'Check Out': 'Fecha de Salida',
     'Reservation date': 'Fecha de reservación',
     'Client data': 'Datos del cliente',
     'Your reservation was modified': 'Su reserva fue modificada',
@@ -44,6 +46,7 @@ export default {
     Cancelled: 'Cancelado',
     'In process': 'En proceso',
     Rooms: 'Habitaciones',
+    'Room' : 'Habitación',
     Date: 'Fecha',
     'Price per night': 'Precio por noche',
     Occupation: 'Ocupación',
@@ -113,6 +116,7 @@ export default {
     'Taxes Hotel' : 'Impuestos Hotel',
     'Total debt' : 'Monto pendiente por pagar',
     'Total deposited' : 'Total depositado',
+    'Total Booking' : 'Total Reserva',
     'Confirm Deposit' : 'Confimar Depósito',
     'Confirmation Deposit' : 'Confirmación de depósito',
     'Bank Account' : 'Cuenta Bancaria',
@@ -181,5 +185,7 @@ export default {
     'Saved' : 'Guardado',
     'Error' : 'Error',
     'With this action the reservation will be available to be downloaded for the pms' : 'Con esta acción la reserva estara disponible para ser descargada para el pms',
-    'Send Again' : 'Enviar de Nuevo'
+    'Send Again' : 'Enviar de Nuevo',
+    'Prices' : 'Precios',
+    'Only data that have been updated are displayed' : 'Solo se muestran los datos que han sido actualizados'
 }

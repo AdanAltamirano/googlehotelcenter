@@ -40,7 +40,7 @@
         v-if="(data.item.source == 'R' && data.item.action == 1) 
         || (data.item.source == 'CC' && data.item.action == 6)" 
         variant="link"
-        @click="GetDetails()">
+        @click="GetDetails(data.item.reservationNumber, data.item.idLog, data.item.source)">
           {{$t('Details')}}
         </b-button>
       </template>
@@ -60,7 +60,10 @@
 </template>
 
 <script>
+import Vue from "vue";
+import EventBus from '../../../../core/event-bus';
 import ReservationService from '../../../../api/reservation-service';
+import LogDetails from './Details.vue';
 import Loading from "vue-loading-overlay";
 
 export default {
@@ -129,17 +132,51 @@ export default {
 
       });
     },
-    GetDetails(){
+    async GetDetails(reservationNumber, idLog, source){
+      
+      let logDetail = await this.getDetailsLog(reservationNumber, idLog, source);
+
+      let component = Vue.extend(LogDetails);
+
+      let instance = new component({
+          propsData: {
+              logDetail : logDetail,
+          }
+      });
+            
+      instance.$mount();
 
       this.$swal.fire({       
-        title: this.$t("Track Record"),
+        title: this.$t("Details"),
+        customClass:{
+          popup:''
+        },
+        type: "info",
+        html: "<div></div>",
         showCancelButton: true,
         showConfirmButton:false,
         cancelButtonText: this.$t("Close"),
-        cancelButtonColor: "#d33",      
+        cancelButtonColor: "#d33",
+        onBeforeOpen: () => {
+          this.$swal
+          .getContent()
+          .querySelector("div")
+          .append(instance.$el);
+        },
+        onClose: () => {        
+          EventBus.$emit('historymovementsreservation');
+        }      
       }); 
-
     },
+    //API
+    async getDetailsLog(reservationNumber, idLog, source){
+
+      let response =  await ReservationService.GetDetailLog(reservationNumber,source, idLog);
+
+      let result  = await response.json();
+
+      return result;
+    }
   }
 }
 </script>

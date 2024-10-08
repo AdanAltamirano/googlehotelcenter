@@ -72,10 +72,13 @@ namespace APIServices.Helpers.Reservation
             double totalBefore = Double.Parse(totalDetailsBefore.Element("Total").Value);
             double totalAfter = Double.Parse(totalDetailsAfter.Element("Total").Value);
 
-            if(totalBefore != totalAfter)
+            string currencyBefore = totalDetailsBefore.Element("Currency").Value;
+            string currencyAfter = totalDetailsAfter.Element("Currency").Value;
+
+            if (totalBefore != totalAfter)
             {
-                TotalDetailsLog totalDetailsLogBefore = new TotalDetailsLog() { Total = totalBefore };
-                TotalDetailsLog totalDetailsLogAfter = new TotalDetailsLog() { Total = totalAfter };
+                TotalDetailsLog totalDetailsLogBefore = new TotalDetailsLog() { Total = totalBefore, Currency = currencyBefore };
+                TotalDetailsLog totalDetailsLogAfter = new TotalDetailsLog() { Total = totalAfter, Currency = currencyAfter };
 
                 reservationDetailLog.TotalDetailsBefore = totalDetailsLogBefore;
                 reservationDetailLog.TotalDetailsAfter = totalDetailsLogAfter;
@@ -90,6 +93,10 @@ namespace APIServices.Helpers.Reservation
             ReservationDetailLog reservationDetailLog = new ReservationDetailLog();
 
             //Son xml's diferentes uno es Hotel_Display_RS para el viejo y reqHotelModifyNoRestrictions para el nuevo
+
+            //Se saca moneda
+            string currencyBefore = dataBefore.Root.Element("HotelDisplay").Element("Reservation").Element("Money").Value;
+            string currencyAfter = dataAfter.Root.Element("Reservation").Element("CurrencyCode").Value;
 
             //Revisar Nombre
             XElement customerBefore = dataBefore.Root.Element("HotelDisplay").Element("Customer");
@@ -114,8 +121,11 @@ namespace APIServices.Helpers.Reservation
             DateTime checkInBefore = DateTime.Parse(dataBefore.Root.Element("HotelDisplay").Element("Reservation").Element("CheckInDate").Value).Date;
             DateTime checkOutBefore = DateTime.Parse(dataBefore.Root.Element("HotelDisplay").Element("Reservation").Element("CheckOutDate").Value).Date;
 
-            DateTime checkInAfter = DateTime.Parse(dataAfter.Root.Element("Reservation").Element("CheckInDate").Value).Date;
-            DateTime checkOutAfter = DateTime.Parse(dataAfter.Root.Element("Reservation").Element("CheckOutDate").Value).Date;
+            int[] checkInAfterArray = dataAfter.Root.Element("Reservation").Element("CheckInDate").Value.Split('/').Select(Int32.Parse).ToArray();
+            int[] checkOutAfterArray = dataAfter.Root.Element("Reservation").Element("CheckOutDate").Value.Split('/').Select(Int32.Parse).ToArray();
+
+            DateTime checkInAfter = new DateTime(checkInAfterArray[2], checkInAfterArray[1], checkInAfterArray[0]).Date;
+            DateTime checkOutAfter = new DateTime(checkOutAfterArray[2], checkOutAfterArray[1], checkOutAfterArray[0]).Date;
 
             //Se Comparan Fechas
             if (DateTime.Compare(checkInBefore, checkInAfter) != 0 && DateTime.Compare(checkOutBefore, checkOutAfter) != 0)
@@ -129,9 +139,7 @@ namespace APIServices.Helpers.Reservation
 
             //Se Comparan Habitaciones
 
-            RoomsUVCCLog(dataBefore, dataAfter, ref reservationDetailLog);
-
-
+            RoomsUVCCLog(dataBefore, dataAfter, currencyBefore, currencyAfter, ref reservationDetailLog);
 
             //Se Compara el Total de la Reserva
             XElement totalDetailsBefore = dataBefore.Root.Element("HotelDisplay").Element("Reservation");
@@ -142,8 +150,8 @@ namespace APIServices.Helpers.Reservation
 
             if (totalBefore != totalAfter)
             {
-                TotalDetailsLog totalDetailsLogBefore = new TotalDetailsLog() { Total = totalBefore };
-                TotalDetailsLog totalDetailsLogAfter = new TotalDetailsLog() { Total = totalAfter };
+                TotalDetailsLog totalDetailsLogBefore = new TotalDetailsLog() { Total = totalBefore, Currency = currencyBefore };
+                TotalDetailsLog totalDetailsLogAfter = new TotalDetailsLog() { Total = totalAfter, Currency = currencyAfter };
 
                 reservationDetailLog.TotalDetailsBefore = totalDetailsLogBefore;
                 reservationDetailLog.TotalDetailsAfter = totalDetailsLogAfter;
@@ -166,10 +174,12 @@ namespace APIServices.Helpers.Reservation
             List<RoomDetailsLog> roomDetailsLogListAfter = new List<RoomDetailsLog>();
 
             int totalRoomsOccupied = roomsAfter.Count;
-            bool hasRoomChange = false;
+            //bool hasRoomChange = false;
 
             for (int i = 0; i < totalRoomsOccupied; i++)
             {
+                bool hasRoomChange = false;
+
                 RoomDetailsLog roomDetailsLogBefore = new RoomDetailsLog();
                 RoomDetailsLog roomDetailsLogAfter = new RoomDetailsLog();
 
@@ -215,7 +225,11 @@ namespace APIServices.Helpers.Reservation
                     hasRoomChange = true;
                 }
 
-                if (string.Equals(childrenAgesBefore, childrenAgesAfter))
+
+                int totalChildrensBeforeWithExtras = childrensBefore + extraChildrensBefore;
+                int totalChildrensAfterWithExtras = childrensAfter + extraChildrensAfter;
+
+                if ((totalChildrensBeforeWithExtras > 0 || totalChildrensBeforeWithExtras > 0) && !string.Equals(childrenAgesBefore, childrenAgesAfter))
                 {
                     roomDetailsLogBefore.AgeChildren = childrenAgesBefore;
                     roomDetailsLogAfter.AgeChildren = childrenAgesAfter;
@@ -247,168 +261,197 @@ namespace APIServices.Helpers.Reservation
                 roomDetailsLogBefore.Currency = currencyBefore;
                 roomDetailsLogAfter.Currency = currencyAfter;
 
-                //Revisar Precios por habitacion
-                List<XElement> priceDetailsBefore = roomsBefore[i].Element("PriceDetails").Elements("RoomPriceDetails").ToList();
-                List<XElement> priceDetailsAfter = roomsAfter[i].Element("PriceDetails").Elements("RoomPriceDetails").ToList();
-
-                //Hay diferentes nodos de precio
-                if (priceDetailsBefore.Count != priceDetailsAfter.Count)
+                if (totalBefore != totalAfter)
                 {
-                    List<RoomPriceDetailsLog> roomPriceDetailsBeforeLogsList = new List<RoomPriceDetailsLog>();
-                    List<RoomPriceDetailsLog> roomPriceDetailsAfterLogsList = new List<RoomPriceDetailsLog>();
+                    //Revisar Precios por habitacion
+                    List<XElement> priceDetailsBefore = roomsBefore[i].Element("PriceDetails").Elements("RoomPriceDetails").ToList();
+                    List<XElement> priceDetailsAfter = roomsAfter[i].Element("PriceDetails").Elements("RoomPriceDetails").ToList();
 
-                    //Before
-                    foreach (XElement priceDetailBefore in priceDetailsBefore)
+                    //Hay diferentes nodos de precio
+                    if (priceDetailsBefore.Count != priceDetailsAfter.Count)
                     {
-                        RoomPriceDetailsLog roomPriceDetailsLogTemp = new RoomPriceDetailsLog()
+                        List<RoomPriceDetailsLog> roomPriceDetailsBeforeLogsList = new List<RoomPriceDetailsLog>();
+                        List<RoomPriceDetailsLog> roomPriceDetailsAfterLogsList = new List<RoomPriceDetailsLog>();
+
+                        //Before
+                        foreach (XElement priceDetailBefore in priceDetailsBefore)
                         {
-                            Price = Double.Parse(priceDetailBefore.Element("Price").Value),
-                            ExtraPrice = Double.Parse(priceDetailBefore.Element("ExtraPrice").Value),
-                            PriceNR = Double.Parse(priceDetailBefore.Element("PriceNR").Value),
-                            ExtraPriceNR = Double.Parse(priceDetailBefore.Element("ExtraPriceNR").Value),
-                            CheckIn = DateTime.Parse(priceDetailBefore.Element("CheckIn").Value).Date,
-                            CheckOut = DateTime.Parse(priceDetailBefore.Element("CheckOut").Value).Date,
-                            Currency = priceDetailBefore.Element("Currency").Value
+                            RoomPriceDetailsLog roomPriceDetailsLogTemp = new RoomPriceDetailsLog()
+                            {
+                                Price = Double.Parse(priceDetailBefore.Element("Price").Value),
+                                ExtraPrice = Double.Parse(priceDetailBefore.Element("ExtraPrice").Value),
+                                PriceNR = Double.Parse(priceDetailBefore.Element("PriceNR").Value),
+                                ExtraPriceNR = Double.Parse(priceDetailBefore.Element("ExtraPriceNR").Value),
+                                CheckIn = DateTime.Parse(priceDetailBefore.Element("CheckIn").Value).Date,
+                                CheckOut = DateTime.Parse(priceDetailBefore.Element("CheckOut").Value).Date,
+                                Currency = priceDetailBefore.Element("Currency").Value
 
-                        };
+                            };
 
-                        roomPriceDetailsBeforeLogsList.Add(roomPriceDetailsLogTemp);
-                    }
-
-                    roomDetailsLogBefore.PriceDetails = roomPriceDetailsBeforeLogsList;
-
-                    //After
-                    foreach (XElement priceDetailAfter in priceDetailsAfter)
-                    {
-                        RoomPriceDetailsLog roomPriceDetailsLogTemp = new RoomPriceDetailsLog()
-                        {
-                            Price = Double.Parse(priceDetailAfter.Element("Price").Value),
-                            ExtraPrice = Double.Parse(priceDetailAfter.Element("ExtraPrice").Value),
-                            PriceNR = Double.Parse(priceDetailAfter.Element("PriceNR").Value),
-                            ExtraPriceNR = Double.Parse(priceDetailAfter.Element("ExtraPriceNR").Value),
-                            CheckIn = DateTime.Parse(priceDetailAfter.Element("CheckIn").Value).Date,
-                            CheckOut = DateTime.Parse(priceDetailAfter.Element("CheckOut").Value).Date,
-                            Currency = priceDetailAfter.Element("Currency").Value
-
-                        };
-
-                        roomPriceDetailsAfterLogsList.Add(roomPriceDetailsLogTemp);
-                    }
-
-                    roomDetailsLogAfter.PriceDetails = roomPriceDetailsAfterLogsList;
-
-
-                }
-                else
-                {
-                    List<RoomPriceDetailsLog> roomPriceDetailsBeforeLogsList = new List<RoomPriceDetailsLog>();
-                    List<RoomPriceDetailsLog> roomPriceDetailsAfterLogsList = new List<RoomPriceDetailsLog>();
-
-                    int totalPriceDetailsPerRoomCount = priceDetailsAfter.Count;
-                    bool hasPriceDetailChange = false;
-
-                    for (int j = 0; j < totalPriceDetailsPerRoomCount; j++)
-                    {
-                        RoomPriceDetailsLog roomPriceDetailsBeforeLogTemp = new RoomPriceDetailsLog();
-                        RoomPriceDetailsLog roomPriceDetailsAfterLogTemp = new RoomPriceDetailsLog();
-
-                        double priceDetailBefore = Double.Parse(priceDetailsBefore[i].Element("Price").Value);
-                        double priceDetailAfter = Double.Parse(priceDetailsAfter[i].Element("Price").Value);
-                        double extraPriceDetailBefore = Double.Parse(priceDetailsBefore[i].Element("ExtraPrice").Value);
-                        double extraPriceDetailAfter = Double.Parse(priceDetailsAfter[i].Element("ExtraPrice").Value);
-                        double priceNRDetailBefore = Double.Parse(priceDetailsBefore[i].Element("PriceNR").Value);
-                        double priceNRDetailAfter = Double.Parse(priceDetailsAfter[i].Element("PriceNR").Value);
-                        double extraPriceNRDetailBefore = Double.Parse(priceDetailsBefore[i].Element("ExtraPriceNR").Value);
-                        double extraPriceNRDetailAfter = Double.Parse(priceDetailsAfter[i].Element("ExtraPriceNR").Value);
-                        DateTime checkInDetailBefore = DateTime.Parse(priceDetailsBefore[i].Element("CheckIn").Value).Date;
-                        DateTime checkOutDetailBefore = DateTime.Parse(priceDetailsBefore[i].Element("CheckOut").Value).Date;
-                        DateTime checkInDetailAfter = DateTime.Parse(priceDetailsAfter[i].Element("CheckIn").Value).Date;
-                        DateTime checkOutDetailAfter = DateTime.Parse(priceDetailsAfter[i].Element("CheckOut").Value).Date;
-                        string currencyDetailBefore = priceDetailsBefore[i].Element("Currency").Value;
-                        string currencyDetailAfter = priceDetailsAfter[i].Element("Currency").Value;
-
-                        if (priceDetailBefore != priceDetailAfter)
-                        {
-                            roomPriceDetailsBeforeLogTemp.Price = priceDetailBefore;
-                            roomPriceDetailsAfterLogTemp.Price = priceDetailAfter;
-                            hasPriceDetailChange = true;
+                            roomPriceDetailsBeforeLogsList.Add(roomPriceDetailsLogTemp);
                         }
 
-                        if (extraPriceDetailBefore != extraPriceDetailAfter)
-                        {
-                            roomPriceDetailsBeforeLogTemp.ExtraPrice = extraPriceDetailBefore;
-                            roomPriceDetailsAfterLogTemp.ExtraPrice = extraPriceDetailBefore;
-                            hasPriceDetailChange = true;
-                        }
-
-                        if (priceNRDetailBefore != priceNRDetailAfter)
-                        {
-                            roomPriceDetailsBeforeLogTemp.PriceNR = priceNRDetailBefore;
-                            roomPriceDetailsAfterLogTemp.PriceNR = priceNRDetailAfter;
-                            hasPriceDetailChange = true;
-                        }
-
-                        if (extraPriceNRDetailBefore != extraPriceNRDetailAfter)
-                        {
-                            roomPriceDetailsBeforeLogTemp.ExtraPriceNR = extraPriceNRDetailBefore;
-                            roomPriceDetailsAfterLogTemp.ExtraPriceNR = extraPriceNRDetailAfter;
-                            hasPriceDetailChange = true;
-                        }
-
-                        roomPriceDetailsBeforeLogTemp.CheckIn = checkInDetailBefore;
-                        roomPriceDetailsBeforeLogTemp.CheckOut = checkOutDetailBefore;
-
-                        roomPriceDetailsAfterLogTemp.CheckIn = checkInDetailAfter;
-                        roomPriceDetailsAfterLogTemp.CheckOut = checkOutDetailAfter;
-
-                        roomPriceDetailsAfterLogTemp.Currency = currencyDetailBefore;
-                        roomPriceDetailsAfterLogTemp.Currency = currencyDetailAfter;
-
-                        roomPriceDetailsBeforeLogsList.Add(roomPriceDetailsBeforeLogTemp);
-                        roomPriceDetailsAfterLogsList.Add(roomPriceDetailsAfterLogTemp);
-                    }
-
-                    if (hasPriceDetailChange)
-                    {
                         roomDetailsLogBefore.PriceDetails = roomPriceDetailsBeforeLogsList;
-                        roomDetailsLogAfter.PriceDetails = roomPriceDetailsAfterLogsList;
-                    }
 
+                        //After
+                        foreach (XElement priceDetailAfter in priceDetailsAfter)
+                        {
+                            RoomPriceDetailsLog roomPriceDetailsLogTemp = new RoomPriceDetailsLog()
+                            {
+                                Price = Double.Parse(priceDetailAfter.Element("Price").Value),
+                                ExtraPrice = Double.Parse(priceDetailAfter.Element("ExtraPrice").Value),
+                                PriceNR = Double.Parse(priceDetailAfter.Element("PriceNR").Value),
+                                ExtraPriceNR = Double.Parse(priceDetailAfter.Element("ExtraPriceNR").Value),
+                                CheckIn = DateTime.Parse(priceDetailAfter.Element("CheckIn").Value).Date,
+                                CheckOut = DateTime.Parse(priceDetailAfter.Element("CheckOut").Value).Date,
+                                Currency = priceDetailAfter.Element("Currency").Value
+
+                            };
+
+                            roomPriceDetailsAfterLogsList.Add(roomPriceDetailsLogTemp);
+                        }
+
+                        roomDetailsLogAfter.PriceDetails = roomPriceDetailsAfterLogsList;
+
+
+                    }
+                    else
+                    {
+                        List<RoomPriceDetailsLog> roomPriceDetailsBeforeLogsList = new List<RoomPriceDetailsLog>();
+                        List<RoomPriceDetailsLog> roomPriceDetailsAfterLogsList = new List<RoomPriceDetailsLog>();
+
+                        int totalPriceDetailsPerRoomCount = priceDetailsAfter.Count;
+                        //bool hasPriceDetailChange = false;
+
+                        for (int j = 0; j < totalPriceDetailsPerRoomCount; j++)
+                        {
+                            bool hasPriceDetailChange = false;
+
+                            RoomPriceDetailsLog roomPriceDetailsBeforeLogTemp = new RoomPriceDetailsLog();
+                            RoomPriceDetailsLog roomPriceDetailsAfterLogTemp = new RoomPriceDetailsLog();
+
+                            double priceDetailBefore = Double.Parse(priceDetailsBefore[j].Element("Price").Value);
+                            double priceDetailAfter = Double.Parse(priceDetailsAfter[j].Element("Price").Value);
+                            double extraPriceDetailBefore = Double.Parse(priceDetailsBefore[j].Element("ExtraPrice").Value);
+                            double extraPriceDetailAfter = Double.Parse(priceDetailsAfter[j].Element("ExtraPrice").Value);
+                            double priceNRDetailBefore = Double.Parse(priceDetailsBefore[j].Element("PriceNR").Value);
+                            double priceNRDetailAfter = Double.Parse(priceDetailsAfter[j].Element("PriceNR").Value);
+                            double extraPriceNRDetailBefore = Double.Parse(priceDetailsBefore[j].Element("ExtraPriceNR").Value);
+                            double extraPriceNRDetailAfter = Double.Parse(priceDetailsAfter[j].Element("ExtraPriceNR").Value);
+                            DateTime checkInDetailBefore = DateTime.Parse(priceDetailsBefore[j].Element("CheckIn").Value).Date;
+                            DateTime checkOutDetailBefore = DateTime.Parse(priceDetailsBefore[j].Element("CheckOut").Value).Date;
+                            DateTime checkInDetailAfter = DateTime.Parse(priceDetailsAfter[j].Element("CheckIn").Value).Date;
+                            DateTime checkOutDetailAfter = DateTime.Parse(priceDetailsAfter[j].Element("CheckOut").Value).Date;
+                            string currencyDetailBefore = priceDetailsBefore[j].Element("Currency").Value;
+                            string currencyDetailAfter = priceDetailsAfter[j].Element("Currency").Value;
+
+                            if (priceDetailBefore != priceDetailAfter)
+                            {
+                                roomPriceDetailsBeforeLogTemp.Price = priceDetailBefore;
+                                roomPriceDetailsAfterLogTemp.Price = priceDetailAfter;
+                                hasPriceDetailChange = true;
+                            }
+
+                            if (extraPriceDetailBefore != extraPriceDetailAfter)
+                            {
+                                roomPriceDetailsBeforeLogTemp.ExtraPrice = extraPriceDetailBefore;
+                                roomPriceDetailsAfterLogTemp.ExtraPrice = extraPriceDetailAfter;
+                                hasPriceDetailChange = true;
+                            }
+
+                            if (priceNRDetailBefore != priceNRDetailAfter)
+                            {
+                                roomPriceDetailsBeforeLogTemp.PriceNR = priceNRDetailBefore;
+                                roomPriceDetailsAfterLogTemp.PriceNR = priceNRDetailAfter;
+                                hasPriceDetailChange = true;
+                            }
+
+                            if (extraPriceNRDetailBefore != extraPriceNRDetailAfter)
+                            {
+                                roomPriceDetailsBeforeLogTemp.ExtraPriceNR = extraPriceNRDetailBefore;
+                                roomPriceDetailsAfterLogTemp.ExtraPriceNR = extraPriceNRDetailAfter;
+                                hasPriceDetailChange = true;
+                            }
+
+                            roomPriceDetailsBeforeLogTemp.CheckIn = checkInDetailBefore;
+                            roomPriceDetailsBeforeLogTemp.CheckOut = checkOutDetailBefore;
+
+                            roomPriceDetailsAfterLogTemp.CheckIn = checkInDetailAfter;
+                            roomPriceDetailsAfterLogTemp.CheckOut = checkOutDetailAfter;
+
+                            roomPriceDetailsBeforeLogTemp.Currency = currencyDetailBefore;
+                            roomPriceDetailsAfterLogTemp.Currency = currencyDetailAfter;
+
+                            if (hasPriceDetailChange)
+                            {
+                                roomPriceDetailsBeforeLogsList.Add(roomPriceDetailsBeforeLogTemp);
+                                roomPriceDetailsAfterLogsList.Add(roomPriceDetailsAfterLogTemp);
+                            }
+
+                            //roomPriceDetailsBeforeLogsList.Add(roomPriceDetailsBeforeLogTemp);
+                            //roomPriceDetailsAfterLogsList.Add(roomPriceDetailsAfterLogTemp);
+
+                            hasPriceDetailChange = false;
+                        }
+
+                        //if (hasPriceDetailChange)
+                        //{
+                            roomDetailsLogBefore.PriceDetails = roomPriceDetailsBeforeLogsList;
+                            roomDetailsLogAfter.PriceDetails = roomPriceDetailsAfterLogsList;
+                        //}
+
+                    }
                 }
+
+
 
                 //Agregar a Listas
-                roomDetailsLogListBefore.Add(roomDetailsLogBefore);
-                roomDetailsLogListAfter.Add(roomDetailsLogAfter);
+                //roomDetailsLogListBefore.Add(roomDetailsLogBefore);
+                //roomDetailsLogListAfter.Add(roomDetailsLogAfter);
+
+                if (hasRoomChange)
+                {
+                    roomDetailsLogListBefore.Add(roomDetailsLogBefore);
+                    roomDetailsLogListAfter.Add(roomDetailsLogAfter);
+                }
+
+                hasRoomChange = false;
 
             }
 
             //Se agrega al objeto main
-            if (hasRoomChange)
-            {
+            //if (hasRoomChange)
+            //{
                 reservationDetailLog.RoomDetailsBefore = roomDetailsLogListBefore;
                 reservationDetailLog.RoomDetailsAfter = roomDetailsLogListAfter;
-            }
+            //}
             #endregion
 
         }
 
-        private static void RoomsUVCCLog(XDocument dataBefore, XDocument dataAfter, ref ReservationDetailLog reservationDetailLog)
+        private static void RoomsUVCCLog(XDocument dataBefore, XDocument dataAfter,string currencyBefore, string currencyAfter, ref ReservationDetailLog reservationDetailLog)
         {
             //Revisar Habitaciones
             List<XElement> roomsBefore = dataBefore.Root.Element("HotelDisplay").Element("Rooms").Elements("Room").ToList();
-            List<XElement> roomsAfter = dataAfter.Root.Elements("Room").ToList();
+            
+            List<XElement> roomsAfterRoomsNodeLevel= dataAfter.Root.Element("Rooms").Elements("Room").ToList();
+            List<XElement> roomsAfterRootNodeLevel = dataAfter.Root.Elements("Room").ToList();
+
+            List<XElement> roomsAfter = roomsAfterRoomsNodeLevel.Concat(roomsAfterRootNodeLevel).ToList();
 
             //Precios dataAfter
-            List<XElement> pricesDataAfter = dataAfter.Root.Elements("Prices").ToList();
+            List <XElement> pricesDataAfter = dataAfter.Root.Elements("Prices").ToList();
 
             List<RoomDetailsLog> roomDetailsLogListBefore = new List<RoomDetailsLog>();
             List<RoomDetailsLog> roomDetailsLogListAfter = new List<RoomDetailsLog>();
 
             int totalRoomsOccupied = roomsAfter.Count;
-            bool hasRoomChange = false;
+            
 
             for(int i = 0; i < totalRoomsOccupied; i++)
             {
+                bool hasRoomChange = false;
+
                 RoomDetailsLog roomDetailsLogBefore = new RoomDetailsLog();
                 RoomDetailsLog roomDetailsLogAfter = new RoomDetailsLog();
 
@@ -454,13 +497,18 @@ namespace APIServices.Helpers.Reservation
                     hasRoomChange = true;
                 }
 
-                if (string.Equals(childrenAgesBefore, childrenAgesAfter))
+                int totalChildrensBeforeWithExtras = childrensBefore + extraChildrensBefore;
+                int totalChildrensAfterWithExtras = childrensAfter + extraChildrensAfter;
+
+                if ((totalChildrensBeforeWithExtras > 0 || totalChildrensBeforeWithExtras > 0) && !string.Equals(childrenAgesBefore, childrenAgesAfter))
                 {
                     roomDetailsLogBefore.AgeChildren = childrenAgesBefore;
                     roomDetailsLogAfter.AgeChildren = childrenAgesAfter;
                     hasRoomChange = true;
                 }
 
+                //
+               
                 //Revisar Precios por habitacion para dataBefore
                 List<XElement> priceDetailsBefore = roomsBefore[i].Element("Rates").Elements("Rate").ToList();
 
@@ -470,16 +518,17 @@ namespace APIServices.Helpers.Reservation
                 {
                     RoomPriceDetailsLog roomPriceDetailsBeforeLogTemp = new RoomPriceDetailsLog()
                     {
-                        Price = Double.Parse(priceDetailsBefore[i].Element("AdultRate").Value),
-                        ExtraPrice = Double.Parse(priceDetailsBefore[i].Element("ExtraRateAdult").Value),
-                        CheckIn = DateTime.Parse(priceDetailsBefore[i].Element("Date").Value).Date,
-                        CheckOut = DateTime.Parse(priceDetailsBefore[i].Element("Date").Value).Date
+                        Price = Double.Parse(priceDetailsBefore[j].Element("AdultRate").Value),
+                        ExtraPrice = Double.Parse(priceDetailsBefore[j].Element("ExtraRateAdult").Value),
+                        CheckIn = DateTime.Parse(priceDetailsBefore[j].Element("Date").Value).Date,
+                        CheckOut = DateTime.Parse(priceDetailsBefore[j].Element("Date").Value).Date,
+                        Currency  = currencyBefore
                     };
 
                     roomPriceDetailsBeforeLogsList.Add(roomPriceDetailsBeforeLogTemp);
                 }
 
-                roomDetailsLogBefore.PriceDetails = roomPriceDetailsBeforeLogsList;
+                //roomDetailsLogBefore.PriceDetails = roomPriceDetailsBeforeLogsList;
                 //Termina precios por habitacion para dataBefore
 
                 //Revisar Precios por habitacion para dataAfter
@@ -490,31 +539,53 @@ namespace APIServices.Helpers.Reservation
 
                 for (int j = 0; j < priceDetailsAfter.Count; j++)
                 {
+                    string[] fromNoSpaceArray = priceDetailsAfter[j].Element("From").Value.Split(' ');
+                    int[] fromNoSlashArray = fromNoSpaceArray[0].Split('/').Select(Int32.Parse).ToArray();
+
+                    string[] toNoSpaceArray = priceDetailsAfter[j].Element("To").Value.Split(' ');
+                    int[] toNoSlashArray = toNoSpaceArray[0].Split('/').Select(Int32.Parse).ToArray();
+
                     RoomPriceDetailsLog roomPriceDetailsAfterLogTemp = new RoomPriceDetailsLog()
                     {
-                        Price = Double.Parse(priceDetailsBefore[i].Element("Rate").Value),
-                        ExtraPrice = Double.Parse(priceDetailsBefore[i].Element("Extra").Value),
-                        CheckIn = DateTime.Parse(priceDetailsBefore[i].Element("From").Value).Date,
-                        CheckOut = DateTime.Parse(priceDetailsBefore[i].Element("To").Value).Date
+                        Price = Double.Parse(priceDetailsAfter[j].Element("Rate").Value),
+                        ExtraPrice = Double.Parse(priceDetailsAfter[j].Element("Extra").Value),
+                        CheckIn = new DateTime(fromNoSlashArray[2], fromNoSlashArray[1], fromNoSlashArray[0]).Date,
+                        CheckOut = new DateTime(toNoSlashArray[2], toNoSlashArray[1], toNoSlashArray[0]).Date,
+                        Currency = currencyAfter
                     };
 
                     roomPriceDetailsAfterLogsList.Add(roomPriceDetailsAfterLogTemp);
                 }
 
-                roomDetailsLogAfter.PriceDetails = roomPriceDetailsAfterLogsList;
+                //roomDetailsLogAfter.PriceDetails = roomPriceDetailsAfterLogsList;
+
+                //TODO:Comparar total por habitacion para ver si hubo modificaciones
+                //Comparar el total de la habitacion esta lista roomPriceDetailsBeforeLogsList con roomPriceDetailsAfterLogsList
+
+                bool hasRoomPriceChange = ComparePricesTotalRoom(roomPriceDetailsBeforeLogsList, roomPriceDetailsAfterLogsList);
+
+                if (hasRoomPriceChange)
+                {
+                    roomDetailsLogBefore.PriceDetails = roomPriceDetailsBeforeLogsList;
+                    roomDetailsLogAfter.PriceDetails = roomPriceDetailsAfterLogsList;
+
+                    hasRoomChange = true;
+                }
 
                 //Agregar a Listas
-                roomDetailsLogListBefore.Add(roomDetailsLogBefore);
-                roomDetailsLogListAfter.Add(roomDetailsLogAfter);
+                if (hasRoomChange)
+                {
+                    roomDetailsLogListBefore.Add(roomDetailsLogBefore);
+                    roomDetailsLogListAfter.Add(roomDetailsLogAfter);
+                }
+
+                
             }
 
 
-            //Se agrega al objeto main
-            if (hasRoomChange)
-            {
-                reservationDetailLog.RoomDetailsBefore = roomDetailsLogListBefore;
-                reservationDetailLog.RoomDetailsAfter = roomDetailsLogListAfter;
-            }
+            reservationDetailLog.RoomDetailsBefore = roomDetailsLogListBefore;
+            reservationDetailLog.RoomDetailsAfter = roomDetailsLogListAfter;
+            
         }
 
 
@@ -532,5 +603,58 @@ namespace APIServices.Helpers.Reservation
             return pricesByRoomIndex;
         }
 
+
+        private static bool  ComparePricesTotalRoom(List<RoomPriceDetailsLog> roomPriceDetailsBeforeLogsList, List<RoomPriceDetailsLog> roomPriceDetailsAfterLogsList)
+        {
+            //Comparar total de la reserva
+
+            double totalBefore = 0;
+            double totalAfter = 0;
+
+            foreach(var roomPriceDetailBeforeLog in roomPriceDetailsBeforeLogsList)
+            {
+                var checkIn = roomPriceDetailBeforeLog.CheckIn.Date;
+                var checkOut = roomPriceDetailBeforeLog.CheckOut.Date;
+
+                if(DateTime.Compare(checkIn,checkOut) == 0)
+                {
+                    totalBefore += (roomPriceDetailBeforeLog.Price + roomPriceDetailBeforeLog.ExtraPrice);
+                }
+                else
+                {
+                    int nights = (checkOut - checkIn).Days;
+
+                    for(int i = 0; i < nights; i++)
+                    {
+                        totalBefore += (roomPriceDetailBeforeLog.Price + roomPriceDetailBeforeLog.ExtraPrice);
+                    }
+
+                }
+            }
+
+            foreach(var roomPriceDetailAfterLog in roomPriceDetailsAfterLogsList)
+            {
+                var checkIn = roomPriceDetailAfterLog.CheckIn.Date;
+                var checkOut = roomPriceDetailAfterLog.CheckOut.Date;
+
+                if (DateTime.Compare(checkIn, checkOut) == 0)
+                {
+                    totalAfter += (roomPriceDetailAfterLog.Price + roomPriceDetailAfterLog.ExtraPrice);
+                }
+                else
+                {
+                    int nights = (checkOut - checkIn).Days;
+
+                    for (int i = 0; i <= nights; i++)
+                    {
+                        totalAfter += (roomPriceDetailAfterLog.Price + roomPriceDetailAfterLog.ExtraPrice);
+                    }
+
+                }
+
+            }
+
+            return totalBefore != totalAfter;
+        }
     }
 }

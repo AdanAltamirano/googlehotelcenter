@@ -23,6 +23,14 @@ $point-eight-em: 0.8em;
     font-size: small !important;
 }
 
+.font-size-2 {
+    font-size: medium !important;
+}
+
+.font-size-3 {
+    font-size: smaller !important;
+}
+
 .w-60 {
     width: 60% !important;
 }
@@ -51,6 +59,13 @@ address {
 .card-accent-danger {
     border-top-color: #f86c6b;
     border-top-width: 2px;
+}
+.custom-border-card-primary {
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: .25rem;
+    border-top-color: #10467a;
+    border-top-width: 2px;
+    padding: .25rem;
 }
 .vc-shadow {
     border-width: 0px !important;

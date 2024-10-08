@@ -83,6 +83,7 @@
 </template>
 <script>
 import Vue from "vue";
+import EventBus from '../../../core/event-bus';
 import Record from './Record/Log.vue';
 
 export default {
@@ -94,6 +95,12 @@ export default {
     },
     components: {
         Record
+    },
+    mounted(){
+        EventBus.$on('historymovementsreservation', () =>{
+            console.log('Llego');
+            this.alertHistoryLog();
+        })
     },
     methods: {
         alertReason() {
