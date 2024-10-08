@@ -445,6 +445,35 @@
     <Compile Include="ReservationService.cs" />
     <Compile Include="RoomsClosureService.cs" />
     <Compile Include="RoomsService.cs" />
+    <Compile Include="Service\Arpon\ArponEntities.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ArponEntities.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Service\Arpon\ArponEntities.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ArponEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Service\Arpon\ArponEntities.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ArponEntities.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Service\Arpon\ArponService.cs" />
+    <Compile Include="Service\Arpon\HotelIPH_Arpon.cs">
+      <DependentUpon>ArponEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Service\Arpon\Models\ArponModels.cs" />
+    <Compile Include="Service\Arpon\RatePlansIPH_Arpon.cs">
+      <DependentUpon>ArponEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Service\Arpon\RoomsIPH_Arpon.cs">
+      <DependentUpon>ArponEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Service\Arpon\TipoHabitaciones_Hoteles.cs">
+      <DependentUpon>ArponEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Service\HotelVerse\HotelVerseService.cs" />
     <Compile Include="Service\HotelVerse\Models\Record.cs" />
     <Compile Include="Service\HotelVerse\Models\Response\ResponseRequest.cs" />
@@ -479,8 +508,25 @@
       <DependentUpon>OzUniEntities.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
+    <EntityDeploy Include="Service\Arpon\ArponEntities.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ArponEntities.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Service\Arpon\ArponEntities.edmx.diagram">
+      <DependentUpon>ArponEntities.edmx</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Service\Arpon\ArponEntities.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ArponEntities.edmx</DependentUpon>
+      <LastGenOutput>ArponEntities.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Service\Arpon\ArponEntities.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ArponEntities.edmx</DependentUpon>
+      <LastGenOutput>ArponEntities.cs</LastGenOutput>
+    </Content>
     <EmbeddedResource Include="Errors.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
