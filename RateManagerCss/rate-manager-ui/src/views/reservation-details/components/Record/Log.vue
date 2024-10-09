@@ -149,7 +149,7 @@ export default {
       this.$swal.fire({       
         title: this.$t("Details"),
         customClass:{
-          popup:''
+          popup:'swal-width-80'
         },
         type: "info",
         html: "<div></div>",

@@ -997,6 +997,14 @@ Partial Class AvailabilityRestrictions
                     End If
                 End If
                 closehotel(nota)
+
+                If ddlStatus.SelectedValue = "O" Then
+                    For Each r As ListItem In ddlRateplans.Items
+                        closeRateplan(nota, r.Value, False, splan:=r.Text)
+                    Next
+                End If
+
+
                 If chkApplyAllPlan.Checked AndAlso RbdHotel.Checked Then
                     For Each r As ListItem In ddlRateplans.Items
                         closeRateplan(nota, r.Value, False, splan:=r.Text)
