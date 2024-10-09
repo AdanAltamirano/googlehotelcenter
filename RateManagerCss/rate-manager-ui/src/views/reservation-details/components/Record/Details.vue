@@ -37,7 +37,7 @@
 				</b-th>
 			</b-tr>
 			<!-- Rooms -->
-			<b-tr v-if="logDetail.roomDetailsBefore.length> 0 && logDetail.roomDetailsAfter.length > 0">
+			<b-tr v-if="(logDetail.roomDetailsBefore.length > 0 && logDetail.roomDetailsAfter.length > 0)">
 				<b-th colspan="2" class="font-size-2">{{$t('Rooms')}}</b-th>
 				<b-th colspan="2" class="font-size-2"><rooms-log :roomDetailsLog="logDetail.roomDetailsBefore"></rooms-log></b-th>
 				<b-th colspan="3" class="font-size-2"><rooms-log :roomDetailsLog="logDetail.roomDetailsAfter"></rooms-log></b-th>

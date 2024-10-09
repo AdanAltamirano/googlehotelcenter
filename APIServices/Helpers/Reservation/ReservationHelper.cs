@@ -229,7 +229,7 @@ namespace APIServices.Helpers.Reservation
                 int totalChildrensBeforeWithExtras = childrensBefore + extraChildrensBefore;
                 int totalChildrensAfterWithExtras = childrensAfter + extraChildrensAfter;
 
-                if ((totalChildrensBeforeWithExtras > 0 || totalChildrensBeforeWithExtras > 0) && !string.Equals(childrenAgesBefore, childrenAgesAfter))
+                if ((totalChildrensBeforeWithExtras > 0 || totalChildrensAfterWithExtras > 0) && !string.Equals(childrenAgesBefore, childrenAgesAfter))
                 {
                     roomDetailsLogBefore.AgeChildren = childrenAgesBefore;
                     roomDetailsLogAfter.AgeChildren = childrenAgesAfter;

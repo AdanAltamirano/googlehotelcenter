@@ -12,7 +12,7 @@
 						<div v-if="roomDetailLog.childrens > 0" :id="'children-' +index" class="font-size-3">{{$t('Children')}}: {{roomDetailLog.childrens}}</div>
 						<div v-if="roomDetailLog.extraAdults > 0" :id="'extraAdults-' +index" class="font-size-3">{{$t('Extra Adult(s)')}}: {{roomDetailLog.extraAdults}}</div>
 						<div v-if="roomDetailLog.extraChildrens > 0" :id="'extraChildren-' +index" class="font-size-3">{{$t('Extra Children')}}: {{roomDetailLog.extraChildrens}}</div>
-						<div v-if="roomDetailLog.agesChildren.length > 0" :id="'agesChildren-' +index" class="font-size-3">{{$t('Children Age')}}: {{roomDetailLog.ageChildren}}</div>
+						<div v-if="roomDetailLog.agesChildren !== undefined && roomDetailLog.agesChildren.length > 0" :id="'agesChildren-' +index" class="font-size-3">{{$t('Children Age')}}: {{roomDetailLog.ageChildren}}</div>
 						<div v-if="roomDetailLog.total > 0" :id="'total-' +index" class="font-size-3">{{$t('Total')}}: {{roomDetailLog.total | currency}} {{roomDetailLog.currency}}</div>						
 						<div v-if="roomDetailLog.priceDetails !== undefined && roomDetailLog.priceDetails.length > 0" style="cursor:pointer" v-b-toggle="'rates-' + index" class="mt-1 font-size-3 text-muted">
 							<i class="fa fa-plus-circle"></i> {{$t('Prices')}}
