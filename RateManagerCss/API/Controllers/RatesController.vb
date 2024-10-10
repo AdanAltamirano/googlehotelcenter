@@ -469,10 +469,16 @@ Namespace API.Controllers
             For Each response As Conflux.Models.Restrictions.Response.RestrictionResponse In restrictionResponseList
 
                 If response.IsSuccess Then
-                    pgBase.WriteLog(response.Restrictions(0).XmlRequest(0).ToString(), "LockRate")
-                    pgBase.WriteLog(response.Restrictions(0).Xml(0).ToString(), "LockRate")
+                    'pgBase.WriteLog(response.Restrictions(0).XmlRequest(0).ToString(), "LockRate")
+                    'pgBase.WriteLog(response.Restrictions(0).Xml(0).ToString(), "LockRate")
+                    With (New PaginaBase)
+                        .guardalog(pagina:="/rate-manager-ui/dist/rates-admin.aspx", action:=acciones.Sincronizar, nota:="Tarifa Enviada a Conflux LockRate", peticion:="", datos:=response.Restrictions(0).XmlRequest(0).ToString(), datosDespues:=response.Restrictions(0).Xml(0).ToString(), hotelId:=info.Hotel)
+                    End With
                 Else
-                    pgBase.WriteLog(response.Xml.ToString(), "LockRate")
+                    'pgBase.WriteLog(response.Xml.ToString(), "LockRate")
+                    With (New PaginaBase)
+                        .guardalog(pagina:="/rate-manager-ui/dist/rates-admin.aspx", action:=acciones.Sincronizar, nota:="Error al sicronizar LockRate", peticion:="", datos:=response.Xml.ToString(), datosDespues:="", hotelId:=info.Hotel)
+                    End With
                 End If
 
             Next
