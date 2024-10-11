@@ -8940,4 +8940,7 @@
   <data name="01674" xml:space="preserve">
     <value>El plan tarifario que intenta vincular cuenta con tarifas cargadas. Es necesario eliminarlas antes de realizar el vínculo.</value>
   </data>
+  <data name="01680" xml:space="preserve">
+    <value>Activo</value>
+  </data>
 </root>

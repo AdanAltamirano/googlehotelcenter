@@ -32,9 +32,10 @@
     function Cancel() {
         CtrHotelItem_Clear();
         FireShow('divCtrlContent', 'cmdNew', false)
+
     }
 
-</script>
+    </script>
 </head>
 <body bottommargin="0" leftmargin="0" rightmargin="0" topmargin="0" ms_positioning="FlowLayout">
     <form id="Form1" method="post" runat="server">
@@ -84,6 +85,14 @@
         </table>
     </div>
     <div class="clear">
+         <div style="float:left; margin-bottom:15px;" >
+           <asp:Label ID="lblFilter" runat="server" Text="Filtro:" ></asp:Label>
+           <asp:DropDownList ID="ddlFilter" runat="server" AutoPostBack="True">
+            <asp:ListItem Text="Solo activos" Value="1"></asp:ListItem>
+            <asp:ListItem Text="Solo no activos" Value="0"></asp:ListItem>
+            <asp:ListItem Text="Activos y no activos" Value="-1"></asp:ListItem>
+           </asp:DropDownList>
+        </div>
         <asp:DataGrid ID="grid" runat="server" Width="99%" AllowPaging="True" PageSize="20"
             GridLines="None" DataKeyField="idHotelItem" AutoGenerateColumns="False"
             CssClass="datagrid" ShowFooter="True">
@@ -103,7 +112,7 @@
                             CommandName="Edit">Editar</asp:LinkButton>
                     </ItemTemplate>
                 </asp:TemplateColumn>
-                <asp:TemplateColumn HeaderText="Eliminar" Visible="false">
+                <asp:TemplateColumn HeaderText="Eliminar">
                     <HeaderStyle ></HeaderStyle>
                     <ItemStyle></ItemStyle>
                     <ItemTemplate>

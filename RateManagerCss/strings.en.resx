@@ -8934,4 +8934,7 @@
   <data name="01674" xml:space="preserve">
     <value>The rate plan you are trying to link has charged rates. It is necessary to remove them before making the link.</value>
   </data>
+  <data name="01680" xml:space="preserve">
+    <value>Active</value>
+  </data>
 </root>

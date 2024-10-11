@@ -92,6 +92,7 @@ Partial Public Class ctrlHotelItem
         drow(FIELD_DESCRIPTION) = txtDescription.Text
         drow(FIELD_PRICE) = txtPrice.Text
         drow(FIELD_IDMONEDA) = IDMoneda
+        drow(FIELD_ACTIVE) = chkActive.Checked
         ds.Tables(HOTELITEM_TABLE).Rows.Add(drow)
 
         With New Portal.General.Facade.HotelItemFacade()
@@ -143,6 +144,12 @@ Partial Public Class ctrlHotelItem
                     txtPrice.Text = .Tables(HOTELITEM_TABLE)(0)(FIELD_PRICE)
                 End If
 
+                If Not IsDBNull(.Tables(HOTELITEM_TABLE)(0)(FIELD_ACTIVE)) Then
+                    chkActive.Checked = CType(.Tables(HOTELITEM_TABLE)(0)(FIELD_ACTIVE), Boolean)
+                Else
+                    chkActive.Checked = False
+                End If
+
                 ctrlImgHotelItem1.IdEmpresa = Me.idCompany
                 ctrlImgHotelItem1.ModeView = Opciones.ViewMode.Edit
                 ctrlImgHotelItem1.IdIdioma = PortalCulture.GetIDCulture
@@ -188,6 +195,7 @@ Partial Public Class ctrlHotelItem
         txtDescription.Text = String.Empty
         txtName.Text = String.Empty
         txtPrice.Text = String.Empty
+        chkActive.Checked = False
         ctrlImgHotelItem1.IdHotelItem = "0"
         ctrlImgHotelItem1.LoadImagesByHotelItem(CType(ctrlImgHotelItem1.IdHotelItem, Integer))
         IsEdit = False
@@ -197,6 +205,7 @@ Partial Public Class ctrlHotelItem
         lblDescripcion.Text = PortalCulture.GetString("M000152", True)
         lblName.Text = PortalCulture.GetString("00073", True)
         lblPrice.Text = PortalCulture.GetString("00090", True)
+        lblActive.Text = PortalCulture.GetString("01680", False)
     End Sub
 
     Private Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.PreRender

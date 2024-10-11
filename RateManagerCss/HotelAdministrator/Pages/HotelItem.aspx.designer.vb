@@ -95,6 +95,24 @@ Partial Public Class HotelItem
     Protected WithEvents lblErrorSource As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
+    '''Control lblFilter.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblFilter As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control ddlFilter.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents ddlFilter As Global.System.Web.UI.WebControls.DropDownList
+
+    '''<summary>
     '''Control grid.
     '''</summary>
     '''<remarks>

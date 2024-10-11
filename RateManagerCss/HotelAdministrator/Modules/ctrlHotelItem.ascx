@@ -4,7 +4,8 @@
     function CtrHotelItem_Clear() {
         $("#<%=txtName.ClientID %>").val("");
         $("#<%=txtDescription.ClientID %>").val("");
-        $("#<%=txtName.ClientID %>").val("");
+		$("#<%=txtName.ClientID %>").val("");
+		$("#<%=txtPrice.ClientID %>").val("");
     }
 </script>
 
@@ -38,6 +39,14 @@
 			    <asp:textbox ID="txtPrice" runat="server" Columns="10" ></asp:textbox>
 			    <asp:Label ID="lblCurrency" runat="server"></asp:Label>
 			    <asp:RequiredFieldValidator ID="rfvPrice" ControlToValidate="txtPrice" runat="server" ErrorMessage="*"></asp:RequiredFieldValidator>
+		    </TD>
+		</TR>
+		<TR>
+		    <TD align="right" width="25%" >
+			    <asp:label ID="lblActive" EnableViewState="False" CssClass="clsLabel" runat="server">Activo:</asp:label>
+			</TD>
+			<TD>
+			    <asp:CheckBox ID="chkActive" runat="server"></asp:CheckBox>
 		    </TD>
 		</TR>
 		<tr>
