@@ -169,5 +169,6 @@ export default {
     'Send confimation email' : 'Enviar correo de confirmación',
     'There are no records' : 'No hay movimientos',
     'Extras' : 'Extras',
-    'Description' : 'Descripción'
+    'Description' : 'Descripción',
+    'Quantity' : 'Cantidad'
 }

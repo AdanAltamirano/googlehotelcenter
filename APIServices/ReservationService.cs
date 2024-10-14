@@ -324,11 +324,14 @@ namespace APIServices
                 double totalRoomsNR = 0;
                 GetRooms(ref model, reservationId, details , out totalRooms, out totalRoomsNR);
 
+                double totalItems = 0;
+                GetHotelItemReservation(ref model, reservationId, out totalItems);
+
                 model.TotalDetails = new TotalDetails();
                 model.TotalDetails.SubTotal = totalRooms;
                 model.TotalDetails.SubTotalNR = totalRoomsNR;
                 model.TotalDetails.TotalNR = Convert.ToDouble(details.totalNetRate); //TODO: Validar si esta en null
-                model.TotalDetails.Total = Convert.ToDouble(details.total);
+                model.TotalDetails.Total = totalItems > 0 ? (Convert.ToDouble(details.total) + totalItems): Convert.ToDouble(details.total);
                 model.TotalDetails.Ecotasa = Convert.ToDouble(details.ecotasa);
                 model.TotalDetails.IncludesTax = details.includesTax.Value;
 
@@ -344,8 +347,6 @@ namespace APIServices
                 
                 model.TotalDetails.Currency = details.currency;
                 model.TotalDetails.Commission = Convert.ToDouble((details.IsNetRateUV ? (details.total - details.totalNetRate > 0)? details.total - details.totalNetRate : 0 : 0));
-
-                GetHotelItemReservation(ref model, reservationId);
 
                 Permissions(ref model, isSupervisor, isUserChain, isUsuarioHotelAssociation, idCorporateUserChain, idCorporatePortal, idAsociationPb, idAsociation);
 
@@ -532,8 +533,9 @@ namespace APIServices
             return contenido;
         }
 
-        void GetHotelItemReservation(ref ReservationDetailsModel model, int reservationId)
+        void GetHotelItemReservation(ref ReservationDetailsModel model, int reservationId, out double totalItems)
         {
+            double totalItemsTemps = 0;
             List<spGetReservationHotelItem_Result> hotelItemList = GetHotelItemReservation(reservationId);
 
             foreach (spGetReservationHotelItem_Result hotelItem in hotelItemList)
@@ -554,7 +556,9 @@ namespace APIServices
                     Name = hotelItem.Name,
                     Description = hotelItem.Description,
                     Img = img,
+                    Quantity = hotelItem.Amount,
                     Price = hotelItem.Price,
+                    Total = Convert.ToDecimal(hotelItem.Price * hotelItem.Amount),
                     CurrencyId = hotelItem.idMoneda,
                     CurrencyName = hotelItem.Nombre,
                     Symbol = hotelItem.Signo,
@@ -563,8 +567,12 @@ namespace APIServices
                     ExchangeRate = hotelItem.TipoCambio
                 };
 
+                totalItemsTemps += Convert.ToDouble(hotelItemTemp.Total);
+
                 model.ReservationItemsDetails.Add(hotelItemTemp);
             }
+
+            totalItems = totalItemsTemps;
 
         }
 

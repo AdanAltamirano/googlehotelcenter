@@ -999,9 +999,11 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vReservationDetails' no tiene 
             <PropertyRef Name="checkOut" />
             <PropertyRef Name="reservationId" />
             <PropertyRef Name="reservationNumber" />
+            <PropertyRef Name="reservationIdIDS" />
             <PropertyRef Name="tax" />
             <PropertyRef Name="ecotasa" />
             <PropertyRef Name="IsNetRateUV" />
+            <PropertyRef Name="paymentInformation" />
             <PropertyRef Name="amountTotal" />
             <PropertyRef Name="depositAmount" />
             <PropertyRef Name="depositTarget" />
@@ -1029,6 +1031,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vReservationDetails' no tiene 
           <Property Name="Provisioner" Type="varchar" MaxLength="14" />
           <Property Name="reservationId" Type="int" Nullable="false" />
           <Property Name="reservationNumber" Type="nvarchar" MaxLength="24" Nullable="false" />
+          <Property Name="reservationIdIDS" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="cancellationNumber" Type="nvarchar" MaxLength="50" />
           <Property Name="cancellationReason" Type="nvarchar" MaxLength="250" />
           <Property Name="reservationIdXProvider" Type="nvarchar" MaxLength="50" />
@@ -1045,6 +1048,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vReservationDetails' no tiene 
           <Property Name="customerEmail" Type="nvarchar" MaxLength="80" />
           <Property Name="customerPhone" Type="nvarchar" MaxLength="38" />
           <Property Name="paymentType" Type="int" />
+          <Property Name="paymentInformation" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="onlinePaymentMethod" Type="varchar" MaxLength="9" />
           <Property Name="authorizationNumber" Type="nvarchar" MaxLength="50" />
           <Property Name="cardNumber" Type="ntext" />
@@ -1055,6 +1059,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vReservationDetails' no tiene 
           <Property Name="amountTotal" Type="money" Nullable="false" />
           <Property Name="depositAmount" Type="money" Nullable="false" />
           <Property Name="depositCurrency" Type="nvarchar" MaxLength="3" />
+          <Property Name="depositBank" Type="nvarchar" MaxLength="20" />
           <Property Name="depositReference" Type="nvarchar" MaxLength="100" />
           <Property Name="depositTarget" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="provider" Type="int" Nullable="false" />
@@ -1762,6 +1767,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
     [vReservationDetails].[Provisioner] AS [Provisioner], 
     [vReservationDetails].[reservationId] AS [reservationId], 
     [vReservationDetails].[reservationNumber] AS [reservationNumber], 
+    [vReservationDetails].[reservationIdIDS] AS [reservationIdIDS], 
     [vReservationDetails].[cancellationNumber] AS [cancellationNumber], 
     [vReservationDetails].[cancellationReason] AS [cancellationReason], 
     [vReservationDetails].[reservationIdXProvider] AS [reservationIdXProvider], 
@@ -1778,6 +1784,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
     [vReservationDetails].[customerEmail] AS [customerEmail], 
     [vReservationDetails].[customerPhone] AS [customerPhone], 
     [vReservationDetails].[paymentType] AS [paymentType], 
+    [vReservationDetails].[paymentInformation] AS [paymentInformation], 
     [vReservationDetails].[onlinePaymentMethod] AS [onlinePaymentMethod], 
     [vReservationDetails].[authorizationNumber] AS [authorizationNumber], 
     [vReservationDetails].[cardNumber] AS [cardNumber], 
@@ -1788,6 +1795,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
     [vReservationDetails].[amountTotal] AS [amountTotal], 
     [vReservationDetails].[depositAmount] AS [depositAmount], 
     [vReservationDetails].[depositCurrency] AS [depositCurrency], 
+    [vReservationDetails].[depositBank] AS [depositBank], 
     [vReservationDetails].[depositReference] AS [depositReference], 
     [vReservationDetails].[depositTarget] AS [depositTarget], 
     [vReservationDetails].[provider] AS [provider], 
@@ -3223,6 +3231,8 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
             <PropertyRef Name="h_guaranteePolicies" />
             <PropertyRef Name="h_creditcardPolicies" />
             <PropertyRef Name="agency" />
+            <PropertyRef Name="reservationIdIDS" />
+            <PropertyRef Name="paymentInformation" />
           </Key>
           <Property Name="hotelId" Type="Int32" />
           <Property Name="hotelName" Type="String" MaxLength="180" FixedLength="false" Unicode="true" />
@@ -3290,6 +3300,9 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
           <Property Name="namePromotion" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
           <Property Name="idCancellationUser" Type="Int32" />
           <Property Name="userCancellation" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="reservationIdIDS" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="paymentInformation" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="depositBank" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
         </EntityType>
         <ComplexType Name="spReservationLog_Result1">
           <Property Type="Int32" Name="idLog" Nullable="false" />
@@ -3634,20 +3647,6 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
           <Property Name="Url" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="TypePms" Type="Int16" Nullable="false" />
         </EntityType>
-        <ComplexType Name="spGetReservationHotelItem_Result">
-          <Property Type="Int32" Name="idReservaciones_HotelItems" Nullable="false" />
-          <Property Type="Int32" Name="idHotelItem" Nullable="false" />
-          <Property Type="Int32" Name="idReservacion" Nullable="false" />
-          <Property Type="String" Name="Name" Nullable="true" MaxLength="100" />
-          <Property Type="String" Name="Description" Nullable="true" MaxLength="500" />
-          <Property Type="Decimal" Name="Price" Nullable="false" Precision="19" />
-          <Property Type="Int32" Name="idMoneda" Nullable="false" />
-          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="30" />
-          <Property Type="String" Name="Signo" Nullable="true" MaxLength="2" />
-          <Property Type="String" Name="Abreviatura" Nullable="true" MaxLength="6" />
-          <Property Type="String" Name="Codigo" Nullable="true" MaxLength="3" />
-          <Property Type="Decimal" Name="TipoCambio" Nullable="true" Precision="19" />
-        </ComplexType>
         <EntityType Name="Canales">
           <Key>
             <PropertyRef Name="idCanal" />
@@ -3698,6 +3697,21 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="spGetReservationHotelItem_Result">
+          <Property Type="Int32" Name="idReservaciones_HotelItems" Nullable="false" />
+          <Property Type="Int32" Name="idHotelItem" Nullable="false" />
+          <Property Type="Int32" Name="idReservacion" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="500" />
+          <Property Type="Int32" Name="Amount" Nullable="true" />
+          <Property Type="Decimal" Name="Price" Nullable="false" Precision="19" />
+          <Property Type="Int32" Name="idMoneda" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="Signo" Nullable="true" MaxLength="2" />
+          <Property Type="String" Name="Abreviatura" Nullable="true" MaxLength="6" />
+          <Property Type="String" Name="Codigo" Nullable="true" MaxLength="3" />
+          <Property Type="Decimal" Name="TipoCambio" Nullable="true" Precision="19" />
+        </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4678,6 +4692,9 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
           <EntitySetMapping Name="vReservationDetails">
             <EntityTypeMapping TypeName="Models.vReservationDetails">
               <MappingFragment StoreEntitySet="vReservationDetails">
+                <ScalarProperty Name="depositBank" ColumnName="depositBank" />
+                <ScalarProperty Name="paymentInformation" ColumnName="paymentInformation" />
+                <ScalarProperty Name="reservationIdIDS" ColumnName="reservationIdIDS" />
                 <ScalarProperty Name="userCancellation" ColumnName="userCancellation" />
                 <ScalarProperty Name="idCancellationUser" ColumnName="idCancellationUser" />
                 <ScalarProperty Name="namePromotion" ColumnName="namePromotion" />
@@ -5056,6 +5073,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
                 <ScalarProperty Name="idReservacion" ColumnName="idReservacion" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="idMoneda" ColumnName="idMoneda" />
                 <ScalarProperty Name="Nombre" ColumnName="Nombre" />

@@ -209,7 +209,9 @@ namespace APIServices.Models.DTO
         public string Name { get; set; }
         public string Description { get; set; }
         public string Img { get; set; } = "";
+        public int? Quantity { get; set; }
         public decimal Price { get; set; }
+        public decimal Total { get; set; }
         public int CurrencyId { get; set; }
         public string CurrencyName { get; set; }
         public string Symbol { get; set; }

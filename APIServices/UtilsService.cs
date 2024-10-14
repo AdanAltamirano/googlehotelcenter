@@ -34,7 +34,10 @@ namespace APIServices
                     }
                     else
                     { // Si no existe un registro, lo inserta
-                        HotelCanales newComision = new HotelCanales(idHotel, idCanal, Comision);
+                        HotelCanales newComision = new HotelCanales();
+                        newComision.idHotel = idHotel;
+                        newComision.idCanal = idCanal;
+                        newComision.Comision = Comision;
 
                         dbContext.HotelCanales.Add(newComision);
                         dbContext.SaveChanges();

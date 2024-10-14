@@ -14,17 +14,6 @@ namespace APIServices.Models
     
     public partial class HotelCanales
     {
-        public HotelCanales()
-        {
-        }
-
-        public HotelCanales(int idHotel, int idCanal, int comision)
-        {
-            this.idHotel = idHotel;
-            this.idCanal = idCanal;
-            Comision = comision;
-        }
-
         public int id { get; set; }
         public Nullable<int> idHotel { get; set; }
         public Nullable<int> idCanal { get; set; }

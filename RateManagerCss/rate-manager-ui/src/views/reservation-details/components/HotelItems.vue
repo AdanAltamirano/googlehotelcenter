@@ -27,7 +27,13 @@
                 {{$t('Description')}}: <strong>{{item.description}}</strong>
               </div>
               <div class="color-212529">
+                {{$t('Quantity')}}: <strong>{{item.quantity}}</strong>
+              </div>
+              <div class="color-212529">
                 {{$t('Price')}}: <strong>{{item.price | currency}} {{item.code}}</strong>
+              </div>
+               <div class="color-212529">
+                {{$t('Total')}}: <strong>{{item.total | currency}} {{item.code}}</strong>
               </div>
             </b-col>
           </b-row>
