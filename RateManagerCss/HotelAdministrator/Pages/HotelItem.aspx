@@ -71,7 +71,7 @@
                                             Text="Guardar" OnClientClick="return"  CausesValidation="true">
                                         </asp:Button>
                                         <asp:Button ID="btncancel" runat="server" EnableViewState="False" CssClass="Button" 
-                                            Text="Cancelar" OnClientClick="Cancel();return false;" CausesValidation="false"  >
+                                            Text="Cancelar" CausesValidation="false"  >
                                         </asp:Button>
                                 </td>
                             </tr>

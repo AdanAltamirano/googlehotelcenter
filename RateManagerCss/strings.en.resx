@@ -8937,4 +8937,13 @@
   <data name="01680" xml:space="preserve">
     <value>Active</value>
   </data>
+  <data name="01681" xml:space="preserve">
+    <value>Payment at destination</value>
+  </data>
+  <data name="01682" xml:space="preserve">
+    <value>IVA</value>
+  </data>
+  <data name="01683" xml:space="preserve">
+    <value>Comisionable</value>
+  </data>
 </root>

@@ -164,4 +164,9 @@ Partial Public Class HotelItem
 
     End Sub
 
+    Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btncancel.Click
+        ctrlHotelItem1.ResetForm()
+        cmdNew.Style("display") = "block"
+    End Sub
+
 End Class

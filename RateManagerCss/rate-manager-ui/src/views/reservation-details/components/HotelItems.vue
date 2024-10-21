@@ -4,7 +4,7 @@
       <i class="fa fa-plus-circle"></i>
       {{$t('Extras')}}
     </h5>
-    <b-collapse id="itemCollapse">
+    <b-collapse visible id="itemCollapse">
       <div v-for="item in items" :key="item" class="card card-accent-primary mt-2">
         <div class="card-header">
           <h6>{{item.name}}</h6>       

@@ -23,22 +23,31 @@ Partial Public Class ctrlHotelItem
     Protected WithEvents lblName As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
-    '''Control txtName.
+    '''Control ctrlNameIdioma.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents txtName As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents ctrlNameIdioma As Global.RateManager.CtrlIdioma
 
     '''<summary>
-    '''Control rfvName.
+    '''Control lblActive.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents rfvName As Global.System.Web.UI.WebControls.RequiredFieldValidator
+    Protected WithEvents lblActive As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control chkActive.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents chkActive As Global.System.Web.UI.WebControls.CheckBox
 
     '''<summary>
     '''Control lblDescripcion.
@@ -50,22 +59,31 @@ Partial Public Class ctrlHotelItem
     Protected WithEvents lblDescripcion As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
-    '''Control txtDescription.
+    '''Control ctrlDescriptionIdioma.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents txtDescription As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents ctrlDescriptionIdioma As Global.RateManager.CtrlIdioma
 
     '''<summary>
-    '''Control rfvDescription.
+    '''Control lblPaymentDestination.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents rfvDescription As Global.System.Web.UI.WebControls.RequiredFieldValidator
+    Protected WithEvents lblPaymentDestination As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control chkPaymentDestination.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents chkPaymentDestination As Global.System.Web.UI.WebControls.CheckBox
 
     '''<summary>
     '''Control lblPrice.
@@ -104,20 +122,65 @@ Partial Public Class ctrlHotelItem
     Protected WithEvents rfvPrice As Global.System.Web.UI.WebControls.RequiredFieldValidator
 
     '''<summary>
-    '''Control lblActive.
+    '''Control lblTax.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents lblActive As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblTax As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
-    '''Control chkActive.
+    '''Control txtTax.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents chkActive As Global.System.Web.UI.WebControls.CheckBox
+    Protected WithEvents txtTax As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
+    '''Control txtTaxSrc.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents txtTaxSrc As Global.System.Web.UI.HtmlControls.HtmlInputHidden
+
+    '''<summary>
+    '''Control RequiredFieldValidator8.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents RequiredFieldValidator8 As Global.System.Web.UI.WebControls.RequiredFieldValidator
+
+    '''<summary>
+    '''Control RangeValidator9.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents RangeValidator9 As Global.System.Web.UI.WebControls.RangeValidator
+
+    '''<summary>
+    '''Control lblComisionable.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblComisionable As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control chkComisionable.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents chkComisionable As Global.System.Web.UI.WebControls.CheckBox
 End Class
