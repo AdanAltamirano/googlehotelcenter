@@ -627,6 +627,9 @@ namespace APIServices.Conflux.Helpers.Rates
         //General Tarifa Normal
         public static RateAmountMessage CreateDeleteRateAmountMessage(spGetCurrentRatesByHotel_Result4 currentRate, vDayRates vDayRate)
         {
+
+            if (DateTime.Now.Date > vDayRate.PromoEndDateBookingWindow && DateTime.Now.Date > vDayRate.EndDate) return null;
+
             RateAmountMessage rateAmountMessage = new RateAmountMessage();
 
             rateAmountMessage.statusApplicationControl = new StatusApplicationControl { RatePlanCode = vDayRate.RatePlanId, InvTypeCode = currentRate.RoomCode ?? "" };
@@ -635,11 +638,11 @@ namespace APIServices.Conflux.Helpers.Rates
 
             DateTime starDate = vDayRate.StartDate.Date;
 
-            if (vDayRate.StartDate.Date > vDayRate.EndDate.Date && vDayRate.EndDate.Date >= DateTime.Now.Date)
+            if(DateTime.Now.Date > vDayRate.PromoEndDateBookingWindow && vDayRate.EndDate.Date > DateTime.Now.Date)
             {
                 starDate = DateTime.Now.Date;
             }
-            else if (vDayRate.StartDate.Date < DateTime.Now.Date)
+            else if (vDayRate.StartDate.Date > vDayRate.EndDate.Date && vDayRate.EndDate.Date >= DateTime.Now.Date)
             {
                 starDate = DateTime.Now.Date;
             }
@@ -649,7 +652,7 @@ namespace APIServices.Conflux.Helpers.Rates
             Rate rate = new Rate()
             {
                 StartDate = starDate.ToString("yyyyMMdd"),
-                EndDate = vDayRate.EndDate.ToString("yyyyMMdd")
+                EndDate = vDayRate.EndDate.ToString("yyyyMMdd")                           
             };
 
             rates.Add(rate);
@@ -663,6 +666,8 @@ namespace APIServices.Conflux.Helpers.Rates
         //General Tarifa Promocion
         public static RateAmountMessage CreateDeleteRateAmountMessage(spGetCurrentRatesByHotel_Result4 currentRate, vDayRatesExceptions vDayRate)
         {
+            if (DateTime.Now.Date > vDayRate.PromoEndDateBookingWindow && DateTime.Now.Date > vDayRate.EndDate) return null;
+
             RateAmountMessage rateAmountMessage = new RateAmountMessage();
 
             rateAmountMessage.statusApplicationControl = new StatusApplicationControl { RatePlanCode = vDayRate.RatePlanId, InvTypeCode = currentRate.RoomCode ?? "" };
@@ -671,14 +676,15 @@ namespace APIServices.Conflux.Helpers.Rates
 
             DateTime starDate = vDayRate.StartDate.Date;
 
-            if (vDayRate.StartDate.Date > vDayRate.EndDate.Date && vDayRate.EndDate.Date >= DateTime.Now.Date)
+            if (DateTime.Now.Date > vDayRate.PromoEndDateBookingWindow && vDayRate.EndDate.Date > DateTime.Now.Date)
             {
                 starDate = DateTime.Now.Date;
             }
-            else if (vDayRate.StartDate.Date < DateTime.Now.Date)
+            else if (vDayRate.StartDate.Date > vDayRate.EndDate.Date && vDayRate.EndDate.Date >= DateTime.Now.Date)
             {
                 starDate = DateTime.Now.Date;
             }
+            
 
             //var starDate = vDayRate.StartDate.Date < DateTime.Now.Date ? DateTime.Now.Date : vDayRate.StartDate.Date;
 
@@ -699,6 +705,8 @@ namespace APIServices.Conflux.Helpers.Rates
         //Por Tarifa Normal
         public static RateAmountMessage CreateDeleteRateAmountMessage(vDayRates vDayRate)
         {
+            if (DateTime.Now.Date > vDayRate.PromoEndDateBookingWindow && DateTime.Now.Date > vDayRate.EndDate) return null;
+
             RateAmountMessage rateAmountMessage = new RateAmountMessage();
             var room = RoomHelper.GetRoom(vDayRate.RoomId);
 
@@ -708,14 +716,15 @@ namespace APIServices.Conflux.Helpers.Rates
 
             DateTime starDate = vDayRate.StartDate.Date;
 
-            if (vDayRate.StartDate.Date > vDayRate.EndDate.Date && vDayRate.EndDate.Date >= DateTime.Now.Date)
+            if (DateTime.Now.Date > vDayRate.PromoEndDateBookingWindow && vDayRate.EndDate.Date > DateTime.Now.Date)
             {
                 starDate = DateTime.Now.Date;
             }
-            else if (vDayRate.StartDate.Date < DateTime.Now.Date)
+            else if (vDayRate.StartDate.Date > vDayRate.EndDate.Date && vDayRate.EndDate.Date >= DateTime.Now.Date)
             {
                 starDate = DateTime.Now.Date;
             }
+            
 
             //var starDate = vDayRate.StartDate.Date < DateTime.Now.Date ? DateTime.Now.Date : vDayRate.StartDate.Date;
 
