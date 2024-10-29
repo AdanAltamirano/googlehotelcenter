@@ -25,8 +25,7 @@
           <b-row class="mt-3" v-if="result.reservationItemsDetails.length > 0" >
             <b-col>
               <hotel-items :items="result.reservationItemsDetails"></hotel-items>
-            </b-col>
-            <b-col md="4"></b-col>
+            </b-col>          
           </b-row>
           <b-row v-if="result.policyDetails" class="pt-3">
             <b-col>

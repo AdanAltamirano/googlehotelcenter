@@ -28,6 +28,7 @@ Partial Public Class HotelItem
             If dsHotel.Tables(.HOTEL_TABLE).Rows.Count > 0 Then
                 ctrlHotelItem1.IDMoneda = .Tables(.HOTEL_TABLE)(0)(.FIELD_IDMONEDA)
                 ctrlHotelItem1.Moneda = .Tables(.HOTEL_TABLE)(0)("Codigo")
+                ctrlHotelItem1.MonedaInfo = .Tables(.HOTEL_TABLE)(0)("Codigo")
             Else
                 ctrlHotelItem1.Visible = False
             End If

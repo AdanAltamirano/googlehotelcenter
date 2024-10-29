@@ -34,13 +34,13 @@
 						<input id="attach4" type="file" name="attach4" runat="server"><br>
 						<input id="attach5" type="file" name="attach5" runat="server"><br>
 					</td>
-					<td>
+					<%--<td>
 						<input id="attach6" type="file" name="attach6" runat="server"><br>
 						<input id="attach7" type="file" name="attach7" runat="server"><br>
 						<input id="attach8" type="file" name="attach8" runat="server"><br>
 						<input id="attach9" type="file" name="attach9" runat="server"><br>
 						<input id="attach10" type="file" name="attach10" runat="server"><br>
-					</td>
+					</td>--%>
 				</tr>
 				<tr>
 					<td align="center" colSpan="2">

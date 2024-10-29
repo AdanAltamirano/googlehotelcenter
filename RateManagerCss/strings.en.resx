@@ -8946,4 +8946,10 @@
   <data name="01683" xml:space="preserve">
     <value>Comisionable</value>
   </data>
+  <data name="01684" xml:space="preserve">
+    <value>Price without tax</value>
+  </data>
+  <data name="01685" xml:space="preserve">
+    <value>Price with tax</value>
+  </data>
 </root>

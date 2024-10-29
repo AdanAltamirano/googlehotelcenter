@@ -77,51 +77,6 @@ Partial Public Class ctrlImagesHotelItem
     Protected WithEvents attach5 As Global.System.Web.UI.HtmlControls.HtmlInputFile
 
     '''<summary>
-    '''Control attach6.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents attach6 As Global.System.Web.UI.HtmlControls.HtmlInputFile
-
-    '''<summary>
-    '''Control attach7.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents attach7 As Global.System.Web.UI.HtmlControls.HtmlInputFile
-
-    '''<summary>
-    '''Control attach8.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents attach8 As Global.System.Web.UI.HtmlControls.HtmlInputFile
-
-    '''<summary>
-    '''Control attach9.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents attach9 As Global.System.Web.UI.HtmlControls.HtmlInputFile
-
-    '''<summary>
-    '''Control attach10.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents attach10 As Global.System.Web.UI.HtmlControls.HtmlInputFile
-
-    '''<summary>
     '''Control btnAttach.
     '''</summary>
     '''<remarks>

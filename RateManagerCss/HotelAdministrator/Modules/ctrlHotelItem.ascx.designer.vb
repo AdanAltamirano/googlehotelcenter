@@ -32,24 +32,6 @@ Partial Public Class ctrlHotelItem
     Protected WithEvents ctrlNameIdioma As Global.RateManager.CtrlIdioma
 
     '''<summary>
-    '''Control lblActive.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents lblActive As Global.System.Web.UI.WebControls.Label
-
-    '''<summary>
-    '''Control chkActive.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents chkActive As Global.System.Web.UI.WebControls.CheckBox
-
-    '''<summary>
     '''Control lblDescripcion.
     '''</summary>
     '''<remarks>
@@ -66,24 +48,6 @@ Partial Public Class ctrlHotelItem
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
     Protected WithEvents ctrlDescriptionIdioma As Global.RateManager.CtrlIdioma
-
-    '''<summary>
-    '''Control lblPaymentDestination.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents lblPaymentDestination As Global.System.Web.UI.WebControls.Label
-
-    '''<summary>
-    '''Control chkPaymentDestination.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents chkPaymentDestination As Global.System.Web.UI.WebControls.CheckBox
 
     '''<summary>
     '''Control lblPrice.
@@ -165,6 +129,69 @@ Partial Public Class ctrlHotelItem
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
     Protected WithEvents RangeValidator9 As Global.System.Web.UI.WebControls.RangeValidator
+
+    '''<summary>
+    '''Control lblPriceWithTaxInfo.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblPriceWithTaxInfo As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control txtPriceTaxInfo.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents txtPriceTaxInfo As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
+    '''Control lblCurrencyInfo.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblCurrencyInfo As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control lblActive.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblActive As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control chkActive.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents chkActive As Global.System.Web.UI.WebControls.CheckBox
+
+    '''<summary>
+    '''Control lblPaymentDestination.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblPaymentDestination As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control chkPaymentDestination.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents chkPaymentDestination As Global.System.Web.UI.WebControls.CheckBox
 
     '''<summary>
     '''Control lblComisionable.

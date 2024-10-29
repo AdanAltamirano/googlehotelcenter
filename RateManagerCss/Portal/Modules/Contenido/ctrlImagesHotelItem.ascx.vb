@@ -54,7 +54,7 @@ Public Class ctrlImagesHotelItem
 
     Public Sub SaveImages()
         With New Albums.Facade.BusinessFacade
-            For i As Integer = 1 To 10
+            For i As Integer = 1 To 5
                 Dim htmlInputFile As HtmlInputFile = FindControl("attach" & i.ToString)
                 If Not htmlInputFile Is Nothing AndAlso Not htmlInputFile.PostedFile Is Nothing Then
                     If .VerifyValidImg(htmlInputFile, Request) Then

@@ -13,17 +13,17 @@
           <!-- 1st row -->
           <b-row>
             <!-- Imagen -->
-            <b-col md="4">
+            <div class="padding-l-15">
               <b-img
-                style="height:70px;"
+                style="width:100px;height:100px;"
                 :src="item.img"
                 @error="(e) => {e.target.src=DefaultImage}"
                 fluid-grow
               ></b-img>
-            </b-col>
+            </div>
             <!-- Info -->
-            <b-col md="8">
-              <div class="truncate-text color-212529">
+            <div class="padding-l-15">
+              <div class="color-212529">
                 {{$t('Description')}}: <strong>{{item.description}}</strong>
               </div>
               <div class="color-212529">
@@ -35,7 +35,7 @@
                <div class="color-212529">
                 {{$t('Total')}}: <strong>{{item.total | currency}} {{item.code}}</strong>
               </div>
-            </b-col>
+            </div>
           </b-row>
         </div>
       </div>

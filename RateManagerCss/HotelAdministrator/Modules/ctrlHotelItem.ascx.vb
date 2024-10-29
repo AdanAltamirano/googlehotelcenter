@@ -13,6 +13,16 @@ Partial Public Class ctrlHotelItem
             lblCurrency.Text = value
         End Set
     End Property
+
+    Public Property MonedaInfo() As String
+        Get
+            Return lblCurrencyInfo.Text
+        End Get
+        Set(ByVal value As String)
+            lblCurrencyInfo.Text = value
+        End Set
+    End Property
+
     Public Property IDMoneda() As Integer
         Get
             Return ViewState("CtrPaymentMethod_IDMoneda")
@@ -92,6 +102,8 @@ Partial Public Class ctrlHotelItem
             ctrlImgHotelItem1.IdIdioma = PortalCulture.GetIDCulture
         End If
 
+        chkPaymentDestination.Enabled = False
+        chkComisionable.Enabled = False
         Me.ctrlNameIdioma.IsMultiline = False
 
     End Sub
@@ -196,8 +208,11 @@ Partial Public Class ctrlHotelItem
             If .Tables(HOTELITEM_TABLE).Rows.Count > 0 Then
                 IDHotelItem = id
 
-                If IDMoneda = .Tables(HOTELITEM_TABLE)(0)(FIELD_IDMONEDA) Then
-                    txtPrice.Text = .Tables(HOTELITEM_TABLE)(0)(FIELD_PRICE)
+                If Not IsDBNull(.Tables(HOTELITEM_TABLE)(0)(FIELD_PRICE)) Then
+                    txtPrice.Text = Format(.Tables(HOTELITEM_TABLE)(0)(FIELD_PRICE), "###0.00")
+                    txtPriceTaxInfo.Text = txtPrice.Text
+                Else
+                    txtPrice.Text = ""
                 End If
 
                 If Not IsDBNull(.Tables(HOTELITEM_TABLE)(0)(FIELD_ACTIVE)) Then
@@ -221,6 +236,14 @@ Partial Public Class ctrlHotelItem
                 If Not IsDBNull(.Tables(HOTELITEM_TABLE)(0)(FIELD_TAX)) Then
                     txtTax.Text = Format(.Tables(HOTELITEM_TABLE)(0)(FIELD_TAX), "###0.00")
                     txtTaxSrc.Value = txtTax.Text
+
+                    Dim taxD As Double = Convert.ToDouble(txtTax.Text)
+                    Dim priceD As Double = Convert.ToDouble(txtPrice.Text)
+
+                    Dim toAdd As Double = Convert.ToDouble(((taxD / 100) * priceD))
+
+                    txtPriceTaxInfo.Text = Format((priceD + toAdd), "###0.00")
+
                 Else
                     txtTax.Text = ""
                     txtTaxSrc.Value = txtTax.Text
@@ -285,9 +308,10 @@ Partial Public Class ctrlHotelItem
 
         txtPrice.Text = String.Empty
         txtTax.Text = String.Empty
+        txtPriceTaxInfo.Text = String.Empty
         chkActive.Checked = False
         chkComisionable.Checked = False
-        chkPaymentDestination.Checked = False
+        chkPaymentDestination.Checked = True
         ctrlImgHotelItem1.IdHotelItem = "0"
         ctrlNameIdioma.Limpia()
         ctrlDescriptionIdioma.Limpia()
@@ -298,7 +322,8 @@ Partial Public Class ctrlHotelItem
     Private Sub LoadResources()
         lblDescripcion.Text = PortalCulture.GetString("M000152", True)
         lblName.Text = PortalCulture.GetString("00073", True)
-        lblPrice.Text = PortalCulture.GetString("00090", True)
+        lblPrice.Text = PortalCulture.GetString("01684", True)
+        lblPriceWithTaxInfo.Text = PortalCulture.GetString("01685", True)
         lblActive.Text = PortalCulture.GetString("01680", False)
         lblPaymentDestination.Text = PortalCulture.GetString("01681", False)
         lblTax.Text = PortalCulture.GetString("01682", True)
