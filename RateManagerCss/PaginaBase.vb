@@ -1024,6 +1024,7 @@ End Class
     Public IdAsociation As Integer
     Public IsHouse As Boolean
     Public IsSingleImgInv As Boolean
+    Public IsGooglePrice As Boolean
 
 
     Public Sub New()
@@ -1055,6 +1056,7 @@ End Class
             Me.IdCorporate = .GetValue("IdCorporate", GetType(Integer))
             Me.IsHouse = .GetValue("IsHouse", GetType(Boolean))
             Me.IsSingleImgInv = .GetValue("IsSingleImgInv", GetType(Boolean))
+            Me.IsGooglePrice = .GetValue("IsGooglePrice", GetType(Boolean))
         End With
     End Sub
 
@@ -1082,7 +1084,8 @@ End Class
             .AddValue("IdAsociation", Me.IdAsociation, GetType(Integer))
             .AddValue("IdCorporate", Me.IdCorporate, GetType(Integer))
             .AddValue("IsHouse", Me.IsHouse, GetType(Boolean))
-            .AddValue("IsSingleImgInv", Me.IsHouse, GetType(Boolean))
+            .AddValue("IsSingleImgInv", Me.IsSingleImgInv, GetType(Boolean))
+            .AddValue("IsGooglePrice", Me.IsGooglePrice, GetType(Boolean))
         End With
     End Sub
 

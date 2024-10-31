@@ -101,6 +101,7 @@
                                     <asp:BoundColumn Visible="False" DataField="idasociacion"></asp:BoundColumn>
                                     <asp:BoundColumn Visible="False" DataField="isHouse"></asp:BoundColumn>
                                     <asp:BoundColumn Visible="False" DataField="isSingleImgInv"></asp:BoundColumn>
+                                    <asp:BoundColumn Visible="False" DataField="isGooglePrice"></asp:BoundColumn>
                                 </Columns>
                                 <PagerStyle NextPageText="Siguiente &gt;&gt;" PrevPageText="&lt;&lt; Anterior" HorizontalAlign="Right"
                                     Position="Bottom" CssClass="dgPager" Mode="NumericPages"></PagerStyle>

@@ -247,6 +247,8 @@
                                                             </asp:Button>
                                                             <asp:Button ID="btnSingleImgInv" runat="server" CssClass="button" CausesValidation="false" Visible="false" Text='Sinc Channel Manager'>
                                                             </asp:Button>
+                                                            <asp:Button ID="btnSincGooglePrice" runat="server" CssClass="button" CausesValidation="false" Visible="false" Text='Sinc Google Price'>
+                                                            </asp:Button>
                                                         </td>
                                                     </tr>
                                                     <tr>
