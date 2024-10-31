@@ -18,13 +18,17 @@ namespace APIServices.Models
         public int idReservacion { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public Nullable<int> Amount { get; set; }
+        public int Amount { get; set; }
         public decimal Price { get; set; }
-        public int idMoneda { get; set; }
+        public Nullable<int> idMoneda { get; set; }
         public string Nombre { get; set; }
         public string Signo { get; set; }
         public string Abreviatura { get; set; }
         public string Codigo { get; set; }
         public Nullable<decimal> TipoCambio { get; set; }
+        public decimal Tax { get; set; }
+        public string Currency { get; set; }
+        public bool Comisionable { get; set; }
+        public bool AllowPaymentDestination { get; set; }
     }
 }

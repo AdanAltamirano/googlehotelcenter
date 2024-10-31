@@ -223,12 +223,13 @@ namespace APIServices.Models.DTO
         public int? Quantity { get; set; }
         public decimal Price { get; set; }
         public decimal Total { get; set; }
-        public int CurrencyId { get; set; }
+        public int? CurrencyId { get; set; }
         public string CurrencyName { get; set; }
         public string Symbol { get; set; }
         public string Abbreviation { get; set; }
         public string Code { get; set; }
         public Nullable<decimal> ExchangeRate { get; set; }
+        public bool AllowPaymentDestination { get; set; }
 
     }
 

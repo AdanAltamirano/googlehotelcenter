@@ -1,22 +1,29 @@
 <template>
-  <div class="d-flex">
-    <h4 class="text-info" style="color:#10467a !important;">
-      <i class="fas fa-hotel fa-sm"></i>
-      {{result.hotelName}} {{showCorporate}}
-    </h4>
-    <div class="d-flex ml-auto">
+  <div>
+    <div class="d-flex">
+      <h4 class="text-info" style="color:#10467a !important;">
+        <i class="fas fa-hotel fa-sm"></i>
+        {{result.hotelName}} {{showCorporate}}
+      </h4>
+      <div class="d-flex ml-auto">       
+        <b-button-toolbar class="h-fit-content" v-if="showCancelButton || showModifyButton || showReactivateButton || showPrintButton">
+          <b-dropdown class="mx-1" right variant="primary" :text="$t('Options')">
+            <b-dropdown-item v-if="showModifyButton" @click="modify">{{$t('Modify')}}</b-dropdown-item>
+            <b-dropdown-item v-if="showCancelButton" @click="cancel">{{$t('Cancel')}}</b-dropdown-item>
+            <b-dropdown-item v-if="showReactivateButton" @click="reactivate">{{$t('Reactivate')}}</b-dropdown-item>
+            <b-dropdown-item v-if="showSendNotificationButton" @click="sendNotification">{{$t('Send confimation email')}}</b-dropdown-item>
+            <b-dropdown-item @click="print">{{$t('Print')}}</b-dropdown-item>
+          </b-dropdown>
+        </b-button-toolbar>
+      </div>
+    </div>
+    <div class="d-flex">
       <b-alert v-if="result.collectedBy.length > 0" class="" variant="info" show>
         <b>{{$t('Who Collects')}}: {{result.collectedBy}}</b>
       </b-alert>
-      <b-button-toolbar class="h-fit-content" v-if="showCancelButton || showModifyButton || showReactivateButton || showPrintButton">
-        <b-dropdown class="mx-1" right variant="primary" :text="$t('Options')">
-          <b-dropdown-item v-if="showModifyButton" @click="modify">{{$t('Modify')}}</b-dropdown-item>
-          <b-dropdown-item v-if="showCancelButton" @click="cancel">{{$t('Cancel')}}</b-dropdown-item>
-          <b-dropdown-item v-if="showReactivateButton" @click="reactivate">{{$t('Reactivate')}}</b-dropdown-item>
-          <b-dropdown-item v-if="showSendNotificationButton" @click="sendNotification">{{$t('Send confimation email')}}</b-dropdown-item>
-          <b-dropdown-item @click="print">{{$t('Print')}}</b-dropdown-item>
-        </b-dropdown>
-      </b-button-toolbar>
+      <b-alert class="ml-1" v-if="hasItemsToPayAtHotel" variant="info" show>
+        <b>{{$t('This reservation contains extra items or services that must be charged upon the guests arrival')}}</b>
+      </b-alert>
     </div>
   </div>
 </template>
@@ -433,7 +440,7 @@ export default {
       setTimeout(() => {
         window.print();
       },300);
-    }
+    },
   },
   computed: {
     showCancelButton() {
@@ -486,7 +493,20 @@ export default {
         return "- " + this.result.corporateName;
       }
       return "";
+    },
+    hasItemsToPayAtHotel(){
+
+      if(this.result.reservationItemsDetails == undefined || this.result.reservationItemsDetails.length == 0) return false;
+
+      let has = false;
+
+      this.result.reservationItemsDetails.forEach(item => {
+         if(item.allowPaymentDestination) has = true;
+      });
+
+      return has;
     }
+
   }
 };
 </script>

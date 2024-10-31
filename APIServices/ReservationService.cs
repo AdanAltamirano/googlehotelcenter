@@ -582,7 +582,8 @@ namespace APIServices
                     Symbol = hotelItem.Signo,
                     Abbreviation = hotelItem.Abreviatura,
                     Code = hotelItem.Codigo,
-                    ExchangeRate = hotelItem.TipoCambio
+                    ExchangeRate = hotelItem.TipoCambio,
+                    AllowPaymentDestination = hotelItem.AllowPaymentDestination
                 };
 
                 totalItemsTemps += Convert.ToDouble(hotelItemTemp.Total);

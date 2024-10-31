@@ -3696,16 +3696,20 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
           <Property Type="Int32" Name="idReservaciones_HotelItems" Nullable="false" />
           <Property Type="Int32" Name="idHotelItem" Nullable="false" />
           <Property Type="Int32" Name="idReservacion" Nullable="false" />
-          <Property Type="String" Name="Name" Nullable="true" MaxLength="100" />
-          <Property Type="String" Name="Description" Nullable="true" MaxLength="500" />
-          <Property Type="Int32" Name="Amount" Nullable="true" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Description" Nullable="false" MaxLength="500" />
+          <Property Type="Int32" Name="Amount" Nullable="false" />
           <Property Type="Decimal" Name="Price" Nullable="false" Precision="19" />
-          <Property Type="Int32" Name="idMoneda" Nullable="false" />
-          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="30" />
+          <Property Type="Int32" Name="idMoneda" Nullable="true" />
+          <Property Type="String" Name="Nombre" Nullable="true" MaxLength="30" />
           <Property Type="String" Name="Signo" Nullable="true" MaxLength="2" />
           <Property Type="String" Name="Abreviatura" Nullable="true" MaxLength="6" />
           <Property Type="String" Name="Codigo" Nullable="true" MaxLength="3" />
           <Property Type="Decimal" Name="TipoCambio" Nullable="true" Precision="19" />
+          <Property Type="Decimal" Name="Tax" Nullable="false" Precision="19" />
+          <Property Type="String" Name="Currency" Nullable="false" MaxLength="3" />
+          <Property Type="Boolean" Name="Comisionable" Nullable="false" />
+          <Property Type="Boolean" Name="AllowPaymentDestination" Nullable="false" />
         </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
@@ -5051,6 +5055,10 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
                 <ScalarProperty Name="Abreviatura" ColumnName="Abreviatura" />
                 <ScalarProperty Name="Codigo" ColumnName="Codigo" />
                 <ScalarProperty Name="TipoCambio" ColumnName="TipoCambio" />
+                <ScalarProperty Name="Tax" ColumnName="Tax" />
+                <ScalarProperty Name="Currency" ColumnName="Currency" />
+                <ScalarProperty Name="Comisionable" ColumnName="Comisionable" />
+                <ScalarProperty Name="AllowPaymentDestination" ColumnName="AllowPaymentDestination" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

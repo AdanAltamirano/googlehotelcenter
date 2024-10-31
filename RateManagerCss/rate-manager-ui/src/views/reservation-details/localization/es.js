@@ -187,9 +187,11 @@ export default {
     'With this action the reservation will be available to be downloaded for the pms' : 'Con esta acción la reserva estara disponible para ser descargada para el pms',
     'Send Again' : 'Enviar de Nuevo',
     'Prices' : 'Precios',
-    'Only data that have been updated are displayed' : 'Solo se muestran los datos que han sido actualizados'
+    'Only data that have been updated are displayed' : 'Solo se muestran los datos que han sido actualizados',
     'There are no records' : 'No hay movimientos',
     'Extras' : 'Extras',
     'Description' : 'Descripción',
-    'Quantity' : 'Cantidad'
+    'Quantity' : 'Cantidad',
+    'This item must be charged upon arrival of the guest' : 'Este articulo deberá  ser cobrado a la llegada del huésped',
+    'This reservation contains extra items or services that must be charged upon the guests arrival' : 'Esta reserva contiene articulos o servicios extras que deberán ser cobrados a la llegada del huésped'
 }
