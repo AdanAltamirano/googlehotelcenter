@@ -987,10 +987,12 @@ Partial Class FaresCatalogue
         For Each response As Models.Restrictions.Response.RestrictionResponse In restrictionResponseList
 
             If response.IsSuccess Then
-                Me.WriteLog(response.Restrictions(0).XmlRequest(0).ToString(), "LockRate")
-                Me.WriteLog(response.Restrictions(0).Xml(0).ToString(), "LockRate")
+                'Me.WriteLog(response.Restrictions(0).XmlRequest(0).ToString(), "LockRate")
+                'Me.WriteLog(response.Restrictions(0).Xml(0).ToString(), "LockRate")
+                Me.guardalog("/Pages/FaresCatalogue.aspx", acciones.Sincronizar, "Tarifa enviada a Conflux LockRate", "", response.Restrictions(0).XmlRequest(0).ToString(), response.Restrictions(0).Xml(0).ToString(), info.Hotel)
             Else
-                Me.WriteLog(response.Xml.ToString(), "LockRate")
+                'Me.WriteLog(response.Xml.ToString(), "LockRate")
+                Me.guardalog("/Pages/FaresCatalogue.aspx", acciones.Sincronizar, "Error al sincronizar LockRate", "", response.Xml.ToString(), "", info.Hotel)
             End If
 
         Next

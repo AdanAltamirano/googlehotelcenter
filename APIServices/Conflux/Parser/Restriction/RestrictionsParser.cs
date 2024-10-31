@@ -231,7 +231,14 @@ namespace APIServices.Conflux.Parser.Restriction
                         Start = starDate.Date,
                         End = endDate.Date,
                         InvTypeCode = activeRoom.ItemArray[22].ToString() ?? "",
-                        RatePlanCode = lockRatePlan.RatePlanId
+                        RatePlanCode = lockRatePlan.RatePlanId,
+                        ApplyMon = lockRatePlan.ApplyWeek[0] == 'Y' ? true : false,
+                        ApplyTue = lockRatePlan.ApplyWeek[1] == 'Y' ? true : false,
+                        ApplyWed = lockRatePlan.ApplyWeek[2] == 'Y' ? true : false,
+                        ApplyThu = lockRatePlan.ApplyWeek[3] == 'Y' ? true : false,
+                        ApplyFri = lockRatePlan.ApplyWeek[4] == 'Y' ? true : false,
+                        ApplySat = lockRatePlan.ApplyWeek[5] == 'Y' ? true : false,
+                        ApplySun = lockRatePlan.ApplyWeek[6] == 'Y' ? true : false
                     };
 
                     availStatusMessage.RestrictionStatus = RestrictionHelper.GetRestrictionStatus(lockRatePlan.Status);
@@ -293,7 +300,14 @@ namespace APIServices.Conflux.Parser.Restriction
                             Start = starDate.Date,
                             End = endDate.Date,
                             InvTypeCode = room.ItemArray[22].ToString() ?? "",
-                            RatePlanCode = rateplan.ItemArray[0].ToString()
+                            RatePlanCode = rateplan.ItemArray[0].ToString(),
+                            ApplyMon = lockGral.ApplyWeek[0] == 'Y' ? true : false,
+                            ApplyTue = lockGral.ApplyWeek[1] == 'Y' ? true : false,
+                            ApplyWed = lockGral.ApplyWeek[2] == 'Y' ? true : false,
+                            ApplyThu = lockGral.ApplyWeek[3] == 'Y' ? true : false,
+                            ApplyFri = lockGral.ApplyWeek[4] == 'Y' ? true : false,
+                            ApplySat = lockGral.ApplyWeek[5] == 'Y' ? true : false,
+                            ApplySun = lockGral.ApplyWeek[6] == 'Y' ? true : false
                         };
 
                         availStatusMessage.RestrictionStatus = RestrictionHelper.GetRestrictionStatus(lockGral.Status);
@@ -329,6 +343,8 @@ namespace APIServices.Conflux.Parser.Restriction
 
             return availStatusMessages;
         }
+
+        #region Promociones
 
         //General Promociones
         public static AvailStatusMessages ToAvailStatusMessages(int hotelId,List<spGetLockGralByHotel_Result> locksGral, List<DataRow> rooms, List<DataRow> ratePlans, List<DataRow> promos)
@@ -400,7 +416,14 @@ namespace APIServices.Conflux.Parser.Restriction
                                     Start = starDate.Date,
                                     End = endDate.Date,
                                     InvTypeCode = room.ItemArray[22].ToString() ?? "",
-                                    RatePlanCode = promoId + ratePlanId
+                                    RatePlanCode = promoId + ratePlanId,
+                                    ApplyMon = lockGral.ApplyWeek[0] == 'Y' ? true : false,
+                                    ApplyTue = lockGral.ApplyWeek[1] == 'Y' ? true : false,
+                                    ApplyWed = lockGral.ApplyWeek[2] == 'Y' ? true : false,
+                                    ApplyThu = lockGral.ApplyWeek[3] == 'Y' ? true : false,
+                                    ApplyFri = lockGral.ApplyWeek[4] == 'Y' ? true : false,
+                                    ApplySat = lockGral.ApplyWeek[5] == 'Y' ? true : false,
+                                    ApplySun = lockGral.ApplyWeek[6] == 'Y' ? true : false
                                 };
 
                                 availStatusMessage.RestrictionStatus = RestrictionHelper.GetRestrictionStatus(lockGral.Status);
@@ -564,7 +587,14 @@ namespace APIServices.Conflux.Parser.Restriction
                                 Start = starDate.Date,
                                 End = endDate.Date,
                                 InvTypeCode = room.ItemArray[22].ToString() ?? "",
-                                RatePlanCode = promoId + lockRatePlan.RatePlanId
+                                RatePlanCode = promoId + lockRatePlan.RatePlanId,
+                                ApplyMon = lockRatePlan.ApplyWeek[0] == 'Y' ? true : false,
+                                ApplyTue = lockRatePlan.ApplyWeek[1] == 'Y' ? true : false,
+                                ApplyWed = lockRatePlan.ApplyWeek[2] == 'Y' ? true : false,
+                                ApplyThu = lockRatePlan.ApplyWeek[3] == 'Y' ? true : false,
+                                ApplyFri = lockRatePlan.ApplyWeek[4] == 'Y' ? true : false,
+                                ApplySat = lockRatePlan.ApplyWeek[5] == 'Y' ? true : false,
+                                ApplySun = lockRatePlan.ApplyWeek[6] == 'Y' ? true : false
                             };
 
                             availStatusMessage.RestrictionStatus = RestrictionHelper.GetRestrictionStatus(lockRatePlan.Status);
@@ -579,6 +609,8 @@ namespace APIServices.Conflux.Parser.Restriction
             return availStatusMessages;
 
         }
+
+        #endregion 
 
         #region Tarifas
         public static AvailStatusMessages ToAvailStatusMessages(List<vDayRates> vDayRates, string status)

@@ -110,6 +110,7 @@
   <ItemGroup>
     <Compile Include="AgencyService.cs" />
     <Compile Include="Conflux\ConfluxService.cs" />
+    <Compile Include="Conflux\Crypto\ConfluxCrypto.cs" />
     <Compile Include="Conflux\Enum\PersonTypeEnum.cs" />
     <Compile Include="Conflux\Enum\RestrictionEnum.cs" />
     <Compile Include="Conflux\Enum\TypeRateEnum.cs" />
@@ -188,6 +189,7 @@
     <Compile Include="Models\DTO\F2GModel.cs" />
     <Compile Include="Models\DTO\HotelConfiguration.cs" />
     <Compile Include="Models\DTO\HotelInfo.cs" />
+    <Compile Include="Models\DTO\Log\ReservationDetailLog.cs" />
     <Compile Include="Models\DTO\ModifyBooking.cs" />
     <Compile Include="Models\DTO\Portal.cs" />
     <Compile Include="Models\DTO\OffersModel.cs" />
@@ -228,6 +230,9 @@
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\LockRoomTypes.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Log.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Moneda.cs">
@@ -364,6 +369,9 @@
     </Compile>
     <Compile Include="Models\UsuarioHotel.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\uvcc_log.cs">
+      <DependentUpon>OzUniEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\vAdministrator.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>

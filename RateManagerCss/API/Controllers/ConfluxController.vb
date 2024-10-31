@@ -114,8 +114,6 @@ Namespace API.Controllers
                 Next
             End If
 
-
-
             If Not result.IsSuccess Then
                 Log("Sincronizar Restricciones Conflux con el hotel: ", result.Xml, hotelId)
                 Return BadRequest(result.Error)

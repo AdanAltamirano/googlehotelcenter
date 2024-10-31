@@ -19,5 +19,6 @@ namespace APIServices.Models
         public System.DateTime EndDate { get; set; }
         public Nullable<byte> MinDays { get; set; }
         public Nullable<byte> MaxDays { get; set; }
+        public string ApplyWeek { get; set; }
     }
 }

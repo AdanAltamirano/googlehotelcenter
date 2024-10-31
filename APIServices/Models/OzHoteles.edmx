@@ -185,6 +185,23 @@
           <Property Name="EndDate" Type="smalldatetime" />
           <Property Name="idRepl4" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
+        <EntityType Name="Log">
+          <Key>
+            <PropertyRef Name="idLog" />
+          </Key>
+          <Property Name="usuario" Type="nvarchar" MaxLength="80" Nullable="false" />
+          <Property Name="fecha" Type="datetime" Nullable="false" />
+          <Property Name="pagina" Type="nvarchar" MaxLength="50" />
+          <Property Name="hotel" Type="int" />
+          <Property Name="accion" Type="tinyint" />
+          <Property Name="nota" Type="nvarchar" MaxLength="400" />
+          <Property Name="idLog" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="datos" Type="ntext" />
+          <Property Name="datosDespues" Type="ntext" />
+          <Property Name="idUsuario" Type="int" />
+          <Property Name="NoReservacion" Type="nvarchar" MaxLength="25" />
+          <Property Name="Motivo" Type="nvarchar(max)" />
+        </EntityType>
         <EntityType Name="PrepagoRatesPlan">
           <Key>
             <PropertyRef Name="IdPrepagoRatesPlan" />
@@ -1435,6 +1452,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
           <EntitySet Name="Hoteles" EntityType="Self.Hoteles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Indice" EntityType="Self.Indice" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LockRoomTypes" EntityType="Self.LockRoomTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Log" EntityType="Self.Log" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PrepagoRatesPlan" EntityType="Self.PrepagoRatesPlan" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Promociones_RatePlan" EntityType="Self.Promociones_RatePlan" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Promociones_TipoHabitacionHotel" EntityType="Self.Promociones_TipoHabitacionHotel" Schema="dbo" store:Type="Tables" />
@@ -2109,12 +2127,6 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
           <EntitySet Name="vLinkedRoomTypes" EntityType="Models.vLinkedRoomTypes" />
           <EntitySet Name="vLinkedRatePlans" EntityType="Models.vLinkedRatePlans" />
           <FunctionImport Name="spGetLockRoomTypesByHotel" ReturnType="Collection(Models.spGetLockRoomTypesByHotel_Result)">
-          <Parameter Name="hotelId" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="spGetLockRatePlansByHotel" ReturnType="Collection(Models.spGetLockRatePlansByHotel_Result)">
-          <Parameter Name="hotelId" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="spGetLockGralByHotel" ReturnType="Collection(Models.spGetLockGralByHotel_Result)">
           <Parameter Name="hotelId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="spGetPromosByRatePlan" ReturnType="Collection(Models.spGetPromosByRatePlan_Result)">
@@ -3507,23 +3519,6 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
           <Property Type="DateTime" Name="StartDate" Nullable="true" Precision="16" />
           <Property Type="DateTime" Name="EndDate" Nullable="true" Precision="16" />
         </ComplexType>
-        <ComplexType Name="spGetLockRatePlansByHotel_Result">
-          <Property Type="Int32" Name="HotelId" Nullable="false" />
-          <Property Type="String" Name="RatePlanId" Nullable="false" MaxLength="4" />
-          <Property Type="String" Name="Status" Nullable="true" MaxLength="1" />
-          <Property Type="DateTime" Name="StartDate" Nullable="true" Precision="16" />
-          <Property Type="DateTime" Name="EndDate" Nullable="false" Precision="16" />
-          <Property Type="Byte" Name="MinDays" Nullable="true" />
-          <Property Type="Byte" Name="MaxDays" Nullable="true" />
-        </ComplexType>
-        <ComplexType Name="spGetLockGralByHotel_Result">
-          <Property Type="Int32" Name="HotelId" Nullable="true" />
-          <Property Type="String" Name="Status" Nullable="true" MaxLength="1" />
-          <Property Type="DateTime" Name="StartDate" Nullable="true" Precision="16" />
-          <Property Type="DateTime" Name="EndDate" Nullable="false" Precision="16" />
-          <Property Type="Byte" Name="MinDays" Nullable="true" />
-          <Property Type="Byte" Name="MaxDays" Nullable="true" />
-        </ComplexType>
         <ComplexType Name="spGetPromosByRatePlan_Result">
           <Property Type="Int32" Name="IdPromocion_RatePlan" Nullable="false" />
           <Property Type="String" Name="IdPromocion" Nullable="false" MaxLength="4" />
@@ -4905,31 +4900,6 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="StartDate" ColumnName="StartDate" />
                 <ScalarProperty Name="EndDate" ColumnName="EndDate" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="spGetLockRatePlansByHotel" FunctionName="Models.Store.spGetLockRatePlansByHotel">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="Models.spGetLockRatePlansByHotel_Result">
-                <ScalarProperty Name="HotelId" ColumnName="HotelId" />
-                <ScalarProperty Name="RatePlanId" ColumnName="RatePlanId" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
-                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
-                <ScalarProperty Name="MinDays" ColumnName="MinDays" />
-                <ScalarProperty Name="MaxDays" ColumnName="MaxDays" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="spGetLockGralByHotel" FunctionName="Models.Store.spGetLockGralByHotel">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="Models.spGetLockGralByHotel_Result">
-                <ScalarProperty Name="HotelId" ColumnName="HotelId" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
-                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
-                <ScalarProperty Name="MinDays" ColumnName="MinDays" />
-                <ScalarProperty Name="MaxDays" ColumnName="MaxDays" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

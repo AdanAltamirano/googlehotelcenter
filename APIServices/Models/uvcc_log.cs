@@ -10,16 +10,17 @@
 namespace APIServices.Models
 {
     using System;
+    using System.Collections.Generic;
     
-    public partial class spGetLockRatePlansByHotel_Result
+    public partial class uvcc_log
     {
-        public int HotelId { get; set; }
-        public string RatePlanId { get; set; }
-        public string Status { get; set; }
-        public Nullable<System.DateTime> StartDate { get; set; }
-        public System.DateTime EndDate { get; set; }
-        public byte MinDays { get; set; }
-        public byte MaxDays { get; set; }
-        public string ApplyWeek { get; set; }
+        public int idLog { get; set; }
+        public int idOperador { get; set; }
+        public string noReservacion { get; set; }
+        public int Operation { get; set; }
+        public string Data_Before { get; set; }
+        public string Data_After { get; set; }
+        public Nullable<System.DateTime> RegisterDate { get; set; }
+        public string Comments { get; set; }
     }
 }

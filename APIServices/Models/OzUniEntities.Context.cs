@@ -34,6 +34,7 @@ namespace APIServices.Models
         public virtual DbSet<Elementos> Elementos { get; set; }
         public virtual DbSet<Contenido> Contenido { get; set; }
         public virtual DbSet<HotelItem_Contenido> HotelItem_Contenido { get; set; }
+        public virtual DbSet<uvcc_log> uvcc_log { get; set; }
     
         public virtual ObjectResult<GetHotelsByCorporateId_Result> GetHotelsByCorporateId(Nullable<int> corporateId)
         {

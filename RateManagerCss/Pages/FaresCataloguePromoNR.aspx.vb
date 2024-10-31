@@ -939,10 +939,12 @@ Partial Public Class FaresCataloguePromoNR
         For Each response As Models.Restrictions.Response.RestrictionResponse In restrictionResponseList
 
             If response.IsSuccess Then
-                Me.WriteLog(response.Restrictions(0).XmlRequest(0).ToString(), "LockRateExceptions")
-                Me.WriteLog(response.Restrictions(0).Xml(0).ToString(), "LockRateExceptions")
+                'Me.WriteLog(response.Restrictions(0).XmlRequest(0).ToString(), "LockRateExceptions")
+                'Me.WriteLog(response.Restrictions(0).Xml(0).ToString(), "LockRateExceptions")
+                Me.guardalog("/Pages/FaresCataloguePromoNR.aspx", acciones.Sincronizar, "Tarifa enviada a Conflux LockRateExceptions", "", response.Restrictions(0).XmlRequest(0).ToString(), response.Restrictions(0).Xml(0).ToString(), info.Hotel)
             Else
-                Me.WriteLog(response.Xml.ToString(), "LockRate")
+                'Me.WriteLog(response.Xml.ToString(), "LockRate")
+                Me.guardalog("/Pages/FaresCataloguePromoNR.aspx", acciones.Sincronizar, "Error al sincronizar LockRateExceptions", "", response.Xml.ToString(), "", info.Hotel)
             End If
 
         Next

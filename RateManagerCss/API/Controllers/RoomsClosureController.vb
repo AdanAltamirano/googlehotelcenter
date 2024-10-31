@@ -94,6 +94,7 @@ Namespace API.Controller
 
                     nota &= " Status: " & GetStatus(roomClosureRQ.Status) & ". "
 
+                    'Para cierres LockRoomType Google se utiliza spGetLockRatePlansByHotel_Result como modelo
 
                     Try
                         If allRatePlans Then
@@ -125,23 +126,14 @@ Namespace API.Controller
 
                                                 Dim availStatusMessagesLockRatePlans = RestrictionsParser.ToAvailStatusMessages(room, lockRatePlans)
 
-                                                Dim lockRatePlanHotelAvailNotifRQ = HotelAvailNotifRQ.CreateHotelAvailNotifRQ(availStatusMessagesLockRatePlans)
+                                                Dim lockRatePlanHotelAvailNotifRQList = HotelAvailNotifRQ.CreateHotelAvailNotifRQList(availStatusMessagesLockRatePlans)
 
-                                                Dim lockRatePlanSoapRQ As XDocument = Soap.CreateSoapRequestXml(lockRatePlanHotelAvailNotifRQ)
-
-                                                Dim restrictionResponse As RestrictionResponse = confluxService.UpdateRestriction(lockRatePlanSoapRQ, RestrictionEnum.LockRoomType)
-
-                                                If restrictionResponse.IsSuccess Then
-                                                    pageBase.WriteLog(restrictionResponse.Restrictions(0).XmlRequest(0).ToString(), "LockRoomType")
-                                                    pageBase.WriteLog(restrictionResponse.Restrictions(0).Xml(0).ToString(), "LockRoomType")
-                                                Else
-                                                    pageBase.WriteLog(restrictionResponse.Xml.ToString(), "LockRoomType")
-                                                End If
+                                                GoogleRequest(lockRatePlanHotelAvailNotifRQList, idHotel, confluxService, pageBase)
 
                                             End If 'Termina Google
 
                                         Catch ex As Exception
-                                            pageBase.WriteLog(ex.Message, "LockRoomType")
+                                            page.guardalog("rate-manager-ui/dist/rooms-closure.aspx", PaginaBase.acciones.Sincronizar, "Fallo Google LockRoomType Sincronizar", roomClosureRQ.IdHotel)
                                         End Try
 
                                     Next
@@ -166,22 +158,13 @@ Namespace API.Controller
 
                                             Dim availStatusMessagesLockRatePlans = RestrictionsParser.ToAvailStatusMessages(room, lockRatePlans)
 
-                                            Dim lockRatePlanHotelAvailNotifRQ = HotelAvailNotifRQ.CreateHotelAvailNotifRQ(availStatusMessagesLockRatePlans)
+                                            Dim lockRatePlanHotelAvailNotifRQList = HotelAvailNotifRQ.CreateHotelAvailNotifRQList(availStatusMessagesLockRatePlans)
 
-                                            Dim lockRatePlanSoapRQ As XDocument = Soap.CreateSoapRequestXml(lockRatePlanHotelAvailNotifRQ)
-
-                                            Dim restrictionResponse As RestrictionResponse = confluxService.UpdateRestriction(lockRatePlanSoapRQ, RestrictionEnum.LockRoomType)
-
-                                            If restrictionResponse.IsSuccess Then
-                                                pageBase.WriteLog(restrictionResponse.Restrictions(0).XmlRequest(0).ToString(), "LockRoomType")
-                                                pageBase.WriteLog(restrictionResponse.Restrictions(0).Xml(0).ToString(), "LockRoomType")
-                                            Else
-                                                pageBase.WriteLog(restrictionResponse.Xml.ToString(), "LockRoomType")
-                                            End If
+                                            GoogleRequest(lockRatePlanHotelAvailNotifRQList, idHotel, confluxService, pageBase)
 
                                         End If 'Termina Google
                                     Catch ex As Exception
-                                        pageBase.WriteLog(ex.Message, "LockRoomType")
+                                        page.guardalog("rate-manager-ui/dist/rooms-closure.aspx", PaginaBase.acciones.Sincronizar, "Fallo Google LockRoomType Sincronizar", roomClosureRQ.IdHotel)
                                     End Try
 
 
@@ -211,23 +194,14 @@ Namespace API.Controller
 
                                             Dim availStatusMessagesLockRatePlans = RestrictionsParser.ToAvailStatusMessages(room, lockRatePlans)
 
-                                            Dim lockRatePlanHotelAvailNotifRQ = HotelAvailNotifRQ.CreateHotelAvailNotifRQ(availStatusMessagesLockRatePlans)
+                                            Dim lockRatePlanHotelAvailNotifRQList = HotelAvailNotifRQ.CreateHotelAvailNotifRQList(availStatusMessagesLockRatePlans)
 
-                                            Dim lockRatePlanSoapRQ As XDocument = Soap.CreateSoapRequestXml(lockRatePlanHotelAvailNotifRQ)
-
-                                            Dim restrictionResponse As RestrictionResponse = confluxService.UpdateRestriction(lockRatePlanSoapRQ, RestrictionEnum.LockRoomType)
-
-                                            If restrictionResponse.IsSuccess Then
-                                                pageBase.WriteLog(restrictionResponse.Restrictions(0).XmlRequest(0).ToString(), "LockRoomType")
-                                                pageBase.WriteLog(restrictionResponse.Restrictions(0).Xml(0).ToString(), "LockRoomType")
-                                            Else
-                                                pageBase.WriteLog(restrictionResponse.Xml.ToString(), "LockRoomType")
-                                            End If
+                                            GoogleRequest(lockRatePlanHotelAvailNotifRQList, idHotel, confluxService, pageBase)
 
                                         End If 'Termina Google
 
                                     Catch ex As Exception
-                                        pageBase.WriteLog(ex.Message, "LockRoomType")
+                                        page.guardalog("rate-manager-ui/dist/rooms-closure.aspx", PaginaBase.acciones.Sincronizar, "Fallo Google LockRoomType Sincronizar", roomClosureRQ.IdHotel)
                                     End Try
 
                                 Next
@@ -250,21 +224,12 @@ Namespace API.Controller
 
                                         Dim availStatusMessagesLockRatePlans = RestrictionsParser.ToAvailStatusMessages(room, lockRatePlans)
 
-                                        Dim lockRatePlanHotelAvailNotifRQ = HotelAvailNotifRQ.CreateHotelAvailNotifRQ(availStatusMessagesLockRatePlans)
+                                        Dim lockRatePlanHotelAvailNotifRQList = HotelAvailNotifRQ.CreateHotelAvailNotifRQList(availStatusMessagesLockRatePlans)
 
-                                        Dim lockRatePlanSoapRQ As XDocument = Soap.CreateSoapRequestXml(lockRatePlanHotelAvailNotifRQ)
-
-                                        Dim restrictionResponse As RestrictionResponse = confluxService.UpdateRestriction(lockRatePlanSoapRQ, RestrictionEnum.LockRoomType)
-
-                                        If restrictionResponse.IsSuccess Then
-                                            pageBase.WriteLog(restrictionResponse.Restrictions(0).XmlRequest(0).ToString(), "LockRoomType")
-                                            pageBase.WriteLog(restrictionResponse.Restrictions(0).Xml(0).ToString(), "LockRoomType")
-                                        Else
-                                            pageBase.WriteLog(restrictionResponse.Xml.ToString(), "LockRoomType")
-                                        End If
+                                        GoogleRequest(lockRatePlanHotelAvailNotifRQList, idHotel, confluxService, pageBase)
 
                                     Catch ex As Exception
-                                        pageBase.WriteLog(ex.Message, "LockRoomType")
+                                        page.guardalog("rate-manager-ui/dist/rooms-closure.aspx", PaginaBase.acciones.Sincronizar, "Fallo Google LockRoomType Sincronizar", roomClosureRQ.IdHotel)
                                     End Try
 
                                 End If
@@ -407,5 +372,36 @@ Namespace API.Controller
                     Return ""
             End Select
         End Function
+
+        Private Sub GoogleRequest(ByVal lockRatePlanHotelAvailNotifRQList As List(Of XElement), ByVal idHotel As Integer, ByRef confluxService As ConfluxService, ByRef page As PaginaBase)
+
+            Try
+                Dim lockRatePlanHotelAvailNotifSoapRQList As List(Of XDocument) = New List(Of XDocument)
+
+                For Each request As XElement In lockRatePlanHotelAvailNotifRQList
+                    Dim lockRatePlanHotelAvailSoapRQ = Soap.CreateSoapRequestXml(request)
+                    lockRatePlanHotelAvailNotifSoapRQList.Add(lockRatePlanHotelAvailSoapRQ)
+                Next
+
+                Dim index As Integer = 0
+
+                For Each lockRatePlanSoapRQ As XDocument In lockRatePlanHotelAvailNotifSoapRQList
+
+                    Dim restrictionResponse As RestrictionResponse = confluxService.UpdateRestriction(lockRatePlanSoapRQ, RestrictionEnum.LockRoomType)
+                    Dim note As String = String.Format("Sincronizar request numero {0} LockRoomType Conflux con el hotel: ", (index + 1))
+
+                    If restrictionResponse.IsSuccess Then
+                        page.guardalog(pagina:="/rate-manager-ui/dist/rooms-closure.aspx", action:=acciones.Sincronizar, nota:=note, peticion:="", datos:=restrictionResponse.Restrictions(0).XmlRequest(0).ToString(), datosDespues:=restrictionResponse.Restrictions(0).Xml(0).ToString(), hotelId:=idHotel)
+
+                    Else
+                        page.guardalog(pagina:="/rate-manager-ui/dist/rooms-closure.aspx", action:=acciones.Sincronizar, nota:="Error al sincronizar", peticion:="", datos:=restrictionResponse.Xml.ToString(), datosDespues:="", hotelId:=idHotel)
+                    End If
+                    index = index + 1
+                Next
+            Catch ex As Exception
+                page.guardalog(pagina:="/rate-manager-ui/dist/rooms-closure.aspx", action:=acciones.Sincronizar, nota:="Error al sincronizar", peticion:="", datos:=ex.Message, datosDespues:="", hotelId:=idHotel)
+            End Try
+        End Sub
+
     End Class
 End Namespace

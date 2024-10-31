@@ -76,7 +76,7 @@
                                 <b-form-group :label="$t('Status')">
                                     <b-form-checkbox-group v-model="checkStatus">
                                         <b-form-checkbox value="1">{{ $t('Reserved') }}</b-form-checkbox>
-                                        <b-form-checkbox value="4" v-if="isSupervisor">{{ $t('In process') }}</b-form-checkbox>
+                                        <b-form-checkbox value="4" v-if="isSupervisor || isHotelUser || isHotelCompany">{{ $t('In process') }}</b-form-checkbox>
                                         <b-form-checkbox value="3">{{ $t('Cancelled') }}</b-form-checkbox>
                                     </b-form-checkbox-group>
                                 </b-form-group>
@@ -271,6 +271,8 @@ export default {
             agentsToFilter:[],
             isAgencyCompany:(this.$appConfig.session.isAgencyCompany === 'True')? true : false,
             isSupervisor:(this.$appConfig.session.isSupervisor === 'True')? true : false,
+            isHotelUser: (this.$appConfig.session.isHotelUser === 'True')? true : false,
+            isHotelCompany:(this.$appConfig.session.isHotelCompany === 'True')? true : false,
             typeDates: [
                 { text: this.$t('Reservation date'), value: 'ReservationDate' },
                 { text: this.$t('Arrival date'), value: 'CheckIn' },

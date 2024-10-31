@@ -14,6 +14,7 @@ Imports APIServices.Models.DTO
 Imports APIServices.Models.DTO.Reservation.Deposit.Request
 Imports APIServices.Models.DTO.Reservation.Deposit.Response
 Imports APIServices.Models.DTO.Reservation.Pms.Response
+Imports APIServices.Models.DTO.Log
 Imports RateManager.Utitlities.Email
 Imports System.Threading
 Imports Portal.General.Common.Data
@@ -54,12 +55,12 @@ Namespace API.Controller
 
             ElseIf roles.Contains("hotelcompany") Then
                 Dim hotels() As Integer = GetUserHotels(GetUserId().Value).Select(Function(h) h.HotelId).ToArray()
-                Return ReservationService.GetAll().Where(Function(h) hotels.Contains(h.HotelId) And h.Provider = "INTERNET POWER" And h.Status <> 4)
+                Return ReservationService.GetAll().Where(Function(h) hotels.Contains(h.HotelId) And h.Provider = "INTERNET POWER")
             ElseIf roles.Contains("usuariohotel") Then
 
                 Dim userOzhoteles As UsuarioHotel = GetUserFromOzHoteles(GetUserId().Value)
                 Dim hotels() As Integer = GetUserHotels(userOzhoteles.IdMainUser).Select(Function(h) h.HotelId).ToArray()
-                Return ReservationService.GetAll().Where(Function(h) hotels.Contains(h.HotelId) And h.Provider = "INTERNET POWER" And h.Status <> 4)
+                Return ReservationService.GetAll().Where(Function(h) hotels.Contains(h.HotelId) And h.Provider = "INTERNET POWER")
             ElseIf roles.Contains("agencycompany") Then
                 Dim page As New PaginaBase
                 If page.IsAgencyCompany Then
@@ -259,6 +260,16 @@ Namespace API.Controller
 
             Return logs
         End Function
+
+        'Get api/reservations/1978/history/log/detail/CC/234242123 source ->CC,R
+        <Route("{reservationId:int}/history/log/detail/{source}/{idLog}"), HttpGet>
+        Public Function GetReservationHistoryLog(ByVal reservationId As Integer, ByVal source As String, ByVal idLog As String) As HttpResponseMessage
+
+            Dim result As ReservationDetailLog = ReservationService.GetModificationReservationDetailLog(reservationId, source, CType(idLog, Integer))
+
+            Return Request.CreateResponse(Net.HttpStatusCode.OK, result)
+        End Function
+
 
         'POST api/reservations/1978/cancel
         <Route("{reservationId:int}/cancel"), HttpPost>
@@ -491,6 +502,39 @@ Namespace API.Controller
             Return Ok(result)
         End Function
 
+        'POST api/reservations/1978/pms/verify/update
+        <Route("{reservationId:int}/pms/verify/update"), HttpPost>
+        Public Function PmsVerifyUpdate(ByVal reservationId As Integer, <FromBody> request As Pms) As HttpResponseMessage
+
+            Dim details As vReservationDetails = ReservationService.GetReservation(reservationId)
+            Dim hotelId As Integer = details.hotelId
+            Dim pmsCodeBefore As String = details.pmsReservationNumber
+
+            Dim result As Object = ReservationService.PmsVerifyUpdate(reservationId, request)
+
+            'GuardarLog
+
+            If Not result.IsSuccess Then
+                Dim [error] As KeyValuePair(Of String, String) = New KeyValuePair(Of String, String)("0", "Error")
+                Return BadRequest([error])
+            End If
+
+            Dim page As String = "/HotelAdministrator/Pages/ConfirmReservas.aspx"
+            Dim nota As String = String.Empty
+
+            If request.VerifyAction Then
+                'Revisar con Chepe si tambien se va a quitar el codigo pms cuando el status sea 1
+                nota = "Quitó la confirmación con el codigo de pms " & pmsCodeBefore & " de la reservación " & reservationId
+                Logs(hotelId, reservationId, page, acciones.Modificar, nota)
+            Else
+                nota = "Confirmó la reservación con el código de pms " & request.PmsCode & " de la reservación " & reservationId
+                Logs(hotelId, reservationId, page, acciones.Modificar, nota)
+            End If
+
+            Return Ok(result)
+        End Function
+
+
         'POST api/reservations/1978/deposit
         <Route("{reservationId:int}/deposit"), HttpPost>
         Public Function Deposit(ByVal reservationId As Integer, <FromBody> request As ReservationDepositDTO) As ReservationDepositResponse
@@ -574,6 +618,14 @@ Namespace API.Controller
                            currentData, hotelId, noReservacion:=reservationId.ToString(), motivo:=motivo)
             End With
         End Sub
+
+        Sub Logs(ByVal hotelId As Integer, ByVal reservationId As Integer, ByVal page As String, ByVal action As acciones, Optional ByVal nota As String = "")
+
+            With (New PaginaBase)
+                .guardalog(hotelId, page, action, nota, reservationId.ToString())
+            End With
+        End Sub
+
         Function GetQuery(request As HttpRequestMessage, actionContext As Http.Controllers.HttpActionContext) As IQueryable
             Dim parser = New QueryParser()
             Dim _query As QueryData = parser.CreateAndValidateQuery(request, actionContext, "reservationId")

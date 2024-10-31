@@ -19,6 +19,7 @@ Imports APIServices.Models
 Imports APIServices.Helpers.Reservation
 Imports APIServices.Service.HotelVerse
 Imports APIServices.Service.HotelVerse.Models.Response
+Imports APIServices.Conflux.Crypto
 
 Partial Class ReservationDetails
     Inherits PaginaBase
@@ -1578,7 +1579,12 @@ Partial Class ReservationDetails
                 LoadUserSeeCards(MyBase.Usuario)
                 If Not .IsNull(dsReservaciones.FIELD_NUMEROCC) Then
                     Dim ccN As String = String.Empty
-                    ccN = crypto.DecryptString128Bit(.Item(dsReservaciones.FIELD_NUMEROCC), crypto.PublicKey)
+
+                    If .Item("source").ToString.ToUpper.Trim = "IDS" Then
+                        ccN = DecryptOTA(.Item("sourceids").ToString(), .Item(dsReservaciones.FIELD_NOMBRECC).ToString(), .Item(dsReservaciones.FIELD_NUMEROCC).ToString())
+                    Else
+                        ccN = crypto.DecryptString128Bit(.Item(dsReservaciones.FIELD_NUMEROCC), crypto.PublicKey)
+                    End If
 
                     If ccN.Length >= 4 Then
                         ccN = Right(("XXXXXXXXXXXXXXXX" & Right(ccN, 4)), 16)
@@ -1589,7 +1595,14 @@ Partial Class ReservationDetails
                         If (Not IsSupervisor And isNR = True) Or Not lblCCExp.Visible Then
                             lblCCNumber.Text = ccN
                         Else
-                            lblCCNumber.Text = crypto.DecryptString128Bit(.Item(dsReservaciones.FIELD_NUMEROCC), crypto.PublicKey)
+
+                            If .Item("source").ToString.ToUpper.Trim = "IDS" Then
+                                lblCCNumber.Text = DecryptOTA(.Item("sourceids").ToString(), .Item(dsReservaciones.FIELD_NOMBRECC).ToString(), .Item(dsReservaciones.FIELD_NUMEROCC).ToString())
+                            Else
+                                lblCCNumber.Text = crypto.DecryptString128Bit(.Item(dsReservaciones.FIELD_NUMEROCC), crypto.PublicKey)
+                            End If
+
+
                         End If
                     End If
 
@@ -1615,9 +1628,19 @@ Partial Class ReservationDetails
                     If Not IsSupervisor And isNR = True Then
                         lblCCcvNumber.Text = "XXX"
                     Else
-                        If Regex.IsMatch(cvv, "[A-Z]") Then
-                            cvv = crypto.DecryptString128Bit(cvv, crypto.PublicKey)
+
+                        If .Item("source").ToString.ToUpper.Trim = "IDS" Then
+
+                            If Regex.IsMatch(cvv, "[A-Z]") Then
+                                cvv = DecryptOTA(.Item("sourceids").ToString(), .Item(dsReservaciones.FIELD_NOMBRECC).ToString(), .Item(dsReservaciones.FIELD_DIGITOCC).ToString())
+                            End If
+
+                        Else
+                            If Regex.IsMatch(cvv, "[A-Z]") Then
+                                cvv = crypto.DecryptString128Bit(cvv, crypto.PublicKey)
+                            End If
                         End If
+
                         lblCCcvNumber.Text = IIf(cvv = String.Empty, " -", cvv)
                     End If
 
@@ -3094,6 +3117,38 @@ Partial Class ReservationDetails
             PortalCulture.SetCulture(System.Threading.Thread.CurrentThread.CurrentCulture.Name)
         End Try
     End Sub
+
+    Private Function DecryptOTA(ByVal sourceids As String, ByVal nombreCC As String, ByVal toDecrypt As String) As String
+        Dim decrypted As String = String.Empty
+
+        Try
+            If (sourceids.ToUpper().Contains("EXPEDIA")) Then
+
+                Dim dataEncrypted As String = String.Empty
+
+                If Not nombreCC.ToUpper().Contains("EXPEDIA") Then
+                    dataEncrypted = crypto.DecryptString128Bit(toDecrypt, crypto.PublicKey)
+                Else
+                    dataEncrypted = toDecrypt
+                End If
+
+                Dim isDecrypted As Boolean = ConfluxCrypto.Decrypt(dataEncrypted, decrypted)
+
+            ElseIf (sourceids.ToUpper().Contains("BOOKING")) Then
+            ElseIf (sourceids.ToUpper().Contains("DESPEGAR")) Then
+            ElseIf (sourceids.ToUpper().Contains("BESTDAY")) Then
+            ElseIf (sourceids.ToUpper().Contains("HOTELBEDS")) Then
+            ElseIf (sourceids.ToUpper().Contains("PRICETRAVEL")) Then
+            End If
+
+
+        Catch ex As Exception
+            decrypted = String.Empty
+        End Try
+
+        Return decrypted
+    End Function
+
 End Class
 
 

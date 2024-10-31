@@ -6,13 +6,16 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Text.RegularExpressions;
 using System.Net.Http;
+using System.Xml.Linq;
 using APIServices.Extension;
 using APIServices.Models;
 using APIServices.Models.DTO;
 using APIServices.Models.DTO.Reservation.Deposit.Request;
 using APIServices.Models.DTO.Reservation.Deposit.Response;
 using APIServices.Models.DTO.Reservation.Pms.Response;
+using APIServices.Models.DTO.Log;
 using OfficeOpenXml;
+using APIServices.Conflux.Crypto;
 using PortalLibraries;
 
 namespace APIServices
@@ -228,6 +231,7 @@ namespace APIServices
             {
                 model.ReservationNumber = details.reservationNumber;
                 model.ReservationId = reservationId;
+                model.ReservationNumberIDS = details.reservationIdIDS;
                 model.CancellationNumber = details.cancellationNumber;
                 model.HotelName = details.hotelName;
                 model.HotelEmail = details.hotelEmail;
@@ -251,6 +255,8 @@ namespace APIServices
                 model.Portal = details.Portal;
                 model.IsNetRateUV = details.IsNetRateUV;
                 model.PaymentWay = details.paymentType;
+                model.CollectedBy = (details.paymentType == 4)? GetPayeeOTA(details.Portal.ToUpper(), details.cardNumber, details.cardCustomerName) : GetPayee(details.paymentType, details.IsNetRateUV, details.depositTarget);
+                model.PaymentInformation = details.paymentInformation;
                 model.Agency = details.agency;
                 model.AgencyUser = details.agencyUser;
                 model.RatePlanPromotion = details.ratePlanPromotion;
@@ -271,6 +277,7 @@ namespace APIServices
                     model.BankDepositDetails.Target = details.depositTarget;
                     model.BankDepositDetails.Total = Convert.ToDouble(totalDeposited); //(double)details.depositAmount;
                     model.BankDepositDetails.Currency = details.depositCurrency;
+                    model.BankDepositDetails.Bank = details.depositBank;
                     model.BankDepositDetails.Reference = details.depositReference;
                     model.BankDepositDetails.Debt = debt;
                     model.BankDepositDetails.HasDebt = hasDebt;
@@ -308,11 +315,22 @@ namespace APIServices
 
                 if (!string.IsNullOrEmpty(details.cardNumber))
                 {
-                    string cc = crypto.DecryptString128Bit(details.cardNumber, crypto.PublicKey);
-                    model.Customer.CardDetails.CardType = model.Customer.CardDetails.GetCardType(cc);
-                    cc = (cc.Length > 0) ? $"XXXXXXXXXXXX{cc.Substring(cc.Length - 4)}" : "" ;
-                    model.Customer.CardDetails.Number = cc;
-                    model.Customer.CardDetails.IsSuccess = true;
+                    if (details.source.Equals("IDS"))
+                    {
+                        CardDetails otaCreditCard = ReadCreditCardNumberOTA(details);
+
+                        model.Customer.CardDetails = otaCreditCard;
+                    }
+                    else
+                    {
+                        string cc = crypto.DecryptString128Bit(details.cardNumber, crypto.PublicKey);
+                        model.Customer.CardDetails.CardType = model.Customer.CardDetails.GetCardType(cc);
+                        cc = (cc.Length > 0) ? $"XXXXXXXXXXXX{cc.Substring(cc.Length - 4)}" : "";
+                        model.Customer.CardDetails.Number = cc;
+                        model.Customer.CardDetails.IsSuccess = true;
+                        model.Customer.CardDetails.ShowBasicCreditCardData = true;
+                    }
+                    
                 }
                 if (isHotelCompany || (showCreditCard.HasValue ? showCreditCard.Value : false))
                     model.Customer.CardDetails.AllowsShowCreditCardData = true;
@@ -591,19 +609,27 @@ namespace APIServices
 
             if (details != null && (isHotelCompany || showCreditCard.Value))
             {
-                string cc = crypto.DecryptString128Bit(details.cardNumber, crypto.PublicKey);
-                string cvv = details.cardCvv;
-                if (Regex.IsMatch(details.cardCvv, "[A-Z]"))
-                    cvv = crypto.DecryptString128Bit(cvv, crypto.PublicKey);
 
-                result.Number = cc;
-                result.CardType = result.GetCardType(cc);
-                result.MonthExpiration = details.cardExpMonth;
-                result.YearExpiration = details.cardExpYear;
-                result.Owner = details.cardCustomerName;
-                result.Cvv = cvv;
-                result.IsSuccess = true;
-                result.AllowsShowCreditCardData = true;
+                if (!details.source.Equals("IDS"))
+                {
+                    string cc = crypto.DecryptString128Bit(details.cardNumber, crypto.PublicKey);
+                    string cvv = details.cardCvv;
+                    if (Regex.IsMatch(details.cardCvv, "[A-Z]"))
+                        cvv = crypto.DecryptString128Bit(cvv, crypto.PublicKey);
+
+                    result.Number = cc;
+                    result.CardType = result.GetCardType(cc);
+                    result.MonthExpiration = details.cardExpMonth;
+                    result.YearExpiration = details.cardExpYear;
+                    result.Owner = details.cardCustomerName;
+                    result.Cvv = cvv;
+                    result.IsSuccess = true;
+                    result.AllowsShowCreditCardData = true;
+                }
+                else if (details.source.Equals("IDS"))
+                {
+                    result = GetCreditCardDetailsOTA(details);
+                }
             }
             return result;
         }
@@ -614,6 +640,119 @@ namespace APIServices
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             return new string(Enumerable.Repeat(chars, length)
               .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
+        private CardDetails ReadCreditCardNumberOTA(vReservationDetails details)
+        {
+            CardDetails cardDetails = new CardDetails();
+
+            if (details.Portal.ToUpper().Contains("EXPEDIA"))
+            {
+                //Tarjeta de Cliente Viejito tiene doble encriptado uno en 128 y otro el de conflux
+                string cardNumberEncrypted = details.cardNumber;
+
+                if(!details.cardCustomerName.ToUpper().Contains("EXPEDIA"))
+                {
+                    cardNumberEncrypted = crypto.DecryptString128Bit(details.cardNumber, crypto.PublicKey);
+                }
+
+                string CC = string.Empty;
+                bool isDecryptedCC = ConfluxCrypto.Decrypt(cardNumberEncrypted, out CC);
+
+                if(isDecryptedCC)
+                {
+                    //Mostrar
+                    string CCHidden = (CC.Length > 0) ? $"XXXXXXXXXXXX{CC.Substring(CC.Length - 4)}" : "";
+
+                    cardDetails.Number = CCHidden;
+                    cardDetails.IsSuccess = true;
+                    cardDetails.CardType = cardDetails.GetCardType(CC);
+                    cardDetails.ShowBasicCreditCardData = true;
+                }
+            }
+            else if (details.Portal.ToUpper().Contains("BOOKING"))
+            {
+
+            }
+            else if (details.Portal.ToUpper().Contains("DESPEGAR"))
+            {
+
+            }
+            else if (details.Portal.ToUpper().Contains("BESTDAY"))
+            {
+
+            }
+            else if (details.Portal.ToUpper().Contains("HOTELBEDS"))
+            {
+
+            }
+            else if (details.Portal.ToUpper().Contains("PRICETRAVEL"))
+            {
+
+            }
+
+            return cardDetails;
+        }
+
+        private CardDetails GetCreditCardDetailsOTA(vReservationDetails details)
+        {
+            CardDetails cardDetails = new CardDetails();
+
+            if (details.Portal.ToUpper().Contains("EXPEDIA"))
+            {
+                //Tarjeta de Cliente Viejito tiene doble encriptado uno en 128 y otro el de conflux
+                string cardNumberEncrypted = details.cardNumber;
+                string cardCVVEncrypted = details.cardCvv;
+
+                if (!details.cardCustomerName.ToUpper().Contains("EXPEDIA"))
+                {
+                    cardNumberEncrypted = crypto.DecryptString128Bit(details.cardNumber, crypto.PublicKey);
+
+                    if (Regex.IsMatch(details.cardCvv, "[A-Z]"))
+                        cardCVVEncrypted = crypto.DecryptString128Bit(details.cardCvv, crypto.PublicKey);
+
+                }
+
+                string CC = string.Empty;
+                bool isDecryptedCC = ConfluxCrypto.Decrypt(cardNumberEncrypted, out CC);
+
+                string CVV = string.Empty;
+                bool isDecryptedCVV = ConfluxCrypto.Decrypt(cardCVVEncrypted, out CVV);
+
+                cardDetails.Number = CC;
+                cardDetails.Cvv = CVV;
+                cardDetails.CardType = cardDetails.GetCardType(CC);
+                cardDetails.MonthExpiration = details.cardExpMonth;
+                cardDetails.YearExpiration = details.cardExpYear;
+                cardDetails.Owner = details.cardCustomerName;
+                cardDetails.ShowBasicCreditCardData = true;
+                cardDetails.IsSuccess = true;
+                cardDetails.AllowsShowCreditCardData = true;
+
+            }
+            else if (details.Portal.ToUpper().Contains("BOOKING"))
+            {
+
+            }
+            else if (details.Portal.ToUpper().Contains("DESPEGAR"))
+            {
+
+            }
+            else if (details.Portal.ToUpper().Contains("BESTDAY"))
+            {
+
+            }
+            else if (details.Portal.ToUpper().Contains("HOTELBEDS"))
+            {
+
+            }
+            else if (details.Portal.ToUpper().Contains("PRICETRAVEL"))
+            {
+
+            }
+
+            return cardDetails;
+
         }
 
         #endregion
@@ -704,6 +843,77 @@ namespace APIServices
                     break;
             }
         }
+        #endregion
+
+
+        #region quien cobra
+        /**
+        * paymentType
+        * 0 = bank deposit
+        * 1 = online payment
+        * 2 = payment at the hotel
+        * 3 = CCT OTRA
+        * 4 = OTA
+        */
+        private string GetPayee(int? paymentType, bool isNetRate, string depositTarget)
+        {
+            string payee = string.Empty;
+
+            switch (paymentType)
+            {
+                case 0:
+                    payee = depositTarget;
+                    break;
+                case 1:
+
+                    payee = (isNetRate) ? "Internet Power Hotel" : "Hotel";
+
+                    break;
+                case 2:
+                    payee = "Hotel";
+                    break;
+                case 3:
+                    payee = "Hotel";
+                    break;               
+            }          
+
+            return payee;
+        }
+
+        private string GetPayeeOTA(string portal, string cardNumber, string cardCustomerName)
+        {
+            string payee = string.Empty;
+
+
+            if (portal.Contains("EXPEDIA"))
+            {
+                if (!string.IsNullOrEmpty(cardCustomerName) && cardCustomerName.Contains("Expedia")) payee = "Expedia";
+                else payee = "Hotel";
+            }
+            else if(portal.Contains("BOOKING"))
+            {
+
+            }
+            else if (portal.Contains("DESPEGAR"))
+            {
+
+            }
+            else if (portal.Contains("BESTDAY"))
+            {
+
+            }
+            else if (portal.Contains("HOTELBEDS"))
+            {
+
+            }
+            else if (portal.Contains("PRICETRAVEL"))
+            {
+
+            }
+
+            return payee;
+        }
+
         #endregion
 
         #region cancelar reserva
@@ -1053,9 +1263,49 @@ namespace APIServices
 
         }
 
+        public ReservationPmsResponse PmsVerifyUpdate(int reservationId, Pms request)
+        {
+            ReservationPmsResponse response = new ReservationPmsResponse() { IsSuccess = false };
+
+            try
+            {
+                var reservation = dbContext.Reservaciones.FirstOrDefault(r => r.idReservacion == reservationId);
+
+                if (reservation != null)
+                {
+                    /***
+                        * true = Marcar como no verificada boton,  cambiaria el pms status en 0 y reiniciar el failed attempts
+                        * false =  verificar reservacion button ver pagina cambiar pms status en 1 y guardaria el pmscode
+                    */
+
+                    if (request.VerifyAction)
+                    {
+                        reservation.pmscode = "";
+                        reservation.pmsStatus = request.Status;
+                        reservation.PmsFailedAttempts = 0;
+                    }
+                    else
+                    {
+                        reservation.pmsStatus = request.Status;
+                        reservation.pmscode = request.PmsCode;
+                    }
+
+                    dbContext.SaveChanges();
+
+                    response.IsSuccess = true;
+
+                }
 
 
+            }
+            catch (Exception ex)
+            {
 
+            }
+
+            return response;
+
+        }
 
         public bool PmsReactivate (int reservationId)
         {
@@ -1275,6 +1525,50 @@ namespace APIServices
                     transaction.Rollback();
                 }
             }
+        }
+
+        public ReservationDetailLog GetModificationReservationDetailLog(int reservationId,string source, int idLog)
+        {
+            ReservationDetailLog result = null;
+
+            switch (source)
+            {
+                case "R":
+                    Log log = dbContext.Log.FirstOrDefault(l => l.idLog == idLog);
+
+                    if(log != null)
+                    {
+                        XDocument dataBefore = XDocument.Parse(log.datos);
+                        XDocument dataAfter = XDocument.Parse(log.datosDespues);
+
+                        result =  Helpers.Reservation.ReservationHelper.ValidateReservationChangesCRS(dataBefore,dataAfter);
+                    }
+
+                 break;
+
+                case "CC":
+
+                    uvcc_log logCC = null;
+
+                    using(OzUniEntities ozUniEntities = new OzUniEntities())
+                    {
+                        logCC = ozUniEntities.uvcc_log.FirstOrDefault(l => l.idLog == idLog);
+                    }
+
+                    if(logCC != null)
+                    {
+                        XDocument dataBefore = XDocument.Parse(logCC.Data_Before);
+                        XDocument dataAfter = XDocument.Parse(logCC.Data_After);
+
+                        result = Helpers.Reservation.ReservationHelper.ValidateReservationChangesUVCC(dataBefore,dataAfter);
+                    }
+
+
+                break;
+            }
+
+            return result;
+
         }
 
 

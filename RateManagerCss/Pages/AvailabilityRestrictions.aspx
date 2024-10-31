@@ -720,7 +720,7 @@
                                                     <br>
                                                 </div>
                                                 <div id="divApplyAllPlan" runat="server">
-                                                    <asp:CheckBox ID="chkApplyAllPlan" runat="server" EnableViewState="False" Text="Todos los Planes"></asp:CheckBox>
+                                                    <asp:CheckBox ID="chkApplyAllPlan" Checked="false" Visible="false" runat="server" EnableViewState="False" Text="Todos los Planes"></asp:CheckBox>
                                                 </div>
                                             </td>
                                             <td>
