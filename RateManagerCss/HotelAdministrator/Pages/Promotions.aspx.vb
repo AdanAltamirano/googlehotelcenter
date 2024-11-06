@@ -40,6 +40,34 @@ Public Class Promotions
         deleted
     End Enum
 
+    Private Property StartDateTravelWindowAux() As Date
+        Get
+            Return ViewState("startDateTravelWindowAux")
+        End Get
+        Set(ByVal Value As Date)
+            ViewState("startDateTravelWindowAux") = Value
+        End Set
+    End Property
+
+    Private Property RateplansListAux() As List(Of String)
+        Get
+            Return ViewState("rateplansListAux")
+        End Get
+        Set(ByVal Value As List(Of String))
+            ViewState("rateplansListAux") = Value
+        End Set
+    End Property
+
+    Private Property RoomsListAux() As List(Of String)
+        Get
+            Return ViewState("roomsListAux")
+        End Get
+        Set(ByVal Value As List(Of String))
+            ViewState("roomsListAux") = Value
+        End Set
+    End Property
+
+
     Private Property Cerror() As Integer
         Get
             Return ViewState("_cerror")
@@ -612,6 +640,24 @@ Public Class Promotions
                     'Me.txtPromoDiscount.Text = .Item(dsRatePlan.FIELD_DESCPROMOTION).ToString
 
                     If isEnabledGoogleRequest Then
+
+                        Dim travelWindowArrayFrom() As String = travelWindowFrom.Text.Split("/")
+
+                        Dim startDateTravelWindow As Date = New Date(CType(travelWindowArrayFrom(2), Integer), CType(travelWindowArrayFrom(1), Integer), CType(travelWindowArrayFrom(0), Integer))
+
+                        If StartDateTravelWindowAux.Date <> startDateTravelWindow.Date Then
+                            'Eliminar
+
+                            Dim endDate As Date = startDateTravelWindow.AddDays(-1)
+
+                            Dim deleteMessages As RateAmountMessages = CreateDeleteRateAmountMessages(info.Hotel, info.Empresa, txtPromotionCode.Text, endDate, RateplansListAux, RoomsListAux)
+
+                            Dim rateResponseDelete As RateResponse = confluxService.DeleteRates(deleteMessages)
+
+                            CType(Me.Page, PaginaBase).guardalog("/HotelAdministrator/Pages/Promotions.aspx", CType(Me.Page, PaginaBase).acciones.Eliminar, "Eliminar Modificacion Promotions", "", rateResponseDelete.RequestXML, rateResponseDelete.Xml, info.Hotel)
+
+                        End If
+
                         Dim res As Tuple(Of RateResponse, RateResponse) = confluxService.UpdateRatePromotion(info.Hotel, info.Empresa, IdRatePlan, TypeRateEnum.RoomRate)
                         CType(Me.Page, PaginaBase).guardalog("/HotelAdministrator/Pages/Promotions.aspx", CType(Me.Page, PaginaBase).acciones.Sincronizar, "Sincronizar Modificacion Promotions", "", res.Item1.RequestXML, res.Item1.Xml, info.Hotel)
 
@@ -702,10 +748,12 @@ Public Class Promotions
                 ds = .GetPromoRatesPlanByPromoCode(IdRatePlan, cInfoActual.Hotel)
             End With
             If ds.Tables.Count > 0 AndAlso ds.Tables(0).Rows.Count > 0 Then
+                RateplansListAux = New List(Of String)
                 For Each item As ListItem In chlListContract.Items
                     For Each row As DataRow In ds.Tables(0).Rows
                         If item.Value = row.Item("IdRatePlan") Then
                             item.Selected = True
+                            RateplansListAux.Add(item.Value)
                         End If
                     Next
                 Next
@@ -720,16 +768,22 @@ Public Class Promotions
     End Function
 
     Private Function LoadPromoRooms()
+
+        Dim separators() As Char = {"-", " "}
+
         Dim ds As New DataSet
         Try
             With New RatePlanFacade
                 ds = .GetPromoRoomsByPromoCode(IdRatePlan, cInfoActual.Hotel)
             End With
             If ds.Tables.Count > 0 AndAlso ds.Tables(0).Rows.Count > 0 Then
+                RoomsListAux = New List(Of String)
                 For Each item As ListItem In chkListRoom.Items
                     For Each row As DataRow In ds.Tables(0).Rows
                         If item.Value = row.Item("IdTipoHabitacionHotel") Then
                             item.Selected = True
+                            Dim roomArray() As String = item.Text.Split(separators, StringSplitOptions.RemoveEmptyEntries)
+                            RoomsListAux.Add(roomArray(0))
                         End If
                     Next
                 Next
@@ -1037,6 +1091,9 @@ Public Class Promotions
                 If Not .IsNull(RatesPlanRulesData.FIELD_PromoStartDate) Then
                     travelWindowFrom.Text = CType(.Item(RatesPlanRulesData.FIELD_PromoStartDate), Date).ToString("dd/MM/yyyy") '.Item(RatesPlanRulesData.FIELD_PromoStartDate).ToString
                     travelWindowTo.Text = CType(.Item(RatesPlanRulesData.FIELD_PromoEndDate), Date).ToString("dd/MM/yyyy")
+
+                    StartDateTravelWindowAux = CType(.Item(RatesPlanRulesData.FIELD_PromoStartDate), Date)
+
                 End If
             End With
         End If
@@ -1337,6 +1394,10 @@ Public Class Promotions
         idDiccPCFull = 0
         idDiccPCReview = 0
         idDicc = 0
+
+        StartDateTravelWindowAux = Nothing
+        RateplansListAux = Nothing
+        RoomsListAux = Nothing
     End Sub
 
     Public Function SaveRules(ByVal publish As Boolean, ByRef IdRule As Integer) As Boolean
@@ -1789,5 +1850,41 @@ Public Class Promotions
             End Try
         End If
     End Sub
+
+    Private Function CreateDeleteRateAmountMessages(ByVal hotelId As Integer, ByVal companyId As Integer, ByVal promotionCode As String, ByVal endDate As Date, ByVal rateplansListAux As List(Of String), ByVal roomsListAux As List(Of String)) As RateAmountMessages
+        Dim rateAmountMessages As RateAmountMessages = New RateAmountMessages
+
+        rateAmountMessages.HotelCode = companyId
+        rateAmountMessages.RateAmountMessagesList = New List(Of OTA.Models.Rates.RateAmountMessage)
+
+        For Each ratePlan As String In rateplansListAux
+            For Each room As String In roomsListAux
+
+                Dim ratePlanCode As String = promotionCode & ratePlan
+
+                Dim rateAmountMessage As OTA.Models.Rates.RateAmountMessage = New OTA.Models.Rates.RateAmountMessage()
+
+                rateAmountMessage.statusApplicationControl = New OTA.Models.Rates.StatusApplicationControl()
+                rateAmountMessage.statusApplicationControl.RatePlanCode = ratePlanCode
+                rateAmountMessage.statusApplicationControl.InvTypeCode = room
+
+                Dim ratesList As List(Of OTA.Models.Rates.Rate) = New List(Of OTA.Models.Rates.Rate)
+
+                Dim rate As OTA.Models.Rates.Rate = New OTA.Models.Rates.Rate()
+
+                rate.StartDate = DateTime.Now.Date.ToString("yyyyMMdd")
+                rate.EndDate = endDate.Date.ToString("yyyyMMdd")
+
+                ratesList.Add(rate)
+
+                rateAmountMessage.Rates = ratesList
+
+                rateAmountMessages.RateAmountMessagesList.Add(rateAmountMessage)
+
+            Next
+        Next
+
+        Return rateAmountMessages
+    End Function
 
 End Class
