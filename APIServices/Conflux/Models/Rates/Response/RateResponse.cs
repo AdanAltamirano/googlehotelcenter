@@ -11,4 +11,11 @@ namespace APIServices.Conflux.Models.Rates.Response
 
         public List<Rate> Rates = new List<Rate>();
     }
+
+
+    public class RatesReponse
+    {
+        public List<RateResponse> RateResponseList { get; set; } = new List<RateResponse>();
+    }
+
 }

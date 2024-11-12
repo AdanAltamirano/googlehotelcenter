@@ -52,14 +52,15 @@ Namespace API.Controllers
 
             Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
 
-            Dim result As Tuple(Of RateResponse, RateResponse) = ConfluxService.UpdateRates(hotelId, info.Empresa)
+            Dim result As RatesReponse = ConfluxService.UpdateRates(hotelId, info.Empresa)
 
-            Dim ratesToUpdate As RateResponse = result.Item1
-            Dim ratesToDelete As RateResponse = result.Item2
+            Dim ratesToUpdate As RateResponse = result.RateResponseList(0)
+            Dim ratesToDelete As RateResponse = result.RateResponseList(1)
+            Dim ratesToUpdateExceptions As RateResponse = result.RateResponseList(2)
 
             If Not ratesToUpdate.IsSuccess Then
 
-                Log("Sincronizar Tarifas Conflux con el hotel: ", ratesToUpdate.Xml, hotelId, String.Empty)
+                Log("Error Sincronizar Tarifas Conflux con el hotel: ", ratesToUpdate.Xml, hotelId, String.Empty)
 
                 Return BadRequest(ratesToUpdate.Error)
 
@@ -73,10 +74,25 @@ Namespace API.Controllers
                 index += 1
             Next
 
+
+            If ratesToUpdateExceptions IsNot Nothing Then
+                If Not ratesToUpdateExceptions.IsSuccess Then
+                    Log("Error Sincronizar Tarifas Excepciones Conflux con el hotel: ", ratesToUpdateExceptions.Xml, hotelId, String.Empty)
+                Else
+                    index = 1
+
+                    For Each request As APIServices.Conflux.Models.Rates.Response.Rate In ratesToUpdateExceptions.Rates
+                        Dim note As String = String.Format("Sincronizar excepciones request numero {0} Tarifas Conflux con el hotel: ", (index))
+                        Log(note, request.Xml, hotelId, request.XmlRequest)
+                        index += 1
+                    Next
+                End If
+            End If
+
             Dim toObject As Object = ratesToUpdate
 
             'Log Delete
-            If result.Item2 IsNot Nothing Then
+            If ratesToDelete IsNot Nothing Then
                 Dim noteDelete As String = String.Format("Eliminar Tarifas Conflux con el hotel: {0}", hotelId)
                 Log(noteDelete, ratesToDelete.Xml, hotelId, ratesToDelete.RequestXML)
             End If

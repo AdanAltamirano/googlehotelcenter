@@ -15,16 +15,22 @@ namespace APIServices.Conflux.Parser
     public static class Parser
     {
         //General
-        public static RateAmountMessages ToRateAmountMessages(List<spGetCurrentRatesByHotel_Result4> currentRates,int hotelId , int companyId, bool? plusTax, decimal? tax, string currency, ref RateAmountMessages deleteRateAmountMessages)
+        public static Models.Rates.Response.RatesMessages ToRateAmountMessages(List<spGetCurrentRatesByHotel_Result4> currentRates,int hotelId , int companyId, bool? plusTax, decimal? tax, string currency)
         {
+            Models.Rates.Response.RatesMessages ratesMessages = new Models.Rates.Response.RatesMessages();
 
             RateAmountMessages rateAmountMessages = new RateAmountMessages();
+            RateAmountMessages deleteRateAmountMessages = new RateAmountMessages();
+            RateAmountMessages rateAmountMessagesExceptions = new RateAmountMessages();
 
             rateAmountMessages.HotelCode = companyId;
             rateAmountMessages.RateAmountMessagesList = new List<RateAmountMessage>();
 
             deleteRateAmountMessages.HotelCode = companyId;
             deleteRateAmountMessages.RateAmountMessagesList = new List<RateAmountMessage>();
+
+            rateAmountMessagesExceptions.HotelCode = companyId;
+            rateAmountMessagesExceptions.RateAmountMessagesList = new List<RateAmountMessage>();
 
 
             RatesHelpers.Init(hotelId,plusTax, tax,currency);
@@ -36,18 +42,22 @@ namespace APIServices.Conflux.Parser
                 {
                     case (int) TypeRateEnum.RoomRate:
 
-                        RoomRateMessages(currentRate, ref rateAmountMessages, ref deleteRateAmountMessages);
-
+                        RoomRateMessages(currentRate, ref rateAmountMessages, ref deleteRateAmountMessages, ref rateAmountMessagesExceptions);
+                        
                         break;
                     case (int)TypeRateEnum.RoomRatePromotion:
-                        RoomRatePromotionMessages(currentRate, ref rateAmountMessages, ref deleteRateAmountMessages);
+                        RoomRatePromotionMessages(currentRate, ref rateAmountMessages, ref deleteRateAmountMessages, ref rateAmountMessagesExceptions);
                         break;
 
                 }
             }
 
+            //0: tarifas, 1: borrar, 2: tarifas excepciones
+            ratesMessages.RateAmountMessagesList.Add(rateAmountMessages);
+            ratesMessages.RateAmountMessagesList.Add(deleteRateAmountMessages);
+            ratesMessages.RateAmountMessagesList.Add(rateAmountMessagesExceptions);
 
-            return rateAmountMessages;
+            return ratesMessages;
         }
         
         //Por Tarifa
@@ -514,7 +524,7 @@ namespace APIServices.Conflux.Parser
 
         //}
 
-        public static void RoomRateMessages(spGetCurrentRatesByHotel_Result4 currentRate, ref RateAmountMessages rateAmountMessages, ref RateAmountMessages deleteRateAmountMessages)
+        public static void RoomRateMessages(spGetCurrentRatesByHotel_Result4 currentRate, ref RateAmountMessages rateAmountMessages, ref RateAmountMessages deleteRateAmountMessages, ref RateAmountMessages rateAmountMessagesExceptions)
         {
             string[] splitSegmentsNoRates = ConfigurationManager.AppSettings["segmentsNoRates"].Split(',');
 
@@ -534,8 +544,10 @@ namespace APIServices.Conflux.Parser
                             if (DateTime.Now.Date >= vDayRate.PromoStartDateBookingWindow && DateTime.Now.Date <= vDayRate.PromoEndDateBookingWindow)
                             {
                                 RateAmountMessage rateAmountMessage = RatesHelpers.CreateRateAmountMessage(currentRate, vDayRate);
+                                RateAmountMessage rateAmountMessageException = RatesHelpers.CreateRateAmountMessageException(currentRate, vDayRate);
 
                                 rateAmountMessages.RateAmountMessagesList.Add(rateAmountMessage);
+                                if (rateAmountMessageException != null) rateAmountMessagesExceptions.RateAmountMessagesList.Add(rateAmountMessageException);
                             }
                             else
                             {
@@ -548,21 +560,25 @@ namespace APIServices.Conflux.Parser
                         else
                         {
                             RateAmountMessage rateAmountMessage = RatesHelpers.CreateRateAmountMessage(currentRate, vDayRate);
+                            RateAmountMessage rateAmountMessageException = RatesHelpers.CreateRateAmountMessageException(currentRate, vDayRate);
 
                             rateAmountMessages.RateAmountMessagesList.Add(rateAmountMessage);
+                            if (rateAmountMessageException != null) rateAmountMessagesExceptions.RateAmountMessagesList.Add(rateAmountMessageException);
                         }
                     }
                     else
                     {
                         RateAmountMessage rateAmountMessage = RatesHelpers.CreateRateAmountMessage(currentRate, vDayRate);
+                        RateAmountMessage rateAmountMessageException = RatesHelpers.CreateRateAmountMessageException(currentRate, vDayRate);
 
                         rateAmountMessages.RateAmountMessagesList.Add(rateAmountMessage);
+                        if (rateAmountMessageException != null) rateAmountMessagesExceptions.RateAmountMessagesList.Add(rateAmountMessageException);
                     }
                 }
             }
         }
 
-        public static void RoomRatePromotionMessages(spGetCurrentRatesByHotel_Result4 currentRate, ref RateAmountMessages rateAmountMessages, ref RateAmountMessages deleteRateAmountMessages)
+        public static void RoomRatePromotionMessages(spGetCurrentRatesByHotel_Result4 currentRate, ref RateAmountMessages rateAmountMessages, ref RateAmountMessages deleteRateAmountMessages, ref RateAmountMessages rateAmountMessagesExceptions)
         {
             string[] splitSegmentsNoRates = ConfigurationManager.AppSettings["segmentsNoRates"].Split(',');
 
@@ -583,8 +599,10 @@ namespace APIServices.Conflux.Parser
                             if (DateTime.Now.Date >= vDayRate.PromoStartDateBookingWindow && DateTime.Now.Date <= vDayRate.PromoEndDateBookingWindow)
                             {
                                 RateAmountMessage rateAmountMessage = RatesHelpers.CreateRateAmountMessage(currentRate, vDayRate);
+                                RateAmountMessage rateAmountMessageException = RatesHelpers.CreateRateAmountMessageException(currentRate, vDayRate);
 
                                 rateAmountMessages.RateAmountMessagesList.Add(rateAmountMessage);
+                                if (rateAmountMessageException != null) rateAmountMessagesExceptions.RateAmountMessagesList.Add(rateAmountMessageException);
                             }
                             else
                             {
@@ -596,15 +614,19 @@ namespace APIServices.Conflux.Parser
                         else
                         {
                             RateAmountMessage rateAmountMessage = RatesHelpers.CreateRateAmountMessage(currentRate, vDayRate);
+                            RateAmountMessage rateAmountMessageException = RatesHelpers.CreateRateAmountMessageException(currentRate, vDayRate);
 
                             rateAmountMessages.RateAmountMessagesList.Add(rateAmountMessage);
+                            if (rateAmountMessageException != null) rateAmountMessagesExceptions.RateAmountMessagesList.Add(rateAmountMessageException);
                         }
                     }
                     else
                     {
                         RateAmountMessage rateAmountMessage = RatesHelpers.CreateRateAmountMessage(currentRate, vDayRate);
+                        RateAmountMessage rateAmountMessageException = RatesHelpers.CreateRateAmountMessageException(currentRate, vDayRate);
 
                         rateAmountMessages.RateAmountMessagesList.Add(rateAmountMessage);
+                        if (rateAmountMessageException != null) rateAmountMessagesExceptions.RateAmountMessagesList.Add(rateAmountMessageException);
                     }
 
                 }

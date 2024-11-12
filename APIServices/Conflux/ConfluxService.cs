@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using System.Linq;
+using System.Threading;
 using System.Net;
 using System.Net.Http;
 using System.Collections.Generic;
@@ -485,11 +486,16 @@ namespace APIServices.Conflux
         /// <param name="hotelId"></param>
         /// <param name="companyId"></param>
         /// <returns>First Param RatesToUpdate, Second Param RatesToDelete</returns>
-        public Tuple<RateResponse,RateResponse> UpdateRates(int hotelId, int companyId)
+        public RatesReponse UpdateRates(int hotelId, int companyId)
         {
-            RateResponse rateResponse = new RateResponse();
+            RatesReponse ratesReponse = new RatesReponse();
 
-            RateAmountMessages deleteRateAmountMessages = new RateAmountMessages();
+            RateResponse rateResponse = new RateResponse();
+            RateResponse deleteRateResponse = null;
+            RateResponse rateResponseExceptiones = null;
+
+            //Objeto donde van todos los mensajes RateAmountMessages
+            RatesMessages ratesMessages = null;
 
             try
             {
@@ -498,9 +504,10 @@ namespace APIServices.Conflux
                 var hotel = dbContext.Hoteles.First(h => h.idHotel == hotelId);
                 var hotelBasicInfo = dbContext.vHotelBasicInfo.FirstOrDefault(vh => vh.Id == hotelId);
 
-                var rateAmountMessages = Parser.Parser.ToRateAmountMessages(currentRates, hotelId, companyId, hotel.PlusTax, hotel.Impuesto, hotelBasicInfo.Currency, ref deleteRateAmountMessages);
+                //0: tarifas, 1: borrar, 2: tarifas excepciones
+                ratesMessages = Parser.Parser.ToRateAmountMessages(currentRates, hotelId, companyId, hotel.PlusTax, hotel.Impuesto, hotelBasicInfo.Currency);
 
-                var xmlList = HotelRateAmountNotifRQ.CreateHotelRateAmountNotifRQList(rateAmountMessages);
+                var xmlList = HotelRateAmountNotifRQ.CreateHotelRateAmountNotifRQList(ratesMessages.RateAmountMessagesList[0]);
 
 
                 foreach (XElement xml in xmlList)
@@ -534,6 +541,9 @@ namespace APIServices.Conflux
 
                     rateResponse.Rates.Add(res);
 
+                    //Espera 1 segundo antes de mandar el siguiente request
+                    Thread.Sleep(TimeSpan.FromSeconds(1));
+
                 }
 
                 rateResponse.IsSuccess = true;
@@ -554,14 +564,84 @@ namespace APIServices.Conflux
                 errorsElement.Add(errorElementProperty);
 
                 rateResponse.Xml = errorsElement.ToString();
-
             }
 
-            RateResponse deleteRateResponse = null;
 
-            if (deleteRateAmountMessages.RateAmountMessagesList.Count > 0) deleteRateResponse = DeleteRates(deleteRateAmountMessages);
+            //Tarfias Excepciones
+            if (ratesMessages.RateAmountMessagesList[2].RateAmountMessagesList.Count > 0) 
+            {
+                rateResponseExceptiones = new RateResponse();
 
-            return new Tuple<RateResponse,RateResponse>(rateResponse, deleteRateResponse);
+                try
+                {
+                    var xmlList = HotelRateAmountNotifRQ.CreateHotelRateAmountNotifRQList(ratesMessages.RateAmountMessagesList[2]);
+
+
+                    foreach (XElement xml in xmlList)
+                    {
+                        Models.Rates.Response.Rate res = new Models.Rates.Response.Rate();
+
+                        var soapRequest = Soap.CreateSoapRequestXml(xml);
+
+                        HttpContent httpContent = new StringContent(soapRequest.ToString());
+
+                        string url = ConfigurationManager.AppSettings["confluxApiUrl"] + "pms/ota/rates/update";
+
+                        var uri = new Uri(url);
+
+                        System.Xml.Linq.XElement otaRS = null;
+
+                        using (var client = new HttpClient())
+                        {
+
+                            client.Timeout = TimeSpan.FromMinutes(50);
+                            var response = client.PostAsync(uri, httpContent).Result;
+
+                            string result = response.Content.ReadAsStringAsync().Result; //regresa un xml
+
+                            otaRS = HotelRateAmountNotifRS.ParseHotelRateAmountNotifRS(result);
+                        }
+
+                        res.Xml = otaRS.ToString();
+                        res.XmlRequest = soapRequest.ToString();
+                        res.IsSuccess = HotelRateAmountNotifRS.IsSuccessRequest(otaRS);
+
+                        rateResponseExceptiones.Rates.Add(res);
+
+                        //Espera 1 segundo antes de mandar el siguiente request
+                        Thread.Sleep(TimeSpan.FromSeconds(1));
+
+                    }
+
+                    rateResponseExceptiones.IsSuccess = true;
+
+                }
+                catch (Exception ex)
+                {
+                    rateResponseExceptiones.IsSuccess = false;
+                    rateResponseExceptiones.Error = new KeyValuePair<string, string>("448", ex.Message);
+
+                    var errorsElement = new System.Xml.Linq.XElement("Errors");
+                    var errorElementProperty = new System.Xml.Linq.XElement("Error");
+                    errorElementProperty.Add(
+                        new System.Xml.Linq.XAttribute("Type", "3"),
+                        new System.Xml.Linq.XAttribute("Code", "448"),
+                        new System.Xml.Linq.XText(ex.Message));
+
+                    errorsElement.Add(errorElementProperty);
+
+                    rateResponseExceptiones.Xml = errorsElement.ToString();
+                }
+            }
+
+            if (ratesMessages.RateAmountMessagesList[1].RateAmountMessagesList.Count > 0) deleteRateResponse = DeleteRates(ratesMessages.RateAmountMessagesList[1]);
+
+
+            ratesReponse.RateResponseList.Add(rateResponse);
+            ratesReponse.RateResponseList.Add(deleteRateResponse);
+            ratesReponse.RateResponseList.Add(rateResponseExceptiones);
+
+            return ratesReponse;
 
         }
 
