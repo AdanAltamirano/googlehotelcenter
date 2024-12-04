@@ -711,11 +711,20 @@ namespace APIServices
             switch (paymentType)
             {
                 case 0:
-                    payee = depositTarget;
+
+                    if(depositTarget.Equals("Internet Power Hotel"))
+                    {
+                        payee = "Zentauro Solutions";
+                    }
+                    else
+                    {
+                        payee = depositTarget;
+                    }
+
                     break;
                 case 1:
 
-                    payee = (isNetRate) ? "Internet Power Hotel" : "Hotel";
+                    payee = (isNetRate) ? "Zentauro Solutions" : "Hotel";
 
                     break;
                 case 2:

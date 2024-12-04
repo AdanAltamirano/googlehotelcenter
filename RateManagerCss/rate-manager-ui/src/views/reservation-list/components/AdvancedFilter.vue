@@ -261,7 +261,8 @@ export default {
                 {paymentMethodId : 'PayU', paymentMethod: 'PayU'},
                 {paymentMethodId : 'Conekta / OXXO', paymentMethod: 'Conekta / OXXO'},
                 {paymentMethodId : 'Amex', paymentMethod: 'Amex'},
-                {paymentMethodId : 'Banregio', paymentMethod: 'Banregio'}
+                {paymentMethodId : 'Banregio', paymentMethod: 'Banregio'},
+                {paymentMethodId : 'Stripe', paymentMethod: 'Stripe'}
             ],
             ota: 'ALL',
             agency: -1,
