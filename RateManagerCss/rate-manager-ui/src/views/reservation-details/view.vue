@@ -62,7 +62,7 @@
                       </td>
                     </tr>
                      <tr v-if="result.isNetRateUV" style="font-size:smaller;">
-                      <td>{{$t('Commission Internet Power')}}</td>
+                      <td>{{$t('Commission Zentauro Solutions')}}</td>
                       <td>{{result.totalDetails.commission | currency}} {{result.totalDetails.currency}}</td>
                     </tr>
                     <tr v-if="result.isNetRateUV" style="font-size:smaller;">
@@ -101,7 +101,7 @@
                       </td>
                     </tr>
                     <tr v-if="isSupervisor || isUsuarioHotelAssociation" style="font-size:smaller;">
-                      <td>{{$t('Commission Internet Power')}}</td>
+                      <td>{{$t('Commission Zentauro Solutions')}}</td>
                       <td>{{result.totalDetails.commission | currency}} {{result.totalDetails.currency}}</td>
                     </tr>
                     <tr style="font-size:smaller;">

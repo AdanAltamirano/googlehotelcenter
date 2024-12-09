@@ -95,7 +95,7 @@ export default {
     'Send email with reservation details?': "¿Enviar correo electrónico con detalles de la reserva?",
     'Email Sent': 'Correo Enviado',
     'Email Not Sent': 'Correo no enviado',
-    'Commission Internet Power': 'Comisión Internet Power',
+    'Commission Zentauro Solutions': 'Comisión Zentauro Solutions',
     'Payment Gateway': 'Pasarela',
     'Total Hotel': 'Total Hotel',
     'Agency': 'Agencia',
