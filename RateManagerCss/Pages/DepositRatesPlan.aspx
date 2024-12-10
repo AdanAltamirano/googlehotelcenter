@@ -141,7 +141,7 @@
                                             <asp:Label ID="lblTarget" runat="server">El depositó se hará a:</asp:Label>
                                         </td>
                                         <td>
-                                            <asp:RadioButton ID="RdbUV" runat="server" Text="UV" GroupName="DepositSource"></asp:RadioButton><asp:RadioButton
+                                            <asp:RadioButton ID="RdbUV" runat="server" Text="ZT" GroupName="DepositSource"></asp:RadioButton><asp:RadioButton
                                                 ID="RdbHotel" runat="server" Text="Hotel" GroupName="DepositSource"></asp:RadioButton>
                                         </td>
                                     </tr>

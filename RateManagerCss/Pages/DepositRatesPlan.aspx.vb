@@ -333,7 +333,7 @@ Partial Class DepositRatesPlan
             If Me.RdbHotel.Checked Then
                 dr.Item(DepositsRates.FIELD_DepositTarget) = "HTL"
             Else
-                dr.Item(DepositsRates.FIELD_DepositTarget) = "UV"
+                dr.Item(DepositsRates.FIELD_DepositTarget) = "ZT"
             End If
             dr.Item(DepositsRates.FIELD_IdDepositRatesPlan) = iddepositratesplan
             DS.Tables(DepositsRates.TABLEDepositRates).Rows.Add(dr)
