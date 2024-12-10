@@ -44,7 +44,6 @@
         <EntityTypeShape EntityType="Models.vReservation" Width="1.5" PointX="19.75" PointY="0.75" />
         <EntityTypeShape EntityType="Models.Reservaciones_Movimientos_Log" Width="1.5" PointX="20.375" PointY="10.75" />
         <EntityTypeShape EntityType="Models.vReservationLog" Width="1.5" PointX="20.375" PointY="6.75" />
-        <EntityTypeShape EntityType="Models.vReservationDetails" Width="1.5" PointX="3.375" PointY="14.75" />
         <EntityTypeShape EntityType="Models.vHotelActives" Width="1.5" PointX="11.375" PointY="20.75" />
         <EntityTypeShape EntityType="Models.vLinkedRoomTypes" Width="1.5" PointX="13.375" PointY="20.75" />
         <EntityTypeShape EntityType="Models.vLinkedRatePlans" Width="1.5" PointX="15.375" PointY="20.75" />
@@ -53,6 +52,7 @@
         <EntityTypeShape EntityType="Models.UsuarioHotel" Width="1.5" PointX="5.375" PointY="0.75" />
         <EntityTypeShape EntityType="Models.vUsersConnectivity" Width="1.5" PointX="7.375" PointY="0.75" />
         <EntityTypeShape EntityType="Models.Log" Width="1.5" PointX="22.375" PointY="0.75" />
+        <EntityTypeShape EntityType="Models.vReservationDetails" Width="1.5" PointX="3.375" PointY="13.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

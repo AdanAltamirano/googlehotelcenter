@@ -166,6 +166,8 @@ namespace APIServices
                 model.ModificationReason = details.modificationReason;
                 model.Portal = details.Portal;
                 model.IsNetRateUV = details.IsNetRateUV;
+                model.TypeCC = details.typeCC;
+                model.DescriptionCC = details.descriptionCC;
                 model.PaymentWay = details.paymentType;
                 model.CollectedBy = (details.paymentType == 4)? GetPayeeOTA(details.Portal.ToUpper(), details.cardNumber, details.cardCustomerName) : GetPayee(details.paymentType, details.IsNetRateUV, details.depositTarget);
                 model.PaymentInformation = details.paymentInformation;

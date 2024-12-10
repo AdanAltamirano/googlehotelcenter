@@ -27,6 +27,8 @@ namespace APIServices.Models.DTO
         public string RatePlan { get; set; }
         public string Source { get; set; }
         public string Portal { get; set; }
+        public byte TypeCC { get; set; }
+        public string DescriptionCC { get; set; }
         public string CollectedBy { get; set; } = string.Empty;
         public string PaymentInformation { get; set; } = string.Empty;
         public bool IsNetRateUV { get; set; }

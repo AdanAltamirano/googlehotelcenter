@@ -61,7 +61,6 @@ namespace APIServices.Models
         public virtual DbSet<vReservation> vReservation { get; set; }
         public virtual DbSet<Reservaciones_Movimientos_Log> Reservaciones_Movimientos_Log { get; set; }
         public virtual DbSet<vReservationLog> vReservationLog { get; set; }
-        public virtual DbSet<vReservationDetails> vReservationDetails { get; set; }
         public virtual DbSet<vHotelActives> vHotelActives { get; set; }
         public virtual DbSet<vLinkedRoomTypes> vLinkedRoomTypes { get; set; }
         public virtual DbSet<vLinkedRatePlans> vLinkedRatePlans { get; set; }
@@ -70,6 +69,7 @@ namespace APIServices.Models
         public virtual DbSet<UsuarioHotel> UsuarioHotel { get; set; }
         public virtual DbSet<vUsersConnectivity> vUsersConnectivity { get; set; }
         public virtual DbSet<Log> Log { get; set; }
+        public virtual DbSet<vReservationDetails> vReservationDetails { get; set; }
     
         public virtual int spReservationCancel(Nullable<int> idReservacion, string noConfCancelGalileo, string noCancelacion, string txCode, Nullable<bool> statusConf, string systemCode, string travelAgencyName, string voucher, string wizcomPassOn, string wizcomSequenceNumber, string motivoCancelacion, Nullable<bool> cancelWithError, string sessionId, Nullable<int> iduser)
         {

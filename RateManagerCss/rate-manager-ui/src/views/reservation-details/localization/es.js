@@ -187,5 +187,7 @@ export default {
     'With this action the reservation will be available to be downloaded for the pms' : 'Con esta acción la reserva estara disponible para ser descargada para el pms',
     'Send Again' : 'Enviar de Nuevo',
     'Prices' : 'Precios',
-    'Only data that have been updated are displayed' : 'Solo se muestran los datos que han sido actualizados'
+    'Only data that have been updated are displayed' : 'Solo se muestran los datos que han sido actualizados',
+    'Virtual Card' : 'Tarjeta Virtual',
+    'Amount to be charged' : 'Monto a cobrar'
 }

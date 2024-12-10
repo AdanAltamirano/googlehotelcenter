@@ -29,6 +29,7 @@ namespace APIServices.Models
         public string Provisioner { get; set; }
         public int reservationId { get; set; }
         public string reservationNumber { get; set; }
+        public string reservationIdIDS { get; set; }
         public string cancellationNumber { get; set; }
         public string cancellationReason { get; set; }
         public string reservationIdXProvider { get; set; }
@@ -45,6 +46,7 @@ namespace APIServices.Models
         public string customerEmail { get; set; }
         public string customerPhone { get; set; }
         public Nullable<int> paymentType { get; set; }
+        public string paymentInformation { get; set; }
         public string onlinePaymentMethod { get; set; }
         public string authorizationNumber { get; set; }
         public string cardNumber { get; set; }
@@ -52,9 +54,12 @@ namespace APIServices.Models
         public string cardExpYear { get; set; }
         public string cardCvv { get; set; }
         public string cardCustomerName { get; set; }
+        public byte typeCC { get; set; }
+        public string descriptionCC { get; set; }
         public decimal amountTotal { get; set; }
         public decimal depositAmount { get; set; }
         public string depositCurrency { get; set; }
+        public string depositBank { get; set; }
         public string depositReference { get; set; }
         public string depositTarget { get; set; }
         public int provider { get; set; }
@@ -80,8 +85,5 @@ namespace APIServices.Models
         public string namePromotion { get; set; }
         public Nullable<int> idCancellationUser { get; set; }
         public string userCancellation { get; set; }
-        public string depositBank { get; set; }
-        public string reservationIdIDS { get; set; }
-        public string paymentInformation { get; set; }
     }
 }
