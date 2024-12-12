@@ -296,7 +296,8 @@ export default {
                 { text: 'Booking.com', value: 'Booking' },
                 { text: 'Expedia', value: 'Expedia' },
                 { text: 'Hotel Beds', value: 'Hotel Beds' },
-                { text: 'PriceTravel', value: 'PriceTravel' }
+                { text: 'PriceTravel', value: 'PriceTravel' },
+                { text: 'Despegar', value: 'Despegar.com' }
             ],
             corporate: [],
             //muestra hoteles o corporativos en la busqueda avazanda
