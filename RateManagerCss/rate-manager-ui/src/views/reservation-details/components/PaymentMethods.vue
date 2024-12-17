@@ -202,7 +202,7 @@
               </div>
               <div>
                 {{$t('Amount to be charged')}}:
-                <strong>{{result.descriptionCC}}</strong>
+                <strong>{{result.descriptionCC | currency}} {{result.totalDetails.currency}}</strong>
               </div>
             </template>
           </template>
