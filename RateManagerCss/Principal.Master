@@ -116,11 +116,15 @@
                     isUi: false,
                     url: null
                 };
-            jQuery('#menuPrincipal ul > li a').click(function(){
+            jQuery('#menuPrincipal ul > li a').click(function () {
 
                 var ui = jQuery(this).attr('href').indexOf('rate-manager-ui') > 0;
                 window.ratemanager_ui.isUi = ui;
                 window.ratemanager_ui.url = (ui ? jQuery(this).attr('href') : null);
+
+                console.log(window.ratemanager_ui.isUi);
+
+                if (!window.ratemanager_ui.isUi) jQuery('#loading').show();
 
                 var content_submenu = jQuery(this).attr('href') + '_div';
                 HideMenu();
