@@ -976,7 +976,7 @@ namespace APIServices.Conflux
                 var lockRatePlans = dbContext.spGetLockRatePlansByHotel(hotelId).ToList();
 
                 var availStatusMessagesLockRatePlans = RestrictionsParser.ToAvailStatusMessages(activeRooms, lockRatePlans);
-
+              
                 List<XElement> lockRatePlanHotelAvailNotifRQList = HotelAvailNotifRQ.CreateHotelAvailNotifRQList(availStatusMessagesLockRatePlans);
 
                 foreach (XElement lockRatePlanHotelAvailNotifRQ in lockRatePlanHotelAvailNotifRQList)

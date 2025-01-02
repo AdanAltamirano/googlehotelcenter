@@ -508,6 +508,16 @@ Public Class Promotions
                             End With
                         End If
 
+
+                        If isEnabledGoogleRequest Then
+                            Dim res As Tuple(Of RateResponse, RateResponse) = confluxService.UpdateRatePromotion(info.Hotel, info.Empresa, Me.txtPromotionCode.Text.ToUpper, TypeRateEnum.RoomRate)
+                            CType(Me.Page, PaginaBase).guardalog("/HotelAdministrator/Pages/Promotions.aspx", CType(Me.Page, PaginaBase).acciones.Sincronizar, "Sincronizar Modificacion Promotions", "", res.Item1.RequestXML, res.Item1.Xml, info.Hotel)
+
+                            Dim resPromotion As Tuple(Of RateResponse, RateResponse) = confluxService.UpdateRatePromotion(info.Hotel, info.Empresa, Me.txtPromotionCode.Text.ToUpper, TypeRateEnum.RoomRatePromotion)
+                            CType(Me.Page, PaginaBase).guardalog("/HotelAdministrator/Pages/Promotions.aspx", CType(Me.Page, PaginaBase).acciones.Sincronizar, "Sincronizar Modificacion Promotions", "", resPromotion.Item1.RequestXML, resPromotion.Item1.Xml, info.Hotel)
+                        End If
+
+
                         '            Me.strError.Value = strError
 
                         ClearData()
