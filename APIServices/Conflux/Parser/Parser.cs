@@ -554,7 +554,7 @@ namespace APIServices.Conflux.Parser
                                 //Delete
                                 RateAmountMessage rateAmountMessageToDelete = RatesHelpers.CreateDeleteRateAmountMessage(currentRate,vDayRate);
                                 
-                                if(rateAmountMessageToDelete != null) deleteRateAmountMessages.RateAmountMessagesList.Add(rateAmountMessageToDelete);
+                                if(rateAmountMessageToDelete != null && vDayRate.DeletedInGoogle == false) deleteRateAmountMessages.RateAmountMessagesList.Add(rateAmountMessageToDelete);
                             }
                         }
                         else
@@ -608,7 +608,7 @@ namespace APIServices.Conflux.Parser
                             {
                                 //Delete
                                 RateAmountMessage rateAmountMessageToDelete = RatesHelpers.CreateDeleteRateAmountMessage(currentRate, vDayRate);
-                                if(rateAmountMessageToDelete != null) deleteRateAmountMessages.RateAmountMessagesList.Add(rateAmountMessageToDelete);
+                                if(rateAmountMessageToDelete != null && vDayRate.DeletedInGoogle == false) deleteRateAmountMessages.RateAmountMessagesList.Add(rateAmountMessageToDelete);
                             }
                         }
                         else

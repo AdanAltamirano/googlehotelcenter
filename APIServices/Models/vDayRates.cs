@@ -42,5 +42,7 @@ namespace APIServices.Models
         public bool IsCallCenterOnly { get; set; }
         public Nullable<System.DateTime> PromoStartDateBookingWindow { get; set; }
         public Nullable<System.DateTime> PromoEndDateBookingWindow { get; set; }
+        public string PromoRatePlanId { get; set; }
+        public bool DeletedInGoogle { get; set; }
     }
 }

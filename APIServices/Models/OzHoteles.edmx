@@ -265,6 +265,7 @@
           <Property Name="IsCombinablePromotion" Type="bit" />
           <Property Name="IsMobileRate" Type="bit" />
           <Property Name="IsCallCenterOnly" Type="bit" />
+          <Property Name="DeletedInGoogle" Type="bit" />
         </EntityType>
         <EntityType Name="ratesPlanDeal">
           <Key>
@@ -626,8 +627,6 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vDayRates' no tiene definida n
             
             <PropertyRef Name="Currency" />
             <PropertyRef Name="IsPromotion" />
-            
-            
             <PropertyRef Name="RateId" />
             <PropertyRef Name="HotelId" />
             <PropertyRef Name="RoomId" />
@@ -663,8 +662,10 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vDayRates' no tiene definida n
           <Property Name="Language" Type="int" Nullable="false" />
           <Property Name="IsMobileRate" Type="bit" Nullable="false" />
           <Property Name="IsCallCenterOnly" Type="bit" Nullable="false" />
+          <Property Name="PromoRatePlanId" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="PromoStartDateBookingWindow" Type="smalldatetime" />
           <Property Name="PromoEndDateBookingWindow" Type="smalldatetime" />
+          <Property Name="DeletedInGoogle" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'OzHoteles.dbo.vDayRatesExceptions' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
@@ -678,8 +679,6 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vDayRatesExceptions' no tiene 
             
             <PropertyRef Name="Currency" />
             <PropertyRef Name="IsPromotion" />
-            
-            
             <PropertyRef Name="RateId" />
             <PropertyRef Name="HotelId" />
             <PropertyRef Name="RoomId" />
@@ -716,8 +715,10 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vDayRatesExceptions' no tiene 
           <Property Name="Language" Type="int" Nullable="false" />
           <Property Name="IsMobileRate" Type="bit" Nullable="false" />
           <Property Name="IsCallCenterOnly" Type="bit" Nullable="false" />
+          <Property Name="PromoRatePlanId" Type="nvarchar" MaxLength="50" />
           <Property Name="PromoStartDateBookingWindow" Type="smalldatetime" />
           <Property Name="PromoEndDateBookingWindow" Type="smalldatetime" />
+          <Property Name="DeletedInGoogle" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'OzHoteles.dbo.vHotelActives' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
@@ -1483,8 +1484,10 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
     [vDayRates].[Language] AS [Language], 
     [vDayRates].[IsMobileRate] AS [IsMobileRate], 
     [vDayRates].[IsCallCenterOnly] AS [IsCallCenterOnly], 
+    [vDayRates].[PromoRatePlanId] AS [PromoRatePlanId], 
     [vDayRates].[PromoStartDateBookingWindow] AS [PromoStartDateBookingWindow], 
-    [vDayRates].[PromoEndDateBookingWindow] AS [PromoEndDateBookingWindow]
+    [vDayRates].[PromoEndDateBookingWindow] AS [PromoEndDateBookingWindow], 
+    [vDayRates].[DeletedInGoogle] AS [DeletedInGoogle]
     FROM [dbo].[vDayRates] AS [vDayRates]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vDayRatesExceptions" EntityType="Self.vDayRatesExceptions" store:Type="Views" store:Schema="dbo">
@@ -1516,8 +1519,10 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
     [vDayRatesExceptions].[Language] AS [Language], 
     [vDayRatesExceptions].[IsMobileRate] AS [IsMobileRate], 
     [vDayRatesExceptions].[IsCallCenterOnly] AS [IsCallCenterOnly], 
+    [vDayRatesExceptions].[PromoRatePlanId] AS [PromoRatePlanId], 
     [vDayRatesExceptions].[PromoStartDateBookingWindow] AS [PromoStartDateBookingWindow], 
-    [vDayRatesExceptions].[PromoEndDateBookingWindow] AS [PromoEndDateBookingWindow]
+    [vDayRatesExceptions].[PromoEndDateBookingWindow] AS [PromoEndDateBookingWindow], 
+    [vDayRatesExceptions].[DeletedInGoogle] AS [DeletedInGoogle]
     FROM [dbo].[vDayRatesExceptions] AS [vDayRatesExceptions]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vHotelActives" EntityType="Self.vHotelActives" store:Type="Views" store:Schema="dbo">
@@ -2131,6 +2136,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
           <Property Name="IsCombinablePromotion" Type="Boolean" />
           <Property Name="IsMobileRate" Type="Boolean" />
           <Property Name="IsCallCenterOnly" Type="Boolean" />
+          <Property Name="DeletedInGoogle" Type="Boolean" />
           </EntityType>
         <EntityType Name="Tarifas">
           <Key>
@@ -3400,6 +3406,8 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
           <Property Name="IsCallCenterOnly" Type="Boolean" Nullable="false" />
           <Property Name="PromoStartDateBookingWindow" Type="DateTime" Precision="0" />
           <Property Name="PromoEndDateBookingWindow" Type="DateTime" Precision="0" />
+          <Property Name="PromoRatePlanId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DeletedInGoogle" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="vDayRatesExceptions">
           <Key>
@@ -3444,6 +3452,8 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
           <Property Name="IsCallCenterOnly" Type="Boolean" Nullable="false" />
           <Property Name="PromoStartDateBookingWindow" Type="DateTime" Precision="0" />
           <Property Name="PromoEndDateBookingWindow" Type="DateTime" Precision="0" />
+          <Property Name="PromoRatePlanId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DeletedInGoogle" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="UsuarioHotel">
           <Key>
@@ -3617,6 +3627,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
           <EntitySetMapping Name="RatesPlan">
             <EntityTypeMapping TypeName="Models.RatesPlan">
               <MappingFragment StoreEntitySet="RatesPlan">
+                <ScalarProperty Name="DeletedInGoogle" ColumnName="DeletedInGoogle" />
                 <ScalarProperty Name="IsCallCenterOnly" ColumnName="IsCallCenterOnly" />
                 <ScalarProperty Name="IsMobileRate" ColumnName="IsMobileRate" />
                 <ScalarProperty Name="IsCombinablePromotion" ColumnName="IsCombinablePromotion" />
@@ -4742,6 +4753,8 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
           <EntitySetMapping Name="vDayRates">
             <EntityTypeMapping TypeName="Models.vDayRates">
               <MappingFragment StoreEntitySet="vDayRates">
+                <ScalarProperty Name="DeletedInGoogle" ColumnName="DeletedInGoogle" />
+                <ScalarProperty Name="PromoRatePlanId" ColumnName="PromoRatePlanId" />
                 <ScalarProperty Name="PromoEndDateBookingWindow" ColumnName="PromoEndDateBookingWindow" />
                 <ScalarProperty Name="PromoStartDateBookingWindow" ColumnName="PromoStartDateBookingWindow" />
                 <ScalarProperty Name="IsCallCenterOnly" ColumnName="IsCallCenterOnly" />
@@ -4776,6 +4789,8 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
           <EntitySetMapping Name="vDayRatesExceptions">
             <EntityTypeMapping TypeName="Models.vDayRatesExceptions">
               <MappingFragment StoreEntitySet="vDayRatesExceptions">
+                <ScalarProperty Name="DeletedInGoogle" ColumnName="DeletedInGoogle" />
+                <ScalarProperty Name="PromoRatePlanId" ColumnName="PromoRatePlanId" />
                 <ScalarProperty Name="PromoEndDateBookingWindow" ColumnName="PromoEndDateBookingWindow" />
                 <ScalarProperty Name="PromoStartDateBookingWindow" ColumnName="PromoStartDateBookingWindow" />
                 <ScalarProperty Name="IsCallCenterOnly" ColumnName="IsCallCenterOnly" />

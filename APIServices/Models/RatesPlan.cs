@@ -59,6 +59,7 @@ namespace APIServices.Models
         public Nullable<bool> IsCombinablePromotion { get; set; }
         public Nullable<bool> IsMobileRate { get; set; }
         public Nullable<bool> IsCallCenterOnly { get; set; }
+        public Nullable<bool> DeletedInGoogle { get; set; }
     
         public virtual Hoteles Hoteles { get; set; }
         public virtual RatesPlanRules RatesPlanRules { get; set; }
