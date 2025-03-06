@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?> 
-<Segmentos>		
+<Segmentos>
+	<Segmento>
+		<Desc>All</Desc>
+		<Code>E</Code>
+		<Head>ALL</Head>
+	</Segmento>
 	<Segmento>
 		<Desc>Standard</Desc>
 		<Code>R</Code>	
