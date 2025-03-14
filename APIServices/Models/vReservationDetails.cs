@@ -85,8 +85,5 @@ namespace APIServices.Models
         public string namePromotion { get; set; }
         public Nullable<int> idCancellationUser { get; set; }
         public string userCancellation { get; set; }
-        public string reservationIdIDS { get; set; }
-        public string paymentInformation { get; set; }
-        public string depositBank { get; set; }
     }
 }
