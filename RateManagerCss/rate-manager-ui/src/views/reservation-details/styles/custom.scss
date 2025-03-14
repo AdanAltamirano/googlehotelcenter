@@ -117,6 +117,33 @@ address {
     border-top: 1px solid $color-light-gray;
 }
 
+.padding-l-15{
+    padding-left: 15px !important;
+}
+
+.padding-r-15{
+    padding-right: 15px !important;
+}
+
+
+.color-212529{
+    color: #212529;
+}
+
+.truncate-text {
+    text-overflow: ellipsis;  // this line adds the ellipsis
+    cursor: pointer;          // this changes the cursor 
+    word-break: break-all;
+    overflow:hidden;         // this hides the overflowing text
+    white-space: nowrap;
+}
+
+.truncate-text:hover {
+    overflow: visible; 
+    white-space: normal;
+    height:auto;
+}
+
 .h-fit-content {
     height: fit-content !important;
 }

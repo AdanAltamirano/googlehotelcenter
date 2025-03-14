@@ -135,6 +135,11 @@ Partial Class HomePage
 
     Protected CtlMensajes1 As ctlMensajes
 
+    Enum SincOptions
+        ChannelManager
+        GooglePrice
+    End Enum
+
     Public Function getFunctionShow() As String
         Return "javascript:var e=document.getElementById('" & Me.TxtRooms.ClientID & "'); if (eval(e.value)==0) { " &
              CtlMensajes1.getShow(Me.btnSaveIntervals.ClientID, "", PortalCulture.GetString("00607")) &
@@ -199,9 +204,13 @@ Partial Class HomePage
             Div1.Style.Add("display", "block")
         End If
 
-        'If cInfoActual.IsSingleImgInv AndAlso IsSupervisor Then
-        btnSingleImgInv.Visible = True
-        'End If
+        If cInfoActual.IsSingleImgInv AndAlso IsSupervisor Then
+            btnSingleImgInv.Visible = True
+        End If
+
+        If cInfoActual.IsGooglePrice AndAlso IsSupervisor Then
+            btnSincGooglePrice.Visible = True
+        End If
         'If SourceName <> "" Then
         '    lblRoomName.Text = Me.SourceName.Split("//")(2 * ddlRoomtype.SelectedIndex)
         'End If
@@ -733,9 +742,6 @@ Partial Class HomePage
         Dim hr As Boolean
         dsBefore = (New RoomsInventoryFacade).getInventoryByDate_Data(tipoCuarto, inicio, fin)
 
-        Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
-        Dim isEnabledGoogleRequest As Boolean = HotelUtilitie.IsEnableGoogleRequest(info.Hotel)
-
         If (cInfoActual.IsHouse) AndAlso Rooms > 1 Then
             Rooms = 1
         End If
@@ -749,14 +755,13 @@ Partial Class HomePage
                 dsTrans = ds
                 dsTrans.AcceptChanges()
 
-                'If hr AndAlso cInfoActual.IsSingleImgInv Then
-                '    TwoWayUpdate(ds)
-                'End If
-
-                If isEnabledGoogleRequest Then
-                    TwoWayUpdate(ds)
+                If hr AndAlso cInfoActual.IsSingleImgInv Then
+                    TwoWayUpdate(ds, SincOptions.ChannelManager)
                 End If
 
+                If hr AndAlso cInfoActual.IsGooglePrice Then
+                    TwoWayUpdate(ds, SincOptions.GooglePrice)
+                End If
 
                 Return hr
             End With
@@ -782,16 +787,16 @@ Partial Class HomePage
                     dr.AcceptChanges()
                     dr(ds.FLD_STATUS) = dr(ds.FLD_STATUS)
 
-                    'If hr AndAlso cInfoActual.IsSingleImgInv Then
-                    '    TwoWayUpdate(ds)
-                    'End If
+                    If hr AndAlso cInfoActual.IsSingleImgInv Then
+                        TwoWayUpdate(ds, SincOptions.ChannelManager)
+                    End If
 
-                    If isEnabledGoogleRequest Then
-                        TwoWayUpdate(ds)
+                    If hr AndAlso cInfoActual.IsGooglePrice Then
+                        TwoWayUpdate(ds, SincOptions.GooglePrice)
                     End If
 
                 End If
-                Return hr
+                    Return hr
             End With
         End If
 
@@ -887,45 +892,11 @@ Partial Class HomePage
     End Function
 
     Private Sub btnSingleImgInv_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSingleImgInv.Click
-        Dim ds As New RoomsInventoryData
-        ds.Tables(0).Columns.Add("RoomCode", GetType(System.String))
+        SincInventory(SincOptions.ChannelManager)
+    End Sub
 
-        Dim dsActualInventory As RoomsInventoryData
-        Dim fini As Date = CDate(txtInicio.Text)
-        Dim fend As Date = CDate(txtFinal.Text)
-
-        For i As Integer = 0 To Me.ddlRoomtype.Items.Count - 1
-            If Me.ddlRoomtype.Items(i).Value <> 0 Then
-                dsActualInventory = (New RoomsInventoryFacade).getInventoryByDate_Data(Me.ddlRoomtype.Items(i).Value, fini, fend)
-
-                For Each row As DataRow In dsActualInventory.Tables(0).Rows
-                    Dim dr As DataRow = ds.Tables(RoomsInventoryData.TBL_ROOMS_INVENTORY).NewRow
-
-                    dr(RoomsInventoryData.FLD_DATE) = row(RoomsInventoryData.FLD_DATE)
-                    dr(RoomsInventoryData.FLD_STARTDATE) = row(RoomsInventoryData.FLD_DATE)
-                    dr(RoomsInventoryData.FLD_ENDDATE) = row(RoomsInventoryData.FLD_DATE)
-                    dr(RoomsInventoryData.FLD_ID_ROOM_HOTEL) = Me.ddlRoomtype.Items(i).Value
-                    dr(RoomsInventoryData.FLD_NUMBER_ROOMS) = row(RoomsInventoryData.FLD_NUMBER_ROOMS)
-                    dr(RoomsInventoryData.FLD_STATUS) = 0
-                    dr(RoomsInventoryData.FLD_NUMBER_AVAILABILITY) = row(RoomsInventoryData.FLD_NUMBER_AVAILABILITY)
-                    dr("RoomCode") = Me.ddlRoomtype.Items(i).Text.Split("-")(0).Trim()
-                    ds.Tables(RoomsInventoryData.TBL_ROOMS_INVENTORY).Rows.Add(dr)
-                    dr.AcceptChanges()
-                    dr(RoomsInventoryData.FLD_STATUS) = dr(RoomsInventoryData.FLD_STATUS)
-                Next
-
-            End If
-        Next
-
-        Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
-        Dim isEnabledGoogleRequest As Boolean = HotelUtilitie.IsEnableGoogleRequest(info.Hotel)
-
-        If isEnabledGoogleRequest Then
-            TwoWayUpdate(ds)
-        End If
-
-        'TwoWayUpdate(ds)
-
+    Private Sub btnSincGooglePrice_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSincGooglePrice.Click
+        SincInventory(SincOptions.GooglePrice)
     End Sub
 
     Private Sub btnSaveIntervals_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSaveIntervals.Click
@@ -1077,7 +1048,41 @@ Partial Class HomePage
         Me.txtFinal.Text = searched.AddDays(Date.DaysInMonth(year, month) - 1).ToString("MM/dd/yyyy")
     End Sub
 
-    Private Sub TwoWayUpdate(ByVal dsRooms As RoomsInventoryData)
+    Private Sub SincInventory(ByVal sincOption As SincOptions)
+        Dim ds As New RoomsInventoryData
+        ds.Tables(0).Columns.Add("RoomCode", GetType(System.String))
+
+        Dim dsActualInventory As RoomsInventoryData
+        Dim fini As Date = CDate(txtInicio.Text)
+        Dim fend As Date = CDate(txtFinal.Text)
+
+        For i As Integer = 0 To Me.ddlRoomtype.Items.Count - 1
+            If Me.ddlRoomtype.Items(i).Value <> 0 Then
+                dsActualInventory = (New RoomsInventoryFacade).getInventoryByDate_Data(Me.ddlRoomtype.Items(i).Value, fini, fend)
+
+                For Each row As DataRow In dsActualInventory.Tables(0).Rows
+                    Dim dr As DataRow = ds.Tables(RoomsInventoryData.TBL_ROOMS_INVENTORY).NewRow
+
+                    dr(RoomsInventoryData.FLD_DATE) = row(RoomsInventoryData.FLD_DATE)
+                    dr(RoomsInventoryData.FLD_STARTDATE) = row(RoomsInventoryData.FLD_DATE)
+                    dr(RoomsInventoryData.FLD_ENDDATE) = row(RoomsInventoryData.FLD_DATE)
+                    dr(RoomsInventoryData.FLD_ID_ROOM_HOTEL) = Me.ddlRoomtype.Items(i).Value
+                    dr(RoomsInventoryData.FLD_NUMBER_ROOMS) = row(RoomsInventoryData.FLD_NUMBER_ROOMS)
+                    dr(RoomsInventoryData.FLD_STATUS) = 0
+                    dr(RoomsInventoryData.FLD_NUMBER_AVAILABILITY) = row(RoomsInventoryData.FLD_NUMBER_AVAILABILITY)
+                    dr("RoomCode") = row("CodigoHabitacion")
+                    ds.Tables(RoomsInventoryData.TBL_ROOMS_INVENTORY).Rows.Add(dr)
+                    dr.AcceptChanges()
+                    dr(RoomsInventoryData.FLD_STATUS) = dr(RoomsInventoryData.FLD_STATUS)
+                Next
+
+            End If
+        Next
+
+        TwoWayUpdate(ds, sincOption)
+    End Sub
+
+    Private Sub TwoWayUpdate(ByVal dsRooms As RoomsInventoryData, ByVal sincOption As SincOptions)
         Dim service As New WsConnectWcf.wsConnectWCFv2
         Dim RQ As New WsConnectWcf.OTA_HotelAvailNotifRQ
         Dim POS(0) As WsConnectWcf.SourceType
@@ -1144,8 +1149,16 @@ Partial Class HomePage
 
 
         MyBase.WriteLog(String.Format("Request: {0}", soapRequest.ToString()), "SingleImgInv")
-        Dim url As String = ConfigurationManager.AppSettings("TwoWayUpdateURL")
+        Dim url As String = ConfigurationManager.AppSettings("confluxApiUrl")
         Dim strError As String = String.Empty
+
+        Select Case sincOption
+            Case SincOptions.ChannelManager
+                url += "inventory/ota/update"
+            Case SincOptions.GooglePrice
+                url += "pms/ota/inventory/update"
+        End Select
+
         Try
             Dim HttpReq As System.Net.HttpWebRequest = System.Net.WebRequest.Create(url)
 

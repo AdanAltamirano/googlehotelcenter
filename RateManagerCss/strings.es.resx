@@ -7285,7 +7285,7 @@
     <value>Actualización Exitosa</value>
   </data>
   <data name="01152" xml:space="preserve">
-    <value>Configuración de Conexión PMS</value>
+    <value>Configuración de Conexión Conflux</value>
   </data>
   <data name="01153" xml:space="preserve">
     <value>Correo de la Compañia</value>
@@ -8939,5 +8939,23 @@
   </data>
   <data name="01674" xml:space="preserve">
     <value>El plan tarifario que intenta vincular cuenta con tarifas cargadas. Es necesario eliminarlas antes de realizar el vínculo.</value>
+  </data>
+  <data name="01680" xml:space="preserve">
+    <value>Activo</value>
+  </data>
+  <data name="01681" xml:space="preserve">
+    <value>Pago en destino</value>
+  </data>
+  <data name="01682" xml:space="preserve">
+    <value>IVA</value>
+  </data>
+  <data name="01683" xml:space="preserve">
+    <value>Comisionable</value>
+  </data>
+  <data name="01684" xml:space="preserve">
+    <value>Precio sin impuesto</value>
+  </data>
+  <data name="01685" xml:space="preserve">
+    <value>Precio con impuesto</value>
   </data>
 </root>

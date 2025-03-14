@@ -160,19 +160,28 @@
     <Compile Include="Models\AplicacionPortal.cs">
       <DependentUpon>OzUniEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Canales.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Ciudades.cs">
+      <DependentUpon>OzUniEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ContratosNR.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Contenido.cs">
       <DependentUpon>OzUniEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Corporativos.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\DTO\CancelBooking.cs" />
-    <Compile Include="Models\ContratosNR.cs">
+    <Compile Include="Models\Corporativos.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Diccionario.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\DTO\CancelBooking.cs" />
     <Compile Include="Models\DTO\Currency\CurrencyDTO.cs" />
     <Compile Include="Models\DTO\DailyRate.cs" />
     <Compile Include="Models\DTO\DailyRateDetail.cs" />
@@ -208,8 +217,14 @@
     <Compile Include="Models\GetMappedHotelsWithRatePlan_Result.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\HotelCanales.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Hoteles.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\HotelItem_Contenido.cs">
+      <DependentUpon>OzUniEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Indice.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
@@ -239,7 +254,7 @@
       <DependentUpon>OzHoteles.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\DTO\RatesByRatePlan.cs" />
-    <Compile Include="Models\OzHoteles1.Designer.cs">
+    <Compile Include="Models\OzHoteles.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>OzHoteles.edmx</DependentUpon>
@@ -328,6 +343,9 @@
     <Compile Include="Models\spGetPromosByRatePlan_Result.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\spGetReservationHotelItem_Result.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\spReservationLog_Result.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
@@ -382,6 +400,9 @@
     <Compile Include="Models\vHotelByUser.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\vHotelChannel.cs">
+      <DependentUpon>OzHoteles.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\vHotelPlan.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
@@ -432,10 +453,40 @@
     <Compile Include="ReservationService.cs" />
     <Compile Include="RoomsClosureService.cs" />
     <Compile Include="RoomsService.cs" />
+    <Compile Include="Service\Arpon\ArponEntities.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ArponEntities.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Service\Arpon\ArponEntities.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ArponEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Service\Arpon\ArponEntities.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ArponEntities.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Service\Arpon\ArponService.cs" />
+    <Compile Include="Service\Arpon\HotelIPH_Arpon.cs">
+      <DependentUpon>ArponEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Service\Arpon\Models\ArponModels.cs" />
+    <Compile Include="Service\Arpon\RatePlansIPH_Arpon.cs">
+      <DependentUpon>ArponEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Service\Arpon\RoomsIPH_Arpon.cs">
+      <DependentUpon>ArponEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Service\Arpon\TipoHabitaciones_Hoteles.cs">
+      <DependentUpon>ArponEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Service\HotelVerse\HotelVerseService.cs" />
     <Compile Include="Service\HotelVerse\Models\Record.cs" />
     <Compile Include="Service\HotelVerse\Models\Response\ResponseRequest.cs" />
     <Compile Include="Utilities.cs" />
+    <Compile Include="UtilsService.cs" />
     <Compile Include="Xml\OTA\Request\RatePlan\HotelRatePlanRQ.cs" />
     <Compile Include="Xml\OTA\Request\Rates\HotelRateAmountNotifRQ.cs" />
     <Compile Include="Xml\OTA\Request\Rates\HotelRateAmountNotifRS.cs" />
@@ -446,7 +497,7 @@
   <ItemGroup>
     <EntityDeploy Include="Models\OzHoteles.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>OzHoteles1.Designer.cs</LastGenOutput>
+      <LastGenOutput>OzHoteles.Designer.cs</LastGenOutput>
     </EntityDeploy>
   </ItemGroup>
   <ItemGroup>
@@ -465,8 +516,25 @@
       <DependentUpon>OzUniEntities.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
+    <EntityDeploy Include="Service\Arpon\ArponEntities.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ArponEntities.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Service\Arpon\ArponEntities.edmx.diagram">
+      <DependentUpon>ArponEntities.edmx</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Service\Arpon\ArponEntities.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ArponEntities.edmx</DependentUpon>
+      <LastGenOutput>ArponEntities.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Service\Arpon\ArponEntities.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ArponEntities.edmx</DependentUpon>
+      <LastGenOutput>ArponEntities.cs</LastGenOutput>
+    </Content>
     <EmbeddedResource Include="Errors.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>

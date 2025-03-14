@@ -66,6 +66,9 @@ namespace APIServices.Models
         public virtual DbSet<vLinkedRatePlans> vLinkedRatePlans { get; set; }
         public virtual DbSet<vDayRates> vDayRates { get; set; }
         public virtual DbSet<vDayRatesExceptions> vDayRatesExceptions { get; set; }
+        public virtual DbSet<Canales> Canales { get; set; }
+        public virtual DbSet<vHotelChannel> vHotelChannel { get; set; }
+        public virtual DbSet<HotelCanales> HotelCanales { get; set; }
         public virtual DbSet<UsuarioHotel> UsuarioHotel { get; set; }
         public virtual DbSet<vUsersConnectivity> vUsersConnectivity { get; set; }
         public virtual DbSet<Log> Log { get; set; }
@@ -475,6 +478,15 @@ namespace APIServices.Models
                 new ObjectParameter("hotelId", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetLockRatePlansByHotel_Result>("spGetLockRatePlansByHotel", hotelIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetReservationHotelItem_Result> spGetReservationHotelItem(Nullable<int> idReservation)
+        {
+            var idReservationParameter = idReservation.HasValue ?
+                new ObjectParameter("idReservation", idReservation) :
+                new ObjectParameter("idReservation", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetReservationHotelItem_Result>("spGetReservationHotelItem", idReservationParameter);
         }
     }
 }

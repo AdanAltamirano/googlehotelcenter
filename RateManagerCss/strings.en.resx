@@ -7275,7 +7275,7 @@
     <value>Sucess Update</value>
   </data>
   <data name="01152" xml:space="preserve">
-    <value>PMS Connection Settings</value>
+    <value>Conflux Connection Settings</value>
   </data>
   <data name="01153" xml:space="preserve">
     <value>Email Bussiness</value>
@@ -8933,5 +8933,23 @@
   </data>
   <data name="01674" xml:space="preserve">
     <value>The rate plan you are trying to link has charged rates. It is necessary to remove them before making the link.</value>
+  </data>
+  <data name="01680" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="01681" xml:space="preserve">
+    <value>Payment at destination</value>
+  </data>
+  <data name="01682" xml:space="preserve">
+    <value>IVA</value>
+  </data>
+  <data name="01683" xml:space="preserve">
+    <value>Comisionable</value>
+  </data>
+  <data name="01684" xml:space="preserve">
+    <value>Price without tax</value>
+  </data>
+  <data name="01685" xml:space="preserve">
+    <value>Price with tax</value>
   </data>
 </root>

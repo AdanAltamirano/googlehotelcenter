@@ -101,6 +101,7 @@ Partial Class Rooms
 
     Private Enum columns
         idRoomType
+        Orden
         codigo
         Tipo
         nameroom
@@ -114,6 +115,7 @@ Partial Class Rooms
         ExtraBedPrice
         Options
         Delete
+        Active
         Description
         eliminada
         idDiccionarioNombreHabitacion
@@ -128,6 +130,7 @@ Partial Class Rooms
 #End Region
     Protected WithEvents CtrlRooms1 As ctrlRooms
     Protected WithEvents CtlMensajes1 As ctlMensajes
+    Protected WithEvents CtlMensajes2 As ctlMensajes
 
     Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load, Me.Load
 
@@ -184,14 +187,26 @@ Partial Class Rooms
     End Sub
 
     Private Sub LoadRooms(ByVal sFiltro As String)
+
+        Dim roomsDataView As DataView = Nothing
+
         With CtrlRooms1
             If ddlFilter.SelectedIndex = 0 Then
                 sFiltro = IIf(sFiltro = String.Empty, "eliminada=false", "eliminada=false and " & sFiltro)
             ElseIf ddlFilter.SelectedIndex = 1 Then
                 sFiltro = IIf(sFiltro = String.Empty, "eliminada=true", "eliminada=true and " & sFiltro)
             End If
-            grid.DataSource = .getAllRooms(sFiltro)
+
+            roomsDataView = .getAllRooms(sFiltro)
+
+            'grid.DataSource = .getAllRooms(sFiltro)
+
+            grid.DataSource = roomsDataView
+            .totalRooms = roomsDataView.ToTable().Rows.Count
+
             CType(grid.Columns(columns.idRoomType), BoundColumn).DataField = RoomsHotelData.FLD_ID_ROOM_HOTEL
+
+            CType(grid.Columns(columns.Orden), BoundColumn).DataField = RoomsHotelData.FLD_ORDEN
 
             CType(grid.Columns(columns.codigo), BoundColumn).DataField = RoomsHotelData.FLD_ROOM_CODE  '//// este nueva
             CType(grid.Columns(columns.Tipo), BoundColumn).DataField = RoomsHotelData.FLD_ROOM_TYPE '//// este nueva
@@ -208,6 +223,10 @@ Partial Class Rooms
             CType(grid.Columns(columns.eliminada), BoundColumn).DataField = "eliminada"
             'Page.RegisterViewStateHandler()
             grid.DataBind()
+
+            If .edicion = False Then
+                .cargarOrden()
+            End If
         End With
 
     End Sub
@@ -226,6 +245,7 @@ Partial Class Rooms
         idRoom = 0
         Habitacion = String.Empty
         Me.grid.SelectedIndex = -1
+        Me.CtrlRooms1.edicion = False
         CtrlRooms1.newRoom()
         TipoEdicion = Edicion.NoEdicion
         Editando = False
@@ -271,10 +291,12 @@ Partial Class Rooms
             'End  If
 
         End If
-        LoadRooms("")
+        'LoadRooms("")
         Me.grid.SelectedIndex = -1
         TipoEdicion = Edicion.NoEdicion
         Editando = False
+        Me.CtrlRooms1.edicion = False
+        LoadRooms("")
         Me.idRoom = 0
         Me.Habitacion = String.Empty
         CtrlRooms1.newRoom()
@@ -309,37 +331,69 @@ Partial Class Rooms
 
             Dim stat As String = e.Item.Cells(columns.eliminada).Text
             Dim LK As LinkButton
+            Dim hpl As HyperLink
             Dim sMsg As String
 
+            Dim ordenItem As Integer = CInt(e.Item.Cells(columns.Orden).Text)
+
+            If (ordenItem > CtrlRooms1.totalRooms) Then
+                e.Item.Cells(columns.Orden).Text = CtrlRooms1.totalRooms
+            End If
+
+
+
             LK = e.Item.FindControl("ibtnEdit")
+
             If Not LK Is Nothing Then
-                LK.Text = PortalCulture.GetString("M000061")
-                If (stat.ToLower.Trim = "true") Then                    
+                LK.Text = PortalCulture.GetString("M000061") 'PortalCulture Editar
+                If (stat.ToLower.Trim = "true") Then
                     LK.Enabled = False
                 Else
                     LK.Enabled = True
                 End If
             End If
-            LK = e.Item.FindControl("ibtnDelete2")
-            Dim hpl As HyperLink            
-            hpl = e.Item.FindControl("ibtnDelete")
-            If (stat.ToLower.Trim = "true") Then
-                sMsg = PortalCulture.GetString("01522")
-                hpl.Text = PortalCulture.GetString("01520")
-            Else
+
+            If stat.ToUpper() = "TRUE" Then ' Activamos, Habitacion esta desactivada
+
+                e.Item.FindControl("ibtnDelete2").Visible = False
+                e.Item.FindControl("ibtnDelete").Visible = False
+
+                LK = e.Item.FindControl("ibtnActive2")
+                hpl = e.Item.FindControl("ibtnActive")
+                sMsg = PortalCulture.GetString("01522") 'PortalCulture Realmente Desea Activar la Habitacion
+                hpl.Text = PortalCulture.GetString("01520") 'PortalCulture Activar
+                hpl.NavigateUrl = Me.CtlMensajes2.getShow(LK.ClientID, PortalCulture.GetString("A00041"), sMsg, True)
+
+                If ddlFilter.SelectedValue = "-1" Then
+                    e.Item.Style("background-color") = "#FEE"
+                End If
+
+            Else ' Desactivamos, Habitacion esta activada
+
+                e.Item.FindControl("ibtnActive2").Visible = False
+                e.Item.FindControl("ibtnActive").Visible = False
+
+                LK = e.Item.FindControl("ibtnDelete2")
+                hpl = e.Item.FindControl("ibtnDelete")
+
+
+
                 If Not isLinked(e.Item.Cells(columns.idRoomType).Text) Then
                     sMsg = PortalCulture.GetString("01523")
                     hpl.Text = PortalCulture.GetString("01521")
                 Else
                     hpl.Visible = False
-                    e.Item.Cells(columns.Delete).Text = PortalCulture.GetString("01588")
+                    e.Item.Cells(columns.Delete).Text = PortalCulture.GetString("01588") 'PortalCulture Vinculado
                 End If
+
+                hpl.NavigateUrl = Me.CtlMensajes1.getShow(LK.ClientID, PortalCulture.GetString("A00041"), sMsg, True)
             End If
 
-
-            hpl.NavigateUrl = Me.CtlMensajes1.getShow(LK.ClientID, PortalCulture.GetString("A00041"), sMsg, True)
-
             e.Item.Cells(columns.ExtraBedPrice).Text = FCurrency(e.Item.Cells(columns.ExtraBedPrice).Text, 2)
+
+
+        ElseIf e.Item.ItemType = ListItemType.Header Then
+            e.Item.Cells(columns.Orden).Text = PortalCulture.GetString("00920")
         ElseIf e.Item.ItemType = ListItemType.Footer Then
             e.Item.Cells(columns.Delete).Text = CType(grid.DataSource, DataView).Count & " " & PortalCulture.GetString("A00041")
         End If
@@ -360,7 +414,9 @@ Partial Class Rooms
         Select Case e.CommandName
             Case "Select"
                 TipoEdicion = Edicion.Rooms
-
+                Me.CtrlRooms1.edicion = True
+                Me.CtrlRooms1.cargarOrden()
+                'CtrlRooms1.loadRoom(idRoom)
                 If Not editar = False Then
                     Me.Editando = True
                     'Me.Habitacion = e.Item.Cells(1).Text
@@ -376,10 +432,11 @@ Partial Class Rooms
                     If grid.CurrentPageIndex > 0 And grid.Items.Count = 1 Then
                         grid.CurrentPageIndex = (((grid.Items.Count - 1) * grid.PageSize) - 1) \ grid.PageSize
                     End If
-                    LoadRooms("")
+                    Me.CtrlRooms1.edicion = False
                     Me.grid.SelectedIndex = -1
                     TipoEdicion = Edicion.NoEdicion
                     Editando = False
+                    LoadRooms("")
                 Else
                     Select Case _error
                         Case 1
@@ -392,6 +449,24 @@ Partial Class Rooms
 
                     lblDeleteError.Visible = True
                 End If
+                MostrarCmdNew(True)
+                btnOcultarDivContenedor_Click(Nothing, Nothing)
+
+            Case "Active"
+                Dim _error As Integer = CtrlRooms1.activeRoom()
+
+                If _error = 0 Then
+                    guardalog("/Pages/Rooms.aspx", PaginaBase.acciones.Eliminar, "Se activó la habitación " & grid.Items(grid.SelectedIndex).Cells(columns.Tipo).Text & " - " & grid.Items(grid.SelectedIndex).Cells(columns.nameroom).Text & " de el hotel " & Me.cInfoActual.HotelName)
+                    If grid.CurrentPageIndex > 0 And grid.Items.Count = 1 Then
+                        grid.CurrentPageIndex = (((grid.Items.Count - 1) * grid.PageSize) - 1) \ grid.PageSize
+                    End If
+                    Me.CtrlRooms1.edicion = False
+                    Me.grid.SelectedIndex = -1
+                    TipoEdicion = Edicion.NoEdicion
+                    Editando = False
+                    LoadRooms("")
+                End If
+
                 MostrarCmdNew(True)
                 btnOcultarDivContenedor_Click(Nothing, Nothing)
         End Select
@@ -548,7 +623,7 @@ Partial Class Rooms
             End If
         End If
         Dim lnk As LinkButton
-        If e.Item.ItemType = ListItemType.EditItem Or _
+        If e.Item.ItemType = ListItemType.EditItem Or
             e.Item.ItemType = ListItemType.AlternatingItem _
             Or e.Item.ItemType = ListItemType.Item Then
             lnk = e.Item.Cells(10).FindControl("ibtnEdit")
@@ -595,6 +670,7 @@ Partial Class Rooms
         'MostarDivContenedor = False
         'divContenedor.Style("display") = "none"
         'btnMostarDivContenedor.Visible = Not MostarDivContenedor
+        Me.CtrlRooms1.edicion = False
         MostrarCmdNew(True)
         btnNuevo_Click(sender, e)
     End Sub

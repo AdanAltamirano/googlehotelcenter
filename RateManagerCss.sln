@@ -1,7 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.34601.136
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "RateManagerCss", "RateManagerCss\RateManagerCss.vbproj", "{7EA5E769-494C-4457-A350-1C214B205956}"
+	ProjectSection(ProjectDependencies) = postProject
+		{66017370-9F20-4FC4-97EF-E00FD5FE80CE} = {66017370-9F20-4FC4-97EF-E00FD5FE80CE}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{764D53DB-A515-4AD1-8AC0-902EF9A66A8D}"
 	ProjectSection(SolutionItems) = preProject
@@ -30,5 +35,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1EE975DE-A4FA-482A-811A-3D7F660BB5A1}
 	EndGlobalSection
 EndGlobal

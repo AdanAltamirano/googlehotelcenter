@@ -16,6 +16,8 @@ Partial Public Class HotelItem
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         If Not MyBase.IsHotelSelected Then MyBase.redirectTo(PaginaBase.pages.Home)
+        ctrlHotelItem1.idHotel = MyBase.cInfoActual.Hotel
+        ctrlHotelItem1.idCompany = MyBase.cInfoActual.Empresa
         Dim dsHotel As HotelDatos
         Dim dsEtiq As MonedaDatos
 
@@ -26,10 +28,35 @@ Partial Public Class HotelItem
             If dsHotel.Tables(.HOTEL_TABLE).Rows.Count > 0 Then
                 ctrlHotelItem1.IDMoneda = .Tables(.HOTEL_TABLE)(0)(.FIELD_IDMONEDA)
                 ctrlHotelItem1.Moneda = .Tables(.HOTEL_TABLE)(0)("Codigo")
+                ctrlHotelItem1.MonedaInfo = .Tables(.HOTEL_TABLE)(0)("Codigo")
             Else
                 ctrlHotelItem1.Visible = False
             End If
         End With
+
+        If Not IsPostBack Then
+            ddlFilter.Items.Clear()
+            ddlFilter.Items.Add(New ListItem(PortalCulture.GetString("01541"), 1))
+            ddlFilter.Items.Add(New ListItem(PortalCulture.GetString("01542"), 0))
+            ddlFilter.Items.Add(New ListItem(PortalCulture.GetString("01543"), -1))
+            ddlFilter.SelectedIndex = 0
+        End If
+
+        If IsPostBack Then
+            Dim ctrlName As String = Page.Request.Params.Get("__EVENTTARGET")
+            If ctrlName = "ddlFilter" Then
+                ctrlHotelItem1.IsEdit = False
+                cmdNew.Style("display") = "block"
+            End If
+        End If
+
+
+        If Not IsPostBack Then
+            If Request.QueryString("idTypeHotelItem") IsNot Nothing Then
+                cmdNew.Style("display") = "none"
+                ctrlHotelItem1.LoadHotelItem(CType(Request.QueryString("idTypeHotelItem"), Integer), True)
+            End If
+        End If
 
     End Sub
 
@@ -37,10 +64,25 @@ Partial Public Class HotelItem
         'Dim dt As PaymentMethodDataSet.CompanyPaymentMethod_GeByCompanyIDDataTable
         Dim ds As HotelItemData
 
+        Dim sFiltro = String.Empty
+
+        If ddlFilter.SelectedIndex = 0 Then
+            sFiltro = "active=true"
+        ElseIf ddlFilter.SelectedIndex = 1 Then
+            sFiltro = "active=false"
+        Else ddlFilter.SelectedIndex = 2
+            sFiltro = String.Empty
+        End If
+
         ds = New Portal.General.Facade.HotelItemFacade().GetHotelItemByIDHotel(MyBase.cInfoActual.Hotel)
 
+        Dim dv As DataView
+        dv = ds.Tables(ds.HOTELITEM_TABLE).DefaultView
+        dv.RowFilter = sFiltro
+
+
         With grid
-            .DataSource = ds.Tables(ds.HOTELITEM_TABLE)
+            .DataSource = dv
             .DataBind()
         End With
 
@@ -121,6 +163,11 @@ Partial Public Class HotelItem
             lblMsg.Text = PortalCulture.GetString("01574")
         End If
 
+    End Sub
+
+    Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btncancel.Click
+        ctrlHotelItem1.ResetForm()
+        cmdNew.Style("display") = "block"
     End Sub
 
 End Class

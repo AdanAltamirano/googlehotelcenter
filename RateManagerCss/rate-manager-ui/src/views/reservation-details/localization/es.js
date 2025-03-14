@@ -188,6 +188,10 @@ export default {
     'Send Again' : 'Enviar de Nuevo',
     'Prices' : 'Precios',
     'Only data that have been updated are displayed' : 'Solo se muestran los datos que han sido actualizados',
-    'Virtual Card' : 'Tarjeta Virtual',
-    'Amount to be charged' : 'Monto a cobrar'
+    'There are no records' : 'No hay movimientos',
+    'Extras' : 'Extras',
+    'Description' : 'Descripción',
+    'Quantity' : 'Cantidad',
+    'This item must be charged upon arrival of the guest' : 'Este articulo deberá  ser cobrado a la llegada del huésped',
+    'This reservation contains extra items or services that must be charged upon the guests arrival' : 'Esta reserva contiene articulos o servicios extras que deberán ser cobrados a la llegada del huésped'
 }

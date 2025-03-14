@@ -62,7 +62,7 @@ namespace APIServices.Models.DTO
         public Nullable<int> IdCancellationUser  { get; set; }
         public string UserCancellation { get; set; }
         public bool ShowLogs { get; set; }
-
+        public List<HotelItem> ReservationItemsDetails { get; set; } = new List<HotelItem>();
     }
 
     public class CustomerDetails
@@ -214,6 +214,27 @@ namespace APIServices.Models.DTO
          */
         public bool VerifyAction { get; set; } 
     }
+
+    public class HotelItem
+    {
+        public int HotelItemReservationId { get; set; }
+        public int ReservationId { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public string Img { get; set; } = "";
+        public int? Quantity { get; set; }
+        public decimal Price { get; set; }
+        public decimal Total { get; set; }
+        public int? CurrencyId { get; set; }
+        public string CurrencyName { get; set; }
+        public string Symbol { get; set; }
+        public string Abbreviation { get; set; }
+        public string Code { get; set; }
+        public Nullable<decimal> ExchangeRate { get; set; }
+        public bool AllowPaymentDestination { get; set; }
+
+    }
+
 
 
 }

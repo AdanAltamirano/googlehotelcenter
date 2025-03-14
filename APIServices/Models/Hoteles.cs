@@ -18,6 +18,7 @@ namespace APIServices.Models
         public Hoteles()
         {
             this.RatesPlan = new HashSet<RatesPlan>();
+            this.HotelCanales = new HashSet<HotelCanales>();
         }
     
         public int idHotel { get; set; }
@@ -132,5 +133,7 @@ namespace APIServices.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RatesPlan> RatesPlan { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<HotelCanales> HotelCanales { get; set; }
     }
 }
