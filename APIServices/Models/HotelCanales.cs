@@ -19,6 +19,7 @@ namespace APIServices.Models
         public Nullable<int> idCanal { get; set; }
         public int Comision { get; set; }
     
+        public virtual Canales Canales { get; set; }
         public virtual Hoteles Hoteles { get; set; }
     }
 }

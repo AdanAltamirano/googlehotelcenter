@@ -57,6 +57,8 @@
         <AssociationConnector Association="Models.FK__HotelCana__idHot__54C23EC5" />
         <EntityTypeShape EntityType="Models.UsuarioHotel" Width="1.5" PointX="1.5" PointY="5.625" />
         <EntityTypeShape EntityType="Models.vUsersConnectivity" Width="1.5" PointX="11.75" PointY="4" IsExpanded="false" />
+        <AssociationConnector Association="Models.FK__HotelCana__idCan__55B662FE" />
+        <AssociationConnector Association="Models.FK__HotelCana__idHot__54C23EC5" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

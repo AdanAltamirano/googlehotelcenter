@@ -14,7 +14,16 @@ namespace APIServices.Models
     
     public partial class Canales
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Canales()
+        {
+            this.HotelCanales = new HashSet<HotelCanales>();
+        }
+    
         public int idCanal { get; set; }
         public string nombre { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<HotelCanales> HotelCanales { get; set; }
     }
 }
