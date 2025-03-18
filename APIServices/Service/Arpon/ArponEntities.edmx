@@ -12,6 +12,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IdHotelIP" Type="nvarchar(max)" />
           <Property Name="IdHotelArpon" Type="nvarchar(max)" />
+          <Property Name="UrlArpon" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="RatePlansIPH_Arpon">
           <Key>
@@ -84,8 +85,9 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IdHotelIP" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IdHotelIP" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="IdHotelArpon" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UrlArpon" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="RatePlansIPH_Arpon">
           <Key>
@@ -158,6 +160,7 @@
           <EntitySetMapping Name="HotelIPH_Arpon">
             <EntityTypeMapping TypeName="OzArpon.HotelIPH_Arpon">
               <MappingFragment StoreEntitySet="HotelIPH_Arpon">
+                <ScalarProperty Name="UrlArpon" ColumnName="UrlArpon" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="IdHotelIP" ColumnName="IdHotelIP" />
                 <ScalarProperty Name="IdHotelArpon" ColumnName="IdHotelArpon" />

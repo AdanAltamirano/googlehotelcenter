@@ -17,5 +17,6 @@ namespace APIServices.Service.Arpon
         public int Id { get; set; }
         public string IdHotelIP { get; set; }
         public string IdHotelArpon { get; set; }
+        public string UrlArpon { get; set; }
     }
 }
