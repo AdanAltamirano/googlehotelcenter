@@ -6,6 +6,7 @@
 				<tr>
 					<th>Hotel Internet Power</th>
 					<th>Hotel Arpon</th>
+					<th>{{$t('Agency')}}</th>
 					<th>Url</th>
 				</tr>
 			</thead>
@@ -14,6 +15,9 @@
 					<td>{{hotelId}}</td>
 					<td>
 						<b-form-input class="w-300" v-model="arponId" required></b-form-input>
+					</td>
+					<td>
+						<b-form-input class="w-300" v-model="agencyArpon"></b-form-input>
 					</td>
 					<td>
 						<b-form-input class="w-400" v-model="urlArpon" required></b-form-input>
@@ -48,6 +52,7 @@ export default {
 			hotelId: this.$appConfig.session.hotelId,
 			arponId: '',
 			urlArpon: '',
+			agencyArpon: '',
 			callApi:false,
 			showButton:true
 		}
@@ -89,6 +94,7 @@ export default {
 				console.log(response);
 				this.arponId = response.body.idHotelArpon;
 				this.urlArpon = response.body.urlArpon;
+				this.agencyArpon = response.body.agencyArpon;
 				this.callApi = false;
 			})
 			.catch(error => {
@@ -102,7 +108,8 @@ export default {
 			const payload  = {
 				IdHotelIp : this.hotelId,
 				IdHotelArpon : this.arponId,
-				UrlArpon : this.urlArpon
+				UrlArpon : this.urlArpon,
+				AgencyArpon: this.agencyArpon
 			}
 
 			ArponService.SaveHotelArpon(this.hotelId, payload)

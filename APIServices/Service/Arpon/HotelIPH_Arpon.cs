@@ -18,5 +18,6 @@ namespace APIServices.Service.Arpon
         public string IdHotelIP { get; set; }
         public string IdHotelArpon { get; set; }
         public string UrlArpon { get; set; }
+        public string AgencyArpon { get; set; }
     }
 }

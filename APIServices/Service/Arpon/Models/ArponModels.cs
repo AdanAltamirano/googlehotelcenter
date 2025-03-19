@@ -11,6 +11,7 @@ namespace APIServices.Service.Arpon.Models
         public string IdHotelIp { get; set; } = string.Empty;
         public string IdHotelArpon { get; set; } = string.Empty;
         public string UrlArpon { get; set; } = string.Empty;
+        public string AgencyArpon { get; set; } = string.Empty;
     }
 
     public class RatePlansIPH_Arpon_Model

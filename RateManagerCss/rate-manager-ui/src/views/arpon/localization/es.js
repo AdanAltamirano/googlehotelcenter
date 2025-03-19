@@ -8,5 +8,6 @@ export default {
     'Rateplans Saved' : 'Planes Tarifarios Guardados',
     'Rooms' : 'Habitaciones',
     'Rooms Saved' : 'Habitaciones Guardadas',
-    'Exit' : 'Cerrar'
+    'Exit' : 'Cerrar',
+    'Agency' : 'Agencia'
 }
