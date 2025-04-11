@@ -545,6 +545,24 @@ Partial Public Class Hotel
     Protected WithEvents RangeValidatorTxtEcotasa As Global.System.Web.UI.WebControls.RangeValidator
 
     '''<summary>
+    '''Control lblSendRatesAPICache.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblSendRatesAPICache As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control chkSendRatesAPICache.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents chkSendRatesAPICache As Global.System.Web.UI.WebControls.CheckBox
+
+    '''<summary>
     '''Control lblConfirmationEmail.
     '''</summary>
     '''<remarks>

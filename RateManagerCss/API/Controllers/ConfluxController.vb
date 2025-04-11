@@ -50,13 +50,14 @@ Namespace API.Controllers
         <Route("updaterates/{hotelId:int}"), HttpPost>
         Public Function UpdateRates(ByVal hotelId As Integer) As HttpResponseMessage
 
+            Dim endpointGoogle As String = ConfigurationManager.AppSettings("confluxApiUrl") & "pms/ota/rates/update"
+            Dim endpointDeleteGoogle As String = ConfigurationManager.AppSettings("confluxApiUrl") & "pms/ota/rates/delete"
             Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
+            Dim ratesMessages As RatesMessages = ConfluxService.GetRateMessages(hotelId, info.Empresa)
 
-            Dim result As RatesReponse = ConfluxService.UpdateRates(hotelId, info.Empresa)
+            Dim result As RatesReponse = ConfluxService.UpdateRates(ratesMessages, endpointGoogle, endpointDeleteGoogle)
 
             Dim ratesToUpdate As RateResponse = result.RateResponseList(0)
-            Dim ratesToDelete As RateResponse = result.RateResponseList(1)
-            Dim ratesToUpdateExceptions As RateResponse = result.RateResponseList(2)
 
             If Not ratesToUpdate.IsSuccess Then
 
@@ -66,37 +67,15 @@ Namespace API.Controllers
 
             End If
 
-            Dim index As Integer = 1
+            LogRates(hotelId, "Conflux", result)
 
-            For Each request As APIServices.Conflux.Models.Rates.Response.Rate In ratesToUpdate.Rates
-                Dim note As String = String.Format("Sincronizar request numero {0} Tarifas Conflux con el hotel: ", (index))
-                Log(note, request.Xml, hotelId, request.XmlRequest)
-                index += 1
-            Next
-
-
-            If ratesToUpdateExceptions IsNot Nothing Then
-                If Not ratesToUpdateExceptions.IsSuccess Then
-                    Log("Error Sincronizar Tarifas Excepciones Conflux con el hotel: ", ratesToUpdateExceptions.Xml, hotelId, String.Empty)
-                Else
-                    index = 1
-
-                    For Each request As APIServices.Conflux.Models.Rates.Response.Rate In ratesToUpdateExceptions.Rates
-                        Dim note As String = String.Format("Sincronizar excepciones request numero {0} Tarifas Conflux con el hotel: ", (index))
-                        Log(note, request.Xml, hotelId, request.XmlRequest)
-                        index += 1
-                    Next
-                End If
+            ''API CACHE
+            If Utitlities.Hotel.HotelUtilitie.IsEnableSendRatesAPICache(hotelId) Then
+                Dim resultAPICache As RatesReponse = ConfluxService.UpdateRates(ratesMessages, "", "")
+                LogRates(hotelId, "APICache", result)
             End If
 
             Dim toObject As Object = ratesToUpdate
-
-            'Log Delete
-            If ratesToDelete IsNot Nothing Then
-                Dim noteDelete As String = String.Format("Eliminar Tarifas Conflux con el hotel: {0}", hotelId)
-                Log(noteDelete, ratesToDelete.Xml, hotelId, ratesToDelete.RequestXML)
-            End If
-
 
             Return Ok(toObject)
 
@@ -172,6 +151,52 @@ Namespace API.Controllers
             With (New PaginaBase)
                 .guardalog("/rate-manager-ui/dist/channel-rates-update.aspx", acciones.Sincronizar, note & hotelId, "", requestXMl, xml, hotelId:=hotelId)
             End With
+        End Sub
+
+        Private Sub LogRates(ByVal hotelId As Integer, ByVal serviceToSent As String, ByVal result As RatesReponse)
+
+            Dim ratesToUpdate As RateResponse = result.RateResponseList(0)
+            Dim ratesToDelete As RateResponse = result.RateResponseList(1)
+            Dim ratesToUpdateExceptions As RateResponse = result.RateResponseList(2)
+
+
+
+            Dim index As Integer = 1
+
+            If Not ratesToUpdate.IsSuccess Then
+                Dim note As String = String.Format("Error Sincronizar Tarifas {1} con el hotel: {0}", hotelId, serviceToSent)
+                Log(note, ratesToUpdate.Xml, hotelId, String.Empty)
+            Else
+
+                For Each request As APIServices.Conflux.Models.Rates.Response.Rate In ratesToUpdate.Rates
+                    Dim note As String = String.Format("Sincronizar request numero {0} Tarifas {1} con el hotel: ", (index), serviceToSent)
+                    Log(note, request.Xml, hotelId, request.XmlRequest)
+                    index += 1
+                Next
+
+            End If
+
+            If ratesToUpdateExceptions IsNot Nothing Then
+                If Not ratesToUpdateExceptions.IsSuccess Then
+                    Dim note As String = String.Format("Error Sincronizar Tarifas Excepciones {1} con el hotel: {0}", hotelId, serviceToSent)
+                    Log(note, ratesToUpdateExceptions.Xml, hotelId, String.Empty)
+                Else
+                    index = 1
+
+                    For Each request As APIServices.Conflux.Models.Rates.Response.Rate In ratesToUpdateExceptions.Rates
+                        Dim note As String = String.Format("Sincronizar excepciones request numero {0} Tarifas {1} con el hotel: ", (index), serviceToSent)
+                        Log(note, request.Xml, hotelId, request.XmlRequest)
+                        index += 1
+                    Next
+                End If
+            End If
+
+            'Log Delete
+            If ratesToDelete IsNot Nothing Then
+                Dim noteDelete As String = String.Format("Eliminar Tarifas {1} con el hotel: {0}", hotelId, serviceToSent)
+                Log(noteDelete, ratesToDelete.Xml, hotelId, ratesToDelete.RequestXML)
+            End If
+
         End Sub
 
     End Class

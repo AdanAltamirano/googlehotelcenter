@@ -583,6 +583,7 @@ Partial Class ctrlRooms
 
                         mlDescriptionRoom.Update(idDictionryDesc, publish)
                         mlNameRoom.Update(idDictionryName, publish)
+                        ctrlImgRooms1.SaveImages()
                     End If
                 End If
             End With

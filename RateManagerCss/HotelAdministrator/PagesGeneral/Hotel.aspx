@@ -281,6 +281,14 @@
                         </td>
                     </tr>
                     <tr>
+                        <td style="height:16px" align="right">
+                           <asp:Label ID="lblSendRatesAPICache" runat="server" CssClass="clsLabel" Visible="false">Enviar tarifas a API de caché:</asp:Label>
+                       </td>
+                       <td style="height:16px" align="left">
+                           <asp:CheckBox ID="chkSendRatesAPICache" runat="server" CssClass="clsLabel" Visible="false"></asp:CheckBox>
+                       </td>
+                    </tr>
+                    <tr>
                         <td class="dgitem" align="center" colspan="4">
                             <asp:Label ID="lblConfirmationEmail" runat="server" EnableViewState="False">Confirmation Email</asp:Label>
                         </td>

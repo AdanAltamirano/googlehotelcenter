@@ -50,6 +50,7 @@ Namespace API.Controller
             Dim confluxService As New ConfluxService()
             Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
             Dim isEnabledGoogleRequest As Boolean = HotelUtilitie.IsEnableGoogleRequest(info.Hotel)
+            Dim isEnabledSendingRatesAPICache As Boolean = HotelUtilitie.IsEnableSendRatesAPICache(info.Hotel)
             RestrictionsParser.Init(info.Empresa)
 
             Dim dsrooms As RoomsHotelData
@@ -113,28 +114,13 @@ Namespace API.Controller
                                                  roomClosureRQ.Status)
 
 
-                                        Try
-
-                                            If isEnabledGoogleRequest Then
-
-                                                Dim dates As List(Of Tuple(Of Date, Date)) = New List(Of Tuple(Of Date, Date))
-                                                dates.Add(New Tuple(Of Date, Date)(dateClosure.StartDate, dateClosure.EndDate))
-
-                                                Dim lockRatePlans As List(Of spGetLockRatePlansByHotel_Result) = RestrictionHelper.CreateLockRatePlansByHotel(dates, roomClosureRQ.Status, drrateplan(dsrateplans.FIELD_CODIGOTARIFA).ToString())
-
-                                                Dim room As DataRow = rooms.FirstOrDefault(Function(r) r.Item(0).ToString() = drroom(dsrooms.FLD_ID_ROOM_HOTEL).ToString())
-
-                                                Dim availStatusMessagesLockRatePlans = RestrictionsParser.ToAvailStatusMessages(room, lockRatePlans)
-
-                                                Dim lockRatePlanHotelAvailNotifRQList = HotelAvailNotifRQ.CreateHotelAvailNotifRQList(availStatusMessagesLockRatePlans)
-
-                                                GoogleRequest(lockRatePlanHotelAvailNotifRQList, idHotel, confluxService, pageBase)
-
-                                            End If 'Termina Google
-
-                                        Catch ex As Exception
-                                            page.guardalog("rate-manager-ui/dist/rooms-closure.aspx", PaginaBase.acciones.Sincronizar, "Fallo Google LockRoomType Sincronizar", roomClosureRQ.IdHotel)
-                                        End Try
+                                        If isEnabledGoogleRequest Or isEnabledSendingRatesAPICache Then
+                                            Dim dates As List(Of Tuple(Of Date, Date)) = New List(Of Tuple(Of Date, Date))
+                                            dates.Add(New Tuple(Of Date, Date)(dateClosure.StartDate, dateClosure.EndDate))
+                                            Dim lockRatePlans As List(Of spGetLockRatePlansByHotel_Result) = RestrictionHelper.CreateLockRatePlansByHotel(dates, roomClosureRQ.Status, drrateplan(dsrateplans.FIELD_CODIGOTARIFA).ToString())
+                                            Dim room As DataRow = rooms.FirstOrDefault(Function(r) r.Item(0).ToString() = drroom(dsrooms.FLD_ID_ROOM_HOTEL).ToString())
+                                            ExecuteServices(lockRatePlans, room, idHotel, isEnabledGoogleRequest, isEnabledSendingRatesAPICache, pageBase)
+                                        End If
 
                                     Next
                                 Next
@@ -145,28 +131,13 @@ Namespace API.Controller
                                                 drrateplan(dsrateplans.FIELD_CODIGOTARIFA), roomClosureRQ.RoomOption,
                                                 roomClosureRQ.Status)
 
-                                    Try
-
-                                        If isEnabledGoogleRequest Then
-
-                                            Dim dates As List(Of Tuple(Of Date, Date)) = New List(Of Tuple(Of Date, Date))
-                                            dates.Add(New Tuple(Of Date, Date)(dateClosure.StartDate, dateClosure.EndDate))
-
-                                            Dim lockRatePlans As List(Of spGetLockRatePlansByHotel_Result) = RestrictionHelper.CreateLockRatePlansByHotel(dates, roomClosureRQ.Status, drrateplan(dsrateplans.FIELD_CODIGOTARIFA).ToString())
-
-                                            Dim room As DataRow = rooms.FirstOrDefault(Function(r) r.Item(0).ToString() = roomClosureRQ.RoomOption)
-
-                                            Dim availStatusMessagesLockRatePlans = RestrictionsParser.ToAvailStatusMessages(room, lockRatePlans)
-
-                                            Dim lockRatePlanHotelAvailNotifRQList = HotelAvailNotifRQ.CreateHotelAvailNotifRQList(availStatusMessagesLockRatePlans)
-
-                                            GoogleRequest(lockRatePlanHotelAvailNotifRQList, idHotel, confluxService, pageBase)
-
-                                        End If 'Termina Google
-                                    Catch ex As Exception
-                                        page.guardalog("rate-manager-ui/dist/rooms-closure.aspx", PaginaBase.acciones.Sincronizar, "Fallo Google LockRoomType Sincronizar", roomClosureRQ.IdHotel)
-                                    End Try
-
+                                    If isEnabledGoogleRequest Or isEnabledSendingRatesAPICache Then
+                                        Dim dates As List(Of Tuple(Of Date, Date)) = New List(Of Tuple(Of Date, Date))
+                                        dates.Add(New Tuple(Of Date, Date)(dateClosure.StartDate, dateClosure.EndDate))
+                                        Dim lockRatePlans As List(Of spGetLockRatePlansByHotel_Result) = RestrictionHelper.CreateLockRatePlansByHotel(dates, roomClosureRQ.Status, drrateplan(dsrateplans.FIELD_CODIGOTARIFA).ToString())
+                                        Dim room As DataRow = rooms.FirstOrDefault(Function(r) r.Item(0).ToString() = roomClosureRQ.RoomOption)
+                                        ExecuteServices(lockRatePlans, room, idHotel, isEnabledGoogleRequest, isEnabledSendingRatesAPICache, pageBase)
+                                    End If
 
                                 Next
                             End If
@@ -181,28 +152,13 @@ Namespace API.Controller
                                                ratePlan.Code, drroom(dsrooms.FLD_ID_ROOM_HOTEL),
                                                roomClosureRQ.Status)
 
-                                    Try
-
-                                        If isEnabledGoogleRequest Then
-
-                                            Dim dates As List(Of Tuple(Of Date, Date)) = New List(Of Tuple(Of Date, Date))
-                                            dates.Add(New Tuple(Of Date, Date)(dateClosure.StartDate, dateClosure.EndDate))
-
-                                            Dim lockRatePlans As List(Of spGetLockRatePlansByHotel_Result) = RestrictionHelper.CreateLockRatePlansByHotel(dates, roomClosureRQ.Status, ratePlan.Code)
-
-                                            Dim room As DataRow = rooms.FirstOrDefault(Function(r) r.Item(0).ToString() = drroom(dsrooms.FLD_ID_ROOM_HOTEL).ToString())
-
-                                            Dim availStatusMessagesLockRatePlans = RestrictionsParser.ToAvailStatusMessages(room, lockRatePlans)
-
-                                            Dim lockRatePlanHotelAvailNotifRQList = HotelAvailNotifRQ.CreateHotelAvailNotifRQList(availStatusMessagesLockRatePlans)
-
-                                            GoogleRequest(lockRatePlanHotelAvailNotifRQList, idHotel, confluxService, pageBase)
-
-                                        End If 'Termina Google
-
-                                    Catch ex As Exception
-                                        page.guardalog("rate-manager-ui/dist/rooms-closure.aspx", PaginaBase.acciones.Sincronizar, "Fallo Google LockRoomType Sincronizar", roomClosureRQ.IdHotel)
-                                    End Try
+                                    If isEnabledGoogleRequest Or isEnabledSendingRatesAPICache Then
+                                        Dim dates As List(Of Tuple(Of Date, Date)) = New List(Of Tuple(Of Date, Date))
+                                        dates.Add(New Tuple(Of Date, Date)(dateClosure.StartDate, dateClosure.EndDate))
+                                        Dim lockRatePlans As List(Of spGetLockRatePlansByHotel_Result) = RestrictionHelper.CreateLockRatePlansByHotel(dates, roomClosureRQ.Status, ratePlan.Code)
+                                        Dim room As DataRow = rooms.FirstOrDefault(Function(r) r.Item(0).ToString() = drroom(dsrooms.FLD_ID_ROOM_HOTEL).ToString())
+                                        ExecuteServices(lockRatePlans, room, idHotel, isEnabledGoogleRequest, isEnabledSendingRatesAPICache, pageBase)
+                                    End If
 
                                 Next
                             Else
@@ -211,27 +167,13 @@ Namespace API.Controller
                                                ratePlan.Code, roomClosureRQ.RoomOption,
                                                roomClosureRQ.Status)
 
-                                If isEnabledGoogleRequest Then
 
-                                    Try
-
-                                        Dim dates As List(Of Tuple(Of Date, Date)) = New List(Of Tuple(Of Date, Date))
-                                        dates.Add(New Tuple(Of Date, Date)(dateClosure.StartDate, dateClosure.EndDate))
-
-                                        Dim lockRatePlans As List(Of spGetLockRatePlansByHotel_Result) = RestrictionHelper.CreateLockRatePlansByHotel(dates, roomClosureRQ.Status, ratePlan.Code)
-
-                                        Dim room As DataRow = rooms.FirstOrDefault(Function(r) r.Item(0).ToString() = roomClosureRQ.RoomOption)
-
-                                        Dim availStatusMessagesLockRatePlans = RestrictionsParser.ToAvailStatusMessages(room, lockRatePlans)
-
-                                        Dim lockRatePlanHotelAvailNotifRQList = HotelAvailNotifRQ.CreateHotelAvailNotifRQList(availStatusMessagesLockRatePlans)
-
-                                        GoogleRequest(lockRatePlanHotelAvailNotifRQList, idHotel, confluxService, pageBase)
-
-                                    Catch ex As Exception
-                                        page.guardalog("rate-manager-ui/dist/rooms-closure.aspx", PaginaBase.acciones.Sincronizar, "Fallo Google LockRoomType Sincronizar", roomClosureRQ.IdHotel)
-                                    End Try
-
+                                If isEnabledGoogleRequest Or isEnabledSendingRatesAPICache Then
+                                    Dim dates As List(Of Tuple(Of Date, Date)) = New List(Of Tuple(Of Date, Date))
+                                    dates.Add(New Tuple(Of Date, Date)(dateClosure.StartDate, dateClosure.EndDate))
+                                    Dim lockRatePlans As List(Of spGetLockRatePlansByHotel_Result) = RestrictionHelper.CreateLockRatePlansByHotel(dates, roomClosureRQ.Status, ratePlan.Code)
+                                    Dim room As DataRow = rooms.FirstOrDefault(Function(r) r.Item(0).ToString() = roomClosureRQ.RoomOption)
+                                    ExecuteServices(lockRatePlans, room, idHotel, isEnabledGoogleRequest, isEnabledSendingRatesAPICache, pageBase)
                                 End If
 
                             End If
@@ -373,34 +315,42 @@ Namespace API.Controller
             End Select
         End Function
 
-        Private Sub GoogleRequest(ByVal lockRatePlanHotelAvailNotifRQList As List(Of XElement), ByVal idHotel As Integer, ByRef confluxService As ConfluxService, ByRef page As PaginaBase)
-
+        Private Sub SendClosureToService(ByVal lockRatePlanHotelAvailNotifRQList As List(Of XElement), ByVal idHotel As Integer, ByVal endpoint As String, ByVal service As String, ByRef page As PaginaBase)
             Try
                 Dim lockRatePlanHotelAvailNotifSoapRQList As List(Of XDocument) = New List(Of XDocument)
-
                 For Each request As XElement In lockRatePlanHotelAvailNotifRQList
                     Dim lockRatePlanHotelAvailSoapRQ = Soap.CreateSoapRequestXml(request)
                     lockRatePlanHotelAvailNotifSoapRQList.Add(lockRatePlanHotelAvailSoapRQ)
                 Next
-
                 Dim index As Integer = 0
-
                 For Each lockRatePlanSoapRQ As XDocument In lockRatePlanHotelAvailNotifSoapRQList
-
-                    Dim restrictionResponse As RestrictionResponse = confluxService.UpdateRestriction(lockRatePlanSoapRQ, RestrictionEnum.LockRoomType)
-                    Dim note As String = String.Format("Sincronizar request numero {0} LockRoomType Conflux con el hotel: ", (index + 1))
-
+                    Dim restrictionResponse As RestrictionResponse = HotelUtilitie.ConfluxServiceHelper.UpdateRestriction(lockRatePlanSoapRQ, endpoint, RestrictionEnum.LockRoomType)
+                    Dim note As String = String.Format("Sincronizar request numero {0} LockRoomType {1} con el hotel: ", (index + 1), service)
+                    Dim noteError As String = String.Format("Error al sincronizar con {0}", service)
                     If restrictionResponse.IsSuccess Then
                         page.guardalog(pagina:="/rate-manager-ui/dist/rooms-closure.aspx", action:=acciones.Sincronizar, nota:=note, peticion:="", datos:=restrictionResponse.Restrictions(0).XmlRequest(0).ToString(), datosDespues:=restrictionResponse.Restrictions(0).Xml(0).ToString(), hotelId:=idHotel)
 
                     Else
-                        page.guardalog(pagina:="/rate-manager-ui/dist/rooms-closure.aspx", action:=acciones.Sincronizar, nota:="Error al sincronizar", peticion:="", datos:=restrictionResponse.Xml.ToString(), datosDespues:="", hotelId:=idHotel)
+                        page.guardalog(pagina:="/rate-manager-ui/dist/rooms-closure.aspx", action:=acciones.Sincronizar, nota:=noteError, peticion:="", datos:=restrictionResponse.Xml.ToString(), datosDespues:="", hotelId:=idHotel)
                     End If
                     index = index + 1
                 Next
             Catch ex As Exception
                 page.guardalog(pagina:="/rate-manager-ui/dist/rooms-closure.aspx", action:=acciones.Sincronizar, nota:="Error al sincronizar", peticion:="", datos:=ex.Message, datosDespues:="", hotelId:=idHotel)
             End Try
+        End Sub
+
+        Private Sub ExecuteServices(ByVal lockRatePlans As List(Of spGetLockRatePlansByHotel_Result), ByVal room As DataRow, ByVal idHotel As Integer, ByVal isEnabledGoogleRequest As Boolean, ByVal isEnabledSendingRatesAPICache As Boolean, ByVal pageBase As PaginaBase)
+            Dim availStatusMessagesLockRatePlans = RestrictionsParser.ToAvailStatusMessages(room, lockRatePlans)
+            Dim lockRatePlanHotelAvailNotifRQList As List(Of XElement) = HotelAvailNotifRQ.CreateHotelAvailNotifRQList(availStatusMessagesLockRatePlans)
+
+            If isEnabledGoogleRequest And lockRatePlanHotelAvailNotifRQList IsNot Nothing Then
+                SendClosureToService(lockRatePlanHotelAvailNotifRQList, idHotel, HotelUtilitie.ENDPOINTCLOSURE, "Conflux", pageBase)
+            End If
+
+            If isEnabledSendingRatesAPICache And lockRatePlanHotelAvailNotifRQList IsNot Nothing Then
+                SendClosureToService(lockRatePlanHotelAvailNotifRQList, idHotel, HotelUtilitie.ENDPOINTAPICLOSURE, "APICache", pageBase)
+            End If
         End Sub
 
     End Class

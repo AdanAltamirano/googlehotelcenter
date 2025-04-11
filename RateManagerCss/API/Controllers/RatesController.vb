@@ -52,49 +52,18 @@ Namespace API.Controllers
 
                 Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
                 Dim isEnabledGoogleRequest As Boolean = HotelUtilitie.IsEnableGoogleRequest(info.Hotel)
+                Dim isEnabledSendingRatesAPICache As Boolean = HotelUtilitie.IsEnableSendRatesAPICache(info.Hotel)
 
                 If logRates IsNot Nothing And logRates.Count > 0 Then
-                    If isEnabledGoogleRequest Then
+
+                    If isEnabledGoogleRequest Or isEnabledSendingRatesAPICache Then
 
                         Dim updatedRates As IEnumerable(Of Tarifas) = logRates.Distinct()
 
-                        Try
+                        For Each rate As Tarifas In updatedRates
+                            ExecuteServices(isEnabledGoogleRequest, isEnabledSendingRatesAPICache, RQ.HotelId, rate, info)
+                        Next
 
-                            Dim pgBase As PaginaBase = New PaginaBase()
-
-                            For Each rate As Tarifas In updatedRates
-
-                                Dim res As Tuple(Of RateResponse, RateResponse) = ConfluxService.UpdateRate(rate.idTarifa, rate.FechaInicia, rate.FechaFinaliza, HotelId, info.Empresa, TypeRateEnum.RoomRate)
-
-                                Log(hotelId:=RQ.HotelId, action:=acciones.Sincronizar, room:="", startDate:=Nothing, endDate:=Nothing, rateCode:="", xml:=res.Item1.Xml, dataXml:=res.Item1.RequestXML, note:="Tarifa enviada a Conflux")
-
-                                'Delete Log
-                                If res.Item2 IsNot Nothing Then
-                                    Log(hotelId:=RQ.HotelId, action:=acciones.Eliminar, room:="", startDate:=Nothing, endDate:=Nothing, rateCode:="", xml:=res.Item2.Xml, dataXml:=res.Item2.RequestXML, note:="Tarifa enviada para eliminar a Conflux")
-                                End If
-
-                                'Cierres Google Tarifa
-                                SendClosureByRateGoogle(rate.idTarifa, rate.FechaInicia, rate.FechaFinaliza, ConfluxService, info, pgBase)
-
-
-                            Next
-
-                        Catch ex As Exception
-
-                            Dim errorsElement As New System.Xml.Linq.XElement("Errors")
-                            Dim errorElementProperty As New System.Xml.Linq.XElement("Error")
-
-                            errorElementProperty.Add(
-                            New System.Xml.Linq.XAttribute("Type", "3"),
-                            New System.Xml.Linq.XAttribute("Code", "448"),
-                            New System.Xml.Linq.XText(ex.Message)
-                        )
-
-                            errorsElement.Add(errorElementProperty)
-
-                            Log(RQ.HotelId, acciones.Sincronizar, "", Nothing, Nothing, "", xml:=errorsElement.ToString(), note:="No se pudo enviar la tarifa a Conflux")
-
-                        End Try
                     End If
                 End If
 
@@ -140,46 +109,15 @@ Namespace API.Controllers
 
                 Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
                 Dim isEnabledGoogleRequest As Boolean = HotelUtilitie.IsEnableGoogleRequest(info.Hotel)
+                Dim isEnabledSendingRatesAPICache As Boolean = HotelUtilitie.IsEnableSendRatesAPICache(info.Hotel)
 
                 If logRates IsNot Nothing And logRates.Count > 0 Then
-                    If isEnabledGoogleRequest Then
 
-                        Try
-                            Dim pgBase As PaginaBase = New PaginaBase()
-
-                            Dim updatedRateDay As IEnumerable(Of Tarifas) = logRates.Where(Function(t) t.FechaInicia = RQ.StartDate And t.FechaFinaliza = RQ.EndDate).Distinct()
-
-                            For Each rate As Tarifas In updatedRateDay
-
-                                Dim res As Tuple(Of RateResponse, RateResponse) = ConfluxService.UpdateRate(rate.idTarifa, rate.FechaInicia, rate.FechaFinaliza, HotelId, info.Empresa, TypeRateEnum.RoomRate)
-
-                                Log(hotelId:=RQ.HotelId, action:=acciones.Sincronizar, room:="", startDate:=Nothing, endDate:=Nothing, rateCode:="", xml:=res.Item1.Xml, dataXml:=res.Item1.RequestXML, note:="Tarifa enviada a Conflux")
-
-                                'Delete Log
-                                If res.Item2 IsNot Nothing Then
-                                    Log(hotelId:=RQ.HotelId, action:=acciones.Eliminar, room:="", startDate:=Nothing, endDate:=Nothing, rateCode:="", xml:=res.Item2.Xml, dataXml:=res.Item2.RequestXML, note:="Tarifa enviada para eliminar a Conflux")
-                                End If
-
-                                'Cierres Google Tarifa
-                                SendClosureByRateGoogle(rate.idTarifa, rate.FechaInicia, rate.FechaFinaliza, ConfluxService, info, pgBase)
-
-                            Next
-
-                        Catch ex As Exception
-
-                            Dim errorsElement As New System.Xml.Linq.XElement("Errors")
-                            Dim errorElementProperty As New System.Xml.Linq.XElement("Error")
-
-                            errorElementProperty.Add(
-                            New System.Xml.Linq.XAttribute("Type", "3"),
-                            New System.Xml.Linq.XAttribute("Code", "448"),
-                            New System.Xml.Linq.XText(ex.Message)
-                        )
-
-                            errorsElement.Add(errorElementProperty)
-
-                            Log(RQ.HotelId, acciones.Sincronizar, HotelId, "", Nothing, Nothing, xml:=errorsElement.ToString(), note:="No se pudo enviar la tarifa a Conflux")
-                        End Try
+                    If isEnabledGoogleRequest Or isEnabledSendingRatesAPICache Then
+                        Dim updatedRateDay As IEnumerable(Of Tarifas) = logRates.Where(Function(t) t.FechaInicia = RQ.StartDate And t.FechaFinaliza = RQ.EndDate).Distinct()
+                        For Each rate As Tarifas In updatedRateDay
+                            ExecuteServices(isEnabledGoogleRequest, isEnabledSendingRatesAPICache, RQ.HotelId, rate, info)
+                        Next
                     End If
                 End If
 
@@ -441,7 +379,7 @@ Namespace API.Controllers
             Return xml
         End Function
 
-        Private Sub SendClosureByRateGoogle(ByVal rateId As Integer, ByVal startDate As Date, ByVal endDate As Date, ByVal confluxService As ConfluxService, ByVal info As companyInfo, ByVal pgBase As PaginaBase)
+        Private Sub SendClosureToService(ByVal rateId As Integer, ByVal startDate As Date, ByVal endDate As Date, ByVal endpoint As String, ByVal service As String, ByVal info As companyInfo)
 
             Dim requests As List(Of XDocument) = New List(Of XDocument)
 
@@ -462,26 +400,76 @@ Namespace API.Controllers
             Dim restrictionResponseList As List(Of Conflux.Models.Restrictions.Response.RestrictionResponse) = New List(Of Conflux.Models.Restrictions.Response.RestrictionResponse)
 
             For Each request As XDocument In requests
-                Dim response As Conflux.Models.Restrictions.Response.RestrictionResponse = confluxService.UpdateRestriction(request, RestrictionEnum.LockRate)
+                Dim response As Conflux.Models.Restrictions.Response.RestrictionResponse = HotelUtilitie.ConfluxServiceHelper.UpdateRestriction(request, endpoint, RestrictionEnum.LockRate)
                 restrictionResponseList.Add(response)
             Next
+
+            Dim note As String = String.Format("Tarifa enviada a {0} LockRate", service)
+            Dim noteError As String = String.Format("Error al sincronizar LockRate {0}", service)
 
             For Each response As Conflux.Models.Restrictions.Response.RestrictionResponse In restrictionResponseList
 
                 If response.IsSuccess Then
-                    'pgBase.WriteLog(response.Restrictions(0).XmlRequest(0).ToString(), "LockRate")
-                    'pgBase.WriteLog(response.Restrictions(0).Xml(0).ToString(), "LockRate")
                     With (New PaginaBase)
-                        .guardalog(pagina:="/rate-manager-ui/dist/rates-admin.aspx", action:=acciones.Sincronizar, nota:="Tarifa Enviada a Conflux LockRate", peticion:="", datos:=response.Restrictions(0).XmlRequest(0).ToString(), datosDespues:=response.Restrictions(0).Xml(0).ToString(), hotelId:=info.Hotel)
+                        .guardalog(pagina:="/rate-manager-ui/dist/rates-admin.aspx", action:=acciones.Sincronizar, nota:=note, peticion:="", datos:=response.Restrictions(0).XmlRequest(0).ToString(), datosDespues:=response.Restrictions(0).Xml(0).ToString(), hotelId:=info.Hotel)
                     End With
                 Else
-                    'pgBase.WriteLog(response.Xml.ToString(), "LockRate")
                     With (New PaginaBase)
-                        .guardalog(pagina:="/rate-manager-ui/dist/rates-admin.aspx", action:=acciones.Sincronizar, nota:="Error al sicronizar LockRate", peticion:="", datos:=response.Xml.ToString(), datosDespues:="", hotelId:=info.Hotel)
+                        .guardalog(pagina:="/rate-manager-ui/dist/rates-admin.aspx", action:=acciones.Sincronizar, nota:=noteError, peticion:="", datos:=response.Xml.ToString(), datosDespues:="", hotelId:=info.Hotel)
                     End With
                 End If
 
             Next
+
+        End Sub
+
+
+        Private Sub SendRatesToService(ByVal ratesMessages As RatesMessages, ByVal endpoint As String, ByVal endpointDelete As String, ByVal hotelId As Integer, ByVal service As String)
+            Dim res As Tuple(Of RateResponse, RateResponse) = HotelUtilitie.ConfluxServiceHelper.UpdateRate(ratesMessages, endpoint, endpointDelete)
+
+            Dim note As String = String.Format("Tarifa envida a {0}", service)
+            Dim noteDelete As String = String.Format("Tarifa envidada para eliminar a {0}", service)
+
+            Log(hotelId:=hotelId, action:=acciones.Sincronizar, room:="", startDate:=Nothing, endDate:=Nothing, rateCode:="", xml:=res.Item1.Xml, dataXml:=res.Item1.RequestXML, note:=note)
+
+            'Delete Log
+            If res.Item2 IsNot Nothing Then
+                Log(hotelId:=hotelId, action:=acciones.Eliminar, room:="", startDate:=Nothing, endDate:=Nothing, rateCode:="", xml:=res.Item2.Xml, dataXml:=res.Item2.RequestXML, note:=service)
+            End If
+
+        End Sub
+
+
+        Private Sub ExecuteServices(ByVal isEnabledGoogleRequest As Boolean, ByVal isEnabledSendingRatesAPICache As Boolean, ByVal hotelId As Integer, ByVal rate As Tarifas, ByVal info As companyInfo)
+
+            Dim ratesForRequest As RatesMessages = HotelUtilitie.ConfluxServiceHelper.GetRateMessages(rate.idTarifa, rate.FechaInicia, rate.FechaFinaliza, hotelId, info.Empresa, TypeRateEnum.RoomRate)
+
+            If isEnabledGoogleRequest Then
+                Try
+                    SendRatesToService(ratesForRequest, HotelUtilitie.ENDPOINT, HotelUtilitie.ENDPOINTDELETE, hotelId, "Conflux")
+                    SendClosureToService(rate.idTarifa, rate.FechaInicia, rate.FechaFinaliza, HotelUtilitie.ENDPOINTCLOSURE, "Conflux", info)
+                Catch ex As Exception
+                    Dim errorsElement As New System.Xml.Linq.XElement("Errors")
+                    Dim errorElementProperty As New System.Xml.Linq.XElement("Error")
+                    errorElementProperty.Add(New System.Xml.Linq.XAttribute("Type", "3"), New System.Xml.Linq.XAttribute("Code", "448"), New System.Xml.Linq.XText(ex.Message))
+                    errorsElement.Add(errorElementProperty)
+                    Log(hotelId, acciones.Sincronizar, "", Nothing, Nothing, "", xml:=errorsElement.ToString(), note:="No se pudo enviar la tarifa a Conflux")
+                End Try
+
+            End If
+
+            If isEnabledSendingRatesAPICache Then
+                Try
+                    SendRatesToService(ratesForRequest, HotelUtilitie.ENDPOINTAPI, HotelUtilitie.ENDPOINTAPIDELETE, hotelId, "APICache")
+                    SendClosureToService(rate.idTarifa, rate.FechaInicia, rate.FechaFinaliza, HotelUtilitie.ENDPOINTAPICLOSURE, "APICache", info)
+                Catch ex As Exception
+                    Dim errorsElement As New System.Xml.Linq.XElement("Errors")
+                    Dim errorElementProperty As New System.Xml.Linq.XElement("Error")
+                    errorElementProperty.Add(New System.Xml.Linq.XAttribute("Type", "3"), New System.Xml.Linq.XAttribute("Code", "448"), New System.Xml.Linq.XText(ex.Message))
+                    errorsElement.Add(errorElementProperty)
+                    Log(hotelId, acciones.Sincronizar, "", Nothing, Nothing, "", xml:=errorsElement.ToString(), note:="No se pudo enviar la tarifa a APICache")
+                End Try
+            End If
 
         End Sub
 

@@ -966,6 +966,7 @@ Partial Class AvailabilityRestrictions
             Dim confluxService As New ConfluxService()
             Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
             Dim isEnabledGoogleRequest As Boolean = HotelUtilitie.IsEnableGoogleRequest(info.Hotel)
+            Dim isEnabledSendingRatesAPICache As Boolean = HotelUtilitie.IsEnableSendRatesAPICache(info.Hotel)
 
             Dim roomsByHotel As RoomsHotelData = New RoomFacade().getAllRooms(info.Hotel, 1)
             Dim activeRooms As List(Of DataRow) = roomsByHotel.Tables(RoomsHotelData.TBL_ROOM_HOTEL).Select("eliminada=false").ToList()
@@ -1008,8 +1009,7 @@ Partial Class AvailabilityRestrictions
 
                 'Google
 
-
-                If isEnabledGoogleRequest Then
+                If isEnabledGoogleRequest Or isEnabledSendingRatesAPICache Then
 
                     Dim dsRatePlans As RatePlanData = New RatePlanFacade().GetRatePlanByIdHotel(info.Hotel.ToString(), idioma:=1, IncluirPaquetesSegmentoK:=1, incluirNetRatesPlan:=1, idAsociacion:=-1, DeleteFilter:=1)
                     Dim dsRatePlansPromos As RatePlanData = New RatePlanFacade().GetRatePlanByIdHotel(info.Hotel.ToString(), idioma:=1, IncluirPaquetesSegmentoK:=1, incluirNetRatesPlan:=1, idAsociacion:=-1, DeleteFilter:=1, getPromos:=True)
@@ -1021,16 +1021,6 @@ Partial Class AvailabilityRestrictions
                     Dim activeRatePlansPromos = dsRatePlansPromos.Tables(RatePlanData.RATEPLAN_TABLE).Select(filterPromosDates).ToList()
 
                     Dim lockGral As List(Of spGetLockGralByHotel_Result) = New List(Of spGetLockGralByHotel_Result)
-
-                    'For Each [date] As Tuple(Of Date, Date) In dates
-
-                    '    Dim tempLock As spGetLockGralByHotel_Result = New spGetLockGralByHotel_Result
-                    '    tempLock.StartDate = [date].Item1
-                    '    tempLock.EndDate = [date].Item2
-                    '    tempLock.Status = ddlStatus.SelectedValue
-                    '    lockGral.Add(tempLock)
-                    'Next
-
                     Dim tempLock As spGetLockGralByHotel_Result = New spGetLockGralByHotel_Result
                     tempLock.StartDate = startDate
                     tempLock.EndDate = endDate
@@ -1038,9 +1028,15 @@ Partial Class AvailabilityRestrictions
                     tempLock.ApplyWeek = apply
                     lockGral.Add(tempLock)
 
+                    If isEnabledGoogleRequest Then
+                        SendClosureToService(lockGral, activeRooms, activeRatePlans, HotelUtilitie.ENDPOINTCLOSURE, "Conflux", "LockGral", RestrictionEnum.LockGral)
+                        SendClosureToService(lockGral, activeRooms, activeRatePlansPromos, HotelUtilitie.ENDPOINTCLOSURE, "Conflux", "LockGralPromos", RestrictionEnum.LockGral)
+                    End If
 
-                    RequestLockGralGoogle(lockGral, activeRooms, activeRatePlans, confluxService)
-                    RequestLockGralPromosGoogle(lockGral, activeRooms, activeRatePlansPromos, confluxService)
+                    If isEnabledSendingRatesAPICache Then
+                        SendClosureToService(lockGral, activeRooms, activeRatePlans, HotelUtilitie.ENDPOINTAPICLOSURE, "APICache", "LockGral", RestrictionEnum.LockGral)
+                        SendClosureToService(lockGral, activeRooms, activeRatePlansPromos, HotelUtilitie.ENDPOINTAPICLOSURE, "APICache", "LockGralPromos", RestrictionEnum.LockGral)
+                    End If
 
                 End If
 
@@ -1049,29 +1045,15 @@ Partial Class AvailabilityRestrictions
                 closeRateplan(nota, splan:=ddlRateplans.SelectedItem.Text)
                 'closeRateplan(nota, splan:=ddlRateplans.SelectedItem.Text, hotelId:=info.Hotel, dates:=dates, confluxService:=confluxService, isEnabledGoogleRequest:=isEnabledGoogleRequest, activeRooms:=activeRooms, restrictionType:=RestrictionEnum.LockRatePlan)
 
-                If isEnabledGoogleRequest Then
+                If isEnabledGoogleRequest Or isEnabledSendingRatesAPICache Then
                     Dim dsRatePlansPromos As RatePlanData = New RatePlanFacade().GetRatePlanByIdHotel(info.Hotel.ToString(), idioma:=1, IncluirPaquetesSegmentoK:=1, incluirNetRatesPlan:=1, idAsociacion:=-1, DeleteFilter:=1, getPromos:=True)
                     Dim filterPromosDates As String = "((FechaFin IS NOT NULL AND FechaFin>= '" + DateTime.Now.Date.ToString() + "') OR (FechaFin IS NULL AND PromoEndDate >= '" + DateTime.Now.Date.ToString() + "'))"
                     Dim activeRatePlansPromos As List(Of DataRow) = dsRatePlansPromos.Tables(RatePlanData.RATEPLAN_TABLE).Select(filterPromosDates).ToList()
-
                     Dim promos As List(Of spGetPromosByRatePlan_Result) = HotelUtilitie.GetPromosByRatePlan(info.Hotel, ddlRateplans.SelectedValue)
-
                     Dim validPromosList As List(Of DataRow) = GetValidPromos(activeRatePlansPromos, promos)
-
-
                     Dim lockRatePlans As List(Of spGetLockRatePlansByHotel_Result) = New List(Of spGetLockRatePlansByHotel_Result)
-
                     'Solo se usa el Modelo para las promos
                     Dim lockPromos As List(Of spGetLockGralByHotel_Result) = New List(Of spGetLockGralByHotel_Result)
-
-                    'For Each [date] As Tuple(Of Date, Date) In dates
-
-                    '    Dim tempLock As spGetLockGralByHotel_Result = New spGetLockGralByHotel_Result
-                    '    tempLock.StartDate = [date].Item1
-                    '    tempLock.EndDate = [date].Item2
-                    '    tempLock.Status = ddlStatus.SelectedValue
-                    '    lockPromos.Add(tempLock)
-                    'Next
 
                     Dim tempLockPromos As spGetLockGralByHotel_Result = New spGetLockGralByHotel_Result
                     tempLockPromos.StartDate = startDate
@@ -1089,9 +1071,15 @@ Partial Class AvailabilityRestrictions
                     tempLockRatePlans.ApplyWeek = apply
                     lockRatePlans.Add(tempLockRatePlans)
 
-                    'RequestLockRatePlanGoogle(ddlStatus.SelectedValue, ddlRateplans.SelectedValue, dates, activeRooms, confluxService)
-                    RequestLockRatePlanGoogle(lockRatePlans, activeRooms, confluxService)
-                    RequestLockRatePlanPromosGoogle(lockPromos, activeRooms, validPromosList, confluxService)
+                    If isEnabledGoogleRequest Then
+                        SendClosureToService(lockRatePlans, activeRooms, HotelUtilitie.ENDPOINTCLOSURE, "Conflux", "LockRatePlan", RestrictionEnum.LockRatePlan)
+                        SendClosureToService(lockPromos, activeRooms, validPromosList, HotelUtilitie.ENDPOINTCLOSURE, "Conflux", "LockRatePlanPromos", RestrictionEnum.LockRatePlan)
+                    End If
+
+                    If isEnabledSendingRatesAPICache Then
+                        SendClosureToService(lockRatePlans, activeRooms, HotelUtilitie.ENDPOINTAPICLOSURE, "APICache", "LockRatePlan", RestrictionEnum.LockRatePlan)
+                        SendClosureToService(lockPromos, activeRooms, validPromosList, HotelUtilitie.ENDPOINTAPICLOSURE, "APICache", "LockRatePlanPromos", RestrictionEnum.LockRatePlan)
+                    End If
 
                 End If
             End If
@@ -2133,66 +2121,18 @@ Partial Class AvailabilityRestrictions
 
 #Region "Google"
 
-    Public Sub RequestLockGralGoogle(ByVal lockGral As List(Of spGetLockGralByHotel_Result), ByVal activeRooms As List(Of DataRow), ByVal activeRatePlans As List(Of DataRow), ByVal confluxService As ConfluxService)
 
+    Private Sub SendClosureToService(ByVal lockGral As List(Of spGetLockGralByHotel_Result), ByVal activeRooms As List(Of DataRow), ByVal activeRatePlans As List(Of DataRow), ByVal endpoint As String, ByVal service As String, ByVal typeOfLock As String, ByVal typeOfLockEnum As RestrictionEnum)
         Try
 
-            Dim requests As List(Of XDocument) = New List(Of XDocument)
-
-            Dim availStatusMessagesLockGralNoPromos As AvailStatusMessages = RestrictionsParser.ToAvailStatusMessages(lockGral, activeRooms, activeRatePlans)
-            Dim lockGralNoPromosHotelAvailNotifRQList As List(Of XElement) = HotelAvailNotifRQ.CreateHotelAvailNotifRQList(availStatusMessagesLockGralNoPromos)
-
-            For Each availStatusMessage As XElement In lockGralNoPromosHotelAvailNotifRQList
-                'Request 
-                Dim xmlRequest As XDocument = APIServices.Xml.Soap.Soap.CreateSoapRequestXml(availStatusMessage)
-                requests.Add(xmlRequest)
-            Next
-
-            Dim restrictionResponseList As List(Of Models.Restrictions.Response.RestrictionResponse) = New List(Of Models.Restrictions.Response.RestrictionResponse)
-
-            For Each request As XDocument In requests
-                Dim response As Models.Restrictions.Response.RestrictionResponse = confluxService.UpdateRestriction(request, RestrictionEnum.LockGral)
-                restrictionResponseList.Add(response)
-            Next
-
-            Dim index As Integer = 0
-
-            For Each response As Models.Restrictions.Response.RestrictionResponse In restrictionResponseList
-
-                If response.IsSuccess Then
-
-                    Dim note As String = String.Format("Sincronizar LockGral request {0} con el hotel: {1}", (index + 1), MyBase.cInfoActual.Hotel)
-
-                    MyBase.guardalog("/Pages/AvailabilityRestrictions.aspx", acciones.Sincronizar, note, "", response.Restrictions(0).XmlRequest(0).ToString(), response.Restrictions(0).Xml(0).ToString(), hotelId:=MyBase.cInfoActual.Hotel)
-                Else
-
-                    Dim note As String = String.Format("Error al sincronizar request LockGral {0} con el hotel: {1}", (index + 1), MyBase.cInfoActual.Hotel)
-
-                    MyBase.guardalog("/Pages/AvailabilityRestrictions.aspx", acciones.Sincronizar, note, "", response.Xml.ToString(), "", hotelId:=MyBase.cInfoActual.Hotel)
-                End If
-
-                index = index + 1
-            Next
-
-        Catch ex As Exception
-            MyBase.guardalog("/Pages/AvailabilityRestrictions.aspx", acciones.Sincronizar, "Error al sincronizar LockGral con el hotel:" & MyBase.cInfoActual.Hotel, "", ex.Message, "", hotelId:=MyBase.cInfoActual.Hotel)
-        End Try
-
-    End Sub
-
-    Public Sub RequestLockGralPromosGoogle(ByVal lockGral As List(Of spGetLockGralByHotel_Result), ByVal activeRooms As List(Of DataRow), ByVal activeRatePlansPromos As List(Of DataRow), ByVal confluxService As ConfluxService)
-
-        Try
-
-            If activeRatePlansPromos.Count > 0 Then
+            If activeRatePlans.Count > 0 Then
 
                 Dim requests As List(Of XDocument) = New List(Of XDocument)
 
-                Dim availStatusMessagesLockGralPromos As AvailStatusMessages = RestrictionsParser.ToAvailStatusMessages(lockGral, activeRooms, activeRatePlansPromos)
-                Dim lockGralPromosHotelAvailNotifRQList As List(Of XElement) = HotelAvailNotifRQ.CreateHotelAvailNotifRQList(availStatusMessagesLockGralPromos)
+                Dim availStatusMessages As AvailStatusMessages = RestrictionsParser.ToAvailStatusMessages(lockGral, activeRooms, activeRatePlans)
+                Dim hotelAvailNotifRQList As List(Of XElement) = HotelAvailNotifRQ.CreateHotelAvailNotifRQList(availStatusMessages)
 
-                For Each availStatusMessage As XElement In lockGralPromosHotelAvailNotifRQList
-                    'Request 
+                For Each availStatusMessage As XElement In hotelAvailNotifRQList
                     Dim xmlRequest As XDocument = APIServices.Xml.Soap.Soap.CreateSoapRequestXml(availStatusMessage)
                     requests.Add(xmlRequest)
                 Next
@@ -2200,7 +2140,7 @@ Partial Class AvailabilityRestrictions
                 Dim restrictionResponseList As List(Of Models.Restrictions.Response.RestrictionResponse) = New List(Of Models.Restrictions.Response.RestrictionResponse)
 
                 For Each request As XDocument In requests
-                    Dim response As Models.Restrictions.Response.RestrictionResponse = confluxService.UpdateRestriction(request, RestrictionEnum.LockGral)
+                    Dim response As Models.Restrictions.Response.RestrictionResponse = HotelUtilitie.ConfluxServiceHelper.UpdateRestriction(request, endpoint, typeOfLockEnum)
                     restrictionResponseList.Add(response)
                 Next
 
@@ -2210,26 +2150,73 @@ Partial Class AvailabilityRestrictions
 
                     If response.IsSuccess Then
 
-                        Dim note As String = String.Format("Sincronizar LockGralPromos request {0} con el hotel: {1}", (index + 1), MyBase.cInfoActual.Hotel)
+                        Dim note As String = String.Format("Sincronizar {0} {1} request {2} con el hotel: {3}", typeOfLock, service, (index + 1), MyBase.cInfoActual.Hotel)
 
                         MyBase.guardalog("/Pages/AvailabilityRestrictions.aspx", acciones.Sincronizar, note, "", response.Restrictions(0).XmlRequest(0).ToString(), response.Restrictions(0).Xml(0).ToString(), hotelId:=MyBase.cInfoActual.Hotel)
                     Else
 
-                        Dim note As String = String.Format("Error al sincronizar LockGralPromos request {0} con el hotel: {1}", (index + 1), MyBase.cInfoActual.Hotel)
+                        Dim noteError As String = String.Format("Error al sincronizar {0} {1} request {2} con el hotel: {3}", typeOfLock, service, (index + 1), MyBase.cInfoActual.Hotel)
 
-                        MyBase.guardalog("/Pages/AvailabilityRestrictions.aspx", acciones.Sincronizar, note, "", response.Xml.ToString(), "", hotelId:=MyBase.cInfoActual.Hotel)
+                        MyBase.guardalog("/Pages/AvailabilityRestrictions.aspx", acciones.Sincronizar, noteError, "", response.Xml.ToString(), "", hotelId:=MyBase.cInfoActual.Hotel)
                     End If
 
                     index = index + 1
                 Next
 
             End If
+        Catch Ex As Exception
+
+            Dim noteError As String = String.Format("Error al sincronizar {0} {1} con el hotel: {2}", typeOfLock, service, MyBase.cInfoActual.Hotel)
+
+            MyBase.guardalog("/Pages/AvailabilityRestrictions.aspx", acciones.Sincronizar, noteError, "", Ex.Message, "", hotelId:=MyBase.cInfoActual.Hotel)
+        End Try
+    End Sub
+
+    Private Sub SendClosureToService(ByVal lockRatePlans As List(Of spGetLockRatePlansByHotel_Result), ByVal activeRooms As List(Of DataRow), ByVal endpoint As String, ByVal service As String, ByVal typeOfLock As String, ByVal typeOfLockEnum As RestrictionEnum)
+        Try
+            Dim requests As List(Of XDocument) = New List(Of XDocument)
+            Dim availStatusMessages = RestrictionsParser.ToAvailStatusMessages(activeRooms, lockRatePlans)
+            Dim hotelAvailNotifRQList As List(Of XElement) = HotelAvailNotifRQ.CreateHotelAvailNotifRQList(availStatusMessages)
+
+            For Each availStatusMessage As XElement In hotelAvailNotifRQList
+                Dim xmlRequest As XDocument = APIServices.Xml.Soap.Soap.CreateSoapRequestXml(availStatusMessage)
+                requests.Add(xmlRequest)
+            Next
+
+            Dim restrictionResponseList As List(Of Models.Restrictions.Response.RestrictionResponse) = New List(Of Models.Restrictions.Response.RestrictionResponse)
+
+            For Each request As XDocument In requests
+                Dim response As Models.Restrictions.Response.RestrictionResponse = HotelUtilitie.ConfluxServiceHelper.UpdateRestriction(request, endpoint, typeOfLockEnum)
+                restrictionResponseList.Add(response)
+            Next
+
+            Dim index As Integer = 0
+
+            For Each response As Models.Restrictions.Response.RestrictionResponse In restrictionResponseList
+
+                If response.IsSuccess Then
+
+                    Dim note As String = String.Format("Sincronizar {0} {1} request {2} con el hotel: {3}", typeOfLock, service, (index + 1), MyBase.cInfoActual.Hotel)
+
+                    MyBase.guardalog("/Pages/AvailabilityRestrictions.aspx", acciones.Sincronizar, note, "", response.Restrictions(0).XmlRequest(0).ToString(), response.Restrictions(0).Xml(0).ToString(), hotelId:=MyBase.cInfoActual.Hotel)
+                Else
+
+                    Dim noteError As String = String.Format("Error al sincronizar {0} {1} request {2} con el hotel: {3}", typeOfLock, service, (index + 1), MyBase.cInfoActual.Hotel)
+
+                    MyBase.guardalog("/Pages/AvailabilityRestrictions.aspx", acciones.Sincronizar, noteError, "", response.Xml.ToString(), "", hotelId:=MyBase.cInfoActual.Hotel)
+                End If
+
+                index = index + 1
+            Next
+
 
         Catch ex As Exception
-            MyBase.guardalog("/Pages/AvailabilityRestrictions.aspx", acciones.Sincronizar, "Error al sincronizar LockGralPromos con el hotel:" & MyBase.cInfoActual.Hotel, "", ex.Message, "", hotelId:=MyBase.cInfoActual.Hotel)
-        End Try
+            Dim noteError As String = String.Format("Error al sincronizar {0} {1} con el hotel: {2}", typeOfLock, service, MyBase.cInfoActual.Hotel)
 
+            MyBase.guardalog("/Pages/AvailabilityRestrictions.aspx", acciones.Sincronizar, noteError, "", ex.Message, "", hotelId:=MyBase.cInfoActual.Hotel)
+        End Try
     End Sub
+
 
     'Public Sub RequestLockRatePlanGoogle(ByVal status As String, ByVal ratePlanId As String, ByVal dates As List(Of Tuple(Of Date, Date)), ByVal activeRooms As List(Of DataRow), ByVal confluxService As ConfluxService)
 
@@ -2262,112 +2249,6 @@ Partial Class AvailabilityRestrictions
     '    End Try
 
     'End Sub
-
-    Public Sub RequestLockRatePlanGoogle(ByVal lockRatePlans As List(Of spGetLockRatePlansByHotel_Result), ByVal activeRooms As List(Of DataRow), ByVal confluxService As ConfluxService)
-
-        Try
-
-            Dim requests As List(Of XDocument) = New List(Of XDocument)
-
-            Dim availStatusMessagesLockRatePlans = RestrictionsParser.ToAvailStatusMessages(activeRooms, lockRatePlans)
-
-            Dim lockRatePlanHotelAvailNotifRQList As List(Of XElement) = HotelAvailNotifRQ.CreateHotelAvailNotifRQList(availStatusMessagesLockRatePlans)
-
-            For Each availStatusMessage As XElement In lockRatePlanHotelAvailNotifRQList
-                'Request 
-                Dim xmlRequest As XDocument = APIServices.Xml.Soap.Soap.CreateSoapRequestXml(availStatusMessage)
-                requests.Add(xmlRequest)
-            Next
-
-            Dim restrictionResponseList As List(Of Models.Restrictions.Response.RestrictionResponse) = New List(Of Models.Restrictions.Response.RestrictionResponse)
-
-            For Each request As XDocument In requests
-                Dim response As Models.Restrictions.Response.RestrictionResponse = confluxService.UpdateRestriction(request, RestrictionEnum.LockRatePlan)
-                restrictionResponseList.Add(response)
-            Next
-
-            Dim index As Integer = 0
-
-            For Each response As Models.Restrictions.Response.RestrictionResponse In restrictionResponseList
-
-                If response.IsSuccess Then
-
-                    Dim note As String = String.Format("Sincronizar LockRatePlan request {0} con el hotel: {1}", (index + 1), MyBase.cInfoActual.Hotel)
-
-                    MyBase.guardalog("/Pages/AvailabilityRestrictions.aspx", acciones.Sincronizar, note, "", response.Restrictions(0).XmlRequest(0).ToString(), response.Restrictions(0).Xml(0).ToString(), hotelId:=MyBase.cInfoActual.Hotel)
-                Else
-
-                    Dim note As String = String.Format("Error al sincronizar LockRatePlan request {0} con el hotel: {1}", (index + 1), MyBase.cInfoActual.Hotel)
-
-                    MyBase.guardalog("/Pages/AvailabilityRestrictions.aspx", acciones.Sincronizar, note, "", response.Xml.ToString(), "", hotelId:=MyBase.cInfoActual.Hotel)
-                End If
-
-                index = index + 1
-            Next
-
-        Catch ex As Exception
-            'MyBase.WriteLog(ex.Message, "LockRatePlan")
-            MyBase.guardalog("/Pages/AvailabilityRestrictions.aspx", acciones.Sincronizar, "Error al sincronizar LockRatePlan con el hotel:" & MyBase.cInfoActual.Hotel, "", ex.Message, "", hotelId:=MyBase.cInfoActual.Hotel)
-        End Try
-
-
-    End Sub
-
-
-
-
-
-
-    Public Sub RequestLockRatePlanPromosGoogle(ByVal lockGral As List(Of spGetLockGralByHotel_Result), ByVal activeRooms As List(Of DataRow), ByVal activeRatePlansPromos As List(Of DataRow), ByVal confluxService As ConfluxService)
-        Try
-
-            If activeRatePlansPromos.Count > 0 Then
-
-                Dim requests As List(Of XDocument) = New List(Of XDocument)
-
-                Dim availStatusMessagesLockGralPromos As AvailStatusMessages = RestrictionsParser.ToAvailStatusMessages(lockGral, activeRooms, activeRatePlansPromos)
-                Dim lockGralPromosHotelAvailNotifRQList As List(Of XElement) = HotelAvailNotifRQ.CreateHotelAvailNotifRQList(availStatusMessagesLockGralPromos)
-
-                For Each availStatusMessage As XElement In lockGralPromosHotelAvailNotifRQList
-                    'Request 
-                    Dim xmlRequest As XDocument = APIServices.Xml.Soap.Soap.CreateSoapRequestXml(availStatusMessage)
-                    requests.Add(xmlRequest)
-                Next
-
-                Dim restrictionResponseList As List(Of Models.Restrictions.Response.RestrictionResponse) = New List(Of Models.Restrictions.Response.RestrictionResponse)
-
-                For Each request As XDocument In requests
-                    Dim response As Models.Restrictions.Response.RestrictionResponse = confluxService.UpdateRestriction(request, RestrictionEnum.LockRatePlan)
-                    restrictionResponseList.Add(response)
-                Next
-
-                Dim index As Integer = 0
-
-                For Each response As Models.Restrictions.Response.RestrictionResponse In restrictionResponseList
-
-                    If response.IsSuccess Then
-
-                        Dim note As String = String.Format("Sincronizar LockRatePlanPromos request {0} con el hotel: {1}", (index + 1), MyBase.cInfoActual.Hotel)
-
-                        MyBase.guardalog("/Pages/AvailabilityRestrictions.aspx", acciones.Sincronizar, note, "", response.Restrictions(0).XmlRequest(0).ToString(), response.Restrictions(0).Xml(0).ToString(), hotelId:=MyBase.cInfoActual.Hotel)
-                    Else
-
-                        Dim note As String = String.Format("Error al sincronizar LockRatePlanPromos request {0} con el hotel: {1}", (index + 1), MyBase.cInfoActual.Hotel)
-
-                        MyBase.guardalog("/Pages/AvailabilityRestrictions.aspx", acciones.Sincronizar, note, "", response.Xml.ToString(), "", hotelId:=MyBase.cInfoActual.Hotel)
-                    End If
-
-                    index = index + 1
-                Next
-
-            End If
-
-        Catch ex As Exception
-            'MyBase.WriteLog(ex.Message, "LockRatePlanPromos")
-            MyBase.guardalog("/Pages/AvailabilityRestrictions.aspx", acciones.Sincronizar, "Error al sincronizar LockRatePlanPromos con el hotel:" & MyBase.cInfoActual.Hotel, "", ex.Message, "", hotelId:=MyBase.cInfoActual.Hotel)
-        End Try
-    End Sub
-
 
     Private Function GetValidPromos(ByVal activeRatePlansPromos As List(Of DataRow), ByVal promos As List(Of spGetPromosByRatePlan_Result)) As List(Of DataRow)
 

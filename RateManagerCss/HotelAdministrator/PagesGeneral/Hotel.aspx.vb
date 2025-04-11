@@ -275,6 +275,11 @@ Partial Class Hotel
                 End If
 
 
+                If Not .IsNull(dsHotel.FIELD_SEND_RATES_API_CACHE) Then
+                    chkSendRatesAPICache.Checked = .Item(dsHotel.FIELD_SEND_RATES_API_CACHE)
+                End If
+
+
                 Dim sFecha As String
                 sFecha = IIf(.IsNull(dsHotel.FIELD_FECHAAPERTURA), "", .Item(dsHotel.FIELD_FECHAAPERTURA))
                 If sFecha <> "" Then sFecha = CDate(sFecha).ToString("MM/dd/yyyy")
@@ -787,6 +792,8 @@ Partial Class Hotel
 
                 .Item(dsHotel.FIELD_ENABLE_GOOGLE) = Me.chkEnableGoogle.Checked
 
+                .Item(dsHotel.FIELD_SEND_RATES_API_CACHE) = Me.chkSendRatesAPICache.Checked
+
             End With
 
             LoadDsImpuesto(ds)
@@ -1058,6 +1065,11 @@ Partial Class Hotel
             lblEnableGoogle.Visible = True
 
             chkEnableGoogle.Visible = True
+
+            lblSendRatesAPICache.Text = PortalCulture.GetString("01686", True)
+            lblSendRatesAPICache.Visible = True
+            chkSendRatesAPICache.Visible = True
+
         End If
     End Sub
 

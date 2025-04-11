@@ -781,70 +781,24 @@ Partial Class ctrRatePlan
 
                     Me.strError.Value = strError
 
-                    'Google
-
                     Dim confluxService As New ConfluxService()
                     Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
                     Dim isEnabledGoogleRequest As Boolean = HotelUtilitie.IsEnableGoogleRequest(info.Hotel)
+                    Dim isEnabledSendingRatesAPICache As Boolean = HotelUtilitie.IsEnableSendRatesAPICache(info.Hotel)
 
-                    Dim pgBase As PaginaBase = New PaginaBase()
-
-                    If isEnabledGoogleRequest Then
-
-
+                    If isEnabledGoogleRequest Or isEnabledSendingRatesAPICache Then
                         If totalPromotionBeforeEdition <> "" And txtDescProm.Text = "" Then
-                            Dim res As Tuple(Of RateResponse, RateResponse) = confluxService.UpdateRate(info.Hotel, info.Empresa, IdRatePlan, TypeRateEnum.RoomRate)
-                            pgBase.guardalog("/Pages/RatesPlans.aspx", pgBase.acciones.Sincronizar, "Sincronizar ctrRatePlan", "", res.Item1.RequestXML, res.Item1.Xml, info.Hotel)
 
-                            If res.Item2 IsNot Nothing Then
-                                pgBase.guardalog("/Pages/RatesPlans.aspx", pgBase.acciones.Eliminar, "Eliminar ctrRatePlan", "", res.Item2.RequestXML, res.Item2.Xml, info.Hotel)
-                            End If
-
-
-                            Dim resPromotion As Tuple(Of RateResponse, RateResponse) = confluxService.UpdateRate(info.Hotel, info.Empresa, IdRatePlan, TypeRateEnum.RoomRatePromotion)
-                            pgBase.guardalog("/Pages/RatesPlans.aspx", pgBase.acciones.Sincronizar, "Sincronizar ctrRatePlan", "", resPromotion.Item1.RequestXML, resPromotion.Item1.Xml, info.Hotel)
-
-                            If resPromotion.Item2 IsNot Nothing Then
-                                pgBase.guardalog("/Pages/RatesPlans.aspx", pgBase.acciones.Eliminar, "Eliminar ctrRatePlan", "", resPromotion.Item2.RequestXML, resPromotion.Item2.Xml, info.Hotel)
-                            End If
+                            ExecuteServices(info.Hotel, info.Empresa, IdRatePlan, isEnabledGoogleRequest, isEnabledSendingRatesAPICache)
 
                         ElseIf totalPromotionBeforeEdition <> "" And txtDescProm.Text <> "" Then
                             If CDbl(totalPromotionBeforeEdition) <> CDbl(txtDescProm.Text) Then
-                                Dim res As Tuple(Of RateResponse, RateResponse) = confluxService.UpdateRate(info.Hotel, info.Empresa, IdRatePlan, TypeRateEnum.RoomRate)
-                                pgBase.guardalog("/Pages/RatesPlans.aspx", pgBase.acciones.Sincronizar, "Sincronizar ctrRatePlan", "", res.Item1.RequestXML, res.Item1.Xml, info.Hotel)
-
-                                If res.Item2 IsNot Nothing Then
-                                    pgBase.guardalog("/Pages/RatesPlans.aspx", pgBase.acciones.Eliminar, "Eliminar ctrRatePlan", "", res.Item2.RequestXML, res.Item2.Xml, info.Hotel)
-                                End If
-
-
-                                Dim resPromotion As Tuple(Of RateResponse, RateResponse) = confluxService.UpdateRate(info.Hotel, info.Empresa, IdRatePlan, TypeRateEnum.RoomRatePromotion)
-                                pgBase.guardalog("/Pages/RatesPlans.aspx", pgBase.acciones.Sincronizar, "Sincronizar ctrRatePlan", "", resPromotion.Item1.RequestXML, resPromotion.Item1.Xml, info.Hotel)
-
-                                If resPromotion.Item2 IsNot Nothing Then
-                                    pgBase.guardalog("/Pages/RatesPlans.aspx", pgBase.acciones.Eliminar, "Eliminar ctrRatePlan", "", resPromotion.Item2.RequestXML, resPromotion.Item2.Xml, info.Hotel)
-                                End If
-
+                                ExecuteServices(info.Hotel, info.Empresa, IdRatePlan, isEnabledGoogleRequest, isEnabledSendingRatesAPICache)
                             End If
                         ElseIf totalPromotionBeforeEdition = "" And txtDescProm.Text <> "" Then
-                            Dim res As Tuple(Of RateResponse, RateResponse) = confluxService.UpdateRate(info.Hotel, info.Empresa, IdRatePlan, TypeRateEnum.RoomRate)
-                            pgBase.guardalog("/Pages/RatesPlans.aspx", pgBase.acciones.Sincronizar, "Sincronizar ctrRatePlan", "", res.Item1.RequestXML, res.Item1.Xml, info.Hotel)
-
-                            If res.Item2 IsNot Nothing Then
-                                pgBase.guardalog("/Pages/RatesPlans.aspx", pgBase.acciones.Eliminar, "Eliminar ctrRatePlan", "", res.Item2.RequestXML, res.Item2.Xml, info.Hotel)
-                            End If
-
-                            Dim resPromotion As Tuple(Of RateResponse, RateResponse) = confluxService.UpdateRate(info.Hotel, info.Empresa, IdRatePlan, TypeRateEnum.RoomRatePromotion)
-                            pgBase.guardalog("/Pages/RatesPlans.aspx", pgBase.acciones.Sincronizar, "Sincronizar ctrRatePlan", "", resPromotion.Item2.RequestXML, resPromotion.Item2.Xml, info.Hotel)
-
-                            If resPromotion.Item2 IsNot Nothing Then
-                                pgBase.guardalog("/Pages/RatesPlans.aspx", pgBase.acciones.Eliminar, "Eliminar ctrRatePlan", "", resPromotion.Item2.RequestXML, resPromotion.Item2.Xml, info.Hotel)
-                            End If
-
+                            ExecuteServices(info.Hotel, info.Empresa, IdRatePlan, isEnabledGoogleRequest, isEnabledSendingRatesAPICache)
                         End If
                     End If
-
-
 
                     ClearData()
 
@@ -1363,5 +1317,46 @@ Partial Class ctrRatePlan
         cmbMonedas.DataBind()
         cmbMonedas.Items.Insert(0, New ListItem("", "-1"))
     End Sub
+
+    Private Sub SendRatesToService(ByVal ratesForRequest As RatesMessages, ByVal ratesForRequestPromotion As RatesMessages, ByVal endpoint As String, ByVal endpointDelete As String, ByVal hotelId As String, ByVal service As String)
+
+        Dim pgBase As PaginaBase = New PaginaBase()
+
+        Dim note As String = String.Format("Sincronizar ctrRatePlan {0}", service)
+        Dim noteDelete As String = String.Format("Eliminar ctrRatePlan {0}", service)
+
+        Dim noteException As String = String.Format("Sincronizar exception ctrRatePlan {0}", service)
+        Dim noteDeleteException As String = String.Format("Eliminar exception ctrRatePlan {0}", service)
+
+        Dim res As Tuple(Of RateResponse, RateResponse) = HotelUtilitie.ConfluxServiceHelper.UpdateRate(ratesForRequest, endpoint, endpointDelete)
+
+        pgBase.guardalog("/Pages/RatesPlans.aspx", pgBase.acciones.Sincronizar, note, "", res.Item1.RequestXML, res.Item1.Xml, hotelId)
+
+        If res.Item2 IsNot Nothing Then
+            pgBase.guardalog("/Pages/RatesPlans.aspx", pgBase.acciones.Eliminar, noteDelete, "", res.Item2.RequestXML, res.Item2.Xml, hotelId)
+        End If
+
+        Dim resPromotion As Tuple(Of RateResponse, RateResponse) = HotelUtilitie.ConfluxServiceHelper.UpdateRate(ratesForRequestPromotion, endpoint, endpointDelete)
+        pgBase.guardalog("/Pages/RatesPlans.aspx", pgBase.acciones.Sincronizar, noteException, "", resPromotion.Item1.RequestXML, resPromotion.Item1.Xml, hotelId)
+
+        If resPromotion.Item2 IsNot Nothing Then
+            pgBase.guardalog("/Pages/RatesPlans.aspx", pgBase.acciones.Eliminar, noteDeleteException, "", resPromotion.Item2.RequestXML, resPromotion.Item2.Xml, hotelId)
+        End If
+
+    End Sub
+
+    Private Sub ExecuteServices(ByVal hotelId As Integer, ByVal companyId As Integer, ByVal idRatePlan As String, ByVal isEnabledGoogleRequest As Boolean, ByVal isEnabledSendingRatesAPICache As Boolean)
+        Dim ratesForRequest As RatesMessages = HotelUtilitie.ConfluxServiceHelper.GetRateMessages(hotelId, idRatePlan, companyId, TypeRateEnum.RoomRate)
+        Dim ratesForRequestPromotion As RatesMessages = HotelUtilitie.ConfluxServiceHelper.GetRateMessages(hotelId, idRatePlan, companyId, TypeRateEnum.RoomRatePromotion)
+
+        If isEnabledGoogleRequest Then
+            SendRatesToService(ratesForRequest, ratesForRequestPromotion, HotelUtilitie.ENDPOINT, HotelUtilitie.ENDPOINTDELETE, hotelId, "Conflux")
+        End If
+
+        If isEnabledSendingRatesAPICache Then
+            SendRatesToService(ratesForRequest, ratesForRequestPromotion, HotelUtilitie.ENDPOINTAPI, HotelUtilitie.ENDPOINTAPIDELETE, hotelId, "APICache")
+        End If
+    End Sub
+
 
 End Class

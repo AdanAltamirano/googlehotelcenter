@@ -65,6 +65,7 @@ namespace APIServices.Conflux.Parser
         {
             RateAmountMessages rateAmountMessages = new RateAmountMessages();
 
+
             rateAmountMessages.HotelCode = companyId;
             rateAmountMessages.RateAmountMessagesList = new List<RateAmountMessage>();
 
@@ -89,6 +90,44 @@ namespace APIServices.Conflux.Parser
 
             return rateAmountMessages;
         }
+
+        public static Models.Rates.Response.RatesMessages ToRateAmountMessages(List<vDayRates> rates, List<vDayRatesExceptions> ratesExceptions, int hotelId, int companyId, bool? plusTax, decimal? tax, string currency, TypeRateEnum typeRate)
+        {
+            Models.Rates.Response.RatesMessages ratesMessages = new Models.Rates.Response.RatesMessages();
+
+            RateAmountMessages rateAmountMessages = new RateAmountMessages();
+            RateAmountMessages deleteRateAmountMessages = new RateAmountMessages();
+
+            rateAmountMessages.HotelCode = companyId;
+            rateAmountMessages.RateAmountMessagesList = new List<RateAmountMessage>();
+
+            deleteRateAmountMessages.HotelCode = companyId;
+            deleteRateAmountMessages.RateAmountMessagesList = new List<RateAmountMessage>();
+
+            RatesHelpers.Init(hotelId, plusTax, tax, currency);
+            //Para Tarifa Promociones ver si se tiene que poner condicion para diferenciar
+
+            switch (typeRate)
+            {
+                case TypeRateEnum.RoomRate:
+
+                    RoomRateMessages(rates, ref rateAmountMessages, ref deleteRateAmountMessages);
+
+                    break;
+                case TypeRateEnum.RoomRatePromotion:
+                    RoomRatePromotionMessages(ratesExceptions, ref rateAmountMessages);
+                    break;
+
+            }
+
+            //0: tarifas, 1: borrar, 2: tarifas excepciones
+            ratesMessages.RateAmountMessagesList.Add(rateAmountMessages);
+            ratesMessages.RateAmountMessagesList.Add(deleteRateAmountMessages);
+
+            return ratesMessages;
+        }
+
+
 
         #region Delete
         //Invividual

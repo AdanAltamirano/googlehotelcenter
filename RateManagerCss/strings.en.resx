@@ -8952,4 +8952,7 @@
   <data name="01685" xml:space="preserve">
     <value>Price with tax</value>
   </data>
+  <data name="01686" xml:space="preserve">
+    <value>Send rates to Cache API</value>
+  </data>
 </root>
