@@ -50,12 +50,10 @@ Namespace API.Controllers
         <Route("updaterates/{hotelId:int}"), HttpPost>
         Public Function UpdateRates(ByVal hotelId As Integer) As HttpResponseMessage
 
-            Dim endpointGoogle As String = ConfigurationManager.AppSettings("confluxApiUrl") & "pms/ota/rates/update"
-            Dim endpointDeleteGoogle As String = ConfigurationManager.AppSettings("confluxApiUrl") & "pms/ota/rates/delete"
             Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
             Dim ratesMessages As RatesMessages = ConfluxService.GetRateMessages(hotelId, info.Empresa)
 
-            Dim result As RatesReponse = ConfluxService.UpdateRates(ratesMessages, endpointGoogle, endpointDeleteGoogle)
+            Dim result As RatesReponse = ConfluxService.UpdateRates(ratesMessages, Utitlities.Hotel.HotelUtilitie.ENDPOINT, Utitlities.Hotel.HotelUtilitie.ENDPOINTDELETE, True)
 
             Dim ratesToUpdate As RateResponse = result.RateResponseList(0)
 
@@ -71,7 +69,7 @@ Namespace API.Controllers
 
             ''API CACHE
             If Utitlities.Hotel.HotelUtilitie.IsEnableSendRatesAPICache(hotelId) Then
-                Dim resultAPICache As RatesReponse = ConfluxService.UpdateRates(ratesMessages, "", "")
+                Dim resultAPICache As RatesReponse = ConfluxService.UpdateRates(ratesMessages, Utitlities.Hotel.HotelUtilitie.ENDPOINTAPI, Utitlities.Hotel.HotelUtilitie.ENDPOINTAPIDELETE, False)
                 LogRates(hotelId, "APICache", result)
             End If
 
@@ -85,59 +83,43 @@ Namespace API.Controllers
         Public Function UpdateRestrictions(ByVal hotelId As Integer) As HttpResponseMessage
 
             Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
-
-            Dim result As RestrictionResponse = ConfluxService.UpdateRestrictionsGeneral(hotelId, info.Empresa)
-
-            'Cierres de Tarifas
-
-            Dim ratesClosure As RestrictionResponse = ConfluxService.UpdateRestrictionsRates(hotelId, info.Empresa)
-
-
-            If Not ratesClosure.IsSuccess Then
-                Log("Sincronizar Restricciones Tarifas Conflux con el hotel: ", result.Xml, hotelId)
-            ElseIf ratesClosure.IsSuccess Then
-                For Each restriction As Restriction In ratesClosure.Restrictions
-                    Select Case restriction.Type
-                        Case RestrictionEnum.LockRate
-                            Dim index As Integer = 0
-                            While index < restriction.Xml.Count()
-                                Dim note As String = String.Format("Sincronizar request numero {0} LockRate(Cierre de Tarifa) Conflux con el hotel: ", (index + 1))
-                                Log(note, restriction.Xml(index).ToString(), hotelId, requestXMl:=restriction.XmlRequest(index).ToString())
-                                index = index + 1
-                            End While
-                    End Select
-                Next
-            End If
+            Dim priorityRequests As List(Of List(Of System.Xml.Linq.XDocument)) = ConfluxService.GetClosureMessages(hotelId, info.Empresa)
+            Dim result As RestrictionResponse = ConfluxService.UpdateRestriction(Utitlities.Hotel.HotelUtilitie.ENDPOINTCLOSURE, priorityRequests)
 
             If Not result.IsSuccess Then
-                Log("Sincronizar Restricciones Conflux con el hotel: ", result.Xml, hotelId)
+                Log("Error Sincronizar Restricciones con el hotel: ", result.Xml, hotelId)
                 Return BadRequest(result.Error)
-            ElseIf result.IsSuccess Then
-                For Each restriction As Restriction In result.Restrictions
-                    Select Case restriction.Type
-                        Case RestrictionEnum.LockGral
-                            Dim index As Integer = 0
-                            While index < restriction.Xml.Count()
-                                Dim note As String = String.Format("Sincronizar request numero {0} LockGral Conflux con el hotel: ", (index + 1))
-                                Log(note, restriction.Xml(index).ToString(), hotelId, requestXMl:=restriction.XmlRequest(index).ToString())
-                                index += 1
-                            End While
-                        Case RestrictionEnum.LockRatePlan
-                            Dim index As Integer = 0
-                            While index < restriction.Xml.Count()
-                                Dim note As String = String.Format("Sincronizar request numero {0} LockRatePlan Conflux con el hotel: ", (index + 1))
-                                Log(note, restriction.Xml(index).ToString(), hotelId, requestXMl:=restriction.XmlRequest(index).ToString())
-                                index += 1
-                            End While
-                        Case RestrictionEnum.LockRoomType
-                            Dim index As Integer = 0
-                            While index < restriction.Xml.Count()
-                                Dim note As String = String.Format("Sincronizar request numero {0} LockRoomtype Conflux con el hotel: ", (index + 1))
-                                Log(note, restriction.Xml(index).ToString(), hotelId, requestXMl:=restriction.XmlRequest(index).ToString())
-                                index += 1
-                            End While
-                    End Select
-                Next
+            End If
+
+            LogClosure(hotelId, "Conflux", result.Restrictions)
+
+
+            Dim ratesClosureRequest As List(Of System.Xml.Linq.XDocument) = ConfluxService.GetClosureRatesMessages(hotelId, info.Empresa)
+            Dim resultRateClosure As RestrictionResponse = ConfluxService.UpdateRestriction(Utitlities.Hotel.HotelUtilitie.ENDPOINTCLOSURE, ratesClosureRequest)
+
+            If Not resultRateClosure.IsSuccess Then
+                Log("Error Sincronizar Restricciones LockRate(Cierre de tarifa) con el hotel: ", resultRateClosure.Xml, hotelId)
+            Else
+                LogClosure(hotelId, "Conflux", resultRateClosure.Restrictions)
+            End If
+
+            If Utitlities.Hotel.HotelUtilitie.IsEnableSendRatesAPICache(hotelId) Then
+                Dim resultAPICache As RestrictionResponse = ConfluxService.UpdateRestriction(Utitlities.Hotel.HotelUtilitie.ENDPOINTAPICLOSURE, priorityRequests)
+
+                If Not resultAPICache.IsSuccess Then
+                    Log("Error Sincronizar Restricciones APICache con el hotel: ", result.Xml, hotelId)
+                Else
+                    LogClosure(hotelId, "APICache", resultAPICache.Restrictions)
+                End If
+
+                Dim resultAPICacheRatesClosure As RestrictionResponse = ConfluxService.UpdateRestriction(Utitlities.Hotel.HotelUtilitie.ENDPOINTAPICLOSURE, ratesClosureRequest)
+
+                If Not resultAPICacheRatesClosure.IsSuccess Then
+                    Log("Error Sincronizar Restricciones APICache LockRate(Cierre de tarifa) con el hotel: ", resultAPICacheRatesClosure.Xml, hotelId)
+                Else
+                    LogClosure(hotelId, "APICache", resultAPICacheRatesClosure.Restrictions)
+                End If
+
             End If
 
             Dim toObject As Object = result
@@ -158,8 +140,6 @@ Namespace API.Controllers
             Dim ratesToUpdate As RateResponse = result.RateResponseList(0)
             Dim ratesToDelete As RateResponse = result.RateResponseList(1)
             Dim ratesToUpdateExceptions As RateResponse = result.RateResponseList(2)
-
-
 
             Dim index As Integer = 1
 
@@ -197,6 +177,41 @@ Namespace API.Controllers
                 Log(noteDelete, ratesToDelete.Xml, hotelId, ratesToDelete.RequestXML)
             End If
 
+        End Sub
+
+        Private Sub LogClosure(ByVal hotelId As Integer, ByVal service As String, ByVal restrictionList As List(Of Restriction))
+            For Each restriction As Restriction In restrictionList
+                Select Case restriction.Type
+                    Case RestrictionEnum.LockGral
+                        Dim index As Integer = 0
+                        While index < restriction.Xml.Count()
+                            Dim note As String = String.Format("Sincronizar request numero {0} LockGral {1} con el hotel: ", (index + 1), service)
+                            Log(note, restriction.Xml(index).ToString(), hotelId, requestXMl:=restriction.XmlRequest(index).ToString())
+                            index += 1
+                        End While
+                    Case RestrictionEnum.LockRatePlan
+                        Dim index As Integer = 0
+                        While index < restriction.Xml.Count()
+                            Dim note As String = String.Format("Sincronizar request numero {0} LockRatePlan {1} con el hotel: ", (index + 1), service)
+                            Log(note, restriction.Xml(index).ToString(), hotelId, requestXMl:=restriction.XmlRequest(index).ToString())
+                            index += 1
+                        End While
+                    Case RestrictionEnum.LockRoomType
+                        Dim index As Integer = 0
+                        While index < restriction.Xml.Count()
+                            Dim note As String = String.Format("Sincronizar request numero {0} LockRoomtype {1} con el hotel: ", (index + 1), service)
+                            Log(note, restriction.Xml(index).ToString(), hotelId, requestXMl:=restriction.XmlRequest(index).ToString())
+                            index += 1
+                        End While
+                    Case RestrictionEnum.LockRate
+                        Dim index As Integer = 0
+                        While index < restriction.Xml.Count()
+                            Dim note As String = String.Format("Sincronizar request numero {0} LockRate(Cierre de Tarifa) {1} con el hotel: ", (index + 1), service)
+                            Log(note, restriction.Xml(index).ToString(), hotelId, requestXMl:=restriction.XmlRequest(index).ToString())
+                            index += 1
+                        End While
+                End Select
+            Next
         End Sub
 
     End Class

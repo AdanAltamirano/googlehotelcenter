@@ -718,7 +718,7 @@ Partial Public Class FaresCataloguePromoNR
 
                             If isEnabledGoogleRequest And ratesForRequest IsNot Nothing Then
                                 Try
-                                    SendRatesToService(ratesForRequest, info.Hotel, HotelUtilitie.ENDPOINT, HotelUtilitie.ENDPOINTDELETE, "Conflux")
+                                    SendRatesToService(ratesForRequest, info.Hotel, HotelUtilitie.ENDPOINT, HotelUtilitie.ENDPOINTDELETE, "Conflux", True)
                                     SendClosureToService(auxFareId, f1, f2, HotelUtilitie.ENDPOINTCLOSURE, "Conflux", info)
                                 Catch ex As Exception
 
@@ -732,7 +732,7 @@ Partial Public Class FaresCataloguePromoNR
 
                             If isEnabledSendingRatesAPICache And ratesForRequest IsNot Nothing Then
                                 Try
-                                    SendRatesToService(ratesForRequest, info.Hotel, HotelUtilitie.ENDPOINTAPI, HotelUtilitie.ENDPOINTAPIDELETE, "APICache")
+                                    SendRatesToService(ratesForRequest, info.Hotel, HotelUtilitie.ENDPOINTAPI, HotelUtilitie.ENDPOINTAPIDELETE, "APICache", False)
                                     SendClosureToService(auxFareId, f1, f2, HotelUtilitie.ENDPOINTAPICLOSURE, "APICache", info)
                                 Catch ex As Exception
                                     Dim errorsElement As New System.Xml.Linq.XElement("Errors")
@@ -925,11 +925,11 @@ Partial Public Class FaresCataloguePromoNR
 
     End Sub
 
-    Private Sub SendRatesToService(ByVal ratesForRequest As RatesMessages, ByVal hotelId As Integer, ByVal endpoint As String, ByVal endpointDelete As String, ByVal service As String)
+    Private Sub SendRatesToService(ByVal ratesForRequest As RatesMessages, ByVal hotelId As Integer, ByVal endpoint As String, ByVal endpointDelete As String, ByVal service As String, Optional ByVal deleteRates As Boolean = True)
 
         Dim ratesMessages As RatesMessages = ratesForRequest
 
-        Dim res As Tuple(Of RateResponse, RateResponse) = HotelUtilitie.ConfluxServiceHelper.UpdateRate(ratesMessages, endpoint, endpointDelete)
+        Dim res As Tuple(Of RateResponse, RateResponse) = HotelUtilitie.ConfluxServiceHelper.UpdateRate(ratesMessages, endpoint, endpointDelete, deleteRates)
 
         Dim note As String = String.Format("Tarifa envida a {0}", service)
         Dim noteDelete As String = String.Format("Eliminar tarifas {0}", service)

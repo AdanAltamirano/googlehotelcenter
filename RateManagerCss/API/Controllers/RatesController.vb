@@ -424,8 +424,8 @@ Namespace API.Controllers
         End Sub
 
 
-        Private Sub SendRatesToService(ByVal ratesMessages As RatesMessages, ByVal endpoint As String, ByVal endpointDelete As String, ByVal hotelId As Integer, ByVal service As String)
-            Dim res As Tuple(Of RateResponse, RateResponse) = HotelUtilitie.ConfluxServiceHelper.UpdateRate(ratesMessages, endpoint, endpointDelete)
+        Private Sub SendRatesToService(ByVal ratesMessages As RatesMessages, ByVal endpoint As String, ByVal endpointDelete As String, ByVal hotelId As Integer, ByVal service As String, Optional ByVal deleteRates As Boolean = True)
+            Dim res As Tuple(Of RateResponse, RateResponse) = HotelUtilitie.ConfluxServiceHelper.UpdateRate(ratesMessages, endpoint, endpointDelete, deleteRates)
 
             Dim note As String = String.Format("Tarifa envida a {0}", service)
             Dim noteDelete As String = String.Format("Tarifa envidada para eliminar a {0}", service)
@@ -446,7 +446,7 @@ Namespace API.Controllers
 
             If isEnabledGoogleRequest Then
                 Try
-                    SendRatesToService(ratesForRequest, HotelUtilitie.ENDPOINT, HotelUtilitie.ENDPOINTDELETE, hotelId, "Conflux")
+                    SendRatesToService(ratesForRequest, HotelUtilitie.ENDPOINT, HotelUtilitie.ENDPOINTDELETE, hotelId, "Conflux", True)
                     SendClosureToService(rate.idTarifa, rate.FechaInicia, rate.FechaFinaliza, HotelUtilitie.ENDPOINTCLOSURE, "Conflux", info)
                 Catch ex As Exception
                     Dim errorsElement As New System.Xml.Linq.XElement("Errors")
@@ -460,7 +460,7 @@ Namespace API.Controllers
 
             If isEnabledSendingRatesAPICache Then
                 Try
-                    SendRatesToService(ratesForRequest, HotelUtilitie.ENDPOINTAPI, HotelUtilitie.ENDPOINTAPIDELETE, hotelId, "APICache")
+                    SendRatesToService(ratesForRequest, HotelUtilitie.ENDPOINTAPI, HotelUtilitie.ENDPOINTAPIDELETE, hotelId, "APICache", False)
                     SendClosureToService(rate.idTarifa, rate.FechaInicia, rate.FechaFinaliza, HotelUtilitie.ENDPOINTAPICLOSURE, "APICache", info)
                 Catch ex As Exception
                     Dim errorsElement As New System.Xml.Linq.XElement("Errors")
