@@ -22,7 +22,7 @@
               <rooms :isNetRate="result.isNetRateUV" :ratePlan="result.ratePlan" :rooms="result.roomDetails"></rooms>
             </b-col>
           </b-row>
-          <b-row class="mt-3" v-if="result.reservationItemsDetails.length > 0" >
+          <b-row class="mt-3" v-if="result.reservationItemsDetails != undefined && result.reservationItemsDetails.length > 0" >
             <b-col>
               <hotel-items :items="result.reservationItemsDetails"></hotel-items>
             </b-col>          

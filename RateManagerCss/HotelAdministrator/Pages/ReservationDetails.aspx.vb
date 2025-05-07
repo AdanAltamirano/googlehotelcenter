@@ -1088,7 +1088,24 @@ Partial Class ReservationDetails
 
                     AmountDebtByBankDeposit = (deposit - TotalDepositByBankDeposit)
 
-                    Dim _depositTargetResource As String = If(xml.Reservation(0)("DepositTarget").ToString.ToUpper() = "UV", PortalCulture.GetString("01410"), PortalCulture.GetString("01411"))
+                    '01687 Zentauro Solutions ZT
+                    '01410 UV Internet Power Hotel
+                    '01411 HOTEL HT
+
+                    Dim depositTargetTemp As String = String.Empty
+
+                    Select Case xml.Reservation(0)("DepositTarget").ToString.ToUpper()
+                        Case "UV"
+                            depositTargetTemp = PortalCulture.GetString("01410")
+                        Case "ZT"
+                            depositTargetTemp = PortalCulture.GetString("01687")
+                        Case Else
+                            depositTargetTemp = PortalCulture.GetString("01411")
+                    End Select
+
+
+
+                    Dim _depositTargetResource As String = depositTargetTemp
                     Dim _depositReference As String = xml.Reservation(0).DepositReference
                     Dim _totalDepositByBankDeposit As String = "$ " & TotalDepositByBankDeposit.ToString("#,###,##0.00") & " "
                     Dim _amountDebtByBankDeposit As String = "$ " & AmountDebtByBankDeposit.ToString("#,###,##0.00") & " "
