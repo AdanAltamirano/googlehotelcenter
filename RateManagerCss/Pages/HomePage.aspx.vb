@@ -1055,29 +1055,52 @@ Partial Class HomePage
         Dim dsActualInventory As RoomsInventoryData
         Dim fini As Date = CDate(txtInicio.Text)
         Dim fend As Date = CDate(txtFinal.Text)
+        Dim roomIdTemp As String = Me.ddlRoomtype.SelectedValue
 
-        For i As Integer = 0 To Me.ddlRoomtype.Items.Count - 1
-            If Me.ddlRoomtype.Items(i).Value <> 0 Then
-                dsActualInventory = (New RoomsInventoryFacade).getInventoryByDate_Data(Me.ddlRoomtype.Items(i).Value, fini, fend)
+        If roomIdTemp = "0" Then
+            For i As Integer = 0 To Me.ddlRoomtype.Items.Count - 1
+                If Me.ddlRoomtype.Items(i).Value <> 0 Then
+                    dsActualInventory = (New RoomsInventoryFacade).getInventoryByDate_Data(Me.ddlRoomtype.Items(i).Value, fini, fend)
 
-                For Each row As DataRow In dsActualInventory.Tables(0).Rows
-                    Dim dr As DataRow = ds.Tables(RoomsInventoryData.TBL_ROOMS_INVENTORY).NewRow
+                    For Each row As DataRow In dsActualInventory.Tables(0).Rows
+                        Dim dr As DataRow = ds.Tables(RoomsInventoryData.TBL_ROOMS_INVENTORY).NewRow
 
-                    dr(RoomsInventoryData.FLD_DATE) = row(RoomsInventoryData.FLD_DATE)
-                    dr(RoomsInventoryData.FLD_STARTDATE) = row(RoomsInventoryData.FLD_DATE)
-                    dr(RoomsInventoryData.FLD_ENDDATE) = row(RoomsInventoryData.FLD_DATE)
-                    dr(RoomsInventoryData.FLD_ID_ROOM_HOTEL) = Me.ddlRoomtype.Items(i).Value
-                    dr(RoomsInventoryData.FLD_NUMBER_ROOMS) = row(RoomsInventoryData.FLD_NUMBER_ROOMS)
-                    dr(RoomsInventoryData.FLD_STATUS) = 0
-                    dr(RoomsInventoryData.FLD_NUMBER_AVAILABILITY) = row(RoomsInventoryData.FLD_NUMBER_AVAILABILITY)
-                    dr("RoomCode") = row("CodigoHabitacion")
-                    ds.Tables(RoomsInventoryData.TBL_ROOMS_INVENTORY).Rows.Add(dr)
-                    dr.AcceptChanges()
-                    dr(RoomsInventoryData.FLD_STATUS) = dr(RoomsInventoryData.FLD_STATUS)
-                Next
+                        dr(RoomsInventoryData.FLD_DATE) = row(RoomsInventoryData.FLD_DATE)
+                        dr(RoomsInventoryData.FLD_STARTDATE) = row(RoomsInventoryData.FLD_DATE)
+                        dr(RoomsInventoryData.FLD_ENDDATE) = row(RoomsInventoryData.FLD_DATE)
+                        dr(RoomsInventoryData.FLD_ID_ROOM_HOTEL) = Me.ddlRoomtype.Items(i).Value
+                        dr(RoomsInventoryData.FLD_NUMBER_ROOMS) = row(RoomsInventoryData.FLD_NUMBER_ROOMS)
+                        dr(RoomsInventoryData.FLD_STATUS) = 0
+                        dr(RoomsInventoryData.FLD_NUMBER_AVAILABILITY) = row(RoomsInventoryData.FLD_NUMBER_AVAILABILITY)
+                        dr("RoomCode") = row("CodigoHabitacion")
+                        ds.Tables(RoomsInventoryData.TBL_ROOMS_INVENTORY).Rows.Add(dr)
+                        dr.AcceptChanges()
+                        dr(RoomsInventoryData.FLD_STATUS) = dr(RoomsInventoryData.FLD_STATUS)
+                    Next
 
-            End If
-        Next
+                End If
+            Next
+        Else
+
+            dsActualInventory = (New RoomsInventoryFacade).getInventoryByDate_Data(roomIdTemp, fini, fend)
+
+            For Each row As DataRow In dsActualInventory.Tables(0).Rows
+                Dim dr As DataRow = ds.Tables(RoomsInventoryData.TBL_ROOMS_INVENTORY).NewRow
+
+                dr(RoomsInventoryData.FLD_DATE) = row(RoomsInventoryData.FLD_DATE)
+                dr(RoomsInventoryData.FLD_STARTDATE) = row(RoomsInventoryData.FLD_DATE)
+                dr(RoomsInventoryData.FLD_ENDDATE) = row(RoomsInventoryData.FLD_DATE)
+                dr(RoomsInventoryData.FLD_ID_ROOM_HOTEL) = roomIdTemp
+                dr(RoomsInventoryData.FLD_NUMBER_ROOMS) = row(RoomsInventoryData.FLD_NUMBER_ROOMS)
+                dr(RoomsInventoryData.FLD_STATUS) = 0
+                dr(RoomsInventoryData.FLD_NUMBER_AVAILABILITY) = row(RoomsInventoryData.FLD_NUMBER_AVAILABILITY)
+                dr("RoomCode") = row("CodigoHabitacion")
+                ds.Tables(RoomsInventoryData.TBL_ROOMS_INVENTORY).Rows.Add(dr)
+                dr.AcceptChanges()
+                dr(RoomsInventoryData.FLD_STATUS) = dr(RoomsInventoryData.FLD_STATUS)
+            Next
+
+        End If
 
         TwoWayUpdate(ds, sincOption)
     End Sub
