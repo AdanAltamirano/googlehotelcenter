@@ -548,11 +548,11 @@ namespace APIServices.Conflux
 
         }
 
-        public RatesMessages GetRateMessages(int hotelId, int companyId)
+        public RatesMessages GetRateMessages(int hotelId, int companyId,string rateplanId, int? roomId, DateTime? startDate, DateTime? endDate )
         {
             RatesMessages ratesMessages = null;
 
-            var currentRates = dbContext.spGetCurrentRatesByHotel(hotelId).ToList();
+            var currentRates = dbContext.spGetCurrentRatesByHotel(hotelId: hotelId, rateplanId:rateplanId, roomId:roomId, startDate: startDate, endDate:endDate).ToList();
 
             var hotel = dbContext.Hoteles.First(h => h.idHotel == hotelId);
             var hotelBasicInfo = dbContext.vHotelBasicInfo.FirstOrDefault(vh => vh.Id == hotelId);
@@ -978,7 +978,7 @@ namespace APIServices.Conflux
         public List<XDocument> GetClosureRatesMessages(int hotelId, int companyId)
         {
             List<XDocument> lockRatesSoapRQ = new List<XDocument>();
-            var currentRates = dbContext.spGetCurrentRatesByHotel(hotelId).ToList();
+            var currentRates = new List<spGetCurrentRatesByHotel_Result4>(); //dbContext.spGetCurrentRatesByHotel(hotelId).ToList();
             
             RestrictionsParser.Init(companyId);
 

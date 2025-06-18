@@ -48,10 +48,11 @@ Namespace API.Controllers
 
 
         <Route("updaterates/{hotelId:int}"), HttpPost>
-        Public Function UpdateRates(ByVal hotelId As Integer) As HttpResponseMessage
+        Public Function UpdateRates(ByVal hotelId As Integer, <FromBody> body As APIServices.Conflux.Models.Rates.RatePrice) As HttpResponseMessage
 
             Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
-            Dim ratesMessages As RatesMessages = ConfluxService.GetRateMessages(hotelId, info.Empresa)
+
+            Dim ratesMessages As RatesMessages = GetMessages(hotelId, info.Empresa, body)
 
             Dim result As RatesReponse = ConfluxService.UpdateRates(ratesMessages, Utitlities.Hotel.HotelUtilitie.ENDPOINT, Utitlities.Hotel.HotelUtilitie.ENDPOINTDELETE, True)
 
@@ -213,6 +214,53 @@ Namespace API.Controllers
                 End Select
             Next
         End Sub
+
+        Private Function GetMessages(ByVal hotelId As Integer, ByVal companyId As Integer, ByVal ratePrice As APIServices.Conflux.Models.Rates.RatePrice) As RatesMessages
+
+            Dim ratesMessages As RatesMessages = Nothing
+
+            If ((ratePrice.RatePlansList.Length = 1 And ratePrice.RatePlansList(0) = "0") And (ratePrice.RoomsList.Length = 1 And ratePrice.RoomsList(0) = 0)) Then
+
+                'Todos los planes con todas las habitaciones
+                ratesMessages = ConfluxService.GetRateMessages(hotelId, companyId, Nothing, Nothing, ratePrice.StartDate.Value.Date, ratePrice.EndDate.Value.Date)
+
+            ElseIf ((ratePrice.RatePlansList.Length = 1 And ratePrice.RatePlansList(0) = "0") And ((ratePrice.RoomsList.Length = 1 And ratePrice.RoomsList(0) <> 0) Or ratePrice.RoomsList.Length > 1)) Then
+
+                Dim rateAmountMessages As OTA.Models.Rates.RateAmountMessages = New OTA.Models.Rates.RateAmountMessages()
+                Dim deleteRateAmountMessages As OTA.Models.Rates.RateAmountMessages = New OTA.Models.Rates.RateAmountMessages()
+                Dim rateAmountMessagesExceptions As OTA.Models.Rates.RateAmountMessages = New OTA.Models.Rates.RateAmountMessages()
+
+                rateAmountMessages.HotelCode = companyId
+                deleteRateAmountMessages.HotelCode = companyId
+                rateAmountMessagesExceptions.HotelCode = companyId
+
+                ' //0 tarifas, 1: borrar, 2: tarifas excepciones
+
+                'Todos los planes, habitaciones seleccionadas
+                For Each roomId As Integer In ratePrice.RoomsList
+
+                    Dim ratesMessagesTemp As RatesMessages = ConfluxService.GetRateMessages(hotelId, companyId, Nothing, roomId, ratePrice.StartDate.Value.Date, ratePrice.EndDate.Value.Date)
+
+                    Dim tarifas As List(Of OTA.Models.Rates.RateAmountMessage) = ratesMessagesTemp.RateAmountMessagesList(0).RateAmountMessagesList
+                    Dim borrar As List(Of OTA.Models.Rates.RateAmountMessage) = ratesMessagesTemp.RateAmountMessagesList(1).RateAmountMessagesList
+                    Dim excepciones As List(Of OTA.Models.Rates.RateAmountMessage) = ratesMessagesTemp.RateAmountMessagesList(2).RateAmountMessagesList
+
+                    rateAmountMessages.RateAmountMessagesList.AddRange(tarifas)
+                    deleteRateAmountMessages.RateAmountMessagesList.AddRange(borrar)
+                    rateAmountMessagesExceptions.RateAmountMessagesList.AddRange(excepciones)
+
+                Next
+
+                ratesMessages.RateAmountMessagesList.Add(rateAmountMessages)
+                ratesMessages.RateAmountMessagesList.Add(deleteRateAmountMessages)
+                ratesMessages.RateAmountMessagesList.Add(rateAmountMessagesExceptions)
+
+            End If
+
+            Return ratesMessages
+
+        End Function
+
 
     End Class
 End Namespace

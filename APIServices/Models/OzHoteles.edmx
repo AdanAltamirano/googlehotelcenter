@@ -165,6 +165,7 @@
           <Property Name="noDepartures" Type="nvarchar" MaxLength="7" />
           <Property Name="Ecotasa" Type="smallmoney" />
           <Property Name="EnableGoogle" Type="bit" />
+          <Property Name="SendRatesAPICache" Type="bit" />
         </EntityType>
         <EntityType Name="Indice">
           <Key>
@@ -1358,6 +1359,10 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
         </Function>
         <Function Name="spGetCurrentRatesByHotel" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="hotelId" Type="int" Mode="In" />
+          <Parameter Name="rateplanId" Type="nvarchar" Mode="In" />
+          <Parameter Name="roomId" Type="int" Mode="In" />
+          <Parameter Name="startDate" Type="smalldatetime" Mode="In" />
+          <Parameter Name="endDate" Type="smalldatetime" Mode="In" />
         </Function>
         <Function Name="spGetLockGralByHotel" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="hotelId" Type="int" Mode="In" />
@@ -2138,9 +2143,6 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
 					<FunctionImport Name="spGetPricesByRatePromotionException" ReturnType="Collection(Models.spGetPricesByRatePromotionException_Result)">
           <Parameter Name="RateId" Mode="In" Type="Int32" />
           </FunctionImport>
-					<FunctionImport Name="spGetCurrentRatesByHotel" ReturnType="Collection(Models.spGetCurrentRatesByHotel_Result4)">
-          <Parameter Name="hotelId" Mode="In" Type="Int32" />
-          </FunctionImport>
 					<EntitySet Name="vLinkedRoomTypes" EntityType="Models.vLinkedRoomTypes" />
 					<EntitySet Name="vLinkedRatePlans" EntityType="Models.vLinkedRatePlans" />
 					<FunctionImport Name="spGetLockRoomTypesByHotel" ReturnType="Collection(Models.spGetLockRoomTypesByHotel_Result)">
@@ -2176,6 +2178,13 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
             <End Role="Hoteles" EntitySet="Hoteles" />
             <End Role="HotelCanales" EntitySet="HotelCanales" />
           </AssociationSet>
+          <FunctionImport Name="spGetCurrentRatesByHotel" ReturnType="Collection(Models.spGetCurrentRatesByHotel_Result4)">
+            <Parameter Name="hotelId" Mode="In" Type="Int32" />
+            <Parameter Name="rateplanId" Mode="In" Type="String" />
+            <Parameter Name="roomId" Mode="In" Type="Int32" />
+            <Parameter Name="startDate" Mode="In" Type="DateTime" />
+            <Parameter Name="endDate" Mode="In" Type="DateTime" />
+          </FunctionImport>
 				</EntityContainer>
 				<EntityType Name="RatesPlan">
 					<Key>
@@ -2542,6 +2551,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
 					<Property Name="noDepartures" Type="String" MaxLength="7" FixedLength="false" Unicode="true" />
 					<Property Name="EnableGoogle" Type="Boolean" />
           <NavigationProperty Name="HotelCanales" Relationship="Models.FK__HotelCana__idHot__54C23EC5" FromRole="Hoteles" ToRole="HotelCanales" />
+          <Property Name="SendRatesAPICache" Type="Boolean" />
 				</EntityType>
 				<Association Name="FK_RatesPlan_Hoteles">
 					<End Type="Models.Hoteles" Role="Hoteles" Multiplicity="1" />
@@ -3379,25 +3389,6 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
 					<Property Type="String" Name="RoomCode" Nullable="true" MaxLength="4" />
 					<Property Type="Int32" Name="TypeRate" Nullable="false" />
 				</ComplexType>
-				<ComplexType Name="spGetCurrentRatesByHotel_Result4">
-					<Property Type="Int32" Name="RateId" Nullable="true" />
-					<Property Type="Int32" Name="ParentRoomHotelId" Nullable="true" />
-					<Property Type="Int32" Name="RoomHotelId" Nullable="true" />
-					<Property Type="DateTime" Name="StartDate" Nullable="true" Precision="16" />
-					<Property Type="DateTime" Name="EndDate" Nullable="true" Precision="16" />
-					<Property Type="String" Name="RateCode" Nullable="true" MaxLength="8" />
-					<Property Type="String" Name="RatePlanId" Nullable="true" MaxLength="4" />
-					<Property Type="Int32" Name="RoomId" Nullable="true" />
-					<Property Type="Int32" Name="HotelId" Nullable="true" />
-					<Property Type="Byte" Name="People" Nullable="true" />
-					<Property Type="Byte" Name="ExtraPeople" Nullable="true" />
-					<Property Type="Byte" Name="MaxAdults" Nullable="true" />
-					<Property Type="Byte" Name="MinAdults" Nullable="true" />
-					<Property Type="Byte" Name="MaxChildren" Nullable="true" />
-					<Property Type="String" Name="RoomName" Nullable="true" MaxLength="80" />
-					<Property Type="String" Name="RoomCode" Nullable="true" MaxLength="4" />
-					<Property Type="Int32" Name="TypeRate" Nullable="false" />
-				</ComplexType>
 				<EntityType Name="vLinkedRoomTypes">
 					<Key>
 						<PropertyRef Name="idtipohabitacion_Target" />
@@ -3783,6 +3774,25 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="spGetCurrentRatesByHotel_Result4">
+          <Property Type="Int32" Name="RateId" Nullable="true" />
+          <Property Type="Int32" Name="ParentRoomHotelId" Nullable="true" />
+          <Property Type="Int32" Name="RoomHotelId" Nullable="true" />
+          <Property Type="DateTime" Name="StartDate" Nullable="true" Precision="16" />
+          <Property Type="DateTime" Name="EndDate" Nullable="true" Precision="16" />
+          <Property Type="String" Name="RateCode" Nullable="true" MaxLength="8" />
+          <Property Type="String" Name="RatePlanId" Nullable="true" MaxLength="4" />
+          <Property Type="Int32" Name="RoomId" Nullable="true" />
+          <Property Type="Int32" Name="HotelId" Nullable="true" />
+          <Property Type="Byte" Name="People" Nullable="true" />
+          <Property Type="Byte" Name="ExtraPeople" Nullable="true" />
+          <Property Type="Byte" Name="MaxAdults" Nullable="true" />
+          <Property Type="Byte" Name="MinAdults" Nullable="true" />
+          <Property Type="Byte" Name="MaxChildren" Nullable="true" />
+          <Property Type="String" Name="RoomName" Nullable="true" MaxLength="80" />
+          <Property Type="String" Name="RoomCode" Nullable="true" MaxLength="4" />
+          <Property Type="Int32" Name="TypeRate" Nullable="false" />
+        </ComplexType>
 			</Schema>
 		</edmx:ConceptualModels>
 		<!-- C-S mapping content -->
@@ -4005,7 +4015,8 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
 					<EntitySetMapping Name="Hoteles">
 						<EntityTypeMapping TypeName="Models.Hoteles">
 							<MappingFragment StoreEntitySet="Hoteles">
-								<ScalarProperty Name="EnableGoogle" ColumnName="EnableGoogle" />
+								<ScalarProperty Name="SendRatesAPICache" ColumnName="SendRatesAPICache" />
+                <ScalarProperty Name="EnableGoogle" ColumnName="EnableGoogle" />
 								<ScalarProperty Name="noDepartures" ColumnName="noDepartures" />
 								<ScalarProperty Name="Ecotasa" ColumnName="Ecotasa" />
 								<ScalarProperty Name="IsPMSPushNotifActive" ColumnName="IsPMSPushNotifActive" />
@@ -4828,29 +4839,6 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
 							</ComplexTypeMapping>
 						</ResultMapping>
 					</FunctionImportMapping>
-					<FunctionImportMapping FunctionImportName="spGetCurrentRatesByHotel" FunctionName="Models.Store.spGetCurrentRatesByHotel">
-						<ResultMapping>
-							<ComplexTypeMapping TypeName="Models.spGetCurrentRatesByHotel_Result4">
-								<ScalarProperty Name="RateId" ColumnName="RateId" />
-								<ScalarProperty Name="ParentRoomHotelId" ColumnName="ParentRoomHotelId" />
-								<ScalarProperty Name="RoomHotelId" ColumnName="RoomHotelId" />
-								<ScalarProperty Name="StartDate" ColumnName="StartDate" />
-								<ScalarProperty Name="EndDate" ColumnName="EndDate" />
-								<ScalarProperty Name="RateCode" ColumnName="RateCode" />
-								<ScalarProperty Name="RatePlanId" ColumnName="RatePlanId" />
-								<ScalarProperty Name="RoomId" ColumnName="RoomId" />
-								<ScalarProperty Name="HotelId" ColumnName="HotelId" />
-								<ScalarProperty Name="People" ColumnName="People" />
-								<ScalarProperty Name="ExtraPeople" ColumnName="ExtraPeople" />
-								<ScalarProperty Name="MaxAdults" ColumnName="MaxAdults" />
-								<ScalarProperty Name="MinAdults" ColumnName="MinAdults" />
-								<ScalarProperty Name="MaxChildren" ColumnName="MaxChildren" />
-								<ScalarProperty Name="RoomName" ColumnName="RoomName" />
-								<ScalarProperty Name="RoomCode" ColumnName="RoomCode" />
-								<ScalarProperty Name="TypeRate" ColumnName="TypeRate" />
-							</ComplexTypeMapping>
-						</ResultMapping>
-					</FunctionImportMapping>
 					<EntitySetMapping Name="vLinkedRoomTypes">
 						<EntityTypeMapping TypeName="Models.vLinkedRoomTypes">
 							<MappingFragment StoreEntitySet="vLinkedRoomTypes">
@@ -5186,6 +5174,29 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spGetCurrentRatesByHotel" FunctionName="Models.Store.spGetCurrentRatesByHotel">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Models.spGetCurrentRatesByHotel_Result4">
+                <ScalarProperty Name="RateId" ColumnName="RateId" />
+                <ScalarProperty Name="ParentRoomHotelId" ColumnName="ParentRoomHotelId" />
+                <ScalarProperty Name="RoomHotelId" ColumnName="RoomHotelId" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="RateCode" ColumnName="RateCode" />
+                <ScalarProperty Name="RatePlanId" ColumnName="RatePlanId" />
+                <ScalarProperty Name="RoomId" ColumnName="RoomId" />
+                <ScalarProperty Name="HotelId" ColumnName="HotelId" />
+                <ScalarProperty Name="People" ColumnName="People" />
+                <ScalarProperty Name="ExtraPeople" ColumnName="ExtraPeople" />
+                <ScalarProperty Name="MaxAdults" ColumnName="MaxAdults" />
+                <ScalarProperty Name="MinAdults" ColumnName="MinAdults" />
+                <ScalarProperty Name="MaxChildren" ColumnName="MaxChildren" />
+                <ScalarProperty Name="RoomName" ColumnName="RoomName" />
+                <ScalarProperty Name="RoomCode" ColumnName="RoomCode" />
+                <ScalarProperty Name="TypeRate" ColumnName="TypeRate" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
 				</EntityContainerMapping>
 			</Mapping>
 		</edmx:Mappings>

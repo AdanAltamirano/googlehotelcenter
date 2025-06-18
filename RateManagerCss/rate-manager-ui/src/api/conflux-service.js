@@ -49,9 +49,9 @@ export default {
     /**
      * @param hotelid
     */
-    UpdateRates(hotelid){
+    UpdateRates(hotelid,payload){
         console.log(hotelid);
-        return updateRates.save({hotelid},{});
+        return updateRates.save({hotelid},payload);
     },
     /**
      * @param hotelid

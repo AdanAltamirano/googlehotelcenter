@@ -90,6 +90,7 @@ export default {
         }
     },
     created() {
+        console.log(this.dates);
         this.loadRatesPlans(this.hotelId);
         this.loadRooms(this.hotelId);
         
@@ -107,9 +108,21 @@ export default {
     },
     methods:{
         updateRates(){
+            
+            const ratesPlans = this.ratePlansList.map(obj => obj.value);
+            const rooms = this.roomsList.map(obj => parseInt(obj.value, 10));
+
+            const payload = {
+                startDate: this.dates.start,
+                endDate: this.dates.end,
+                ratePlansList: ratesPlans,
+                roomsList: rooms
+            };
+
             this.showButton = false;
             this.callApi = true;
-            ConfluxService.UpdateRates(this.hotelId)
+
+            ConfluxService.UpdateRates(this.hotelId,payload)
             .then(response => {
                 console.log(response);
                 this.callApi = false;

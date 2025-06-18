@@ -431,15 +431,6 @@ namespace APIServices.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetPricesByRatePromotionException_Result>("spGetPricesByRatePromotionException", rateIdParameter);
         }
     
-        public virtual ObjectResult<spGetCurrentRatesByHotel_Result4> spGetCurrentRatesByHotel(Nullable<int> hotelId)
-        {
-            var hotelIdParameter = hotelId.HasValue ?
-                new ObjectParameter("hotelId", hotelId) :
-                new ObjectParameter("hotelId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCurrentRatesByHotel_Result4>("spGetCurrentRatesByHotel", hotelIdParameter);
-        }
-    
         public virtual ObjectResult<spGetLockRoomTypesByHotel_Result> spGetLockRoomTypesByHotel(Nullable<int> hotelId)
         {
             var hotelIdParameter = hotelId.HasValue ?
@@ -487,6 +478,31 @@ namespace APIServices.Models
                 new ObjectParameter("idReservation", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetReservationHotelItem_Result>("spGetReservationHotelItem", idReservationParameter);
+        }
+    
+        public virtual ObjectResult<spGetCurrentRatesByHotel_Result4> spGetCurrentRatesByHotel(Nullable<int> hotelId, string rateplanId, Nullable<int> roomId, Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate)
+        {
+            var hotelIdParameter = hotelId.HasValue ?
+                new ObjectParameter("hotelId", hotelId) :
+                new ObjectParameter("hotelId", typeof(int));
+    
+            var rateplanIdParameter = rateplanId != null ?
+                new ObjectParameter("rateplanId", rateplanId) :
+                new ObjectParameter("rateplanId", typeof(string));
+    
+            var roomIdParameter = roomId.HasValue ?
+                new ObjectParameter("roomId", roomId) :
+                new ObjectParameter("roomId", typeof(int));
+    
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("startDate", startDate) :
+                new ObjectParameter("startDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("endDate", endDate) :
+                new ObjectParameter("endDate", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCurrentRatesByHotel_Result4>("spGetCurrentRatesByHotel", hotelIdParameter, rateplanIdParameter, roomIdParameter, startDateParameter, endDateParameter);
         }
     }
 }
