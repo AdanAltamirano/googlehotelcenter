@@ -5,6 +5,8 @@ import BootstrapVue from 'bootstrap-vue';
 import moment from 'moment';
 import '../../core/app.settings';
 import VueMoment from 'vue-moment';
+import VCalendar from 'v-calendar';
+import VTooltip from 'v-tooltip';
 import Loading from 'vue-loading-overlay';
 import locale from '../../core/localization';
 import es from './localization/es';
@@ -24,6 +26,8 @@ Vue.use(VueMoment, {
 });
 
 Vue.use(Loading);
+Vue.use(VCalendar);
+Vue.use(VTooltip);
 Vue.use(BootstrapVue);
 
 Vue.config.productionTip = false;

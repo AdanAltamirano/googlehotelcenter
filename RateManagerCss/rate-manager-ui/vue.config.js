@@ -102,11 +102,11 @@ module.exports = {
             filename:'rooms-closure.aspx',
             chunks:['node_vendors','commons','rooms_closure']
         },
-        channel_rates_update: {
-            entry:'src/views/channel-rates-update/main.js',
+        google: {
+            entry:'src/views/google/main.js',
             template:'public/channel-rates-update.aspx',
             filename:'channel-rates-update.aspx',
-            chunks:['node_vendors','commons','channel_rates_update']
+            chunks:['node_vendors','commons','google']
         },
         channel_hotels: {
             entry:'src/views/channel-hotels/main.js',

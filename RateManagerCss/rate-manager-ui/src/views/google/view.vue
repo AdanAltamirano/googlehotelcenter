@@ -1,0 +1,90 @@
+<template>
+	<div id="app">
+        <b-container fluid>
+            <h1 class="text-primary">{{ $t('Synchronize with Google Hotel Center') }}</h1>
+            <!-- Fechas -->
+            <b-row class="mt-4">
+                <b-col class="col-custom-3">
+                    <b-form-group 
+                    :label="$t('Show Availability')"
+                    :description="$t('Date Range')">
+                        <b-input-group>
+                            <v-date-picker
+                            v-model="dates"
+                            class="form-control p-0"
+                            mode="range"
+                            :min-date="new Date()"                           
+                            :popover="{ placement: 'bottom', visibility: 'click' }"
+                            :columns="2">
+                            </v-date-picker>
+                            <b-input-group-append>
+                                <b-button :disabled="dates == null" variant="danger" @click="dates = null">
+                                    <i class="fa fa-times"></i>
+                                </b-button>
+                            </b-input-group-append>
+                        </b-input-group>
+                    </b-form-group>
+                </b-col>
+            </b-row>            
+            <!-- Tabs -->
+            <div class="mt-4">
+                <b-tabs
+                justified
+                active-nav-item-class="nav-custom-tab"
+                active-tab-class="mt-3"
+                nav-class="nav-custom-tab"> 
+                
+                    <b-tab :title="$t('Prices')" active>
+                        <prices :hotelId="hotelId" :isEnabledGoogle="isEnabledGoogleRequest" :dates="dates"></prices>
+                    </b-tab>
+
+                    <b-tab :title="$t('Closure')">
+                        <closure :hotelId="hotelId" :isEnabledGoogle="isEnabledGoogleRequest"></closure>
+                    </b-tab>
+
+                    <b-tab :title="$t('Inventory')">
+                        <p>Contenido del Tab 3</p>
+                    </b-tab>
+                </b-tabs>
+            </div>
+        </b-container>
+    </div>
+</template>
+
+<script>
+import Prices from "./components/Prices.vue";
+import Closure from "./components/Closure.vue";
+
+export default {
+    components: {
+        Prices,
+        Closure
+    },
+    created(){
+
+        const start = new Date();
+       
+        let dateEnd = new Date();
+        dateEnd.setDate(dateEnd.getDate() + 1);
+
+        this.dates = {
+            start: start,
+            end: dateEnd
+        }
+    },
+    data (){
+        return {
+            //Hotel Id
+            hotelId: this.$appConfig.session.hotelId,
+            isEnabledGoogleRequest: this.$appConfig.google.isEnabledGoogleRequest === 0 ? false : true,
+            dates: null,
+        }
+    },
+    mounted(){
+        console.log(this.isEnabledGoogleRequest);
+    },
+    methods:{
+    }
+}
+</script>
+            
