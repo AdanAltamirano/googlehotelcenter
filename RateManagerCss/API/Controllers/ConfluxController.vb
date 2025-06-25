@@ -1,5 +1,6 @@
 ﻿Imports System.Web.Http
 Imports System.Net.Http
+Imports System.Xml.Linq
 Imports NinjAPI
 Imports NinjAPI.Query
 Imports APIServices.Conflux
@@ -9,7 +10,10 @@ Imports APIServices.Conflux.Models.User
 Imports APIServices.Conflux.Models.User.Response
 Imports APIServices.Conflux.Models.Rates.Response
 Imports APIServices.Conflux.Models.Restrictions.Response
+Imports APIServices.Conflux.Models.Inventory.Response
+Imports Portal.Hotel.Common.Data
 Imports RateManager.PaginaBase
+
 
 Namespace API.Controllers
     <RoutePrefix("api/conflux")>
@@ -79,6 +83,28 @@ Namespace API.Controllers
             Return Ok(toObject)
 
         End Function
+
+        <Route("inventory/{hotelId:int}"), HttpPost>
+        Public Function UpdateInventory(ByVal hotelId As Integer, <FromBody> body As APIServices.Conflux.Models.Inventory.Inventory) As HttpResponseMessage
+
+            Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
+
+            Dim soapRequests As List(Of XDocument) = GetMessages(hotelId, info.Empresa, PortalCulture.GetIDCulture, body)
+
+            Dim result As InventoryResponse = ConfluxService.UpdateInventory(soapRequests, Utitlities.Hotel.HotelUtilitie.ENDPOINTINVENTORY)
+
+            If Not result.IsSuccess Then
+                Log("Error Sincronizar Inventario con el hotel: ", result.Xml, hotelId, String.Empty)
+                Return BadRequest(result.Error)
+            End If
+
+            LogInventory(hotelId, "Conflux", result)
+
+            Dim toObject As Object = result
+
+            Return Ok(toObject)
+        End Function
+
 
         <Route("updaterestrictions/{hotelId:int}"), HttpPost>
         Public Function UpdateRestrictions(ByVal hotelId As Integer) As HttpResponseMessage
@@ -215,9 +241,28 @@ Namespace API.Controllers
             Next
         End Sub
 
+        Private Sub LogInventory(ByVal hotelId As Integer, ByVal serviceToSent As String, ByVal result As InventoryResponse)
+            Dim index As Integer = 1
+
+            If Not result.IsSuccess Then
+                Dim note As String = String.Format("Error Sincronizar Inventario {1} con el hotel: {0}", hotelId, serviceToSent)
+                Log(note, result.Xml, hotelId, String.Empty)
+            Else
+
+                For Each request As InventoryHttpResponse In result.InventoryHttpResponseList
+                    Dim note As String = String.Format("Sincronizar request numero {0} Inventario {1} con el hotel: ", (index), serviceToSent)
+                    Log(note, request.Xml, hotelId, request.XmlRequest)
+                    index += 1
+                Next
+
+            End If
+
+        End Sub
+
         Private Function GetMessages(ByVal hotelId As Integer, ByVal companyId As Integer, ByVal ratePrice As APIServices.Conflux.Models.Rates.RatePrice) As RatesMessages
 
             Dim ratesMessages As RatesMessages = Nothing
+
 
             If ((ratePrice.RatePlansList.Length = 1 And ratePrice.RatePlansList(0) = "0") And (ratePrice.RoomsList.Length = 1 And ratePrice.RoomsList(0) = 0)) Then
 
@@ -225,40 +270,291 @@ Namespace API.Controllers
                 ratesMessages = ConfluxService.GetRateMessages(hotelId, companyId, Nothing, Nothing, ratePrice.StartDate.Value.Date, ratePrice.EndDate.Value.Date)
 
             ElseIf ((ratePrice.RatePlansList.Length = 1 And ratePrice.RatePlansList(0) = "0") And ((ratePrice.RoomsList.Length = 1 And ratePrice.RoomsList(0) <> 0) Or ratePrice.RoomsList.Length > 1)) Then
-
-                Dim rateAmountMessages As OTA.Models.Rates.RateAmountMessages = New OTA.Models.Rates.RateAmountMessages()
-                Dim deleteRateAmountMessages As OTA.Models.Rates.RateAmountMessages = New OTA.Models.Rates.RateAmountMessages()
-                Dim rateAmountMessagesExceptions As OTA.Models.Rates.RateAmountMessages = New OTA.Models.Rates.RateAmountMessages()
-
-                rateAmountMessages.HotelCode = companyId
-                deleteRateAmountMessages.HotelCode = companyId
-                rateAmountMessagesExceptions.HotelCode = companyId
-
-                ' //0 tarifas, 1: borrar, 2: tarifas excepciones
-
-                'Todos los planes, habitaciones seleccionadas
-                For Each roomId As Integer In ratePrice.RoomsList
-
-                    Dim ratesMessagesTemp As RatesMessages = ConfluxService.GetRateMessages(hotelId, companyId, Nothing, roomId, ratePrice.StartDate.Value.Date, ratePrice.EndDate.Value.Date)
-
-                    Dim tarifas As List(Of OTA.Models.Rates.RateAmountMessage) = ratesMessagesTemp.RateAmountMessagesList(0).RateAmountMessagesList
-                    Dim borrar As List(Of OTA.Models.Rates.RateAmountMessage) = ratesMessagesTemp.RateAmountMessagesList(1).RateAmountMessagesList
-                    Dim excepciones As List(Of OTA.Models.Rates.RateAmountMessage) = ratesMessagesTemp.RateAmountMessagesList(2).RateAmountMessagesList
-
-                    rateAmountMessages.RateAmountMessagesList.AddRange(tarifas)
-                    deleteRateAmountMessages.RateAmountMessagesList.AddRange(borrar)
-                    rateAmountMessagesExceptions.RateAmountMessagesList.AddRange(excepciones)
-
-                Next
-
-                ratesMessages.RateAmountMessagesList.Add(rateAmountMessages)
-                ratesMessages.RateAmountMessagesList.Add(deleteRateAmountMessages)
-                ratesMessages.RateAmountMessagesList.Add(rateAmountMessagesExceptions)
-
+                'Todos los planes con habitaciones seleccionadas
+                ratesMessages = New RatesMessages
+                RatesAllRatePlans(companyId, hotelId, ratePrice, ratesMessages)
+            ElseIf ((ratePrice.RoomsList.Length = 1 And ratePrice.RoomsList(0) = "0") And ((ratePrice.RatePlansList.Length = 1 And ratePrice.RatePlansList(0) <> 0) Or ratePrice.RatePlansList.Length > 1)) Then
+                'Todas las habitaciones con planes seleccionados
+                ratesMessages = New RatesMessages
+                RatesAllRooms(companyId, hotelId, ratePrice, ratesMessages)
+            Else
+                'Planes seleccionados con habitaciones seleccionadas
+                ratesMessages = New RatesMessages
+                RatesRatePlansRooms(companyId, hotelId, ratePrice, ratesMessages)
             End If
 
             Return ratesMessages
 
+        End Function
+
+        Public Function GetMessages(ByVal hotelId As Integer, ByVal companyId As Integer, ByVal lang As Integer, ByVal inventory As APIServices.Conflux.Models.Inventory.Inventory) As List(Of XDocument)
+
+            Dim document As List(Of XDocument) = Nothing
+
+            If inventory.RoomsList.Length = 1 And inventory.RoomsList(0) = "0" Then
+                'Todas las habitaciones
+                Dim roomsIdList As Integer() = ConfluxService.LoadRoomsByIdHotel(hotelId, lang)
+                Dim inventoryData As RoomsInventoryData = ConfluxService.GetInventoryData(roomsIdList, inventory.StartDate, inventory.EndDate)
+
+                document = GetInventoryXml(companyId, inventory.Days, inventoryData)
+
+            Else
+                Dim inventoryData As RoomsInventoryData = ConfluxService.GetInventoryData(inventory.RoomsList, inventory.StartDate, inventory.EndDate)
+                document = GetInventoryXml(companyId, inventory.Days, inventoryData)
+            End If
+
+            Return document
+        End Function
+
+
+
+        Private Sub RatesAllRatePlans(ByVal companyId As Integer, ByVal hotelId As Integer, ByVal ratePrice As APIServices.Conflux.Models.Rates.RatePrice, ByRef ratesMessages As RatesMessages)
+
+            Dim rateAmountMessages As OTA.Models.Rates.RateAmountMessages = New OTA.Models.Rates.RateAmountMessages()
+            Dim deleteRateAmountMessages As OTA.Models.Rates.RateAmountMessages = New OTA.Models.Rates.RateAmountMessages()
+            Dim rateAmountMessagesExceptions As OTA.Models.Rates.RateAmountMessages = New OTA.Models.Rates.RateAmountMessages()
+
+            rateAmountMessages.HotelCode = companyId
+            deleteRateAmountMessages.HotelCode = companyId
+            rateAmountMessagesExceptions.HotelCode = companyId
+
+            rateAmountMessages.RateAmountMessagesList = New List(Of OTA.Models.Rates.RateAmountMessage)
+            deleteRateAmountMessages.RateAmountMessagesList = New List(Of OTA.Models.Rates.RateAmountMessage)
+            rateAmountMessagesExceptions.RateAmountMessagesList = New List(Of OTA.Models.Rates.RateAmountMessage)
+
+            ' //0 tarifas, 1: borrar, 2: tarifas excepciones
+
+            'Todos los planes, habitaciones seleccionadas
+            For Each roomId As Integer In ratePrice.RoomsList
+
+                Dim ratesMessagesTemp As RatesMessages = ConfluxService.GetRateMessages(hotelId, companyId, Nothing, roomId, ratePrice.StartDate.Value.Date, ratePrice.EndDate.Value.Date)
+
+                Dim rates As List(Of OTA.Models.Rates.RateAmountMessage) = ratesMessagesTemp.RateAmountMessagesList(0).RateAmountMessagesList
+                Dim delete As List(Of OTA.Models.Rates.RateAmountMessage) = ratesMessagesTemp.RateAmountMessagesList(1).RateAmountMessagesList
+                Dim exceptions As List(Of OTA.Models.Rates.RateAmountMessage) = ratesMessagesTemp.RateAmountMessagesList(2).RateAmountMessagesList
+
+                rateAmountMessages.RateAmountMessagesList.AddRange(rates)
+                deleteRateAmountMessages.RateAmountMessagesList.AddRange(delete)
+                rateAmountMessagesExceptions.RateAmountMessagesList.AddRange(exceptions)
+
+            Next
+
+            ratesMessages.RateAmountMessagesList.Add(rateAmountMessages)
+            ratesMessages.RateAmountMessagesList.Add(deleteRateAmountMessages)
+            ratesMessages.RateAmountMessagesList.Add(rateAmountMessagesExceptions)
+
+        End Sub
+
+        Private Sub RatesAllRooms(ByVal companyId As Integer, ByVal hotelId As Integer, ByVal ratePrice As APIServices.Conflux.Models.Rates.RatePrice, ByRef ratesMessages As RatesMessages)
+
+            Dim rateAmountMessages As OTA.Models.Rates.RateAmountMessages = New OTA.Models.Rates.RateAmountMessages()
+            Dim deleteRateAmountMessages As OTA.Models.Rates.RateAmountMessages = New OTA.Models.Rates.RateAmountMessages()
+            Dim rateAmountMessagesExceptions As OTA.Models.Rates.RateAmountMessages = New OTA.Models.Rates.RateAmountMessages()
+
+            rateAmountMessages.HotelCode = companyId
+            deleteRateAmountMessages.HotelCode = companyId
+            rateAmountMessagesExceptions.HotelCode = companyId
+
+            rateAmountMessages.RateAmountMessagesList = New List(Of OTA.Models.Rates.RateAmountMessage)
+            deleteRateAmountMessages.RateAmountMessagesList = New List(Of OTA.Models.Rates.RateAmountMessage)
+            rateAmountMessagesExceptions.RateAmountMessagesList = New List(Of OTA.Models.Rates.RateAmountMessage)
+
+            ' //0 tarifas, 1: borrar, 2: tarifas excepciones
+
+            'Todas las habitaciones , planes seleccionados
+            For Each rateplanId As Integer In ratePrice.RatePlansList
+
+                Dim ratesMessagesTemp As RatesMessages = ConfluxService.GetRateMessages(hotelId, companyId, rateplanId, Nothing, ratePrice.StartDate.Value.Date, ratePrice.EndDate.Value.Date)
+
+                Dim rates As List(Of OTA.Models.Rates.RateAmountMessage) = ratesMessagesTemp.RateAmountMessagesList(0).RateAmountMessagesList
+                Dim delete As List(Of OTA.Models.Rates.RateAmountMessage) = ratesMessagesTemp.RateAmountMessagesList(1).RateAmountMessagesList
+                Dim exceptions As List(Of OTA.Models.Rates.RateAmountMessage) = ratesMessagesTemp.RateAmountMessagesList(2).RateAmountMessagesList
+
+                rateAmountMessages.RateAmountMessagesList.AddRange(rates)
+                deleteRateAmountMessages.RateAmountMessagesList.AddRange(delete)
+                rateAmountMessagesExceptions.RateAmountMessagesList.AddRange(exceptions)
+
+            Next
+
+            ratesMessages.RateAmountMessagesList.Add(rateAmountMessages)
+            ratesMessages.RateAmountMessagesList.Add(deleteRateAmountMessages)
+            ratesMessages.RateAmountMessagesList.Add(rateAmountMessagesExceptions)
+
+        End Sub
+
+        Private Sub RatesRatePlansRooms(ByVal companyId As Integer, ByVal hotelId As Integer, ByVal ratePrice As APIServices.Conflux.Models.Rates.RatePrice, ByRef ratesMessages As RatesMessages)
+
+            Dim rateAmountMessages As OTA.Models.Rates.RateAmountMessages = New OTA.Models.Rates.RateAmountMessages()
+            Dim deleteRateAmountMessages As OTA.Models.Rates.RateAmountMessages = New OTA.Models.Rates.RateAmountMessages()
+            Dim rateAmountMessagesExceptions As OTA.Models.Rates.RateAmountMessages = New OTA.Models.Rates.RateAmountMessages()
+
+            rateAmountMessages.HotelCode = companyId
+            deleteRateAmountMessages.HotelCode = companyId
+            rateAmountMessagesExceptions.HotelCode = companyId
+
+            rateAmountMessages.RateAmountMessagesList = New List(Of OTA.Models.Rates.RateAmountMessage)
+            deleteRateAmountMessages.RateAmountMessagesList = New List(Of OTA.Models.Rates.RateAmountMessage)
+            rateAmountMessagesExceptions.RateAmountMessagesList = New List(Of OTA.Models.Rates.RateAmountMessage)
+
+            'Planes y Habitaciones seleccionadas
+
+            ' //0 tarifas, 1: borrar, 2: tarifas excepciones
+            For Each roomId As Integer In ratePrice.RoomsList
+                For Each rateplanId As String In ratePrice.RatePlansList
+
+                    Dim ratesMessagesTemp As RatesMessages = ConfluxService.GetRateMessages(hotelId, companyId, rateplanId, roomId, ratePrice.StartDate.Value.Date, ratePrice.EndDate.Value.Date)
+
+                    Dim rates As List(Of OTA.Models.Rates.RateAmountMessage) = ratesMessagesTemp.RateAmountMessagesList(0).RateAmountMessagesList
+                    Dim delete As List(Of OTA.Models.Rates.RateAmountMessage) = ratesMessagesTemp.RateAmountMessagesList(1).RateAmountMessagesList
+                    Dim exceptions As List(Of OTA.Models.Rates.RateAmountMessage) = ratesMessagesTemp.RateAmountMessagesList(2).RateAmountMessagesList
+
+                    rateAmountMessages.RateAmountMessagesList.AddRange(rates)
+                    deleteRateAmountMessages.RateAmountMessagesList.AddRange(delete)
+                    rateAmountMessagesExceptions.RateAmountMessagesList.AddRange(exceptions)
+                Next
+            Next
+
+            ratesMessages.RateAmountMessagesList.Add(rateAmountMessages)
+            ratesMessages.RateAmountMessagesList.Add(deleteRateAmountMessages)
+            ratesMessages.RateAmountMessagesList.Add(rateAmountMessagesExceptions)
+        End Sub
+
+        Private Function GetInventoryXml(ByVal companyId As Integer, ByVal days As Boolean(), ByVal inventoryData As RoomsInventoryData) As List(Of XDocument)
+
+            Dim soapRequestList As List(Of XDocument) = New List(Of XDocument)
+
+            Dim limitMessages As Integer = 40
+
+            Dim Index As Integer = 0
+            Dim totalMessages = inventoryData.Tables(0).Rows.Count - 1
+
+            Dim AvailStatusMessage(totalMessages) As WsConnectWcf.AvailStatusMessageType 'Array tiene tosos los messages 4
+
+            For Each dr As DataRow In inventoryData.Tables(0).Rows
+                AvailStatusMessage(Index) = New WsConnectWcf.AvailStatusMessageType
+
+                Dim StatusApplicationControl As New WsConnectWcf.StatusApplicationControlType
+
+                AvailStatusMessage(Index).BookingLimit = dr(RoomsInventoryData.FLD_NUMBER_AVAILABILITY)
+                StatusApplicationControl.InvTypeCode = dr("RoomCode")
+                StatusApplicationControl.Start = CDate(dr(RoomsInventoryData.FLD_STARTDATE)).ToString("yyyy-MM-dd").Replace("-", "")
+                StatusApplicationControl.End = CDate(dr(RoomsInventoryData.FLD_ENDDATE)).ToString("yyyy-MM-dd").Replace("-", "")
+
+                If Not days(0) Or Not days(1) Or Not days(2) Or Not days(3) Or Not days(4) Or Not days(5) Or Not days(6) Then
+
+                    StatusApplicationControl.Mon = days(1)
+                    StatusApplicationControl.Tue = days(2)
+                    StatusApplicationControl.Weds = days(3)
+                    StatusApplicationControl.Thur = days(4)
+                    StatusApplicationControl.Fri = days(5)
+                    StatusApplicationControl.Sat = days(6)
+                    StatusApplicationControl.Sun = days(0)
+
+                    StatusApplicationControl.MonSpecified = True
+                    StatusApplicationControl.WedsSpecified = True
+                    StatusApplicationControl.ThurSpecified = True
+                    StatusApplicationControl.TueSpecified = True
+                    StatusApplicationControl.SatSpecified = True
+                    StatusApplicationControl.SunSpecified = True
+                    StatusApplicationControl.FriSpecified = True
+                End If
+
+                AvailStatusMessage(Index).StatusApplicationControl = StatusApplicationControl
+                Index += 1
+            Next
+            'ya tengo todos los mensajes
+
+            Dim messagesAdded As Integer = 0
+            Dim _AvailStatusMessage As List(Of WsConnectWcf.AvailStatusMessageType) = Nothing 'Mensajes que lleva el request
+
+            'Dividir mensajes
+            For i As Integer = 0 To AvailStatusMessage.Length - 1
+
+                If messagesAdded = 0 Then
+                    _AvailStatusMessage = New List(Of WsConnectWcf.AvailStatusMessageType)()
+                End If
+
+                If messagesAdded < limitMessages Then
+                    _AvailStatusMessage.Add(AvailStatusMessage(i))
+                    messagesAdded = messagesAdded + 1
+                End If
+
+                'Hacer Request
+                If messagesAdded = limitMessages Then
+
+                    Dim RQ As New WsConnectWcf.OTA_HotelAvailNotifRQ
+                    Dim POS(0) As WsConnectWcf.SourceType
+                    POS(0) = New WsConnectWcf.SourceType
+                    Dim RequestorID As New WsConnectWcf.SourceTypeRequestorID
+                    Dim AvailStatusMessages As New WsConnectWcf.OTA_HotelAvailNotifRQAvailStatusMessages
+
+                    RQ.Version = 1
+                    RequestorID.Type = "22"
+                    RequestorID.ID = "IPRM"
+                    Dim myuuid As Guid = Guid.NewGuid()
+                    RQ.EchoToken = myuuid.ToString()
+
+                    AvailStatusMessages.HotelCode = companyId.ToString()
+                    AvailStatusMessages.AvailStatusMessage = _AvailStatusMessage.ToArray()
+
+                    RQ.POS = POS
+                    RQ.AvailStatusMessages = AvailStatusMessages
+                    POS(0).RequestorID = RequestorID
+
+                    Dim strRequest As String = New PaginaBase().GetXMLFromObject(RQ)
+
+                    Dim requestXDocument As XDocument = XDocument.Parse(strRequest)
+
+                    Dim xmlRQ As XElement = requestXDocument.Element("OTA_HotelAvailNotifRQ")
+
+                    Dim soapRequest As XDocument = APIServices.Xml.Soap.Soap.CreateSoapRequestXml(xmlRQ)
+
+                    'Agregarlo a la lista de requests
+
+                    soapRequestList.Add(soapRequest)
+
+                    _AvailStatusMessage = Nothing
+                    messagesAdded = 0
+                End If
+
+            Next
+
+            If _AvailStatusMessage IsNot Nothing Then
+
+                Dim RQ As New WsConnectWcf.OTA_HotelAvailNotifRQ
+                Dim POS(0) As WsConnectWcf.SourceType
+                POS(0) = New WsConnectWcf.SourceType
+                Dim RequestorID As New WsConnectWcf.SourceTypeRequestorID
+                Dim AvailStatusMessages As New WsConnectWcf.OTA_HotelAvailNotifRQAvailStatusMessages
+
+                RQ.Version = 1
+                RequestorID.Type = "22"
+                RequestorID.ID = "IPRM"
+                Dim myuuid As Guid = Guid.NewGuid()
+                RQ.EchoToken = myuuid.ToString()
+
+                AvailStatusMessages.HotelCode = companyId.ToString()
+                AvailStatusMessages.AvailStatusMessage = _AvailStatusMessage.ToArray()
+
+                RQ.POS = POS
+                RQ.AvailStatusMessages = AvailStatusMessages
+                POS(0).RequestorID = RequestorID
+
+                Dim strRequest As String = New PaginaBase().GetXMLFromObject(RQ)
+
+                Dim requestXDocument As XDocument = XDocument.Parse(strRequest)
+
+                Dim xmlRQ As XElement = requestXDocument.Element("OTA_HotelAvailNotifRQ")
+
+                Dim soapRequest As XDocument = APIServices.Xml.Soap.Soap.CreateSoapRequestXml(xmlRQ)
+
+                'Agregarlo a la lista de requests
+
+                soapRequestList.Add(soapRequest)
+
+            End If
+
+            Return soapRequestList
         End Function
 
 

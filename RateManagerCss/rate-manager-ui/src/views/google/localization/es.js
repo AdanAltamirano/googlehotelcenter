@@ -26,5 +26,16 @@ export default {
     'Inventory' : 'Inventario',
     'Rate Plans' : 'Planes Tarifarios',
     'Rooms' : 'Habitaciones',
-    'All' : 'Todos'
+    'All' : 'Todos',
+    'Su' : 'Do',
+    'Mo' : 'Lu',
+    'Tu' : 'Ma',
+    'We' : 'Mi',
+    'Th' : 'Ju',
+    'Fr' : 'Vi',
+    'Sa' : 'Sa',
+    'Update Inventory' : 'Sincronizar Inventario',
+    'Inventory Updated' : 'Inventario Actualizado',
+    'Days of the Week' : 'Días de la Semana'
+
 }

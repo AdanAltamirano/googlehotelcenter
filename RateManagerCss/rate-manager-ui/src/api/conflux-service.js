@@ -9,6 +9,7 @@ if (Vue.http.interceptors.indexOf(Interceptor) === -1) {
 
 const updateRates = Vue.resource(`${process.env.VUE_APP_API_URL}/conflux/updaterates/{hotelid}`);
 const updateRestrictions = Vue.resource(`${process.env.VUE_APP_API_URL}/conflux/updaterestrictions/{hotelid}`);
+const updateInventory = Vue.resource(`${process.env.VUE_APP_API_URL}/conflux/inventory/{hotelid}`);
 const hotels = Vue.resource(`${process.env.VUE_APP_API_URL}/conflux/hotels{?filter,orderBy,pageSize,page}`);
 const createUser = Vue.resource(`${process.env.VUE_APP_API_URL}/conflux/create/user`);
 const usersConnectivities = Vue.resource(`${process.env.VUE_APP_API_URL}/conflux/users/connectivity{?filter,orderBy,pageSize,page}`)
@@ -51,7 +52,14 @@ export default {
     */
     UpdateRates(hotelid,payload){
         console.log(hotelid);
-        return updateRates.save({hotelid},payload);
+        return updateRates.save({hotelid}, payload);
+    },
+    /**
+     * @param hotelId
+     * @param payload
+     */
+    UpdateInventory(hotelid, payload){
+        return updateInventory.save({hotelid},payload);
     },
     /**
      * @param hotelid

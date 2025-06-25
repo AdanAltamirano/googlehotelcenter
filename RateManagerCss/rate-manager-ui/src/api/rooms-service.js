@@ -20,7 +20,11 @@ const roomClosurePost = Vue.resource(`${process.env.VUE_APP_API_URL}/closure/sav
 
 const roomClosureGetRatePlans = Vue.resource(`${process.env.VUE_APP_API_URL}/closure/rateplans/{hotelid}`);
 
+const roomClosureGetRatePlansNoLinks = Vue.resource(`${process.env.VUE_APP_API_URL}/closure/rateplansnolinks/{hotelid}`);
+
 const roomClosureGetRooms = Vue.resource(`${process.env.VUE_APP_API_URL}/closure/rooms/{hotelid}`);
+
+const roomClosureGetRoomsNoLinks = Vue.resource(`${process.env.VUE_APP_API_URL}/closure/roomsnolinks/{hotelid}`);
 
 
 export default {
@@ -58,9 +62,26 @@ export default {
      * 
      * @param {Number} hotelid 
      */
+    getRatePlansByHotelIdNoLinks(hotelid){
+        return roomClosureGetRatePlansNoLinks.get({
+            hotelid: hotelid
+        });
+    },
+    /**
+     * 
+     * @param {Number} hotelid 
+     */
     getRoomsByHotelId(hotelid){
         return roomClosureGetRooms.get({
             hotelid : hotelid
+        });
+    },
+    /***
+     * @param {Number} hotelId
+     */
+    getRoomsByHotelIdNoLinks(hotelId){
+        return roomClosureGetRoomsNoLinks.get({
+            hotelid:hotelId
         });
     },
     /**

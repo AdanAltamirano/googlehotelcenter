@@ -295,11 +295,27 @@ Namespace API.Controller
                                           page.IsUsuarioHotel, PortalCulture.GetIDCulture)
         End Function
 
+        <Route("rateplansnolinks/{idHotel:Int}"), HttpGet>
+        Public Function GetRatePlansByHotelIdNoLinks(ByVal idHotel As Integer) As List(Of DTO.RatePlansClosureModel)
+
+            Dim page As New PaginaBase
+
+            Dim idAsoc As Integer = page.GetIdAsociation()
+
+            Return service.LoadRatePlanByIdHotelNoLinks(idHotel, idAsoc, page.IdCorporativoUserChain, page.IsHotel,
+                                          page.IsUsuarioHotel, PortalCulture.GetIDCulture)
+        End Function
+
         <Route("rooms/{idHotel:Int}"), HttpGet>
         Public Function GetRoomsByHotelId(ByVal idHotel As Integer) As List(Of DTO.RoomsModel)
 
 
             Return service.LoadRoomsByIdHotel(idHotel, PortalCulture.GetIDCulture)
+        End Function
+
+        <Route("roomsnolinks/{idHotel:Int}"), HttpGet>
+        Public Function GetRoomsByHotelIdNoLinks(ByVal idHotel As Integer) As List(Of DTO.RoomsModel)
+            Return service.LoadRoomsByHotelIdHotelNoLinks(idHotel, PortalCulture.GetIDCulture)
         End Function
 
         Private Function GetStatus(ByVal status As String) As String

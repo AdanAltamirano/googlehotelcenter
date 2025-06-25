@@ -30,8 +30,16 @@ using Portal.General.Common.Data;
 
 namespace APIServices.Conflux
 {
-    public class ConfluxService
+    public partial class ConfluxService
     {
+        private HttpStatusCode[] validStatusCodes = new[]
+        {
+            HttpStatusCode.OK,
+            HttpStatusCode.Accepted,
+            HttpStatusCode.Created,
+            HttpStatusCode.NoContent
+        };
+
         private OzHotelesEntities dbContext = new OzHotelesEntities();
 
         public IQueryable<vHotelActives> GetHotels() => dbContext.vHotelActives.AsQueryable();
@@ -393,7 +401,7 @@ namespace APIServices.Conflux
         }
 
 
-
+        
         /// <summary>
         /// 
         /// </summary>
@@ -1171,5 +1179,6 @@ namespace APIServices.Conflux
             return res;
 
         }
+
     }
 }

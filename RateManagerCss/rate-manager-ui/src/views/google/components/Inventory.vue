@@ -1,28 +1,11 @@
 <template>
   <div clas="">
-    <details class="text-primary">{{$t('This action will only send the current prices to Google Hotel Center as of the current date')}}</details>
+    <details class="text-primary">{{$t('Update Inventory')}}</details>
     <b-row>
-        <b-col md="4">
-            <b-form-group :label="$t('Rate Plans')" class="mt-3">                
-                <multiselect                    
-                    id="planes"                                   
-                    v-model="ratePlansList"
-                    label='text'                     
-                    :options="options"
-                    track-by="value"
-                    :multiple="true"                                
-                    :selectLabel="''"
-                    :selectedLabel="''"
-                    :deselectLabel="''"
-                    :placeholder="$t('Rate Plans')"
-                    @input="RemoveWhenItsAll">
-                </multiselect>
-            </b-form-group>
-        </b-col>
         <b-col md="4">
             <b-form-group :label="$t('Rooms')" class="mt-3">                
                 <multiselect                    
-                    id="planes"                                   
+                    id="habitaciones"                                   
                     v-model="roomsList"
                     label='text'                     
                     :options="optionsRooms"
@@ -36,13 +19,24 @@
                 </multiselect>
             </b-form-group>
         </b-col>
+        <b-col md="6">
+            <b-form-group :label="$t('Days of the Week')" class="mt-3">
+                <b-form-checkbox
+                    v-for="(option, index) in options"
+                    :key="index"
+                    v-model="daysStatus[index]"
+                    inline>                
+                    {{ option.label }}
+                </b-form-checkbox>
+            </b-form-group>
+        </b-col>
     </b-row>
     <div v-if="callApi" class="mt-3 vld-parent" style="height:80px;">
         <loading style="display:block !important;" :active="true" :is-full-page="false" color="#007bff"></loading>
     </div>
     <div else class="mt-4">
-        <b-button :disabled="!isEnabledGoogle" class="mt-1" v-if="showButton" variant="primary" @click="updateRates()">
-            {{$t('Update Rates')}}
+        <b-button :disabled="!isEnabledGoogle" class="mt-1" v-if="showButton" variant="primary" @click="updateInventory()">
+            {{$t('Update Inventory')}}
         </b-button>
     </div>
     <div class="mt-3">
@@ -83,51 +77,52 @@ export default {
         return {
             callApi: false,
             showButton: true,
-            ratePlansList:[],
-            options:[],
             roomsList:[],
-            optionsRooms:[]
+            optionsRooms:[],
+            daysStatus: [true, true, true, true, true, true, true],
+            options: [
+                { label: this.$t('Su') },
+                { label: this.$t('Mo') },
+                { label: this.$t('Tu') },
+                { label: this.$t('We') },
+                { label: this.$t('Th') },
+                { label: this.$t('Fr') },
+                { label: this.$t('Sa') }
+            ]
         }
     },
     created() {
         console.log(this.dates);
-        this.loadRatesPlans(this.hotelId);
         this.loadRooms(this.hotelId);
         
     },
     mounted(){
-        this.ratePlansList.push({
-            value : "0",
-            text : this.$t('All')
-        });
-
         this.roomsList.push({
             value: "0",
             text: this.$t('All')
         })
     },
     methods:{
-        updateRates(){
-            
-            const ratesPlans = this.ratePlansList.map(obj => obj.value);
+        updateInventory(){
+
             const rooms = this.roomsList.map(obj => parseInt(obj.value, 10));
 
             const payload = {
                 startDate: this.dates.start,
                 endDate: this.dates.end,
-                ratePlansList: ratesPlans,
-                roomsList: rooms
+                roomsList: rooms,
+                days: this.daysStatus
             };
 
             this.showButton = false;
             this.callApi = true;
 
-            ConfluxService.UpdateRates(this.hotelId,payload)
+            ConfluxService.UpdateInventory(this.hotelId,payload)
             .then(response => {
                 console.log(response);
                 this.callApi = false;
                 this.showButton = true;
-                this.$appAlert(this.success(this.$t("Rates Updated")));
+                this.$appAlert(this.success(this.$t("Inventory Updated")));
             })
             .catch(error => {
                 console.log(error);
@@ -160,23 +155,8 @@ export default {
                 time: 2500,               
             };
         },
-        loadRatesPlans(hotelId){
-            RoomsClosureService.getRatePlansByHotelIdNoLinks(hotelId)
-            .then(response => {
-                console.log(response.body);
-
-                this.options.push({
-                    value : "0",
-                    text : this.$t('All')
-                });
-
-                response.body.forEach(rateplan => {
-                    this.options.push(rateplan);                
-                });
-            });
-        },
         loadRooms(hotelId){
-            RoomsClosureService.getRoomsByHotelIdNoLinks(hotelId)
+            RoomsClosureService.getRoomsByHotelId(hotelId)
             .then(response => {
                 console.log(response.body);
 

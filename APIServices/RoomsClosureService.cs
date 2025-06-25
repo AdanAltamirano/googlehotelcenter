@@ -332,7 +332,44 @@ namespace APIServices
             return list;
 
         }
-        
+
+        public List<RatePlansClosureModel> LoadRatePlanByIdHotelNoLinks(int idHotel, int idAsoc, int idCorporativoUserChain, bool isHotel, bool isUsuarioHotel, int lang = 1)
+        {
+            RatePlanData ds = new RatePlanFacade()
+             .GetRatePlanByIdHotel(idHotel.ToString(), lang, 0, 1, idAsociacion: idAsoc, DeleteFilter: 1);
+
+            LinkRatePlanData links = new LinkRatePlanData();
+            links = new LinkRatePlanFacade().getList(idHotel, lang, idAsociacion: idAsoc);
+
+            ds = RatePlanFilter(ds,links);
+
+            List<RatePlansClosureModel> list = new List<RatePlansClosureModel>();
+            var ratePlanTable = ds.Tables[RatePlanData.RATEPLAN_TABLE];
+
+            foreach (DataRow row in ratePlanTable.Rows)
+            {
+                //Indices para el codigo 0 u 8
+                string code = row.ItemArray[0].ToString();
+                string name = row.ItemArray[11].ToString();
+
+                string text = code + " - " + name;
+
+                RatePlansClosureModel model = new RatePlansClosureModel()
+                {
+                    Value = code,
+                    Text = text
+                };
+
+                list.Add(model);
+
+            }
+
+            return list;
+
+        }
+
+
+
         /// <summary>
         /// 
         /// </summary>
@@ -369,6 +406,59 @@ namespace APIServices
 
             return list;
         }
+
+        public List<RoomsModel> LoadRoomsByHotelIdHotelNoLinks(int idHotel, int lang = 1)
+        {
+            List<RoomsModel> list = new List<RoomsModel>();
+            RoomsHotelData ds = new RoomFacade().getRooms(idHotel, lang);
+
+            LinkRoomTypeData links = new LinkRoomTypeData();
+            links = new LinkRoomsFacade().getList(idHotel, lang);
+
+            DataView dv;
+
+            foreach (DataRow r in ds.Tables[RoomsHotelData.TBL_ROOM_HOTEL].Rows)
+            {
+                dv = links.Tables[LinkRoomTypeData.TABLE_LINKROOM].DefaultView;
+                dv.RowFilter = LinkRoomTypeData.FIELD_TargetRoom + "=" + r[RoomsHotelData.FLD_ID_ROOM_HOTEL];
+
+                if (dv.Count > 0)
+                {
+                    r.Delete();
+                }
+            }
+
+            ds.AcceptChanges();
+
+            var roomsTable = ds.Tables[RoomsHotelData.TBL_ROOM_HOTEL];
+
+            foreach (DataRow row in roomsTable.Rows)
+            {
+                //Indices para el codigo 0
+                //Indices para la habitacion 2 u 9
+
+                string code = row.ItemArray[0].ToString();
+                string name = row.ItemArray[9].ToString();
+                string shortName = row.ItemArray[22].ToString();
+
+                string text = shortName + " - " + name;
+
+                RoomsModel model = new RoomsModel()
+                {
+                    Value = code,
+                    Text = text
+                };
+
+                list.Add(model);
+
+            }
+
+
+
+            return list;
+        }
+
+
 
         #endregion
 
@@ -654,7 +744,25 @@ namespace APIServices
             return ds;
         }
 
+        private RatePlanData RatePlanFilter(RatePlanData ds, LinkRatePlanData links)
+        {
+            DataView dv;
 
+            foreach (DataRow row in ds.Tables[RatePlanData.RATEPLAN_TABLE].Rows)
+            {
+                dv = links.Tables[LinkRatePlanData.TABLE_LINKRATEPLAN].DefaultView;
+                dv.RowFilter = LinkRatePlanData.FIELD_TargetRatePlan + "='" + row[RatePlanData.FIELD_IDRATEPLAN] + "'";
+
+                if (dv.Count > 0 )
+                {
+                    row.Delete();
+                }
+            }
+
+            ds.AcceptChanges();
+
+            return ds;
+        }
 
         #endregion
 

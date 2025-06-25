@@ -11,6 +11,7 @@ Namespace Utitlities.Hotel
         Public ENDPOINT As String = ConfigurationManager.AppSettings("confluxApiUrl") & "pms/ota/rates/update"
         Public ENDPOINTDELETE As String = ConfigurationManager.AppSettings("confluxApiUrl") & "pms/ota/rates/delete"
         Public ENDPOINTCLOSURE As String = ConfigurationManager.AppSettings("confluxApiUrl") & "pms/ota/restriction/update"
+        Public ENDPOINTINVENTORY As String = ConfigurationManager.AppSettings("confluxApiUrl") & "pms/ota/inventory/update"
         'APICache EndPoints
         Public ENDPOINTAPI As String = ConfigurationManager.AppSettings("confluxApiUrl") & "pms/ota/calendar/rates"
         Public ENDPOINTAPIDELETE As String = ""

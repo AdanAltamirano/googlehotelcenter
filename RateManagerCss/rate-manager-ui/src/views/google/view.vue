@@ -12,8 +12,7 @@
                             <v-date-picker
                             v-model="dates"
                             class="form-control p-0"
-                            mode="range"
-                            :min-date="new Date()"                           
+                            mode="range"                                                     
                             :popover="{ placement: 'bottom', visibility: 'click' }"
                             :columns="2">
                             </v-date-picker>
@@ -43,7 +42,7 @@
                     </b-tab>
 
                     <b-tab :title="$t('Inventory')">
-                        <p>Contenido del Tab 3</p>
+                        <inventory :hotelId="hotelId" :isEnabledGoogle="isEnabledGoogleRequest" :dates="dates"></inventory>
                     </b-tab>
                 </b-tabs>
             </div>
@@ -54,11 +53,13 @@
 <script>
 import Prices from "./components/Prices.vue";
 import Closure from "./components/Closure.vue";
+import Inventory from "./components/Inventory.vue";
 
 export default {
     components: {
         Prices,
-        Closure
+        Closure,
+        Inventory
     },
     created(){
 
