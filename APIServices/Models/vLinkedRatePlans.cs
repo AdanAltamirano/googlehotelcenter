@@ -17,17 +17,17 @@ namespace APIServices.Models
         public string SourceRatePlan { get; set; }
         public int IdHotel { get; set; }
         public Nullable<decimal> OnePersonRatio { get; set; }
-        public Nullable<decimal> OnePersonOffset { get; set; }
+        public decimal OnePersonOffset { get; set; }
         public Nullable<decimal> TwoPersonRatio { get; set; }
-        public Nullable<decimal> TwoPersonOffset { get; set; }
+        public decimal TwoPersonOffset { get; set; }
         public Nullable<decimal> ExtraAdultRatio { get; set; }
-        public Nullable<decimal> ExtraAdultOffset { get; set; }
+        public decimal ExtraAdultOffset { get; set; }
         public Nullable<decimal> ExtraChildRatio { get; set; }
-        public Nullable<decimal> ExtraChildOffset { get; set; }
+        public decimal ExtraChildOffset { get; set; }
         public Nullable<bool> RoundAmount { get; set; }
         public string TargetRatePlan { get; set; }
         public Nullable<decimal> OthersOccupationRatio { get; set; }
-        public Nullable<decimal> OthersOccupationOffset { get; set; }
+        public decimal OthersOccupationOffset { get; set; }
         public Nullable<decimal> SoldOutPerc { get; set; }
         public int idLinkRatePlan { get; set; }
     }

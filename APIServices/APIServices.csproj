@@ -109,6 +109,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AgencyService.cs" />
+    <Compile Include="Conflux\ConfluxService.Closure.cs" />
     <Compile Include="Conflux\ConfluxService.cs" />
     <Compile Include="Conflux\ConfluxService.Inventory.cs" />
     <Compile Include="Conflux\Crypto\ConfluxCrypto.cs" />
@@ -116,12 +117,15 @@
     <Compile Include="Conflux\Enum\RestrictionEnum.cs" />
     <Compile Include="Conflux\Enum\TypeRateEnum.cs" />
     <Compile Include="Conflux\Helpers\RatesHelpers.cs" />
+    <Compile Include="Conflux\Helpers\RatesPlan\RatesPlanHelper.cs" />
     <Compile Include="Conflux\Helpers\Rates\LinkedPricesRates.cs" />
     <Compile Include="Conflux\Helpers\Rates\LinkedPricesRatesPromotion.cs" />
     <Compile Include="Conflux\Helpers\Rates\RateAmountMessage.cs" />
     <Compile Include="Conflux\Helpers\Rates\RatesHelpers.cs" />
     <Compile Include="Conflux\Helpers\Restriction\AvailStatusMessage.cs" />
     <Compile Include="Conflux\Helpers\Restriction\RestrictionHelper.cs" />
+    <Compile Include="Conflux\Helpers\Rooms\RoomsHelper.cs" />
+    <Compile Include="Conflux\Models\Closure\Closure.cs" />
     <Compile Include="Conflux\Models\Inventory\Inventory.cs" />
     <Compile Include="Conflux\Models\Inventory\Response\InventoryResponse.cs" />
     <Compile Include="Conflux\Models\OTA\Rates\AdditionalGuestAmount.cs" />

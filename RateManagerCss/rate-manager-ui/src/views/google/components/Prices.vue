@@ -1,10 +1,13 @@
 <template>
   <div clas="">
-    <details class="text-primary">{{$t('This action will only send the current prices to Google Hotel Center as of the current date')}}</details>
+    <details class="text-primary">
+        <p>{{$t('This action will only send the prices to Google Hotel Center from the selected dates')}}</p>
+        <p>{{$t('The listings only show the base plans and rooms, when sending the rates of these, the linked ones will also be sent')}}</p>
+    </details>
     <b-row>
         <b-col md="4">
             <b-form-group :label="$t('Rate Plans')" class="mt-3">                
-                <multiselect                    
+                <multiselect                                     
                     id="planes"                                   
                     v-model="ratePlansList"
                     label='text'                     
@@ -15,6 +18,7 @@
                     :selectedLabel="''"
                     :deselectLabel="''"
                     :placeholder="$t('Rate Plans')"
+                    open-direction="bottom"   
                     @input="RemoveWhenItsAll">
                 </multiselect>
             </b-form-group>
@@ -32,6 +36,7 @@
                     :selectedLabel="''"
                     :deselectLabel="''"
                     :placeholder="$t('Rooms')"
+                    open-direction="bottom"   
                     @input="RemoveWhenItsAll">
                 </multiselect>
             </b-form-group>

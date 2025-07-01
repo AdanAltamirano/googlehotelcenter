@@ -1,6 +1,6 @@
 <template>
   <div clas="">
-    <details class="text-primary">{{$t('Update Inventory')}}</details>
+    <details class="text-primary">{{$t('This action will only send the inventory to Google Hotel Center from the selected dates')}}</details>
     <b-row>
         <b-col md="4">
             <b-form-group :label="$t('Rooms')" class="mt-3">                
@@ -15,6 +15,7 @@
                     :selectedLabel="''"
                     :deselectLabel="''"
                     :placeholder="$t('Rooms')"
+                    open-direction="bottom"   
                     @input="RemoveWhenItsAll">
                 </multiselect>
             </b-form-group>

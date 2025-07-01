@@ -28,7 +28,6 @@
             <!-- Tabs -->
             <div class="mt-4">
                 <b-tabs
-                justified
                 active-nav-item-class="nav-custom-tab"
                 active-tab-class="mt-3"
                 nav-class="nav-custom-tab"> 
@@ -38,7 +37,7 @@
                     </b-tab>
 
                     <b-tab :title="$t('Closure')">
-                        <closure :hotelId="hotelId" :isEnabledGoogle="isEnabledGoogleRequest"></closure>
+                        <closure :hotelId="hotelId" :isEnabledGoogle="isEnabledGoogleRequest" :dates="dates"></closure>
                     </b-tab>
 
                     <b-tab :title="$t('Inventory')">
@@ -46,6 +45,7 @@
                     </b-tab>
                 </b-tabs>
             </div>
+            <div></div>
         </b-container>
     </div>
 </template>

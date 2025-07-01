@@ -107,10 +107,10 @@ Namespace API.Controllers
 
 
         <Route("updaterestrictions/{hotelId:int}"), HttpPost>
-        Public Function UpdateRestrictions(ByVal hotelId As Integer) As HttpResponseMessage
+        Public Function UpdateRestrictions(ByVal hotelId As Integer, <FromBody> closure As APIServices.Conflux.Models.Closure.Closure) As HttpResponseMessage
 
             Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
-            Dim priorityRequests As List(Of List(Of System.Xml.Linq.XDocument)) = ConfluxService.GetClosureMessages(hotelId, info.Empresa)
+            Dim priorityRequests As List(Of List(Of System.Xml.Linq.XDocument)) = ConfluxService.GetClosureMessagesV2(hotelId, info.Empresa, closure)
             Dim result As RestrictionResponse = ConfluxService.UpdateRestriction(Utitlities.Hotel.HotelUtilitie.ENDPOINTCLOSURE, priorityRequests)
 
             If Not result.IsSuccess Then

@@ -64,8 +64,8 @@ export default {
     /**
      * @param hotelid
     */
-    UpdateRestrictions(hotelid){
+    UpdateRestrictions(hotelid,payload){
         console.log(hotelid);
-        return updateRestrictions.save({hotelid},{});
+        return updateRestrictions.save({hotelid},payload);
     },
 }

@@ -18,8 +18,8 @@ export default {
     'Synchronize with Google Hotel Center' : 'Sincronizar con Google Hotel Center',
     'Prices' : 'Precios',
     'Closure' : 'Cierres',
-    'This action will only send the current closures to Google Hotel Center from the current date' : 'Esta acción solo enviara los cierres vigentes a google hotel center a partir de la fecha actual',
-    'This action will only send the current prices to Google Hotel Center as of the current date' : 'Esta acción solo enviara los precios vigentes a google hotel center a partir de la fecha actual',
+    'This action will only send the closings to Google Hotel Center from the selected dates' : 'Esta acción sólo enviará los cierres a Google Hotel Center a partir de las fechas seleccionadas',
+    'This action will only send the prices to Google Hotel Center from the selected dates' : 'Esta acción solo enviara los precios a google hotel center a partir de las fechas seleccionadas',
     'Enable Google Prices in Content / General Information' : 'Habilitar Precios Google en Contenido / Información General',
     'Show Availability' : 'Mostrar Disponibilidad',
     'Date Range' : 'Rango de Fechas',
@@ -36,6 +36,8 @@ export default {
     'Sa' : 'Sa',
     'Update Inventory' : 'Sincronizar Inventario',
     'Inventory Updated' : 'Inventario Actualizado',
-    'Days of the Week' : 'Días de la Semana'
+    'Days of the Week' : 'Días de la Semana',
+    'This action will only send the inventory to Google Hotel Center from the selected dates' : 'Esta acción sólo enviará el inventario a Google Hotel Center a partir de la fechas seleccionadas',
+    'The listings only show the base plans and rooms, when sending the rates of these, the linked ones will also be sent':'En los listados solo se muestran los planes y habitaciones base, al enviar las tarifas de estos se enviaran también las vinculadas'
 
 }

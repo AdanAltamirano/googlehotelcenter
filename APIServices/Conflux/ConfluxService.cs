@@ -810,7 +810,7 @@ namespace APIServices.Conflux
 
             #region LockGral
             List<XDocument> lockGralPrioritySoapRQ = new List<XDocument>(); //Irian todos lo request de Promos y no Promos
-            var lockGral = dbContext.spGetLockGralByHotel(hotelId).ToList();
+            var lockGral = dbContext.spGetLockGralByHotel(hotelId,null,null).ToList();
             var availStatusMessagesLockGralNoPromos = RestrictionsParser.ToAvailStatusMessages(lockGral, activeRooms, activeRatePlans);
             List<XElement> lockGralNoPromosHotelAvailNotifRQList = HotelAvailNotifRQ.CreateHotelAvailNotifRQList(availStatusMessagesLockGralNoPromos);
 
@@ -834,7 +834,7 @@ namespace APIServices.Conflux
 
             #region LockRoomType
             List<XDocument> lockRoomTypesPrioritySoapRQ = new List<XDocument>(); //Irian todos lo request
-            var lockRoomTypes = dbContext.spGetLockRoomTypesByHotel(hotelId).ToList();
+            var lockRoomTypes = dbContext.spGetLockRoomTypesByHotel(hotelId,null,null,null,null).ToList();
             var availStatusMessagesLockRoomTypes = RestrictionsParser.ToAvailStatusMessages(lockRoomTypes);
             List<XElement> lockRoomTypeHotelAvailNotifRQList = HotelAvailNotifRQ.CreateHotelAvailNotifRQList(availStatusMessagesLockRoomTypes);
 
@@ -862,7 +862,7 @@ namespace APIServices.Conflux
 
             #region LockRatePlan
             List<XDocument> lockRatePlanPrioritySoapRQ = new List<XDocument>(); //aqui irian los requests
-            var lockRatePlans = dbContext.spGetLockRatePlansByHotel(hotelId).ToList();
+            var lockRatePlans = dbContext.spGetLockRatePlansByHotel(hotelId,null,null,null).ToList();
             var availStatusMessagesLockRatePlans = RestrictionsParser.ToAvailStatusMessages(activeRooms, lockRatePlans);
             List<XElement> lockRatePlanHotelAvailNotifRQList = HotelAvailNotifRQ.CreateHotelAvailNotifRQList(availStatusMessagesLockRatePlans);
 
@@ -905,6 +905,39 @@ namespace APIServices.Conflux
 
             return priorityRequests;
         }
+
+        public List<List<XDocument>> GetClosureMessagesV2(int hotelId, int companyId, APIServices.Conflux.Models.Closure.Closure closure)
+        {
+            int size = 3;
+            int lockGral;
+            int lockRatePlans;
+            int lockRoomTypes;
+            List<List<XDocument>> priorityRequests = new List<List<XDocument>>(size);
+
+            RestrictionsParser.Init(companyId);
+
+            List<XDocument> lockGralPrioritySoapRQ = GetGeneralClosure(hotelId,closure, out lockGral);
+            List<XDocument> lockRatePlanPrioritySoapRQ = GetRatePlanClosure(hotelId, closure, out lockRatePlans);
+            List<XDocument> lockRoomTypesPrioritySoapRQ = GetRoomTypeClosure(hotelId, closure, out lockRoomTypes);
+
+            int priorityLockRoomType = Convert.ToInt32(ConfigurationManager.AppSettings["PriorityLockRoomTypes"]);
+            int priorityratePlanLock = Convert.ToInt32(ConfigurationManager.AppSettings["PriorityLockRatePlans"]);
+            int priorityLockGral = Convert.ToInt32(ConfigurationManager.AppSettings["PriorityLockGral"]);
+
+            //Init
+            for (int i = 0; i < size; i++)
+            {
+                priorityRequests.Add(null);
+            }
+
+            if (lockRoomTypes > 0) priorityRequests[priorityLockRoomType - 1] = lockRoomTypesPrioritySoapRQ;
+            if (lockRatePlans > 0) priorityRequests[priorityratePlanLock - 1] = lockRatePlanPrioritySoapRQ;
+            if (lockGral > 0) priorityRequests[priorityLockGral - 1] = lockGralPrioritySoapRQ;
+
+            return priorityRequests;
+
+        }
+
 
         public RestrictionResponse UpdateRestriction(string endpoint, List<List<XDocument>> priorityRequests)
         {
