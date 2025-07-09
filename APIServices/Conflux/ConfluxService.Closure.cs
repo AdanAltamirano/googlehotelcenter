@@ -6,6 +6,7 @@ using APIServices.Conflux.Parser.Restriction;
 using APIServices.Conflux.Models.Closure;
 using APIServices.Conflux.Helpers.Rooms;
 using APIServices.Conflux.Helpers.RatesPlan;
+using APIServices.Conflux.Helpers.Restriction;
 using APIServices.Xml.Soap;
 using APIServices.Xml.OTA.Request.Restrictions;
 
@@ -43,6 +44,12 @@ namespace APIServices.Conflux
             
             var lockGral = dbContext.spGetLockGralByHotel(hotelId, closure.StartDate.Value.Date, closure.EndDate.Value.Date).ToList();
             var availStatusMessagesLockGralNoPromos = RestrictionsParser.ToAvailStatusMessages(lockGral, roomsList, ratesplansList);
+
+
+            var lockGralNoPromosAvailStatusMessageListTemp = availStatusMessagesLockGralNoPromos.AvailStatusMessageList;
+            RestrictionHelper.CheckDatesCalendar(closure.StartDate, closure.EndDate, ref lockGralNoPromosAvailStatusMessageListTemp);
+            availStatusMessagesLockGralNoPromos.AvailStatusMessageList = lockGralNoPromosAvailStatusMessageListTemp;
+
             List<XElement> lockGralNoPromosHotelAvailNotifRQList = HotelAvailNotifRQ.CreateHotelAvailNotifRQList(availStatusMessagesLockGralNoPromos);
 
             foreach (XElement lockGralNoPromosHotelAvailNotifRQ in lockGralNoPromosHotelAvailNotifRQList)
@@ -55,6 +62,12 @@ namespace APIServices.Conflux
             if (ratesplansListPromos.Count > 0)
             {
                 var availStatusMessagesLockGralPromos = RestrictionsParser.ToAvailStatusMessages(hotelId, lockGral, roomsList, ratesplansList, ratesplansListPromos);
+
+                var lockGralPromosAvailStatusMessageListTemp = availStatusMessagesLockGralPromos.AvailStatusMessageList;
+                RestrictionHelper.CheckDatesCalendar(closure.StartDate, closure.EndDate, ref lockGralPromosAvailStatusMessageListTemp);
+                availStatusMessagesLockGralPromos.AvailStatusMessageList = lockGralPromosAvailStatusMessageListTemp;
+
+
                 List<XElement> lockGralPromosHotelAvailNotifRQList = HotelAvailNotifRQ.CreateHotelAvailNotifRQList(availStatusMessagesLockGralPromos);
                 foreach (XElement lockGralPromosHotelAvailNotifRQ in lockGralPromosHotelAvailNotifRQList)
                 {
@@ -102,6 +115,11 @@ namespace APIServices.Conflux
             var ratesplansListPromos = RatesPlanHelper.GetRatePlansPromosByHotel(hotelId, filterRatesPlansPromos);
 
             var availStatusMessagesLockRatePlans = RestrictionsParser.ToAvailStatusMessages(roomsList, lockRatePlans);
+
+            var lockRatePlansAvailStatusMessageListTemp = availStatusMessagesLockRatePlans.AvailStatusMessageList;
+            RestrictionHelper.CheckDatesCalendar(closure.StartDate, closure.EndDate, ref lockRatePlansAvailStatusMessageListTemp);
+            availStatusMessagesLockRatePlans.AvailStatusMessageList = lockRatePlansAvailStatusMessageListTemp;
+
             List<XElement> lockRatePlanHotelAvailNotifRQList = HotelAvailNotifRQ.CreateHotelAvailNotifRQList(availStatusMessagesLockRatePlans);
 
             foreach (XElement lockRatePlanHotelAvailNotifRQ in lockRatePlanHotelAvailNotifRQList)
@@ -116,6 +134,12 @@ namespace APIServices.Conflux
             {
                 var activeRatePlansLockRatePlan = lockRatePlans.Select(lrt => lrt.RatePlanId).Distinct().ToList();
                 var availStatusMessagesLockRatePlanPromos = RestrictionsParser.ToAvailStatusMessages(hotelId, lockRatePlans, roomsList, activeRatePlansLockRatePlan, ratesplansListPromos);
+
+                var lockRatePlansPromosAvailStatusMessageListTemp = availStatusMessagesLockRatePlanPromos.AvailStatusMessageList;
+                RestrictionHelper.CheckDatesCalendar(closure.StartDate, closure.EndDate, ref lockRatePlansPromosAvailStatusMessageListTemp);
+                availStatusMessagesLockRatePlanPromos.AvailStatusMessageList = lockRatePlansPromosAvailStatusMessageListTemp;
+
+
                 List<XElement> lockRatePlanPromosHotelAvailNotifRQList = HotelAvailNotifRQ.CreateHotelAvailNotifRQList(availStatusMessagesLockRatePlanPromos);
 
                 foreach (XElement lockRatePlanPromosHotelAvailNotifRQ in lockRatePlanPromosHotelAvailNotifRQList)
@@ -188,6 +212,11 @@ namespace APIServices.Conflux
             var ratesplansListPromos = RatesPlanHelper.GetRatePlansPromosByHotel(hotelId, filterRatesPlansPromos);
 
             var availStatusMessagesLockRoomTypes = RestrictionsParser.ToAvailStatusMessages(lockRoomTypes);
+
+            var lockRoomTypesAvailStatusMessagesListTemp = availStatusMessagesLockRoomTypes.AvailStatusMessageList;
+            RestrictionHelper.CheckDatesCalendar(closure.StartDate, closure.EndDate,ref lockRoomTypesAvailStatusMessagesListTemp);
+            availStatusMessagesLockRoomTypes.AvailStatusMessageList = lockRoomTypesAvailStatusMessagesListTemp;
+
             List<XElement> lockRoomTypeHotelAvailNotifRQList = HotelAvailNotifRQ.CreateHotelAvailNotifRQList(availStatusMessagesLockRoomTypes);
 
             foreach (XElement lockRoomTypeHotelAvailNotifRQ in lockRoomTypeHotelAvailNotifRQList)
@@ -202,6 +231,11 @@ namespace APIServices.Conflux
             {
                 var activeRatePlansLockRoomTypes = lockRoomTypes.Select(lrt => lrt.RatePlanId).Distinct().ToList();
                 var availStatusMessagesLockRoomTypesPromos = RestrictionsParser.ToAvailStatusMessages(hotelId, lockRoomTypes, activeRatePlansLockRoomTypes, ratesplansListPromos);
+
+                var lockRoomTypesPromosAvailStatusMessagesListTemp = availStatusMessagesLockRoomTypesPromos.AvailStatusMessageList;
+                RestrictionHelper.CheckDatesCalendar(closure.StartDate, closure.EndDate, ref lockRoomTypesPromosAvailStatusMessagesListTemp);
+                availStatusMessagesLockRoomTypesPromos.AvailStatusMessageList = lockRoomTypesPromosAvailStatusMessagesListTemp;
+
                 List<XElement> lockRoomTypePromosHotelAvailNotifRQList = HotelAvailNotifRQ.CreateHotelAvailNotifRQList(availStatusMessagesLockRoomTypesPromos);
 
                 foreach (XElement lockroomTypePromosHotelAvailNotifRQ in lockRoomTypePromosHotelAvailNotifRQList)

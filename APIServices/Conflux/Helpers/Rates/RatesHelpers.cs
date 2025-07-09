@@ -6,6 +6,7 @@ using APIServices.Models;
 using APIServices.Conflux.Enum;
 using APIServices.Conflux.Models.Rates;
 using APIServices.Conflux.OTA.Models.Rates;
+using System.Globalization;
 
 namespace APIServices.Conflux.Helpers.Rates
 {
@@ -1507,6 +1508,52 @@ namespace APIServices.Conflux.Helpers.Rates
             return ageQualifyingCode;
 
         }
+
+        public static void CheckDatesCalendar(DateTime? startDate, DateTime? endDate, ref List<RateAmountMessage> rateAmountMessagesList)
+        {
+
+            foreach(var rateAmountMessageTemp in rateAmountMessagesList)
+            {
+                for(int i = 0; i < rateAmountMessageTemp.Rates.Count; i++)
+                {
+
+
+                    DateTime? rateStartDateTemp = DateTime.ParseExact(rateAmountMessageTemp.Rates[i].StartDate, "yyyyMMdd", CultureInfo.InvariantCulture); 
+                    DateTime? rateEndDateTemp = DateTime.ParseExact(rateAmountMessageTemp.Rates[i].EndDate, "yyyyMMdd", CultureInfo.InvariantCulture);
+
+                    if (startDate >= rateStartDateTemp && endDate <= rateEndDateTemp)
+                    {
+                        // La búsqueda está estrictamente dentro del rango de la tarifa incluyendo border
+
+                        rateAmountMessageTemp.Rates[i].StartDate = startDate.Value.ToString("yyyyMMdd");
+                        rateAmountMessageTemp.Rates[i].EndDate = endDate.Value.ToString("yyyyMMdd");
+                    }
+                    else if (startDate <= rateEndDateTemp && endDate >= rateStartDateTemp)
+                    {
+                        // Se traslapan los rangos: hay cruce entre la búsqueda y la tarifa
+
+                        if(startDate < rateStartDateTemp &&  (endDate >= rateStartDateTemp && endDate <= rateEndDateTemp))
+                        {
+                            rateAmountMessageTemp.Rates[i].EndDate = endDate.Value.ToString("yyyyMMdd");
+                        }
+                        else if (endDate > rateEndDateTemp && (startDate >= rateStartDateTemp && startDate <= rateEndDateTemp))
+                        {
+                            rateAmountMessageTemp.Rates[i].StartDate = startDate.Value.ToString("yyyyMMdd");                            
+                        }
+                        else if(startDate < rateStartDateTemp && endDate > rateEndDateTemp)
+                        {
+                            //No se cambian las fechas, van las fechas de la tarifa
+                        }
+
+                    }
+
+
+                }
+            }
+
+        }
+
+
 
     }
 }

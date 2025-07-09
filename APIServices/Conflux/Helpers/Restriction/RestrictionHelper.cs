@@ -4,6 +4,7 @@ using System.Data;
 using System.Collections.Generic;
 using APIServices.Models;
 using APIServices.Conflux.OTA.Models.Restrictions;
+using System.Globalization;
 
 namespace APIServices.Conflux.Helpers.Restriction
 {
@@ -144,6 +145,44 @@ namespace APIServices.Conflux.Helpers.Restriction
 
             return lockRatePlans;
         }
+
+        public static void CheckDatesCalendar(DateTime? startDate, DateTime? endDate, ref List<AvailStatusMessage> availStatusMessageList)
+        {
+
+            foreach (var availStatusMessage in availStatusMessageList)
+            {
+
+                DateTime availStartDateTemp = availStatusMessage.StatusApplicationControl.Start;
+                DateTime availEndDateTemp = availStatusMessage.StatusApplicationControl.End;
+
+                if (startDate >= availStartDateTemp && endDate <= availEndDateTemp)
+                {
+                    availStatusMessage.StatusApplicationControl.Start = startDate.Value.Date;
+                    availStatusMessage.StatusApplicationControl.End = endDate.Value.Date;
+                }
+                else if (startDate <= availEndDateTemp && endDate >= availStartDateTemp)
+                {
+                    
+                    if (startDate < availStartDateTemp && (endDate >= availStartDateTemp && endDate <= availEndDateTemp))
+                    {
+                        availStatusMessage.StatusApplicationControl.End = endDate.Value.Date;
+                    }
+                    else if (endDate > availEndDateTemp && (startDate >= availStartDateTemp && startDate <= availEndDateTemp))
+                    {
+                        availStatusMessage.StatusApplicationControl.Start = startDate.Value.Date;
+                    }
+                    else if (startDate < availStartDateTemp && endDate > availEndDateTemp)
+                    {
+                        //No se cambian las fechas, van las fechas del cierre
+                    }
+
+                }
+            }
+
+        }
+
+
+
 
     }
 }

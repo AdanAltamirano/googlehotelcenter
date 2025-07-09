@@ -178,7 +178,8 @@ namespace APIServices
                        Factor = r.Factor,
                        Offset = r.Offset,
                        Discount = r.Discount,
-                       DiscountLevel = r.DiscountLevel
+                       DiscountLevel = r.DiscountLevel,
+                       PromoRatePlanId = r.PromoRatePlanId
                    })
                 .Select(r =>
                 {
@@ -193,7 +194,8 @@ namespace APIServices
                         Offset = r.Key.Offset,
                         IsPromotion = r.Key.IsPromotion,
                         DiscountLevel = (byte)r.Key.DiscountLevel,
-                        Discount = r.Key.Discount
+                        Discount = r.Key.Discount,
+                        PromoRatePlanId = r.Key.PromoRatePlanId
                     };
 
                     groupedRates.DailyRates = r.SelectMany(rate =>

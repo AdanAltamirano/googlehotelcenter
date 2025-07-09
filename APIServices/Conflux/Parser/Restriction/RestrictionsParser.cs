@@ -484,19 +484,21 @@ namespace APIServices.Conflux.Parser.Restriction
             };
 
 
-            foreach (var lockRoomtype in locksRoomType)
+            foreach(var rateplan in ratePlans)
             {
+                var closuresRoomTypesByRatePlan = locksRoomType.Where(lrt => lrt.RatePlanId == rateplan).ToList();
 
-                foreach (var rateplan in ratePlans)
+                string ratePlanId = rateplan;
+
+                foreach (var closuresRoomType in closuresRoomTypesByRatePlan)
                 {
-                    string ratePlanId = rateplan;
 
                     if (promosRatePlanDictionary.ContainsKey(ratePlanId))
                     {
 
-                        var starDate = ((DateTime)lockRoomtype.StartDate).Date < DateTime.Now.Date ? DateTime.Now.Date : ((DateTime)lockRoomtype.StartDate).Date;
-                        var diff = ((DateTime)lockRoomtype.EndDate).Date - starDate.Date;
-                        var endDate = diff.TotalDays > 1096 ? starDate.AddYears(3) : ((DateTime)lockRoomtype.EndDate).Date;
+                        var starDate = ((DateTime)closuresRoomType.StartDate).Date < DateTime.Now.Date ? DateTime.Now.Date : ((DateTime)closuresRoomType.StartDate).Date;
+                        var diff = ((DateTime)closuresRoomType.EndDate).Date - starDate.Date;
+                        var endDate = diff.TotalDays > 1096 ? starDate.AddYears(3) : ((DateTime)closuresRoomType.EndDate).Date;
 
                         List<string> promoIdListTemp = promosRatePlanDictionary[ratePlanId];
 
@@ -507,18 +509,56 @@ namespace APIServices.Conflux.Parser.Restriction
                             {
                                 Start = starDate.Date,
                                 End = endDate.Date,
-                                InvTypeCode = lockRoomtype.RoomCode ?? "",
+                                InvTypeCode = closuresRoomType.RoomCode ?? "",
                                 RatePlanCode = promoId + ratePlanId
                             };
 
-                            availStatusMessage.RestrictionStatus = RestrictionHelper.GetRestrictionStatus(lockRoomtype.Status);
+                            availStatusMessage.RestrictionStatus = RestrictionHelper.GetRestrictionStatus(closuresRoomType.Status);
 
                             availStatusMessages.AvailStatusMessageList.Add(availStatusMessage);
                         }
                     }
 
                 }
+
             }
+
+
+            //foreach (var lockRoomtype in locksRoomType)
+            //{
+
+            //    foreach (var rateplan in ratePlans)
+            //    {
+            //        string ratePlanId = rateplan;
+
+            //        if (promosRatePlanDictionary.ContainsKey(ratePlanId))
+            //        {
+
+            //            var starDate = ((DateTime)lockRoomtype.StartDate).Date < DateTime.Now.Date ? DateTime.Now.Date : ((DateTime)lockRoomtype.StartDate).Date;
+            //            var diff = ((DateTime)lockRoomtype.EndDate).Date - starDate.Date;
+            //            var endDate = diff.TotalDays > 1096 ? starDate.AddYears(3) : ((DateTime)lockRoomtype.EndDate).Date;
+
+            //            List<string> promoIdListTemp = promosRatePlanDictionary[ratePlanId];
+
+            //            foreach (var promoId in promoIdListTemp)
+            //            {
+            //                AvailStatusMessage availStatusMessage = new AvailStatusMessage();
+            //                availStatusMessage.StatusApplicationControl = new StatusApplicationControl()
+            //                {
+            //                    Start = starDate.Date,
+            //                    End = endDate.Date,
+            //                    InvTypeCode = lockRoomtype.RoomCode ?? "",
+            //                    RatePlanCode = promoId + ratePlanId
+            //                };
+
+            //                availStatusMessage.RestrictionStatus = RestrictionHelper.GetRestrictionStatus(lockRoomtype.Status);
+
+            //                availStatusMessages.AvailStatusMessageList.Add(availStatusMessage);
+            //            }
+            //        }
+
+            //    }
+            //}
 
             return availStatusMessages;
 

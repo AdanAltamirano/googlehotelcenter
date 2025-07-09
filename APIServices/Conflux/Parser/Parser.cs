@@ -15,7 +15,7 @@ namespace APIServices.Conflux.Parser
     public static class Parser
     {
         //General
-        public static Models.Rates.Response.RatesMessages ToRateAmountMessages(List<spGetCurrentRatesByHotel_Result4> currentRates,int hotelId , int companyId, bool? plusTax, decimal? tax, string currency)
+        public static Models.Rates.Response.RatesMessages ToRateAmountMessages(List<spGetCurrentRatesByHotel_Result4> currentRates,int hotelId , int companyId, bool? plusTax, decimal? tax, string currency, DateTime? startDate, DateTime? endDate)
         {
             Models.Rates.Response.RatesMessages ratesMessages = new Models.Rates.Response.RatesMessages();
 
@@ -43,7 +43,7 @@ namespace APIServices.Conflux.Parser
                     case (int) TypeRateEnum.RoomRate:
 
                         RoomRateMessages(currentRate, ref rateAmountMessages, ref deleteRateAmountMessages, ref rateAmountMessagesExceptions);
-                        
+
                         break;
                     case (int)TypeRateEnum.RoomRatePromotion:
                         RoomRatePromotionMessages(currentRate, ref rateAmountMessages, ref deleteRateAmountMessages, ref rateAmountMessagesExceptions);
@@ -51,6 +51,21 @@ namespace APIServices.Conflux.Parser
 
                 }
             }
+
+
+            var rateAmountMessagesListTemp = rateAmountMessages.RateAmountMessagesList;
+            RatesHelpers.CheckDatesCalendar(startDate, endDate, ref rateAmountMessagesListTemp);
+            rateAmountMessages.RateAmountMessagesList = rateAmountMessagesListTemp;
+
+
+            if (rateAmountMessagesExceptions.RateAmountMessagesList.Count > 0)
+            {
+                var rateAmountMessagesExceptionListTemp = rateAmountMessagesExceptions.RateAmountMessagesList;
+                RatesHelpers.CheckDatesCalendar(startDate, endDate, ref rateAmountMessagesExceptionListTemp);
+                rateAmountMessagesExceptions.RateAmountMessagesList = rateAmountMessagesExceptionListTemp;
+            }
+
+
 
             //0: tarifas, 1: borrar, 2: tarifas excepciones
             ratesMessages.RateAmountMessagesList.Add(rateAmountMessages);

@@ -566,7 +566,7 @@ namespace APIServices.Conflux
             var hotelBasicInfo = dbContext.vHotelBasicInfo.FirstOrDefault(vh => vh.Id == hotelId);
 
             //0: tarifas, 1: borrar, 2: tarifas excepciones
-            ratesMessages = Parser.Parser.ToRateAmountMessages(currentRates, hotelId, companyId, hotel.PlusTax, hotel.Impuesto, hotelBasicInfo.Currency);
+            ratesMessages = Parser.Parser.ToRateAmountMessages(currentRates, hotelId, companyId, hotel.PlusTax, hotel.Impuesto, hotelBasicInfo.Currency, startDate, endDate);
 
             return ratesMessages;
         }

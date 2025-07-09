@@ -9,6 +9,8 @@ using Portal.Hotel.Common.Data;
 using Portal.General.Common.Data;
 using Portal.General.Facade;
 using Portal.Hotel.Facade;
+using System.Net.Http;
+using System.Text;
 
 namespace APIServices.Conflux
 {
@@ -17,54 +19,34 @@ namespace APIServices.Conflux
         public InventoryResponse UpdateInventory(List<XDocument> documents, string endpoint)
         {
             InventoryResponse res = new InventoryResponse();
+
+            var uri = new Uri(endpoint);
+
             try
             {
                 foreach (XDocument document in documents)
                 {
                     InventoryHttpResponse inventoryHttpResponse = new InventoryHttpResponse();
 
-                    var httpReq = (System.Net.HttpWebRequest)System.Net.WebRequest.Create(endpoint);
+                    HttpContent httpContent = new StringContent(document.ToString(), Encoding.UTF8, "application/xml");
 
-                    httpReq.Method = "POST";
+                    string result = string.Empty;
 
-                    byte[] bytes = System.Text.Encoding.ASCII.GetBytes(document.ToString());
-                    httpReq.ContentType = "application/xml; encoding='utf-8'";
-                    httpReq.ContentLength = bytes.Length;
-
-                    using (System.IO.Stream requestStream = httpReq.GetRequestStream())
+                    using (var client = new HttpClient())
                     {
-                        requestStream.Write(bytes, 0, bytes.Length);
+
+                        client.Timeout = TimeSpan.FromMinutes(50);
+                        var response = client.PostAsync(uri, httpContent).Result;
+                        result = response.Content.ReadAsStringAsync().Result; //regresa un xml
                     }
 
-                    using (HttpWebResponse response = (HttpWebResponse)httpReq.GetResponse())
-                    {
-                        string responseText = string.Empty;
 
-                        using (System.IO.Stream responseStream = response.GetResponseStream())
-                        {
-                            using (System.IO.StreamReader reader = new System.IO.StreamReader(responseStream))
-                            {
-                                responseText = reader.ReadToEnd();
-                            }
-                        }
+                    inventoryHttpResponse.Xml = result;
+                    inventoryHttpResponse.XmlRequest = document.ToString();
+                    inventoryHttpResponse.IsSuccess = true;
+                    res.InventoryHttpResponseList.Add(inventoryHttpResponse);
 
-                        if (response.StatusCode != HttpStatusCode.OK)
-                        {
-                            inventoryHttpResponse.IsSuccess = false;
-                        }
-                        else if (validStatusCodes.Contains(response.StatusCode))
-                        {
-                            inventoryHttpResponse.IsSuccess = true;
-                        }
-
-                        inventoryHttpResponse.Xml = responseText;
-                        inventoryHttpResponse.XmlRequest = document.ToString();
-
-                        res.InventoryHttpResponseList.Add(inventoryHttpResponse);
-
-                        //Espera 1 segundo antes de mandar el siguiente request
-                        System.Threading.Thread.Sleep(TimeSpan.FromSeconds(1));
-                    }
+                    System.Threading.Thread.Sleep(TimeSpan.FromSeconds(1));
                 }
 
                 res.IsSuccess = true;

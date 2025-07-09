@@ -273,7 +273,7 @@ Namespace API.Controllers
                 'Todos los planes con habitaciones seleccionadas
                 ratesMessages = New RatesMessages
                 RatesAllRatePlans(companyId, hotelId, ratePrice, ratesMessages)
-            ElseIf ((ratePrice.RoomsList.Length = 1 And ratePrice.RoomsList(0) = "0") And ((ratePrice.RatePlansList.Length = 1 And ratePrice.RatePlansList(0) <> 0) Or ratePrice.RatePlansList.Length > 1)) Then
+            ElseIf ((ratePrice.RoomsList.Length = 1 And ratePrice.RoomsList(0) = 0) And ((ratePrice.RatePlansList.Length = 1 And ratePrice.RatePlansList(0) <> "0") Or ratePrice.RatePlansList.Length > 1)) Then
                 'Todas las habitaciones con planes seleccionados
                 ratesMessages = New RatesMessages
                 RatesAllRooms(companyId, hotelId, ratePrice, ratesMessages)
@@ -362,7 +362,7 @@ Namespace API.Controllers
             ' //0 tarifas, 1: borrar, 2: tarifas excepciones
 
             'Todas las habitaciones , planes seleccionados
-            For Each rateplanId As Integer In ratePrice.RatePlansList
+            For Each rateplanId As String In ratePrice.RatePlansList
 
                 Dim ratesMessagesTemp As RatesMessages = ConfluxService.GetRateMessages(hotelId, companyId, rateplanId, Nothing, ratePrice.StartDate.Value.Date, ratePrice.EndDate.Value.Date)
 
@@ -423,7 +423,7 @@ Namespace API.Controllers
 
             Dim soapRequestList As List(Of XDocument) = New List(Of XDocument)
 
-            Dim limitMessages As Integer = 40
+            Dim limitMessages As Integer = 50
 
             Dim Index As Integer = 0
             Dim totalMessages = inventoryData.Tables(0).Rows.Count - 1

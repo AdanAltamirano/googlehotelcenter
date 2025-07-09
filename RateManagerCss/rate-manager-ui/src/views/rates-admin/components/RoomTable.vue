@@ -59,7 +59,7 @@
                 <div class="d-flex" v-for="child in rate.children" :key="child.ratePlanId">
                     <div class="d-flex w-30">
                         <div class="border flex-fill d-flex w-80 justify-content-between align-items-center bg-promo p-1 pl-4">
-                            <h5 v-tooltip="child.ratePlan" class="m-0 pl-3 text-primary w-80 text-truncate">{{child.ratePlan}}</h5>
+                            <h5 v-tooltip="child.ratePlan" class="m-0 pl-3 text-primary w-80 text-truncate">{{child.promoRatePlanId}} - {{child.ratePlan}}</h5>
                             <span class="text-primary m-0">
                                 <i v-tooltip="$t('{discount}% Off', {discount: child.discount})" v-if="child.isPromotion" class="fa fa-tag"></i>
                             </span>
@@ -106,6 +106,9 @@ export default {
             type: Object,
             required: true,
         },
+    },
+    mounted(){
+        console.log(room.rates);
     },
     methods: {
         inventoryStyles(day) {

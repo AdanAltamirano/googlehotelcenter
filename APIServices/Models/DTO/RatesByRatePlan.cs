@@ -19,5 +19,6 @@ namespace APIServices.Models.DTO
         public bool? IsPromotion { get; set; }
         public decimal Discount { get; set; }
         public byte DiscountLevel { get; set; }
+        public string PromoRatePlanId { get; set; }
     }
 }

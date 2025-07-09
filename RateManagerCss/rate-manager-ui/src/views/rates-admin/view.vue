@@ -64,6 +64,9 @@ export default {
             return this.$store.getters.dateRange;
         },
     },
+    mounted(){
+       
+    },
     methods: {
         showLoader() {
             this.loader = this.$loading.show({ color: this.$appConfig.themeColors.info, height: 128, width: 128 });
