@@ -38,6 +38,12 @@ export default {
     'Inventory Updated' : 'Inventario Actualizado',
     'Days of the Week' : 'Días de la Semana',
     'This action will only send the inventory to Google Hotel Center from the selected dates' : 'Esta acción sólo enviará el inventario a Google Hotel Center a partir de la fechas seleccionadas',
-    'The listings only show the base plans and rooms, when sending the rates of these, the linked ones will also be sent':'En los listados solo se muestran los planes y habitaciones base, al enviar las tarifas de estos se enviaran también las vinculadas'
+    'The listings only show the base plans and rooms, when sending the rates of these, the linked ones will also be sent':'En los listados solo se muestran los planes y habitaciones base, al enviar las tarifas de estos se enviaran también las vinculadas',
+    'Delete Rates' : 'Eliminar Tarifas',
+    'Promotions' : 'Promociones',
+    'Include Rates Promotions' : 'Incluir Tarifas Promociones',
+    'Include Rates Of RatePlans' : 'Incluir Tarifas de Planes Tarifarios',
+    'Rates Eliminated' : 'Tarifas Eliminadas',
+    'Choose Dates' : 'Elegir Fechas'
 
 }

@@ -11,6 +11,7 @@ Imports APIServices.Conflux.Models.User.Response
 Imports APIServices.Conflux.Models.Rates.Response
 Imports APIServices.Conflux.Models.Restrictions.Response
 Imports APIServices.Conflux.Models.Inventory.Response
+Imports APIServices.Conflux.Models.Delete.Response
 Imports Portal.Hotel.Common.Data
 Imports RateManager.PaginaBase
 
@@ -27,6 +28,18 @@ Namespace API.Controllers
         Public Function GetHotels() As IQueryable(Of vHotelActives)
             Return ConfluxService.GetHotels()
         End Function
+
+        <Route("delete/permission"), HttpGet>
+        Public Function UserHasPermission() As HttpResponseMessage
+
+            Dim user As APIServices.Conflux.Models.Delete.User = ConfluxService.UserHasPermission(API.Helpers.UserDataHelper.GetUserEmail())
+
+            Dim toObject As Object = user
+
+            Return Ok(toObject)
+        End Function
+
+
 
         <Route("users/connectivity"), HttpGet, Queryable>
         Public Function GetUserConnectivities() As IQueryable(Of vUsersConnectivity)
@@ -155,6 +168,34 @@ Namespace API.Controllers
 
         End Function
 
+        <Route("deleterates/{hotelId:int}"), HttpPost>
+        Public Function DeleteRates(ByVal hotelId As Integer, <FromBody> delete As APIServices.Conflux.Models.Delete.Delete) As HttpResponseMessage
+
+            Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
+
+            Dim messages As OTA.Models.Rates.RateAmountMessages = ConfluxService.GetDeleteMessages(hotelId, info.Empresa, delete)
+
+            Dim soapRequests As List(Of XDocument) = ConfluxService.GetSoapRequests(messages)
+
+            Dim result As DeleteResponse = ConfluxService.UpdateDelete(soapRequests, Utitlities.Hotel.HotelUtilitie.ENDPOINTDELETE)
+
+            If Not result.IsSuccess Then
+                Log("Error Eliminar Tarifas con el hotel: ", result.Xml, hotelId, String.Empty)
+                Return BadRequest(result.Error)
+            End If
+
+            LogDelete(hotelId, "Conflux", result)
+
+            ''API CACHE
+            If Utitlities.Hotel.HotelUtilitie.IsEnableSendRatesAPICache(hotelId) Then
+                Dim resultAPICache As DeleteResponse = ConfluxService.UpdateDelete(soapRequests, Utitlities.Hotel.HotelUtilitie.ENDPOINTAPIDELETE)
+                LogDelete(hotelId, "APICache", resultAPICache)
+            End If
+
+            Dim toObject As Object = result
+
+            Return Ok(toObject)
+        End Function
 
         Private Sub Log(ByVal note As String, ByVal xml As String, ByVal hotelId As Integer, Optional ByVal requestXMl As String = "")
             With (New PaginaBase)
@@ -204,6 +245,23 @@ Namespace API.Controllers
                 Log(noteDelete, ratesToDelete.Xml, hotelId, ratesToDelete.RequestXML)
             End If
 
+        End Sub
+
+        Private Sub LogDelete(ByVal hotelId As Integer, ByVal serviceToSent As String, ByVal result As DeleteResponse)
+            Dim index As Integer = 1
+
+            If Not result.IsSuccess Then
+                Dim note As String = String.Format("Error Eliminar Tarifas {1} con el hotel: {0}", hotelId, serviceToSent)
+                Log(note, result.Xml, hotelId, String.Empty)
+            Else
+
+                For Each request As DeleteHttpResponse In result.DeleteHttpResponseList
+                    Dim note As String = String.Format("Eliminar Tarifas request numero {0} Tarifas {1} con el hotel: ", (index), serviceToSent)
+                    Log(note, request.Xml, hotelId, request.XmlRequest)
+                    index += 1
+                Next
+
+            End If
         End Sub
 
         Private Sub LogClosure(ByVal hotelId As Integer, ByVal service As String, ByVal restrictionList As List(Of Restriction))

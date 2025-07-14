@@ -35,6 +35,24 @@ namespace APIServices.Conflux.Helpers.RatesPlan
 
         }
 
+        public static List<DataRow> GetFilteredRatePlans(RatePlanData ratePlanData)
+        {
+            DataView dv = new DataView(ratePlanData.Tables[RatePlanData.RATEPLAN_TABLE])
+            {
+               
+            };
+
+            var result = dv.Cast<DataRowView>()
+                        .Select(drv => drv.Row)
+                        .ToList();
+
+            Restriction.RestrictionHelper.RemoveRatePlansNoValids(ref result);
+
+            return result;
+
+        }
+
+
         public static List<DataRow> GetRatePlansPromosByHotel(int hotelId, string filter ="")
         {
             RatePlanData datasetRatePlanData = new RatePlanFacade().GetRatePlanByIdHotel(hotelId.ToString(), idioma: 1, IncluirPaquetesSegmentoK: 1, incluirNetRatesPlan: 1, idAsociacion: -1, DeleteFilter: 1, getPromos: true);

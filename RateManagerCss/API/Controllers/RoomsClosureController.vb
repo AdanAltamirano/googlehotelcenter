@@ -295,6 +295,18 @@ Namespace API.Controller
                                           page.IsUsuarioHotel, PortalCulture.GetIDCulture)
         End Function
 
+        <Route("rateplanssegmentsvalids/{idHotel:Int}"), HttpGet>
+        Public Function GetRatePlansByHotelIdSegmentsValids(ByVal idHotel As Integer) As List(Of DTO.RatePlansClosureModel)
+
+            Dim page As New PaginaBase
+
+            Dim idAsoc As Integer = page.GetIdAsociation()
+
+            Return service.LoadRatePlanByIdHotelNoSegmentsInvalids(idHotel, idAsoc, page.IdCorporativoUserChain, page.IsHotel,
+                                          page.IsUsuarioHotel, PortalCulture.GetIDCulture)
+        End Function
+
+
         <Route("rateplansnolinks/{idHotel:Int}"), HttpGet>
         Public Function GetRatePlansByHotelIdNoLinks(ByVal idHotel As Integer) As List(Of DTO.RatePlansClosureModel)
 
@@ -304,6 +316,12 @@ Namespace API.Controller
 
             Return service.LoadRatePlanByIdHotelNoLinks(idHotel, idAsoc, page.IdCorporativoUserChain, page.IsHotel,
                                           page.IsUsuarioHotel, PortalCulture.GetIDCulture)
+        End Function
+
+        <Route("promos/{idHotel:Int}"), HttpGet>
+        Public Function GetPromosByHotelId(ByVal idHotel As Integer) As List(Of DTO.RatePlansClosureModel)
+
+            Return service.LoadPromosByIdHotel(idHotel)
         End Function
 
         <Route("rooms/{idHotel:Int}"), HttpGet>

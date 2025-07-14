@@ -1,6 +1,6 @@
 <template>
     <div class="">        
-        <details class="text-primary">{{$t('This action will only send the closings to Google Hotel Center from the selected dates')}}</details>
+        <details class="text-primary">{{$t('')}}</details>
         <b-row>
             <b-col md="4">
                 <b-form-group :label="$t('Rate Plans')" class="mt-3">                
@@ -18,6 +18,11 @@
                         open-direction="bottom"   
                         @input="RemoveWhenItsAll">
                     </multiselect>
+                    <b-form-checkbox
+                        v-model="enableRatePlans"
+                        class="mt-2">
+                        {{$t('Include Rates Of RatePlans')}}
+                    </b-form-checkbox>
                 </b-form-group>
             </b-col>
             <b-col md="4">
@@ -39,12 +44,37 @@
                 </b-form-group>
             </b-col>
         </b-row>
+        <b-row>
+            <b-col md="4">
+                <b-form-group :label="$t('Promotions')" class="mt-3">                
+                    <multiselect                    
+                        id="promotions"                                   
+                        v-model="promosList"
+                        label='text'                     
+                        :options="optionsPromosList"
+                        track-by="value"
+                        :multiple="true"                                
+                        :selectLabel="''"
+                        :selectedLabel="''"
+                        :deselectLabel="''"
+                        :placeholder="$t('Promotions')"
+                        open-direction="bottom"   
+                        @input="RemoveWhenItsAll">
+                    </multiselect>
+                    <b-form-checkbox
+                        v-model="enablePromotions"
+                        class="mt-2">
+                        {{$t('Include Rates Promotions')}}
+                    </b-form-checkbox>
+                </b-form-group>
+            </b-col>
+        </b-row>
         <div v-if="callApi" class="mt-3 vld-parent" style="height:80px;">
             <loading style="display:block !important;" :active="true" :is-full-page="false" color="#007bff"></loading>
         </div>
         <div else class="mt-4">
-            <b-button :disabled="!isEnabledGoogle" class="mt-1" v-if="showButton" variant="primary" @click="updateRestrictions()">
-                {{$t('Update Closures')}}
+            <b-button :disabled="!isEnabledGoogle" class="mt-1" v-if="showButton" variant="primary" @click="deleteRates()">
+                {{$t('Delete Rates')}}
             </b-button>
         </div>
         <div class="mt-3">
@@ -60,10 +90,8 @@
 </template>
 
 <script>
-import Vue from "vue";
 import Loading from "vue-loading-overlay";
 import Multiselect from 'vue-multiselect';
-import RestrictionAlert from "./RestrictionsAlert.vue";
 import RoomsClosureService from '../../../api/rooms-service';
 import ConfluxService from '../../../api/conflux-service';
 
@@ -90,12 +118,17 @@ export default {
             ratePlansList:[],
             options:[],
             roomsList:[],
-            optionsRooms:[]
+            optionsRooms:[],
+            promosList:[],
+            optionsPromosList:[],
+            enableRatePlans:false,
+            enablePromotions:false
         }
     },
     created() {
         this.loadRatesPlans(this.hotelId);
         this.loadRooms(this.hotelId);
+        this.loadPromos(this.hotelId);
     },
     mounted(){
         this.ratePlansList.push({
@@ -106,41 +139,39 @@ export default {
         this.roomsList.push({
             value: "0",
             text: this.$t('All')
-        })
+        });
+
+        this.promosList.push({
+            value: "0",
+            text: this.$t('All')
+        });
+
     },
     methods:{
-        updateRestrictions(){
+        deleteRates(){
 
             const ratesPlans = this.ratePlansList.map(obj => obj.value);
             const rooms = this.roomsList.map(obj => parseInt(obj.value, 10));
+            const promos = this.promosList.map(obj => obj.value);
 
             const payload = {
                 startDate: this.dates.start,
                 endDate: this.dates.end,
                 ratePlansList: ratesPlans,
-                roomsList: rooms
+                roomsList: rooms,
+                promosList: promos,
+                enableRatePlans: this.enableRatePlans,
+                enablePromotions : this.enablePromotions
             };
 
             this.showButton = false;
             this.callApi = true;
 
-            ConfluxService.UpdateRestrictions(this.hotelId,payload)
+            ConfluxService.DeleteRates(this.hotelId, payload)
             .then(response =>{
-
-                let component = Vue.extend(RestrictionAlert);
-                let instance = new component({
-                    propsData:{
-                        restrictions: response.body.restrictions
-                    }
-                });
-
-                instance.$mount();
-                let html = $("<div>").append(instance.$el);
-                console.log(html);
                 this.callApi = false;
                 this.showButton = true;
-                this.$appAlert(this.successHTML(this.$t('Closures'),html));
-
+                this.$appAlert(this.success(this.$t('Rates Eliminated')));
             })
             .catch(error => {
                 this.callApi = false;
@@ -148,16 +179,17 @@ export default {
                 this.$appAlert(this.error(this.$t('System Error')))
             });
         },
-        successHTML(title, html) {
+        success(title) {
             return {
-                title: title,
                 type: "success",
-                html: html,
+                title: title,
                 showCancelButton: true,
                 showConfirmButton:false,
                 cancelButtonText: this.$t("Exit"),
                 cancelButtonColor: "#d33",
-            }
+                showConfirmButton: false,
+                time: 2500,               
+            };
         },
         error(title) {
             return {
@@ -189,6 +221,7 @@ export default {
         loadRooms(hotelId){
             RoomsClosureService.getRoomsByHotelId(hotelId)
             .then(response => {
+                console.log("Habitaciones");
                 console.log(response.body);
 
                 this.optionsRooms.push({
@@ -200,6 +233,20 @@ export default {
                     this.optionsRooms.push(room);                
                 });
             })
+        },
+        loadPromos(hotelId){
+            RoomsClosureService.getPromosByHotelId(hotelId)
+            .then(response => {
+
+                this.optionsPromosList.push({
+                    value : "0",
+                    text : this.$t('All')
+                });
+
+                response.body.forEach(promo => {
+                    this.optionsPromosList.push(promo);                
+                });
+            });
         },
         RemoveWhenItsAll(array){
 

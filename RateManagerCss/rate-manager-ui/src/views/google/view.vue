@@ -6,7 +6,7 @@
             <b-row class="mt-4">
                 <b-col class="col-custom-3">
                     <b-form-group 
-                    :label="$t('Show Availability')"
+                    :label="$t('Choose Dates')"
                     :description="$t('Date Range')">
                         <b-input-group>
                             <v-date-picker
@@ -43,6 +43,10 @@
                     <b-tab :title="$t('Inventory')">
                         <inventory :hotelId="hotelId" :isEnabledGoogle="isEnabledGoogleRequest" :dates="dates"></inventory>
                     </b-tab>
+
+                    <b-tab :title="$t('Delete Rates')" v-if="hasPermission">
+                        <delete-rates :hotelId="hotelId" :isEnabledGoogle="isEnabledGoogleRequest" :dates="dates"></delete-rates>
+                    </b-tab>
                 </b-tabs>
             </div>
             <div></div>
@@ -54,12 +58,15 @@
 import Prices from "./components/Prices.vue";
 import Closure from "./components/Closure.vue";
 import Inventory from "./components/Inventory.vue";
+import DeleteRates from "./components/DeleteRates.vue";
+import { GetUserPermission } from '../../api/conflux-service';
 
 export default {
     components: {
         Prices,
         Closure,
-        Inventory
+        Inventory,
+        DeleteRates
     },
     created(){
 
@@ -72,12 +79,16 @@ export default {
             start: start,
             end: dateEnd
         }
+
+        this.userHasPermission();
+
     },
     data (){
         return {
             //Hotel Id
             hotelId: this.$appConfig.session.hotelId,
             isEnabledGoogleRequest: this.$appConfig.google.isEnabledGoogleRequest === 0 ? false : true,
+            hasPermission : false,
             dates: null,
         }
     },
@@ -85,6 +96,16 @@ export default {
         console.log(this.isEnabledGoogleRequest);
     },
     methods:{
+        userHasPermission(){
+            GetUserPermission()
+            .then(response =>{
+                console.log(response);
+                this.hasPermission = response.body.hasPermissions;
+            })
+            .catch(error => {
+               console.log(error);
+            });
+        }
     }
 }
 </script>

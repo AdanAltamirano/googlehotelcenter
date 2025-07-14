@@ -942,6 +942,32 @@ namespace APIServices.Conflux.Helpers.Rates
             return rateAmountMessage;
         }
 
+        //General Tarifas
+        public static RateAmountMessage CreateDeleteRateAmountMessage(string rateplanId, string roomCode, DateTime? startDate, DateTime? endDate)
+        {
+
+            RateAmountMessage rateAmountMessage = new RateAmountMessage();
+
+            rateAmountMessage.statusApplicationControl = new StatusApplicationControl { RatePlanCode = rateplanId, InvTypeCode = roomCode };
+
+            List<Rate> rates = new List<Rate>();
+
+
+            Rate rate = new Rate()
+            {
+                StartDate = startDate.Value.ToString("yyyyMMdd"),
+                EndDate = endDate.Value.ToString("yyyyMMdd")
+            };
+
+            rates.Add(rate);
+
+            rateAmountMessage.Rates = rates;
+
+
+            return rateAmountMessage;
+        }
+
+
         //Por Tarifa Normal
         public static RateAmountMessage CreateDeleteRateAmountMessage(vDayRates vDayRate)
         {

@@ -200,7 +200,8 @@ namespace APIServices.Xml.OTA.Request.Rates
                     XElement ratesXml = new XElement(blank + "Rate",                        
                         new XAttribute("Start", rate.StartDate),
                         new XAttribute("End", rate.EndDate),
-                        new XAttribute("CurrencyCode", rate.CurrencyCode));
+                        string.IsNullOrEmpty(rate.CurrencyCode) ? null : new XAttribute("CurrencyCode", rate.CurrencyCode)
+                    );
 
                     if (rate.IsPromotion || rate.HasPriceException || rate.TypeRate == Conflux.Enum.TypeRateEnum.RoomRatePromotion)
                     {

@@ -13,6 +13,8 @@ const updateInventory = Vue.resource(`${process.env.VUE_APP_API_URL}/conflux/inv
 const hotels = Vue.resource(`${process.env.VUE_APP_API_URL}/conflux/hotels{?filter,orderBy,pageSize,page}`);
 const createUser = Vue.resource(`${process.env.VUE_APP_API_URL}/conflux/create/user`);
 const usersConnectivities = Vue.resource(`${process.env.VUE_APP_API_URL}/conflux/users/connectivity{?filter,orderBy,pageSize,page}`)
+const userHasPermission = Vue.resource(`${process.env.VUE_APP_API_URL}/conflux/delete/permission`);
+const deleteRates = Vue.resource(`${process.env.VUE_APP_API_URL}/conflux/deleterates/{hotelid}`);
 
 export default {
     /**
@@ -68,4 +70,17 @@ export default {
         console.log(hotelid);
         return updateRestrictions.save({hotelid},payload);
     },
+    /**
+     * 
+     * @param {*} hotelid 
+     * @param {*} payload 
+     * @returns 
+     */
+    DeleteRates(hotelid, payload){
+        return deleteRates.save({hotelid},payload);
+    }
+}
+
+export function GetUserPermission() {
+    return userHasPermission.get();
 }
