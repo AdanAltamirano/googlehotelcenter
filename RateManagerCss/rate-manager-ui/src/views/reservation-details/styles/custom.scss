@@ -148,6 +148,20 @@ address {
     height: fit-content !important;
 }
 
+.button-like-span {
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  font: inherit !important;
+  cursor: pointer !important;
+  text-decoration: none !important;
+}
+
+.button-like-span:hover {
+  text-decoration: underline !important; /* opcional, como un enlace */
+}
+
 @media only screen and (min-width: 1280px) {
     .swal2-custom-popup {
         width: 40rem !important;

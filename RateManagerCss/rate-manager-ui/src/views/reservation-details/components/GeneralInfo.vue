@@ -13,14 +13,46 @@
                 <b-col md="5" v-if="result.customer">
                     <h3>{{result.customer.name}} {{result.customer.lastName}}</h3>
                     <address>
-                        <span v-if="result.customer.email != ''">
+                        <div v-if="!showClientData">
+                            <b-button
+                            class="text-info button-like-span"
+                            @click="show_alertDatacard"
+                            v-show="showBtn"
+                            variant="link"
+                            >{{$t('View Client Data')}}
+                            </b-button>
+                        </div>
+                        <div v-if="showClientData">
+                            <span v-if="result.customer.email != ''">
                             {{$t('Email')}}: <strong>{{result.customer.email}}</strong>
                             <br>
-                        </span>
-                        <span v-if="result.customer.phone != ''">
-                            {{$t('Phone')}}: <strong>{{result.customer.phone}}</strong>
-                            <br>
-                        </span>
+                            </span>
+                            <span v-if="result.customer.phone != ''">
+                                {{$t('Phone')}}: <strong>{{result.customer.phone}}</strong>
+                                <br>
+                            </span>
+                        </div>
+                        <b-alert
+                        v-if="!errorSendEmail"
+                        :show="dismiss_countDown"
+                        @dismissed="dismiss_countDown=0"
+                        @dismiss-count-down="countDownChanged"
+                        class="mt-1"
+                        variant="warning">                       
+                            <small>{{$t('A verification code has been sent to your email, with which you can view the client details')}}</small>
+                            <b-form class="pt-1" inline>
+                                <b-form-group :description="description_dismiss">
+                                    <b-form-input v-model="code"></b-form-input>&nbsp;
+                                    <b-button @click="authorizeCodeCustomer" variant="primary">{{$t('Send')}}</b-button>
+                                </b-form-group>
+                            </b-form>
+                            <b-alert variant="danger" class="mt-1" :show="codeError">
+                                <small>!Error! {{$t('Invalid verification code')}}</small>
+                            </b-alert>
+                        </b-alert>
+                        <b-alert class="mt-1" v-if="errorSendEmail" variant="danger">
+                            <small>!Error! {{$t('There was a problem sending the mail')}}</small>
+                        </b-alert>
                         <span>{{result.nights}} {{$t('Night(s)')}}</span>
                         <br>
                         <span>{{occupation}}</span>
@@ -85,6 +117,7 @@
 import Vue from "vue";
 import EventBus from '../../../core/event-bus';
 import Record from './Record/Log.vue';
+import ReservationService from '../../../api/reservation-service';
 
 export default {
     props: {
@@ -95,6 +128,16 @@ export default {
     },
     components: {
         Record
+    },
+    data(){
+        return {
+            showClientData: false,
+            dismiss_sec: 300,
+            dismiss_countDown: 0,
+            code: "",
+            errorSendEmail: false,
+            codeError: false,
+        }
     },
     mounted(){
         EventBus.$on('historymovementsreservation', () =>{
@@ -157,6 +200,35 @@ export default {
                 },
             });
 
+        },
+        countDownChanged(dismissCountDown) {
+            this.dismiss_countDown = dismissCountDown;
+        },
+        show_alertDatacard() {
+            this.dismiss_countDown = this.dismiss_sec;
+            this.sendEmail();
+        },
+        sendEmail() {
+            ReservationService.SendCodeCustomer(this.result.reservationId).then(response => {
+                console.log(response.body);
+                if (!response.body.success) {
+                    this.errorSendEmail = true;
+                    this.dismiss_countDown = 0;
+                }
+            });
+        },
+        authorizeCodeCustomer(){
+            ReservationService.GetAuhtorizationCustomerCode(this.result.reservationId, this.code)
+            .then(response =>{
+                if(response.body.success){
+                    this.showClientData = true;
+                    this.dismiss_countDown = 0
+                }
+                else{
+                    this.codeError = true;
+                    this.code = "";
+                }
+            });
         }
     },
     computed: {
@@ -186,7 +258,28 @@ export default {
 
             return `${adults} ${this.$t('Adult(s)')} ${childrens > 0 ? ', ' : ''}
             ${childrens > 0 ? (childrens + ' ' + this.$t('Children')) : ''}`;
-        }
+        },
+        showBtn() {
+            return this.dismiss_countDown == 0 ? true : false;
+        },
+        description_dismiss() {
+            let txtTime = "";
+            let seconds = this.dismiss_countDown;
+            let minutes = Math.floor(this.dismiss_countDown / 60);
+            if (minutes > 0) {
+                seconds -= minutes * 60;
+                txtTime += `${minutes} ${
+                minutes > 1 ? `${this.$t("minute")}s` : this.$t("minute")
+                }`;
+            }
+            txtTime += `${minutes > 0 && seconds > 0 ? ", " : ""}`;
+            if (seconds > 0)
+                txtTime += `${seconds} ${
+                seconds > 1 ? `${this.$t("second")}s` : this.$t("second")
+                }`;
+
+            return `${this.$t("The code must be added before")} ${txtTime}`;
+        },
     }
 }
 </script>

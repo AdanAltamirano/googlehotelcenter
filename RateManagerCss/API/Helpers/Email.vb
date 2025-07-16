@@ -42,6 +42,24 @@ Namespace API.Helpers
             Return False
         End Function
 
+        Public Function SendVerificationCodeEmailCustomer(ByVal code As String, ByVal reservationId As Integer) As Boolean
+            Dim mail As New emailTemplates.Template
+            mail.To = GetUserEmail()
+            mail.TemplateName = "CodeCustomer"
+            mail.Html = True
+            mail.SubjectParam = reservationId
+            mail.AddParameter("code") = code
+            mail.Idioma = "es-MX"
+            Try
+                mail.Send()
+                Return True
+            Catch ex As Exception
+
+            End Try
+            Return False
+        End Function
+
+
         Public Function SendModificationEmail(ByVal toEmail As String, ByVal reservation As ReservationDetailsModel,
                                               ByVal oldReservation As ReservationDetailsModel, ByRef emailError As String, ByVal typeClient As TypeClient, Optional companyInfo As companyInfo = Nothing) As Boolean
             Try

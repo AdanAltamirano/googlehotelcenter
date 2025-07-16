@@ -581,6 +581,36 @@ Namespace API.Controller
             Return New DTO.CardDetails()
         End Function
 
+        'GET api/reservations/1978/customer/detail
+        <Route("{reservationId:int}/customer/detail"), HttpGet>
+        Public Function GetCodeCustomer(ByVal reservationId As Integer)
+            Dim code As String = ReservationService.GetCode(10)
+            HttpContext.Current.Session("code_customer_detail") = code
+
+            Dim note As String = String.Format("El usuario {0} solicitó información de cliente para la reserva {1} con el codigo {2}", GetUserEmail(), reservationId, code)
+
+            Log(reservationId, acciones.Ver, nota:=note)
+
+            Return Ok(New With {Key .success = SendVerificationCodeEmailCustomer(code, reservationId)})
+        End Function
+
+        <Route("{reservationId:int}/customer/detail/{code}"), HttpGet>
+        Public Function GetAuhtorizationCustomerCode(ByVal reservationId As Integer, ByVal code As String)
+            Dim generatedCode As String = ""
+            If HttpContext.Current.Session("code_customer_detail") IsNot Nothing Then
+                generatedCode = HttpContext.Current.Session("code_customer_detail")
+            End If
+            If (code = generatedCode) Then
+                HttpContext.Current.Session("code_customer_detail") = Nothing
+                Dim note As String = String.Format("El usuario {0} confirmo el codigo {1} para ver la información del cliente para la reserva {2}", GetUserEmail(), code, reservationId)
+                Log(reservationId, acciones.Ver, nota:=note)
+                Return Ok(New With {Key .success = True})
+            End If
+
+
+            Return Ok(New With {Key .success = False})
+        End Function
+
         'GET api/reservations/1978/sendnotification
         <Route("{reservationId:int}/sendnotification"), HttpGet>
         Public Function SendNotification(ByVal reservationId As Integer) As HttpResponseMessage

@@ -612,6 +612,8 @@
     <Content Include="Correos\html\ChangeEmailUser_ES.htm" />
     <Content Include="Correos\html\ChangePasswordUser_EN.htm" />
     <Content Include="Correos\html\ChangePasswordUser_ES.htm" />
+    <Content Include="Correos\html\codecustomer_en.htm" />
+    <Content Include="Correos\html\codecustomer_es.htm" />
     <Content Include="Correos\html\ForgotPasswordUser_EN.htm" />
     <Content Include="Correos\html\ForgotPasswordUser_ES.htm" />
     <Content Include="Correos\html\HotelLog_EN.htm" />

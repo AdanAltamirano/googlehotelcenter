@@ -27,6 +27,8 @@ const hotelChannels = Vue.resource(`${process.env.VUE_APP_API_URL}/utils/hotelCh
 const reservationHistoryLog = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations/{reservationId}/history/log`);
 const reservationDetailLog = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations/{reservationId}/history/log/detail/{source}/{idLog}`);
 
+const customerDetail = Vue.resource(`${process.env.VUE_APP_API_URL}/reservations/{reservationId}/customer/detail/{code}`);
+
 export default {
     /**
      *
@@ -73,7 +75,17 @@ export default {
             code
         });
     },
-
+    SendCodeCustomer(reservationId) {
+        return customerDetail.get({
+            reservationId
+        });
+    },
+    GetAuhtorizationCustomerCode(reservationId, code) {
+        return customerDetail.get({
+            reservationId,
+            code
+        });
+    },
     ReservationUpdate(reservationId, patch, request, sendNotification) {
 
         let headersParams = {

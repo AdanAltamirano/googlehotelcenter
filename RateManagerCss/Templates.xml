@@ -24,6 +24,27 @@
 			<en-US valor="/correos/texto/codecc_en.txt" />
 		</text>
   </CodeCC>
+
+	<CodeCustomer descripcion="codigo customer">
+		<subject>
+			<es-MX valor="Código de verificación #{0}"></es-MX>
+			<en-US valor="Verification code #{0}"></en-US>
+		</subject>
+		<from valor="custsrvc@univisit.com" />
+		<smtpServer valor="smtp.mandrillapp.com"/>
+		<userName valor="javier@univisit.com"/>
+		<password valor="NCxlNTHApCDYtSZjtyRvvQ"/>
+		<port valor="587"/>
+		<ssl valor="true"/>
+		<parametros>
+			<code/>
+		</parametros>
+		<html>
+			<es-MX valor="/correos/html/codecustomer_es.htm"></es-MX>
+			<en-US valor="/correos/html/codecustomer_en.htm"></en-US>
+		</html>
+	</CodeCustomer>
+	
   
 	<T01 descripcion="Template de Usuario Nuevo">
 		<subject>
