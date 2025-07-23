@@ -685,10 +685,20 @@
                                         <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
                                         <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                         <ItemTemplate>
-                                            <asp:LinkButton ID="lnkItinerario" runat="server" CssClass="dgLink" CommandName="DetalleReserva"
+                                            <%--<asp:LinkButton ID="lnkItinerario" runat="server" CssClass="dgLink" CommandName="DetalleReserva"
                                                 CausesValidation="false">
 											<%# DataBinder.Eval(Container, "DataItem.NoReservacion") %>
-                                            </asp:LinkButton>
+                                            </asp:LinkButton>--%>
+
+                                            <asp:HyperLink 
+                                                ID="hpDgReservations" 
+                                                runat="server" 
+                                                CssClass="dgLink" 
+                                                NavigateUrl='<%# Eval("ID", "/ratemanager/rate-manager-ui/dist/reservation-details.aspx?qs={0}") %>' 
+                                                Target="_blank"
+                                                Text='<%# Eval("NoReservacion") %>'>
+                                            </asp:HyperLink>
+
                                         </ItemTemplate>
                                     </asp:TemplateColumn>
                                     <asp:TemplateColumn>
@@ -729,10 +739,18 @@
                                         <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
                                         <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                         <ItemTemplate>
-                                            <asp:LinkButton ID="lnkItinerario" runat="server" CssClass="dgLink" CommandName="DetalleReserva"
+                                            <%--<asp:LinkButton ID="lnkItinerario" runat="server" CssClass="dgLink" CommandName="DetalleReserva"
                                                 CausesValidation="false">
 											<%# DataBinder.Eval(Container, "DataItem.NoReservacion") %>
-                                            </asp:LinkButton>
+                                            </asp:LinkButton>--%>
+                                              <asp:HyperLink 
+                                                ID="hpDgDeposits" 
+                                                runat="server" 
+                                                CssClass="dgLink" 
+                                                NavigateUrl='<%# Eval("ID", "/ratemanager/rate-manager-ui/dist/reservation-details.aspx?qs={0}") %>' 
+                                                Target="_blank"
+                                                Text='<%# Eval("NoReservacion") %>'>
+                                            </asp:HyperLink>
                                         </ItemTemplate>
                                     </asp:TemplateColumn>
                                     <asp:BoundColumn HeaderText="pmsACT" Visible="false"></asp:BoundColumn>
@@ -779,10 +797,18 @@
                                         <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
                                         <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                         <ItemTemplate>
-                                            <asp:LinkButton ID="lnkItinerario" runat="server" CssClass="dgLink" CommandName="DetalleReserva"
+                                           <%-- <asp:LinkButton ID="lnkItinerario" runat="server" CssClass="dgLink" CommandName="DetalleReserva"
                                                 CausesValidation="false">
 											<%# DataBinder.Eval(Container, "DataItem.NoReservacion") %>
-                                            </asp:LinkButton>
+                                            </asp:LinkButton>--%>
+                                              <asp:HyperLink 
+                                                ID="hpDgCryptoDeposits" 
+                                                runat="server" 
+                                                CssClass="dgLink" 
+                                                NavigateUrl='<%# Eval("ID", "/ratemanager/rate-manager-ui/dist/reservation-details.aspx?qs={0}") %>' 
+                                                Target="_blank"
+                                                Text='<%# Eval("NoReservacion") %>'>
+                                            </asp:HyperLink>
                                         </ItemTemplate>
                                     </asp:TemplateColumn>
                                     <asp:BoundColumn HeaderText="pmsACT" Visible="false"></asp:BoundColumn>
