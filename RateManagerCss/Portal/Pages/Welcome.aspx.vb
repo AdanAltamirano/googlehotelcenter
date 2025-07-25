@@ -664,8 +664,8 @@ Partial Class Welcome1
         Dim lk As LinkButton
         For Each i As DataGridItem In Me.dgReservations.Items
             If i.ItemType = ListItemType.AlternatingItem Or i.ItemType = ListItemType.Item Then
-                lk = i.FindControl("lnkItinerario")
-                CType(Me.Page, PaginaBase).Habilitaboton(permisos.ReservationsList, lk, "R")
+                'lk = i.FindControl("lnkItinerario")
+                'CType(Me.Page, PaginaBase).Habilitaboton(permisos.ReservationsList, lk, "R")
                 lk = i.FindControl("lnkVerificar")
                 CType(Me.Page, PaginaBase).Habilitaboton(permisos.ConfirmReservations, lk, "R")
             End If

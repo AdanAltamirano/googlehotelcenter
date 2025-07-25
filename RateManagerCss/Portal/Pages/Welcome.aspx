@@ -690,7 +690,7 @@
 											<%# DataBinder.Eval(Container, "DataItem.NoReservacion") %>
                                             </asp:LinkButton>--%>
 
-                                            <asp:HyperLink 
+                                            <asp:HyperLink                                             
                                                 ID="hpDgReservations" 
                                                 runat="server" 
                                                 CssClass="dgLink" 
