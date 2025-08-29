@@ -1016,11 +1016,11 @@ namespace APIServices.Conflux
             return res;
         }
 
-        public List<XDocument> GetClosureRatesMessages(int hotelId, int companyId)
+        public List<XDocument> GetClosureRatesMessages(int hotelId, int companyId, APIServices.Conflux.Models.Closure.Closure closure)
         {
             List<XDocument> lockRatesSoapRQ = new List<XDocument>();
-            var currentRates = new List<spGetCurrentRatesByHotel_Result4>(); //dbContext.spGetCurrentRatesByHotel(hotelId).ToList();
-            
+            var currentRates = GetCurrentRatesForClosure(hotelId, closure);
+
             RestrictionsParser.Init(companyId);
 
             var availStatusMessages = RestrictionsParser.ToAvailStatusMessages(currentRates);
@@ -1034,6 +1034,63 @@ namespace APIServices.Conflux
             }
 
             return lockRatesSoapRQ;
+        }
+
+
+        public List<spGetCurrentRatesByHotel_Result4> GetCurrentRatesForClosure(int hotelId, APIServices.Conflux.Models.Closure.Closure closure)
+        {
+            List<spGetCurrentRatesByHotel_Result4> currentRates = new List<spGetCurrentRatesByHotel_Result4>();
+
+            if ((closure.RatePlansList.Length == 1 && closure.RatePlansList[0] == "0") && (closure.RoomsList.Length == 1 && closure.RoomsList[0] == 0))
+            {
+                // Todos los planes con todas las habitaciones
+                currentRates = dbContext.spGetCurrentRatesByHotel(hotelId,null,null,closure.StartDate.Value.Date, closure.EndDate.Value.Date).ToList();
+            }
+            else if ((closure.RatePlansList.Length == 1 && closure.RatePlansList[0] == "0") && ((closure.RoomsList.Length == 1 && closure.RoomsList[0] != 0) || closure.RoomsList.Length > 1))
+            {
+                // Todos los planes con habitaciones seleccionadas
+
+                foreach(var roomId in closure.RoomsList)
+                {
+                   var currentRatesTemp =  dbContext.spGetCurrentRatesByHotel(hotelId, null, roomId, closure.StartDate.Value.Date, closure.EndDate.Value.Date).ToList();
+
+                    currentRates.AddRange(currentRatesTemp);
+
+                }
+               
+            }
+            else if ((closure.RoomsList.Length == 1 && closure.RoomsList[0] == 0) && ((closure.RatePlansList.Length == 1 && closure.RatePlansList[0] != "0") || closure.RatePlansList.Length > 1))
+            {
+                // Todas las habitaciones con planes seleccionados
+
+                foreach (var rateplanId in closure.RatePlansList)
+                {
+                    var currentRatesTemp = dbContext.spGetCurrentRatesByHotel(hotelId, rateplanId, null, closure.StartDate.Value.Date, closure.EndDate.Value.Date).ToList();
+
+                    currentRates.AddRange(currentRatesTemp);
+
+                }
+
+            }
+            else
+            {
+                // Planes seleccionados con habitaciones seleccionadas
+
+                foreach(var roomId in closure.RoomsList)
+                {
+                    foreach(var rateplanId in closure.RatePlansList)
+                    {
+                        var currentRatesTemp = dbContext.spGetCurrentRatesByHotel(hotelId, rateplanId, roomId, closure.StartDate.Value.Date, closure.EndDate.Value.Date).ToList();
+
+                        currentRates.AddRange(currentRatesTemp);
+                    }
+                }
+
+                
+            }
+
+            return currentRates;
+
         }
 
         public RestrictionResponse UpdateRestriction(string endpoint, List<XDocument> soapRequests)

@@ -545,8 +545,8 @@
                 <asp:TextBox ID="txtCD" CssClass="textbox" runat="server" MaxLength="25" Width="180px"></asp:TextBox></td>
         </tr>
         <tr>
-            <td aling="right">
-                <asp:Label Style="z-index: 0" ID="Label1" CssClass="clsLabel" runat="server">Exclusivo Para:</asp:Label></td>
+            <td align="right">
+                <asp:Label ID="Label1" CssClass="clsLabel" runat="server">Exclusivo Para:</asp:Label>
             </td>
             <td>
                 <asp:CheckBox ID="portalMovil" CssClass="clslabel" runat="server" Text="Portal Movil"></asp:CheckBox>

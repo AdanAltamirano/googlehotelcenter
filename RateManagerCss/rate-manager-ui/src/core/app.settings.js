@@ -16,7 +16,8 @@ const appConfig = {
         code: window.app.code
     },
     google:{
-        isEnabledGoogleRequest: window.app.isEnabledGoogleRequest
+        isEnabledGoogleRequest: window.app.isEnabledGoogleRequest,
+        isEnabledAPICacheRequest: window.app.isEnabledAPICacheRequest
     },
     themeColors: {
         primary: '#10467a',

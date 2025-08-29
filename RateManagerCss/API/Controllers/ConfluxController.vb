@@ -71,27 +71,48 @@ Namespace API.Controllers
 
             Dim ratesMessages As RatesMessages = GetMessages(hotelId, info.Empresa, body)
 
-            Dim result As RatesReponse = ConfluxService.UpdateRates(ratesMessages, Utitlities.Hotel.HotelUtilitie.ENDPOINT, Utitlities.Hotel.HotelUtilitie.ENDPOINTDELETE, True)
+            Dim ratesToUpdate As RateResponse = Nothing
 
-            Dim ratesToUpdate As RateResponse = result.RateResponseList(0)
+            If Utitlities.Hotel.HotelUtilitie.IsEnableGoogleRequest(hotelId) Then
 
-            If Not ratesToUpdate.IsSuccess Then
+                Dim result As RatesReponse = ConfluxService.UpdateRates(ratesMessages, Utitlities.Hotel.HotelUtilitie.ENDPOINT, Utitlities.Hotel.HotelUtilitie.ENDPOINTDELETE, True)
 
-                Log("Error Sincronizar Tarifas Conflux con el hotel: ", ratesToUpdate.Xml, hotelId, String.Empty)
+                ratesToUpdate = result.RateResponseList(0)
 
-                Return BadRequest(ratesToUpdate.Error)
+                If Not ratesToUpdate.IsSuccess Then
+                    Log("Error Sincronizar Tarifas Conflux con el hotel: ", ratesToUpdate.Xml, hotelId, String.Empty)
+                    Return BadRequest(ratesToUpdate.Error)
+                End If
 
+                LogRates(hotelId, "Conflux", result)
             End If
 
-            LogRates(hotelId, "Conflux", result)
+            Dim ratesToUpdateAPICache As RateResponse = Nothing
 
             ''API CACHE
             If Utitlities.Hotel.HotelUtilitie.IsEnableSendRatesAPICache(hotelId) Then
                 Dim resultAPICache As RatesReponse = ConfluxService.UpdateRates(ratesMessages, Utitlities.Hotel.HotelUtilitie.ENDPOINTAPI, Utitlities.Hotel.HotelUtilitie.ENDPOINTAPIDELETE, False)
-                LogRates(hotelId, "APICache", result)
+
+                ratesToUpdateAPICache = resultAPICache.RateResponseList(0)
+
+                If Not ratesToUpdateAPICache.IsSuccess Then
+                    Log("Error Sincronizar Tarifas APi Cache con el hotel: ", ratesToUpdateAPICache.Xml, hotelId, String.Empty)
+                    Return BadRequest(ratesToUpdateAPICache.Error)
+                End If
+
+                LogRates(hotelId, "APICache", resultAPICache)
             End If
 
-            Dim toObject As Object = ratesToUpdate
+            Dim toObject As Object = Nothing
+
+            If ratesToUpdate IsNot Nothing Then
+                toObject = ratesToUpdate
+            End If
+
+            If ratesToUpdateAPICache IsNot Nothing And ratesToUpdate Is Nothing Then
+                toObject = ratesToUpdateAPICache
+            End If
+
 
             Return Ok(toObject)
 
@@ -124,34 +145,53 @@ Namespace API.Controllers
 
             Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
             Dim priorityRequests As List(Of List(Of System.Xml.Linq.XDocument)) = ConfluxService.GetClosureMessagesV2(hotelId, info.Empresa, closure)
-            Dim result As RestrictionResponse = ConfluxService.UpdateRestriction(Utitlities.Hotel.HotelUtilitie.ENDPOINTCLOSURE, priorityRequests)
 
-            If Not result.IsSuccess Then
-                Log("Error Sincronizar Restricciones con el hotel: ", result.Xml, hotelId)
-                Return BadRequest(result.Error)
+            Dim result As RestrictionResponse = Nothing
+            Dim resultAPICache As RestrictionResponse = Nothing
+
+            Dim isEnabledGoogle As Boolean = Utitlities.Hotel.HotelUtilitie.IsEnableGoogleRequest(hotelId)
+            Dim isEnabledAPICache As Boolean = Utitlities.Hotel.HotelUtilitie.IsEnableSendRatesAPICache(hotelId)
+
+            If isEnabledGoogle Then
+
+                result = ConfluxService.UpdateRestriction(Utitlities.Hotel.HotelUtilitie.ENDPOINTCLOSURE, priorityRequests)
+
+                If Not result.IsSuccess Then
+                    Log("Error Sincronizar Restricciones con el hotel: ", result.Xml, hotelId)
+                    Return BadRequest(result.Error)
+                End If
+
+                LogClosure(hotelId, "Conflux", result.Restrictions)
+
             End If
 
-            LogClosure(hotelId, "Conflux", result.Restrictions)
-
-
-            Dim ratesClosureRequest As List(Of System.Xml.Linq.XDocument) = ConfluxService.GetClosureRatesMessages(hotelId, info.Empresa)
-            Dim resultRateClosure As RestrictionResponse = ConfluxService.UpdateRestriction(Utitlities.Hotel.HotelUtilitie.ENDPOINTCLOSURE, ratesClosureRequest)
-
-            If Not resultRateClosure.IsSuccess Then
-                Log("Error Sincronizar Restricciones LockRate(Cierre de tarifa) con el hotel: ", resultRateClosure.Xml, hotelId)
-            Else
-                LogClosure(hotelId, "Conflux", resultRateClosure.Restrictions)
-            End If
-
-            If Utitlities.Hotel.HotelUtilitie.IsEnableSendRatesAPICache(hotelId) Then
-                Dim resultAPICache As RestrictionResponse = ConfluxService.UpdateRestriction(Utitlities.Hotel.HotelUtilitie.ENDPOINTAPICLOSURE, priorityRequests)
+            If isEnabledAPICache Then
+                resultAPICache = ConfluxService.UpdateRestriction(Utitlities.Hotel.HotelUtilitie.ENDPOINTAPICLOSURE, priorityRequests)
 
                 If Not resultAPICache.IsSuccess Then
                     Log("Error Sincronizar Restricciones APICache con el hotel: ", result.Xml, hotelId)
+                    Return BadRequest(resultAPICache.Error)
                 Else
                     LogClosure(hotelId, "APICache", resultAPICache.Restrictions)
                 End If
 
+            End If
+
+            Dim ratesClosureRequest As List(Of System.Xml.Linq.XDocument) = ConfluxService.GetClosureRatesMessages(hotelId, info.Empresa, closure)
+
+            If isEnabledGoogle Then
+
+                Dim resultRateClosure As RestrictionResponse = ConfluxService.UpdateRestriction(Utitlities.Hotel.HotelUtilitie.ENDPOINTCLOSURE, ratesClosureRequest)
+
+                If Not resultRateClosure.IsSuccess Then
+                    Log("Error Sincronizar Restricciones LockRate(Cierre de tarifa) con el hotel: ", resultRateClosure.Xml, hotelId)
+                Else
+                    LogClosure(hotelId, "Conflux", resultRateClosure.Restrictions)
+                End If
+
+            End If
+
+            If isEnabledAPICache Then
                 Dim resultAPICacheRatesClosure As RestrictionResponse = ConfluxService.UpdateRestriction(Utitlities.Hotel.HotelUtilitie.ENDPOINTAPICLOSURE, ratesClosureRequest)
 
                 If Not resultAPICacheRatesClosure.IsSuccess Then
@@ -159,10 +199,17 @@ Namespace API.Controllers
                 Else
                     LogClosure(hotelId, "APICache", resultAPICacheRatesClosure.Restrictions)
                 End If
-
             End If
 
-            Dim toObject As Object = result
+            Dim toObject As Object = Nothing
+
+            If result IsNot Nothing Then
+                toObject = result
+            End If
+
+            If resultAPICache IsNot Nothing And result Is Nothing Then
+                toObject = resultAPICache
+            End If
 
             Return Ok(toObject)
 

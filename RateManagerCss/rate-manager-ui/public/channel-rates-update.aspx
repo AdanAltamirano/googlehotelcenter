@@ -17,6 +17,10 @@
 
         Session("IsEnabledGoogleRequest") = IIf(isEnabledGoogleRequest, 1,0)
 
+        Dim isEnabledAPICache As Boolean = HotelUtilitie.IsEnableSendRatesAPICache(Me.cInfoActual.Hotel)
+
+        Session("IsEnabledAPICache") = IIf(isEnabledAPICache, 1,0)
+
       End Sub
     </script>
     <noscript>
@@ -26,7 +30,8 @@
       window.app = {
         hotelId: <%= Me.cInfoActual.Hotel%>,
         language: '<%= If(Me.IdIdiomaMenu = 1, "es", "en")%>',
-        isEnabledGoogleRequest : <%=Session("IsEnabledGoogleRequest")%>,    
+        isEnabledGoogleRequest : <%=Session("IsEnabledGoogleRequest")%>,
+        isEnabledAPICacheRequest : <%=Session("IsEnabledAPICache")%>,       
       }
     </script>
     <div id="app"></div>

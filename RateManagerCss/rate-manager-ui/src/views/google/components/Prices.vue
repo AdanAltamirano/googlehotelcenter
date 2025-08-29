@@ -46,7 +46,7 @@
         <loading style="display:block !important;" :active="true" :is-full-page="false" color="#007bff"></loading>
     </div>
     <div else class="mt-4">
-        <b-button :disabled="!isEnabledGoogle" class="mt-1" v-if="showButton" variant="primary" @click="updateRates()">
+        <b-button :disabled="!isEnabledGoogle && !isEnabledAPICache" class="mt-1" v-if="showButton" variant="primary" @click="updateRates()">
             {{$t('Update Rates')}}
         </b-button>
     </div>
@@ -74,6 +74,9 @@ export default {
 
         },
         isEnabledGoogle:{
+            type:Boolean
+        },
+        isEnabledAPICache:{
             type:Boolean
         },
         dates:{

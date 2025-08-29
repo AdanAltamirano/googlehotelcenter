@@ -33,18 +33,18 @@
                 nav-class="nav-custom-tab"> 
                 
                     <b-tab :title="$t('Prices')" active>
-                        <prices :hotelId="hotelId" :isEnabledGoogle="isEnabledGoogleRequest" :dates="dates"></prices>
+                        <prices :hotelId="hotelId" :isEnabledGoogle="isEnabledGoogleRequest" :isEnabledAPICache="isEnabledAPICacheRequest" :dates="dates"></prices>
                     </b-tab>
 
                     <b-tab :title="$t('Closure')">
-                        <closure :hotelId="hotelId" :isEnabledGoogle="isEnabledGoogleRequest" :dates="dates"></closure>
+                        <closure :hotelId="hotelId" :isEnabledGoogle="isEnabledGoogleRequest" :isEnabledAPICache="isEnabledAPICacheRequest" :dates="dates"></closure>
                     </b-tab>
 
-                    <b-tab :title="$t('Inventory')">
-                        <inventory :hotelId="hotelId" :isEnabledGoogle="isEnabledGoogleRequest" :dates="dates"></inventory>
+                    <b-tab v-if="isEnabledGoogleRequest" :title="$t('Inventory')">
+                        <inventory :hotelId="hotelId" :isEnabledGoogle="isEnabledGoogleRequest"  :dates="dates"></inventory>
                     </b-tab>
 
-                    <b-tab :title="$t('Delete Rates')" v-if="hasPermission">
+                    <b-tab :title="$t('Delete Rates')" v-if="hasPermission && isEnabledGoogleRequest">
                         <delete-rates :hotelId="hotelId" :isEnabledGoogle="isEnabledGoogleRequest" :dates="dates"></delete-rates>
                     </b-tab>
                 </b-tabs>
@@ -88,6 +88,7 @@ export default {
             //Hotel Id
             hotelId: this.$appConfig.session.hotelId,
             isEnabledGoogleRequest: this.$appConfig.google.isEnabledGoogleRequest === 0 ? false : true,
+            isEnabledAPICacheRequest: this.$appConfig.google.isEnabledAPICacheRequest === 0 ? false : true,
             hasPermission : false,
             dates: null,
         }
