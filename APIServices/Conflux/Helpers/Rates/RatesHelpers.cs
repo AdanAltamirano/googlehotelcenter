@@ -118,7 +118,8 @@ namespace APIServices.Conflux.Helpers.Rates
                     && dr.Language == 1
                     && dr.IsPromotion == false
                     && (dr.RatePlanId == ratePlan
-                        || dr.ParentRatePlanId == ratePlan))
+                        || dr.ParentRatePlanId == ratePlan)
+                    && dr.DeletedRatePlan == false)
                     .OrderBy(vdr => vdr.StartDate)
                     .ToList();
             }
@@ -139,7 +140,8 @@ namespace APIServices.Conflux.Helpers.Rates
                     && dr.Language == 1
                     && dr.IsPromotion == false
                     && (dr.RatePlanId == ratePlan
-                        || dr.ParentRatePlanId == ratePlan))
+                        || dr.ParentRatePlanId == ratePlan)
+                    && dr.DeletedRatePlan == false)
                     .OrderBy(vdr => vdr.StartDate)
                     .ToList();
             }
@@ -158,7 +160,8 @@ namespace APIServices.Conflux.Helpers.Rates
                     && dr.EndDate >= DbFunctions.TruncateTime(DateTime.Now)
                     && dr.Language == 1
                     && dr.IsPromotion == true
-                    && dr.RatePlanId.Contains(ratePlan))
+                    && dr.RatePlanId.Contains(ratePlan)
+                    && dr.DeletedRatePlan == false)
                     .OrderBy(vdr => vdr.StartDate)
                     .ToList();
             }
@@ -177,7 +180,8 @@ namespace APIServices.Conflux.Helpers.Rates
                     && dr.EndDate >= DbFunctions.TruncateTime(DateTime.Now)
                     && dr.Language == 1
                     && dr.IsPromotion == true
-                    && dr.RatePlanId.Contains(ratePlan))
+                    && dr.RatePlanId.Contains(ratePlan)
+                    && dr.DeletedRatePlan == false)
                     .OrderBy(vdr => vdr.StartDate)
                     .ToList();
             }

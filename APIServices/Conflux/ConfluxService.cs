@@ -560,7 +560,7 @@ namespace APIServices.Conflux
         {
             RatesMessages ratesMessages = null;
 
-            var currentRates = dbContext.spGetCurrentRatesByHotel(hotelId: hotelId, rateplanId:rateplanId, roomId:roomId, startDate: startDate, endDate:endDate).ToList();
+            var currentRates = dbContext.spGetCurrentRatesByHotel(hotelId: hotelId, rateplanId:rateplanId, roomId:roomId, startDate: startDate, endDate:endDate,deleted:false).ToList();
 
             var hotel = dbContext.Hoteles.First(h => h.idHotel == hotelId);
             var hotelBasicInfo = dbContext.vHotelBasicInfo.FirstOrDefault(vh => vh.Id == hotelId);
@@ -1044,7 +1044,7 @@ namespace APIServices.Conflux
             if ((closure.RatePlansList.Length == 1 && closure.RatePlansList[0] == "0") && (closure.RoomsList.Length == 1 && closure.RoomsList[0] == 0))
             {
                 // Todos los planes con todas las habitaciones
-                currentRates = dbContext.spGetCurrentRatesByHotel(hotelId,null,null,closure.StartDate.Value.Date, closure.EndDate.Value.Date).ToList();
+                currentRates = dbContext.spGetCurrentRatesByHotel(hotelId,null,null,closure.StartDate.Value.Date, closure.EndDate.Value.Date,false).ToList();
             }
             else if ((closure.RatePlansList.Length == 1 && closure.RatePlansList[0] == "0") && ((closure.RoomsList.Length == 1 && closure.RoomsList[0] != 0) || closure.RoomsList.Length > 1))
             {
@@ -1052,7 +1052,7 @@ namespace APIServices.Conflux
 
                 foreach(var roomId in closure.RoomsList)
                 {
-                   var currentRatesTemp =  dbContext.spGetCurrentRatesByHotel(hotelId, null, roomId, closure.StartDate.Value.Date, closure.EndDate.Value.Date).ToList();
+                   var currentRatesTemp =  dbContext.spGetCurrentRatesByHotel(hotelId, null, roomId, closure.StartDate.Value.Date, closure.EndDate.Value.Date,false).ToList();
 
                     currentRates.AddRange(currentRatesTemp);
 
@@ -1065,7 +1065,7 @@ namespace APIServices.Conflux
 
                 foreach (var rateplanId in closure.RatePlansList)
                 {
-                    var currentRatesTemp = dbContext.spGetCurrentRatesByHotel(hotelId, rateplanId, null, closure.StartDate.Value.Date, closure.EndDate.Value.Date).ToList();
+                    var currentRatesTemp = dbContext.spGetCurrentRatesByHotel(hotelId, rateplanId, null, closure.StartDate.Value.Date, closure.EndDate.Value.Date,false).ToList();
 
                     currentRates.AddRange(currentRatesTemp);
 
@@ -1080,7 +1080,7 @@ namespace APIServices.Conflux
                 {
                     foreach(var rateplanId in closure.RatePlansList)
                     {
-                        var currentRatesTemp = dbContext.spGetCurrentRatesByHotel(hotelId, rateplanId, roomId, closure.StartDate.Value.Date, closure.EndDate.Value.Date).ToList();
+                        var currentRatesTemp = dbContext.spGetCurrentRatesByHotel(hotelId, rateplanId, roomId, closure.StartDate.Value.Date, closure.EndDate.Value.Date,false).ToList();
 
                         currentRates.AddRange(currentRatesTemp);
                     }

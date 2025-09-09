@@ -123,7 +123,8 @@ namespace APIServices
                    && r.StartDate <= endDate
                    && r.EndDate >= startDate
                    && r.Language == language
-                   && r.EndDate >= r.StartDate);
+                   && r.EndDate >= r.StartDate 
+                   && r.DeletedRatePlan == false);
 
                 if (roomId != null)
                     query = query.Where(r => r.RoomId == roomId);

@@ -3,6 +3,14 @@ Imports Portal.Hotel.Facade
 Imports Portal.General.Common.Data
 Imports Portal.General.DataAccess
 Imports Portal.General.Facade
+Imports RateManager.Utitlities.Hotel
+Imports APIServices.Models
+Imports APIServices.Conflux.Enum
+Imports APIServices.Conflux.Helpers.Rates
+Imports System.Xml.Linq
+Imports APIServices.Conflux
+Imports APIServices.Conflux.Models.Delete.Response
+
 Partial Class RatesPlans
     Inherits PaginaBase
     Dim dsegmentos As DataSet
@@ -27,10 +35,10 @@ Partial Class RatesPlans
 
     Private Property Cerror() As Integer
         Get
-            Return viewstate("_cerror")
+            Return ViewState("_cerror")
         End Get
         Set(ByVal Value As Integer)
-            viewstate("_cerror") = Value
+            ViewState("_cerror") = Value
         End Set
     End Property
 
@@ -68,7 +76,7 @@ Partial Class RatesPlans
         End If
 
         If Not IsPostBack Then
-            Cerror = 0            
+            Cerror = 0
             ctrrateplan1.m_iHotelId = Me.cInfoActual.Hotel
             loadrateplans("")
             Me.ctrrateplan1.edicion = False
@@ -80,7 +88,7 @@ Partial Class RatesPlans
             ddlDeletedFilter.Items.Add(New ListItem(PortalCulture.GetString("01541"), 1))
             ddlDeletedFilter.Items.Add(New ListItem(PortalCulture.GetString("01542"), 0))
             ddlDeletedFilter.Items.Add(New ListItem(PortalCulture.GetString("01543"), -1))
-        End If        
+        End If
         cmdNew.Attributes.Add("onclick", String.Format("javascript:FireShow('{0}','{1}',{2});", divContenedor.ClientID, cmdNew.ClientID, "true"))
     End Sub
 
@@ -281,7 +289,7 @@ Partial Class RatesPlans
             lblMsg.Text = PortalCulture.GetString("00012")
         End If
         lblFilter.Text = PortalCulture.GetString("01100")
-        
+
     End Sub
 
     Private Sub dgRatePlans_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles grid.PageIndexChanged
@@ -296,6 +304,11 @@ Partial Class RatesPlans
         Cerror = 0
         Me.lblError.Visible = False
         Me.lblErrorSource.Visible = False
+
+        Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
+        Dim isEnabledGoogleRequest As Boolean = HotelUtilitie.IsEnableGoogleRequest(info.Hotel)
+        Dim isEnabledSendingRatesAPICache As Boolean = HotelUtilitie.IsEnableSendRatesAPICache(info.Hotel)
+
 
         If e.CommandName = "Select" Then
             Me.ctrrateplan1.ClearData()
@@ -361,6 +374,8 @@ Partial Class RatesPlans
                 If .LogicDeleteRatePlan(Me.cInfoActual.Hotel, grid.DataKeys(e.Item.ItemIndex)) Then
                     'ctrrateplan1.eliminarPortales(Me.cInfoActual.Hotel, grid.DataKeys(e.Item.ItemIndex)) ' no se k ondas cone esto...
 
+                    Dim ratePlanIdDeletedTemp As String = Me.grid.Items(e.Item.ItemIndex).Cells(dgcolumns.idrateplan).Text
+
                     Me.guardalog("/Pages/RatesPlans.aspx", PaginaBase.acciones.Eliminar, "Eliminó el rateplan con el id " & Me.grid.Items(e.Item.ItemIndex).Cells(dgcolumns.idrateplan).Text & " y el codigo de tarifa " & Me.grid.Items(e.Item.ItemIndex).Cells(dgcolumns.codigotarifa).Text)
                     If grid.CurrentPageIndex > 0 And grid.Items.Count = 1 Then
                         grid.CurrentPageIndex = ((grid.CurrentPageIndex * grid.PageSize) \ grid.PageSize) - 1
@@ -374,6 +389,26 @@ Partial Class RatesPlans
                     lblError.Visible = False
                     lblErrorSource.Visible = False
                     MostrarCmdNew(True)
+
+
+                    If isEnabledGoogleRequest Then
+
+                        Dim messagesToDelete As APIServices.Conflux.OTA.Models.Rates.RateAmountMessages = GetDeleteMessagesGoogle(info.Hotel, info.Empresa, ratePlanIdDeletedTemp)
+
+                        Dim ConfluxService As ConfluxService = New ConfluxService()
+
+                        Dim soapRequests As List(Of XDocument) = ConfluxService.GetSoapRequests(messagesToDelete)
+
+                        Dim result As DeleteResponse = ConfluxService.UpdateDelete(soapRequests, HotelUtilitie.ENDPOINTDELETE)
+
+                        If Not result.IsSuccess Then
+                            Log("Error Eliminar Tarifas con el hotel: ", result.Xml, info.Hotel, String.Empty)
+                        Else
+                            LogDelete(info.Hotel, "Conflux", result)
+                        End If
+
+                    End If
+
                 Else
                     Cerror = 6
                     lblError.Visible = True
@@ -411,7 +446,7 @@ Partial Class RatesPlans
             Return False
         End If
     End Function
-   
+
 
     Private Function GetSegmento(ByVal Cod As String) As String
         Dim dv As DataView
@@ -446,7 +481,7 @@ Partial Class RatesPlans
     '    Cerror = 0
     '    ScriptManager.RegisterStartupScript(Me.Page, Me.GetType(), "ShowInfo", "ShowNewInfo(1);", True)
     'End Sub
-    
+
     Private Sub dgRatePlans_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles grid.ItemDataBound
         If e.Item.ItemType = ListItemType.AlternatingItem Or e.Item.ItemType = ListItemType.SelectedItem Or e.Item.ItemType = ListItemType.Item Then
             If e.Item.Cells(dgcolumns.orden).Text = "0" Or e.Item.Cells(dgcolumns.orden).Text = "100000" Then
@@ -548,4 +583,122 @@ Partial Class RatesPlans
         lblErrorSource.Visible = False
         MostrarCmdNew(True)
     End Sub
+
+    Private Function GetDeleteMessagesGoogle(ByVal hotelId As Integer, ByVal companyId As Integer, ByVal ratePlanId As String) As APIServices.Conflux.OTA.Models.Rates.RateAmountMessages
+
+        Dim deleteRateAmountMessages As New APIServices.Conflux.OTA.Models.Rates.RateAmountMessages()
+
+        deleteRateAmountMessages.HotelCode = companyId
+        deleteRateAmountMessages.RateAmountMessagesList = New List(Of APIServices.Conflux.OTA.Models.Rates.RateAmountMessage)
+
+        Dim dbContext As New OzHotelesEntities()
+
+        Dim currentRates As List(Of spGetCurrentRatesByHotel_Result4) = dbContext.spGetCurrentRatesByHotel(hotelId:=hotelId, rateplanId:=ratePlanId, roomId:=Nothing, startDate:=Nothing, endDate:=Nothing, deleted:=True).ToList()
+
+
+        For Each currentRate As spGetCurrentRatesByHotel_Result4 In currentRates
+
+            Select Case currentRate.TypeRate
+                Case TypeRateEnum.RoomRate
+
+                    Dim vDayRatesList As List(Of vDayRates) = RatesHelpers.GetVDayRate(currentRate)
+
+                    Dim messagesRoomRateDelete As List(Of APIServices.Conflux.OTA.Models.Rates.RateAmountMessage) = GetMessagesRoomRateDelete(currentRate, vDayRatesList)
+
+                    deleteRateAmountMessages.RateAmountMessagesList.AddRange(messagesRoomRateDelete)
+
+                Case TypeRateEnum.RoomRatePromotion
+
+                    Dim vDayRatesPromotionList As List(Of vDayRatesExceptions) = RatesHelpers.GetVDayRateException(currentRate)
+
+                    Dim messagesRoomRatePromotionDelete As List(Of APIServices.Conflux.OTA.Models.Rates.RateAmountMessage) = GetMessagesRoomRatePromotionDelete(currentRate, vDayRatesPromotionList)
+
+                    deleteRateAmountMessages.RateAmountMessagesList.AddRange(messagesRoomRatePromotionDelete)
+
+            End Select
+        Next
+
+        Return deleteRateAmountMessages
+
+    End Function
+
+    Private Function GetMessagesRoomRateDelete(ByVal currentRate As spGetCurrentRatesByHotel_Result4, ByVal vDayRatesList As List(Of vDayRates)) As List(Of APIServices.Conflux.OTA.Models.Rates.RateAmountMessage)
+
+        Dim messagesToDelete As List(Of APIServices.Conflux.OTA.Models.Rates.RateAmountMessage) = New List(Of APIServices.Conflux.OTA.Models.Rates.RateAmountMessage)
+
+        Dim splitSegmentsNoRates As String() = ConfigurationManager.AppSettings("segmentsNoRates").Split(","c)
+
+        Dim segmentsNoRates As Char() = String.Concat(splitSegmentsNoRates).ToCharArray()
+
+        For Each vDayRate As vDayRates In vDayRatesList
+
+            If vDayRate.Segment.IndexOfAny(segmentsNoRates) = -1 AndAlso (Not vDayRate.IsMobileRate AndAlso Not vDayRate.IsCallCenterOnly) Then
+
+                Dim rateAmountMessageToDelete As APIServices.Conflux.OTA.Models.Rates.RateAmountMessage = RatesHelpers.CreateDeleteRateAmountMessage(currentRate, vDayRate)
+
+                If rateAmountMessageToDelete IsNot Nothing And vDayRate.DeletedInGoogle = False Then
+
+                    messagesToDelete.Add(rateAmountMessageToDelete)
+
+                End If
+
+            End If
+
+        Next
+
+        Return messagesToDelete
+
+    End Function
+
+    Private Function GetMessagesRoomRatePromotionDelete(ByVal currentRate As spGetCurrentRatesByHotel_Result4, ByVal vDayRatesList As List(Of vDayRatesExceptions)) As List(Of APIServices.Conflux.OTA.Models.Rates.RateAmountMessage)
+
+        Dim messagesToDelete As List(Of APIServices.Conflux.OTA.Models.Rates.RateAmountMessage) = New List(Of APIServices.Conflux.OTA.Models.Rates.RateAmountMessage)
+
+        Dim splitSegmentsNoRates As String() = ConfigurationManager.AppSettings("segmentsNoRates").Split(","c)
+
+        Dim segmentsNoRates As Char() = String.Concat(splitSegmentsNoRates).ToCharArray()
+
+        For Each vDayRate As vDayRatesExceptions In vDayRatesList
+
+            If vDayRate.Segment.IndexOfAny(segmentsNoRates) = -1 AndAlso (Not vDayRate.IsMobileRate AndAlso Not vDayRate.IsCallCenterOnly) Then
+
+                Dim rateAmountMessageToDelete As APIServices.Conflux.OTA.Models.Rates.RateAmountMessage = RatesHelpers.CreateDeleteRateAmountMessage(currentRate, vDayRate)
+
+                If rateAmountMessageToDelete IsNot Nothing And vDayRate.DeletedInGoogle = False Then
+
+                    messagesToDelete.Add(rateAmountMessageToDelete)
+
+                End If
+
+            End If
+
+        Next
+
+        Return messagesToDelete
+    End Function
+
+
+    Private Sub Log(ByVal note As String, ByVal xml As String, ByVal hotelId As Integer, Optional ByVal requestXMl As String = "")
+        With (New PaginaBase)
+            .guardalog("/rate-manager-ui/dist/channel-rates-update.aspx", acciones.Sincronizar, note & hotelId, "", requestXMl, xml, hotelId:=hotelId)
+        End With
+    End Sub
+
+    Private Sub LogDelete(ByVal hotelId As Integer, ByVal serviceToSent As String, ByVal result As DeleteResponse)
+        Dim index As Integer = 1
+
+        If Not result.IsSuccess Then
+            Dim note As String = String.Format("Error Eliminar Tarifas {1} con el hotel: {0}", hotelId, serviceToSent)
+            Log(note, result.Xml, hotelId, String.Empty)
+        Else
+
+            For Each request As DeleteHttpResponse In result.DeleteHttpResponseList
+                Dim note As String = String.Format("Eliminar Tarifas request numero {0} Tarifas {1} con el hotel: ", (index), serviceToSent)
+                Log(note, request.Xml, hotelId, request.XmlRequest)
+                index += 1
+            Next
+
+        End If
+    End Sub
+
 End Class

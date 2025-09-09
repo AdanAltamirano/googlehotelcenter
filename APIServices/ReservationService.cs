@@ -219,7 +219,7 @@ namespace APIServices
         }
 
         public ReservationDetailsModel GetDetails(int reservationId, bool isSupervisor, bool isHotelCompany,int userId, bool isUserChain = false, 
-            bool isUsuarioHotelAssociation = false,int idCorporateUserChain = 0, int idCorporatePortal = -1, int idAsociationPb = 0, int idAsociation = -1)
+            bool isUsuarioHotelAssociation = false,int idCorporateUserChain = 0, int idCorporatePortal = -1, int idAsociationPb = 0, int idAsociation = -1, string language = "es-MX")
         {
 
             var details = 

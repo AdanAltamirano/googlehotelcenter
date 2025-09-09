@@ -64,8 +64,6 @@ namespace APIServices.Models
         public virtual DbSet<vHotelActives> vHotelActives { get; set; }
         public virtual DbSet<vLinkedRoomTypes> vLinkedRoomTypes { get; set; }
         public virtual DbSet<vLinkedRatePlans> vLinkedRatePlans { get; set; }
-        public virtual DbSet<vDayRates> vDayRates { get; set; }
-        public virtual DbSet<vDayRatesExceptions> vDayRatesExceptions { get; set; }
         public virtual DbSet<UsuarioHotel> UsuarioHotel { get; set; }
         public virtual DbSet<vUsersConnectivity> vUsersConnectivity { get; set; }
         public virtual DbSet<Log> Log { get; set; }
@@ -73,6 +71,8 @@ namespace APIServices.Models
         public virtual DbSet<Canales> Canales { get; set; }
         public virtual DbSet<vHotelChannel> vHotelChannel { get; set; }
         public virtual DbSet<HotelCanales> HotelCanales { get; set; }
+        public virtual DbSet<vDayRates> vDayRates { get; set; }
+        public virtual DbSet<vDayRatesExceptions> vDayRatesExceptions { get; set; }
     
         public virtual int spReservationCancel(Nullable<int> idReservacion, string noConfCancelGalileo, string noCancelacion, string txCode, Nullable<bool> statusConf, string systemCode, string travelAgencyName, string voucher, string wizcomPassOn, string wizcomSequenceNumber, string motivoCancelacion, Nullable<bool> cancelWithError, string sessionId, Nullable<int> iduser)
         {
@@ -453,31 +453,6 @@ namespace APIServices.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetReservationHotelItem_Result>("spGetReservationHotelItem", idReservationParameter);
         }
     
-        public virtual ObjectResult<spGetCurrentRatesByHotel_Result4> spGetCurrentRatesByHotel(Nullable<int> hotelId, string rateplanId, Nullable<int> roomId, Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate)
-        {
-            var hotelIdParameter = hotelId.HasValue ?
-                new ObjectParameter("hotelId", hotelId) :
-                new ObjectParameter("hotelId", typeof(int));
-    
-            var rateplanIdParameter = rateplanId != null ?
-                new ObjectParameter("rateplanId", rateplanId) :
-                new ObjectParameter("rateplanId", typeof(string));
-    
-            var roomIdParameter = roomId.HasValue ?
-                new ObjectParameter("roomId", roomId) :
-                new ObjectParameter("roomId", typeof(int));
-    
-            var startDateParameter = startDate.HasValue ?
-                new ObjectParameter("startDate", startDate) :
-                new ObjectParameter("startDate", typeof(System.DateTime));
-    
-            var endDateParameter = endDate.HasValue ?
-                new ObjectParameter("endDate", endDate) :
-                new ObjectParameter("endDate", typeof(System.DateTime));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCurrentRatesByHotel_Result4>("spGetCurrentRatesByHotel", hotelIdParameter, rateplanIdParameter, roomIdParameter, startDateParameter, endDateParameter);
-        }
-    
         public virtual ObjectResult<spGetLockGralByHotel_Result> spGetLockGralByHotel(Nullable<int> hotelId, Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate)
         {
             var hotelIdParameter = hotelId.HasValue ?
@@ -539,6 +514,35 @@ namespace APIServices.Models
                 new ObjectParameter("roomId", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetLockRoomTypesByHotel_Result>("spGetLockRoomTypesByHotel", hotelIdParameter, startDateParameter, endDateParameter, rateplanIdParameter, roomIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetCurrentRatesByHotel_Result4> spGetCurrentRatesByHotel(Nullable<int> hotelId, string rateplanId, Nullable<int> roomId, Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, Nullable<bool> deleted)
+        {
+            var hotelIdParameter = hotelId.HasValue ?
+                new ObjectParameter("hotelId", hotelId) :
+                new ObjectParameter("hotelId", typeof(int));
+    
+            var rateplanIdParameter = rateplanId != null ?
+                new ObjectParameter("rateplanId", rateplanId) :
+                new ObjectParameter("rateplanId", typeof(string));
+    
+            var roomIdParameter = roomId.HasValue ?
+                new ObjectParameter("roomId", roomId) :
+                new ObjectParameter("roomId", typeof(int));
+    
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("startDate", startDate) :
+                new ObjectParameter("startDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("endDate", endDate) :
+                new ObjectParameter("endDate", typeof(System.DateTime));
+    
+            var deletedParameter = deleted.HasValue ?
+                new ObjectParameter("deleted", deleted) :
+                new ObjectParameter("deleted", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCurrentRatesByHotel_Result4>("spGetCurrentRatesByHotel", hotelIdParameter, rateplanIdParameter, roomIdParameter, startDateParameter, endDateParameter, deletedParameter);
         }
     }
 }

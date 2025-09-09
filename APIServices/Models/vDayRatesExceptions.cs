@@ -28,7 +28,7 @@ namespace APIServices.Models
         public string NoDeparturesMap { get; set; }
         public string ExceptionMap { get; set; }
         public Nullable<byte> Occupancy { get; set; }
-        public decimal Price { get; set; }
+        public Nullable<decimal> Price { get; set; }
         public decimal ExceptionPrice { get; set; }
         public decimal Discount { get; set; }
         public decimal DayDiscount { get; set; }
@@ -41,9 +41,10 @@ namespace APIServices.Models
         public int Language { get; set; }
         public bool IsMobileRate { get; set; }
         public bool IsCallCenterOnly { get; set; }
+        public string PromoRatePlanId { get; set; }
         public Nullable<System.DateTime> PromoStartDateBookingWindow { get; set; }
         public Nullable<System.DateTime> PromoEndDateBookingWindow { get; set; }
-        public string PromoRatePlanId { get; set; }
         public bool DeletedInGoogle { get; set; }
+        public bool DeletedRatePlan { get; set; }
     }
 }
