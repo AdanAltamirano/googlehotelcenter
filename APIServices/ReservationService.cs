@@ -17,6 +17,7 @@ using APIServices.Models.DTO.Log;
 using OfficeOpenXml;
 using APIServices.Conflux.Crypto;
 using PortalLibraries;
+using WSHotelCommon;
 
 namespace APIServices
 {
@@ -219,7 +220,7 @@ namespace APIServices
         }
 
         public ReservationDetailsModel GetDetails(int reservationId, bool isSupervisor, bool isHotelCompany,int userId, bool isUserChain = false, 
-            bool isUsuarioHotelAssociation = false,int idCorporateUserChain = 0, int idCorporatePortal = -1, int idAsociationPb = 0, int idAsociation = -1, string language = "es-MX")
+            bool isUsuarioHotelAssociation = false,int idCorporateUserChain = 0, int idCorporatePortal = -1, int idAsociationPb = 0, int idAsociation = -1, resHotelDisplay xml = null)
         {
 
             var details = 
@@ -310,6 +311,26 @@ namespace APIServices
                     FailedAttempts = details.pmsFailedAttempts,
                     ReservationNumber = details.pmsReservationNumber
                 };
+
+                if (xml != null)
+                {
+                    model.AgencyDetails = new AgencyDetails();
+
+                    if (xml.Reservation != null && xml.Reservation.Rows.Count > 0)
+                    {
+                        bool hasInfoAgencyTemp = !String.IsNullOrEmpty(xml.Reservation[0].AgeNombre) ? true : false;
+
+                        model.AgencyDetails.HasInfoAgency = hasInfoAgencyTemp;
+                        model.AgencyDetails.Name = hasInfoAgencyTemp ? xml.Reservation[0].AgeNombre : string.Empty;
+                        model.AgencyDetails.City = hasInfoAgencyTemp ? xml.Reservation[0].AgeCiudad : string.Empty;
+                        model.AgencyDetails.State = hasInfoAgencyTemp ? xml.Reservation[0].AgeEstado : string.Empty;
+                        model.AgencyDetails.Country = hasInfoAgencyTemp ? xml.Reservation[0].AgePais : string.Empty;
+                        model.AgencyDetails.AgentName = hasInfoAgencyTemp ? xml.Customer[0].FirstName : string.Empty;
+                        model.AgencyDetails.AgentLastName = hasInfoAgencyTemp ? xml.Customer[0].LastName : string.Empty;
+                       
+                    }
+                }
+
 
                 /*credit card*/
                 var showCreditCard = dbContext.vPermissions

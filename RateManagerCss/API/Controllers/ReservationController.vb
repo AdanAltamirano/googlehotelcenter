@@ -23,6 +23,8 @@ Imports RateManager.Utitlities.XML
 Imports APIServices.Helpers.Reservation
 Imports APIServices.Service.HotelVerse.Models.Response
 Imports APIServices.Service.HotelVerse
+Imports System.Xml
+Imports WSHotelCommon
 
 Namespace API.Controller
     <RoutePrefix("api/reservations"), AuthorizeUser(Roles:="supervisor,userchain,hotelcompany,agencycompany,usuariohotel")>
@@ -249,7 +251,27 @@ Namespace API.Controller
             idCorporateUserChain = paginaBase.GetIdCorporativoUserChain(idHotel)
             idAsociationPb = paginaBase.GetIdAsociation(GetUserId().Value)
 
-            Return ReservationService.GetDetails(reservationId, isSupervisor, isHotelCompany, GetUserId().Value, isUserChain, isUsuarioHotelAssociation, idCorporateUserChain, idCorporatePortal, idAsociationPb, idAsociation)
+            Dim xdoc As New XmlDataDocument(New reqHotelDisplay)
+            Dim dsreq As reqHotelDisplay = CType(xdoc.DataSet, reqHotelDisplay)
+            Dim xml As resHotelDisplay
+            Dim isNetRateUV As Boolean = False
+
+            Dim drR As reqHotelDisplay.HotelDisplayRow
+            drR = dsreq.HotelDisplay.NewHotelDisplayRow
+            drR.ConfirmNumber = reservationId.ToString()
+            If PortalCulture.GetIDCulture() = 1 Then
+                drR.Language = "es-MX"
+            Else
+                drR.Language = "en-US"
+            End If
+            dsreq.HotelDisplay.AddHotelDisplayRow(drR)
+
+            With New WSHotelFacade.clsFADisplay
+                xml = .GetHotelDisplay(xdoc.DocumentElement)
+            End With
+
+
+            Return ReservationService.GetDetails(reservationId, isSupervisor, isHotelCompany, GetUserId().Value, isUserChain, isUsuarioHotelAssociation, idCorporateUserChain, idCorporatePortal, idAsociationPb, idAsociation, xml)
         End Function
 
         'Get api/reservations/1978/history/log

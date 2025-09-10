@@ -46,6 +46,7 @@ namespace APIServices.Models.DTO
         public int? PaymentWay{ get; set; }
         public BankDepositDetails BankDepositDetails { get; set; }
         public PolicyDetails PolicyDetails { get; set; }
+        public AgencyDetails AgencyDetails { get; set; }
 
         public bool AllowsCancel { get; set; } = false;
         public bool AllowsModify { get; set; } = false;
@@ -235,6 +236,17 @@ namespace APIServices.Models.DTO
 
     }
 
+    public class AgencyDetails
+    {
+        public bool HasInfoAgency { get; set; } = false;
+        public string Name { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public string Country { get; set; }
+        public string AgentName { get; set; }
+        public string AgentLastName { get; set; }
+
+    }
 
 
 }

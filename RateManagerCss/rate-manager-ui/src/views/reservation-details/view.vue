@@ -148,6 +148,11 @@
               </template>
             </b-col>
           </b-row>
+          <b-row v-if="result.agencyDetails.hasInfoAgency" class="mb-3">
+            <b-col>
+              <agency-details :agencyDetails="result.agencyDetails"></agency-details>
+            </b-col>
+          </b-row>
           <b-row v-if="result.pms">
             <b-col>
               <pms :id="result.reservationId"  :pms="result.pms" :supervisor="isSupervisor"></pms>
@@ -168,6 +173,7 @@ import HotelItems from "./components/HotelItems.vue";
 import Policies from "./components/Policies.vue";
 import PaymentMethods from "./components/PaymentMethods.vue";
 import Pms from "./components/Pms/Pms.vue";
+import AgencyDetails from './components/Agency/Agency.vue'
 import image from "./assets/internetpower.png";
 import listHotels from "../../json/hotels.json";
 
@@ -180,7 +186,8 @@ export default {
     HotelItems,
     Policies,
     PaymentMethods,
-    Pms
+    Pms,
+    AgencyDetails
   },
   created() {
     //this.session();

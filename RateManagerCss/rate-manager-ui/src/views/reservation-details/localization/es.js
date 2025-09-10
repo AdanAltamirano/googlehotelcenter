@@ -196,5 +196,7 @@ export default {
     'This reservation contains extra items or services that must be charged upon the guests arrival' : 'Esta reserva contiene articulos o servicios extras que deberán ser cobrados a la llegada del huésped',
     'View Client Data' : 'Ver datos del cliente',
     'A verification code has been sent to your email, with which you can view the client details' : 'Se ha enviado un código de verificación a su correo, con el cual podra visualizar los datos del cliente',
-    'Amount to be charged' : 'Cantidad a ser cargada'
+    'Amount to be charged' : 'Cantidad a ser cargada',
+    'Agency Information' : 'Información de Agencia',
+    'Agent': 'Agente'
 }

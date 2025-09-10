@@ -1,57 +1,57 @@
 <template>
     <div>
-    <h6 style="cursor:pointer" v-b-toggle.pms>
-        <i class="fa fa-plus-circle"></i>
-        {{$t('PMS Status')}}
-    </h6>
-    <b-collapse visible id="pms">
-					<b-alert show variant="secondary">
-            <address>               
-                <div v-if="supervisor">
-                    <template v-if="!pms.status && pms.failedAttempts === 3">
-                        <strong>{{ $t('Maximun attempts reached') }}</strong>
-                        <b-button class="ml-1 p-1 align-baseline" @click="reactivate" variant="primary">{{$t('Send Again')}}</b-button>
-                    </template>
-                    <template v-else-if="!pms.status && pms.failedAttempts < 3" >
-                        <strong>{{ $t('Waiting to be collected') }}</strong>
-                    </template>
-                    <template v-else-if="pms.status">
-                        <strong>{{ $t('Reservation Collected') }}</strong>
-                    </template>
-                </div>
-                <div v-else>
-                    <strong>{{(!pms.status ? $t('Waiting to be collected') : $t('Reservation Collected'))}}</strong>
-                </div>
-                <div>
-                    <strong>{{$t('Status')}}:</strong>
-                    {{PmsStatus}}
-                    <div class="d-inline-block">                   
-											<pms-status v-if="supervisor" :reservationId="id"></pms-status>
-                    </div>
-                    <!-- <div v-if="supervisor">
-                        <strong>{{$t('Change only status')}}</strong>
-                        <div class=" d-inline-block ml-1">
-                            <pms-status-only v-if="supervisor" :reservationId="id"></pms-status-only>
-                        </div>
-                    </div>-->
-                    <div>
-                        <span v-if="pms.status">
-                            <strong>{{$t('Reservation number')}}:</strong>
-                            {{pms.reservationNumber}}
-                        </span>
-                    </div>
+        <h6 style="cursor:pointer" v-b-toggle.pms>
+            <i class="fa fa-plus-circle"></i>
+            {{$t('PMS Status')}}
+        </h6>
+        <b-collapse visible id="pms">
+            <b-alert show variant="secondary">
+                <address>               
                     <div v-if="supervisor">
-                        <b-button  v-tooltip="$t('With this action the reservation will be available to be downloaded for the pms')" 
-                            v-if="pms.status" class="font-weight-bold mb-2" 
-                            variant="primary" 
-                            @click="saveNotVerified">{{$t('Check as not verified')}}
-                        </b-button>
-                        <pms-verify v-else-if="!pms.status" :reservationId="id"></pms-verify>
+                        <template v-if="!pms.status && pms.failedAttempts === 3">
+                            <strong>{{ $t('Maximun attempts reached') }}</strong>
+                            <b-button class="ml-1 p-1 align-baseline" @click="reactivate" variant="primary">{{$t('Send Again')}}</b-button>
+                        </template>
+                        <template v-else-if="!pms.status && pms.failedAttempts < 3" >
+                            <strong>{{ $t('Waiting to be collected') }}</strong>
+                        </template>
+                        <template v-else-if="pms.status">
+                            <strong>{{ $t('Reservation Collected') }}</strong>
+                        </template>
                     </div>
-                </div>                               
-            </address>
-        </b-alert>
-    </b-collapse>
+                    <div v-else>
+                        <strong>{{(!pms.status ? $t('Waiting to be collected') : $t('Reservation Collected'))}}</strong>
+                    </div>
+                    <div>
+                        <strong>{{$t('Status')}}:</strong>
+                        {{PmsStatus}}
+                        <div class="d-inline-block">                   
+                                                <pms-status v-if="supervisor" :reservationId="id"></pms-status>
+                        </div>
+                        <!-- <div v-if="supervisor">
+                            <strong>{{$t('Change only status')}}</strong>
+                            <div class=" d-inline-block ml-1">
+                                <pms-status-only v-if="supervisor" :reservationId="id"></pms-status-only>
+                            </div>
+                        </div>-->
+                        <div>
+                            <span v-if="pms.status">
+                                <strong>{{$t('Reservation number')}}:</strong>
+                                {{pms.reservationNumber}}
+                            </span>
+                        </div>
+                        <div v-if="supervisor">
+                            <b-button  v-tooltip="$t('With this action the reservation will be available to be downloaded for the pms')" 
+                                v-if="pms.status" class="font-weight-bold mb-2" 
+                                variant="primary" 
+                                @click="saveNotVerified">{{$t('Check as not verified')}}
+                            </b-button>
+                            <pms-verify v-else-if="!pms.status" :reservationId="id"></pms-verify>
+                        </div>
+                    </div>                               
+                </address>
+            </b-alert>
+        </b-collapse>
     </div>
 </template>
 
