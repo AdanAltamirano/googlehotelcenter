@@ -766,33 +766,72 @@ Partial Class ctrlRooms
     Public Function updateImage(ByVal oldUrl As String, ByRef lblfile As System.Web.UI.HtmlControls.HtmlInputFile, ByVal Idimg As Integer) As Boolean
         'Dim oImg As System.Drawing.Image
 
+        'Try
+        '    If Not Directory.Exists(AppSettings("MapPathCRS") & AppSettings("DIR_TIPO_HAB") & Me.idCompany & "/") Then
+        '        Directory.CreateDirectory(AppSettings("MapPathCRS") & AppSettings("DIR_TIPO_HAB") & idCompany & "/")
+        '    End If
+
+        '    Dim BitImage As New Bitmap(lblfile.PostedFile.InputStream)
+        '    Dim Bit As Bitmap
+        '    Dim newSize As Size
+
+        '    '--------------------------------------------------------
+        '    'AppSettings("DIR_TIPO_HAB") + IdCompamy + Tipohabitacion
+        '    '--------------------------------------------------------
+
+
+        '    'ORIGINAL - SALVANDO IMAGEN  (IdRoom)
+        '    BitImage.Save(AppSettings("MapPathCRS") & AppSettings("DIR_TIPO_HAB") & Me.idCompany & "/" & Idimg, ImageFormat.Png)
+
+        '    'MODULO - SALVANDO IMAGEN    (IdRoom + "_M")
+        '    newSize = New Size(160, 120)
+        '    Bit = BitImage.GetThumbnailImage(newSize.Width, newSize.Height, Nothing, Nothing)
+        '    Bit.Save(AppSettings("MapPathCRS") & AppSettings("DIR_TIPO_HAB") & Me.idCompany & "/" & Idimg & "_M", ImageFormat.Png)
+
+        '    'THUMBNAiL - SALVANDO IMAGEN  (IdRoom + "_T")
+        '    newSize = New Size(70, 70)
+        '    Bit = BitImage.GetThumbnailImage(newSize.Width, newSize.Height, Nothing, Nothing)
+        '    Bit.Save(AppSettings("MapPathCRS") & AppSettings("DIR_TIPO_HAB") & Me.idCompany & "/" & Idimg & "_T", ImageFormat.Png)
+
+
+        'Catch ex As Exception
+        '    updateImage = False
+        'End Try
+
         Try
-            If Not Directory.Exists(AppSettings("MapPathCRS") & AppSettings("DIR_TIPO_HAB") & Me.idCompany & "/") Then
-                Directory.CreateDirectory(AppSettings("MapPathCRS") & AppSettings("DIR_TIPO_HAB") & idCompany & "/")
+            Dim basePath As String = AppSettings("MapPathCRS") & AppSettings("DIR_TIPO_HAB") & Me.idCompany & "/"
+
+            If Not Directory.Exists(basePath) Then
+                Directory.CreateDirectory(basePath)
             End If
 
-            Dim BitImage As New Bitmap(lblfile.PostedFile.InputStream)
-            Dim Bit As Bitmap
-            Dim newSize As Size
+            ' Ruta completa de archivos
+            Dim originalPath As String = basePath & Idimg
+            Dim mediumPath As String = basePath & Idimg & "_M"
+            Dim thumbPath As String = basePath & Idimg & "_T"
 
-            '--------------------------------------------------------
-            'AppSettings("DIR_TIPO_HAB") + IdCompamy + Tipohabitacion
-            '--------------------------------------------------------
+            ' Leer imagen original
+            Using postedStream As Stream = lblfile.PostedFile.InputStream
+                Using bitImage As New Bitmap(postedStream)
+                    ' Eliminar archivos existentes (opcional pero recomendable para forzar sobreescritura)
+                    If File.Exists(originalPath) Then File.Delete(originalPath)
+                    If File.Exists(mediumPath) Then File.Delete(mediumPath)
+                    If File.Exists(thumbPath) Then File.Delete(thumbPath)
 
+                    ' Guardar imagen original
+                    bitImage.Save(originalPath, ImageFormat.Png)
 
-            'ORIGINAL - SALVANDO IMAGEN  (IdRoom)
-            BitImage.Save(AppSettings("MapPathCRS") & AppSettings("DIR_TIPO_HAB") & Me.idCompany & "/" & Idimg, ImageFormat.Png)
+                    ' Guardar versión mediana (160x120)
+                    Using bitM As Image = bitImage.GetThumbnailImage(160, 120, Nothing, IntPtr.Zero)
+                        bitM.Save(mediumPath, ImageFormat.Png)
+                    End Using
 
-            'MODULO - SALVANDO IMAGEN    (IdRoom + "_M")
-            newSize = New Size(160, 120)
-            Bit = BitImage.GetThumbnailImage(newSize.Width, newSize.Height, Nothing, Nothing)
-            Bit.Save(AppSettings("MapPathCRS") & AppSettings("DIR_TIPO_HAB") & Me.idCompany & "/" & Idimg & "_M", ImageFormat.Png)
-
-            'THUMBNAiL - SALVANDO IMAGEN  (IdRoom + "_T")
-            newSize = New Size(70, 70)
-            Bit = BitImage.GetThumbnailImage(newSize.Width, newSize.Height, Nothing, Nothing)
-            Bit.Save(AppSettings("MapPathCRS") & AppSettings("DIR_TIPO_HAB") & Me.idCompany & "/" & Idimg & "_T", ImageFormat.Png)
-
+                    ' Guardar thumbnail (70x70)
+                    Using bitT As Image = bitImage.GetThumbnailImage(70, 70, Nothing, IntPtr.Zero)
+                        bitT.Save(thumbPath, ImageFormat.Png)
+                    End Using
+                End Using
+            End Using
 
         Catch ex As Exception
             updateImage = False
