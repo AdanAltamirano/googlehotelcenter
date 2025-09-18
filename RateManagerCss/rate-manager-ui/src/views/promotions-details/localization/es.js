@@ -89,4 +89,5 @@ export default {
     'T': 'J',
     'F': 'V',
     'S': 'S',
+    'Return to Promotions List' : 'Volver al Listado'
 };

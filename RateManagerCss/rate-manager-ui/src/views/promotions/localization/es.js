@@ -25,5 +25,6 @@ export default {
     'Promotion Disabled' : 'Promoción Desactivada',
     'Cannot Enable Promotion' : 'No se pudo activar la promoción',
     'Cannot Disable Promotion' : 'No se pudo desactivar la promoción',
-    'There are no records that match your request': 'No hay registros que coincidan con su solicitud'
+    'There are no records that match your request': 'No hay registros que coincidan con su solicitud',
+    'Clone' : 'Clonar',
 }

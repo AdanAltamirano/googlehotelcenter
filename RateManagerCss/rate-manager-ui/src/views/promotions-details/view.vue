@@ -9,7 +9,7 @@
                         <b-col md="6">
                             <b-form-group :label="$t('Promotion code')">
                                 <!-- <b-form-input :max="4" v-model="promo.id" :placeholder="$t('Code')" trim/> -->
-                                <input type="text" class="form-control" id="promo" name="promoName" maxlength="4" v-model="promo.id">
+                                <input :disabled="isEdit" type="text" class="form-control" id="promo" name="promoName" maxlength="4" v-model="promo.id">
                             </b-form-group>
                             <b-form-group class="pt-2" :label="$t('Promotion name')">
                                 <b-tabs active-nav-item-class="font-weight-bold text-info">
@@ -70,6 +70,9 @@
             </b-col>
         </b-row>
         <b-row class="mb-4">
+            <b-col class="text-left">
+                <b-link :href="$appConfig.basePath + '/rate-manager-ui/dist/promotions.aspx'">{{ $t('Return to Promotions List') }}</b-link>
+            </b-col>
             <b-col class="text-right mr-4">
                 <b-button @click="save" variant="primary">{{ $t('Save') }}</b-button>
             </b-col>
@@ -113,6 +116,8 @@ export default {
     data() {
         return {
             hotelId: this.$appConfig.session.hotelId,
+            isClone: this.$appConfig.promotion.clone,
+            isEdit: this.$appConfig.promotion.edit,
             offset: false,
             load: false,
             //view Promo Model
@@ -221,13 +226,32 @@ export default {
             offersService.getByCode(this.hotelId, this.promo.id)
             .then(response => {
                 //if (response.body.length > 0) {
-                    console.log(response.body)
+                    //console.log(response.body)
                     this.promo = Object.assign({}, response.body);
                     console.log('Promo Object');
                     console.log(this.promo);
+                
                     this.$set(this.promo.rule, '_applyDays', []);
                     this.$set(this.promo.rule, '_noArrivals', []);
                     this.$set(this.promo.rule, 'closures', []);
+                    
+                    if(this.isClone)
+                    {
+                        console.log('Clonar Object');
+
+                        this.promo.id = null;
+                        this.promo.active = false;
+                        this.promo.name.id = null;
+                        this.promo.description.id = null;
+                        this.promo.rule.id = null;
+                        this.promo.rule.bookingWindow.id = null;
+                        this.promo.rule.cancelPenalty.name = '';
+                        this.promo.rule.cancelPenalty.detailedDescription.id = null;
+                        this.promo.rule.cancelPenalty.shortDescription.id = null;
+
+                        console.log(this.promo);
+                    }
+
                     this.load = true;
                     loader.hide();
                 //} else {
@@ -240,7 +264,7 @@ export default {
             this.formValidation();
             if (!this.error) {
                 //Update Promotion
-                if(this.$appConfig.session.code)
+                if(this.$appConfig.session.code && !this.isClone)
                 {
                     this.$appAlert({
                         type: "question",
@@ -366,7 +390,7 @@ export default {
                 console.log("Post");
                 console.log(this.post);
             }
-        }
+        },
     }
 }
 </script>

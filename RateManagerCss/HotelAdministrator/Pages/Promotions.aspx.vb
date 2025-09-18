@@ -474,7 +474,7 @@ Public Class Promotions
                                         Dim promotionRatePlanId As String = Me.txtPromotionCode.Text & plan.Value
                                         Dim ratePlanNameId As String = plan.Value & "-" & Me.txtPromoName.GetES()
                                         Dim res As RatePlanResponse = HotelUtilitie.ConfluxServiceHelper.InsertRatePlan(info.Hotel, info.Empresa, promotionRatePlanId, ratePlanNameId, Me.txtPromoDescription.GetES(), "ES")
-                                        CType(Me.Page, PaginaBase).guardalog("/Pages/Promotions.aspx", CType(Me.Page, PaginaBase).acciones.Sincronizar, "Sincronizar Nuevo  Codigo de Promocion con RatePlan", "", res.RequestXML, res.Response, info.Hotel)
+                                        CType(Me.Page, PaginaBase).guardalog("/Pages/Promotions.aspx", CType(Me.Page, PaginaBase).acciones.Sincronizar, "Sincronizar Nuevo  Codigo de Promocion con RatePlan", "", Res.RequestXML, Res.Response, info.Hotel)
                                     End If
                                 End If
                             End If

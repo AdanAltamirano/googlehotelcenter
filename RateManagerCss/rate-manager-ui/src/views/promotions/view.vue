@@ -53,7 +53,7 @@
             <!--Custom Edit -->
             <template v-slot:cell(edit)="data">
                  <b-link
-                    :href="$appConfig.basePath + '/rate-manager-ui/dist/promotions-details.aspx?qs=' + data.item.promotionCode">
+                    :href="$appConfig.basePath + '/rate-manager-ui/dist/promotions-details.aspx?qs=' + data.item.promotionCode + '&edit=1'">
                     {{$t('Edit')}}
                 </b-link>
             </template>
@@ -61,6 +61,12 @@
             <template v-slot:cell(active)="data">
                 <b-button v-if="data.item.active == 1" variant="link" @click="disable(data.item.hotelId,data.item.promotionCode)">{{$t('Disable')}}</b-button>
                 <b-button v-else-if="data.item.active == 0" variant="link" @click="enable(data.item.hotelId,data.item.promotionCode)">{{$t('Enable')}}</b-button>
+            </template>
+            <template v-slot:cell(clone)="data">
+                <b-link
+                    :href="$appConfig.basePath + '/rate-manager-ui/dist/promotions-details.aspx?qs=' + data.item.promotionCode + '&clone=1'">
+                    {{$t('Clone')}}
+                </b-link>
             </template>
           </data-table>
         </b-container>
@@ -115,6 +121,10 @@ export default {
                 },
                 {
                     key:'active',
+                    label:''
+                },
+                {
+                    key:'clone',
                     label:''
                 }
             ],

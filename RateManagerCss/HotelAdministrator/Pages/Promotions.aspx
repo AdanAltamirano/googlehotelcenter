@@ -1715,12 +1715,15 @@
                 isValid = false;
             }
 
-            if ($("#ddlCancelationPolicy")[0].selectedIndex == 0 || $("#txtCancellationPolicy").val() === "") {
-                $(".cancelPolicy").addClass("incorrect");
-                isValid = false;
+            if (!$("#chkNonCancelable")[0].checked) {
+
+                if ($("#ddlCancelationPolicy")[0].selectedIndex == 0 || $("#txtCancellationPolicy").val() === "") {
+                    $(".cancelPolicy").addClass("incorrect");
+                    isValid = false;
 
                 }
             }
+
             return isValid;
         }
 

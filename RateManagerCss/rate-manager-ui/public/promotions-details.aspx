@@ -13,7 +13,9 @@
             {
                 hotelId: <%= Me.cInfoActual.Hotel%>,
                 language: '<%= If(Me.IdIdiomaMenu = 1, "es", "en" )%>',
-                code: '<%=Request.QueryString("qs")%>'
+                code: '<%=Request.QueryString("qs")%>',
+                clone: <%= If(String.IsNullOrEmpty(Request.QueryString("clone")), "false", "true") %>,
+                edit: <%= If(String.IsNullOrEmpty(Request.QueryString("edit")), "false", "true") %>
             };
     </script>
     <div id="app"></div>

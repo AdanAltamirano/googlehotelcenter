@@ -19,6 +19,10 @@ const appConfig = {
         isEnabledGoogleRequest: window.app.isEnabledGoogleRequest,
         isEnabledAPICacheRequest: window.app.isEnabledAPICacheRequest
     },
+    promotion:{
+        clone:window.app.clone,
+        edit:window.app.edit
+    },
     themeColors: {
         primary: '#10467a',
         info: '#007bff',
