@@ -18,6 +18,8 @@ using OfficeOpenXml;
 using APIServices.Conflux.Crypto;
 using PortalLibraries;
 using WSHotelCommon;
+using System.Data;
+using System.Data.SqlClient;
 
 namespace APIServices
 {
@@ -331,10 +333,19 @@ namespace APIServices
                     }
                 }
 
-
                 /*credit card*/
-                var showCreditCard = dbContext.vPermissions
-                    .FirstOrDefault(x => x.userId == userId)?.showCreditCard;
+
+                bool showCreditCard = LoadUserSeeCards(userId, (int)model.CompanyId, (int)model.HotelId);
+
+                if (!showCreditCard)
+                {
+                    showCreditCard = dbContext.vPermissions
+                                    .FirstOrDefault(x => x.userId == userId)
+                                    ?.showCreditCard ?? false;
+                }
+
+                //var showCreditCard = dbContext.vPermissions
+                //.FirstOrDefault(x => x.userId == userId)?.showCreditCard;
 
                 if (!string.IsNullOrEmpty(details.cardNumber))
                 {
@@ -355,8 +366,12 @@ namespace APIServices
                     }
                     
                 }
-                if (isHotelCompany || (showCreditCard.HasValue ? showCreditCard.Value : false))
+                
+                if(showCreditCard || isHotelCompany)
                     model.Customer.CardDetails.AllowsShowCreditCardData = true;
+
+                //if (isHotelCompany || (showCreditCard.HasValue ? showCreditCard.Value : false))
+                    //model.Customer.CardDetails.AllowsShowCreditCardData = true;
                 /*fin credit card*/
 
                 GetPayments(ref model, reservationId);
@@ -777,6 +792,75 @@ namespace APIServices
 
             return cardDetails;
 
+        }
+
+
+        public bool LoadUserSeeCards(int userId, int companyId, int hotelId)
+        {
+            bool canSeeCards = false;
+
+            DataSet data = new DataSet();
+            SqlDataAdapter dsCommand = new SqlDataAdapter();
+            SqlCommand loadCommand = null;
+
+            try
+            {
+                loadCommand = new SqlCommand("GetUserCompanyAllowSeeCCByIds", new SqlConnection(ConfigurationSettings.AppSettings["PortalConnectionString"]));
+                loadCommand.CommandType = CommandType.StoredProcedure;
+                loadCommand.Parameters.Add(new SqlParameter("@UserId", SqlDbType.Int));
+                loadCommand.Parameters.Add(new SqlParameter("@CompanyId", SqlDbType.Int));
+
+                dsCommand.SelectCommand = loadCommand;
+                dsCommand.SelectCommand.Parameters["@UserId"].Value = userId;
+                dsCommand.SelectCommand.Parameters["@CompanyId"].Value = companyId;
+                dsCommand.Fill(data);
+
+                if (data != null && data.Tables.Count > 0 && data.Tables[0].Rows.Count > 0)
+                {
+                    canSeeCards = true;
+                }
+                else
+                {
+                    // Código comentado en VB lo dejo omitido aquí
+
+                    loadCommand = new SqlCommand("GetUserHotelsAllowSeeCCByIds", new SqlConnection(ConfigurationSettings.AppSettings["hotelconnectionstring"]));
+                    loadCommand.CommandType = CommandType.StoredProcedure;
+                    loadCommand.Parameters.Add(new SqlParameter("@UserId", SqlDbType.Int));
+                    loadCommand.Parameters.Add(new SqlParameter("@HotelId", SqlDbType.Int));
+
+                    dsCommand.SelectCommand = loadCommand;
+                    dsCommand.SelectCommand.Parameters["@UserId"].Value = userId;
+                    dsCommand.SelectCommand.Parameters["@HotelId"].Value = hotelId;
+                    dsCommand.Fill(data);
+
+                    if (data != null && data.Tables.Count > 0 && data.Tables[0].Rows.Count > 0)
+                    {
+                        canSeeCards = true;
+                    }
+                }
+            }
+            catch
+            {
+                // Manejo de excepciones vacío como en el código original
+            }
+            finally
+            {
+                if (dsCommand.SelectCommand != null)
+                {
+                    if (dsCommand.SelectCommand.Connection != null)
+                    {
+                        dsCommand.SelectCommand.Connection.Dispose();
+                    }
+                    dsCommand.SelectCommand.Dispose();
+                }
+                if (loadCommand != null)
+                {
+                    loadCommand.Dispose();
+                }
+            }
+
+
+            return canSeeCards;
         }
 
         #endregion
