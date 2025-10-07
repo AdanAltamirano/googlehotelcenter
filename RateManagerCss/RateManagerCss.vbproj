@@ -3667,6 +3667,7 @@
     </Compile>
     <Compile Include="Utilities\Contenido\ContenidoUtilitie.vb" />
     <Compile Include="Utilities\Email\EmailUtilitie.vb" />
+    <Compile Include="Utilities\Enum\HotelEnum.vb" />
     <Compile Include="Utilities\Hotel\HotelUtilitie.vb" />
     <Compile Include="Utilities\XML\XmlUtilitie.vb" />
     <Compile Include="Web References\RulesWebService\Reference.vb">

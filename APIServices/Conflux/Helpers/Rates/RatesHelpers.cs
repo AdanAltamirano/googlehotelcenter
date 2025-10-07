@@ -85,6 +85,29 @@ namespace APIServices.Conflux.Helpers.Rates
 
             return vDayRate;
         }
+
+        public static List<vDayRates> GetVDayRate(spGetCurrentRatesByHotel_Result4 rate, bool deleted)
+        {
+            List<vDayRates> vDayRate = null;
+
+            using (OzHotelesEntities dbContext = new OzHotelesEntities())
+            {
+                vDayRate = dbContext.vDayRates.Where(
+                    dr => dr.RateId == rate.RateId
+                    && dr.RoomId == rate.RoomHotelId
+                    && dr.HotelId == rate.HotelId
+                    && dr.StartDate >= rate.StartDate
+                    && dr.EndDate <= rate.EndDate
+                    && dr.EndDate >= dr.StartDate
+                    && dr.Language == 1
+                    && dr.DeletedRatePlan == deleted)
+                    .OrderBy(vdr => vdr.StartDate)
+                    .ToList();
+            }
+
+            return vDayRate;
+        }
+
         public static List<vDayRatesExceptions> GetVDayRateException(spGetCurrentRatesByHotel_Result4 rate)
         {
             List<vDayRatesExceptions> vDayRate = null;
@@ -105,6 +128,29 @@ namespace APIServices.Conflux.Helpers.Rates
 
             return vDayRate;
         }
+
+        public static List<vDayRatesExceptions> GetVDayRateException(spGetCurrentRatesByHotel_Result4 rate,bool deleted)
+        {
+            List<vDayRatesExceptions> vDayRate = null;
+
+            using (OzHotelesEntities dbContext = new OzHotelesEntities())
+            {
+                vDayRate = dbContext.vDayRatesExceptions.Where(
+                    dr => dr.RateId == rate.RateId
+                    && dr.RoomId == rate.RoomHotelId
+                    && dr.HotelId == rate.HotelId
+                    && dr.StartDate >= rate.StartDate
+                    && dr.EndDate <= rate.EndDate
+                    && dr.EndDate >= dr.StartDate
+                    && dr.Language == 1
+                    && dr.DeletedRatePlan == deleted)
+                    .OrderBy(vdr => vdr.StartDate)
+                    .ToList();
+            }
+
+            return vDayRate;
+        }
+
 
         public static List<vDayRates> GetVDayRate(int hotelId, string ratePlan)
         {

@@ -4,6 +4,7 @@ Imports Portal.General.Facade
 Imports Portal.General.Common.Data
 Imports Portal.General.DataAccess
 
+
 Namespace Utitlities.Hotel
     Public Module HotelUtilitie
 
@@ -48,6 +49,20 @@ Namespace Utitlities.Hotel
             Return False
         End Function
 
+        Function GetRatePlans(hotelId As String) As RatePlanData
+            Return New RatePlanFacade().GetRatePlanByIdHotel(hotelId, idioma:=1, IncluirPaquetesSegmentoK:=1, incluirNetRatesPlan:=1, idAsociacion:=-1, DeleteFilter:=1)
+        End Function
+
+        Function GetRatePlansPromos(hotelId As String) As List(Of DataRow)
+            Dim dsRatePlansPromos As RatePlanData = New RatePlanFacade().GetRatePlanByIdHotel(hotelId, idioma:=1, IncluirPaquetesSegmentoK:=1, incluirNetRatesPlan:=1, idAsociacion:=-1, DeleteFilter:=1, getPromos:=True)
+
+
+            Dim filterPromosDates As String = "((FechaFin IS NOT NULL AND FechaFin>= '" + DateTime.Now.Date.ToString() + "') OR (FechaFin IS NULL AND PromoEndDate >= '" + DateTime.Now.Date.ToString() + "'))"
+
+
+            Return dsRatePlansPromos.Tables(RatePlanData.RATEPLAN_TABLE).Select(filterPromosDates).ToList()
+        End Function
+
         Function GetPromosByRatePlan(ByVal hotelId As Integer, ByVal ratePlanId As String) As List(Of spGetPromosByRatePlan_Result)
 
             Dim promos As List(Of spGetPromosByRatePlan_Result) = New List(Of spGetPromosByRatePlan_Result)
@@ -61,6 +76,60 @@ Namespace Utitlities.Hotel
             Return promos
 
         End Function
+
+        Function GetValidPromos(ByVal activeRatePlansPromos As List(Of DataRow), ByVal promos As List(Of spGetPromosByRatePlan_Result)) As List(Of DataRow)
+
+            Dim validPromos As List(Of DataRow) = New List(Of DataRow)
+
+            Dim dsRatePlans As RatePlanData = New RatePlanData
+
+            Dim dt As DataTable = dsRatePlans.Tables(RatePlanData.RATEPLAN_TABLE)
+
+            For Each activeRatePlanPromo As DataRow In activeRatePlansPromos
+
+                For Each promo As spGetPromosByRatePlan_Result In promos
+
+                    If promo.IdPromocion = activeRatePlanPromo.ItemArray(0).ToString() Then
+
+                        Dim tempData As DataRow = dt.NewRow()
+
+                        With tempData
+                            .Item(RatePlanData.FIELD_IDRATEPLAN) = promo.IdPromocion
+                        End With
+
+                        validPromos.Add(tempData)
+
+                    End If
+
+                Next
+
+            Next
+
+            Return validPromos
+
+        End Function
+
+
+        Sub Log(ByVal user As String, ByVal userId As Integer, ByVal page As String, ByVal hotelId As Integer, ByVal action As Actions, ByVal note As String, ByVal request As String, ByVal data As String, ByVal dataAfter As String)
+
+            Dim ds As LogData = New LogData
+            Dim dr As DataRow = ds.Tables(LogData.TABLE_LOG).NewRow
+            dr(LogData.FIELD_USUARIO) = user
+            dr(LogData.FIELD_IDUSUARIO) = userId
+            dr(LogData.FIELD_PAGINA) = page
+            dr(LogData.FIELD_ACCION) = action
+            dr(LogData.FIELD_HOTEL) = hotelId
+            dr(LogData.FIELD_NOTA) = note
+            dr(LogData.FIELD_FECHA) = Date.Now
+            If Not String.IsNullOrEmpty(data) Then dr(LogData.FIELD_DATOS) = data
+            If Not String.IsNullOrEmpty(dataAfter) Then dr(LogData.FIELD_DATOSDESPUES) = dataAfter
+
+            ds.Tables(LogData.TABLE_LOG).Rows.Add(dr)
+            With New LogFacade
+                .insertLog(ds)
+            End With
+
+        End Sub
 
     End Module
 End Namespace

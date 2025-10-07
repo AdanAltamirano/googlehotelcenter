@@ -1,6 +1,8 @@
 ﻿Imports System.Linq
 Imports System.Web.Http
 Imports System.Net.Http
+Imports System.Threading
+Imports System.Threading.Tasks
 Imports NinjAPI
 Imports APIServices
 Imports APIServices.Models
@@ -47,11 +49,18 @@ Namespace API.Controller
 
             Dim pageBase As New PaginaBase
 
-            Dim confluxService As New ConfluxService()
+            Dim maxConcurrentTasks As Integer = 5
+            Dim semaphore As New SemaphoreSlim(maxConcurrentTasks)
+            Dim tasksToExecute As New List(Of Func(Of Task))()
+            Dim userName As String = pageBase.ReadUserCookie().GetValue(0)
+            Dim userId As Integer = pageBase.UserIdentityName
+
+
+            'Dim confluxService As New ConfluxService()
             Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
-            Dim isEnabledGoogleRequest As Boolean = HotelUtilitie.IsEnableGoogleRequest(info.Hotel)
-            Dim isEnabledSendingRatesAPICache As Boolean = HotelUtilitie.IsEnableSendRatesAPICache(info.Hotel)
-            RestrictionsParser.Init(info.Empresa)
+            'Dim isEnabledGoogleRequest As Boolean = HotelUtilitie.IsEnableGoogleRequest(info.Hotel)
+            'Dim isEnabledSendingRatesAPICache As Boolean = HotelUtilitie.IsEnableSendRatesAPICache(info.Hotel)
+            'RestrictionsParser.Init(info.Empresa)
 
             Dim dsrooms As RoomsHotelData
 
@@ -113,14 +122,16 @@ Namespace API.Controller
                                                  drrateplan(dsrateplans.FIELD_CODIGOTARIFA), drroom(dsrooms.FLD_ID_ROOM_HOTEL),
                                                  roomClosureRQ.Status)
 
+                                        tasksToExecute.Add(Function() SendClosureAsync(userName, userId, info.Hotel, info.Empresa, dateClosure.StartDate, dateClosure.EndDate, roomClosureRQ.Status, drrateplan(dsrateplans.FIELD_CODIGOTARIFA).ToString(), drroom(dsrooms.FLD_ID_ROOM_HOTEL).ToString(), rooms))
 
-                                        If isEnabledGoogleRequest Or isEnabledSendingRatesAPICache Then
-                                            Dim dates As List(Of Tuple(Of Date, Date)) = New List(Of Tuple(Of Date, Date))
-                                            dates.Add(New Tuple(Of Date, Date)(dateClosure.StartDate, dateClosure.EndDate))
-                                            Dim lockRatePlans As List(Of spGetLockRatePlansByHotel_Result) = RestrictionHelper.CreateLockRatePlansByHotel(dates, roomClosureRQ.Status, drrateplan(dsrateplans.FIELD_CODIGOTARIFA).ToString())
-                                            Dim room As DataRow = rooms.FirstOrDefault(Function(r) r.Item(0).ToString() = drroom(dsrooms.FLD_ID_ROOM_HOTEL).ToString())
-                                            ExecuteServices(lockRatePlans, room, idHotel, isEnabledGoogleRequest, isEnabledSendingRatesAPICache, pageBase)
-                                        End If
+
+                                        'If isEnabledGoogleRequest Or isEnabledSendingRatesAPICache Then
+                                        '    Dim dates As List(Of Tuple(Of Date, Date)) = New List(Of Tuple(Of Date, Date))
+                                        '    dates.Add(New Tuple(Of Date, Date)(dateClosure.StartDate, dateClosure.EndDate))
+                                        '    Dim lockRatePlans As List(Of spGetLockRatePlansByHotel_Result) = RestrictionHelper.CreateLockRatePlansByHotel(dates, roomClosureRQ.Status, drrateplan(dsrateplans.FIELD_CODIGOTARIFA).ToString())
+                                        '    Dim room As DataRow = rooms.FirstOrDefault(Function(r) r.Item(0).ToString() = drroom(dsrooms.FLD_ID_ROOM_HOTEL).ToString())
+                                        '    ExecuteServices(lockRatePlans, room, idHotel, isEnabledGoogleRequest, isEnabledSendingRatesAPICache, pageBase)
+                                        'End If
 
                                     Next
                                 Next
@@ -131,13 +142,17 @@ Namespace API.Controller
                                                 drrateplan(dsrateplans.FIELD_CODIGOTARIFA), roomClosureRQ.RoomOption,
                                                 roomClosureRQ.Status)
 
-                                    If isEnabledGoogleRequest Or isEnabledSendingRatesAPICache Then
-                                        Dim dates As List(Of Tuple(Of Date, Date)) = New List(Of Tuple(Of Date, Date))
-                                        dates.Add(New Tuple(Of Date, Date)(dateClosure.StartDate, dateClosure.EndDate))
-                                        Dim lockRatePlans As List(Of spGetLockRatePlansByHotel_Result) = RestrictionHelper.CreateLockRatePlansByHotel(dates, roomClosureRQ.Status, drrateplan(dsrateplans.FIELD_CODIGOTARIFA).ToString())
-                                        Dim room As DataRow = rooms.FirstOrDefault(Function(r) r.Item(0).ToString() = roomClosureRQ.RoomOption)
-                                        ExecuteServices(lockRatePlans, room, idHotel, isEnabledGoogleRequest, isEnabledSendingRatesAPICache, pageBase)
-                                    End If
+
+                                    tasksToExecute.Add(Function() SendClosureAsync(userName, userId, info.Hotel, info.Empresa, dateClosure.StartDate, dateClosure.EndDate, roomClosureRQ.Status, drrateplan(dsrateplans.FIELD_CODIGOTARIFA).ToString(), roomClosureRQ.RoomOption, rooms))
+
+
+                                    'If isEnabledGoogleRequest Or isEnabledSendingRatesAPICache Then
+                                    '    Dim dates As List(Of Tuple(Of Date, Date)) = New List(Of Tuple(Of Date, Date))
+                                    '    dates.Add(New Tuple(Of Date, Date)(dateClosure.StartDate, dateClosure.EndDate))
+                                    '    Dim lockRatePlans As List(Of spGetLockRatePlansByHotel_Result) = RestrictionHelper.CreateLockRatePlansByHotel(dates, roomClosureRQ.Status, drrateplan(dsrateplans.FIELD_CODIGOTARIFA).ToString())
+                                    '    Dim room As DataRow = rooms.FirstOrDefault(Function(r) r.Item(0).ToString() = roomClosureRQ.RoomOption)
+                                    '    ExecuteServices(lockRatePlans, room, idHotel, isEnabledGoogleRequest, isEnabledSendingRatesAPICache, pageBase)
+                                    'End If
 
                                 Next
                             End If
@@ -152,13 +167,15 @@ Namespace API.Controller
                                                ratePlan.Code, drroom(dsrooms.FLD_ID_ROOM_HOTEL),
                                                roomClosureRQ.Status)
 
-                                    If isEnabledGoogleRequest Or isEnabledSendingRatesAPICache Then
-                                        Dim dates As List(Of Tuple(Of Date, Date)) = New List(Of Tuple(Of Date, Date))
-                                        dates.Add(New Tuple(Of Date, Date)(dateClosure.StartDate, dateClosure.EndDate))
-                                        Dim lockRatePlans As List(Of spGetLockRatePlansByHotel_Result) = RestrictionHelper.CreateLockRatePlansByHotel(dates, roomClosureRQ.Status, ratePlan.Code)
-                                        Dim room As DataRow = rooms.FirstOrDefault(Function(r) r.Item(0).ToString() = drroom(dsrooms.FLD_ID_ROOM_HOTEL).ToString())
-                                        ExecuteServices(lockRatePlans, room, idHotel, isEnabledGoogleRequest, isEnabledSendingRatesAPICache, pageBase)
-                                    End If
+                                    tasksToExecute.Add(Function() SendClosureAsync(userName, userId, info.Hotel, info.Empresa, dateClosure.StartDate, dateClosure.EndDate, roomClosureRQ.Status, ratePlan.Code, drroom(dsrooms.FLD_ID_ROOM_HOTEL).ToString(), rooms))
+
+                                    'If isEnabledGoogleRequest Or isEnabledSendingRatesAPICache Then
+                                    '    Dim dates As List(Of Tuple(Of Date, Date)) = New List(Of Tuple(Of Date, Date))
+                                    '    dates.Add(New Tuple(Of Date, Date)(dateClosure.StartDate, dateClosure.EndDate))
+                                    '    Dim lockRatePlans As List(Of spGetLockRatePlansByHotel_Result) = RestrictionHelper.CreateLockRatePlansByHotel(dates, roomClosureRQ.Status, ratePlan.Code)
+                                    '    Dim room As DataRow = rooms.FirstOrDefault(Function(r) r.Item(0).ToString() = drroom(dsrooms.FLD_ID_ROOM_HOTEL).ToString())
+                                    '    ExecuteServices(lockRatePlans, room, idHotel, isEnabledGoogleRequest, isEnabledSendingRatesAPICache, pageBase)
+                                    'End If
 
                                 Next
                             Else
@@ -168,13 +185,16 @@ Namespace API.Controller
                                                roomClosureRQ.Status)
 
 
-                                If isEnabledGoogleRequest Or isEnabledSendingRatesAPICache Then
-                                    Dim dates As List(Of Tuple(Of Date, Date)) = New List(Of Tuple(Of Date, Date))
-                                    dates.Add(New Tuple(Of Date, Date)(dateClosure.StartDate, dateClosure.EndDate))
-                                    Dim lockRatePlans As List(Of spGetLockRatePlansByHotel_Result) = RestrictionHelper.CreateLockRatePlansByHotel(dates, roomClosureRQ.Status, ratePlan.Code)
-                                    Dim room As DataRow = rooms.FirstOrDefault(Function(r) r.Item(0).ToString() = roomClosureRQ.RoomOption)
-                                    ExecuteServices(lockRatePlans, room, idHotel, isEnabledGoogleRequest, isEnabledSendingRatesAPICache, pageBase)
-                                End If
+                                tasksToExecute.Add(Function() SendClosureAsync(userName, userId, info.Hotel, info.Empresa, dateClosure.StartDate, dateClosure.EndDate, roomClosureRQ.Status, ratePlan.Code, roomClosureRQ.RoomOption, rooms))
+
+
+                                'If isEnabledGoogleRequest Or isEnabledSendingRatesAPICache Then
+                                '    Dim dates As List(Of Tuple(Of Date, Date)) = New List(Of Tuple(Of Date, Date))
+                                '    dates.Add(New Tuple(Of Date, Date)(dateClosure.StartDate, dateClosure.EndDate))
+                                '    Dim lockRatePlans As List(Of spGetLockRatePlansByHotel_Result) = RestrictionHelper.CreateLockRatePlansByHotel(dates, roomClosureRQ.Status, ratePlan.Code)
+                                '    Dim room As DataRow = rooms.FirstOrDefault(Function(r) r.Item(0).ToString() = roomClosureRQ.RoomOption)
+                                '    ExecuteServices(lockRatePlans, room, idHotel, isEnabledGoogleRequest, isEnabledSendingRatesAPICache, pageBase)
+                                'End If
 
                             End If
                         End If
@@ -189,6 +209,18 @@ Namespace API.Controller
                 Next
 
             Next
+
+            For Each taskDelegate As Func(Of Task) In tasksToExecute
+                Task.Run(Async Function()
+                             Await semaphore.WaitAsync()
+                             Try
+                                 Await taskDelegate()
+                             Finally
+                                 semaphore.Release()
+                             End Try
+                         End Function)
+            Next
+
 
             Return New HttpResponseMessage(Net.HttpStatusCode.OK)
 
@@ -306,6 +338,18 @@ Namespace API.Controller
                                           page.IsUsuarioHotel, PortalCulture.GetIDCulture)
         End Function
 
+        <Route("allrateplanssegmentsvalids/{idHotel:Int}"), HttpGet>
+        Public Function GetAllRatePlansByHotelIdSegmentsValids(ByVal idHotel As Integer) As List(Of DTO.RatePlansClosureModel)
+
+            Dim page As New PaginaBase
+
+            Dim idAsoc As Integer = page.GetIdAsociation()
+
+            Return service.LoadAllRatePlansByIdHotelNoSegmentsInvalids(idHotel, idAsoc, page.IdCorporativoUserChain, page.IsHotel,
+                                          page.IsUsuarioHotel, PortalCulture.GetIDCulture)
+        End Function
+
+
 
         <Route("rateplansnolinks/{idHotel:Int}"), HttpGet>
         Public Function GetRatePlansByHotelIdNoLinks(ByVal idHotel As Integer) As List(Of DTO.RatePlansClosureModel)
@@ -321,7 +365,7 @@ Namespace API.Controller
         <Route("promos/{idHotel:Int}"), HttpGet>
         Public Function GetPromosByHotelId(ByVal idHotel As Integer) As List(Of DTO.RatePlansClosureModel)
 
-            Return service.LoadPromosByIdHotel(idHotel)
+            Return service.LoadAllPromosByIdHotel(idHotel)
         End Function
 
         <Route("rooms/{idHotel:Int}"), HttpGet>
@@ -386,6 +430,86 @@ Namespace API.Controller
                 SendClosureToService(lockRatePlanHotelAvailNotifRQList, idHotel, HotelUtilitie.ENDPOINTAPICLOSURE, "APICache", pageBase)
             End If
         End Sub
+
+        Private Async Function SendClosureAsync(ByVal userName As String, ByVal userId As String, ByVal hotelId As Integer, ByVal companyId As Integer, ByVal startDate As Date, ByVal endDate As Date, ByVal status As String, ByVal ratePlanId As String, ByVal roomCode As String, ByVal rooms As IEnumerable(Of DataRow)) As Task
+
+
+            Try
+
+                Dim isEnabledGoogleRequest As Boolean = HotelUtilitie.IsEnableGoogleRequest(hotelId)
+                Dim isEnabledSendingRatesAPICache As Boolean = HotelUtilitie.IsEnableSendRatesAPICache(hotelId)
+
+                RestrictionsParser.Init(companyId)
+
+                Dim dates As List(Of Tuple(Of Date, Date)) = New List(Of Tuple(Of Date, Date))
+                dates.Add(New Tuple(Of Date, Date)(startDate, endDate))
+
+                Dim lockRatePlans As List(Of spGetLockRatePlansByHotel_Result) = RestrictionHelper.CreateLockRatePlansByHotel(dates, status, ratePlanId)
+
+                Dim room As DataRow = rooms.FirstOrDefault(Function(r) r.Item(0).ToString() = roomCode)
+
+                Dim availStatusMessagesLockRatePlans = RestrictionsParser.ToAvailStatusMessages(room, lockRatePlans)
+                Dim lockRatePlanHotelAvailNotifRQList As List(Of XElement) = HotelAvailNotifRQ.CreateHotelAvailNotifRQList(availStatusMessagesLockRatePlans)
+
+                Await SendClosureIfEnabled(userName, userId, hotelId, companyId, isEnabledGoogleRequest, HotelUtilitie.ENDPOINTCLOSURE, "Conflux", lockRatePlanHotelAvailNotifRQList)
+                Await SendClosureIfEnabled(userName, userId, hotelId, companyId, isEnabledGoogleRequest, HotelUtilitie.ENDPOINTAPICLOSURE, "ApiCache", lockRatePlanHotelAvailNotifRQList)
+
+            Catch ex As Exception
+
+            End Try
+
+        End Function
+
+        Private Async Function SendClosureIfEnabled(ByVal userName As String, ByVal userId As String, ByVal hotelId As Integer, ByVal companyId As Integer, ByVal isEnabled As Boolean, ByVal endPoint As String, ByVal service As String, ByVal lockRatePlanHotelAvailNotifRQList As List(Of XElement)) As Task
+
+            If isEnabled And lockRatePlanHotelAvailNotifRQList IsNot Nothing Then
+                Await SendClosureToServiceAsync(userName, userId, hotelId, endPoint, service, lockRatePlanHotelAvailNotifRQList)
+            End If
+
+        End Function
+
+        Private Async Function SendClosureToServiceAsync(ByVal userName As String, ByVal userId As String, ByVal hotelId As Integer, ByVal endPoint As String, ByVal service As String, ByVal lockRatePlanHotelAvailNotifRQList As List(Of XElement)) As Task
+
+            Try
+
+                Dim confluxService As New ConfluxService()
+
+                Dim lockRatePlanHotelAvailNotifSoapRQList As List(Of XDocument) = New List(Of XDocument)
+
+                For Each request As XElement In lockRatePlanHotelAvailNotifRQList
+                    Dim lockRatePlanHotelAvailSoapRQ = Soap.CreateSoapRequestXml(request)
+                    lockRatePlanHotelAvailNotifSoapRQList.Add(lockRatePlanHotelAvailSoapRQ)
+                Next
+
+                Dim index As Integer = 0
+
+                For Each lockRatePlanSoapRQ As XDocument In lockRatePlanHotelAvailNotifSoapRQList
+
+                    Dim restrictionResponse As RestrictionResponse = Await confluxService.UpdateRestrictionAsync(lockRatePlanSoapRQ, endPoint, RestrictionEnum.LockRoomType)
+
+                    Dim note As String = String.Format("Sincronizar request numero {0} LockRoomType {1} con el hotel: ", (index + 1), service)
+                    Dim noteError As String = String.Format("Error al sincronizar con {0}", service)
+
+                    If restrictionResponse.IsSuccess Then
+
+                        HotelUtilitie.Log(userName, userId, "/rate-manager-ui/dist/rooms-closure.aspx", hotelId, Actions.Sincronizar, note, "", restrictionResponse.Restrictions(0).XmlRequest(0).ToString(), restrictionResponse.Restrictions(0).Xml(0).ToString())
+                    Else
+
+                        HotelUtilitie.Log(userName, userId, "/rate-manager-ui/dist/rooms-closure.aspx", hotelId, Actions.Sincronizar, noteError, "", restrictionResponse.Xml.ToString(), "")
+                    End If
+                    index = index + 1
+                Next
+
+
+            Catch ex As Exception
+
+                Dim noteError As String = String.Format("Error al sincronizar {0} {1} con el hotel: {2}", "LockRoomType", service, hotelId)
+
+                HotelUtilitie.Log(userName, userId, "/rate-manager-ui/dist/rooms-closure.aspx", hotelId, Actions.Sincronizar, noteError, "", ex.Message, "")
+
+            End Try
+
+        End Function
 
     End Class
 End Namespace

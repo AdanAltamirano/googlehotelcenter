@@ -15,7 +15,7 @@ namespace APIServices.Conflux.Parser
     public static class Parser
     {
         //General
-        public static Models.Rates.Response.RatesMessages ToRateAmountMessages(List<spGetCurrentRatesByHotel_Result4> currentRates,int hotelId , int companyId, bool? plusTax, decimal? tax, string currency, DateTime? startDate, DateTime? endDate)
+        public static Models.Rates.Response.RatesMessages ToRateAmountMessages(List<spGetCurrentRatesByHotel_Result4> currentRates, int hotelId, int companyId, bool? plusTax, decimal? tax, string currency, DateTime? startDate, DateTime? endDate)
         {
             Models.Rates.Response.RatesMessages ratesMessages = new Models.Rates.Response.RatesMessages();
 
@@ -33,14 +33,14 @@ namespace APIServices.Conflux.Parser
             rateAmountMessagesExceptions.RateAmountMessagesList = new List<RateAmountMessage>();
 
 
-            RatesHelpers.Init(hotelId,plusTax, tax,currency);
+            RatesHelpers.Init(hotelId, plusTax, tax, currency);
 
             foreach (var currentRate in currentRates)
             {
 
                 switch (currentRate.TypeRate)
                 {
-                    case (int) TypeRateEnum.RoomRate:
+                    case (int)TypeRateEnum.RoomRate:
 
                         RoomRateMessages(currentRate, ref rateAmountMessages, ref deleteRateAmountMessages, ref rateAmountMessagesExceptions);
 
@@ -74,9 +74,9 @@ namespace APIServices.Conflux.Parser
 
             return ratesMessages;
         }
-        
+
         //Por Tarifa
-        public static RateAmountMessages ToRateAmountMessages(List<vDayRates> rates,List<vDayRatesExceptions> ratesExceptions,int hotelId, int companyId, bool? plusTax, decimal? tax, string currency, TypeRateEnum typeRate, ref RateAmountMessages deleteRateAmountMessages)
+        public static RateAmountMessages ToRateAmountMessages(List<vDayRates> rates, List<vDayRatesExceptions> ratesExceptions, int hotelId, int companyId, bool? plusTax, decimal? tax, string currency, TypeRateEnum typeRate, ref RateAmountMessages deleteRateAmountMessages)
         {
             RateAmountMessages rateAmountMessages = new RateAmountMessages();
 
@@ -156,7 +156,7 @@ namespace APIServices.Conflux.Parser
             {
                 case TypeRateEnum.RoomRate:
 
-                    foreach(var vDayRate in vDayRates)
+                    foreach (var vDayRate in vDayRates)
                     {
                         if (vDayRate.Segment.IndexOfAny(segmentsNoRates) == -1 && (!vDayRate.IsMobileRate && !vDayRate.IsCallCenterOnly))
                         {
@@ -183,7 +183,7 @@ namespace APIServices.Conflux.Parser
                         }
 
                     }
-                   
+
                     break;
                 case TypeRateEnum.RoomRatePromotion:
 
@@ -220,6 +220,128 @@ namespace APIServices.Conflux.Parser
             }
 
         }
+
+        public static List<RateAmountMessage> ToRateAmountMessagesDelete(List<vDayRates> vDayRates, List<vDayRatesExceptions> ratesExceptions, TypeRateEnum typeRate)
+        {
+            List<RateAmountMessage> result = new List<RateAmountMessage>();
+
+            string[] splitSegmentsNoRates = ConfigurationManager.AppSettings["segmentsNoRates"].Split(',');
+
+            char[] segmentsNoRates = string.Concat(splitSegmentsNoRates).ToCharArray();
+
+            switch (typeRate)
+            {
+                case TypeRateEnum.RoomRate:
+
+                    foreach (var vDayRate in vDayRates)
+                    {
+                        if (vDayRate.Segment.IndexOfAny(segmentsNoRates) == -1 && (!vDayRate.IsMobileRate && !vDayRate.IsCallCenterOnly))
+                        {
+
+                            var room = RoomHelper.GetRoom(vDayRate.RoomId);
+
+                            RateAmountMessage rateAmountMessage = new RateAmountMessage();
+                            rateAmountMessage.statusApplicationControl = new StatusApplicationControl { RatePlanCode = vDayRate.RatePlanId, InvTypeCode = room.Code ?? "" };
+
+                            List<Rate> rates = new List<Rate>();
+
+                            Rate rate = new Rate()
+                            {
+                                StartDate = vDayRate.StartDate.ToString("yyyyMMdd"),
+                                EndDate = vDayRate.EndDate.ToString("yyyyMMdd")
+                            };
+
+                            rates.Add(rate);
+
+                            rateAmountMessage.Rates = rates;
+
+
+                            result.Add(rateAmountMessage);
+                        }
+
+                    }
+
+                    break;
+
+                case TypeRateEnum.RoomRatePromotion:
+
+                    foreach (var vDayRate in ratesExceptions)
+                    {
+                        if (vDayRate.Segment.IndexOfAny(segmentsNoRates) == -1 && (!vDayRate.IsMobileRate && !vDayRate.IsCallCenterOnly))
+                        {
+
+                            var room = RoomHelper.GetRoom(vDayRate.RoomId);
+
+                            RateAmountMessage rateAmountMessage = new RateAmountMessage();
+                            rateAmountMessage.statusApplicationControl = new StatusApplicationControl { RatePlanCode = vDayRate.RatePlanId, InvTypeCode = room.Code ?? "" };
+
+                            List<Rate> rates = new List<Rate>();
+
+                            Rate rate = new Rate()
+                            {
+                                StartDate = vDayRate.StartDate.ToString("yyyyMMdd"),
+                                EndDate = vDayRate.EndDate.ToString("yyyyMMdd")
+                            };
+
+                            rates.Add(rate);
+
+                            rateAmountMessage.Rates = rates;
+
+
+                            result.Add(rateAmountMessage);
+                        }
+
+                    }
+
+                    break;
+
+            }
+
+
+            return result;
+
+        }
+
+        public static RateAmountMessages ToRateAmountMessagesDelete(int companyId, string promotionCode, DateTime endDate, List<string> rateplansListAux, List<string> roomsListAux)
+        {
+            var rateAmountMessages = new RateAmountMessages
+            {
+                HotelCode = companyId,
+                RateAmountMessagesList = new List<OTA.Models.Rates.RateAmountMessage>()
+            };
+
+            foreach (var ratePlan in rateplansListAux)
+            {
+                foreach (var room in roomsListAux)
+                {
+                    string ratePlanCode = promotionCode + ratePlan;
+
+                    var rateAmountMessage = new OTA.Models.Rates.RateAmountMessage
+                    {
+                        statusApplicationControl = new OTA.Models.Rates.StatusApplicationControl
+                        {
+                            RatePlanCode = ratePlanCode,
+                            InvTypeCode = room
+                        }
+                    };
+
+                    var rate = new OTA.Models.Rates.Rate
+                    {
+                        StartDate = DateTime.Now.Date.ToString("yyyyMMdd"),
+                        EndDate = endDate.Date.ToString("yyyyMMdd")
+                    };
+
+                    rateAmountMessage.Rates = new List<OTA.Models.Rates.Rate> { rate };
+
+                    rateAmountMessages.RateAmountMessagesList.Add(rateAmountMessage);
+                }
+            }
+
+            return rateAmountMessages;
+        }
+
+
+
 
         #endregion
 
@@ -584,7 +706,7 @@ namespace APIServices.Conflux.Parser
 
             char[] segmentsNoRates = string.Concat(splitSegmentsNoRates).ToCharArray();
 
-            List<vDayRates> vDayRates = RatesHelpers.GetVDayRate(currentRate);
+            List<vDayRates> vDayRates = RatesHelpers.GetVDayRate(currentRate,false);
 
             foreach (var vDayRate in vDayRates)
             {
@@ -638,8 +760,7 @@ namespace APIServices.Conflux.Parser
 
             char[] segmentsNoRates = string.Concat(splitSegmentsNoRates).ToCharArray();
 
-
-            List<vDayRatesExceptions> vDayRates = RatesHelpers.GetVDayRateException(currentRate);
+            List<vDayRatesExceptions> vDayRates = RatesHelpers.GetVDayRateException(currentRate,false);
 
             foreach (var vDayRate in vDayRates)
             {

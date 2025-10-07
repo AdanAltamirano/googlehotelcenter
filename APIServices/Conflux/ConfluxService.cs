@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Net;
 using System.Net.Http;
 using System.Collections.Generic;
@@ -25,7 +26,6 @@ using Portal.General.Facade;
 using Portal.Hotel.Facade;
 using Portal.Hotel.Common.Data;
 using Portal.General.Common.Data;
-
 
 
 namespace APIServices.Conflux
@@ -136,6 +136,48 @@ namespace APIServices.Conflux
 
             return response;
         }
+
+        public async Task<RatePlanResponse> InsertRatePlanAsync(int hotelId, int companyId, string ratePlanId, string ratePlanName, string ratePlanDesc, string language = "ES")
+        {
+            var response = new RatePlanResponse();
+            string googleChannelId = ConfigurationManager.AppSettings["GoogleChannelID"];
+
+            try
+            {
+                var transaction = RatePlanParser.ToTransaction(companyId, ratePlanId, ratePlanName, ratePlanDesc, language);
+                var xml = HotelRatePlanRQ.CreateHotelRatePlanInsertRQ(transaction);
+                var soapRequest = Soap.CreateSoapRequestXml(xml);
+
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
+                string endPoint = $"properties/{googleChannelId}/rateplans";
+
+                using (var client = new HttpClient { BaseAddress = new Uri(ConfigurationManager.AppSettings["confluxApiUrl"]) })
+                {
+                    var request = new HttpRequestMessage(new HttpMethod("PATCH"), endPoint)
+                    {
+                        Content = new StringContent(soapRequest.ToString())
+                    };
+
+                    
+                    var responseRequest = await client.SendAsync(request);
+
+                    response.StatusCode = (int)responseRequest.StatusCode;
+                    response.Response = await responseRequest.Content.ReadAsStringAsync();
+                    response.RequestXML = soapRequest.ToString();
+                }
+
+            }
+            catch(Exception ex)
+            {
+                response.StatusCode = 500;
+                response.Response = ex.Message;
+            }
+
+            return response;
+
+        }
+
 
         public RoomResponse InsertRoom(int companyId, Models.Restrictions.Room.RoomData roomData)
         {
@@ -268,11 +310,14 @@ namespace APIServices.Conflux
                     break;
             }
 
-            var hotel = dbContext.Hoteles.First(h => h.idHotel == hotelId);
+            using (OzHotelesEntities ozHotelesEntities = new OzHotelesEntities())
+            {
+                var hotel = ozHotelesEntities.Hoteles.First(h => h.idHotel == hotelId);
 
-            var hotelBasicInfo = dbContext.vHotelBasicInfo.FirstOrDefault(vh => vh.Id == hotelId);
+                var hotelBasicInfo = ozHotelesEntities.vHotelBasicInfo.FirstOrDefault(vh => vh.Id == hotelId);
 
-            ratesMessages = Parser.Parser.ToRateAmountMessages(rates, ratesExceptions, hotelId, companyId, hotel.PlusTax, hotel.Impuesto, hotelBasicInfo.Currency, typeRate);
+                ratesMessages = Parser.Parser.ToRateAmountMessages(rates, ratesExceptions, hotelId, companyId, hotel.PlusTax, hotel.Impuesto, hotelBasicInfo.Currency, typeRate);
+            }
 
             return ratesMessages;
         }
@@ -373,6 +418,65 @@ namespace APIServices.Conflux
             return new Tuple<RateResponse, RateResponse>(rateResponse, deleteRateResponse);
         }
 
+        public async Task<Tuple<RateResponse, RateResponse>> UpdateRateAsync(RatesMessages ratesMessages, string endpoint, string endpointDelete, bool deleteRates = true)
+        {
+            RateResponse rateResponse = new RateResponse();
+            RateResponse deleteRateResponse = null;
+
+            try
+            {
+                var xml = HotelRateAmountNotifRQ.CreateHotelRateAmountNotifRQ(ratesMessages.RateAmountMessagesList[0]);
+                var soapRequest = Soap.CreateSoapRequestXml(xml);
+                HttpContent httpContent = new StringContent(soapRequest.ToString());
+                var uri = new Uri(endpoint);
+
+                System.Xml.Linq.XElement otaRS = null;
+
+                using (var client = new HttpClient())
+                {
+                    client.Timeout = TimeSpan.FromMinutes(50);
+
+                    // Llamadas asincrónicas
+                    var response = await client.PostAsync(uri, httpContent);
+                    string result = await response.Content.ReadAsStringAsync();
+
+                    otaRS = HotelRateAmountNotifRS.ParseHotelRateAmountNotifRS(result);
+                }
+
+                rateResponse.Xml = otaRS.ToString();
+                rateResponse.RequestXML = soapRequest.ToString();
+                rateResponse.IsSuccess = HotelRateAmountNotifRS.IsSuccessRequest(otaRS);
+            }
+            catch (Exception ex)
+            {
+                rateResponse.IsSuccess = false;
+                rateResponse.Error = new KeyValuePair<string, string>("448", ex.Message);
+
+                var errorsElement = new System.Xml.Linq.XElement("Errors");
+                var errorElementProperty = new System.Xml.Linq.XElement("Error");
+                errorElementProperty.Add(
+                    new System.Xml.Linq.XAttribute("Type", "3"),
+                    new System.Xml.Linq.XAttribute("Code", "448"),
+                    new System.Xml.Linq.XText(ex.Message));
+
+                errorsElement.Add(errorElementProperty);
+                rateResponse.Xml = errorsElement.ToString();
+            }
+
+            if (deleteRates)
+            {
+                if (ratesMessages.RateAmountMessagesList[1].RateAmountMessagesList.Count > 0)
+                {
+                    // Llama a DeleteRatesAsync si la tienes
+                    deleteRateResponse = await DeleteRatesAsync(endpointDelete, ratesMessages.RateAmountMessagesList[1]);
+                }
+            }
+
+            return new Tuple<RateResponse, RateResponse>(rateResponse, deleteRateResponse);
+        }
+
+
+
         public RatesMessages GetRateMessages(int rateId, DateTime startDate, DateTime endDate, int hotelId, int companyId, TypeRateEnum typeRate)
         {
             RatesMessages ratesMessages = null;
@@ -390,11 +494,16 @@ namespace APIServices.Conflux
                     break;
             }
 
-            var hotel = dbContext.Hoteles.First(h => h.idHotel == hotelId);
 
-            var hotelBasicInfo = dbContext.vHotelBasicInfo.FirstOrDefault(vh => vh.Id == hotelId);
+            using (OzHotelesEntities ozHotelesEntities = new OzHotelesEntities()) 
+            {
 
-            ratesMessages = Parser.Parser.ToRateAmountMessages(rates, ratesExceptions, hotelId, companyId, hotel.PlusTax, hotel.Impuesto, hotelBasicInfo.Currency, typeRate);
+                var hotel = ozHotelesEntities.Hoteles.First(h => h.idHotel == hotelId);
+
+                var hotelBasicInfo = ozHotelesEntities.vHotelBasicInfo.FirstOrDefault(vh => vh.Id == hotelId);
+
+                ratesMessages = Parser.Parser.ToRateAmountMessages(rates, ratesExceptions, hotelId, companyId, hotel.PlusTax, hotel.Impuesto, hotelBasicInfo.Currency, typeRate);
+            }
 
             return ratesMessages;
 
@@ -1210,6 +1319,57 @@ namespace APIServices.Conflux
 
         }
 
+        public async Task<RestrictionResponse> UpdateRestrictionAsync(XDocument document, string endpoint, RestrictionEnum restrictionEnum)
+        {
+            RestrictionResponse res = new RestrictionResponse();
+
+            try
+            {
+                Restriction restriction = new Restriction();
+                var uri = new Uri(endpoint);
+
+                System.Xml.Linq.XElement otaRS = null;
+                HttpContent httpContent = new StringContent(document.ToString());
+
+                using (var client = new HttpClient())
+                {
+                    client.Timeout = TimeSpan.FromMinutes(50);
+
+                    // Llamadas asíncronas con await
+                    var response = await client.PostAsync(uri, httpContent);
+                    string result = await response.Content.ReadAsStringAsync();
+
+                    otaRS = HotelAvailNotifRS.ParseHotelAvailNotifRS(result); //Cambiar según tu parser
+                }
+
+                // Respuesta API
+                restriction.Xml.Add(otaRS.ToString());
+                restriction.XmlRequest.Add(document.ToString());
+                restriction.Type = restrictionEnum;
+
+                res.Restrictions.Add(restriction);
+                res.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                res.IsSuccess = false;
+                res.Error = new KeyValuePair<string, string>("448", ex.Message);
+
+                var errorsElement = new System.Xml.Linq.XElement("Errors");
+                var errorElementProperty = new System.Xml.Linq.XElement("Error");
+                errorElementProperty.Add(
+                    new System.Xml.Linq.XAttribute("Type", "3"),
+                    new System.Xml.Linq.XAttribute("Code", "448"),
+                    new System.Xml.Linq.XText(ex.Message));
+
+                errorsElement.Add(errorElementProperty);
+                res.Xml = errorsElement.ToString();
+            }
+
+            return res;
+        }
+
+
         public RateResponse DeleteRates(string endpoint,RateAmountMessages rateAmountMessages)
         {
 
@@ -1268,6 +1428,59 @@ namespace APIServices.Conflux
 
             return res;
 
+        }
+
+        public async Task<RateResponse> DeleteRatesAsync(string endpoint, RateAmountMessages rateAmountMessages)
+        {
+            RateResponse res = new RateResponse();
+
+            try
+            {
+                var xml = HotelRateAmountNotifRQ.CreateHotelRateAmountNotifRQDelete(rateAmountMessages);
+                var soapRequest = Soap.CreateSoapRequestXml(xml);
+                var uri = new Uri(endpoint);
+
+                var request = new HttpRequestMessage
+                {
+                    Method = HttpMethod.Delete,
+                    RequestUri = uri,
+                    Content = new StringContent(soapRequest.ToString())
+                };
+
+                System.Xml.Linq.XElement otaRS = null;
+
+                using (var client = new HttpClient())
+                {
+                    client.Timeout = TimeSpan.FromMinutes(50);
+
+                    // Asincrónico
+                    var response = await client.SendAsync(request);
+                    string result = await response.Content.ReadAsStringAsync();
+
+                    otaRS = HotelRateAmountNotifRS.ParseHotelRateAmountNotifRS(result);
+                }
+
+                res.Xml = otaRS.ToString();
+                res.RequestXML = soapRequest.ToString();
+                res.IsSuccess = HotelRateAmountNotifRS.IsSuccessRequest(otaRS);
+            }
+            catch (Exception ex)
+            {
+                res.IsSuccess = false;
+                res.Error = new KeyValuePair<string, string>("448", ex.Message);
+
+                var errorsElement = new System.Xml.Linq.XElement("Errors");
+                var errorElementProperty = new System.Xml.Linq.XElement("Error");
+                errorElementProperty.Add(
+                    new System.Xml.Linq.XAttribute("Type", "3"),
+                    new System.Xml.Linq.XAttribute("Code", "448"),
+                    new System.Xml.Linq.XText(ex.Message));
+
+                errorsElement.Add(errorElementProperty);
+                res.Xml = errorsElement.ToString();
+            }
+
+            return res;
         }
 
     }

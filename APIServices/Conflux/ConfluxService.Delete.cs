@@ -9,6 +9,7 @@ using APIServices.Conflux.Helpers.RatesPlan;
 using APIServices.Conflux.Helpers.Rooms;
 using APIServices.Conflux.OTA.Models.Rates;
 using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace APIServices.Conflux
 {
@@ -86,6 +87,68 @@ namespace APIServices.Conflux
             return res;
 
         }
+
+        public async Task<DeleteResponse> UpdateDeleteAsync(List<XDocument> documents, string endpoint)
+        {
+            DeleteResponse res = new DeleteResponse();
+
+            try
+            {
+                var uri = new Uri(endpoint);
+
+                foreach (XDocument document in documents)
+                {
+                    DeleteHttpResponse deleteHttpResponse = new DeleteHttpResponse();
+
+                    var request = new HttpRequestMessage
+                    {
+                        Method = HttpMethod.Delete,
+                        RequestUri = uri,
+                        Content = new StringContent(document.ToString())
+                    };
+
+                    string result = string.Empty;
+
+                    using (var client = new HttpClient())
+                    {
+                        client.Timeout = TimeSpan.FromMinutes(50);
+
+                        
+                        var response = await client.SendAsync(request);
+
+                        
+                        result = await response.Content.ReadAsStringAsync();
+                    }
+
+                    deleteHttpResponse.Xml = result;
+                    deleteHttpResponse.XmlRequest = document.ToString();
+                    deleteHttpResponse.IsSuccess = true;
+                    res.DeleteHttpResponseList.Add(deleteHttpResponse);
+
+                    
+                    await Task.Delay(TimeSpan.FromSeconds(1));
+                }
+
+                res.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                res.IsSuccess = false;
+                res.Error = new KeyValuePair<string, string>("448", ex.Message);
+                var errorsElement = new XElement("Errors");
+                var errorElementProperty = new XElement("Error");
+                errorElementProperty.Add(
+                    new XAttribute("Type", "3"),
+                    new XAttribute("Code", "448"),
+                    new XText(ex.Message)
+                );
+                errorsElement.Add(errorElementProperty);
+                res.Xml = errorsElement.ToString();
+            }
+
+            return res;
+        }
+
 
         public List<XDocument> GetSoapRequests(RateAmountMessages rateAmountMessages)
         {

@@ -6,6 +6,8 @@ Imports Portal.General.Common.Data
 
 Imports System.IO
 Imports System.Text
+Imports System.Threading
+Imports System.Threading.Tasks
 Imports System.Xml.Linq
 
 Imports APIServices.Models
@@ -963,23 +965,23 @@ Partial Class AvailabilityRestrictions
             '    End If
             'End If
 
-            Dim confluxService As New ConfluxService()
+            'Dim confluxService As New ConfluxService()
             Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
-            Dim isEnabledGoogleRequest As Boolean = HotelUtilitie.IsEnableGoogleRequest(info.Hotel)
-            Dim isEnabledSendingRatesAPICache As Boolean = HotelUtilitie.IsEnableSendRatesAPICache(info.Hotel)
+            'Dim isEnabledGoogleRequest As Boolean = HotelUtilitie.IsEnableGoogleRequest(info.Hotel)
+            'Dim isEnabledSendingRatesAPICache As Boolean = HotelUtilitie.IsEnableSendRatesAPICache(info.Hotel)
 
-            Dim roomsByHotel As RoomsHotelData = New RoomFacade().getAllRooms(info.Hotel, 1)
-            Dim activeRooms As List(Of DataRow) = roomsByHotel.Tables(RoomsHotelData.TBL_ROOM_HOTEL).Select("eliminada=false").ToList()
+            'Dim roomsByHotel As RoomsHotelData = New RoomFacade().getAllRooms(info.Hotel, 1)
+            'Dim activeRooms As List(Of DataRow) = roomsByHotel.Tables(RoomsHotelData.TBL_ROOM_HOTEL).Select("eliminada=false").ToList()
 
             Dim startDate, endDate As Date
             startDate = CDate(Me.txtInicio.Text)
             endDate = CDate(Me.txtFinal.Text)
 
-            Dim apply As String = Me.GetAplyWeek()
+            Dim apply As String = Me.GetAplyWeek() ' Se usa para los request
             'Dim applyDays As String = RestrictionHelper.ToDayOfWeek(apply)
             'Dim dates As List(Of Tuple(Of Date, Date)) = RestrictionHelper.GetActiveDates(startDate, endDate, applyDays)
 
-            RestrictionsParser.Init(info.Empresa)
+            'RestrictionsParser.Init(info.Empresa)
 
 
             Dim banSelecccion As Boolean = RbdRatePlan.Checked
@@ -1009,79 +1011,86 @@ Partial Class AvailabilityRestrictions
 
                 'Google
 
-                If isEnabledGoogleRequest Or isEnabledSendingRatesAPICache Then
+                SendClosureAsync(Me.ReadUserCookie.GetValue(0).ToString(), Me.UserIdentityName, info.Hotel, info.Empresa, startDate, endDate, ddlStatus.SelectedValue, apply, RestrictionEnum.LockGral)
 
-                    Dim dsRatePlans As RatePlanData = New RatePlanFacade().GetRatePlanByIdHotel(info.Hotel.ToString(), idioma:=1, IncluirPaquetesSegmentoK:=1, incluirNetRatesPlan:=1, idAsociacion:=-1, DeleteFilter:=1)
-                    Dim dsRatePlansPromos As RatePlanData = New RatePlanFacade().GetRatePlanByIdHotel(info.Hotel.ToString(), idioma:=1, IncluirPaquetesSegmentoK:=1, incluirNetRatesPlan:=1, idAsociacion:=-1, DeleteFilter:=1, getPromos:=True)
+                'If isEnabledGoogleRequest Or isEnabledSendingRatesAPICache Then
+
+                '    Dim dsRatePlans As RatePlanData = New RatePlanFacade().GetRatePlanByIdHotel(info.Hotel.ToString(), idioma:=1, IncluirPaquetesSegmentoK:=1, incluirNetRatesPlan:=1, idAsociacion:=-1, DeleteFilter:=1)
+                '    Dim dsRatePlansPromos As RatePlanData = New RatePlanFacade().GetRatePlanByIdHotel(info.Hotel.ToString(), idioma:=1, IncluirPaquetesSegmentoK:=1, incluirNetRatesPlan:=1, idAsociacion:=-1, DeleteFilter:=1, getPromos:=True)
 
 
-                    Dim activeRatePlans = dsRatePlans.Tables(RatePlanData.RATEPLAN_TABLE).Select().ToList()
+                '    Dim activeRatePlans = dsRatePlans.Tables(RatePlanData.RATEPLAN_TABLE).Select().ToList()
 
-                    Dim filterPromosDates As String = "((FechaFin IS NOT NULL AND FechaFin>= '" + DateTime.Now.Date.ToString() + "') OR (FechaFin IS NULL AND PromoEndDate >= '" + DateTime.Now.Date.ToString() + "'))"
-                    Dim activeRatePlansPromos = dsRatePlansPromos.Tables(RatePlanData.RATEPLAN_TABLE).Select(filterPromosDates).ToList()
+                '    Dim filterPromosDates As String = "((FechaFin IS NOT NULL AND FechaFin>= '" + DateTime.Now.Date.ToString() + "') OR (FechaFin IS NULL AND PromoEndDate >= '" + DateTime.Now.Date.ToString() + "'))"
+                '    Dim activeRatePlansPromos = dsRatePlansPromos.Tables(RatePlanData.RATEPLAN_TABLE).Select(filterPromosDates).ToList()
 
-                    Dim lockGral As List(Of spGetLockGralByHotel_Result) = New List(Of spGetLockGralByHotel_Result)
-                    Dim tempLock As spGetLockGralByHotel_Result = New spGetLockGralByHotel_Result
-                    tempLock.StartDate = startDate
-                    tempLock.EndDate = endDate
-                    tempLock.Status = ddlStatus.SelectedValue
-                    tempLock.ApplyWeek = apply
-                    lockGral.Add(tempLock)
+                '    Dim lockGral As List(Of spGetLockGralByHotel_Result) = New List(Of spGetLockGralByHotel_Result)
+                '    Dim tempLock As spGetLockGralByHotel_Result = New spGetLockGralByHotel_Result
 
-                    If isEnabledGoogleRequest Then
-                        SendClosureToService(lockGral, activeRooms, activeRatePlans, HotelUtilitie.ENDPOINTCLOSURE, "Conflux", "LockGral", RestrictionEnum.LockGral)
-                        SendClosureToService(lockGral, activeRooms, activeRatePlansPromos, HotelUtilitie.ENDPOINTCLOSURE, "Conflux", "LockGralPromos", RestrictionEnum.LockGral)
-                    End If
+                '    tempLock.StartDate = startDate
+                '    tempLock.EndDate = endDate
+                '    tempLock.Status = ddlStatus.SelectedValue
+                '    tempLock.ApplyWeek = apply
+                '    lockGral.Add(tempLock)
 
-                    If isEnabledSendingRatesAPICache Then
-                        SendClosureToService(lockGral, activeRooms, activeRatePlans, HotelUtilitie.ENDPOINTAPICLOSURE, "APICache", "LockGral", RestrictionEnum.LockGral)
-                        SendClosureToService(lockGral, activeRooms, activeRatePlansPromos, HotelUtilitie.ENDPOINTAPICLOSURE, "APICache", "LockGralPromos", RestrictionEnum.LockGral)
-                    End If
+                '    If isEnabledGoogleRequest Then
+                '        SendClosureToService(lockGral, activeRooms, activeRatePlans, HotelUtilitie.ENDPOINTCLOSURE, "Conflux", "LockGral", RestrictionEnum.LockGral)
+                '        SendClosureToService(lockGral, activeRooms, activeRatePlansPromos, HotelUtilitie.ENDPOINTCLOSURE, "Conflux", "LockGralPromos", RestrictionEnum.LockGral)
+                '    End If
 
-                End If
+                '    If isEnabledSendingRatesAPICache Then
+                '        SendClosureToService(lockGral, activeRooms, activeRatePlans, HotelUtilitie.ENDPOINTAPICLOSURE, "APICache", "LockGral", RestrictionEnum.LockGral)
+                '        SendClosureToService(lockGral, activeRooms, activeRatePlansPromos, HotelUtilitie.ENDPOINTAPICLOSURE, "APICache", "LockGralPromos", RestrictionEnum.LockGral)
+                '    End If
+
+                'End If
 
             Else
                 'Plan Tarifario
                 closeRateplan(nota, splan:=ddlRateplans.SelectedItem.Text)
                 'closeRateplan(nota, splan:=ddlRateplans.SelectedItem.Text, hotelId:=info.Hotel, dates:=dates, confluxService:=confluxService, isEnabledGoogleRequest:=isEnabledGoogleRequest, activeRooms:=activeRooms, restrictionType:=RestrictionEnum.LockRatePlan)
 
-                If isEnabledGoogleRequest Or isEnabledSendingRatesAPICache Then
-                    Dim dsRatePlansPromos As RatePlanData = New RatePlanFacade().GetRatePlanByIdHotel(info.Hotel.ToString(), idioma:=1, IncluirPaquetesSegmentoK:=1, incluirNetRatesPlan:=1, idAsociacion:=-1, DeleteFilter:=1, getPromos:=True)
-                    Dim filterPromosDates As String = "((FechaFin IS NOT NULL AND FechaFin>= '" + DateTime.Now.Date.ToString() + "') OR (FechaFin IS NULL AND PromoEndDate >= '" + DateTime.Now.Date.ToString() + "'))"
-                    Dim activeRatePlansPromos As List(Of DataRow) = dsRatePlansPromos.Tables(RatePlanData.RATEPLAN_TABLE).Select(filterPromosDates).ToList()
-                    Dim promos As List(Of spGetPromosByRatePlan_Result) = HotelUtilitie.GetPromosByRatePlan(info.Hotel, ddlRateplans.SelectedValue)
-                    Dim validPromosList As List(Of DataRow) = GetValidPromos(activeRatePlansPromos, promos)
-                    Dim lockRatePlans As List(Of spGetLockRatePlansByHotel_Result) = New List(Of spGetLockRatePlansByHotel_Result)
-                    'Solo se usa el Modelo para las promos
-                    Dim lockPromos As List(Of spGetLockGralByHotel_Result) = New List(Of spGetLockGralByHotel_Result)
+                'If isEnabledGoogleRequest Or isEnabledSendingRatesAPICache Then
+                '    Dim dsRatePlansPromos As RatePlanData = New RatePlanFacade().GetRatePlanByIdHotel(info.Hotel.ToString(), idioma:=1, IncluirPaquetesSegmentoK:=1, incluirNetRatesPlan:=1, idAsociacion:=-1, DeleteFilter:=1, getPromos:=True)
+                '    Dim filterPromosDates As String = "((FechaFin IS NOT NULL AND FechaFin>= '" + DateTime.Now.Date.ToString() + "') OR (FechaFin IS NULL AND PromoEndDate >= '" + DateTime.Now.Date.ToString() + "'))"
+                '    Dim activeRatePlansPromos As List(Of DataRow) = dsRatePlansPromos.Tables(RatePlanData.RATEPLAN_TABLE).Select(filterPromosDates).ToList()
+                '    Dim promos As List(Of spGetPromosByRatePlan_Result) = HotelUtilitie.GetPromosByRatePlan(info.Hotel, ddlRateplans.SelectedValue)
+                '    Dim validPromosList As List(Of DataRow) = GetValidPromos(activeRatePlansPromos, promos)
+                '    Dim lockRatePlans As List(Of spGetLockRatePlansByHotel_Result) = New List(Of spGetLockRatePlansByHotel_Result)
+                '    'Solo se usa el Modelo para las promos
+                '    Dim lockPromos As List(Of spGetLockGralByHotel_Result) = New List(Of spGetLockGralByHotel_Result)
 
-                    Dim tempLockPromos As spGetLockGralByHotel_Result = New spGetLockGralByHotel_Result
-                    tempLockPromos.StartDate = startDate
-                    tempLockPromos.EndDate = endDate
-                    tempLockPromos.Status = ddlStatus.SelectedValue
-                    tempLockPromos.ApplyWeek = apply
-                    lockPromos.Add(tempLockPromos)
+                '    Dim tempLockPromos As spGetLockGralByHotel_Result = New spGetLockGralByHotel_Result
+                '    tempLockPromos.StartDate = startDate
+                '    tempLockPromos.EndDate = endDate
+                '    tempLockPromos.Status = ddlStatus.SelectedValue
+                '    tempLockPromos.ApplyWeek = apply
+                '    lockPromos.Add(tempLockPromos)
 
 
-                    Dim tempLockRatePlans As spGetLockRatePlansByHotel_Result = New spGetLockRatePlansByHotel_Result
-                    tempLockRatePlans.StartDate = startDate
-                    tempLockRatePlans.EndDate = endDate
-                    tempLockRatePlans.Status = ddlStatus.SelectedValue
-                    tempLockRatePlans.RatePlanId = ddlRateplans.SelectedValue
-                    tempLockRatePlans.ApplyWeek = apply
-                    lockRatePlans.Add(tempLockRatePlans)
+                '    Dim tempLockRatePlans As spGetLockRatePlansByHotel_Result = New spGetLockRatePlansByHotel_Result
+                '    tempLockRatePlans.StartDate = startDate
+                '    tempLockRatePlans.EndDate = endDate
+                '    tempLockRatePlans.Status = ddlStatus.SelectedValue
+                '    tempLockRatePlans.RatePlanId = ddlRateplans.SelectedValue
+                '    tempLockRatePlans.ApplyWeek = apply
+                '    lockRatePlans.Add(tempLockRatePlans)
 
-                    If isEnabledGoogleRequest Then
-                        SendClosureToService(lockRatePlans, activeRooms, HotelUtilitie.ENDPOINTCLOSURE, "Conflux", "LockRatePlan", RestrictionEnum.LockRatePlan)
-                        SendClosureToService(lockPromos, activeRooms, validPromosList, HotelUtilitie.ENDPOINTCLOSURE, "Conflux", "LockRatePlanPromos", RestrictionEnum.LockRatePlan)
-                    End If
+                '    If isEnabledGoogleRequest Then
+                '        SendClosureToService(lockRatePlans, activeRooms, HotelUtilitie.ENDPOINTCLOSURE, "Conflux", "LockRatePlan", RestrictionEnum.LockRatePlan)
+                '        SendClosureToService(lockPromos, activeRooms, validPromosList, HotelUtilitie.ENDPOINTCLOSURE, "Conflux", "LockRatePlanPromos", RestrictionEnum.LockRatePlan)
+                '    End If
 
-                    If isEnabledSendingRatesAPICache Then
-                        SendClosureToService(lockRatePlans, activeRooms, HotelUtilitie.ENDPOINTAPICLOSURE, "APICache", "LockRatePlan", RestrictionEnum.LockRatePlan)
-                        SendClosureToService(lockPromos, activeRooms, validPromosList, HotelUtilitie.ENDPOINTAPICLOSURE, "APICache", "LockRatePlanPromos", RestrictionEnum.LockRatePlan)
-                    End If
+                '    If isEnabledSendingRatesAPICache Then
+                '        SendClosureToService(lockRatePlans, activeRooms, HotelUtilitie.ENDPOINTAPICLOSURE, "APICache", "LockRatePlan", RestrictionEnum.LockRatePlan)
+                '        SendClosureToService(lockPromos, activeRooms, validPromosList, HotelUtilitie.ENDPOINTAPICLOSURE, "APICache", "LockRatePlanPromos", RestrictionEnum.LockRatePlan)
+                '    End If
 
-                End If
+                'End If
+
+                SendClosureAsync(Me.ReadUserCookie.GetValue(0).ToString(), Me.UserIdentityName, info.Hotel, info.Empresa, startDate, endDate, ddlStatus.SelectedValue, apply, RestrictionEnum.LockRatePlan, ddlRateplans.SelectedValue)
+
+
             End If
             iniCtrl()
         End If
@@ -2284,5 +2293,163 @@ Partial Class AvailabilityRestrictions
 
 #End Region
 
+
+#Region "Google Async"
+    Public Sub SendClosureAsync(ByVal userName As String, ByVal userId As Integer, ByVal hotelId As Integer, ByVal companyId As Integer, ByVal startDate As Date, ByVal endDate As Date, ByVal status As String, ByVal apply As String, ByVal typeOfLock As RestrictionEnum, Optional ratePlan As String = "")
+        Task.Run(Async Function()
+
+
+                     Dim isEnabledGoogleRequest As Boolean = HotelUtilitie.IsEnableGoogleRequest(hotelId)
+                     Dim isEnabledSendingRatesAPICache As Boolean = HotelUtilitie.IsEnableSendRatesAPICache(hotelId)
+
+                     Dim roomsByHotel As RoomsHotelData = New RoomFacade().getAllRooms(hotelId, 1)
+                     Dim activeRooms As List(Of DataRow) = roomsByHotel.Tables(RoomsHotelData.TBL_ROOM_HOTEL).Select("eliminada=false").ToList()
+
+                     Select Case typeOfLock
+                         Case RestrictionEnum.LockGral
+
+                             Dim dsRatePlans As RatePlanData = HotelUtilitie.GetRatePlans(hotelId.ToString())
+                             Dim activeRatePlans = dsRatePlans.Tables(RatePlanData.RATEPLAN_TABLE).Select().ToList()
+
+
+                             Dim activeRatePlansPromos = HotelUtilitie.GetRatePlansPromos(hotelId.ToString())
+
+                             Dim lockGral As List(Of spGetLockGralByHotel_Result) = New List(Of spGetLockGralByHotel_Result)
+                             Dim tempLock As spGetLockGralByHotel_Result = New spGetLockGralByHotel_Result
+                             tempLock.StartDate = startDate
+                             tempLock.EndDate = endDate
+                             tempLock.Status = status
+                             tempLock.ApplyWeek = apply
+                             lockGral.Add(tempLock)
+
+                             Await SendClosureIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledGoogleRequest, RestrictionEnum.LockGral, "Conflux", "LockGral", HotelUtilitie.ENDPOINTCLOSURE, activeRooms, lockGral:=lockGral, activeRatePlans:=activeRatePlans) 'Google
+                             Await SendClosureIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledGoogleRequest, RestrictionEnum.LockGral, "Conflux", "LockGralPromos", HotelUtilitie.ENDPOINTCLOSURE, activeRooms, lockGral:=lockGral, activeRatePlans:=activeRatePlansPromos) 'Google Promos
+
+                             Await SendClosureIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledSendingRatesAPICache, RestrictionEnum.LockGral, "APICache", "LockGral", HotelUtilitie.ENDPOINTAPICLOSURE, activeRooms, lockGral:=lockGral, activeRatePlans:=activeRatePlans) 'Google
+                             Await SendClosureIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledSendingRatesAPICache, RestrictionEnum.LockGral, "APICache", "LockGralPromos", HotelUtilitie.ENDPOINTAPICLOSURE, activeRooms, lockGral:=lockGral, activeRatePlans:=activeRatePlansPromos) 'Google Promos
+
+                         Case RestrictionEnum.LockRatePlan
+
+                             Dim activeRatePlansPromos As List(Of DataRow) = HotelUtilitie.GetRatePlansPromos(hotelId.ToString())
+                             Dim promos As List(Of spGetPromosByRatePlan_Result) = HotelUtilitie.GetPromosByRatePlan(hotelId.ToString(), ratePlan)
+                             Dim validPromosList As List(Of DataRow) = HotelUtilitie.GetValidPromos(activeRatePlansPromos, promos)
+
+                             'Solo se usa el Modelo para las promos
+                             Dim lockPromos As List(Of spGetLockGralByHotel_Result) = New List(Of spGetLockGralByHotel_Result)
+                             Dim tempLockPromos As spGetLockGralByHotel_Result = New spGetLockGralByHotel_Result
+                             tempLockPromos.StartDate = startDate
+                             tempLockPromos.EndDate = endDate
+                             tempLockPromos.Status = status
+                             tempLockPromos.ApplyWeek = apply
+                             lockPromos.Add(tempLockPromos)
+
+                             Dim lockRatePlans As List(Of spGetLockRatePlansByHotel_Result) = New List(Of spGetLockRatePlansByHotel_Result)
+                             Dim tempLockRatePlans As spGetLockRatePlansByHotel_Result = New spGetLockRatePlansByHotel_Result
+                             tempLockRatePlans.StartDate = startDate
+                             tempLockRatePlans.EndDate = endDate
+                             tempLockRatePlans.Status = status
+                             tempLockRatePlans.RatePlanId = ratePlan
+                             tempLockRatePlans.ApplyWeek = apply
+                             lockRatePlans.Add(tempLockRatePlans)
+
+                             Await SendClosureIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledGoogleRequest, RestrictionEnum.LockRatePlan, "Conflux", "LockRatePlan", HotelUtilitie.ENDPOINTCLOSURE, activeRooms, lockRatePlans:=lockRatePlans, isPromo:=False)
+                             Await SendClosureIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledGoogleRequest, RestrictionEnum.LockRatePlan, "Conflux", "LockRatePlanPromos", HotelUtilitie.ENDPOINTCLOSURE, activeRooms, lockGral:=lockPromos, activeRatePlans:=validPromosList, isPromo:=True)
+
+                             Await SendClosureIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledGoogleRequest, RestrictionEnum.LockRatePlan, "APICache", "LockRatePlan", HotelUtilitie.ENDPOINTAPICLOSURE, activeRooms, lockRatePlans:=lockRatePlans, isPromo:=False)
+                             Await SendClosureIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledGoogleRequest, RestrictionEnum.LockRatePlan, "APICache", "LockRatePlanPromos", HotelUtilitie.ENDPOINTAPICLOSURE, activeRooms, lockGral:=lockPromos, activeRatePlans:=validPromosList, isPromo:=True)
+
+                     End Select
+
+                 End Function)
+    End Sub
+
+    Private Async Function SendClosureIfEnabledAsync(ByVal userName As String, ByVal userId As Integer, ByVal hotelId As Integer, ByVal companyId As Integer, ByVal isEnabled As Boolean, ByVal typeOfLock As RestrictionEnum, ByVal service As String, ByVal lockOfType As String,
+                                                     ByVal endPoint As String,
+                                                     ByVal activeRooms As List(Of DataRow), Optional ByVal lockGral As List(Of spGetLockGralByHotel_Result) = Nothing, Optional ByVal activeRatePlans As List(Of DataRow) = Nothing,
+                                                     Optional ByVal lockRatePlans As List(Of spGetLockRatePlansByHotel_Result) = Nothing, Optional ByVal isPromo As Boolean = False) As Task
+
+        If isEnabled Then
+
+            RestrictionsParser.Init(companyId)
+
+            Select Case typeOfLock
+                Case RestrictionEnum.LockGral
+
+                    If activeRatePlans.Count > 0 Then
+
+                        Dim availStatusMessages As AvailStatusMessages = RestrictionsParser.ToAvailStatusMessages(lockGral, activeRooms, activeRatePlans)
+
+                        Await SendClosureToServiceAsync(userName, userId, hotelId, companyId, endPoint, service, lockOfType, typeOfLock, availStatusMessages)
+
+                    End If
+
+                Case RestrictionEnum.LockRatePlan
+
+                    Dim availStatusMessages As AvailStatusMessages = If(isPromo, RestrictionsParser.ToAvailStatusMessages(lockGral, activeRooms, activeRatePlans),
+                        RestrictionsParser.ToAvailStatusMessages(activeRooms, lockRatePlans))
+
+
+                    Await SendClosureToServiceAsync(userName, userId, hotelId, companyId, endPoint, service, lockOfType, typeOfLock, availStatusMessages)
+
+            End Select
+
+
+        End If
+
+    End Function
+
+    Private Async Function SendClosureToServiceAsync(ByVal userName As String, ByVal userId As Integer, ByVal hotelId As Integer, ByVal companyId As Integer, ByVal endpoint As String, ByVal service As String, ByVal typeOfLock As String,
+                                                     ByVal typeOfLockEnum As RestrictionEnum, ByVal availStatusMessages As AvailStatusMessages) As Task
+
+        Try
+            Dim confluxService As New ConfluxService()
+
+            Dim requests As List(Of XDocument) = New List(Of XDocument)
+
+            Dim hotelAvailNotifRQList As List(Of XElement) = HotelAvailNotifRQ.CreateHotelAvailNotifRQList(availStatusMessages)
+
+            For Each availStatusMessage As XElement In hotelAvailNotifRQList
+                Dim xmlRequest As XDocument = APIServices.Xml.Soap.Soap.CreateSoapRequestXml(availStatusMessage)
+                requests.Add(xmlRequest)
+            Next
+
+            Dim restrictionResponseList As List(Of Models.Restrictions.Response.RestrictionResponse) = New List(Of Models.Restrictions.Response.RestrictionResponse)
+
+            For Each request As XDocument In requests
+                Dim response As Models.Restrictions.Response.RestrictionResponse = Await confluxService.UpdateRestrictionAsync(request, endpoint, typeOfLockEnum)
+                restrictionResponseList.Add(response)
+            Next
+
+            Dim index As Integer = 0
+
+            For Each response As Models.Restrictions.Response.RestrictionResponse In restrictionResponseList
+
+                If response.IsSuccess Then
+
+                    Dim note As String = String.Format("Sincronizar {0} {1} request {2} con el hotel: {3}", typeOfLock, service, (index + 1), MyBase.cInfoActual.Hotel)
+
+                    HotelUtilitie.Log(userName, userId, "/Pages/AvailabilityRestrictions.aspx", hotelId, Actions.Sincronizar, note, "", response.Restrictions(0).XmlRequest(0).ToString(), response.Restrictions(0).Xml(0).ToString())
+                Else
+
+                    Dim noteError As String = String.Format("Error al sincronizar {0} {1} request {2} con el hotel: {3}", typeOfLock, service, (index + 1), MyBase.cInfoActual.Hotel)
+
+                    HotelUtilitie.Log(userName, userId, "/Pages/AvailabilityRestrictions.aspx", hotelId, Actions.Sincronizar, noteError, "", response.Xml.ToString(), "")
+
+                End If
+
+                index = index + 1
+            Next
+
+        Catch ex As Exception
+
+            Dim noteError As String = String.Format("Error al sincronizar {0} {1} con el hotel: {2}", typeOfLock, service, MyBase.cInfoActual.Hotel)
+
+            HotelUtilitie.Log(userName, userId, "/Pages/AvailabilityRestrictions.aspx", hotelId, Actions.Sincronizar, noteError, "", ex.Message, "")
+
+        End Try
+
+    End Function
+
+#End Region
 
 End Class

@@ -204,7 +204,7 @@ export default {
             };
         },
         loadRatesPlans(hotelId){
-            RoomsClosureService.getRatePlansByHotelIdSegmentsValids(hotelId)
+            RoomsClosureService.getAllRatePlansByHotelIdSegmentsValids(hotelId)
             .then(response => {
                 console.log(response.body);
 

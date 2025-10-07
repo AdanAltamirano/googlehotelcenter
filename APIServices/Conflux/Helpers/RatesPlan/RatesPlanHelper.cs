@@ -70,6 +70,19 @@ namespace APIServices.Conflux.Helpers.RatesPlan
 
         }
 
+        public static List<DataRow> GetAllRatePlansPromosByHotel(int hotelId)
+        {
+            RatePlanData datasetRatePlanData = new RatePlanFacade().GetRatePlanByIdHotel(hotelId.ToString(), idioma: 1, IncluirPaquetesSegmentoK: 1, incluirNetRatesPlan: 1, idAsociacion: -1, DeleteFilter: -1, getPromos: true);
+
+            string rowFilter = string.Empty;
+
+            var ratePlansPromos = datasetRatePlanData.Tables[RatePlanData.RATEPLAN_TABLE].Select().ToList();
+
+            return ratePlansPromos;
+
+        }
+
+
 
     }
 }

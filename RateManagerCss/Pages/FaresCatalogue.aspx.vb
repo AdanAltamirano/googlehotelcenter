@@ -10,6 +10,9 @@ Imports APIServices.Conflux.OTA.Models.Rates
 Imports APIServices.Conflux.Models.Rates.Response
 Imports APIServices.Conflux.Parser.Restriction
 Imports RateManager.Utitlities.Hotel
+Imports System.Threading
+Imports System.Threading.Tasks
+
 Partial Class FaresCatalogue
     Inherits PaginaBase
     Enum dgcolumns
@@ -219,12 +222,19 @@ Partial Class FaresCatalogue
     Public Sub CommandDelete(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.CommandEventArgs)
         If e.CommandName = "Delete" Then
 
+            Dim maxConcurrentTasks As Integer = 5
+            Dim semaphore As New SemaphoreSlim(maxConcurrentTasks)
+            Dim tasksToExecute As New List(Of Func(Of Task))()
+            Dim userName As String = Me.ReadUserCookie().GetValue(0)
+            Dim userId As Integer = Me.UserIdentityName
+
             Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
-            Dim isEnabledGoogleRequest As Boolean = HotelUtilitie.IsEnableGoogleRequest(info.Hotel)
-            Dim isEnabledSendingRatesAPICache As Boolean = HotelUtilitie.IsEnableSendRatesAPICache(info.Hotel)
-            Dim rateAmountMessages As RateAmountMessages = New RateAmountMessages()
-            rateAmountMessages.HotelCode = info.Empresa
-            rateAmountMessages.RateAmountMessagesList = New List(Of OTA.Models.Rates.RateAmountMessage)
+            'Dim isEnabledGoogleRequest As Boolean = HotelUtilitie.IsEnableGoogleRequest(info.Hotel)
+            'Dim isEnabledSendingRatesAPICache As Boolean = HotelUtilitie.IsEnableSendRatesAPICache(info.Hotel)
+
+            'Dim rateAmountMessages As RateAmountMessages = New RateAmountMessages()
+            'rateAmountMessages.HotelCode = info.Empresa
+            'rateAmountMessages.RateAmountMessagesList = New List(Of OTA.Models.Rates.RateAmountMessage)
 
             For Each room As DataGridItem In dgRooms.Items
                 Dim checkBoxTemp As CheckBox = room.FindControl("deleteCheckbox")
@@ -235,31 +245,47 @@ Partial Class FaresCatalogue
                     Dim lblEndDateNoFormat As Label = room.FindControl("lblEndDateNoFormat")
                     Dim startDate As DateTime = Convert.ToDateTime(lblStartDateNoFormat.Text)
                     Dim endDate As DateTime = Convert.ToDateTime(lblEndDateNoFormat.Text)
+
                     Dim vDayRates As List(Of vDayRates) = Helpers.Rates.RatesHelpers.GetVDayRate(iFareIdTemp, startDate, endDate)
+
 
                     With New FaresSystem
                         If .DeleteFares(iFareIdTemp) Then
 
                             Me.guardalog("/Pages/FaresCatalogue.aspx", PaginaBase.acciones.Eliminar, "Se eliminó la tarifa de la habitación " & room.Cells(dgcolumns.codigohabitacion).Text & " de la fecha " & room.Cells(dgcolumns.FechaInicia).Text & " a la fecha " & room.Cells(dgcolumns.FechaFinaliza).Text & " con el rateplan " & labelTemp.Text)
 
-                            If isEnabledGoogleRequest Or isEnabledSendingRatesAPICache Then
+                            'If isEnabledGoogleRequest Or isEnabledSendingRatesAPICache Then
 
-                                Parser.Parser.ToRateAmountMessagesDelete(vDayRates, Nothing, TypeRateEnum.RoomRate, rateAmountMessages.RateAmountMessagesList)
+                            '    Parser.Parser.ToRateAmountMessagesDelete(vDayRates, Nothing, TypeRateEnum.RoomRate, rateAmountMessages.RateAmountMessagesList)
 
-                            End If
+                            'End If
+
+                            tasksToExecute.Add(Function() SendDeleteAsync(userName, userId, info.Hotel, info.Empresa, vDayRates))
 
                         End If
                     End With
                 End If
             Next
 
-            If isEnabledGoogleRequest Then
-                SendDeleteToService(rateAmountMessages, info.Hotel, HotelUtilitie.ENDPOINTDELETE, "Conflux")
-            End If
+            'If isEnabledGoogleRequest Then
+            '    SendDeleteToService(rateAmountMessages, info.Hotel, HotelUtilitie.ENDPOINTDELETE, "Conflux")
+            'End If
 
-            If isEnabledSendingRatesAPICache Then
-                SendDeleteToService(rateAmountMessages, info.Hotel, HotelUtilitie.ENDPOINTAPIDELETE, "APICache")
-            End If
+            'If isEnabledSendingRatesAPICache Then
+            '    SendDeleteToService(rateAmountMessages, info.Hotel, HotelUtilitie.ENDPOINTAPIDELETE, "APICache")
+            'End If
+
+
+            For Each taskDelegate As Func(Of Task) In tasksToExecute
+                Task.Run(Async Function()
+                             Await semaphore.WaitAsync()
+                             Try
+                                 Await taskDelegate()  ' Aquí se ejecuta MandarTarifasAsync
+                             Finally
+                                 semaphore.Release()
+                             End Try
+                         End Function)
+            Next
 
 
 
@@ -686,6 +712,13 @@ Partial Class FaresCatalogue
         Dim FareJuniorMin As Double
         Dim sCorreo As String = ""
 
+        Dim maxConcurrentTasks As Integer = 5
+        Dim semaphore As New SemaphoreSlim(maxConcurrentTasks)
+        Dim tasksToExecute As New List(Of Func(Of Task))()
+        Dim userName As String = Me.ReadUserCookie().GetValue(0)
+        Dim userId As Integer = Me.UserIdentityName
+
+
         If CtrlPlanFaresExc2.IsValidData AndAlso CtrlPlanFares2.IsValidData Then
 
             If Me.idroom <> 0 Then
@@ -710,8 +743,8 @@ Partial Class FaresCatalogue
 
 
                     Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
-                    Dim isEnabledGoogleRequest As Boolean = HotelUtilitie.IsEnableGoogleRequest(info.Hotel)
-                    Dim isEnabledSendingRatesAPICache As Boolean = HotelUtilitie.IsEnableSendRatesAPICache(info.Hotel)
+                    'Dim isEnabledGoogleRequest As Boolean = HotelUtilitie.IsEnableGoogleRequest(info.Hotel)
+                    'Dim isEnabledSendingRatesAPICache As Boolean = HotelUtilitie.IsEnableSendRatesAPICache(info.Hotel)
 
                     For i As Integer = 1 To CtrRateAplication1.lstDatesCount
                         Dim f1, f2 As Date
@@ -738,11 +771,11 @@ Partial Class FaresCatalogue
                         FaresAdjust(f1, f2)
 
                         Dim auxFareId As Integer = 0
-                        Dim vDayRates As List(Of vDayRates) = Nothing
+                        'Dim vDayRates As List(Of vDayRates) = Nothing
                         Dim areSameDates = False
-                        If Editando Then
-                            vDayRates = Helpers.Rates.RatesHelpers.GetVDayRate(CtrRateAplication1.m_iFareId, CtrRateAplication1.m_StartDateFareId, CtrRateAplication1.m_EndDateFareId)
-                        End If
+                        'If Editando Then
+                        '    vDayRates = Helpers.Rates.RatesHelpers.GetVDayRate(CtrRateAplication1.m_iFareId, CtrRateAplication1.m_StartDateFareId, CtrRateAplication1.m_EndDateFareId)
+                        'End If
 
                         If CtrRateAplication1.AddFare(idroom, CtrRateAplication1.m_iFareId, f1, f2, chLast, rpLast, f1Last, f2Last, ddlRooms.SelectedItem.Text, publish, (bPorOcupacion = 1), FareAdultMin, FareChildMin, FareJuniorMin, sCorreo) = True Then
                             CtrlPlanFares2.m_iFareId = CtrRateAplication1.m_iFareId
@@ -754,44 +787,48 @@ Partial Class FaresCatalogue
                             Me.CtrlPlanFares2.m_iFareId = 0
                             CtrRateAplication1.m_iFareId = 0
 
-                            Dim ratesForRequest As RatesMessages = Nothing
+                            'Dim ratesForRequest As RatesMessages = Nothing
 
-                            If isEnabledGoogleRequest Or isEnabledSendingRatesAPICache Then
-                                ratesForRequest = HotelUtilitie.ConfluxServiceHelper.GetRateMessages(auxFareId, f1, f2, info.Hotel, info.Empresa, TypeRateEnum.RoomRate)
-                            End If
+                            'If isEnabledGoogleRequest Or isEnabledSendingRatesAPICache Then
+                            '    ratesForRequest = HotelUtilitie.ConfluxServiceHelper.GetRateMessages(auxFareId, f1, f2, info.Hotel, info.Empresa, TypeRateEnum.RoomRate)
+                            'End If
 
-                            If isEnabledGoogleRequest And ratesForRequest IsNot Nothing Then
+                            'If isEnabledGoogleRequest And ratesForRequest IsNot Nothing Then
 
-                                Try
-                                    SendRatesToService(ratesForRequest, info.Hotel, HotelUtilitie.ENDPOINT, HotelUtilitie.ENDPOINTDELETE, "Conflux", True)
-                                    SendClosureToService(auxFareId, f1, f2, HotelUtilitie.ENDPOINTCLOSURE, "Conflux", info)
+                            '    Try
+                            '        SendRatesToService(ratesForRequest, info.Hotel, HotelUtilitie.ENDPOINT, HotelUtilitie.ENDPOINTDELETE, "Conflux", True)
+                            '        SendClosureToService(auxFareId, f1, f2, HotelUtilitie.ENDPOINTCLOSURE, "Conflux", info)
 
-                                Catch ex As Exception
+                            '    Catch ex As Exception
 
-                                    Dim errorsElement As New System.Xml.Linq.XElement("Errors")
-                                    Dim errorElementProperty As New System.Xml.Linq.XElement("Error")
-                                    errorElementProperty.Add(New System.Xml.Linq.XAttribute("Type", "3"), New System.Xml.Linq.XAttribute("Code", "448"), New System.Xml.Linq.XText(ex.Message))
-                                    errorsElement.Add(errorElementProperty)
-                                    Me.guardalog("/Pages/FaresCatalogue.aspx", acciones.Sincronizar, "Error al sincronizar con Conflux", "", "", errorsElement.ToString(), info.Hotel)
-                                End Try
-                            End If
+                            '        Dim errorsElement As New System.Xml.Linq.XElement("Errors")
+                            '        Dim errorElementProperty As New System.Xml.Linq.XElement("Error")
+                            '        errorElementProperty.Add(New System.Xml.Linq.XAttribute("Type", "3"), New System.Xml.Linq.XAttribute("Code", "448"), New System.Xml.Linq.XText(ex.Message))
+                            '        errorsElement.Add(errorElementProperty)
+                            '        Me.guardalog("/Pages/FaresCatalogue.aspx", acciones.Sincronizar, "Error al sincronizar con Conflux", "", "", errorsElement.ToString(), info.Hotel)
+                            '    End Try
+                            'End If
 
-                            If isEnabledSendingRatesAPICache And ratesForRequest IsNot Nothing Then
+                            'If isEnabledSendingRatesAPICache And ratesForRequest IsNot Nothing Then
 
-                                Try
-                                    SendRatesToService(ratesForRequest, info.Hotel, HotelUtilitie.ENDPOINTAPI, HotelUtilitie.ENDPOINTAPIDELETE, "APICache", False)
-                                    SendClosureToService(auxFareId, f1, f2, HotelUtilitie.ENDPOINTAPICLOSURE, "APICache", info)
+                            '    Try
+                            '        SendRatesToService(ratesForRequest, info.Hotel, HotelUtilitie.ENDPOINTAPI, HotelUtilitie.ENDPOINTAPIDELETE, "APICache", False)
+                            '        SendClosureToService(auxFareId, f1, f2, HotelUtilitie.ENDPOINTAPICLOSURE, "APICache", info)
 
-                                Catch ex As Exception
-                                    Dim errorsElement As New System.Xml.Linq.XElement("Errors")
-                                    Dim errorElementProperty As New System.Xml.Linq.XElement("Error")
-                                    errorElementProperty.Add(New System.Xml.Linq.XAttribute("Type", "3"), New System.Xml.Linq.XAttribute("Code", "448"), New System.Xml.Linq.XText(ex.Message))
-                                    errorsElement.Add(errorElementProperty)
-                                    Me.guardalog("/Pages/FaresCatalogue.aspx", acciones.Sincronizar, "Error al sincronizar con APICache", "", "", errorsElement.ToString(), info.Hotel)
-                                End Try
+                            '    Catch ex As Exception
+                            '        Dim errorsElement As New System.Xml.Linq.XElement("Errors")
+                            '        Dim errorElementProperty As New System.Xml.Linq.XElement("Error")
+                            '        errorElementProperty.Add(New System.Xml.Linq.XAttribute("Type", "3"), New System.Xml.Linq.XAttribute("Code", "448"), New System.Xml.Linq.XText(ex.Message))
+                            '        errorsElement.Add(errorElementProperty)
+                            '        Me.guardalog("/Pages/FaresCatalogue.aspx", acciones.Sincronizar, "Error al sincronizar con APICache", "", "", errorsElement.ToString(), info.Hotel)
+                            '    End Try
 
-                            End If
+                            'End If
 
+
+                            'Async
+                            'Agregar a listado de tareas async
+                            tasksToExecute.Add(Function() SendRatesAsync(info.Hotel, info.Empresa, auxFareId, f1, f2, userName, userId))
 
                         Else
                             _exito = False
@@ -812,6 +849,21 @@ Partial Class FaresCatalogue
                         Me.CtrlPlanFares2.ReFill()
                         Me.CtrlPlanFaresExc2.ReFill()
                     End If
+
+                    'Ejecutar Tareas Async
+
+                    For Each taskDelegate As Func(Of Task) In tasksToExecute
+                        Task.Run(Async Function()
+                                     Await semaphore.WaitAsync()
+                                     Try
+                                         Await taskDelegate()  ' Aquí se ejecuta MandarTarifasAsync
+                                     Finally
+                                         semaphore.Release()
+                                     End Try
+                                 End Function)
+                    Next
+
+
                 End If
             Else
                 Me.lblNoroomSelected.Visible = True
@@ -947,6 +999,50 @@ Partial Class FaresCatalogue
 
     End Sub
 
+    Private Async Function SendClosureToServiceAsync(ByVal userName As String, ByVal userId As Integer, ByVal rateId As Integer, ByVal startDate As Date, ByVal endDate As Date,
+                                                     ByVal endpoint As String, ByVal service As String, ByVal hotelId As Integer, ByVal companyId As Integer) As Task
+
+        Dim requests As List(Of XDocument) = New List(Of XDocument)
+
+        Dim vDayRatesForClosure As List(Of vDayRates) = Helpers.Rates.RatesHelpers.GetVDayRate(rateId, startDate, endDate)
+
+        RestrictionsParser.Init(companyId)
+
+        Dim availStatusMessages As OTA.Models.Restrictions.AvailStatusMessages = RestrictionsParser.ToAvailStatusMessages(vDayRatesForClosure, "N")
+
+        Dim availStatusMessagesList As List(Of XElement) = APIServices.Xml.OTA.Request.Restrictions.HotelAvailNotifRQ.CreateHotelAvailNotifRQList(availStatusMessages)
+
+        For Each availStatusMessage As XElement In availStatusMessagesList
+            'Request 
+            Dim xmlRequest As XDocument = APIServices.Xml.Soap.Soap.CreateSoapRequestXml(availStatusMessage)
+            requests.Add(xmlRequest)
+        Next
+
+        Dim restrictionResponseList As List(Of Models.Restrictions.Response.RestrictionResponse) = New List(Of Models.Restrictions.Response.RestrictionResponse)
+
+        Dim confluxService As New APIServices.Conflux.ConfluxService()
+
+        For Each request As XDocument In requests
+            Dim response As Models.Restrictions.Response.RestrictionResponse = Await confluxService.UpdateRestrictionAsync(request, endpoint, RestrictionEnum.LockRate)
+            restrictionResponseList.Add(response)
+        Next
+
+        Dim note As String = String.Format("Tarifa enviada a {0} LockRate", service)
+        Dim noteError As String = String.Format("Error al sincronizar LockRate {0}", service)
+
+        For Each response As Models.Restrictions.Response.RestrictionResponse In restrictionResponseList
+
+            If response.IsSuccess Then
+                HotelUtilitie.Log(userName, userId, "/Pages/FaresCatalogue.aspx", hotelId, RateManager.Utitlities.Hotel.Actions.Sincronizar, note, "", response.Restrictions(0).XmlRequest(0).ToString(), response.Restrictions(0).Xml(0).ToString())
+
+            Else
+                HotelUtilitie.Log(userName, userId, "/Pages/FaresCatalogue.aspx", hotelId, Actions.Sincronizar, noteError, "", response.Xml.ToString(), "")
+            End If
+
+        Next
+
+    End Function
+
     Private Sub SendRatesToService(ByVal ratesForRequest As RatesMessages, ByVal hotelId As Integer, ByVal endpoint As String, ByVal endpointDelete As String, ByVal service As String, Optional ByVal deleteRates As Boolean = True)
 
         Dim ratesMessages As RatesMessages = ratesForRequest
@@ -964,6 +1060,28 @@ Partial Class FaresCatalogue
         End If
 
     End Sub
+
+    Private Async Function SendRatesToServiceAsync(ByVal userName As String, ByVal userId As Integer, ByVal ratesForRequest As RatesMessages, ByVal hotelId As Integer, ByVal endpoint As String, ByVal endpointDelete As String, ByVal service As String, Optional ByVal deleteRates As Boolean = True) As Task
+
+        Await Task.Delay(TimeSpan.FromMinutes(1))
+
+        Dim confluxService As New APIServices.Conflux.ConfluxService()
+
+        Dim ratesMessages As RatesMessages = ratesForRequest
+
+        Dim res As Tuple(Of RateResponse, RateResponse) = Await confluxService.UpdateRateAsync(ratesMessages, endpoint, endpointDelete, deleteRates)
+
+        Dim note As String = String.Format("Tarifa envida a {0}", service)
+        Dim noteDelete As String = String.Format("Eliminar tarifas {0}", service)
+
+        HotelUtilitie.Log(userName, userId, "/Pages/FaresCatalogue.aspx", hotelId, RateManager.Utitlities.Hotel.Actions.Sincronizar, note, "", res.Item1.RequestXML, res.Item1.Xml)
+
+        If res.Item2 IsNot Nothing Then
+            HotelUtilitie.Log(userName, userId, "/Pages/FaresCatalogue.aspx", hotelId, RateManager.Utitlities.Hotel.Actions.Eliminar, noteDelete, "", res.Item2.RequestXML, res.Item2.Xml)
+        End If
+
+    End Function
+
 
     Private Sub SendDeleteToService(ByVal rateAmountMessages As RateAmountMessages, ByVal hotelId As Integer, ByVal endpoint As String, ByVal service As String)
 
@@ -985,6 +1103,129 @@ Partial Class FaresCatalogue
             Me.guardalog("/Pages/FaresCatalogue.aspx", acciones.Eliminar, noteError, "", "", errorsElement.ToString(), hotelId)
         End Try
     End Sub
+
+
+    Private Async Function SendRatesAsync(ByVal hotelId As Integer, ByVal companyId As Integer, ByVal rateId As Integer, ByVal startDate As Date, ByVal endDate As Date, ByVal userName As String, ByVal userId As Integer) As Task
+        Try
+
+            Dim confluxService As New APIServices.Conflux.ConfluxService()
+
+            Dim isEnabledGoogleRequest As Boolean = HotelUtilitie.IsEnableGoogleRequest(hotelId)
+            Dim isEnabledSendingRatesAPICache As Boolean = HotelUtilitie.IsEnableSendRatesAPICache(hotelId)
+
+            Dim ratesForRequest As RatesMessages = If(isEnabledGoogleRequest Or isEnabledSendingRatesAPICache,
+                                          confluxService.GetRateMessages(rateId, startDate, endDate, hotelId, companyId, TypeRateEnum.RoomRate),
+                                          Nothing)
+
+            ' Enviar tarifas a Conflux
+            Await SendRatesIfEnabledAsync(userName, userId, isEnabledGoogleRequest, ratesForRequest, hotelId, companyId, rateId,
+                   startDate, endDate,
+                   HotelUtilitie.ENDPOINT, HotelUtilitie.ENDPOINTDELETE,
+                   HotelUtilitie.ENDPOINTCLOSURE, "Conflux", True)
+
+            ' Enviar tarifas a APICache
+            Await SendRatesIfEnabledAsync(userName, userId, isEnabledSendingRatesAPICache, ratesForRequest, hotelId, companyId, rateId,
+                   startDate, endDate,
+                   HotelUtilitie.ENDPOINTAPI, HotelUtilitie.ENDPOINTAPIDELETE,
+                   HotelUtilitie.ENDPOINTAPICLOSURE, "APICache", False)
+
+
+        Catch ex As Exception
+
+        End Try
+    End Function
+
+    Private Async Function SendRatesIfEnabledAsync(ByVal userName As String, ByVal userId As Integer, ByVal isEnabled As Boolean,
+                                                ByVal ratesForRequest As RatesMessages, ByVal hotelId As Integer, ByVal companyId As Integer,
+                                                ByVal rateId As Integer, ByVal startDate As Date, ByVal endDate As Date,
+                                                ByVal endpoint As String, ByVal endpointDelete As String,
+                                                ByVal closureEndpoint As String, ByVal serviceName As String, ByVal deleteRates As Boolean) As Task
+
+
+        If isEnabled AndAlso ratesForRequest IsNot Nothing Then
+            Try
+                ' Enviar tarifas
+                Await SendRatesToServiceAsync(userName, userId, ratesForRequest, hotelId, endpoint, endpointDelete, serviceName, deleteRates)
+
+
+                Await SendClosureToServiceAsync(userName, userId, rateId, startDate, endDate, closureEndpoint, serviceName, hotelId, companyId)
+
+
+            Catch ex As Exception
+                Dim errorsElement As New System.Xml.Linq.XElement("Errors")
+                Dim errorElementProperty As New System.Xml.Linq.XElement("Error")
+                errorElementProperty.Add(New System.Xml.Linq.XAttribute("Type", "3"),
+                                         New System.Xml.Linq.XAttribute("Code", "448"),
+                                         New System.Xml.Linq.XText(ex.Message))
+                errorsElement.Add(errorElementProperty)
+
+                HotelUtilitie.Log(userName, userId, "/Pages/FaresCatalogue.aspx", hotelId, Actions.Sincronizar, $"Error al sincronizar con {serviceName}", "", errorsElement.ToString(), "")
+
+            End Try
+        End If
+
+    End Function
+
+
+    Private Async Function SendDeleteAsync(ByVal userName As String, ByVal userId As Integer, ByVal hotelId As Integer, ByVal companyId As Integer,
+                                           ByVal vDayRates As List(Of vDayRates)) As Task
+        Try
+
+            Dim isEnabledGoogleRequest As Boolean = HotelUtilitie.IsEnableGoogleRequest(hotelId)
+            Dim isEnabledSendingRatesAPICache As Boolean = HotelUtilitie.IsEnableSendRatesAPICache(hotelId)
+
+            Dim rateAmountMessages As RateAmountMessages = New RateAmountMessages()
+            rateAmountMessages.HotelCode = companyId
+            rateAmountMessages.RateAmountMessagesList = New List(Of OTA.Models.Rates.RateAmountMessage)
+
+            rateAmountMessages.RateAmountMessagesList = Parser.Parser.ToRateAmountMessagesDelete(vDayRates, Nothing, TypeRateEnum.RoomRate)
+
+            Await SendDeleteIfEnabledAsync(userName, userId, hotelId, rateAmountMessages, isEnabledGoogleRequest, "Conflux")
+
+
+        Catch ex As Exception
+
+        End Try
+
+    End Function
+
+    Private Async Function SendDeleteIfEnabledAsync(ByVal userName As String, ByVal userId As Integer, ByVal hotelId As Integer, ByVal rateAmountMessages As RateAmountMessages, ByVal isEnabled As Boolean, ByVal service As String) As Task
+
+        If isEnabled Then
+            Try
+                Await SendDeleteToServiceAsync(userName, userId, rateAmountMessages, hotelId, HotelUtilitie.ENDPOINTDELETE, service)
+            Catch ex As Exception
+
+            End Try
+        End If
+
+    End Function
+
+    Private Async Function SendDeleteToServiceAsync(ByVal userName As String, ByVal userId As Integer, ByVal rateAmountMessages As RateAmountMessages, ByVal hotelId As Integer, ByVal endpoint As String, ByVal service As String) As Task
+
+        Dim note As String = String.Format("Eliminar tarifas {0}", service)
+        Dim noteError As String = String.Format("Error al eliminar tarifas {0}", service)
+
+        Try
+
+            Dim confluxService As New APIServices.Conflux.ConfluxService()
+
+            Dim res As RateResponse = Await confluxService.DeleteRatesAsync(endpoint, rateAmountMessages)
+
+            HotelUtilitie.Log(userName, userId, "/Pages/FaresCatalogue.aspx", hotelId, RateManager.Utitlities.Hotel.Actions.Eliminar, note, "", res.RequestXML, res.Xml)
+
+        Catch ex As Exception
+
+            Dim errorsElement As New System.Xml.Linq.XElement("Errors")
+            Dim errorElementProperty As New System.Xml.Linq.XElement("Error")
+            errorElementProperty.Add(New System.Xml.Linq.XAttribute("Type", "3"), New System.Xml.Linq.XAttribute("Code", "448"), New System.Xml.Linq.XText(ex.Message))
+            errorsElement.Add(errorElementProperty)
+
+            HotelUtilitie.Log(userName, userId, "/Pages/FaresCatalogue.aspx", hotelId, RateManager.Utitlities.Hotel.Actions.Eliminar, noteError, "", errorsElement.ToString(), "")
+
+        End Try
+    End Function
+
 
 
 End Class

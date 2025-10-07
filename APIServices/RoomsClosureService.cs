@@ -365,6 +365,39 @@ namespace APIServices
 
         }
 
+        public List<RatePlansClosureModel> LoadAllRatePlansByIdHotelNoSegmentsInvalids(int idHotel, int idAsoc, int idCorporativoUserChain, bool isHotel, bool isUsuarioHotel, int lang = 1)
+        {
+            RatePlanData ds = new RatePlanFacade()
+             .GetRatePlanByIdHotel(idHotel.ToString(), lang, 0, 1, idAsociacion: idAsoc, DeleteFilter: -1);
+
+            List<RatePlansClosureModel> list = new List<RatePlansClosureModel>();
+            //var ratePlanTable = ds.Tables[RatePlanData.RATEPLAN_TABLE];
+
+            var ratePlanTable = Conflux.Helpers.RatesPlan.RatesPlanHelper.GetFilteredRatePlans(ds);
+
+            foreach (DataRow row in ratePlanTable)
+            {
+                //Indices para el codigo 0 u 8
+                string code = row.ItemArray[0].ToString();
+                string name = row.ItemArray[11].ToString();
+
+                string text = code + " - " + name;
+
+                RatePlansClosureModel model = new RatePlansClosureModel()
+                {
+                    Value = code,
+                    Text = text
+                };
+
+                list.Add(model);
+
+            }
+
+            return list;
+
+        }
+
+
 
         public List<RatePlansClosureModel> LoadRatePlanByIdHotelNoLinks(int idHotel, int idAsoc, int idCorporativoUserChain, bool isHotel, bool isUsuarioHotel, int lang = 1)
         {
@@ -409,6 +442,33 @@ namespace APIServices
             string filterRatesPlansPromos = "((FechaFin IS NOT NULL AND FechaFin>= '" + DateTime.Now.Date.ToString() + "') OR (FechaFin IS NULL AND PromoEndDate >= '" + DateTime.Now.Date.ToString() + "'))"; // Ver si va quedar el mismo filtro
 
             List<DataRow> promos = APIServices.Conflux.Helpers.RatesPlan.RatesPlanHelper.GetRatePlansPromosByHotel(idhotel, filterRatesPlansPromos);
+
+            List<RatePlansClosureModel> list = new List<RatePlansClosureModel>();
+
+            foreach (DataRow row in promos)
+            {
+                string code = row.ItemArray[0].ToString();
+                string name = row.ItemArray[11].ToString();
+
+                string text = code + " - " + name;
+
+                RatePlansClosureModel model = new RatePlansClosureModel()
+                {
+                    Value = code,
+                    Text = text
+                };
+
+                list.Add(model);
+
+            }
+
+            return list;
+        }
+
+        public List<RatePlansClosureModel> LoadAllPromosByIdHotel(int idhotel)
+        {
+            
+            List<DataRow> promos = APIServices.Conflux.Helpers.RatesPlan.RatesPlanHelper.GetAllRatePlansPromosByHotel(idhotel);
 
             List<RatePlansClosureModel> list = new List<RatePlansClosureModel>();
 
