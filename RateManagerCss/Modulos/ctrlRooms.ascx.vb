@@ -612,7 +612,9 @@ Partial Class ctrlRooms
             'Modificado: agrege el parametro Me.lstRoomType.SelectedValue  la funcion 
             Dim idmessage As Integer
             With New RoomFacade
-                idmessage = .EliminateRoom(idRoom, (Not elimina), Me.idHotel) '.deleteRoom(idRoom, Me.lstRoomType.SelectedValue)
+                'idmessage = .EliminateRoom(idRoom, (Not elimina), Me.idHotel) '.deleteRoom(idRoom, Me.lstRoomType.SelectedValue)
+                idmessage = .EliminateRoom(idRoom, elimina, Me.idHotel) '.deleteRoom(idRoom, Me.lstRoomType.SelectedValue)
+
             End With
             Me.newRoom()
             Return 0

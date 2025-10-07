@@ -405,7 +405,7 @@ Partial Class Rooms
         Try
             idRoom = Integer.Parse(e.Item.Cells(0).Text)
             Me.Habitacion = e.Item.Cells(1).Text
-            elimina = If(e.Item.Cells(columns.eliminada).Text.ToString.ToLower.Trim = "true", True, False)
+            elimina = True 'If(e.Item.Cells(columns.eliminada).Text.ToString.ToLower.Trim = "false", True, False)
             grid.SelectedIndex = e.Item.ItemIndex
         Catch ex As Exception
             Return
