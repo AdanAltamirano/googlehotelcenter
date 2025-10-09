@@ -484,8 +484,9 @@ Public Class Promotions
 
                                     Dim promotionRatePlanId As String = Me.txtPromotionCode.Text & plan.Value
                                     Dim ratePlanNameId As String = plan.Value & "-" & Me.txtPromoName.GetES()
+                                    Dim descriptionES As String = Me.txtPromoDescription.GetES()
 
-                                    tasksToExecuteInsertPromoRatePlan.Add(Function() InsertPromoRatePlanAsync(userName, userId, info.Hotel, info.Empresa, isEnabledGoogleRequest, promotionRatePlanId, ratePlanNameId, Me.txtPromoDescription.GetES(), "ES"))
+                                    tasksToExecuteInsertPromoRatePlan.Add(Function() InsertPromoRatePlanAsync(userName, userId, info.Hotel, info.Empresa, isEnabledGoogleRequest, promotionRatePlanId, ratePlanNameId, descriptionES, "ES"))
 
                                     'Enviar a google nuevo
                                     'If isEnabledGoogleRequest Then
@@ -526,8 +527,10 @@ Public Class Promotions
                             End With
                         End If
 
+                        Dim codePromotionTemp As String = Me.txtPromotionCode.Text.ToUpper()
+
                         Task.Run(Async Function()
-                                     Await InsertRatePlansPromosAndSendRates(userName, userId, info.Hotel, info.Empresa, Me.txtPromotionCode.Text.ToUpper(), tasksToExecuteInsertPromoRatePlan)
+                                     Await InsertRatePlansPromosAndSendRates(userName, userId, info.Hotel, info.Empresa, codePromotionTemp, tasksToExecuteInsertPromoRatePlan)
                                  End Function)
 
                         'If isEnabledGoogleRequest Or isEnabledSendingRatesAPICache Then
@@ -610,8 +613,9 @@ Public Class Promotions
 
                                     Dim promotionRatePlanId As String = Me.txtPromotionCode.Text & plan.Value
                                     Dim ratePlanNameId As String = plan.Value & "-" & Me.txtPromoName.GetES()
+                                    Dim descriptionES As String = Me.txtPromoDescription.GetES()
 
-                                    tasksToExecuteInsertPromoRatePlan.Add(Function() InsertPromoRatePlanAsync(userName, userId, info.Hotel, info.Empresa, isEnabledGoogleRequest, promotionRatePlanId, ratePlanNameId, Me.txtPromoDescription.GetES(), "ES"))
+                                    tasksToExecuteInsertPromoRatePlan.Add(Function() InsertPromoRatePlanAsync(userName, userId, info.Hotel, info.Empresa, isEnabledGoogleRequest, promotionRatePlanId, ratePlanNameId, descriptionES, "ES"))
 
 
                                     'If isEnabledGoogleRequest Then
@@ -689,11 +693,15 @@ Public Class Promotions
 
                     End If
 
+                    Dim rateplanIdTemp As String = IdRatePlan
+                    Dim promotionRatePlanCodetoDelete As String = txtPromotionCode.Text
+                    Dim ratePlansAuxList As List(Of String) = RateplansListAux
+                    Dim roomsListAuxList As List(Of String) = RoomsListAux
 
                     Task.Run(Async Function()
-                                 Await InsertRatePlansPromosAndSendRates(userName, userId, info.Hotel, info.Empresa, IdRatePlan, tasksToExecuteInsertPromoRatePlan,
-                                                                         deleteRates:=deleteRates, promoRatePlanCodeToDelete:=txtPromotionCode.Text, dateToDelete:=endDateDelete,
-                                                                         ratePlansListAux:=RateplansListAux, roomsListAux:=RoomsListAux)
+                                 Await InsertRatePlansPromosAndSendRates(userName, userId, info.Hotel, info.Empresa, rateplanIdTemp, tasksToExecuteInsertPromoRatePlan,
+                                                                         deleteRates:=deleteRates, promoRatePlanCodeToDelete:=promotionRatePlanCodetoDelete, dateToDelete:=endDateDelete,
+                                                                         ratePlansListAux:=ratePlansAuxList, roomsListAux:=roomsListAuxList)
                              End Function)
 
                     'If isEnabledGoogleRequest Or isEnabledSendingRatesAPICache Then
@@ -1224,7 +1232,7 @@ Public Class Promotions
 
                     Task.Run(Async Function()
                                  Try
-                                     Await DeleteRatesAsync(userName, userId, info.Hotel, info.Empresa, vDayRatesPromotion, vDayRatesPromotionException)
+                                     Await DeleteRatesAsync(userName, userId, info.Hotel, info.Empresa, vDayRatesPromotion, vDayRatesPromotionException, ratePlanId)
                                  Catch ex As Exception
 
                                  End Try
@@ -2084,12 +2092,12 @@ Public Class Promotions
 
         Dim deleteMessages As RateAmountMessages = Parser.Parser.ToRateAmountMessagesDelete(companyId, promoRatePlanCodeToDelete, dateToDelete, ratePlansListAux, roomsListAux)
 
-        Await SendDeleteRatesIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledGoogleRequest, deleteMessages, HotelUtilitie.ENDPOINTDELETE, "Conflux")
+        Await SendDeleteRatesIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledGoogleRequest, deleteMessages, HotelUtilitie.ENDPOINTDELETE, "Conflux", promoRatePlanCodeToDelete)
 
     End Function
 
     Private Async Function DeleteRatesAsync(ByVal userName As String, ByVal userId As Integer, ByVal hotelId As Integer, ByVal companyId As Integer,
-                                            ByVal vDayRatesPromotion As List(Of vDayRates), ByVal vDayRatesPromotionException As List(Of vDayRatesExceptions)) As Task
+                                            ByVal vDayRatesPromotion As List(Of vDayRates), ByVal vDayRatesPromotionException As List(Of vDayRatesExceptions), ByVal promoRatePlanCodeToDelete As String) As Task
 
         Dim isEnabledGoogleRequest As Boolean = HotelUtilitie.IsEnableGoogleRequest(hotelId)
         Dim isEnabledSendingRatesAPICache As Boolean = HotelUtilitie.IsEnableSendRatesAPICache(hotelId)
@@ -2111,19 +2119,19 @@ Public Class Promotions
             Parser.Parser.ToRateAmountMessagesDelete(Nothing, vDayRatesPromotionException, TypeRateEnum.RoomRate, rateAmountMessagesPromotion.RateAmountMessagesList)
         End If
 
-        Await SendDeleteRatesIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledGoogleRequest, rateAmountMessages, HotelUtilitie.ENDPOINTDELETE, "Conflux")
-        Await SendDeleteRatesIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledGoogleRequest, rateAmountMessagesPromotion, HotelUtilitie.ENDPOINTDELETE, "Conflux")
+        Await SendDeleteRatesIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledGoogleRequest, rateAmountMessages, HotelUtilitie.ENDPOINTDELETE, "Conflux", promoRatePlanCodeToDelete)
+        Await SendDeleteRatesIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledGoogleRequest, rateAmountMessagesPromotion, HotelUtilitie.ENDPOINTDELETE, "Conflux", promoRatePlanCodeToDelete)
 
     End Function
 
     Private Async Function SendDeleteRatesIfEnabledAsync(ByVal userName As String, ByVal userId As Integer, ByVal hotelId As Integer, ByVal companyId As Integer, ByVal isEnabled As Boolean,
-                                                         ByVal deleteMessages As RateAmountMessages, ByVal endpoint As String, ByVal service As String) As Task
+                                                         ByVal deleteMessages As RateAmountMessages, ByVal endpoint As String, ByVal service As String, ByVal promoRatePlanCodeToDelete As String) As Task
 
         If isEnabled And deleteMessages IsNot Nothing Then
 
             Try
 
-                Await SendDeleteRatesToServiceAsync(userName, userId, hotelId, companyId, deleteMessages, endpoint, service)
+                Await SendDeleteRatesToServiceAsync(userName, userId, hotelId, companyId, deleteMessages, endpoint, service, promoRatePlanCodeToDelete)
 
             Catch ex As Exception
                 Dim errorsElement As New System.Xml.Linq.XElement("Errors")
@@ -2141,11 +2149,11 @@ Public Class Promotions
     End Function
 
     Private Async Function SendDeleteRatesToServiceAsync(ByVal userName As String, ByVal userId As Integer, ByVal hotelId As Integer, ByVal companyId As Integer,
-                                                        ByVal deleteMessages As RateAmountMessages, ByVal endpoint As String, ByVal service As String) As Task
+                                                        ByVal deleteMessages As RateAmountMessages, ByVal endpoint As String, ByVal service As String, ByVal promoRatePlanCodeToDelete As String) As Task
 
         Dim confluxService As New ConfluxService()
 
-        Dim note As String = String.Format("Eliminar Promotions {0}", service)
+        Dim note As String = String.Format("Eliminar Promotions {1} {0}", service, promoRatePlanCodeToDelete)
 
         Dim rateResponseDelete As RateResponse = Await confluxService.DeleteRatesAsync(endpoint, deleteMessages)
 
