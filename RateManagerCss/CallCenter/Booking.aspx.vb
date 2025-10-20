@@ -394,7 +394,7 @@ Partial Class Booking
         drhh.CheckinDate = CDate(Me.txtInicio.Text).Year & CDate(Me.txtInicio.Text).Month.ToString.PadLeft(2, "0") & CDate(Me.txtInicio.Text).Day.ToString.PadLeft(2, "0")
         drhh.CheckoutDate = CDate(Me.txtFinal.Text).Year & CDate(Me.txtFinal.Text).Month.ToString.PadLeft(2, "0") & CDate(Me.txtFinal.Text).Day.ToString.PadLeft(2, "0")
         drhh.Source = "CCT"
-        drhh.Language = "es"
+        drhh.Language = "ES"
 
         'DirectCast(PortalCulture.GetCulture, System.Globalization.CultureInfo).Name
         If Not String.IsNullOrEmpty(txtAccessCode.Text) Then
@@ -406,6 +406,97 @@ Partial Class Booking
 
         dsreq.HotelHeader.AddHotelHeaderRow(drhh)
         drhh.SetParentRow(drC)
+
+        'HotelFilter P
+        Dim hotelFilterP As reqHotelComplete.HotelFilterRow
+        hotelFilterP = dsreq.HotelFilter.NewHotelFilterRow()
+        hotelFilterP.Segment = "P"
+        dsreq.HotelFilter.AddHotelFilterRow(hotelFilterP)
+        hotelFilterP.SetParentRow(drC)
+
+        'HotelFilter R
+        Dim hotelFilterR As reqHotelComplete.HotelFilterRow
+        hotelFilterR = dsreq.HotelFilter.NewHotelFilterRow()
+        hotelFilterR.Segment = "R"
+        dsreq.HotelFilter.AddHotelFilterRow(hotelFilterR)
+        hotelFilterR.SetParentRow(drC)
+
+        'HotelFilter C
+        Dim hotelFilterC As reqHotelComplete.HotelFilterRow
+        hotelFilterC = dsreq.HotelFilter.NewHotelFilterRow()
+        hotelFilterC.Segment = "C"
+        dsreq.HotelFilter.AddHotelFilterRow(hotelFilterC)
+        hotelFilterC.SetParentRow(drC)
+
+        'HotelFilter K
+        Dim hotelFilterK As reqHotelComplete.HotelFilterRow
+        hotelFilterK = dsreq.HotelFilter.NewHotelFilterRow()
+        hotelFilterK.Segment = "K"
+        dsreq.HotelFilter.AddHotelFilterRow(hotelFilterK)
+        hotelFilterK.SetParentRow(drC)
+
+        'HotelFilter O
+        Dim hotelFilterO As reqHotelComplete.HotelFilterRow
+        hotelFilterO = dsreq.HotelFilter.NewHotelFilterRow()
+        hotelFilterO.Segment = "O"
+        dsreq.HotelFilter.AddHotelFilterRow(hotelFilterO)
+        hotelFilterO.SetParentRow(drC)
+
+        'HotelFilter V
+        Dim hotelFilterV As reqHotelComplete.HotelFilterRow
+        hotelFilterV = dsreq.HotelFilter.NewHotelFilterRow()
+        hotelFilterV.Segment = "V"
+        dsreq.HotelFilter.AddHotelFilterRow(hotelFilterV)
+        hotelFilterV.SetParentRow(drC)
+
+        'HotelFilter I
+        Dim hotelFilterI As reqHotelComplete.HotelFilterRow
+        hotelFilterI = dsreq.HotelFilter.NewHotelFilterRow()
+        hotelFilterI.Segment = "I"
+        dsreq.HotelFilter.AddHotelFilterRow(hotelFilterI)
+        hotelFilterI.SetParentRow(drC)
+
+        'HotelFilter W
+        Dim hotelFilterW As reqHotelComplete.HotelFilterRow
+        hotelFilterW = dsreq.HotelFilter.NewHotelFilterRow()
+        hotelFilterW.Segment = "W"
+        dsreq.HotelFilter.AddHotelFilterRow(hotelFilterW)
+        hotelFilterW.SetParentRow(drC)
+
+        'HotelFilter B
+        Dim hotelFilterB As reqHotelComplete.HotelFilterRow
+        hotelFilterB = dsreq.HotelFilter.NewHotelFilterRow()
+        hotelFilterB.Segment = "B"
+        dsreq.HotelFilter.AddHotelFilterRow(hotelFilterB)
+        hotelFilterB.SetParentRow(drC)
+
+        'HotelFilter F
+        Dim hotelFilterF As reqHotelComplete.HotelFilterRow
+        hotelFilterF = dsreq.HotelFilter.NewHotelFilterRow()
+        hotelFilterF.Segment = "F"
+        dsreq.HotelFilter.AddHotelFilterRow(hotelFilterF)
+        hotelFilterF.SetParentRow(drC)
+
+        'HotelFilter D
+        Dim hotelFilterD As reqHotelComplete.HotelFilterRow
+        hotelFilterD = dsreq.HotelFilter.NewHotelFilterRow()
+        hotelFilterD.Segment = "D"
+        dsreq.HotelFilter.AddHotelFilterRow(hotelFilterD)
+        hotelFilterD.SetParentRow(drC)
+
+        'HotelFilter N
+        Dim hotelFilterN As reqHotelComplete.HotelFilterRow
+        hotelFilterN = dsreq.HotelFilter.NewHotelFilterRow()
+        hotelFilterN.Segment = "N"
+        dsreq.HotelFilter.AddHotelFilterRow(hotelFilterN)
+        hotelFilterN.SetParentRow(drC)
+
+        'HotelFilter E
+        Dim hotelFilterE As reqHotelComplete.HotelFilterRow
+        hotelFilterE = dsreq.HotelFilter.NewHotelFilterRow()
+        hotelFilterE.Segment = "E"
+        dsreq.HotelFilter.AddHotelFilterRow(hotelFilterE)
+        hotelFilterE.SetParentRow(drC)
 
         '//HotelRequest
         Dim drhr As reqHotelComplete.HotelRequestsRow
