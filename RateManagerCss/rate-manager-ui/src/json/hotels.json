@@ -7,6 +7,18 @@
         {
             "id": 4481,
             "name": "Hotel Royal Pedregal"
+        },
+        {
+            "id": 6708,
+            "name": "Hotel Colonial Hermosillo"
+        },
+          {
+            "id": 6707,
+            "name": "Hotel Colonial Mexicali"
+        },
+        {
+            "id": 6709,
+            "name": "Hotel Colonial Ciudad Juarez"
         }
     ]
 }

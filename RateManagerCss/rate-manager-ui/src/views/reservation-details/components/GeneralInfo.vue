@@ -56,6 +56,12 @@
                         <span>{{result.nights}} {{$t('Night(s)')}}</span>
                         <br>
                         <span>{{occupation}}</span>
+                        <div v-if="ages.length > 0">
+                            <span><strong>{{$t('Children Ages')}}</strong></span><br>
+                            <span v-for="(age,index) in ages" :key="index">
+                                {{age}} {{age === '1'? $t('year'): $t('years')}} {{index === ages.length - 1? '' : ','}}
+                            </span>
+                        </div> 
                     </address>
                 </b-col>
                 <b-col md="4" :class="status_class" class="alert">
@@ -280,6 +286,23 @@ export default {
 
             return `${this.$t("The code must be added before")} ${txtTime}`;
         },
+        ages(){
+            let ages = []; 
+
+            if(this.result.roomDetails.length > 0){              
+                this.result.roomDetails.forEach(r => {
+                    if(r.ageChildren.length > 0){
+                        let temp = r.ageChildren.split(',');
+                        temp.forEach(t => {
+                            ages.push(t);
+                        });
+                    }
+                  
+                });
+            }
+
+            return ages;
+        }
     }
 }
 </script>
