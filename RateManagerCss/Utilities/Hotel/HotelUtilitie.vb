@@ -15,8 +15,10 @@ Namespace Utitlities.Hotel
         Public ENDPOINTINVENTORY As String = ConfigurationManager.AppSettings("confluxApiUrl") & "pms/ota/inventory/update"
         'APICache EndPoints
         Public ENDPOINTAPI As String = ConfigurationManager.AppSettings("confluxApiUrl") & "pms/ota/calendar/rates"
+        Public ENDPOINTAPIV2 As String = "pms/ota/calendar/rates"
         Public ENDPOINTAPIDELETE As String = ""
         Public ENDPOINTAPICLOSURE As String = ConfigurationManager.AppSettings("confluxApiUrl") & "pms/ota/calendar/inventory"
+        Public ENDPOINTAPICLOSUREV2 As String = "pms/ota/calendar/inventory"
 
         Public ReadOnly Property ConfluxServiceHelper As APIServices.Conflux.ConfluxService
             Get
@@ -51,6 +53,20 @@ Namespace Utitlities.Hotel
 
         Function GetRatePlans(hotelId As String) As RatePlanData
             Return New RatePlanFacade().GetRatePlanByIdHotel(hotelId, idioma:=1, IncluirPaquetesSegmentoK:=1, incluirNetRatesPlan:=1, idAsociacion:=-1, DeleteFilter:=1)
+        End Function
+
+        Function GetRatePlanNameById(ByVal rateplanName As String, ByVal hotelId As Integer) As String
+
+            Dim nameRatePlan As String = String.Empty
+
+            Using dbContext As New OzHotelesEntities()
+                Dim rateplanTemp As RatesPlan = dbContext.RatesPlan.FirstOrDefault(Function(rateplan) rateplan.idRatePlan = rateplanName And rateplan.IdHotel = hotelId)
+
+                nameRatePlan = dbContext.Diccionario.First(Function(dictionary) dictionary.IdDiccionario = rateplanTemp.IdDiccShortDesc And dictionary.IdIdioma = 1).Texto
+
+            End Using
+
+            Return nameRatePlan
         End Function
 
         Function GetRatePlansPromos(hotelId As String) As List(Of DataRow)

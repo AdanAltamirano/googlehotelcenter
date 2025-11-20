@@ -483,7 +483,7 @@ Public Class Promotions
                                 Else
 
                                     Dim promotionRatePlanId As String = Me.txtPromotionCode.Text & plan.Value
-                                    Dim ratePlanNameId As String = plan.Value & "-" & Me.txtPromoName.GetES()
+                                    Dim ratePlanNameId As String = HotelUtilitie.GetRatePlanNameById(plan.Value, Me.m_iHotelId) & " - " & Me.txtPromoName.GetES()
                                     Dim descriptionES As String = Me.txtPromoDescription.GetES()
 
                                     tasksToExecuteInsertPromoRatePlan.Add(Function() InsertPromoRatePlanAsync(userName, userId, info.Hotel, info.Empresa, isEnabledGoogleRequest, promotionRatePlanId, ratePlanNameId, descriptionES, "ES"))
@@ -612,7 +612,7 @@ Public Class Promotions
                                 Else
 
                                     Dim promotionRatePlanId As String = Me.txtPromotionCode.Text & plan.Value
-                                    Dim ratePlanNameId As String = plan.Value & "-" & Me.txtPromoName.GetES()
+                                    Dim ratePlanNameId As String = HotelUtilitie.GetRatePlanNameById(plan.Value, Me.m_iHotelId) & " - " & Me.txtPromoName.GetES()
                                     Dim descriptionES As String = Me.txtPromoDescription.GetES()
 
                                     tasksToExecuteInsertPromoRatePlan.Add(Function() InsertPromoRatePlanAsync(userName, userId, info.Hotel, info.Empresa, isEnabledGoogleRequest, promotionRatePlanId, ratePlanNameId, descriptionES, "ES"))
@@ -2023,8 +2023,8 @@ Public Class Promotions
         Await SendRatesIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledGoogleRequest, ratesForRequestPromotion, HotelUtilitie.ENDPOINT, HotelUtilitie.ENDPOINTDELETE, "Conflux", True, True)
 
         'APICache
-        Await SendRatesIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledSendingRatesAPICache, ratesForRequest, HotelUtilitie.ENDPOINTAPI, HotelUtilitie.ENDPOINTAPIDELETE, "APICache", False, False)
-        Await SendRatesIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledSendingRatesAPICache, ratesForRequestPromotion, HotelUtilitie.ENDPOINTAPI, HotelUtilitie.ENDPOINTAPIDELETE, "APICache", False, True)
+        'Await SendRatesIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledSendingRatesAPICache, ratesForRequest, HotelUtilitie.ENDPOINTAPI, HotelUtilitie.ENDPOINTAPIDELETE, "APICache", False, False)
+        'Await SendRatesIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledSendingRatesAPICache, ratesForRequestPromotion, HotelUtilitie.ENDPOINTAPI, HotelUtilitie.ENDPOINTAPIDELETE, "APICache", False, True)
 
     End Function
 

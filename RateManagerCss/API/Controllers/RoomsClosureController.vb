@@ -452,7 +452,7 @@ Namespace API.Controller
                 Dim lockRatePlanHotelAvailNotifRQList As List(Of XElement) = HotelAvailNotifRQ.CreateHotelAvailNotifRQList(availStatusMessagesLockRatePlans)
 
                 Await SendClosureIfEnabled(userName, userId, hotelId, companyId, isEnabledGoogleRequest, HotelUtilitie.ENDPOINTCLOSURE, "Conflux", lockRatePlanHotelAvailNotifRQList)
-                Await SendClosureIfEnabled(userName, userId, hotelId, companyId, isEnabledGoogleRequest, HotelUtilitie.ENDPOINTAPICLOSURE, "ApiCache", lockRatePlanHotelAvailNotifRQList)
+                'Await SendClosureIfEnabled(userName, userId, hotelId, companyId, isEnabledGoogleRequest, HotelUtilitie.ENDPOINTAPICLOSURE, "ApiCache", lockRatePlanHotelAvailNotifRQList)
 
             Catch ex As Exception
 

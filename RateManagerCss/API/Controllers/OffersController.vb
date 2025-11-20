@@ -71,7 +71,7 @@ Namespace API.Controllers
 
                 For Each plan As String In RQ.ApplicableFor.RatesPlan
                     Dim promotionRatePlanId As String = RQ.Id & plan
-                    Dim ratePlanNameId As String = plan & "-" & RQ.Name.Esp
+                    Dim ratePlanNameId As String = HotelUtilitie.GetRatePlanNameById(plan, hotelId) & " - " & RQ.Name.Esp
 
                     tasksToExecuteInsertPromoRatePlan.Add(Function() InsertPromoRatePlanAsync(userName, userId, info.Hotel, info.Empresa, isEnabledGoogleRequest, promotionRatePlanId, ratePlanNameId, RQ.Description.Esp, "ES"))
 
@@ -125,7 +125,7 @@ Namespace API.Controllers
 
                 For Each plan As String In RQ.ApplicableFor.RatesPlan
                     Dim promotionRatePlanId As String = RQ.Id & plan
-                    Dim ratePlanNameId As String = plan & "-" & RQ.Name.Esp
+                    Dim ratePlanNameId As String = HotelUtilitie.GetRatePlanNameById(plan, hotelId) & " - " & RQ.Name.Esp
 
                     tasksToExecuteInsertPromoRatePlan.Add(Function() InsertPromoRatePlanAsync(userName, userId, info.Hotel, info.Empresa, isEnabledGoogleRequest, promotionRatePlanId, ratePlanNameId, RQ.Description.Esp, "ES"))
 
@@ -474,8 +474,8 @@ Namespace API.Controllers
             Await SendRatesIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledGoogleRequest, ratesForRequestPromotion, HotelUtilitie.ENDPOINT, HotelUtilitie.ENDPOINTDELETE, "Conflux", True, True)
 
             'APICache
-            Await SendRatesIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledSendingRatesAPICache, ratesForRequest, HotelUtilitie.ENDPOINTAPI, HotelUtilitie.ENDPOINTAPIDELETE, "APICache", False, False)
-            Await SendRatesIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledSendingRatesAPICache, ratesForRequestPromotion, HotelUtilitie.ENDPOINTAPI, HotelUtilitie.ENDPOINTAPIDELETE, "APICache", False, True)
+            'Await SendRatesIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledSendingRatesAPICache, ratesForRequest, HotelUtilitie.ENDPOINTAPIV2, HotelUtilitie.ENDPOINTAPIDELETE, "APICache", False, False)
+            'Await SendRatesIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledSendingRatesAPICache, ratesForRequestPromotion, HotelUtilitie.ENDPOINTAPIV2, HotelUtilitie.ENDPOINTAPIDELETE, "APICache", False, True)
 
         End Function
 
@@ -523,7 +523,13 @@ Namespace API.Controllers
 
             Dim ratesMessages As RatesMessages = ratesForRequest
 
-            Dim res As Tuple(Of RateResponse, RateResponse) = Await confluxService.UpdateRateAsync(ratesMessages, endpoint, endpointDelete, deleteRates)
+            Dim res As Tuple(Of RateResponse, RateResponse) = Nothing
+
+            If service = "APICache" Then
+                res = Await confluxService.UpdateRatePatchAsync(ratesMessages, endpoint, endpointDelete, deleteRates)
+            Else
+                res = Await confluxService.UpdateRateAsync(ratesMessages, endpoint, endpointDelete, deleteRates)
+            End If
 
             HotelUtilitie.Log(userName, userId, "/rate-manager-ui/dist/Promotions.aspx", hotelId, Actions.Sincronizar, note, "", res.Item1.RequestXML, res.Item1.Xml)
 

@@ -475,7 +475,51 @@ namespace APIServices.Conflux
             return new Tuple<RateResponse, RateResponse>(rateResponse, deleteRateResponse);
         }
 
+        public async Task<Tuple<RateResponse, RateResponse>> UpdateRatePatchAsync(RatesMessages ratesMessages, string endpoint, string endpointDelete, bool deleteRates = true)
+        {
+            RateResponse rateResponse = new RateResponse();
+            RateResponse deleteRateResponse = null;
 
+            try
+            {
+                var xml = HotelRateAmountNotifRQ.CreateHotelRateAmountNotifRQ(ratesMessages.RateAmountMessagesList[0]);
+                var soapRequest = Soap.CreateSoapRequestXml(xml);
+
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
+                HttpRequestMessage request = new HttpRequestMessage(new HttpMethod("PATCH"), endpoint);
+                request.Content = new StringContent(soapRequest.ToString());
+
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(ConfigurationManager.AppSettings["confluxApiUrl"].ToString());
+
+                    var responseRequest = await client.SendAsync(request);
+
+                    rateResponse.Xml = await responseRequest.Content.ReadAsStringAsync();
+                    rateResponse.RequestXML = soapRequest.ToString();
+                    rateResponse.IsSuccess = true;
+
+                }
+            }
+            catch (Exception ex)
+            {
+                rateResponse.IsSuccess = false;
+                rateResponse.Error = new KeyValuePair<string, string>("448", ex.Message);
+
+                var errorsElement = new System.Xml.Linq.XElement("Errors");
+                var errorElementProperty = new System.Xml.Linq.XElement("Error");
+                errorElementProperty.Add(
+                    new System.Xml.Linq.XAttribute("Type", "3"),
+                    new System.Xml.Linq.XAttribute("Code", "448"),
+                    new System.Xml.Linq.XText(ex.Message));
+
+                errorsElement.Add(errorElementProperty);
+                rateResponse.Xml = errorsElement.ToString();
+            }
+
+            return new Tuple<RateResponse, RateResponse>(rateResponse, deleteRateResponse);
+        }
 
         public RatesMessages GetRateMessages(int rateId, DateTime startDate, DateTime endDate, int hotelId, int companyId, TypeRateEnum typeRate)
         {
@@ -664,6 +708,140 @@ namespace APIServices.Conflux
             return ratesReponse;
 
         }
+
+        public RatesReponse UpdateRatesPatch(RatesMessages ratesMessages, string endpoint)
+        {
+            RatesReponse ratesReponse = new RatesReponse();
+
+            RateResponse rateResponse = new RateResponse();
+            RateResponse deleteRateResponse = null;
+            RateResponse rateResponseExceptiones = null;
+
+            try
+            {
+
+                var xmlList = HotelRateAmountNotifRQ.CreateHotelRateAmountNotifRQList(ratesMessages.RateAmountMessagesList[0]);
+
+                foreach (XElement xml in xmlList)
+                {
+                    Models.Rates.Response.Rate res = new Models.Rates.Response.Rate();
+
+                    var soapRequest = Soap.CreateSoapRequestXml(xml);
+
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
+                    HttpRequestMessage request = new HttpRequestMessage(new HttpMethod("PATCH"), endpoint);
+                    request.Content = new StringContent(soapRequest.ToString());
+
+                    using (var client = new HttpClient())
+                    {
+                        client.BaseAddress = new Uri(ConfigurationManager.AppSettings["confluxApiUrl"].ToString());
+
+                        var responseRequest = client.SendAsync(request).Result;
+
+                        res.Xml = responseRequest.Content.ReadAsStringAsync().Result;
+                        res.XmlRequest = soapRequest.ToString();
+                        res.IsSuccess = true;
+
+                    }
+
+                    rateResponse.Rates.Add(res);
+                    Thread.Sleep(TimeSpan.FromSeconds(1));
+                }
+
+                rateResponse.IsSuccess = true;
+
+            }
+            catch (Exception ex)
+            {
+                rateResponse.IsSuccess = false;
+                rateResponse.Error = new KeyValuePair<string, string>("448", ex.Message);
+
+                var errorsElement = new System.Xml.Linq.XElement("Errors");
+                var errorElementProperty = new System.Xml.Linq.XElement("Error");
+                errorElementProperty.Add(
+                    new System.Xml.Linq.XAttribute("Type", "3"),
+                    new System.Xml.Linq.XAttribute("Code", "448"),
+                    new System.Xml.Linq.XText(ex.Message));
+
+                errorsElement.Add(errorElementProperty);
+
+                rateResponse.Xml = errorsElement.ToString();
+            }
+
+
+
+
+            //Tarfias Excepciones
+            if (ratesMessages.RateAmountMessagesList[2].RateAmountMessagesList.Count > 0)
+            {
+
+                rateResponseExceptiones = new RateResponse();
+
+
+                try
+                {
+                    var xmlList = HotelRateAmountNotifRQ.CreateHotelRateAmountNotifRQList(ratesMessages.RateAmountMessagesList[2]);
+
+
+                    foreach (XElement xml in xmlList)
+                    {
+                        Models.Rates.Response.Rate res = new Models.Rates.Response.Rate();
+
+                        var soapRequest = Soap.CreateSoapRequestXml(xml);
+
+                        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
+                        HttpRequestMessage request = new HttpRequestMessage(new HttpMethod("PATCH"), endpoint);
+                        request.Content = new StringContent(soapRequest.ToString());
+
+                        using (var client = new HttpClient())
+                        {
+                            client.BaseAddress = new Uri(ConfigurationManager.AppSettings["confluxApiUrl"].ToString());
+
+                            var responseRequest = client.SendAsync(request).Result;
+
+                            res.Xml = responseRequest.Content.ReadAsStringAsync().Result;
+                            res.XmlRequest = soapRequest.ToString();
+                            res.IsSuccess = true;
+
+                        }
+
+                        rateResponseExceptiones.Rates.Add(res);
+
+                        //Espera 1 segundo antes de mandar el siguiente request
+                        Thread.Sleep(TimeSpan.FromSeconds(1));
+                    }
+
+                    rateResponseExceptiones.IsSuccess = true;
+
+                }
+                catch (Exception ex)
+                {
+                    rateResponseExceptiones.IsSuccess = false;
+                    rateResponseExceptiones.Error = new KeyValuePair<string, string>("448", ex.Message);
+
+                    var errorsElement = new System.Xml.Linq.XElement("Errors");
+                    var errorElementProperty = new System.Xml.Linq.XElement("Error");
+                    errorElementProperty.Add(
+                        new System.Xml.Linq.XAttribute("Type", "3"),
+                        new System.Xml.Linq.XAttribute("Code", "448"),
+                        new System.Xml.Linq.XText(ex.Message));
+
+                    errorsElement.Add(errorElementProperty);
+
+                    rateResponseExceptiones.Xml = errorsElement.ToString();
+                }
+
+            }
+
+            ratesReponse.RateResponseList.Add(rateResponse);
+            ratesReponse.RateResponseList.Add(deleteRateResponse);
+            ratesReponse.RateResponseList.Add(rateResponseExceptiones);
+
+            return ratesReponse;
+        }
+
 
         public RatesMessages GetRateMessages(int hotelId, int companyId,string rateplanId, int? roomId, DateTime? startDate, DateTime? endDate )
         {
@@ -1125,6 +1303,84 @@ namespace APIServices.Conflux
             return res;
         }
 
+        public RestrictionResponse UpdateRestrictionPatch(string endpoint, List<List<XDocument>> priorityRequests)
+        {
+            RestrictionResponse res = new RestrictionResponse();
+
+            var uri = new Uri(endpoint);
+
+            try
+            {
+                int priorityLockRoomType = Convert.ToInt32(ConfigurationManager.AppSettings["PriorityLockRoomTypes"]);
+                int priorityratePlanLock = Convert.ToInt32(ConfigurationManager.AppSettings["PriorityLockRatePlans"]);
+                int priorityLockGral = Convert.ToInt32(ConfigurationManager.AppSettings["PriorityLockGral"]);
+
+                int index = 0;
+
+                foreach (var priorityRequest in priorityRequests)
+                {
+                    Restriction restriction = new Restriction();
+
+                    if (priorityRequest != null)
+                    {
+                        foreach (var soapRequest in priorityRequest)
+                        {
+                            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
+                            HttpRequestMessage request = new HttpRequestMessage(new HttpMethod("PATCH"), endpoint);
+                            request.Content = new StringContent(soapRequest.ToString());
+
+                            using (var client = new HttpClient())
+                            {
+                                client.BaseAddress = new Uri(ConfigurationManager.AppSettings["confluxApiUrl"].ToString());
+
+                                var responseRequest = client.SendAsync(request).Result;
+
+                                restriction.Xml.Add(responseRequest.Content.ReadAsStringAsync().Result);
+                                restriction.XmlRequest.Add(soapRequest.ToString());
+                                restriction.IsSuccess = true;
+
+                            }
+                        }
+
+                        if ((index + 1) == priorityLockGral)
+                        {
+                            restriction.Type = Enum.RestrictionEnum.LockGral;
+                        }
+                        else if ((index + 1) == priorityratePlanLock)
+                        {
+                            restriction.Type = Enum.RestrictionEnum.LockRatePlan;
+                        }
+                        else if ((index + 1) == priorityLockRoomType)
+                        {
+                            restriction.Type = Enum.RestrictionEnum.LockRoomType;
+                        }
+
+                        res.Restrictions.Add(restriction);
+
+                    }
+
+                    index++;
+
+                }
+
+                res.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                res.IsSuccess = false;
+                res.Error = new KeyValuePair<string, string>("448", ex.Message);
+                var errorsElement = new System.Xml.Linq.XElement("Errors");
+                var errorElementProperty = new System.Xml.Linq.XElement("Error");
+                errorElementProperty.Add(new System.Xml.Linq.XAttribute("Type", "3"), new System.Xml.Linq.XAttribute("Code", "448"), new System.Xml.Linq.XText(ex.Message));
+                errorsElement.Add(errorElementProperty);
+                res.Xml = errorsElement.ToString();
+            }
+
+            return res;
+        }
+
+
         public List<XDocument> GetClosureRatesMessages(int hotelId, int companyId, APIServices.Conflux.Models.Closure.Closure closure)
         {
             List<XDocument> lockRatesSoapRQ = new List<XDocument>();
@@ -1251,6 +1507,59 @@ namespace APIServices.Conflux
             return res;
         }
 
+        public RestrictionResponse UpdateRestrictionPatch(string endpoint, List<XDocument> soapRequests)
+        {
+
+            RestrictionResponse res = new RestrictionResponse();
+
+            try
+            {
+                var uri = new Uri(endpoint);
+
+                Restriction restriction = new Restriction();
+
+                foreach (var soapRequest in soapRequests)
+                {
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
+                    HttpRequestMessage request = new HttpRequestMessage(new HttpMethod("PATCH"), endpoint);
+                    request.Content = new StringContent(soapRequest.ToString());
+
+                    using (var client = new HttpClient())
+                    {
+                        client.BaseAddress = new Uri(ConfigurationManager.AppSettings["confluxApiUrl"].ToString());
+
+                        var responseRequest = client.SendAsync(request).Result;
+
+                        restriction.Xml.Add(responseRequest.Content.ReadAsStringAsync().Result);
+                        restriction.XmlRequest.Add(soapRequest.ToString());
+                        restriction.IsSuccess = true;
+
+                    }
+
+                    restriction.Type = Enum.RestrictionEnum.LockRate;
+                    res.Restrictions.Add(restriction);
+
+                }
+
+                res.IsSuccess = true;
+
+            }
+            catch (Exception ex)
+            {
+                res.IsSuccess = false;
+                res.Error = new KeyValuePair<string, string>("448", ex.Message);
+                var errorsElement = new System.Xml.Linq.XElement("Errors");
+                var errorElementProperty = new System.Xml.Linq.XElement("Error");
+                errorElementProperty.Add(new System.Xml.Linq.XAttribute("Type", "3"), new System.Xml.Linq.XAttribute("Code", "448"), new System.Xml.Linq.XText(ex.Message));
+                errorsElement.Add(errorElementProperty);
+                res.Xml = errorsElement.ToString();
+            }
+
+            return res;
+        }
+
+
         /***
             Paginas que usan:
             FareCatalogue
@@ -1369,6 +1678,51 @@ namespace APIServices.Conflux
             return res;
         }
 
+        public async Task<RestrictionResponse> UpdateRestrictionPatchAsync(XDocument document, string endpoint, RestrictionEnum restrictionEnum)
+        {
+            RestrictionResponse res = new RestrictionResponse();
+
+            try
+            {
+                Restriction restriction = new Restriction();
+
+                HttpRequestMessage request = new HttpRequestMessage(new HttpMethod("PATCH"), endpoint);
+                request.Content = new StringContent(document.ToString());
+
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(ConfigurationManager.AppSettings["confluxApiUrl"].ToString());
+
+                    var responseRequest = await client.SendAsync(request);
+
+                    restriction.Xml.Add(await responseRequest.Content.ReadAsStringAsync());
+                    restriction.XmlRequest.Add(document.ToString());
+                    restriction.IsSuccess = true;
+                }
+
+                restriction.Type = restrictionEnum;
+
+                res.Restrictions.Add(restriction);
+                res.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                res.IsSuccess = false;
+                res.Error = new KeyValuePair<string, string>("448", ex.Message);
+
+                var errorsElement = new System.Xml.Linq.XElement("Errors");
+                var errorElementProperty = new System.Xml.Linq.XElement("Error");
+                errorElementProperty.Add(
+                    new System.Xml.Linq.XAttribute("Type", "3"),
+                    new System.Xml.Linq.XAttribute("Code", "448"),
+                    new System.Xml.Linq.XText(ex.Message));
+
+                errorsElement.Add(errorElementProperty);
+                res.Xml = errorsElement.ToString();
+            }
+
+            return res;
+        }
 
         public RateResponse DeleteRates(string endpoint,RateAmountMessages rateAmountMessages)
         {

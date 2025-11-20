@@ -1148,10 +1148,10 @@ Partial Class FaresCatalogueNR
                    HotelUtilitie.ENDPOINTCLOSURE, "Conflux", True)
 
             ' Enviar tarifas a APICache
-            Await SendRatesIfEnabledAsync(userName, userId, isEnabledSendingRatesAPICache, ratesForRequest, hotelId, companyId, rateId,
-                   startDate, endDate,
-                   HotelUtilitie.ENDPOINTAPI, HotelUtilitie.ENDPOINTAPIDELETE,
-                   HotelUtilitie.ENDPOINTAPICLOSURE, "APICache", False)
+            'Await SendRatesIfEnabledAsync(userName, userId, isEnabledSendingRatesAPICache, ratesForRequest, hotelId, companyId, rateId,
+            '       startDate, endDate,
+            '       HotelUtilitie.ENDPOINTAPIV2, HotelUtilitie.ENDPOINTAPIDELETE,
+            '       HotelUtilitie.ENDPOINTAPICLOSUREV2, "APICache", False)
 
 
         Catch ex As Exception
@@ -1196,7 +1196,13 @@ Partial Class FaresCatalogueNR
 
         Dim ratesMessages As RatesMessages = ratesForRequest
 
-        Dim res As Tuple(Of RateResponse, RateResponse) = Await confluxService.UpdateRateAsync(ratesMessages, endpoint, endpointDelete, deleteRates)
+        Dim res As Tuple(Of RateResponse, RateResponse) = Nothing
+
+        If service = "APICache" Then
+            res = Await confluxService.UpdateRatePatchAsync(ratesMessages, endpoint, endpointDelete, deleteRates)
+        Else
+            res = Await confluxService.UpdateRateAsync(ratesMessages, endpoint, endpointDelete, deleteRates)
+        End If
 
         Dim note As String = String.Format("Tarifa envida a {0}", service)
         Dim noteDelete As String = String.Format("Eliminar tarifas {0}", service)
@@ -1233,7 +1239,15 @@ Partial Class FaresCatalogueNR
         Dim confluxService As New APIServices.Conflux.ConfluxService()
 
         For Each request As XDocument In requests
-            Dim response As Models.Restrictions.Response.RestrictionResponse = Await confluxService.UpdateRestrictionAsync(request, endpoint, RestrictionEnum.LockRate)
+
+            Dim response As Models.Restrictions.Response.RestrictionResponse = Nothing
+
+            If service = "APICache" Then
+                response = Await confluxService.UpdateRestrictionPatchAsync(request, endpoint, RestrictionEnum.LockRate)
+            Else
+                response = Await confluxService.UpdateRestrictionAsync(request, endpoint, RestrictionEnum.LockRate)
+            End If
+
             restrictionResponseList.Add(response)
         Next
 

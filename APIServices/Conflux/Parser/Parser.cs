@@ -24,12 +24,15 @@ namespace APIServices.Conflux.Parser
             RateAmountMessages rateAmountMessagesExceptions = new RateAmountMessages();
 
             rateAmountMessages.HotelCode = companyId;
+            rateAmountMessages.HotelCodeV2 = hotelId;
             rateAmountMessages.RateAmountMessagesList = new List<RateAmountMessage>();
 
             deleteRateAmountMessages.HotelCode = companyId;
+            deleteRateAmountMessages.HotelCodeV2 = hotelId;
             deleteRateAmountMessages.RateAmountMessagesList = new List<RateAmountMessage>();
 
             rateAmountMessagesExceptions.HotelCode = companyId;
+            rateAmountMessagesExceptions.HotelCodeV2 = hotelId;
             rateAmountMessagesExceptions.RateAmountMessagesList = new List<RateAmountMessage>();
 
 
