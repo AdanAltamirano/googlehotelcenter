@@ -524,8 +524,8 @@ Namespace API.Controllers
                                                                HotelUtilitie.ENDPOINTDELETE, HotelUtilitie.ENDPOINTCLOSURE, "Conflux", True)
 
                                  ' Enviar tarifas a APICache
-                                 Await SendRatesIfEnabledAsync(userName, userId, hotelId, companyId, ratesForRequest, rate, isEnabledGoogleRequest, HotelUtilitie.ENDPOINTAPI,
-                                                               HotelUtilitie.ENDPOINTAPIDELETE, HotelUtilitie.ENDPOINTAPICLOSURE, "APICache", False)
+                                 Await SendRatesIfEnabledAsync(userName, userId, hotelId, companyId, ratesForRequest, rate, isEnabledGoogleRequest, HotelUtilitie.ENDPOINTAPIV2,
+                                                               HotelUtilitie.ENDPOINTAPIDELETE, HotelUtilitie.ENDPOINTAPICLOSUREV2, "APICache", False)
                              Next
 
                          Finally
@@ -571,7 +571,13 @@ Namespace API.Controllers
 
             Dim ratesMessages As RatesMessages = ratesForRequest
 
-            Dim res As Tuple(Of RateResponse, RateResponse) = Await confluxService.UpdateRateAsync(ratesMessages, endpoint, endpointDelete, deleteRates)
+            Dim res As Tuple(Of RateResponse, RateResponse) = Nothing
+
+            If service = "APICache" Then
+                res = Await confluxService.UpdateRatePatchAsync(ratesMessages, endpoint, endpointDelete, deleteRates)
+            Else
+                res = Await confluxService.UpdateRateAsync(ratesMessages, endpoint, endpointDelete, deleteRates)
+            End If
 
             Dim note As String = String.Format("Tarifa envida a {0}", service)
             Dim noteDelete As String = String.Format("Eliminar tarifas {0}", service)
@@ -590,7 +596,12 @@ Namespace API.Controllers
             Dim requests As List(Of XDocument) = New List(Of XDocument)
 
             Dim vDayRatesForClosure As List(Of vDayRates) = Conflux.Helpers.Rates.RatesHelpers.GetVDayRate(rateId, startDate, endDate)
-            RestrictionsParser.Init(companyId)
+
+            If service = "APICache" Then
+                RestrictionsParser.Init(hotelId)
+            Else
+                RestrictionsParser.Init(companyId)
+            End If
 
             Dim availStatusMessages As OTA.Models.Restrictions.AvailStatusMessages = RestrictionsParser.ToAvailStatusMessages(vDayRatesForClosure, "N")
 
@@ -607,7 +618,15 @@ Namespace API.Controllers
             Dim confluxService As New APIServices.Conflux.ConfluxService()
 
             For Each request As XDocument In requests
-                Dim response As Conflux.Models.Restrictions.Response.RestrictionResponse = Await confluxService.UpdateRestrictionAsync(request, endpoint, RestrictionEnum.LockRate)
+
+                Dim response As Conflux.Models.Restrictions.Response.RestrictionResponse = Nothing
+
+                If service = "APICache" Then
+                    response = Await confluxService.UpdateRestrictionPatchAsync(request, endpoint, RestrictionEnum.LockRate)
+                Else
+                    response = Await confluxService.UpdateRestrictionAsync(request, endpoint, RestrictionEnum.LockRate)
+                End If
+
                 restrictionResponseList.Add(response)
             Next
 

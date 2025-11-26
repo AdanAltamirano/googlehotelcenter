@@ -482,6 +482,9 @@ namespace APIServices.Conflux
 
             try
             {
+
+                ratesMessages.RateAmountMessagesList[0].HotelCode = ratesMessages.RateAmountMessagesList[0].HotelCodeV2;
+
                 var xml = HotelRateAmountNotifRQ.CreateHotelRateAmountNotifRQ(ratesMessages.RateAmountMessagesList[0]);
                 var soapRequest = Soap.CreateSoapRequestXml(xml);
 
@@ -720,6 +723,8 @@ namespace APIServices.Conflux
             try
             {
 
+                ratesMessages.RateAmountMessagesList[0].HotelCode = ratesMessages.RateAmountMessagesList[0].HotelCodeV2;
+
                 var xmlList = HotelRateAmountNotifRQ.CreateHotelRateAmountNotifRQList(ratesMessages.RateAmountMessagesList[0]);
 
                 foreach (XElement xml in xmlList)
@@ -781,6 +786,8 @@ namespace APIServices.Conflux
 
                 try
                 {
+                    ratesMessages.RateAmountMessagesList[2].HotelCode = ratesMessages.RateAmountMessagesList[2].HotelCodeV2;
+
                     var xmlList = HotelRateAmountNotifRQ.CreateHotelRateAmountNotifRQList(ratesMessages.RateAmountMessagesList[2]);
 
 
@@ -1307,8 +1314,6 @@ namespace APIServices.Conflux
         {
             RestrictionResponse res = new RestrictionResponse();
 
-            var uri = new Uri(endpoint);
-
             try
             {
                 int priorityLockRoomType = Convert.ToInt32(ConfigurationManager.AppSettings["PriorityLockRoomTypes"]);
@@ -1514,7 +1519,6 @@ namespace APIServices.Conflux
 
             try
             {
-                var uri = new Uri(endpoint);
 
                 Restriction restriction = new Restriction();
 

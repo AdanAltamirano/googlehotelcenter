@@ -1105,6 +1105,110 @@ Partial Class HomePage
         TwoWayUpdate(ds, sincOption)
     End Sub
 
+    'Private Sub TwoWayUpdate(ByVal dsRooms As RoomsInventoryData, ByVal sincOption As SincOptions)
+    '    Dim service As New WsConnectWcf.wsConnectWCFv2
+    '    Dim RQ As New WsConnectWcf.OTA_HotelAvailNotifRQ
+    '    Dim POS(0) As WsConnectWcf.SourceType
+    '    POS(0) = New WsConnectWcf.SourceType
+    '    Dim RequestorID As New WsConnectWcf.SourceTypeRequestorID
+    '    Dim AvailStatusMessages As New WsConnectWcf.OTA_HotelAvailNotifRQAvailStatusMessages
+    '    Dim ASMQuantity As Integer = 0
+    '    Dim Index As Integer = 0
+
+    '    RQ.Version = 1
+    '    RequestorID.Type = "22"
+    '    RequestorID.ID = "IPRM"
+    '    Dim myuuid As Guid = Guid.NewGuid()
+    '    RQ.EchoToken = myuuid.ToString()
+
+    '    ASMQuantity = dsRooms.Tables(0).Rows.Count - 1
+
+    '    Dim AvailStatusMessage(ASMQuantity) As WsConnectWcf.AvailStatusMessageType
+    '    For Each dr As DataRow In dsRooms.Tables(0).Rows
+    '        AvailStatusMessage(Index) = New WsConnectWcf.AvailStatusMessageType
+
+    '        Dim StatusApplicationControl As New WsConnectWcf.StatusApplicationControlType
+
+    '        AvailStatusMessage(Index).BookingLimit = dr(RoomsInventoryData.FLD_NUMBER_AVAILABILITY)
+    '        StatusApplicationControl.InvTypeCode = dr("RoomCode")
+    '        StatusApplicationControl.Start = CDate(dr(RoomsInventoryData.FLD_STARTDATE)).ToString("yyyy-MM-dd").Replace("-", "")
+    '        StatusApplicationControl.End = CDate(dr(RoomsInventoryData.FLD_ENDDATE)).ToString("yyyy-MM-dd").Replace("-", "")
+
+    '        If Not Chk1.Checked Or Not Chk2.Checked Or Not Chk3.Checked Or Not Chk4.Checked Or Not Chk5.Checked Or Not Chk6.Checked Or Not Chk7.Checked Then
+    '            StatusApplicationControl.Mon = Chk1.Checked
+    '            StatusApplicationControl.Tue = Chk2.Checked
+    '            StatusApplicationControl.Weds = Chk3.Checked
+    '            StatusApplicationControl.Thur = Chk4.Checked
+    '            StatusApplicationControl.Fri = Chk5.Checked
+    '            StatusApplicationControl.Sat = Chk6.Checked
+    '            StatusApplicationControl.Sun = Chk7.Checked
+
+    '            StatusApplicationControl.MonSpecified = True
+    '            StatusApplicationControl.WedsSpecified = True
+    '            StatusApplicationControl.ThurSpecified = True
+    '            StatusApplicationControl.TueSpecified = True
+    '            StatusApplicationControl.SatSpecified = True
+    '            StatusApplicationControl.SunSpecified = True
+    '            StatusApplicationControl.FriSpecified = True
+    '        End If
+    '        AvailStatusMessage(Index).StatusApplicationControl = StatusApplicationControl
+    '        Index += 1
+    '    Next
+
+    '    AvailStatusMessages.HotelCode = cInfoActual.Empresa.ToString()
+    '    AvailStatusMessages.AvailStatusMessage = AvailStatusMessage
+
+    '    RQ.POS = POS
+    '    RQ.AvailStatusMessages = AvailStatusMessages
+    '    POS(0).RequestorID = RequestorID
+
+    '    Dim strRequest As String = MyBase.GetXMLFromObject(RQ)
+
+    '    Dim requestXDocument As System.Xml.Linq.XDocument = System.Xml.Linq.XDocument.Parse(strRequest)
+
+    '    Dim xmlRQ As System.Xml.Linq.XElement = requestXDocument.Element("OTA_HotelAvailNotifRQ")
+
+    '    Dim soapRequest As System.Xml.Linq.XDocument = Soap.CreateSoapRequestXml(xmlRQ)
+
+
+    '    MyBase.WriteLog(String.Format("Request: {0}", soapRequest.ToString()), "SingleImgInv")
+    '    Dim url As String = ConfigurationManager.AppSettings("confluxApiUrl")
+    '    Dim strError As String = String.Empty
+
+    '    Select Case sincOption
+    '        Case SincOptions.ChannelManager
+    '            url += "inventory/ota/update"
+    '        Case SincOptions.GooglePrice
+    '            url += "pms/ota/inventory/update"
+    '    End Select
+
+    '    Try
+    '        Dim HttpReq As System.Net.HttpWebRequest = System.Net.WebRequest.Create(url)
+
+    '        HttpReq.Method = "POST"
+    '        Dim bytes() As Byte = System.Text.Encoding.ASCII.GetBytes(soapRequest.ToString())
+    '        HttpReq.ContentType = "application/xml; encoding='utf-8'"
+    '        HttpReq.ContentLength = bytes.Length
+    '        Dim requestStream As System.IO.Stream = HttpReq.GetRequestStream()
+    '        requestStream.Write(bytes, 0, bytes.Length)
+    '        requestStream.Close()
+    '        Dim response As System.Net.HttpWebResponse = HttpReq.GetResponse()
+    '        If Not response.StatusCode = System.Net.HttpStatusCode.OK Then
+    '            lblError.Text = "Falló el envío de inventario a channel manager: " & response.StatusCode.ToString()
+    '            lblError.Visible = True
+    '        Else
+    '            MyBase.WriteLog(String.Format("Response: {0}", response.StatusCode.ToString()), "SingleImgInv")
+    '            lblError.Text = "Inventario Actualizado"
+    '            lblError.Visible = True
+    '        End If
+    '    Catch ex As Exception
+    '        lblError.Text = ex.Message
+    '        lblError.Visible = True
+
+    '        MyBase.WriteLog(String.Format("Response: {0}", ex.StackTrace), "SingleImgInv")
+    '    End Try
+    'End Sub
+
     Private Sub TwoWayUpdate(ByVal dsRooms As RoomsInventoryData, ByVal sincOption As SincOptions)
         Dim service As New WsConnectWcf.wsConnectWCFv2
         Dim RQ As New WsConnectWcf.OTA_HotelAvailNotifRQ
@@ -1114,26 +1218,20 @@ Partial Class HomePage
         Dim AvailStatusMessages As New WsConnectWcf.OTA_HotelAvailNotifRQAvailStatusMessages
         Dim ASMQuantity As Integer = 0
         Dim Index As Integer = 0
-
         RQ.Version = 1
         RequestorID.Type = "22"
         RequestorID.ID = "IPRM"
         Dim myuuid As Guid = Guid.NewGuid()
         RQ.EchoToken = myuuid.ToString()
-
         ASMQuantity = dsRooms.Tables(0).Rows.Count - 1
-
         Dim AvailStatusMessage(ASMQuantity) As WsConnectWcf.AvailStatusMessageType
         For Each dr As DataRow In dsRooms.Tables(0).Rows
             AvailStatusMessage(Index) = New WsConnectWcf.AvailStatusMessageType
-
             Dim StatusApplicationControl As New WsConnectWcf.StatusApplicationControlType
-
             AvailStatusMessage(Index).BookingLimit = dr(RoomsInventoryData.FLD_NUMBER_AVAILABILITY)
             StatusApplicationControl.InvTypeCode = dr("RoomCode")
             StatusApplicationControl.Start = CDate(dr(RoomsInventoryData.FLD_STARTDATE)).ToString("yyyy-MM-dd").Replace("-", "")
             StatusApplicationControl.End = CDate(dr(RoomsInventoryData.FLD_ENDDATE)).ToString("yyyy-MM-dd").Replace("-", "")
-
             If Not Chk1.Checked Or Not Chk2.Checked Or Not Chk3.Checked Or Not Chk4.Checked Or Not Chk5.Checked Or Not Chk6.Checked Or Not Chk7.Checked Then
                 StatusApplicationControl.Mon = Chk1.Checked
                 StatusApplicationControl.Tue = Chk2.Checked
@@ -1142,7 +1240,6 @@ Partial Class HomePage
                 StatusApplicationControl.Fri = Chk5.Checked
                 StatusApplicationControl.Sat = Chk6.Checked
                 StatusApplicationControl.Sun = Chk7.Checked
-
                 StatusApplicationControl.MonSpecified = True
                 StatusApplicationControl.WedsSpecified = True
                 StatusApplicationControl.ThurSpecified = True
@@ -1154,39 +1251,31 @@ Partial Class HomePage
             AvailStatusMessage(Index).StatusApplicationControl = StatusApplicationControl
             Index += 1
         Next
-
         AvailStatusMessages.HotelCode = cInfoActual.Empresa.ToString()
         AvailStatusMessages.AvailStatusMessage = AvailStatusMessage
-
         RQ.POS = POS
         RQ.AvailStatusMessages = AvailStatusMessages
         POS(0).RequestorID = RequestorID
-
         Dim strRequest As String = MyBase.GetXMLFromObject(RQ)
-
         Dim requestXDocument As System.Xml.Linq.XDocument = System.Xml.Linq.XDocument.Parse(strRequest)
-
         Dim xmlRQ As System.Xml.Linq.XElement = requestXDocument.Element("OTA_HotelAvailNotifRQ")
-
         Dim soapRequest As System.Xml.Linq.XDocument = Soap.CreateSoapRequestXml(xmlRQ)
-
-
         MyBase.WriteLog(String.Format("Request: {0}", soapRequest.ToString()), "SingleImgInv")
         Dim url As String = ConfigurationManager.AppSettings("confluxApiUrl")
         Dim strError As String = String.Empty
-
+        Dim bytes() As Byte
         Select Case sincOption
             Case SincOptions.ChannelManager
-                url += "inventory/ota/update"
+                url += "inventory/ota/update/batch"
+                bytes = System.Text.Encoding.ASCII.GetBytes(xmlRQ.ToString())
             Case SincOptions.GooglePrice
                 url += "pms/ota/inventory/update"
+                bytes = System.Text.Encoding.ASCII.GetBytes(soapRequest.ToString())
         End Select
-
         Try
             Dim HttpReq As System.Net.HttpWebRequest = System.Net.WebRequest.Create(url)
-
             HttpReq.Method = "POST"
-            Dim bytes() As Byte = System.Text.Encoding.ASCII.GetBytes(soapRequest.ToString())
+            'Dim bytes() As Byte = System.Text.Encoding.ASCII.GetBytes(soapRequest.ToString())
             HttpReq.ContentType = "application/xml; encoding='utf-8'"
             HttpReq.ContentLength = bytes.Length
             Dim requestStream As System.IO.Stream = HttpReq.GetRequestStream()
@@ -1204,8 +1293,9 @@ Partial Class HomePage
         Catch ex As Exception
             lblError.Text = ex.Message
             lblError.Visible = True
-
             MyBase.WriteLog(String.Format("Response: {0}", ex.StackTrace), "SingleImgInv")
         End Try
     End Sub
+
+
 End Class

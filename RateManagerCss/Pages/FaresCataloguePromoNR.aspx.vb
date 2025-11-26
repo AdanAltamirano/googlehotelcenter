@@ -1089,10 +1089,10 @@ Partial Public Class FaresCataloguePromoNR
                    HotelUtilitie.ENDPOINTCLOSURE, "Conflux", True)
 
             ' Enviar tarifas a APICache
-            'Await SendRatesIfEnabledAsync(userName, userId, isEnabledSendingRatesAPICache, ratesForRequest, hotelId, companyId, rateId,
-            '       startDate, endDate,
-            '       HotelUtilitie.ENDPOINTAPIV2, HotelUtilitie.ENDPOINTAPIDELETE,
-            '       HotelUtilitie.ENDPOINTAPICLOSUREV2, "APICache", False)
+            Await SendRatesIfEnabledAsync(userName, userId, isEnabledSendingRatesAPICache, ratesForRequest, hotelId, companyId, rateId,
+                   startDate, endDate,
+                   HotelUtilitie.ENDPOINTAPIV2, HotelUtilitie.ENDPOINTAPIDELETE,
+                   HotelUtilitie.ENDPOINTAPICLOSUREV2, "APICache", False)
 
 
         Catch ex As Exception
@@ -1163,7 +1163,11 @@ Partial Public Class FaresCataloguePromoNR
 
         Dim vDayRatesForClosure As List(Of vDayRatesExceptions) = Helpers.Rates.RatesHelpers.GetVDayRateException(rateId, startDate, endDate)
 
-        RestrictionsParser.Init(companyId)
+        If service = "APICache" Then
+            RestrictionsParser.Init(hotelId)
+        Else
+            RestrictionsParser.Init(companyId)
+        End If
 
         Dim availStatusMessages As OTA.Models.Restrictions.AvailStatusMessages = RestrictionsParser.ToAvailStatusMessages(vDayRatesForClosure, "N")
 

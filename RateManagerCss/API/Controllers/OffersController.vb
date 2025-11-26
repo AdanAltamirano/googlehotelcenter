@@ -474,8 +474,8 @@ Namespace API.Controllers
             Await SendRatesIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledGoogleRequest, ratesForRequestPromotion, HotelUtilitie.ENDPOINT, HotelUtilitie.ENDPOINTDELETE, "Conflux", True, True)
 
             'APICache
-            'Await SendRatesIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledSendingRatesAPICache, ratesForRequest, HotelUtilitie.ENDPOINTAPIV2, HotelUtilitie.ENDPOINTAPIDELETE, "APICache", False, False)
-            'Await SendRatesIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledSendingRatesAPICache, ratesForRequestPromotion, HotelUtilitie.ENDPOINTAPIV2, HotelUtilitie.ENDPOINTAPIDELETE, "APICache", False, True)
+            Await SendRatesIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledSendingRatesAPICache, ratesForRequest, HotelUtilitie.ENDPOINTAPIV2, HotelUtilitie.ENDPOINTAPIDELETE, "APICache", False, False)
+            Await SendRatesIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledSendingRatesAPICache, ratesForRequestPromotion, HotelUtilitie.ENDPOINTAPIV2, HotelUtilitie.ENDPOINTAPIDELETE, "APICache", False, True)
 
         End Function
 

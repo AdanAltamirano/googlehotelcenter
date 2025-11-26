@@ -452,7 +452,16 @@ Namespace API.Controller
                 Dim lockRatePlanHotelAvailNotifRQList As List(Of XElement) = HotelAvailNotifRQ.CreateHotelAvailNotifRQList(availStatusMessagesLockRatePlans)
 
                 Await SendClosureIfEnabled(userName, userId, hotelId, companyId, isEnabledGoogleRequest, HotelUtilitie.ENDPOINTCLOSURE, "Conflux", lockRatePlanHotelAvailNotifRQList)
-                'Await SendClosureIfEnabled(userName, userId, hotelId, companyId, isEnabledGoogleRequest, HotelUtilitie.ENDPOINTAPICLOSURE, "ApiCache", lockRatePlanHotelAvailNotifRQList)
+
+                If isEnabledSendingRatesAPICache Then
+
+                    RestrictionsParser.Init(hotelId)
+
+                    Dim availStatusMessagesLockRatePlansAPICache = RestrictionsParser.ToAvailStatusMessages(room, lockRatePlans)
+                    Dim lockRatePlanHotelAvailNotifRQListPatchAPICache As List(Of XElement) = HotelAvailNotifRQ.CreateHotelAvailNotifRQList(availStatusMessagesLockRatePlans)
+
+                    Await SendClosureIfEnabled(userName, userId, hotelId, companyId, isEnabledSendingRatesAPICache, HotelUtilitie.ENDPOINTAPICLOSUREV2, "APICache", lockRatePlanHotelAvailNotifRQListPatchAPICache)
+                End If
 
             Catch ex As Exception
 
@@ -485,7 +494,13 @@ Namespace API.Controller
 
                 For Each lockRatePlanSoapRQ As XDocument In lockRatePlanHotelAvailNotifSoapRQList
 
-                    Dim restrictionResponse As RestrictionResponse = Await confluxService.UpdateRestrictionAsync(lockRatePlanSoapRQ, endPoint, RestrictionEnum.LockRoomType)
+                    Dim restrictionResponse As RestrictionResponse = Nothing
+
+                    If service = "APICache" Then
+                        restrictionResponse = Await confluxService.UpdateRestrictionPatchAsync(lockRatePlanSoapRQ, endPoint, RestrictionEnum.LockRoomType)
+                    Else
+                        restrictionResponse = Await confluxService.UpdateRestrictionAsync(lockRatePlanSoapRQ, endPoint, RestrictionEnum.LockRoomType)
+                    End If
 
                     Dim note As String = String.Format("Sincronizar request numero {0} LockRoomType {1} con el hotel: ", (index + 1), service)
                     Dim noteError As String = String.Format("Error al sincronizar con {0}", service)

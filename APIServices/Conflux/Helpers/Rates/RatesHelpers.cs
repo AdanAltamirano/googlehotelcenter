@@ -547,30 +547,41 @@ namespace APIServices.Conflux.Helpers.Rates
 
                     for (var i = 0; i < maxChildren; i++)
                     {
-                        var priceChild = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Child);
-                        var amountBeforeTaxChild = decimal.Round((decimal)(priceChild.Price / (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
+                        var priceChild = prices.FirstOrDefault(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Child);
 
-                        var priceTeeneger = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Teeneger);
-                        var amountBeforeTaxTeeneger = decimal.Round((decimal)(priceTeeneger.Price / (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
-
-                        BaseGuestAmount baseGuestAmountChild = new BaseGuestAmount()
+                        if (priceChild != null)
                         {
-                            AmountBeforeTax = amountBeforeTaxChild,
-                            AmountAfterTax = priceChild.Price,
-                            NumberOfGuests = priceChild.Quantity.ToString(),
-                            AgeQualifyingCode = priceChild.PersonType
-                        };
+                            var amountBeforeTaxChild = decimal.Round((decimal)(priceChild.Price / (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
 
-                        BaseGuestAmount baseGuestAmountTeeneger = new BaseGuestAmount()
-                        {
-                            AmountBeforeTax = amountBeforeTaxTeeneger,
-                            AmountAfterTax = priceTeeneger.Price,
-                            NumberOfGuests = priceTeeneger.Quantity.ToString(),
-                            AgeQualifyingCode = priceTeeneger.PersonType
-                        };
+                            BaseGuestAmount baseGuestAmountChild = new BaseGuestAmount()
+                            {
+                                AmountBeforeTax = amountBeforeTaxChild,
+                                AmountAfterTax = priceChild.Price,
+                                NumberOfGuests = priceChild.Quantity.ToString(),
+                                AgeQualifyingCode = priceChild.PersonType
+                            };
 
-                        baseGuestAmounts.Add(baseGuestAmountChild);
-                        baseGuestAmounts.Add(baseGuestAmountTeeneger);
+
+                            baseGuestAmounts.Add(baseGuestAmountChild);
+
+                            var priceTeeneger = prices.FirstOrDefault(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Teeneger);
+
+                            if (priceTeeneger != null)
+                            {
+                                var amountBeforeTaxTeeneger = decimal.Round((decimal)(priceTeeneger.Price / (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
+
+                                BaseGuestAmount baseGuestAmountTeeneger = new BaseGuestAmount()
+                                {
+                                    AmountBeforeTax = amountBeforeTaxTeeneger,
+                                    AmountAfterTax = priceTeeneger.Price,
+                                    NumberOfGuests = priceTeeneger.Quantity.ToString(),
+                                    AgeQualifyingCode = priceTeeneger.PersonType
+                                };
+
+
+                                baseGuestAmounts.Add(baseGuestAmountTeeneger);
+                            }
+                        }
                     }
 
 
@@ -621,30 +632,41 @@ namespace APIServices.Conflux.Helpers.Rates
 
                     for (var i = 0; i < maxChildren; i++)
                     {
-                        var priceChild = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Child);
-                        var amountAfterTaxChild = decimal.Round((decimal)(priceChild.Price * (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
+                        var priceChild = prices.FirstOrDefault(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Child);
 
-                        var priceTeeneger = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Teeneger);
-                        var amountAfterTaxTeeneger = decimal.Round((decimal)(priceTeeneger.Price * (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
-
-                        BaseGuestAmount baseGuestAmountChild = new BaseGuestAmount()
+                        if (priceChild != null)
                         {
-                            AmountBeforeTax = priceChild.Price,
-                            AmountAfterTax = amountAfterTaxChild,
-                            NumberOfGuests = priceChild.Quantity.ToString(),
-                            AgeQualifyingCode = priceChild.PersonType
-                        };
 
-                        BaseGuestAmount baseGuestAmountTeeneger = new BaseGuestAmount()
+                            var amountAfterTaxChild = decimal.Round((decimal)(priceChild.Price * (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
+
+                            BaseGuestAmount baseGuestAmountChild = new BaseGuestAmount()
+                            {
+                                AmountBeforeTax = priceChild.Price,
+                                AmountAfterTax = amountAfterTaxChild,
+                                NumberOfGuests = priceChild.Quantity.ToString(),
+                                AgeQualifyingCode = priceChild.PersonType
+                            };
+
+                            baseGuestAmounts.Add(baseGuestAmountChild);
+                        }
+
+                        var priceTeeneger = prices.FirstOrDefault(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Teeneger);
+
+                        if (priceTeeneger != null)
                         {
-                            AmountBeforeTax = priceTeeneger.Price,
-                            AmountAfterTax = amountAfterTaxTeeneger,
-                            NumberOfGuests = priceTeeneger.Quantity.ToString(),
-                            AgeQualifyingCode = priceTeeneger.PersonType
-                        };
 
-                        baseGuestAmounts.Add(baseGuestAmountChild);
-                        baseGuestAmounts.Add(baseGuestAmountTeeneger);
+                            var amountAfterTaxTeeneger = decimal.Round((decimal)(priceTeeneger.Price * (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
+
+                            BaseGuestAmount baseGuestAmountTeeneger = new BaseGuestAmount()
+                            {
+                                AmountBeforeTax = priceTeeneger.Price,
+                                AmountAfterTax = amountAfterTaxTeeneger,
+                                NumberOfGuests = priceTeeneger.Quantity.ToString(),
+                                AgeQualifyingCode = priceTeeneger.PersonType
+                            };
+
+                            baseGuestAmounts.Add(baseGuestAmountTeeneger);
+                        }
                     }
 
                     //foreach (var price in prices)
@@ -712,11 +734,11 @@ namespace APIServices.Conflux.Helpers.Rates
 
                     for (var i = 0; i < maxChildren; i++)
                     {
-                        var priceChild = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Child);
+                        var priceChild = prices.FirstOrDefault(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Child);
 
-                        var priceTeeneger = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Teeneger);
+                        var priceTeeneger = prices.FirstOrDefault(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Teeneger);
 
-                        if (priceChild.Price > 0)
+                        if (priceChild != null && priceChild.Price > 0)
                         {
                             var amountBeforeTaxChild = decimal.Round((decimal)(priceChild.Price / (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
 
@@ -731,7 +753,7 @@ namespace APIServices.Conflux.Helpers.Rates
                             baseGuestAmounts.Add(baseGuestAmountChild);
                         }
 
-                        if (priceTeeneger.Price > 0)
+                        if (priceTeeneger != null && priceTeeneger.Price > 0)
                         {
                             var amountBeforeTaxTeeneger = decimal.Round((decimal)(priceTeeneger.Price / (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
 
@@ -796,11 +818,11 @@ namespace APIServices.Conflux.Helpers.Rates
 
                     for (var i = 0; i < maxChildren; i++)
                     {
-                        var priceChild = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Child);
+                        var priceChild = prices.FirstOrDefault(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Child);
 
-                        var priceTeeneger = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Teeneger);
+                        var priceTeeneger = prices.FirstOrDefault(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Teeneger);
  
-                        if (priceChild.Price > 0)
+                        if (priceChild != null && priceChild.Price > 0)
                         {
                             var amountAfterTaxChild = decimal.Round((decimal)(priceChild.Price * (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
                             BaseGuestAmount baseGuestAmountChild = new BaseGuestAmount()
@@ -814,7 +836,7 @@ namespace APIServices.Conflux.Helpers.Rates
                             baseGuestAmounts.Add(baseGuestAmountChild);
                         }
 
-                        if (priceTeeneger.Price > 0)
+                        if (priceTeeneger != null && priceTeeneger.Price > 0)
                         {
                             var amountAfterTaxTeeneger = decimal.Round((decimal)(priceTeeneger.Price * (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
                             BaseGuestAmount baseGuestAmountTeeneger = new BaseGuestAmount()

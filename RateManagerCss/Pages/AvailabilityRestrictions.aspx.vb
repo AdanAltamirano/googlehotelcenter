@@ -2325,8 +2325,8 @@ Partial Class AvailabilityRestrictions
                              Await SendClosureIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledGoogleRequest, RestrictionEnum.LockGral, "Conflux", "LockGral", HotelUtilitie.ENDPOINTCLOSURE, activeRooms, lockGral:=lockGral, activeRatePlans:=activeRatePlans) 'Google
                              Await SendClosureIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledGoogleRequest, RestrictionEnum.LockGral, "Conflux", "LockGralPromos", HotelUtilitie.ENDPOINTCLOSURE, activeRooms, lockGral:=lockGral, activeRatePlans:=activeRatePlansPromos) 'Google Promos
 
-                             Await SendClosureIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledSendingRatesAPICache, RestrictionEnum.LockGral, "APICache", "LockGral", HotelUtilitie.ENDPOINTAPICLOSURE, activeRooms, lockGral:=lockGral, activeRatePlans:=activeRatePlans) 'Google
-                             Await SendClosureIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledSendingRatesAPICache, RestrictionEnum.LockGral, "APICache", "LockGralPromos", HotelUtilitie.ENDPOINTAPICLOSURE, activeRooms, lockGral:=lockGral, activeRatePlans:=activeRatePlansPromos) 'Google Promos
+                             Await SendClosureIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledSendingRatesAPICache, RestrictionEnum.LockGral, "APICache", "LockGral", HotelUtilitie.ENDPOINTAPICLOSUREV2, activeRooms, lockGral:=lockGral, activeRatePlans:=activeRatePlans) 'Google
+                             Await SendClosureIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledSendingRatesAPICache, RestrictionEnum.LockGral, "APICache", "LockGralPromos", HotelUtilitie.ENDPOINTAPICLOSUREV2, activeRooms, lockGral:=lockGral, activeRatePlans:=activeRatePlansPromos) 'Google Promos
 
                          Case RestrictionEnum.LockRatePlan
 
@@ -2355,8 +2355,8 @@ Partial Class AvailabilityRestrictions
                              Await SendClosureIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledGoogleRequest, RestrictionEnum.LockRatePlan, "Conflux", "LockRatePlan", HotelUtilitie.ENDPOINTCLOSURE, activeRooms, lockRatePlans:=lockRatePlans, isPromo:=False)
                              Await SendClosureIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledGoogleRequest, RestrictionEnum.LockRatePlan, "Conflux", "LockRatePlanPromos", HotelUtilitie.ENDPOINTCLOSURE, activeRooms, lockGral:=lockPromos, activeRatePlans:=validPromosList, isPromo:=True)
 
-                             Await SendClosureIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledGoogleRequest, RestrictionEnum.LockRatePlan, "APICache", "LockRatePlan", HotelUtilitie.ENDPOINTAPICLOSURE, activeRooms, lockRatePlans:=lockRatePlans, isPromo:=False)
-                             Await SendClosureIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledGoogleRequest, RestrictionEnum.LockRatePlan, "APICache", "LockRatePlanPromos", HotelUtilitie.ENDPOINTAPICLOSURE, activeRooms, lockGral:=lockPromos, activeRatePlans:=validPromosList, isPromo:=True)
+                             Await SendClosureIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledSendingRatesAPICache, RestrictionEnum.LockRatePlan, "APICache", "LockRatePlan", HotelUtilitie.ENDPOINTAPICLOSUREV2, activeRooms, lockRatePlans:=lockRatePlans, isPromo:=False)
+                             Await SendClosureIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledSendingRatesAPICache, RestrictionEnum.LockRatePlan, "APICache", "LockRatePlanPromos", HotelUtilitie.ENDPOINTAPICLOSUREV2, activeRooms, lockGral:=lockPromos, activeRatePlans:=validPromosList, isPromo:=True)
 
                      End Select
 
@@ -2370,7 +2370,11 @@ Partial Class AvailabilityRestrictions
 
         If isEnabled Then
 
-            RestrictionsParser.Init(companyId)
+            If service = "APICache" Then
+                RestrictionsParser.Init(hotelId)
+            Else
+                RestrictionsParser.Init(companyId)
+            End If
 
             Select Case typeOfLock
                 Case RestrictionEnum.LockGral
@@ -2416,7 +2420,15 @@ Partial Class AvailabilityRestrictions
             Dim restrictionResponseList As List(Of Models.Restrictions.Response.RestrictionResponse) = New List(Of Models.Restrictions.Response.RestrictionResponse)
 
             For Each request As XDocument In requests
-                Dim response As Models.Restrictions.Response.RestrictionResponse = Await confluxService.UpdateRestrictionAsync(request, endpoint, typeOfLockEnum)
+
+                Dim response As Models.Restrictions.Response.RestrictionResponse = Nothing
+
+                If service = "APICache" Then
+                    response = Await confluxService.UpdateRestrictionPatchAsync(request, endpoint, typeOfLockEnum)
+                Else
+                    response = Await confluxService.UpdateRestrictionAsync(request, endpoint, typeOfLockEnum)
+                End If
+
                 restrictionResponseList.Add(response)
             Next
 

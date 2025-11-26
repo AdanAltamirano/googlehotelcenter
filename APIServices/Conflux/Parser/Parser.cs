@@ -117,9 +117,11 @@ namespace APIServices.Conflux.Parser
             RateAmountMessages deleteRateAmountMessages = new RateAmountMessages();
 
             rateAmountMessages.HotelCode = companyId;
+            rateAmountMessages.HotelCodeV2 = hotelId;
             rateAmountMessages.RateAmountMessagesList = new List<RateAmountMessage>();
 
             deleteRateAmountMessages.HotelCode = companyId;
+            deleteRateAmountMessages.HotelCodeV2 = hotelId;
             deleteRateAmountMessages.RateAmountMessagesList = new List<RateAmountMessage>();
 
             RatesHelpers.Init(hotelId, plusTax, tax, currency);
