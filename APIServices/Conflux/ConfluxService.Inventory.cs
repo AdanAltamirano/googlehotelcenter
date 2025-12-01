@@ -11,6 +11,7 @@ using Portal.General.Facade;
 using Portal.Hotel.Facade;
 using System.Net.Http;
 using System.Text;
+using System.Configuration;
 
 namespace APIServices.Conflux
 {
@@ -63,6 +64,52 @@ namespace APIServices.Conflux
             }
 
             return res;
+        }
+
+        public InventoryResponse UpdateInventoryPatch(List<XDocument> documents, string endpoint)
+        {
+            InventoryResponse res = new InventoryResponse();
+
+            try
+            {
+                foreach (XDocument document in documents)
+                {
+                    InventoryHttpResponse inventoryHttpResponse = new InventoryHttpResponse();
+
+                    HttpRequestMessage request = new HttpRequestMessage(new HttpMethod("PATCH"), endpoint);
+                    request.Content = new StringContent(document.ToString());
+
+                    using (var client = new HttpClient())
+                    {
+                        client.BaseAddress = new Uri(ConfigurationManager.AppSettings["confluxApiUrl"].ToString());
+
+                        var responseRequest = client.SendAsync(request).Result;
+
+                        inventoryHttpResponse.Xml = responseRequest.Content.ReadAsStringAsync().Result;
+                        inventoryHttpResponse.XmlRequest = document.ToString();
+                        inventoryHttpResponse.IsSuccess = true;
+                        res.InventoryHttpResponseList.Add(inventoryHttpResponse);
+
+                    }
+
+                    System.Threading.Thread.Sleep(TimeSpan.FromSeconds(1));
+                }
+
+                res.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                res.IsSuccess = false;
+                res.Error = new KeyValuePair<string, string>("448", ex.Message);
+                var errorsElement = new System.Xml.Linq.XElement("Errors");
+                var errorElementProperty = new System.Xml.Linq.XElement("Error");
+                errorElementProperty.Add(new System.Xml.Linq.XAttribute("Type", "3"), new System.Xml.Linq.XAttribute("Code", "448"), new System.Xml.Linq.XText(ex.Message));
+                errorsElement.Add(errorElementProperty);
+                res.Xml = errorsElement.ToString();
+            }
+
+            return res;
+
         }
 
         public RoomsInventoryData GetInventoryData(int[] roomsIdList, DateTime? startDate, DateTime? endDate) 

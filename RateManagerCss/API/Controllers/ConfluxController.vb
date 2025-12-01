@@ -123,18 +123,41 @@ Namespace API.Controllers
 
             Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
 
-            Dim soapRequests As List(Of XDocument) = GetMessages(hotelId, info.Empresa, PortalCulture.GetIDCulture, body)
+            Dim result As InventoryResponse = Nothing
 
-            Dim result As InventoryResponse = ConfluxService.UpdateInventory(soapRequests, Utitlities.Hotel.HotelUtilitie.ENDPOINTINVENTORY)
+            If Utitlities.Hotel.HotelUtilitie.IsEnableGoogleRequest(hotelId) Then
+                Dim soapRequests As List(Of XDocument) = GetMessages(hotelId, info.Empresa, PortalCulture.GetIDCulture, body, "Conflux")
 
-            If Not result.IsSuccess Then
-                Log("Error Sincronizar Inventario con el hotel: ", result.Xml, hotelId, String.Empty)
-                Return BadRequest(result.Error)
+                result = ConfluxService.UpdateInventory(soapRequests, Utitlities.Hotel.HotelUtilitie.ENDPOINTINVENTORY)
+
+                If Not result.IsSuccess Then
+                    Log("Error Sincronizar Inventario con el hotel: ", result.Xml, hotelId, String.Empty)
+                    Return BadRequest(result.Error)
+                End If
+
+                LogInventory(hotelId, "Conflux", result)
             End If
 
-            LogInventory(hotelId, "Conflux", result)
+            Dim resultAPI As InventoryResponse = Nothing
 
-            Dim toObject As Object = result
+            If Utitlities.Hotel.HotelUtilitie.IsEnableSendRatesAPICache(hotelId) Then
+                Dim soapRequestsAPI As List(Of XDocument) = GetMessages(hotelId, info.Empresa, PortalCulture.GetIDCulture, body, "APICache")
+
+                resultAPI = ConfluxService.UpdateInventoryPatch(soapRequestsAPI, Utitlities.Hotel.HotelUtilitie.ENDPOINTAPICLOSUREV2)
+
+                LogInventory(hotelId, "APICache", resultAPI)
+
+            End If
+
+            Dim toObject As Object = Nothing
+
+            If result IsNot Nothing Then
+                toObject = result
+            End If
+
+            If resultAPI IsNot Nothing And result Is Nothing Then
+                toObject = resultAPI
+            End If
 
             Return Ok(toObject)
         End Function
@@ -397,7 +420,7 @@ Namespace API.Controllers
 
         End Function
 
-        Public Function GetMessages(ByVal hotelId As Integer, ByVal companyId As Integer, ByVal lang As Integer, ByVal inventory As APIServices.Conflux.Models.Inventory.Inventory) As List(Of XDocument)
+        Public Function GetMessages(ByVal hotelId As Integer, ByVal companyId As Integer, ByVal lang As Integer, ByVal inventory As APIServices.Conflux.Models.Inventory.Inventory, ByVal service As String) As List(Of XDocument)
 
             Dim document As List(Of XDocument) = Nothing
 
@@ -406,11 +429,21 @@ Namespace API.Controllers
                 Dim roomsIdList As Integer() = ConfluxService.LoadRoomsByIdHotel(hotelId, lang)
                 Dim inventoryData As RoomsInventoryData = ConfluxService.GetInventoryData(roomsIdList, inventory.StartDate, inventory.EndDate)
 
-                document = GetInventoryXml(companyId, inventory.Days, inventoryData)
+                If service = "Conflux" Then
+                    document = GetInventoryXml(companyId, inventory.Days, inventoryData)
+                ElseIf service = "APICache" Then
+                    document = GetInventoryXml(hotelId, inventory.Days, inventoryData)
+                End If
 
             Else
                 Dim inventoryData As RoomsInventoryData = ConfluxService.GetInventoryData(inventory.RoomsList, inventory.StartDate, inventory.EndDate)
-                document = GetInventoryXml(companyId, inventory.Days, inventoryData)
+
+                If service = "Conflux" Then
+                    document = GetInventoryXml(companyId, inventory.Days, inventoryData)
+                ElseIf service = "APICache" Then
+                    document = GetInventoryXml(hotelId, inventory.Days, inventoryData)
+                End If
+
             End If
 
             Return document

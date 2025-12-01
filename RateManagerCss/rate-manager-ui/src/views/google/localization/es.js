@@ -44,6 +44,7 @@ export default {
     'Include Rates Promotions' : 'Incluir Tarifas Promociones',
     'Include Rates Of RatePlans' : 'Incluir Tarifas de Planes Tarifarios',
     'Rates Eliminated' : 'Tarifas Eliminadas',
-    'Choose Dates' : 'Elegir Fechas'
+    'Choose Dates' : 'Elegir Fechas',
+    'Enable Google Prices Or Rates APICache in Content / General Information' : 'Habilitar Precios Google ó Tarifas APICache en Contenido / Información General'
 
 }

@@ -201,5 +201,6 @@ export default {
     'Agent': 'Agente',
     'Children Ages' : 'Edades Niños',
     'year' : 'año',
-    'years' : 'años'
+    'years' : 'años',
+    'Promotions Applied' : 'Promociones aplicadas'
 }

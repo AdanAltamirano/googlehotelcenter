@@ -19,6 +19,7 @@ Namespace Utitlities.Hotel
         Public ENDPOINTAPIDELETE As String = ""
         Public ENDPOINTAPICLOSURE As String = ConfigurationManager.AppSettings("confluxApiUrl") & "pms/ota/calendar/inventory"
         Public ENDPOINTAPICLOSUREV2 As String = "pms/ota/calendar/inventory"
+        Public ENDPOINTAPINVENTORY As String = "inventory/ota/update/batch"
 
         Public ReadOnly Property ConfluxServiceHelper As APIServices.Conflux.ConfluxService
             Get

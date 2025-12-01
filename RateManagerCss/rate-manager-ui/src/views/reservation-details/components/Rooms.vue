@@ -111,6 +111,14 @@
                   <strong>{{room.ratePlanPromotion}} - {{room.namePromotion}}</strong>
                   <br />
                 </template>
+                <div v-if="room.promosRateReservation.length > 0">
+                  <div class="alert alert-success">
+                    <h5>{{$t('Promotions Applied')}}</h5>
+                    <strong class="d-block" v-for="promoRateReservation in room.promosRateReservation" :key="promoRateReservation">
+                      {{promoRateReservation.promoCode}} - {{promoRateReservation.name}}
+                    </strong>
+                  </div>
+                </div>
                 {{$t('Preferences')}}:
                 <div class="alert alert-info">
                   <strong>{{room.preferences}}</strong>
