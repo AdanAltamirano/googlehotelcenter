@@ -886,6 +886,10 @@ namespace APIServices.Conflux.Helpers.Rates
             {
                 starDate = DateTime.Now.Date;
             }
+            else if(vDayRate.StartDate.Date < DateTime.Now.Date)
+            {
+                starDate = DateTime.Now.Date;
+            }
 
             //var starDate = vDayRate.StartDate.Date < DateTime.Now.Date ? DateTime.Now.Date : vDayRate.StartDate.Date;
 
@@ -924,7 +928,10 @@ namespace APIServices.Conflux.Helpers.Rates
             {
                 starDate = DateTime.Now.Date;
             }
-            
+            else if (vDayRate.StartDate.Date < DateTime.Now.Date)
+            {
+                starDate = DateTime.Now.Date;
+            }
 
             //var starDate = vDayRate.StartDate.Date < DateTime.Now.Date ? DateTime.Now.Date : vDayRate.StartDate.Date;
 
@@ -942,7 +949,8 @@ namespace APIServices.Conflux.Helpers.Rates
             return rateAmountMessage;
         }
 
-        //General Tarifas
+        //General Tarifas EndPoint 
+        //Aqui llegan las fechas que se escogieron
         public static RateAmountMessage CreateDeleteRateAmountMessage(string rateplanId, string roomCode, DateTime? startDate, DateTime? endDate)
         {
 
@@ -990,7 +998,11 @@ namespace APIServices.Conflux.Helpers.Rates
             {
                 starDate = DateTime.Now.Date;
             }
-            
+            else if (vDayRate.StartDate.Date < DateTime.Now.Date)
+            {
+                starDate = DateTime.Now.Date;
+            }
+
 
             //var starDate = vDayRate.StartDate.Date < DateTime.Now.Date ? DateTime.Now.Date : vDayRate.StartDate.Date;
 

@@ -91,7 +91,7 @@ Namespace API.Controllers
 
             ''API CACHE
             If Utitlities.Hotel.HotelUtilitie.IsEnableSendRatesAPICache(hotelId) Then
-                Dim resultAPICache As RatesReponse = ConfluxService.UpdateRatesPatch(ratesMessages, Utitlities.Hotel.HotelUtilitie.ENDPOINTAPIV2)
+                Dim resultAPICache As RatesReponse = ConfluxService.UpdateRatesPatch(ratesMessages, Utitlities.Hotel.HotelUtilitie.ENDPOINTAPIV2, Utitlities.Hotel.HotelUtilitie.ENDPOINTAPIDELETE, True)
 
                 ratesToUpdateAPICache = resultAPICache.RateResponseList(0)
 
@@ -248,26 +248,46 @@ Namespace API.Controllers
 
             Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
 
-            Dim messages As OTA.Models.Rates.RateAmountMessages = ConfluxService.GetDeleteMessages(hotelId, info.Empresa, delete)
+            Dim result As DeleteResponse = Nothing
 
-            Dim soapRequests As List(Of XDocument) = ConfluxService.GetSoapRequests(messages)
+            If Utitlities.Hotel.HotelUtilitie.IsEnableGoogleRequest(hotelId) Then
+                Dim messages As OTA.Models.Rates.RateAmountMessages = ConfluxService.GetDeleteMessages(hotelId, info.Empresa, delete)
 
-            Dim result As DeleteResponse = ConfluxService.UpdateDelete(soapRequests, Utitlities.Hotel.HotelUtilitie.ENDPOINTDELETE)
+                Dim soapRequests As List(Of XDocument) = ConfluxService.GetSoapRequests(messages)
 
-            If Not result.IsSuccess Then
-                Log("Error Eliminar Tarifas con el hotel: ", result.Xml, hotelId, String.Empty)
-                Return BadRequest(result.Error)
+                result = ConfluxService.UpdateDelete(soapRequests, Utitlities.Hotel.HotelUtilitie.ENDPOINTDELETE)
+
+                If Not result.IsSuccess Then
+                    Log("Error Eliminar Tarifas con el hotel: ", result.Xml, hotelId, String.Empty)
+                    Return BadRequest(result.Error)
+                End If
+
+                LogDelete(hotelId, "Conflux", result)
             End If
 
-            LogDelete(hotelId, "Conflux", result)
+            Dim resultAPICache As DeleteResponse = Nothing
 
             'API CACHE
-            'If Utitlities.Hotel.HotelUtilitie.IsEnableSendRatesAPICache(hotelId) Then
-            '    Dim resultAPICache As DeleteResponse = ConfluxService.UpdateDelete(soapRequests, Utitlities.Hotel.HotelUtilitie.ENDPOINTAPIDELETE)
-            '    LogDelete(hotelId, "APICache", resultAPICache)
-            'End If
+            If Utitlities.Hotel.HotelUtilitie.IsEnableSendRatesAPICache(hotelId) Then
 
-            Dim toObject As Object = result
+                Dim messages As OTA.Models.Rates.RateAmountMessages = ConfluxService.GetDeleteMessages(hotelId, hotelId, delete)
+
+                Dim soapRequests As List(Of XDocument) = ConfluxService.GetSoapRequests(messages)
+
+                resultAPICache = ConfluxService.UpdateDelete(soapRequests, Utitlities.Hotel.HotelUtilitie.ENDPOINTAPIDELETE)
+
+                LogDelete(hotelId, "APICache", resultAPICache)
+            End If
+
+            Dim toObject As Object = Nothing
+
+            If result IsNot Nothing Then
+                toObject = result
+            End If
+
+            If resultAPICache IsNot Nothing And result Is Nothing Then
+                toObject = resultAPICache
+            End If
 
             Return Ok(toObject)
         End Function

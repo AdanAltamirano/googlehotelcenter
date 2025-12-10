@@ -307,11 +307,12 @@ namespace APIServices.Conflux.Parser
 
         }
 
-        public static RateAmountMessages ToRateAmountMessagesDelete(int companyId, string promotionCode, DateTime endDate, List<string> rateplansListAux, List<string> roomsListAux)
+        public static RateAmountMessages ToRateAmountMessagesDelete(int companyId,int hotelId, string promotionCode, DateTime endDate, List<string> rateplansListAux, List<string> roomsListAux)
         {
             var rateAmountMessages = new RateAmountMessages
             {
                 HotelCode = companyId,
+                HotelCodeV2 = hotelId,
                 RateAmountMessagesList = new List<OTA.Models.Rates.RateAmountMessage>()
             };
 

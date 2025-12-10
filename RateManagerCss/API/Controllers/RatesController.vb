@@ -524,8 +524,8 @@ Namespace API.Controllers
                                                                HotelUtilitie.ENDPOINTDELETE, HotelUtilitie.ENDPOINTCLOSURE, "Conflux", True)
 
                                  ' Enviar tarifas a APICache
-                                 Await SendRatesIfEnabledAsync(userName, userId, hotelId, companyId, ratesForRequest, rate, isEnabledGoogleRequest, HotelUtilitie.ENDPOINTAPIV2,
-                                                               HotelUtilitie.ENDPOINTAPIDELETE, HotelUtilitie.ENDPOINTAPICLOSUREV2, "APICache", False)
+                                 Await SendRatesIfEnabledAsync(userName, userId, hotelId, companyId, ratesForRequest, rate, isEnabledSendingRatesAPICache, HotelUtilitie.ENDPOINTAPIV2,
+                                                               HotelUtilitie.ENDPOINTAPIDELETE, HotelUtilitie.ENDPOINTAPICLOSUREV2, "APICache", True)
                              Next
 
                          Finally

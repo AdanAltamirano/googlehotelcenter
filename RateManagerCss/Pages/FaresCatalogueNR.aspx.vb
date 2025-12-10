@@ -1076,11 +1076,13 @@ Partial Class FaresCatalogueNR
 
             Dim rateAmountMessages As RateAmountMessages = New RateAmountMessages()
             rateAmountMessages.HotelCode = companyId
+            rateAmountMessages.HotelCodeV2 = hotelId
             rateAmountMessages.RateAmountMessagesList = New List(Of OTA.Models.Rates.RateAmountMessage)
 
             rateAmountMessages.RateAmountMessagesList = Parser.Parser.ToRateAmountMessagesDelete(vDayRates, Nothing, TypeRateEnum.RoomRate)
 
-            Await SendDeleteIfEnabledAsync(userName, userId, hotelId, rateAmountMessages, isEnabledGoogleRequest, "Conflux")
+            Await SendDeleteIfEnabledAsync(userName, userId, hotelId, rateAmountMessages, isEnabledGoogleRequest, HotelUtilitie.ENDPOINTDELETE, "Conflux")
+            Await SendDeleteIfEnabledAsync(userName, userId, hotelId, rateAmountMessages, isEnabledSendingRatesAPICache, HotelUtilitie.ENDPOINTAPIDELETE, "APICache")
 
 
         Catch ex As Exception
@@ -1089,11 +1091,11 @@ Partial Class FaresCatalogueNR
 
     End Function
 
-    Private Async Function SendDeleteIfEnabledAsync(ByVal userName As String, ByVal userId As Integer, ByVal hotelId As Integer, ByVal rateAmountMessages As RateAmountMessages, ByVal isEnabled As Boolean, ByVal service As String) As Task
+    Private Async Function SendDeleteIfEnabledAsync(ByVal userName As String, ByVal userId As Integer, ByVal hotelId As Integer, ByVal rateAmountMessages As RateAmountMessages, ByVal isEnabled As Boolean, ByVal endpoint As String, ByVal service As String) As Task
 
         If isEnabled Then
             Try
-                Await SendDeleteToServiceAsync(userName, userId, rateAmountMessages, hotelId, HotelUtilitie.ENDPOINTDELETE, service)
+                Await SendDeleteToServiceAsync(userName, userId, rateAmountMessages, hotelId, endpoint, service)
             Catch ex As Exception
 
             End Try
@@ -1110,7 +1112,13 @@ Partial Class FaresCatalogueNR
 
             Dim confluxService As New APIServices.Conflux.ConfluxService()
 
-            Dim res As RateResponse = Await confluxService.DeleteRatesAsync(endpoint, rateAmountMessages)
+            Dim res As RateResponse = Nothing
+
+            If service = "APICache" Then
+                res = Await confluxService.DeleteRatesPatchAsync(endpoint, rateAmountMessages)
+            Else
+                res = Await confluxService.DeleteRatesAsync(endpoint, rateAmountMessages)
+            End If
 
             HotelUtilitie.Log(userName, userId, "/Pages/FaresCatalogueNR.aspx", hotelId, RateManager.Utitlities.Hotel.Actions.Eliminar, note, "", res.RequestXML, res.Xml)
 
@@ -1151,7 +1159,7 @@ Partial Class FaresCatalogueNR
             Await SendRatesIfEnabledAsync(userName, userId, isEnabledSendingRatesAPICache, ratesForRequest, hotelId, companyId, rateId,
                    startDate, endDate,
                    HotelUtilitie.ENDPOINTAPIV2, HotelUtilitie.ENDPOINTAPIDELETE,
-                   HotelUtilitie.ENDPOINTAPICLOSUREV2, "APICache", False)
+                   HotelUtilitie.ENDPOINTAPICLOSUREV2, "APICache", True)
 
 
         Catch ex As Exception

@@ -2023,8 +2023,8 @@ Public Class Promotions
         Await SendRatesIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledGoogleRequest, ratesForRequestPromotion, HotelUtilitie.ENDPOINT, HotelUtilitie.ENDPOINTDELETE, "Conflux", True, True)
 
         'APICache
-        Await SendRatesIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledSendingRatesAPICache, ratesForRequest, HotelUtilitie.ENDPOINTAPIV2, HotelUtilitie.ENDPOINTAPIDELETE, "APICache", False, False)
-        Await SendRatesIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledSendingRatesAPICache, ratesForRequestPromotion, HotelUtilitie.ENDPOINTAPIV2, HotelUtilitie.ENDPOINTAPIDELETE, "APICache", False, True)
+        Await SendRatesIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledSendingRatesAPICache, ratesForRequest, HotelUtilitie.ENDPOINTAPIV2, HotelUtilitie.ENDPOINTAPIDELETE, "APICache", True, False)
+        Await SendRatesIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledSendingRatesAPICache, ratesForRequestPromotion, HotelUtilitie.ENDPOINTAPIV2, HotelUtilitie.ENDPOINTAPIDELETE, "APICache", True, True)
 
     End Function
 
@@ -2096,9 +2096,10 @@ Public Class Promotions
         Dim isEnabledGoogleRequest As Boolean = HotelUtilitie.IsEnableGoogleRequest(hotelId)
         Dim isEnabledSendingRatesAPICache As Boolean = HotelUtilitie.IsEnableSendRatesAPICache(hotelId)
 
-        Dim deleteMessages As RateAmountMessages = Parser.Parser.ToRateAmountMessagesDelete(companyId, promoRatePlanCodeToDelete, dateToDelete, ratePlansListAux, roomsListAux)
+        Dim deleteMessages As RateAmountMessages = Parser.Parser.ToRateAmountMessagesDelete(companyId, hotelId, promoRatePlanCodeToDelete, dateToDelete, ratePlansListAux, roomsListAux)
 
         Await SendDeleteRatesIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledGoogleRequest, deleteMessages, HotelUtilitie.ENDPOINTDELETE, "Conflux", promoRatePlanCodeToDelete)
+        Await SendDeleteRatesIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledSendingRatesAPICache, deleteMessages, HotelUtilitie.ENDPOINTAPIDELETE, "APICache", promoRatePlanCodeToDelete)
 
     End Function
 
@@ -2114,6 +2115,7 @@ Public Class Promotions
         If vDayRatesPromotion.Count > 0 Then
             rateAmountMessages = New RateAmountMessages()
             rateAmountMessages.HotelCode = companyId
+            rateAmountMessages.HotelCodeV2 = hotelId
             rateAmountMessages.RateAmountMessagesList = New List(Of OTA.Models.Rates.RateAmountMessage)
             Parser.Parser.ToRateAmountMessagesDelete(vDayRatesPromotion, Nothing, TypeRateEnum.RoomRate, rateAmountMessages.RateAmountMessagesList)
         End If
@@ -2121,12 +2123,16 @@ Public Class Promotions
         If vDayRatesPromotionException.Count > 0 Then
             rateAmountMessagesPromotion = New RateAmountMessages()
             rateAmountMessagesPromotion.HotelCode = companyId
+            rateAmountMessagesPromotion.HotelCodeV2 = hotelId
             rateAmountMessagesPromotion.RateAmountMessagesList = New List(Of OTA.Models.Rates.RateAmountMessage)
             Parser.Parser.ToRateAmountMessagesDelete(Nothing, vDayRatesPromotionException, TypeRateEnum.RoomRate, rateAmountMessagesPromotion.RateAmountMessagesList)
         End If
 
         Await SendDeleteRatesIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledGoogleRequest, rateAmountMessages, HotelUtilitie.ENDPOINTDELETE, "Conflux", promoRatePlanCodeToDelete)
         Await SendDeleteRatesIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledGoogleRequest, rateAmountMessagesPromotion, HotelUtilitie.ENDPOINTDELETE, "Conflux", promoRatePlanCodeToDelete)
+
+        Await SendDeleteRatesIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledSendingRatesAPICache, rateAmountMessages, HotelUtilitie.ENDPOINTAPIDELETE, "APICache", promoRatePlanCodeToDelete)
+        Await SendDeleteRatesIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledSendingRatesAPICache, rateAmountMessagesPromotion, HotelUtilitie.ENDPOINTAPIDELETE, "APICache", promoRatePlanCodeToDelete)
 
     End Function
 
@@ -2161,7 +2167,13 @@ Public Class Promotions
 
         Dim note As String = String.Format("Eliminar Promotions {1} {0}", service, promoRatePlanCodeToDelete)
 
-        Dim rateResponseDelete As RateResponse = Await confluxService.DeleteRatesAsync(endpoint, deleteMessages)
+        Dim rateResponseDelete As RateResponse = Nothing
+
+        If service = "APICache" Then
+            rateResponseDelete = Await confluxService.DeleteRatesPatchAsync(endpoint, deleteMessages)
+        Else
+            rateResponseDelete = Await confluxService.DeleteRatesAsync(endpoint, deleteMessages)
+        End If
 
         HotelUtilitie.Log(userName, userId, "/HotelAdministrator/Pages/Promotions.aspx", hotelId, Actions.Eliminar, note, "", rateResponseDelete.RequestXML, rateResponseDelete.Xml)
 
