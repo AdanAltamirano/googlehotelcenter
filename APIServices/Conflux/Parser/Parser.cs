@@ -14,6 +14,9 @@ namespace APIServices.Conflux.Parser
 {
     public static class Parser
     {
+
+        public static bool ParserSendRatesToGoogle { get; set; } = true;
+
         //General
         public static Models.Rates.Response.RatesMessages ToRateAmountMessages(List<spGetCurrentRatesByHotel_Result4> currentRates, int hotelId, int companyId, bool? plusTax, decimal? tax, string currency, DateTime? startDate, DateTime? endDate)
         {
@@ -77,6 +80,10 @@ namespace APIServices.Conflux.Parser
 
             return ratesMessages;
         }
+
+
+
+
 
         //Por Tarifa
         public static RateAmountMessages ToRateAmountMessages(List<vDayRates> rates, List<vDayRatesExceptions> ratesExceptions, int hotelId, int companyId, bool? plusTax, decimal? tax, string currency, TypeRateEnum typeRate, ref RateAmountMessages deleteRateAmountMessages)
@@ -146,8 +153,6 @@ namespace APIServices.Conflux.Parser
 
             return ratesMessages;
         }
-
-
 
         #region Delete
         //Invividual
@@ -716,6 +721,7 @@ namespace APIServices.Conflux.Parser
 
             foreach (var vDayRate in vDayRates)
             {
+               
                 //El Segmento no esta en los segmentos no validos
                 if (vDayRate.Segment.IndexOfAny(segmentsNoRates) == -1 && (!vDayRate.IsMobileRate && !vDayRate.IsCallCenterOnly))
                 {
@@ -725,11 +731,7 @@ namespace APIServices.Conflux.Parser
                         {
                             if (DateTime.Now.Date >= vDayRate.PromoStartDateBookingWindow && DateTime.Now.Date <= vDayRate.PromoEndDateBookingWindow)
                             {
-                                RateAmountMessage rateAmountMessage = RatesHelpers.CreateRateAmountMessage(currentRate, vDayRate);
-                                RateAmountMessage rateAmountMessageException = RatesHelpers.CreateRateAmountMessageException(currentRate, vDayRate);
-
-                                rateAmountMessages.RateAmountMessagesList.Add(rateAmountMessage);
-                                if (rateAmountMessageException != null) rateAmountMessagesExceptions.RateAmountMessagesList.Add(rateAmountMessageException);
+                                GeneralAuxCreateRateAmountMessage(vDayRate, currentRate, ref rateAmountMessages, ref rateAmountMessagesExceptions);
                             }
                             else
                             {
@@ -741,20 +743,16 @@ namespace APIServices.Conflux.Parser
                         }
                         else
                         {
-                            RateAmountMessage rateAmountMessage = RatesHelpers.CreateRateAmountMessage(currentRate, vDayRate);
-                            RateAmountMessage rateAmountMessageException = RatesHelpers.CreateRateAmountMessageException(currentRate, vDayRate);
 
-                            rateAmountMessages.RateAmountMessagesList.Add(rateAmountMessage);
-                            if (rateAmountMessageException != null) rateAmountMessagesExceptions.RateAmountMessagesList.Add(rateAmountMessageException);
+                            GeneralAuxCreateRateAmountMessage(vDayRate, currentRate, ref rateAmountMessages, ref rateAmountMessagesExceptions);
+
                         }
                     }
                     else
                     {
-                        RateAmountMessage rateAmountMessage = RatesHelpers.CreateRateAmountMessage(currentRate, vDayRate);
-                        RateAmountMessage rateAmountMessageException = RatesHelpers.CreateRateAmountMessageException(currentRate, vDayRate);
 
-                        rateAmountMessages.RateAmountMessagesList.Add(rateAmountMessage);
-                        if (rateAmountMessageException != null) rateAmountMessagesExceptions.RateAmountMessagesList.Add(rateAmountMessageException);
+                        GeneralAuxCreateRateAmountMessage(vDayRate, currentRate, ref rateAmountMessages, ref rateAmountMessagesExceptions);
+
                     }
                 }
             }
@@ -779,11 +777,9 @@ namespace APIServices.Conflux.Parser
                         {
                             if (DateTime.Now.Date >= vDayRate.PromoStartDateBookingWindow && DateTime.Now.Date <= vDayRate.PromoEndDateBookingWindow)
                             {
-                                RateAmountMessage rateAmountMessage = RatesHelpers.CreateRateAmountMessage(currentRate, vDayRate);
-                                RateAmountMessage rateAmountMessageException = RatesHelpers.CreateRateAmountMessageException(currentRate, vDayRate);
 
-                                rateAmountMessages.RateAmountMessagesList.Add(rateAmountMessage);
-                                if (rateAmountMessageException != null) rateAmountMessagesExceptions.RateAmountMessagesList.Add(rateAmountMessageException);
+                                GeneralAuxCreateRateAmountMessagePromotion(vDayRate, currentRate, ref rateAmountMessages, ref rateAmountMessagesExceptions);
+
                             }
                             else
                             {
@@ -794,20 +790,12 @@ namespace APIServices.Conflux.Parser
                         }
                         else
                         {
-                            RateAmountMessage rateAmountMessage = RatesHelpers.CreateRateAmountMessage(currentRate, vDayRate);
-                            RateAmountMessage rateAmountMessageException = RatesHelpers.CreateRateAmountMessageException(currentRate, vDayRate);
-
-                            rateAmountMessages.RateAmountMessagesList.Add(rateAmountMessage);
-                            if (rateAmountMessageException != null) rateAmountMessagesExceptions.RateAmountMessagesList.Add(rateAmountMessageException);
+                            GeneralAuxCreateRateAmountMessagePromotion(vDayRate, currentRate, ref rateAmountMessages, ref rateAmountMessagesExceptions);
                         }
                     }
                     else
                     {
-                        RateAmountMessage rateAmountMessage = RatesHelpers.CreateRateAmountMessage(currentRate, vDayRate);
-                        RateAmountMessage rateAmountMessageException = RatesHelpers.CreateRateAmountMessageException(currentRate, vDayRate);
-
-                        rateAmountMessages.RateAmountMessagesList.Add(rateAmountMessage);
-                        if (rateAmountMessageException != null) rateAmountMessagesExceptions.RateAmountMessagesList.Add(rateAmountMessageException);
+                        GeneralAuxCreateRateAmountMessagePromotion(vDayRate, currentRate, ref rateAmountMessages, ref rateAmountMessagesExceptions);
                     }
 
                 }
@@ -1197,9 +1185,9 @@ namespace APIServices.Conflux.Parser
                         {
                             if (DateTime.Now.Date >= vDayRate.PromoStartDateBookingWindow && DateTime.Now.Date <= vDayRate.PromoEndDateBookingWindow)
                             {
-                                RateAmountMessage rateAmountMessage = RatesHelpers.CreateRateAmountMessage(vDayRate);
 
-                                rateAmountMessages.RateAmountMessagesList.Add(rateAmountMessage);
+                                RateAuxCreateRateAmountMessage(vDayRate, ref rateAmountMessages);
+
                             }
                             else
                             {
@@ -1209,17 +1197,13 @@ namespace APIServices.Conflux.Parser
                         }
                         else
                         {
-                            RateAmountMessage rateAmountMessage = RatesHelpers.CreateRateAmountMessage(vDayRate);
-
-                            rateAmountMessages.RateAmountMessagesList.Add(rateAmountMessage);
+                            RateAuxCreateRateAmountMessage(vDayRate, ref rateAmountMessages);
                         }
 
                     }
                     else
                     {
-                        RateAmountMessage rateAmountMessage = RatesHelpers.CreateRateAmountMessage(vDayRate);
-
-                        rateAmountMessages.RateAmountMessagesList.Add(rateAmountMessage);
+                        RateAuxCreateRateAmountMessage(vDayRate, ref rateAmountMessages);
                     }
                 }
             }
@@ -1241,28 +1225,112 @@ namespace APIServices.Conflux.Parser
                         {
                             if (DateTime.Now.Date >= vDayRate.PromoStartDateBookingWindow && DateTime.Now.Date <= vDayRate.PromoEndDateBookingWindow)
                             {
-                                RateAmountMessage rateAmountMessage = RatesHelpers.CreateRateAmountMessage(vDayRate);
-
-                                rateAmountMessages.RateAmountMessagesList.Add(rateAmountMessage);
+                                RateAuxCreateRateAmountMessagePromotion(vDayRate, ref rateAmountMessages);
                             }
                         }
                         else
                         {
-                            RateAmountMessage rateAmountMessage = RatesHelpers.CreateRateAmountMessage(vDayRate);
 
-                            rateAmountMessages.RateAmountMessagesList.Add(rateAmountMessage);
+                            RateAuxCreateRateAmountMessagePromotion(vDayRate, ref rateAmountMessages);
                         }
 
                     }
                     else
                     {
-                        RateAmountMessage rateAmountMessage = RatesHelpers.CreateRateAmountMessage(vDayRate);
-
-                        rateAmountMessages.RateAmountMessagesList.Add(rateAmountMessage);
+                        RateAuxCreateRateAmountMessagePromotion(vDayRate, ref rateAmountMessages);
                     }
                 }
             }
 
+        }
+
+
+        #endregion
+
+
+
+        #region GeneralAuxCreateRateAmountMessage
+
+        private static void GeneralAuxCreateRateAmountMessage(vDayRates vDayRate, spGetCurrentRatesByHotel_Result4 currentRate, ref RateAmountMessages rateAmountMessages, ref RateAmountMessages rateAmountMessagesExceptions)
+        {
+
+            if (ParserSendRatesToGoogle)
+            {
+                RateAmountMessage rateAmountMessage = (vDayRate.Price <= 170000) ? RatesHelpers.CreateRateAmountMessage(currentRate, vDayRate) : null;
+                RateAmountMessage rateAmountMessageException = (vDayRate.ExceptionPrice <= 170000) ? RatesHelpers.CreateRateAmountMessageException(currentRate, vDayRate) : null;
+
+                if (rateAmountMessage != null) rateAmountMessages.RateAmountMessagesList.Add(rateAmountMessage);
+                if (rateAmountMessageException != null) rateAmountMessagesExceptions.RateAmountMessagesList.Add(rateAmountMessageException);
+            }
+            else
+            {
+
+                RateAmountMessage rateAmountMessage = RatesHelpers.CreateRateAmountMessage(currentRate, vDayRate);
+                RateAmountMessage rateAmountMessageException = RatesHelpers.CreateRateAmountMessageException(currentRate, vDayRate);
+
+                rateAmountMessages.RateAmountMessagesList.Add(rateAmountMessage);
+                if (rateAmountMessageException != null) rateAmountMessagesExceptions.RateAmountMessagesList.Add(rateAmountMessageException);
+            }
+
+        }
+
+        private static void GeneralAuxCreateRateAmountMessagePromotion(vDayRatesExceptions vDayRate, spGetCurrentRatesByHotel_Result4 currentRate, ref RateAmountMessages rateAmountMessages, ref RateAmountMessages rateAmountMessagesExceptions)
+        {
+
+            if (ParserSendRatesToGoogle)
+            {
+                RateAmountMessage rateAmountMessage = (vDayRate.Price <= 170000) ? RatesHelpers.CreateRateAmountMessage(currentRate, vDayRate) : null;
+                RateAmountMessage rateAmountMessageException = (vDayRate.ExceptionPrice <= 170000) ? RatesHelpers.CreateRateAmountMessageException(currentRate, vDayRate) : null;
+
+                if (rateAmountMessage != null) rateAmountMessages.RateAmountMessagesList.Add(rateAmountMessage);
+                if (rateAmountMessageException != null) rateAmountMessagesExceptions.RateAmountMessagesList.Add(rateAmountMessageException);
+            }
+            else
+            {
+                RateAmountMessage rateAmountMessage = RatesHelpers.CreateRateAmountMessage(currentRate, vDayRate);
+                RateAmountMessage rateAmountMessageException = RatesHelpers.CreateRateAmountMessageException(currentRate, vDayRate);
+
+                rateAmountMessages.RateAmountMessagesList.Add(rateAmountMessage);
+                if (rateAmountMessageException != null) rateAmountMessagesExceptions.RateAmountMessagesList.Add(rateAmountMessageException);
+            }
+
+        }
+
+
+        #endregion
+
+        #region TarifaAuxCreateRAteAmountMessage
+
+        private static void RateAuxCreateRateAmountMessage(vDayRates vDayRate,ref RateAmountMessages rateAmountMessages)
+        {
+            if (ParserSendRatesToGoogle)
+            {
+                RateAmountMessage rateAmountMessage = (vDayRate.Price <= 170000) ? RatesHelpers.CreateRateAmountMessage(vDayRate) : null;
+
+                if (rateAmountMessage != null) rateAmountMessages.RateAmountMessagesList.Add(rateAmountMessage);
+            }
+            else
+            {
+                RateAmountMessage rateAmountMessage = RatesHelpers.CreateRateAmountMessage(vDayRate);
+
+                rateAmountMessages.RateAmountMessagesList.Add(rateAmountMessage);
+            }
+        }
+
+        private static void RateAuxCreateRateAmountMessagePromotion(vDayRatesExceptions vDayRate, ref RateAmountMessages rateAmountMessages)
+        {
+            if (ParserSendRatesToGoogle)
+            {
+                RateAmountMessage rateAmountMessage = (vDayRate.Price <= 170000) ? RatesHelpers.CreateRateAmountMessage(vDayRate) : null;
+
+                if (rateAmountMessage != null) rateAmountMessages.RateAmountMessagesList.Add(rateAmountMessage);
+            }
+            else
+            {
+                RateAmountMessage rateAmountMessage = RatesHelpers.CreateRateAmountMessage(vDayRate);
+
+                rateAmountMessages.RateAmountMessagesList.Add(rateAmountMessage);
+            }
         }
 
 

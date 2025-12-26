@@ -466,16 +466,21 @@ Namespace API.Controllers
             Dim isEnabledGoogleRequest As Boolean = HotelUtilitie.IsEnableGoogleRequest(hotelId)
             Dim isEnabledSendingRatesAPICache As Boolean = HotelUtilitie.IsEnableSendRatesAPICache(hotelId)
 
+            confluxService.ConfluxSendRatesToGoogle = True
             Dim ratesForRequest As RatesMessages = confluxService.GetRateMessagesPromotion(hotelId, rateplanId, companyId, TypeRateEnum.RoomRate)
             Dim ratesForRequestPromotion As RatesMessages = confluxService.GetRateMessagesPromotion(hotelId, rateplanId, companyId, TypeRateEnum.RoomRatePromotion)
+
+            confluxService.ConfluxSendRatesToGoogle = False
+            Dim ratesForRequestAPICache As RatesMessages = confluxService.GetRateMessagesPromotion(hotelId, rateplanId, companyId, TypeRateEnum.RoomRate)
+            Dim ratesForRequestPromotionAPICache As RatesMessages = confluxService.GetRateMessagesPromotion(hotelId, rateplanId, companyId, TypeRateEnum.RoomRatePromotion)
 
             'Google
             Await SendRatesIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledGoogleRequest, ratesForRequest, HotelUtilitie.ENDPOINT, HotelUtilitie.ENDPOINTDELETE, "Conflux", True, False)
             Await SendRatesIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledGoogleRequest, ratesForRequestPromotion, HotelUtilitie.ENDPOINT, HotelUtilitie.ENDPOINTDELETE, "Conflux", True, True)
 
             'APICache
-            Await SendRatesIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledSendingRatesAPICache, ratesForRequest, HotelUtilitie.ENDPOINTAPIV2, HotelUtilitie.ENDPOINTAPIDELETE, "APICache", True, False)
-            Await SendRatesIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledSendingRatesAPICache, ratesForRequestPromotion, HotelUtilitie.ENDPOINTAPIV2, HotelUtilitie.ENDPOINTAPIDELETE, "APICache", True, True)
+            Await SendRatesIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledSendingRatesAPICache, ratesForRequestAPICache, HotelUtilitie.ENDPOINTAPIV2, HotelUtilitie.ENDPOINTAPIDELETE, "APICache", True, False)
+            Await SendRatesIfEnabledAsync(userName, userId, hotelId, companyId, isEnabledSendingRatesAPICache, ratesForRequestPromotionAPICache, HotelUtilitie.ENDPOINTAPIV2, HotelUtilitie.ENDPOINTAPIDELETE, "APICache", True, True)
 
         End Function
 

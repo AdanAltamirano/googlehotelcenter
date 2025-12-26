@@ -517,14 +517,20 @@ Namespace API.Controllers
 
                              For Each rate As Tarifas In ratesIEnumerable
 
+                                 confluxService.ConfluxSendRatesToGoogle = True
                                  Dim ratesForRequest As RatesMessages = confluxService.GetRateMessages(rate.idTarifa, rate.FechaInicia, rate.FechaFinaliza, hotelId, companyId, TypeRateEnum.RoomRate)
+
+
+                                 confluxService.ConfluxSendRatesToGoogle = False
+                                 Dim ratesForRequestAPICache As RatesMessages = confluxService.GetRateMessages(rate.idTarifa, rate.FechaInicia, rate.FechaFinaliza, hotelId, companyId, TypeRateEnum.RoomRate)
+
 
                                  ' Enviar tarifas a Conflux
                                  Await SendRatesIfEnabledAsync(userName, userId, hotelId, companyId, ratesForRequest, rate, isEnabledGoogleRequest, HotelUtilitie.ENDPOINT,
                                                                HotelUtilitie.ENDPOINTDELETE, HotelUtilitie.ENDPOINTCLOSURE, "Conflux", True)
 
                                  ' Enviar tarifas a APICache
-                                 Await SendRatesIfEnabledAsync(userName, userId, hotelId, companyId, ratesForRequest, rate, isEnabledSendingRatesAPICache, HotelUtilitie.ENDPOINTAPIV2,
+                                 Await SendRatesIfEnabledAsync(userName, userId, hotelId, companyId, ratesForRequestAPICache, rate, isEnabledSendingRatesAPICache, HotelUtilitie.ENDPOINTAPIV2,
                                                                HotelUtilitie.ENDPOINTAPIDELETE, HotelUtilitie.ENDPOINTAPICLOSUREV2, "APICache", True)
                              Next
 

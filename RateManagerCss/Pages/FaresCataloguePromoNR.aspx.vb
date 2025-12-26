@@ -1085,9 +1085,13 @@ Partial Public Class FaresCataloguePromoNR
             Dim isEnabledGoogleRequest As Boolean = HotelUtilitie.IsEnableGoogleRequest(hotelId)
             Dim isEnabledSendingRatesAPICache As Boolean = HotelUtilitie.IsEnableSendRatesAPICache(hotelId)
 
-            Dim ratesForRequest As RatesMessages = If(isEnabledGoogleRequest Or isEnabledSendingRatesAPICache,
-                                          confluxService.GetRateMessages(rateId, startDate, endDate, hotelId, companyId, TypeRateEnum.RoomRatePromotion),
-                                          Nothing)
+            confluxService.ConfluxSendRatesToGoogle = True
+            Dim ratesForRequest As RatesMessages = If(isEnabledGoogleRequest,
+                                            confluxService.GetRateMessages(rateId, startDate, endDate, hotelId, companyId, TypeRateEnum.RoomRatePromotion), Nothing)
+
+            confluxService.ConfluxSendRatesToGoogle = False
+            Dim ratesForRequestAPICache As RatesMessages = If(isEnabledSendingRatesAPICache,
+                                            confluxService.GetRateMessages(rateId, startDate, endDate, hotelId, companyId, TypeRateEnum.RoomRatePromotion), Nothing)
 
             ' Enviar tarifas a Conflux
             Await SendRatesIfEnabledAsync(userName, userId, isEnabledGoogleRequest, ratesForRequest, hotelId, companyId, rateId,
@@ -1096,7 +1100,7 @@ Partial Public Class FaresCataloguePromoNR
                    HotelUtilitie.ENDPOINTCLOSURE, "Conflux", True)
 
             ' Enviar tarifas a APICache
-            Await SendRatesIfEnabledAsync(userName, userId, isEnabledSendingRatesAPICache, ratesForRequest, hotelId, companyId, rateId,
+            Await SendRatesIfEnabledAsync(userName, userId, isEnabledSendingRatesAPICache, ratesForRequestAPICache, hotelId, companyId, rateId,
                    startDate, endDate,
                    HotelUtilitie.ENDPOINTAPIV2, HotelUtilitie.ENDPOINTAPIDELETE,
                    HotelUtilitie.ENDPOINTAPICLOSUREV2, "APICache", True)

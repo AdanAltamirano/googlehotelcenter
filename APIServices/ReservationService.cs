@@ -653,13 +653,22 @@ namespace APIServices
         {
             var result = new CardDetails();
             var details = GetReservation(reservationId);
-            var showCreditCard = dbContext.vPermissions
-                .FirstOrDefault(x => x.userId == userId)?.showCreditCard;
+            //var showCreditCard = dbContext.vPermissions
+                //.FirstOrDefault(x => x.userId == userId)?.showCreditCard;
 
-            if (details != null && (isHotelCompany || showCreditCard.Value))
+            bool showCreditCard = LoadUserSeeCards(userId, (int)details.companyId, (int)details.hotelId);
+
+            if (!showCreditCard)
+            {
+                showCreditCard = dbContext.vPermissions
+                                .FirstOrDefault(x => x.userId == userId)
+                                ?.showCreditCard ?? false;
+            }
+
+            if (details != null && (isHotelCompany || showCreditCard))
             {
 
-                if (!details.source.Equals("IDS"))
+            if (!details.source.Equals("IDS"))
                 {
                     string cc = crypto.DecryptString128Bit(details.cardNumber, crypto.PublicKey);
                     string cvv = details.cardCvv;

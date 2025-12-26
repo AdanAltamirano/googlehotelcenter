@@ -40,6 +40,9 @@ namespace APIServices.Conflux
             HttpStatusCode.NoContent
         };
 
+        public bool ConfluxSendRatesToGoogle { get; set; } = true;
+
+
         private OzHotelesEntities dbContext = new OzHotelesEntities();
 
         public IQueryable<vHotelActives> GetHotels() => dbContext.vHotelActives.AsQueryable();
@@ -316,6 +319,7 @@ namespace APIServices.Conflux
 
                 var hotelBasicInfo = ozHotelesEntities.vHotelBasicInfo.FirstOrDefault(vh => vh.Id == hotelId);
 
+                Parser.Parser.ParserSendRatesToGoogle = ConfluxSendRatesToGoogle;
                 ratesMessages = Parser.Parser.ToRateAmountMessages(rates, ratesExceptions, hotelId, companyId, hotel.PlusTax, hotel.Impuesto, hotelBasicInfo.Currency, typeRate);
             }
 
@@ -343,6 +347,7 @@ namespace APIServices.Conflux
 
             var hotelBasicInfo = dbContext.vHotelBasicInfo.FirstOrDefault(vh => vh.Id == hotelId);
 
+            Parser.Parser.ParserSendRatesToGoogle = ConfluxSendRatesToGoogle;
             ratesMessages = Parser.Parser.ToRateAmountMessages(rates, ratesExceptions, hotelId, companyId, hotel.PlusTax, hotel.Impuesto, hotelBasicInfo.Currency, typeRate);
 
             return ratesMessages;
@@ -559,6 +564,8 @@ namespace APIServices.Conflux
 
                 var hotelBasicInfo = ozHotelesEntities.vHotelBasicInfo.FirstOrDefault(vh => vh.Id == hotelId);
 
+                //Inicializar el Parser con SendRates
+                Parser.Parser.ParserSendRatesToGoogle = ConfluxSendRatesToGoogle;
                 ratesMessages = Parser.Parser.ToRateAmountMessages(rates, ratesExceptions, hotelId, companyId, hotel.PlusTax, hotel.Impuesto, hotelBasicInfo.Currency, typeRate);
             }
 
@@ -876,12 +883,13 @@ namespace APIServices.Conflux
             var hotel = dbContext.Hoteles.First(h => h.idHotel == hotelId);
             var hotelBasicInfo = dbContext.vHotelBasicInfo.FirstOrDefault(vh => vh.Id == hotelId);
 
+            Parser.Parser.ParserSendRatesToGoogle = ConfluxSendRatesToGoogle;
+
             //0: tarifas, 1: borrar, 2: tarifas excepciones
             ratesMessages = Parser.Parser.ToRateAmountMessages(currentRates, hotelId, companyId, hotel.PlusTax, hotel.Impuesto, hotelBasicInfo.Currency, startDate, endDate);
 
             return ratesMessages;
         }
-
 
         //public RestrictionResponse UpdateRestrictions(int hotelId, int companyId)
         //{

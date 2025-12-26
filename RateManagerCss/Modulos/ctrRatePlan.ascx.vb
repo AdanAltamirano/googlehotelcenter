@@ -1374,11 +1374,16 @@ Partial Class ctrRatePlan
                      If shouldUpdate Then
                          Dim confluxService As New APIServices.Conflux.ConfluxService()
 
+                         confluxService.ConfluxSendRatesToGoogle = True
                          Dim ratesForRequest = confluxService.GetRateMessages(hotelId, rateplanId, companyId, TypeRateEnum.RoomRate)
                          Dim ratesForRequestPromotion = confluxService.GetRateMessages(hotelId, rateplanId, companyId, TypeRateEnum.RoomRatePromotion)
 
+                         confluxService.ConfluxSendRatesToGoogle = False
+                         Dim ratesForRequestAPICache = confluxService.GetRateMessages(hotelId, rateplanId, companyId, TypeRateEnum.RoomRate)
+                         Dim ratesForRequestPromotionAPICache = confluxService.GetRateMessages(hotelId, rateplanId, companyId, TypeRateEnum.RoomRatePromotion)
+
                          ' Ejecutar la actualización de tarifas de forma asincrónica
-                         Await UpdateRatesServiceAsync(userName, userId, ratesForRequest, ratesForRequestPromotion, hotelId, rateplanId, isEnabledGoogleRequest, isEnabledSendingRatesAPICache)
+                         Await UpdateRatesServiceAsync(userName, userId, ratesForRequest, ratesForRequestPromotion, ratesForRequestAPICache, ratesForRequestPromotionAPICache, hotelId, rateplanId, isEnabledGoogleRequest, isEnabledSendingRatesAPICache)
                      End If
                  End Function)
     End Sub
@@ -1386,6 +1391,8 @@ Partial Class ctrRatePlan
     Private Async Function UpdateRatesServiceAsync(userName As String, userId As Integer,
                                                 ratesForRequest As RatesMessages,
                                                 ratesForRequestPromotion As RatesMessages,
+                                                ratesForRequestAPICache As RatesMessages,
+                                                ratesForRequestPromotionAPICache As RatesMessages,
                                                 hotelId As Integer,
                                                 rateplanId As String,
                                                 isEnabledGoogleRequest As Boolean,
@@ -1396,7 +1403,7 @@ Partial Class ctrRatePlan
         End If
 
         If isEnabledSendingRatesAPICache Then
-            Await SendRatesToServiceAsync(userName, userId, ratesForRequest, ratesForRequestPromotion, HotelUtilitie.ENDPOINTAPI, HotelUtilitie.ENDPOINTAPIDELETE, hotelId, "APICache", False)
+            Await SendRatesToServiceAsync(userName, userId, ratesForRequestAPICache, ratesForRequestPromotionAPICache, HotelUtilitie.ENDPOINTAPI, HotelUtilitie.ENDPOINTAPIDELETE, hotelId, "APICache", False)
         End If
     End Function
 
