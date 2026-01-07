@@ -114,7 +114,7 @@ namespace APIServices.Conflux.Helpers.Restriction
                 var isCallCenterOnly = bool.Parse(row.ItemArray[41].ToString());
 
                 if (isMobileRate || isCallCenterOnly || segment.IndexOfAny(segmentsNoRates) > -1)
-                {                    
+                {
                 }
                 else
                 {
@@ -125,6 +125,22 @@ namespace APIServices.Conflux.Helpers.Restriction
             activeRatePlans = activeRatePlansTemp;
 
         }
+
+        public static void AllRatePlans(ref List<DataRow> activeRatePlans)
+        {
+
+            List<DataRow> activeRatePlansTemp = new List<DataRow>();
+
+            foreach (DataRow row in activeRatePlans)
+            {
+                activeRatePlansTemp.Add(row);             
+            }
+
+            activeRatePlans = activeRatePlansTemp;
+
+        }
+
+
 
         public static List<spGetLockRatePlansByHotel_Result> CreateLockRatePlansByHotel(List<Tuple<DateTime,DateTime>> dates, string status, string rateplanId)
         {

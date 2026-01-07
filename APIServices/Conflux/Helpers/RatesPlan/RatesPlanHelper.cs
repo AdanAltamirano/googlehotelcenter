@@ -52,6 +52,24 @@ namespace APIServices.Conflux.Helpers.RatesPlan
 
         }
 
+        public static List<DataRow> GetAllRatePlans(RatePlanData ratePlanData)
+        {
+            DataView dv = new DataView(ratePlanData.Tables[RatePlanData.RATEPLAN_TABLE])
+            {
+
+            };
+
+            var result = dv.Cast<DataRowView>()
+                        .Select(drv => drv.Row)
+                        .ToList();
+
+            Restriction.RestrictionHelper.AllRatePlans(ref result);
+
+            return result;
+
+        }
+
+
 
         public static List<DataRow> GetRatePlansPromosByHotel(int hotelId, string filter ="")
         {
