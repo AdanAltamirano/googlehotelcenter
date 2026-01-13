@@ -550,7 +550,7 @@ Partial Class ctrlRooms
                             mlDescriptionRoom.Update(rooms.Tables(RoomsHotelData.TBL_ROOM_HOTEL).Rows(0)(RoomsHotelData.FLD_ID_DESCRIPTION), publish)
                             mlNameRoom.Update(rooms.Tables(RoomsHotelData.TBL_ROOM_HOTEL).Rows(0)(RoomsHotelData.FLD_ID_NOMBRE), publish)
                             updateImage(Me.ImagenHabitacion.ImageUrl, ImgFileOpen, Me.idRoom)
-
+                            ctrlImgRooms1.SaveImages()
                         End If
                     Else
                         cvImagen.IsValid = False
