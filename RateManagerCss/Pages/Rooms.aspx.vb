@@ -5,6 +5,14 @@ Imports System.IO
 Imports System.Drawing
 Imports System.Drawing.Drawing2D
 Imports System.Drawing.Imaging
+Imports RateManager.Utitlities.Hotel
+Imports APIServices.Models
+Imports APIServices.Conflux.Enum
+Imports APIServices.Conflux.Helpers.Rates
+Imports System.Xml.Linq
+Imports APIServices.Conflux
+Imports APIServices.Conflux.Models.Delete.Response
+Imports System.Threading.Tasks
 
 Partial Class Rooms
 
@@ -410,6 +418,11 @@ Partial Class Rooms
         Catch ex As Exception
             Return
         End Try
+
+        Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
+        Dim isEnabledGoogleRequest As Boolean = HotelUtilitie.IsEnableGoogleRequest(info.Hotel)
+        Dim isEnabledSendingRatesAPICache As Boolean = HotelUtilitie.IsEnableSendRatesAPICache(info.Hotel)
+
         CtrlRooms1.loadRoom(idRoom, Me.Habitacion)
         Select Case e.CommandName
             Case "Select"
@@ -426,12 +439,22 @@ Partial Class Rooms
                 MostrarCmdNew(False)
 
             Case "Delete"
+
+                Dim idRoomDelete As Integer = idRoom
+
                 Dim _error As Integer = CtrlRooms1.deleteRoom(elimina)
                 If _error = 0 Then
                     guardalog("/Pages/Rooms.aspx", PaginaBase.acciones.Eliminar, "Se eliminó la habitación " & grid.Items(grid.SelectedIndex).Cells(columns.Tipo).Text & " - " & grid.Items(grid.SelectedIndex).Cells(columns.nameroom).Text & " de el hotel " & Me.cInfoActual.HotelName)
                     If grid.CurrentPageIndex > 0 And grid.Items.Count = 1 Then
                         grid.CurrentPageIndex = (((grid.Items.Count - 1) * grid.PageSize) - 1) \ grid.PageSize
                     End If
+
+                    Dim userName As String = CType(Me.Page, PaginaBase).ReadUserCookie.GetValue(0)
+                    Dim userId As Integer = CType(Me.Page, PaginaBase).UserIdentityName
+
+                    DeleteAsync(info.Hotel, info.Empresa, idRoomDelete, userName, userId)
+
+
                     Me.CtrlRooms1.edicion = False
                     Me.grid.SelectedIndex = -1
                     TipoEdicion = Edicion.NoEdicion
@@ -683,5 +706,188 @@ Partial Class Rooms
         divContenedor.Style("display") = "none"
         grid.CurrentPageIndex = 0
     End Sub
+
+
+#Region "Google Delete Async"
+
+    Private Sub DeleteAsync(ByVal hotelId As Integer, ByVal companyId As Integer, ByVal roomIdDelete As String, ByVal userName As String, ByVal userId As String)
+        Task.Run(Async Function()
+
+                     Dim isEnabledGoogleRequest As Boolean = HotelUtilitie.IsEnableGoogleRequest(hotelId)
+                     Dim isEnabledSendRatesAPICache As Boolean = HotelUtilitie.IsEnableSendRatesAPICache(hotelId)
+
+                     Dim messagesToDelete As APIServices.Conflux.OTA.Models.Rates.RateAmountMessages = Nothing
+
+                     If isEnabledGoogleRequest Or isEnabledSendRatesAPICache Then
+                         messagesToDelete = GetDeleteMessagesGoogle(hotelId, companyId, roomIdDelete)
+                     End If
+
+                     Dim ConfluxService As ConfluxService = New ConfluxService()
+
+
+                     If messagesToDelete IsNot Nothing Then
+
+                         If isEnabledGoogleRequest Then
+
+                             Dim soapRequests As List(Of XDocument) = ConfluxService.GetSoapRequests(messagesToDelete)
+
+                             Dim result As DeleteResponse = Await ConfluxService.UpdateDeleteAsync(soapRequests, HotelUtilitie.ENDPOINTDELETE)
+
+                             If Not result.IsSuccess Then
+                                 Dim note As String = String.Format("Error Eliminar Tarifas {1} con el hotel: {0}", hotelId, "Conflux")
+
+                                 HotelUtilitie.Log(userName, userId, "/Pages/Rooms.aspx", hotelId, RateManager.Utitlities.Hotel.Actions.Sincronizar, note, "", "", "")
+                             Else
+                                 Dim index As Integer = 1
+
+                                 For Each request As DeleteHttpResponse In result.DeleteHttpResponseList
+                                     Dim note As String = String.Format("Eliminar Tarifas request numero {0} Tarifas {1} con el hotel: ", (index), "Conflux")
+
+                                     HotelUtilitie.Log(userName, userId, "/Pages/Rooms.aspx", hotelId, RateManager.Utitlities.Hotel.Actions.Eliminar, note, "", request.XmlRequest, request.Xml)
+                                     index += 1
+                                 Next
+
+                             End If
+
+                         End If
+
+
+                         If isEnabledSendRatesAPICache Then
+
+                             messagesToDelete.HotelCode = messagesToDelete.HotelCodeV2
+
+                             Dim soapRequests As List(Of XDocument) = ConfluxService.GetSoapRequests(messagesToDelete)
+
+                             Dim result As DeleteResponse = Await ConfluxService.UpdateDeleteAsync(soapRequests, HotelUtilitie.ENDPOINTAPIDELETE)
+
+                             If Not result.IsSuccess Then
+                                 Dim note As String = String.Format("Error Eliminar Tarifas {1} con el hotel: {0}", hotelId, "APICache")
+
+                                 HotelUtilitie.Log(userName, userId, "/Pages/Rooms.aspx", hotelId, RateManager.Utitlities.Hotel.Actions.Sincronizar, note, "", "", "")
+                             Else
+                                 Dim index As Integer = 1
+
+                                 For Each request As DeleteHttpResponse In result.DeleteHttpResponseList
+                                     Dim note As String = String.Format("Eliminar Tarifas request numero {0} Tarifas {1} con el hotel: ", (index), "APICache")
+
+                                     HotelUtilitie.Log(userName, userId, "/Pages/Rooms.aspx", hotelId, RateManager.Utitlities.Hotel.Actions.Eliminar, note, "", request.XmlRequest, request.Xml)
+                                     index += 1
+                                 Next
+
+                             End If
+
+
+                         End If
+
+
+
+                     End If
+
+                 End Function)
+    End Sub
+
+    Private Function GetDeleteMessagesGoogle(ByVal hotelId As Integer, ByVal companyId As Integer, ByVal roomId As Integer) As APIServices.Conflux.OTA.Models.Rates.RateAmountMessages
+
+        Dim deleteRateAmountMessages As New APIServices.Conflux.OTA.Models.Rates.RateAmountMessages()
+
+        deleteRateAmountMessages.HotelCode = companyId
+        deleteRateAmountMessages.HotelCodeV2 = hotelId
+        deleteRateAmountMessages.RateAmountMessagesList = New List(Of APIServices.Conflux.OTA.Models.Rates.RateAmountMessage)
+
+
+        Dim currentRates As List(Of spGetCurrentRatesByHotel_Result4) = New List(Of spGetCurrentRatesByHotel_Result4)
+        Dim currentRatesDeleted As List(Of spGetCurrentRatesByHotel_Result4) = New List(Of spGetCurrentRatesByHotel_Result4)
+
+        Using dbContext As New OzHotelesEntities()
+            currentRates = dbContext.spGetCurrentRatesByHotel(hotelId:=hotelId, rateplanId:=Nothing, roomId:=roomId, startDate:=Nothing, endDate:=Nothing, deleted:=False).ToList()
+            currentRatesDeleted = dbContext.spGetCurrentRatesByHotel(hotelId:=hotelId, rateplanId:=Nothing, roomId:=roomId, startDate:=Nothing, endDate:=Nothing, deleted:=True).ToList()
+        End Using
+
+        currentRates.Union(currentRatesDeleted)
+
+        For Each currentRate As spGetCurrentRatesByHotel_Result4 In currentRates
+
+            Select Case currentRate.TypeRate
+                Case TypeRateEnum.RoomRate
+
+                    Dim vDayRatesList As List(Of vDayRates) = RatesHelpers.GetVDayRate(currentRate)
+
+                    Dim messagesRoomRateDelete As List(Of APIServices.Conflux.OTA.Models.Rates.RateAmountMessage) = GetMessagesRoomRateDelete(currentRate, vDayRatesList)
+
+                    deleteRateAmountMessages.RateAmountMessagesList.AddRange(messagesRoomRateDelete)
+
+                Case TypeRateEnum.RoomRatePromotion
+
+                    Dim vDayRatesPromotionList As List(Of vDayRatesExceptions) = RatesHelpers.GetVDayRateException(currentRate)
+
+                    Dim messagesRoomRatePromotionDelete As List(Of APIServices.Conflux.OTA.Models.Rates.RateAmountMessage) = GetMessagesRoomRatePromotionDelete(currentRate, vDayRatesPromotionList)
+
+                    deleteRateAmountMessages.RateAmountMessagesList.AddRange(messagesRoomRatePromotionDelete)
+
+            End Select
+        Next
+
+        Return deleteRateAmountMessages
+
+    End Function
+
+    Private Function GetMessagesRoomRateDelete(ByVal currentRate As spGetCurrentRatesByHotel_Result4, ByVal vDayRatesList As List(Of vDayRates)) As List(Of APIServices.Conflux.OTA.Models.Rates.RateAmountMessage)
+
+        Dim messagesToDelete As List(Of APIServices.Conflux.OTA.Models.Rates.RateAmountMessage) = New List(Of APIServices.Conflux.OTA.Models.Rates.RateAmountMessage)
+
+        Dim splitSegmentsNoRates As String() = ConfigurationManager.AppSettings("segmentsNoRates").Split(","c)
+
+        Dim segmentsNoRates As Char() = String.Concat(splitSegmentsNoRates).ToCharArray()
+
+        For Each vDayRate As vDayRates In vDayRatesList
+
+            If vDayRate.Segment.IndexOfAny(segmentsNoRates) = -1 AndAlso (Not vDayRate.IsMobileRate AndAlso Not vDayRate.IsCallCenterOnly) Then
+
+                Dim rateAmountMessageToDelete As APIServices.Conflux.OTA.Models.Rates.RateAmountMessage = RatesHelpers.CreateDeleteRateAmountMessage(currentRate, vDayRate)
+
+                If rateAmountMessageToDelete IsNot Nothing And vDayRate.DeletedInGoogle = False Then
+
+                    messagesToDelete.Add(rateAmountMessageToDelete)
+
+                End If
+
+            End If
+
+        Next
+
+        Return messagesToDelete
+
+    End Function
+
+    Private Function GetMessagesRoomRatePromotionDelete(ByVal currentRate As spGetCurrentRatesByHotel_Result4, ByVal vDayRatesList As List(Of vDayRatesExceptions)) As List(Of APIServices.Conflux.OTA.Models.Rates.RateAmountMessage)
+
+        Dim messagesToDelete As List(Of APIServices.Conflux.OTA.Models.Rates.RateAmountMessage) = New List(Of APIServices.Conflux.OTA.Models.Rates.RateAmountMessage)
+
+        Dim splitSegmentsNoRates As String() = ConfigurationManager.AppSettings("segmentsNoRates").Split(","c)
+
+        Dim segmentsNoRates As Char() = String.Concat(splitSegmentsNoRates).ToCharArray()
+
+        For Each vDayRate As vDayRatesExceptions In vDayRatesList
+
+            If vDayRate.Segment.IndexOfAny(segmentsNoRates) = -1 AndAlso (Not vDayRate.IsMobileRate AndAlso Not vDayRate.IsCallCenterOnly) Then
+
+                Dim rateAmountMessageToDelete As APIServices.Conflux.OTA.Models.Rates.RateAmountMessage = RatesHelpers.CreateDeleteRateAmountMessage(currentRate, vDayRate)
+
+                If rateAmountMessageToDelete IsNot Nothing And vDayRate.DeletedInGoogle = False Then
+
+                    messagesToDelete.Add(rateAmountMessageToDelete)
+
+                End If
+
+            End If
+
+        Next
+
+        Return messagesToDelete
+    End Function
+
+
+
+#End Region
 
 End Class

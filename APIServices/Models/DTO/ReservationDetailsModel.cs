@@ -164,6 +164,7 @@ namespace APIServices.Models.DTO
         public string CustomerLastName { get; set; }
         public string RatePlanPromotion { get; set; }
         public string NamePromotion { get; set; }
+        public List<PromosRateReservation> PromosRateReservation { get; set; } = new List<PromosRateReservation>();
     }
 
     public class RoomPriceDetails
@@ -248,5 +249,11 @@ namespace APIServices.Models.DTO
 
     }
 
+    public class PromosRateReservation
+    {
+        public string PromoCode { get; set; }
+        public string Name { get; set; }
+
+    }
 
 }

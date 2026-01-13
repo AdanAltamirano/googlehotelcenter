@@ -371,7 +371,7 @@ namespace APIServices
                     model.Customer.CardDetails.AllowsShowCreditCardData = true;
 
                 //if (isHotelCompany || (showCreditCard.HasValue ? showCreditCard.Value : false))
-                    //model.Customer.CardDetails.AllowsShowCreditCardData = true;
+                //model.Customer.CardDetails.AllowsShowCreditCardData = true;
                 /*fin credit card*/
 
                 GetPayments(ref model, reservationId);
@@ -495,7 +495,16 @@ namespace APIServices
 
                 totalRoom += totalPerRoom;
                 totalRoomNR += totalPerRoomNetRate;
-                
+
+                List<PromosRateReservation> promosRateReservationTemp = new List<PromosRateReservation>();
+
+                var ratePromosReservations = GetPromosRate(room.roomPriceId, 1);
+
+                if (ratePromosReservations.Count > 0)
+                {
+                    promosRateReservationTemp = GetPromosRateReservation(ratePromosReservations);
+                }
+
 
                 model.RoomDetails.Add(new RoomDetails
                 {
@@ -524,7 +533,8 @@ namespace APIServices
                     CustomerName = room.customerName ?? "",
                     CustomerLastName = room.customerLastName ?? "",
                     RatePlanPromotion = room.ratePlanPromotion,
-                    NamePromotion = room.namePromotion
+                    NamePromotion = room.namePromotion,
+                    PromosRateReservation = promosRateReservationTemp
                 });
 
                 model.RoomDetails[index].PriceDetails.AddRange(priceDetails);
@@ -643,13 +653,22 @@ namespace APIServices
         {
             var result = new CardDetails();
             var details = GetReservation(reservationId);
-            var showCreditCard = dbContext.vPermissions
-                .FirstOrDefault(x => x.userId == userId)?.showCreditCard;
+            //var showCreditCard = dbContext.vPermissions
+                //.FirstOrDefault(x => x.userId == userId)?.showCreditCard;
 
-            if (details != null && (isHotelCompany || showCreditCard.Value))
+            bool showCreditCard = LoadUserSeeCards(userId, (int)details.companyId, (int)details.hotelId);
+
+            if (!showCreditCard)
+            {
+                showCreditCard = dbContext.vPermissions
+                                .FirstOrDefault(x => x.userId == userId)
+                                ?.showCreditCard ?? false;
+            }
+
+            if (details != null && (isHotelCompany || showCreditCard))
             {
 
-                if (!details.source.Equals("IDS"))
+            if (!details.source.Equals("IDS"))
                 {
                     string cc = crypto.DecryptString128Bit(details.cardNumber, crypto.PublicKey);
                     string cvv = details.cardCvv;
@@ -1692,5 +1711,40 @@ namespace APIServices
 
         #endregion
 
+        #region PromosRate
+
+        public List<Service.Arpon.vRatePromosReservations> GetPromosRate(int detailReservationId,int language)
+        {
+            List<Service.Arpon.vRatePromosReservations> promos = new List<Service.Arpon.vRatePromosReservations>();
+
+            using (Service.Arpon.ArponEntities arponEntities = new Service.Arpon.ArponEntities())
+            {
+                promos = arponEntities.vRatePromosReservations.
+                    Where(vrpr => vrpr.idDetalleReservacion == detailReservationId && vrpr.IdIdioma == language)
+                    .ToList();
+            }
+
+            return promos;
+        }
+
+        List<PromosRateReservation> GetPromosRateReservation(List<Service.Arpon.vRatePromosReservations> promos)
+        {
+            List<PromosRateReservation> result = new List<PromosRateReservation>();
+
+            foreach(var promo in promos)
+            {
+                PromosRateReservation promoRateReservationTemp = new PromosRateReservation
+                {
+                    PromoCode = promo.PromoCode,
+                    Name = promo.Texto
+                };
+
+                result.Add(promoRateReservationTemp);
+            }
+
+            return result;
+        }
+
+        #endregion
     }
 }

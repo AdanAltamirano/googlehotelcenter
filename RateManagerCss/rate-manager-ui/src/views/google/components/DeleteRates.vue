@@ -73,16 +73,16 @@
             <loading style="display:block !important;" :active="true" :is-full-page="false" color="#007bff"></loading>
         </div>
         <div else class="mt-4">
-            <b-button :disabled="!isEnabledGoogle" class="mt-1" v-if="showButton" variant="primary" @click="deleteRates()">
+            <b-button :disabled="!isEnabledGoogle && !isEnabledAPICache" class="mt-1" v-if="showButton" variant="primary" @click="deleteRates()">
                 {{$t('Delete Rates')}}
             </b-button>
         </div>
         <div class="mt-3">
-            <label v-if="isEnabledGoogle" style="color:#dc3545;">
+            <label v-if="isEnabledGoogle || isEnabledAPICache" style="color:#dc3545;">
                 {{$t("This operation make take a few minutes")}}
             </label>
-                <label v-else-if="!isEnabledGoogle" style="color:#dc3545;">
-                {{$t("Enable Google Prices in Content / General Information")}}
+                <label v-else-if="!isEnabledGoogle && !isEnabledAPICache" style="color:#dc3545;">
+                {{$t("Enable Google Prices Or Rates APICache in Content / General Information")}}
             </label>
         </div>
         <hr class="solid">
@@ -101,6 +101,9 @@ export default {
 
         },
         isEnabledGoogle:{
+            type:Boolean
+        },
+        isEnabledAPICache:{
             type:Boolean
         },
         dates:{
@@ -204,7 +207,7 @@ export default {
             };
         },
         loadRatesPlans(hotelId){
-            RoomsClosureService.getAllRatePlansByHotelIdSegmentsValids(hotelId)
+            RoomsClosureService.getAllRatePlansByHotelId(hotelId)
             .then(response => {
                 console.log(response.body);
 

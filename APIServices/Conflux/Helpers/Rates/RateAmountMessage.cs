@@ -321,13 +321,22 @@ namespace APIServices.Conflux.Helpers.Rates
             {
                 rate.IsPromotion = true;
 
-                rate.ApplyMon = vDayRate.PromoDays[0] == 'Y' ? true : false;
-                rate.ApplyTue = vDayRate.PromoDays[1] == 'Y' ? true : false;
-                rate.ApplyWed = vDayRate.PromoDays[2] == 'Y' ? true : false;
-                rate.ApplyThu = vDayRate.PromoDays[3] == 'Y' ? true : false;
-                rate.ApplyFri = vDayRate.PromoDays[4] == 'Y' ? true : false;
-                rate.ApplySat = vDayRate.PromoDays[5] == 'Y' ? true : false;
-                rate.ApplySun = vDayRate.PromoDays[6] == 'Y' ? true : false;
+                //rate.ApplyMon = vDayRate.PromoDays[0] == 'Y' ? true : false;
+                //rate.ApplyTue = vDayRate.PromoDays[1] == 'Y' ? true : false;
+                //rate.ApplyWed = vDayRate.PromoDays[2] == 'Y' ? true : false;
+                //rate.ApplyThu = vDayRate.PromoDays[3] == 'Y' ? true : false;
+                //rate.ApplyFri = vDayRate.PromoDays[4] == 'Y' ? true : false;
+                //rate.ApplySat = vDayRate.PromoDays[5] == 'Y' ? true : false;
+                //rate.ApplySun = vDayRate.PromoDays[6] == 'Y' ? true : false;
+
+                rate.ApplyMon = vDayRate.ApplyDayMap[0] == 'Y' ? true : false;
+                rate.ApplyTue = vDayRate.ApplyDayMap[1] == 'Y' ? true : false;
+                rate.ApplyWed = vDayRate.ApplyDayMap[2] == 'Y' ? true : false;
+                rate.ApplyThu = vDayRate.ApplyDayMap[3] == 'Y' ? true : false;
+                rate.ApplyFri = vDayRate.ApplyDayMap[4] == 'Y' ? true : false;
+                rate.ApplySat = vDayRate.ApplyDayMap[5] == 'Y' ? true : false;
+                rate.ApplySun = vDayRate.ApplyDayMap[6] == 'Y' ? true : false;
+
             }
             else if (!vDayRate.IsPromotion)
             {
@@ -886,6 +895,10 @@ namespace APIServices.Conflux.Helpers.Rates
             {
                 starDate = DateTime.Now.Date;
             }
+            else if(vDayRate.StartDate.Date < DateTime.Now.Date)
+            {
+                starDate = DateTime.Now.Date;
+            }
 
             //var starDate = vDayRate.StartDate.Date < DateTime.Now.Date ? DateTime.Now.Date : vDayRate.StartDate.Date;
 
@@ -924,7 +937,10 @@ namespace APIServices.Conflux.Helpers.Rates
             {
                 starDate = DateTime.Now.Date;
             }
-            
+            else if (vDayRate.StartDate.Date < DateTime.Now.Date)
+            {
+                starDate = DateTime.Now.Date;
+            }
 
             //var starDate = vDayRate.StartDate.Date < DateTime.Now.Date ? DateTime.Now.Date : vDayRate.StartDate.Date;
 
@@ -942,7 +958,8 @@ namespace APIServices.Conflux.Helpers.Rates
             return rateAmountMessage;
         }
 
-        //General Tarifas
+        //General Tarifas EndPoint 
+        //Aqui llegan las fechas que se escogieron
         public static RateAmountMessage CreateDeleteRateAmountMessage(string rateplanId, string roomCode, DateTime? startDate, DateTime? endDate)
         {
 
@@ -990,7 +1007,11 @@ namespace APIServices.Conflux.Helpers.Rates
             {
                 starDate = DateTime.Now.Date;
             }
-            
+            else if (vDayRate.StartDate.Date < DateTime.Now.Date)
+            {
+                starDate = DateTime.Now.Date;
+            }
+
 
             //var starDate = vDayRate.StartDate.Date < DateTime.Now.Date ? DateTime.Now.Date : vDayRate.StartDate.Date;
 

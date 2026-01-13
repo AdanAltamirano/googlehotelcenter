@@ -48,11 +48,11 @@
             </b-button>
         </div>
         <div class="mt-3">
-            <label v-if="isEnabledGoogle" style="color:#dc3545;">
+            <label v-if="isEnabledGoogle || isEnabledAPICache" style="color:#dc3545;">
                 {{$t("This operation make take a few minutes")}}
             </label>
-                <label v-else-if="!isEnabledGoogle" style="color:#dc3545;">
-                {{$t("Enable Google Prices in Content / General Information")}}
+                <label v-else-if="!isEnabledGoogle && !isEnabledAPICache" style="color:#dc3545;">
+                {{$t("Enable Google Prices Or Rates APICache in Content / General Information")}}
             </label>
         </div>
         <hr class="solid">

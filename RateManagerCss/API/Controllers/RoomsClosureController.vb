@@ -349,6 +349,16 @@ Namespace API.Controller
                                           page.IsUsuarioHotel, PortalCulture.GetIDCulture)
         End Function
 
+        <Route("allrateplans/{idHotel:Int}"), HttpGet>
+        Public Function GetAllRatePlansByHotelId(ByVal idHotel As Integer) As List(Of DTO.RatePlansClosureModel)
+
+            Dim page As New PaginaBase
+
+            Dim idAsoc As Integer = page.GetIdAsociation()
+
+            Return service.LoadAllRatePlansByIdHotel(idHotel, idAsoc, page.IdCorporativoUserChain, page.IsHotel,
+                                          page.IsUsuarioHotel, PortalCulture.GetIDCulture)
+        End Function
 
 
         <Route("rateplansnolinks/{idHotel:Int}"), HttpGet>

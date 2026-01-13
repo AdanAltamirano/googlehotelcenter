@@ -16,9 +16,10 @@ Namespace Utitlities.Hotel
         'APICache EndPoints
         Public ENDPOINTAPI As String = ConfigurationManager.AppSettings("confluxApiUrl") & "pms/ota/calendar/rates"
         Public ENDPOINTAPIV2 As String = "pms/ota/calendar/rates"
-        Public ENDPOINTAPIDELETE As String = ""
+        Public ENDPOINTAPIDELETE As String = ConfigurationManager.AppSettings("confluxApiUrl") & "cache/rates"
         Public ENDPOINTAPICLOSURE As String = ConfigurationManager.AppSettings("confluxApiUrl") & "pms/ota/calendar/inventory"
         Public ENDPOINTAPICLOSUREV2 As String = "pms/ota/calendar/inventory"
+        Public ENDPOINTAPINVENTORY As String = "inventory/ota/update/batch"
 
         Public ReadOnly Property ConfluxServiceHelper As APIServices.Conflux.ConfluxService
             Get

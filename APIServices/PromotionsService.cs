@@ -342,10 +342,10 @@ namespace APIServices
                         var rp = new RatesPlan()
                         {
                             idRatePlan = offer.Id.ToUpper(),
-                            Description = offer.Name.Esp,
+                            Description = Utilities.Truncate(offer.Name.Eng,49),
                             IdHotel = offer.HotelId,
                             Segment = "R",
-                            Name = offer.Name.Esp,
+                            Name = offer.Description.Eng,
                             RateGDS = false,
                             RatePortal = true,
                             RateUnip = false,
@@ -519,8 +519,8 @@ namespace APIServices
 
                         if (rp != null)
                         {
-                            rp.Description = offer.Name.Esp;
-                            rp.Name = offer.Name.Esp;
+                            rp.Description = Utilities.Truncate(offer.Name.Eng,49);
+                            rp.Name = offer.Description.Eng;
                             rp.codigotarifa = offer.Id.ToUpper();
                             rp.DescPromotion = offer.Discount.Percent != null && offer.Discount.Percent != 0 ? offer.Discount.Percent : null; //offer.Discount.Amount != 0 ? offer.Discount.Amount : null;
                             rp.DaysFree = daysFree;

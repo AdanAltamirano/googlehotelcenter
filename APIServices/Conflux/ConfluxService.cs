@@ -40,6 +40,9 @@ namespace APIServices.Conflux
             HttpStatusCode.NoContent
         };
 
+        public bool ConfluxSendRatesToGoogle { get; set; } = true;
+
+
         private OzHotelesEntities dbContext = new OzHotelesEntities();
 
         public IQueryable<vHotelActives> GetHotels() => dbContext.vHotelActives.AsQueryable();
@@ -316,6 +319,7 @@ namespace APIServices.Conflux
 
                 var hotelBasicInfo = ozHotelesEntities.vHotelBasicInfo.FirstOrDefault(vh => vh.Id == hotelId);
 
+                Parser.Parser.ParserSendRatesToGoogle = ConfluxSendRatesToGoogle;
                 ratesMessages = Parser.Parser.ToRateAmountMessages(rates, ratesExceptions, hotelId, companyId, hotel.PlusTax, hotel.Impuesto, hotelBasicInfo.Currency, typeRate);
             }
 
@@ -343,6 +347,7 @@ namespace APIServices.Conflux
 
             var hotelBasicInfo = dbContext.vHotelBasicInfo.FirstOrDefault(vh => vh.Id == hotelId);
 
+            Parser.Parser.ParserSendRatesToGoogle = ConfluxSendRatesToGoogle;
             ratesMessages = Parser.Parser.ToRateAmountMessages(rates, ratesExceptions, hotelId, companyId, hotel.PlusTax, hotel.Impuesto, hotelBasicInfo.Currency, typeRate);
 
             return ratesMessages;
@@ -521,6 +526,16 @@ namespace APIServices.Conflux
                 rateResponse.Xml = errorsElement.ToString();
             }
 
+            if (deleteRates)
+            {
+                if (ratesMessages.RateAmountMessagesList[1].RateAmountMessagesList.Count > 0)
+                {
+                    // Llama a DeleteRatesAsync si la tienes
+                    deleteRateResponse = await DeleteRatesPatchAsync(endpointDelete, ratesMessages.RateAmountMessagesList[1]);
+                }
+            }
+
+
             return new Tuple<RateResponse, RateResponse>(rateResponse, deleteRateResponse);
         }
 
@@ -549,6 +564,8 @@ namespace APIServices.Conflux
 
                 var hotelBasicInfo = ozHotelesEntities.vHotelBasicInfo.FirstOrDefault(vh => vh.Id == hotelId);
 
+                //Inicializar el Parser con SendRates
+                Parser.Parser.ParserSendRatesToGoogle = ConfluxSendRatesToGoogle;
                 ratesMessages = Parser.Parser.ToRateAmountMessages(rates, ratesExceptions, hotelId, companyId, hotel.PlusTax, hotel.Impuesto, hotelBasicInfo.Currency, typeRate);
             }
 
@@ -712,7 +729,7 @@ namespace APIServices.Conflux
 
         }
 
-        public RatesReponse UpdateRatesPatch(RatesMessages ratesMessages, string endpoint)
+        public RatesReponse UpdateRatesPatch(RatesMessages ratesMessages, string endpoint,string endpointDelete, bool deleteRates = false)
         {
             RatesReponse ratesReponse = new RatesReponse();
 
@@ -842,6 +859,13 @@ namespace APIServices.Conflux
 
             }
 
+            if (deleteRates)
+            {
+
+                if (ratesMessages.RateAmountMessagesList[1].RateAmountMessagesList.Count > 0) deleteRateResponse = DeleteRatesPatch(endpointDelete, ratesMessages.RateAmountMessagesList[1]);
+            }
+
+
             ratesReponse.RateResponseList.Add(rateResponse);
             ratesReponse.RateResponseList.Add(deleteRateResponse);
             ratesReponse.RateResponseList.Add(rateResponseExceptiones);
@@ -859,12 +883,13 @@ namespace APIServices.Conflux
             var hotel = dbContext.Hoteles.First(h => h.idHotel == hotelId);
             var hotelBasicInfo = dbContext.vHotelBasicInfo.FirstOrDefault(vh => vh.Id == hotelId);
 
+            Parser.Parser.ParserSendRatesToGoogle = ConfluxSendRatesToGoogle;
+
             //0: tarifas, 1: borrar, 2: tarifas excepciones
             ratesMessages = Parser.Parser.ToRateAmountMessages(currentRates, hotelId, companyId, hotel.PlusTax, hotel.Impuesto, hotelBasicInfo.Currency, startDate, endDate);
 
             return ratesMessages;
         }
-
 
         //public RestrictionResponse UpdateRestrictions(int hotelId, int companyId)
         //{
@@ -1788,6 +1813,66 @@ namespace APIServices.Conflux
 
         }
 
+        public RateResponse DeleteRatesPatch(string endpoint, RateAmountMessages rateAmountMessages)
+        {
+            RateResponse res = new RateResponse();
+
+            try
+            {
+                rateAmountMessages.HotelCode = rateAmountMessages.HotelCodeV2;
+
+                var xml = HotelRateAmountNotifRQ.CreateHotelRateAmountNotifRQDelete(rateAmountMessages);
+
+                var soapRequest = Soap.CreateSoapRequestXml(xml);
+
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
+                var uri = new Uri(endpoint);
+
+                var request = new HttpRequestMessage
+                {
+                    Method = HttpMethod.Delete,
+                    RequestUri = uri,
+                    Content = new StringContent(soapRequest.ToString())
+                };
+
+                string otaRS = string.Empty;
+
+                using (var client = new HttpClient())
+                {
+
+                    client.Timeout = TimeSpan.FromMinutes(50);
+                    var response = client.SendAsync(request).Result;
+
+                    string result = response.Content.ReadAsStringAsync().Result; //regresa un xml
+
+                    otaRS = result;
+                }
+
+                res.Xml = otaRS.ToString();
+                res.RequestXML = soapRequest.ToString();
+                res.IsSuccess = true;
+            }
+            catch(Exception ex)
+            {
+                res.IsSuccess = false;
+                res.Error = new KeyValuePair<string, string>("448", ex.Message);
+
+                var errorsElement = new System.Xml.Linq.XElement("Errors");
+                var errorElementProperty = new System.Xml.Linq.XElement("Error");
+                errorElementProperty.Add(
+                    new System.Xml.Linq.XAttribute("Type", "3"),
+                    new System.Xml.Linq.XAttribute("Code", "448"),
+                    new System.Xml.Linq.XText(ex.Message));
+
+                errorsElement.Add(errorElementProperty);
+
+                res.Xml = errorsElement.ToString();
+            }
+
+            return res;
+        }
+
         public async Task<RateResponse> DeleteRatesAsync(string endpoint, RateAmountMessages rateAmountMessages)
         {
             RateResponse res = new RateResponse();
@@ -1821,6 +1906,61 @@ namespace APIServices.Conflux
                 res.Xml = otaRS.ToString();
                 res.RequestXML = soapRequest.ToString();
                 res.IsSuccess = HotelRateAmountNotifRS.IsSuccessRequest(otaRS);
+            }
+            catch (Exception ex)
+            {
+                res.IsSuccess = false;
+                res.Error = new KeyValuePair<string, string>("448", ex.Message);
+
+                var errorsElement = new System.Xml.Linq.XElement("Errors");
+                var errorElementProperty = new System.Xml.Linq.XElement("Error");
+                errorElementProperty.Add(
+                    new System.Xml.Linq.XAttribute("Type", "3"),
+                    new System.Xml.Linq.XAttribute("Code", "448"),
+                    new System.Xml.Linq.XText(ex.Message));
+
+                errorsElement.Add(errorElementProperty);
+                res.Xml = errorsElement.ToString();
+            }
+
+            return res;
+        }
+
+        public async Task<RateResponse> DeleteRatesPatchAsync(string endpoint, RateAmountMessages rateAmountMessages)
+        {
+            RateResponse res = new RateResponse();
+
+            try
+            {
+                rateAmountMessages.HotelCode = rateAmountMessages.HotelCodeV2;
+
+                var xml = HotelRateAmountNotifRQ.CreateHotelRateAmountNotifRQDelete(rateAmountMessages);
+                var soapRequest = Soap.CreateSoapRequestXml(xml);
+                var uri = new Uri(endpoint);
+
+                var request = new HttpRequestMessage
+                {
+                    Method = HttpMethod.Delete,
+                    RequestUri = uri,
+                    Content = new StringContent(soapRequest.ToString())
+                };
+
+                string otaRS = string.Empty;
+
+                using (var client = new HttpClient())
+                {
+                    client.Timeout = TimeSpan.FromMinutes(50);
+
+                    // Asincrónico
+                    var response = await client.SendAsync(request);
+                    string result = await response.Content.ReadAsStringAsync();
+
+                    otaRS = result;
+                }
+
+                res.Xml = otaRS.ToString();
+                res.RequestXML = soapRequest.ToString();
+                res.IsSuccess = true;
             }
             catch (Exception ex)
             {

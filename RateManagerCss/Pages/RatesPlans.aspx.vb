@@ -594,6 +594,7 @@ Partial Class RatesPlans
         Dim deleteRateAmountMessages As New APIServices.Conflux.OTA.Models.Rates.RateAmountMessages()
 
         deleteRateAmountMessages.HotelCode = companyId
+        deleteRateAmountMessages.HotelCodeV2 = hotelId
         deleteRateAmountMessages.RateAmountMessagesList = New List(Of APIServices.Conflux.OTA.Models.Rates.RateAmountMessage)
 
         Dim currentRates As List(Of spGetCurrentRatesByHotel_Result4) = New List(Of spGetCurrentRatesByHotel_Result4)
@@ -713,32 +714,72 @@ Partial Class RatesPlans
         Task.Run(Async Function()
 
                      Dim isEnabledGoogleRequest As Boolean = HotelUtilitie.IsEnableGoogleRequest(hotelId)
+                     Dim isEnabledSendRatesAPICache As Boolean = HotelUtilitie.IsEnableSendRatesAPICache(hotelId)
 
-                     If isEnabledGoogleRequest Then
+                     Dim messagesToDelete As APIServices.Conflux.OTA.Models.Rates.RateAmountMessages = Nothing
 
-                         Dim messagesToDelete As APIServices.Conflux.OTA.Models.Rates.RateAmountMessages = GetDeleteMessagesGoogle(hotelId, companyId, ratePlanIdDelete)
+                     If isEnabledGoogleRequest Or isEnabledSendRatesAPICache Then
+                         messagesToDelete = GetDeleteMessagesGoogle(hotelId, companyId, ratePlanIdDelete)
+                     End If
 
-                         Dim ConfluxService As ConfluxService = New ConfluxService()
+                     Dim ConfluxService As ConfluxService = New ConfluxService()
 
-                         Dim soapRequests As List(Of XDocument) = ConfluxService.GetSoapRequests(messagesToDelete)
 
-                         Dim result As DeleteResponse = Await ConfluxService.UpdateDeleteAsync(soapRequests, HotelUtilitie.ENDPOINTDELETE)
+                     If messagesToDelete IsNot Nothing Then
 
-                         If Not result.IsSuccess Then
-                             Dim note As String = String.Format("Error Eliminar Tarifas {1} con el hotel: {0}", hotelId, "Conflux")
+                         If isEnabledGoogleRequest Then
 
-                             HotelUtilitie.Log(userName, userId, "/Pages/RatesPlans.aspx", hotelId, RateManager.Utitlities.Hotel.Actions.Sincronizar, note, "", "", "")
-                         Else
-                             Dim index As Integer = 1
+                             Dim soapRequests As List(Of XDocument) = ConfluxService.GetSoapRequests(messagesToDelete)
 
-                             For Each request As DeleteHttpResponse In result.DeleteHttpResponseList
-                                 Dim note As String = String.Format("Eliminar Tarifas request numero {0} Tarifas {1} con el hotel: ", (index), "Conflux")
+                             Dim result As DeleteResponse = Await ConfluxService.UpdateDeleteAsync(soapRequests, HotelUtilitie.ENDPOINTDELETE)
 
-                                 HotelUtilitie.Log(userName, userId, "/Pages/RatesPlans.aspx", hotelId, RateManager.Utitlities.Hotel.Actions.Eliminar, note, "", request.XmlRequest, request.Xml)
-                                 index += 1
-                             Next
+                             If Not result.IsSuccess Then
+                                 Dim note As String = String.Format("Error Eliminar Tarifas {1} con el hotel: {0}", hotelId, "Conflux")
+
+                                 HotelUtilitie.Log(userName, userId, "/Pages/RatesPlans.aspx", hotelId, RateManager.Utitlities.Hotel.Actions.Sincronizar, note, "", "", "")
+                             Else
+                                 Dim index As Integer = 1
+
+                                 For Each request As DeleteHttpResponse In result.DeleteHttpResponseList
+                                     Dim note As String = String.Format("Eliminar Tarifas request numero {0} Tarifas {1} con el hotel: ", (index), "Conflux")
+
+                                     HotelUtilitie.Log(userName, userId, "/Pages/RatesPlans.aspx", hotelId, RateManager.Utitlities.Hotel.Actions.Eliminar, note, "", request.XmlRequest, request.Xml)
+                                     index += 1
+                                 Next
+
+                             End If
 
                          End If
+
+
+                         If isEnabledSendRatesAPICache Then
+
+                             messagesToDelete.HotelCode = messagesToDelete.HotelCodeV2
+
+                             Dim soapRequests As List(Of XDocument) = ConfluxService.GetSoapRequests(messagesToDelete)
+
+                             Dim result As DeleteResponse = Await ConfluxService.UpdateDeleteAsync(soapRequests, HotelUtilitie.ENDPOINTAPIDELETE)
+
+                             If Not result.IsSuccess Then
+                                 Dim note As String = String.Format("Error Eliminar Tarifas {1} con el hotel: {0}", hotelId, "APICache")
+
+                                 HotelUtilitie.Log(userName, userId, "/Pages/RatesPlans.aspx", hotelId, RateManager.Utitlities.Hotel.Actions.Sincronizar, note, "", "", "")
+                             Else
+                                 Dim index As Integer = 1
+
+                                 For Each request As DeleteHttpResponse In result.DeleteHttpResponseList
+                                     Dim note As String = String.Format("Eliminar Tarifas request numero {0} Tarifas {1} con el hotel: ", (index), "APICache")
+
+                                     HotelUtilitie.Log(userName, userId, "/Pages/RatesPlans.aspx", hotelId, RateManager.Utitlities.Hotel.Actions.Eliminar, note, "", request.XmlRequest, request.Xml)
+                                     index += 1
+                                 Next
+
+                             End If
+
+
+                         End If
+
+
 
                      End If
 

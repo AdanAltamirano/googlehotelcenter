@@ -71,11 +71,47 @@
           <Property Name="MinAdultos" Type="tinyint" />
           <Property Name="Eliminada" Type="bit" />
         </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRatePromosReservations' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="vRatePromosReservations">
+          <Key>
+            <PropertyRef Name="idReservacion" />
+            <PropertyRef Name="NoReservacion" />
+            <PropertyRef Name="idDetalleReservacion" />
+            <PropertyRef Name="Description" />
+            <PropertyRef Name="IdIdioma" />
+            <PropertyRef Name="Texto" />
+          </Key>
+          <Property Name="idReservacion" Type="int" Nullable="false" />
+          <Property Name="NoReservacion" Type="nvarchar" MaxLength="24" Nullable="false" />
+          <Property Name="idDetalleReservacion" Type="int" Nullable="false" />
+          <Property Name="idHotel" Type="int" />
+          <Property Name="PromoCode" Type="nvarchar" MaxLength="4" />
+          <Property Name="Description" Type="nvarchar" MaxLength="400" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="80" />
+          <Property Name="IdDiccShortDesc" Type="int" />
+          <Property Name="IdIdioma" Type="int" Nullable="false" />
+          <Property Name="Texto" Type="nvarchar" MaxLength="4000" Nullable="false" />
+        </EntityType>
         <EntityContainer Name="OzArponStoreContainer">
           <EntitySet Name="HotelIPH_Arpon" EntityType="Self.HotelIPH_Arpon" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RatePlansIPH_Arpon" EntityType="Self.RatePlansIPH_Arpon" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RoomsIPH_Arpon" EntityType="Self.RoomsIPH_Arpon" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TipoHabitaciones_Hoteles" EntityType="Self.TipoHabitaciones_Hoteles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="vRatePromosReservations" EntityType="Self.vRatePromosReservations" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vRatePromosReservations].[idReservacion] AS [idReservacion], 
+    [vRatePromosReservations].[NoReservacion] AS [NoReservacion], 
+    [vRatePromosReservations].[idDetalleReservacion] AS [idDetalleReservacion], 
+    [vRatePromosReservations].[idHotel] AS [idHotel], 
+    [vRatePromosReservations].[PromoCode] AS [PromoCode], 
+    [vRatePromosReservations].[Description] AS [Description], 
+    [vRatePromosReservations].[Name] AS [Name], 
+    [vRatePromosReservations].[IdDiccShortDesc] AS [IdDiccShortDesc], 
+    [vRatePromosReservations].[IdIdioma] AS [IdIdioma], 
+    [vRatePromosReservations].[Texto] AS [Texto]
+    FROM [dbo].[vRatePromosReservations] AS [vRatePromosReservations]</DefiningQuery>
+          </EntitySet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -114,6 +150,7 @@
           <EntitySet Name="RatePlansIPH_Arpon" EntityType="Self.RatePlansIPH_Arpon" />
           <EntitySet Name="RoomsIPH_Arpon" EntityType="Self.RoomsIPH_Arpon" />
           <EntitySet Name="TipoHabitaciones_Hoteles" EntityType="OzArpon.TipoHabitaciones_Hoteles" />
+          <EntitySet Name="vRatePromosReservations" EntityType="OzArpon.vRatePromosReservations" />
         </EntityContainer>
         <EntityType Name="TipoHabitaciones_Hoteles">
           <Key>
@@ -152,6 +189,26 @@
           <Property Name="orden" Type="Int16" />
           <Property Name="MinAdultos" Type="Byte" />
           <Property Name="Eliminada" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="vRatePromosReservations">
+          <Key>
+            <PropertyRef Name="idReservacion" />
+            <PropertyRef Name="NoReservacion" />
+            <PropertyRef Name="Description" />
+            <PropertyRef Name="IdIdioma" />
+            <PropertyRef Name="Texto" />
+            <PropertyRef Name="idDetalleReservacion" />
+          </Key>
+          <Property Name="idReservacion" Type="Int32" Nullable="false" />
+          <Property Name="NoReservacion" Type="String" Nullable="false" MaxLength="24" FixedLength="false" Unicode="true" />
+          <Property Name="idHotel" Type="Int32" />
+          <Property Name="PromoCode" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="400" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="IdDiccShortDesc" Type="Int32" />
+          <Property Name="IdIdioma" Type="Int32" Nullable="false" />
+          <Property Name="Texto" Type="String" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="idDetalleReservacion" Type="Int32" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -226,6 +283,22 @@
                 <ScalarProperty Name="idHotel" ColumnName="idHotel" />
                 <ScalarProperty Name="idTipoHabitacion" ColumnName="idTipoHabitacion" />
                 <ScalarProperty Name="idTipoHabitacion_Hotel" ColumnName="idTipoHabitacion_Hotel" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vRatePromosReservations">
+            <EntityTypeMapping TypeName="OzArpon.vRatePromosReservations">
+              <MappingFragment StoreEntitySet="vRatePromosReservations">
+                <ScalarProperty Name="idDetalleReservacion" ColumnName="idDetalleReservacion" />
+                <ScalarProperty Name="Texto" ColumnName="Texto" />
+                <ScalarProperty Name="IdIdioma" ColumnName="IdIdioma" />
+                <ScalarProperty Name="IdDiccShortDesc" ColumnName="IdDiccShortDesc" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="PromoCode" ColumnName="PromoCode" />
+                <ScalarProperty Name="idHotel" ColumnName="idHotel" />
+                <ScalarProperty Name="NoReservacion" ColumnName="NoReservacion" />
+                <ScalarProperty Name="idReservacion" ColumnName="idReservacion" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -24,6 +24,8 @@ const roomClosureGetRatePlansSegmentsValids = Vue.resource(`${process.env.VUE_AP
 
 const roomClosureGetAllRatePlansSegmentsValids = Vue.resource(`${process.env.VUE_APP_API_URL}/closure/allrateplanssegmentsvalids/{hotelid}`);
 
+const roomClosureGetAllRatePlans = Vue.resource(`${process.env.VUE_APP_API_URL}/closure/allrateplans/{hotelid}`);
+
 const roomClosureGetRatePlansNoLinks = Vue.resource(`${process.env.VUE_APP_API_URL}/closure/rateplansnolinks/{hotelid}`);
 
 const roomClosureGetRooms = Vue.resource(`${process.env.VUE_APP_API_URL}/closure/rooms/{hotelid}`);
@@ -78,6 +80,16 @@ export default {
      */
     getAllRatePlansByHotelIdSegmentsValids(hotelid){
         return roomClosureGetAllRatePlansSegmentsValids.get({
+            hotelid:hotelid
+        })
+    },
+    /**
+     * 
+     * @param {*} hotelid 
+     * @returns 
+     */
+    getAllRatePlansByHotelId(hotelid){
+        return roomClosureGetAllRatePlans.get({
             hotelid:hotelid
         })
     },

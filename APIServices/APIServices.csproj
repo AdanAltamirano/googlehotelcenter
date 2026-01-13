@@ -496,6 +496,9 @@
     <Compile Include="Service\Arpon\TipoHabitaciones_Hoteles.cs">
       <DependentUpon>ArponEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Service\Arpon\vRatePromosReservations.cs">
+      <DependentUpon>ArponEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Service\HotelVerse\HotelVerseService.cs" />
     <Compile Include="Service\HotelVerse\Models\Record.cs" />
     <Compile Include="Service\HotelVerse\Models\Response\ResponseRequest.cs" />

@@ -69,11 +69,15 @@ Namespace API.Controllers
 
             Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
 
-            Dim ratesMessages As RatesMessages = GetMessages(hotelId, info.Empresa, body)
+            Dim ConfluxServiceSpecial As ConfluxService = New ConfluxService()
 
             Dim ratesToUpdate As RateResponse = Nothing
 
             If Utitlities.Hotel.HotelUtilitie.IsEnableGoogleRequest(hotelId) Then
+
+                ConfluxServiceSpecial.ConfluxSendRatesToGoogle = True
+
+                Dim ratesMessages As RatesMessages = GetMessages(hotelId, info.Empresa, body, ConfluxServiceSpecial)
 
                 Dim result As RatesReponse = ConfluxService.UpdateRates(ratesMessages, Utitlities.Hotel.HotelUtilitie.ENDPOINT, Utitlities.Hotel.HotelUtilitie.ENDPOINTDELETE, True)
 
@@ -91,7 +95,12 @@ Namespace API.Controllers
 
             ''API CACHE
             If Utitlities.Hotel.HotelUtilitie.IsEnableSendRatesAPICache(hotelId) Then
-                Dim resultAPICache As RatesReponse = ConfluxService.UpdateRatesPatch(ratesMessages, Utitlities.Hotel.HotelUtilitie.ENDPOINTAPIV2)
+
+                ConfluxServiceSpecial.ConfluxSendRatesToGoogle = False
+
+                Dim ratesMessages As RatesMessages = GetMessages(hotelId, info.Empresa, body, ConfluxServiceSpecial)
+
+                Dim resultAPICache As RatesReponse = ConfluxService.UpdateRatesPatch(ratesMessages, Utitlities.Hotel.HotelUtilitie.ENDPOINTAPIV2, Utitlities.Hotel.HotelUtilitie.ENDPOINTAPIDELETE, True)
 
                 ratesToUpdateAPICache = resultAPICache.RateResponseList(0)
 
@@ -123,18 +132,41 @@ Namespace API.Controllers
 
             Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
 
-            Dim soapRequests As List(Of XDocument) = GetMessages(hotelId, info.Empresa, PortalCulture.GetIDCulture, body)
+            Dim result As InventoryResponse = Nothing
 
-            Dim result As InventoryResponse = ConfluxService.UpdateInventory(soapRequests, Utitlities.Hotel.HotelUtilitie.ENDPOINTINVENTORY)
+            If Utitlities.Hotel.HotelUtilitie.IsEnableGoogleRequest(hotelId) Then
+                Dim soapRequests As List(Of XDocument) = GetMessages(hotelId, info.Empresa, PortalCulture.GetIDCulture, body, "Conflux")
 
-            If Not result.IsSuccess Then
-                Log("Error Sincronizar Inventario con el hotel: ", result.Xml, hotelId, String.Empty)
-                Return BadRequest(result.Error)
+                result = ConfluxService.UpdateInventory(soapRequests, Utitlities.Hotel.HotelUtilitie.ENDPOINTINVENTORY)
+
+                If Not result.IsSuccess Then
+                    Log("Error Sincronizar Inventario con el hotel: ", result.Xml, hotelId, String.Empty)
+                    Return BadRequest(result.Error)
+                End If
+
+                LogInventory(hotelId, "Conflux", result)
             End If
 
-            LogInventory(hotelId, "Conflux", result)
+            Dim resultAPI As InventoryResponse = Nothing
 
-            Dim toObject As Object = result
+            If Utitlities.Hotel.HotelUtilitie.IsEnableSendRatesAPICache(hotelId) Then
+                Dim soapRequestsAPI As List(Of XDocument) = GetMessages(hotelId, info.Empresa, PortalCulture.GetIDCulture, body, "APICache")
+
+                resultAPI = ConfluxService.UpdateInventoryPatch(soapRequestsAPI, Utitlities.Hotel.HotelUtilitie.ENDPOINTAPICLOSUREV2)
+
+                LogInventory(hotelId, "APICache", resultAPI)
+
+            End If
+
+            Dim toObject As Object = Nothing
+
+            If result IsNot Nothing Then
+                toObject = result
+            End If
+
+            If resultAPI IsNot Nothing And result Is Nothing Then
+                toObject = resultAPI
+            End If
 
             Return Ok(toObject)
         End Function
@@ -225,26 +257,46 @@ Namespace API.Controllers
 
             Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
 
-            Dim messages As OTA.Models.Rates.RateAmountMessages = ConfluxService.GetDeleteMessages(hotelId, info.Empresa, delete)
+            Dim result As DeleteResponse = Nothing
 
-            Dim soapRequests As List(Of XDocument) = ConfluxService.GetSoapRequests(messages)
+            If Utitlities.Hotel.HotelUtilitie.IsEnableGoogleRequest(hotelId) Then
+                Dim messages As OTA.Models.Rates.RateAmountMessages = ConfluxService.GetDeleteMessages(hotelId, info.Empresa, delete)
 
-            Dim result As DeleteResponse = ConfluxService.UpdateDelete(soapRequests, Utitlities.Hotel.HotelUtilitie.ENDPOINTDELETE)
+                Dim soapRequests As List(Of XDocument) = ConfluxService.GetSoapRequests(messages)
 
-            If Not result.IsSuccess Then
-                Log("Error Eliminar Tarifas con el hotel: ", result.Xml, hotelId, String.Empty)
-                Return BadRequest(result.Error)
+                result = ConfluxService.UpdateDelete(soapRequests, Utitlities.Hotel.HotelUtilitie.ENDPOINTDELETE)
+
+                If Not result.IsSuccess Then
+                    Log("Error Eliminar Tarifas con el hotel: ", result.Xml, hotelId, String.Empty)
+                    Return BadRequest(result.Error)
+                End If
+
+                LogDelete(hotelId, "Conflux", result)
             End If
 
-            LogDelete(hotelId, "Conflux", result)
+            Dim resultAPICache As DeleteResponse = Nothing
 
             'API CACHE
-            'If Utitlities.Hotel.HotelUtilitie.IsEnableSendRatesAPICache(hotelId) Then
-            '    Dim resultAPICache As DeleteResponse = ConfluxService.UpdateDelete(soapRequests, Utitlities.Hotel.HotelUtilitie.ENDPOINTAPIDELETE)
-            '    LogDelete(hotelId, "APICache", resultAPICache)
-            'End If
+            If Utitlities.Hotel.HotelUtilitie.IsEnableSendRatesAPICache(hotelId) Then
 
-            Dim toObject As Object = result
+                Dim messages As OTA.Models.Rates.RateAmountMessages = ConfluxService.GetDeleteMessages(hotelId, hotelId, delete)
+
+                Dim soapRequests As List(Of XDocument) = ConfluxService.GetSoapRequests(messages)
+
+                resultAPICache = ConfluxService.UpdateDelete(soapRequests, Utitlities.Hotel.HotelUtilitie.ENDPOINTAPIDELETE)
+
+                LogDelete(hotelId, "APICache", resultAPICache)
+            End If
+
+            Dim toObject As Object = Nothing
+
+            If result IsNot Nothing Then
+                toObject = result
+            End If
+
+            If resultAPICache IsNot Nothing And result Is Nothing Then
+                toObject = resultAPICache
+            End If
 
             Return Ok(toObject)
         End Function
@@ -369,7 +421,7 @@ Namespace API.Controllers
 
         End Sub
 
-        Private Function GetMessages(ByVal hotelId As Integer, ByVal companyId As Integer, ByVal ratePrice As APIServices.Conflux.Models.Rates.RatePrice) As RatesMessages
+        Private Function GetMessages(ByVal hotelId As Integer, ByVal companyId As Integer, ByVal ratePrice As APIServices.Conflux.Models.Rates.RatePrice, ByRef ConfluxServiceSpecial As ConfluxService) As RatesMessages
 
             Dim ratesMessages As RatesMessages = Nothing
 
@@ -377,27 +429,27 @@ Namespace API.Controllers
             If ((ratePrice.RatePlansList.Length = 1 And ratePrice.RatePlansList(0) = "0") And (ratePrice.RoomsList.Length = 1 And ratePrice.RoomsList(0) = 0)) Then
 
                 'Todos los planes con todas las habitaciones
-                ratesMessages = ConfluxService.GetRateMessages(hotelId, companyId, Nothing, Nothing, ratePrice.StartDate.Value.Date, ratePrice.EndDate.Value.Date)
+                ratesMessages = ConfluxServiceSpecial.GetRateMessages(hotelId, companyId, Nothing, Nothing, ratePrice.StartDate.Value.Date, ratePrice.EndDate.Value.Date)
 
             ElseIf ((ratePrice.RatePlansList.Length = 1 And ratePrice.RatePlansList(0) = "0") And ((ratePrice.RoomsList.Length = 1 And ratePrice.RoomsList(0) <> 0) Or ratePrice.RoomsList.Length > 1)) Then
                 'Todos los planes con habitaciones seleccionadas
                 ratesMessages = New RatesMessages
-                RatesAllRatePlans(companyId, hotelId, ratePrice, ratesMessages)
+                RatesAllRatePlans(companyId, hotelId, ratePrice, ratesMessages, ConfluxServiceSpecial)
             ElseIf ((ratePrice.RoomsList.Length = 1 And ratePrice.RoomsList(0) = 0) And ((ratePrice.RatePlansList.Length = 1 And ratePrice.RatePlansList(0) <> "0") Or ratePrice.RatePlansList.Length > 1)) Then
                 'Todas las habitaciones con planes seleccionados
                 ratesMessages = New RatesMessages
-                RatesAllRooms(companyId, hotelId, ratePrice, ratesMessages)
+                RatesAllRooms(companyId, hotelId, ratePrice, ratesMessages, ConfluxServiceSpecial)
             Else
                 'Planes seleccionados con habitaciones seleccionadas
                 ratesMessages = New RatesMessages
-                RatesRatePlansRooms(companyId, hotelId, ratePrice, ratesMessages)
+                RatesRatePlansRooms(companyId, hotelId, ratePrice, ratesMessages, ConfluxServiceSpecial)
             End If
 
             Return ratesMessages
 
         End Function
 
-        Public Function GetMessages(ByVal hotelId As Integer, ByVal companyId As Integer, ByVal lang As Integer, ByVal inventory As APIServices.Conflux.Models.Inventory.Inventory) As List(Of XDocument)
+        Public Function GetMessages(ByVal hotelId As Integer, ByVal companyId As Integer, ByVal lang As Integer, ByVal inventory As APIServices.Conflux.Models.Inventory.Inventory, ByVal service As String) As List(Of XDocument)
 
             Dim document As List(Of XDocument) = Nothing
 
@@ -406,11 +458,21 @@ Namespace API.Controllers
                 Dim roomsIdList As Integer() = ConfluxService.LoadRoomsByIdHotel(hotelId, lang)
                 Dim inventoryData As RoomsInventoryData = ConfluxService.GetInventoryData(roomsIdList, inventory.StartDate, inventory.EndDate)
 
-                document = GetInventoryXml(companyId, inventory.Days, inventoryData)
+                If service = "Conflux" Then
+                    document = GetInventoryXml(companyId, inventory.Days, inventoryData)
+                ElseIf service = "APICache" Then
+                    document = GetInventoryXml(hotelId, inventory.Days, inventoryData)
+                End If
 
             Else
                 Dim inventoryData As RoomsInventoryData = ConfluxService.GetInventoryData(inventory.RoomsList, inventory.StartDate, inventory.EndDate)
-                document = GetInventoryXml(companyId, inventory.Days, inventoryData)
+
+                If service = "Conflux" Then
+                    document = GetInventoryXml(companyId, inventory.Days, inventoryData)
+                ElseIf service = "APICache" Then
+                    document = GetInventoryXml(hotelId, inventory.Days, inventoryData)
+                End If
+
             End If
 
             Return document
@@ -418,7 +480,7 @@ Namespace API.Controllers
 
 
 
-        Private Sub RatesAllRatePlans(ByVal companyId As Integer, ByVal hotelId As Integer, ByVal ratePrice As APIServices.Conflux.Models.Rates.RatePrice, ByRef ratesMessages As RatesMessages)
+        Private Sub RatesAllRatePlans(ByVal companyId As Integer, ByVal hotelId As Integer, ByVal ratePrice As APIServices.Conflux.Models.Rates.RatePrice, ByRef ratesMessages As RatesMessages, ByRef ConfluxServiceSpecial As ConfluxService)
 
             Dim rateAmountMessages As OTA.Models.Rates.RateAmountMessages = New OTA.Models.Rates.RateAmountMessages()
             Dim deleteRateAmountMessages As OTA.Models.Rates.RateAmountMessages = New OTA.Models.Rates.RateAmountMessages()
@@ -442,7 +504,7 @@ Namespace API.Controllers
             'Todos los planes, habitaciones seleccionadas
             For Each roomId As Integer In ratePrice.RoomsList
 
-                Dim ratesMessagesTemp As RatesMessages = ConfluxService.GetRateMessages(hotelId, companyId, Nothing, roomId, ratePrice.StartDate.Value.Date, ratePrice.EndDate.Value.Date)
+                Dim ratesMessagesTemp As RatesMessages = ConfluxServiceSpecial.GetRateMessages(hotelId, companyId, Nothing, roomId, ratePrice.StartDate.Value.Date, ratePrice.EndDate.Value.Date)
 
                 Dim rates As List(Of OTA.Models.Rates.RateAmountMessage) = ratesMessagesTemp.RateAmountMessagesList(0).RateAmountMessagesList
                 Dim delete As List(Of OTA.Models.Rates.RateAmountMessage) = ratesMessagesTemp.RateAmountMessagesList(1).RateAmountMessagesList
@@ -460,7 +522,7 @@ Namespace API.Controllers
 
         End Sub
 
-        Private Sub RatesAllRooms(ByVal companyId As Integer, ByVal hotelId As Integer, ByVal ratePrice As APIServices.Conflux.Models.Rates.RatePrice, ByRef ratesMessages As RatesMessages)
+        Private Sub RatesAllRooms(ByVal companyId As Integer, ByVal hotelId As Integer, ByVal ratePrice As APIServices.Conflux.Models.Rates.RatePrice, ByRef ratesMessages As RatesMessages, ByRef ConfluxServiceSpecial As ConfluxService)
 
             Dim rateAmountMessages As OTA.Models.Rates.RateAmountMessages = New OTA.Models.Rates.RateAmountMessages()
             Dim deleteRateAmountMessages As OTA.Models.Rates.RateAmountMessages = New OTA.Models.Rates.RateAmountMessages()
@@ -483,7 +545,7 @@ Namespace API.Controllers
             'Todas las habitaciones , planes seleccionados
             For Each rateplanId As String In ratePrice.RatePlansList
 
-                Dim ratesMessagesTemp As RatesMessages = ConfluxService.GetRateMessages(hotelId, companyId, rateplanId, Nothing, ratePrice.StartDate.Value.Date, ratePrice.EndDate.Value.Date)
+                Dim ratesMessagesTemp As RatesMessages = ConfluxServiceSpecial.GetRateMessages(hotelId, companyId, rateplanId, Nothing, ratePrice.StartDate.Value.Date, ratePrice.EndDate.Value.Date)
 
                 Dim rates As List(Of OTA.Models.Rates.RateAmountMessage) = ratesMessagesTemp.RateAmountMessagesList(0).RateAmountMessagesList
                 Dim delete As List(Of OTA.Models.Rates.RateAmountMessage) = ratesMessagesTemp.RateAmountMessagesList(1).RateAmountMessagesList
@@ -501,7 +563,7 @@ Namespace API.Controllers
 
         End Sub
 
-        Private Sub RatesRatePlansRooms(ByVal companyId As Integer, ByVal hotelId As Integer, ByVal ratePrice As APIServices.Conflux.Models.Rates.RatePrice, ByRef ratesMessages As RatesMessages)
+        Private Sub RatesRatePlansRooms(ByVal companyId As Integer, ByVal hotelId As Integer, ByVal ratePrice As APIServices.Conflux.Models.Rates.RatePrice, ByRef ratesMessages As RatesMessages, ByRef ConfluxServiceSpecial As ConfluxService)
 
             Dim rateAmountMessages As OTA.Models.Rates.RateAmountMessages = New OTA.Models.Rates.RateAmountMessages()
             Dim deleteRateAmountMessages As OTA.Models.Rates.RateAmountMessages = New OTA.Models.Rates.RateAmountMessages()
@@ -525,7 +587,7 @@ Namespace API.Controllers
             For Each roomId As Integer In ratePrice.RoomsList
                 For Each rateplanId As String In ratePrice.RatePlansList
 
-                    Dim ratesMessagesTemp As RatesMessages = ConfluxService.GetRateMessages(hotelId, companyId, rateplanId, roomId, ratePrice.StartDate.Value.Date, ratePrice.EndDate.Value.Date)
+                    Dim ratesMessagesTemp As RatesMessages = ConfluxServiceSpecial.GetRateMessages(hotelId, companyId, rateplanId, roomId, ratePrice.StartDate.Value.Date, ratePrice.EndDate.Value.Date)
 
                     Dim rates As List(Of OTA.Models.Rates.RateAmountMessage) = ratesMessagesTemp.RateAmountMessagesList(0).RateAmountMessagesList
                     Dim delete As List(Of OTA.Models.Rates.RateAmountMessage) = ratesMessagesTemp.RateAmountMessagesList(1).RateAmountMessagesList

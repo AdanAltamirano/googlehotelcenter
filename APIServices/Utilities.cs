@@ -109,5 +109,15 @@ namespace APIServices
 
         }
 
+        public static string Truncate(string texto, int max)
+        {
+            if (string.IsNullOrEmpty(texto))
+                return texto;
+
+            return texto.Length <= max
+                ? texto
+                : texto.Substring(0, max);
+        }
+
     }
 }

@@ -111,9 +111,9 @@
             variant="warning"
           >
             <small>{{$t('A verification code has been sent to your email, with which you can view the card details')}}</small>
-            <b-form class="pt-1" inline>
+            <b-form class="pt-1" inline @submit.prevent>
               <b-form-group :description="description_dismiss">
-                <b-form-input v-model="code"></b-form-input>&nbsp;
+                <b-form-input v-model="code" @keydown.enter.prevent></b-form-input>&nbsp;
                 <b-button @click="getCreditCardData" variant="primary">{{$t('Send')}}</b-button>
               </b-form-group>
             </b-form>
@@ -182,10 +182,10 @@
               variant="warning"
               >
                 <small>{{$t('A verification code has been sent to your email, with which you can view the card details')}}</small>
-                <b-form class="pt-1" inline>
+                <b-form class="pt-1" @submit.prevent>
                   <b-form-group :description="description_dismiss">
-                    <b-form-input v-model="code"></b-form-input>&nbsp;
-                    <b-button @click="getCreditCardData" variant="primary">{{$t('Send')}}</b-button>
+                    <b-form-input v-model="code" @keydown.enter.prevent></b-form-input>&nbsp;
+                    <b-button type="button" @click="getCreditCardData" variant="primary">{{$t('Send')}}</b-button>
                   </b-form-group>
                 </b-form>
                 <b-alert variant="danger" class="mt-1" :show="ccError">
@@ -284,6 +284,9 @@ export default {
           this.dismiss_countDown = 0;
         }
       });
+    },
+    onSubmit(){
+
     }
   },
   computed: {

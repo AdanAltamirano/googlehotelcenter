@@ -40,12 +40,12 @@
                         <closure :hotelId="hotelId" :isEnabledGoogle="isEnabledGoogleRequest" :isEnabledAPICache="isEnabledAPICacheRequest" :dates="dates"></closure>
                     </b-tab>
 
-                    <b-tab v-if="isEnabledGoogleRequest" :title="$t('Inventory')">
-                        <inventory :hotelId="hotelId" :isEnabledGoogle="isEnabledGoogleRequest"  :dates="dates"></inventory>
+                    <b-tab :title="$t('Inventory')">
+                        <inventory :hotelId="hotelId" :isEnabledGoogle="isEnabledGoogleRequest" :isEnabledAPICache="isEnabledAPICacheRequest"  :dates="dates"></inventory>
                     </b-tab>
 
-                    <b-tab :title="$t('Delete Rates')" v-if="hasPermission && isEnabledGoogleRequest">
-                        <delete-rates :hotelId="hotelId" :isEnabledGoogle="isEnabledGoogleRequest" :dates="dates"></delete-rates>
+                    <b-tab :title="$t('Delete Rates')" v-if="hasPermission && (isEnabledGoogleRequest || isEnabledAPICacheRequest)">
+                        <delete-rates :hotelId="hotelId" :isEnabledGoogle="isEnabledGoogleRequest" :isEnabledAPICache="isEnabledAPICacheRequest" :dates="dates"></delete-rates>
                     </b-tab>
                 </b-tabs>
             </div>

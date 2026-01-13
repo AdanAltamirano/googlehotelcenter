@@ -134,7 +134,7 @@ export default {
                 //Promotion Type
                 discount: {
                     amount: null,
-                    applicationMode: null,
+                    applicationMode: 0,
                     discountPattern: null,
                     nightsDiscounted: null,
                     percent: null

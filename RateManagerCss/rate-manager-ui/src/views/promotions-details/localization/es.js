@@ -89,5 +89,6 @@ export default {
     'T': 'J',
     'F': 'V',
     'S': 'S',
-    'Return to Promotions List' : 'Volver al Listado'
+    'Return to Promotions List' : 'Volver al Listado',
+    'Priority to rate' : 'Prioridad en tarifa'
 };
