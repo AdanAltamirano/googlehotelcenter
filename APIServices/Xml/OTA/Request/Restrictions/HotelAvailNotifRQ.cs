@@ -172,100 +172,110 @@ namespace APIServices.Xml.OTA.Request.Restrictions
 
             int index = 0;
 
-            while (index < availStatusMessagesList.Count)
+            try
             {
-                //Nuevo RateAmountMessages
-                if (currentBytesMessages == 0 && availStatusMessagesXml == null)
+                while (index < availStatusMessagesList.Count)
                 {
-                    availStatusMessagesXml = new XElement(blank + "AvailStatusMessages",
-                        new XAttribute("xmlns", blank.NamespaceName),
-                        new XAttribute("HotelCode", hotelCode));
-                }
-
-                XElement availStatusMessageXml = new XElement(blank + "AvailStatusMessage");
-
-                var start = availStatusMessagesList[index].StatusApplicationControl.Start.Date < DateTime.Now.Date ?
-                    DateTime.Now.Date :
-                    availStatusMessagesList[index].StatusApplicationControl.Start;
-
-                XElement statusApplicationControl = null;
-
-                if (availStatusMessagesList[index].StatusApplicationControl.ApplyMon ||
-                    availStatusMessagesList[index].StatusApplicationControl.ApplyTue ||
-                    availStatusMessagesList[index].StatusApplicationControl.ApplyWed ||
-                    availStatusMessagesList[index].StatusApplicationControl.ApplyThu ||
-                    availStatusMessagesList[index].StatusApplicationControl.ApplyFri ||
-                    availStatusMessagesList[index].StatusApplicationControl.ApplySat ||
-                    availStatusMessagesList[index].StatusApplicationControl.ApplySun )
-                {
-
-                    statusApplicationControl = new XElement(blank + "StatusApplicationControl",
-                        new XAttribute("Start", start.ToString("yyyyMMdd")),
-                        new XAttribute("End", availStatusMessagesList[index].StatusApplicationControl.End.ToString("yyyyMMdd")),
-                        new XAttribute("Mon", availStatusMessagesList[index].StatusApplicationControl.ApplyMon),
-                        new XAttribute("Tue", availStatusMessagesList[index].StatusApplicationControl.ApplyTue),
-                        new XAttribute("Weds", availStatusMessagesList[index].StatusApplicationControl.ApplyWed),
-                        new XAttribute("Thur", availStatusMessagesList[index].StatusApplicationControl.ApplyThu),
-                        new XAttribute("Fri", availStatusMessagesList[index].StatusApplicationControl.ApplyFri),
-                        new XAttribute("Sat", availStatusMessagesList[index].StatusApplicationControl.ApplySat),
-                        new XAttribute("Sun", availStatusMessagesList[index].StatusApplicationControl.ApplySun),
-                        new XAttribute("RatePlanCode", availStatusMessagesList[index].StatusApplicationControl.RatePlanCode),
-                        new XAttribute("InvTypeCode", availStatusMessagesList[index].StatusApplicationControl.InvTypeCode));
-                }
-                else
-                {
-                    statusApplicationControl = new XElement(blank + "StatusApplicationControl",
-                        new XAttribute("Start", start.ToString("yyyyMMdd")),
-                        new XAttribute("End", availStatusMessagesList[index].StatusApplicationControl.End.ToString("yyyyMMdd")),
-                        new XAttribute("RatePlanCode", availStatusMessagesList[index].StatusApplicationControl.RatePlanCode),
-                        new XAttribute("InvTypeCode", availStatusMessagesList[index].StatusApplicationControl.InvTypeCode));
-
-                }
-
-
-                XElement restrictionStatus = new XElement(blank + "RestrictionStatus",
-                    new XAttribute("Status", availStatusMessagesList[index].RestrictionStatus.Status));
-
-                if (!string.IsNullOrEmpty(availStatusMessagesList[index].RestrictionStatus.Restriction))
-                {
-                    restrictionStatus.Add(new XAttribute("Restriction", availStatusMessagesList[index].RestrictionStatus.Restriction));
-                }
-
-                availStatusMessageXml.Add(statusApplicationControl, restrictionStatus);
-
-                if (availStatusMessagesList[index].LengthsOfStay.Count > 0)
-                {
-                    XElement lengthsOfStay = new XElement(blank + "LengthsOfStay");
-
-                    foreach (var stay in availStatusMessagesList[index].LengthsOfStay)
+                    //Nuevo RateAmountMessages
+                    if (currentBytesMessages == 0 && availStatusMessagesXml == null)
                     {
-                        XElement lengthOfStay = new XElement(blank + "LengthOfStay",
-                            new XAttribute("MinMaxMessageType", stay.MinMaxMessageType),
-                            new XAttribute("Time", stay.Time.ToString()));
-
-                        lengthsOfStay.Add(lengthOfStay);
+                        availStatusMessagesXml = new XElement(blank + "AvailStatusMessages",
+                            new XAttribute("xmlns", blank.NamespaceName),
+                            new XAttribute("HotelCode", hotelCode));
                     }
 
-                    availStatusMessageXml.Add(lengthsOfStay);
+                    XElement availStatusMessageXml = new XElement(blank + "AvailStatusMessage");
+
+                    var start = availStatusMessagesList[index].StatusApplicationControl.Start.Date < DateTime.Now.Date ?
+                        DateTime.Now.Date :
+                        availStatusMessagesList[index].StatusApplicationControl.Start;
+
+                    XElement statusApplicationControl = null;
+
+                    if (availStatusMessagesList[index].StatusApplicationControl.ApplyMon ||
+                        availStatusMessagesList[index].StatusApplicationControl.ApplyTue ||
+                        availStatusMessagesList[index].StatusApplicationControl.ApplyWed ||
+                        availStatusMessagesList[index].StatusApplicationControl.ApplyThu ||
+                        availStatusMessagesList[index].StatusApplicationControl.ApplyFri ||
+                        availStatusMessagesList[index].StatusApplicationControl.ApplySat ||
+                        availStatusMessagesList[index].StatusApplicationControl.ApplySun)
+                    {
+
+                        statusApplicationControl = new XElement(blank + "StatusApplicationControl",
+                            new XAttribute("Start", start.ToString("yyyyMMdd")),
+                            new XAttribute("End", availStatusMessagesList[index].StatusApplicationControl.End.ToString("yyyyMMdd")),
+                            new XAttribute("Mon", availStatusMessagesList[index].StatusApplicationControl.ApplyMon),
+                            new XAttribute("Tue", availStatusMessagesList[index].StatusApplicationControl.ApplyTue),
+                            new XAttribute("Weds", availStatusMessagesList[index].StatusApplicationControl.ApplyWed),
+                            new XAttribute("Thur", availStatusMessagesList[index].StatusApplicationControl.ApplyThu),
+                            new XAttribute("Fri", availStatusMessagesList[index].StatusApplicationControl.ApplyFri),
+                            new XAttribute("Sat", availStatusMessagesList[index].StatusApplicationControl.ApplySat),
+                            new XAttribute("Sun", availStatusMessagesList[index].StatusApplicationControl.ApplySun),
+                            new XAttribute("RatePlanCode", availStatusMessagesList[index].StatusApplicationControl.RatePlanCode),
+                            new XAttribute("InvTypeCode", availStatusMessagesList[index].StatusApplicationControl.InvTypeCode));
+                    }
+                    else
+                    {
+                        statusApplicationControl = new XElement(blank + "StatusApplicationControl",
+                            new XAttribute("Start", start.ToString("yyyyMMdd")),
+                            new XAttribute("End", availStatusMessagesList[index].StatusApplicationControl.End.ToString("yyyyMMdd")),
+                            new XAttribute("RatePlanCode", availStatusMessagesList[index].StatusApplicationControl.RatePlanCode),
+                            new XAttribute("InvTypeCode", availStatusMessagesList[index].StatusApplicationControl.InvTypeCode));
+
+                    }
+
+
+                    XElement restrictionStatus = new XElement(blank + "RestrictionStatus",
+                        new XAttribute("Status", availStatusMessagesList[index].RestrictionStatus.Status));
+
+                    if (!string.IsNullOrEmpty(availStatusMessagesList[index].RestrictionStatus.Restriction))
+                    {
+                        restrictionStatus.Add(new XAttribute("Restriction", availStatusMessagesList[index].RestrictionStatus.Restriction));
+                    }
+
+                    availStatusMessageXml.Add(statusApplicationControl, restrictionStatus);
+
+                    if (availStatusMessagesList[index].LengthsOfStay.Count > 0)
+                    {
+                        XElement lengthsOfStay = new XElement(blank + "LengthsOfStay");
+
+                        foreach (var stay in availStatusMessagesList[index].LengthsOfStay)
+                        {
+                            XElement lengthOfStay = new XElement(blank + "LengthOfStay",
+                                new XAttribute("MinMaxMessageType", stay.MinMaxMessageType),
+                                new XAttribute("Time", stay.Time.ToString()));
+
+                            lengthsOfStay.Add(lengthOfStay);
+                        }
+
+                        availStatusMessageXml.Add(lengthsOfStay);
+                    }
+
+                    //Calcular Bytes del mensaje
+
+                    var availStatusMessageByteSize = System.Text.ASCIIEncoding.Unicode.GetByteCount(availStatusMessageXml.ToString());
+                    currentBytesMessages += availStatusMessageByteSize;
+
+                    if (currentBytesMessages < limitBytesMessage)
+                    {
+                        availStatusMessagesXml.Add(availStatusMessageXml); //Nodo Padre
+                        index++;
+                    }
+                    else
+                    {
+                        availStatusMessagesListElements.Add(availStatusMessagesXml);
+                        currentBytesMessages = 0;
+                        availStatusMessagesXml = null;
+                    }
+
                 }
 
-                //Calcular Bytes del mensaje
-
-                var availStatusMessageByteSize = System.Text.ASCIIEncoding.Unicode.GetByteCount(availStatusMessageXml.ToString());
-                currentBytesMessages += availStatusMessageByteSize;
-
-                if (currentBytesMessages < limitBytesMessage)
-                {
-                    availStatusMessagesXml.Add(availStatusMessageXml); //Nodo Padre
-                    index++;
-                }
-                else
-                {
-                    availStatusMessagesListElements.Add(availStatusMessagesXml);
-                    currentBytesMessages = 0;
-                    availStatusMessagesXml = null;
-                }
-
+            }
+            catch(Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("Estoy en la iteración: " + index);
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+                System.Diagnostics.Debug.WriteLine(ex.InnerException);
             }
 
             if (availStatusMessagesXml != null)
@@ -274,6 +284,10 @@ namespace APIServices.Xml.OTA.Request.Restrictions
             }
 
             return availStatusMessagesListElements;
+
+
+
+
 
         }
 

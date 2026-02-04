@@ -834,6 +834,8 @@ Partial Class AvailabilityRestrictions
         Me.ddlStatus.Items(2).Value = "C"
         Me.ddlStatus.Items(3).Value = "N"
 
+        Me.ddlStatus.SelectedIndex = 1
+
         Me.lblAdvBook.Text = PortalCulture.GetString("00325", True)
         Me.lblmindays.Text = PortalCulture.GetString("00117", True)
         Me.lblMaxdays.Text = PortalCulture.GetString("00118", True)
@@ -2084,7 +2086,7 @@ Partial Class AvailabilityRestrictions
             chkPriorCancel.Checked = False
             chkEstatus.Checked = False
             If ddlStatus.Items.Count > 0 Then
-                ddlStatus.SelectedIndex = 0
+                ddlStatus.SelectedIndex = 1
             End If
 
             chkMindays.Checked = False
