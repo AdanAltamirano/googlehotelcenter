@@ -308,7 +308,7 @@ namespace APIServices.Conflux.Helpers.Rates
                                 && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
                             {
                                 price.AmountBeforeTax = PriorityRateDiscount(price.AmountBeforeTax, vDayRate.DayDiscount);
-                                price.AmountAfterTax = PriorityRateDiscount(price.AmountAfterTax, vDayRate.DayDiscount);
+                                price.AmountAfterTax = (bool)(PlusTax) ? PriorityRateDiscount(price.AmountAfterTax, vDayRate.DayDiscount) : PriorityRateDiscount(price.AmountAfterTax, vDayRate.DayDiscount) + vDayRate.Ecotasa;
                             }
                         }
 
@@ -327,7 +327,7 @@ namespace APIServices.Conflux.Helpers.Rates
                             {
 
                                 price.AmountBeforeTax = AllDiscounts(price.AmountBeforeTax, vDayRate.DayDiscount);
-                                price.AmountAfterTax = AllDiscounts(price.AmountAfterTax, vDayRate.DayDiscount);
+                                price.AmountAfterTax = (bool)(PlusTax)? AllDiscounts(price.AmountAfterTax, vDayRate.DayDiscount) : AllDiscounts(price.AmountAfterTax, vDayRate.DayDiscount) + vDayRate.Ecotasa;
 
                             }
 
@@ -346,7 +346,7 @@ namespace APIServices.Conflux.Helpers.Rates
                                 && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
                             {
                                 price.AmountBeforeTax = AdditionalDiscount(price.AmountBeforeTax, vDayRate.DayDiscount, vDayRate.Discount);
-                                price.AmountAfterTax = AdditionalDiscount(price.AmountAfterTax, vDayRate.DayDiscount, vDayRate.Discount);
+                                price.AmountAfterTax = (bool)(PlusTax)? AdditionalDiscount(price.AmountAfterTax, vDayRate.DayDiscount, vDayRate.Discount) : AdditionalDiscount(price.AmountAfterTax, vDayRate.DayDiscount, vDayRate.Discount) + vDayRate.Ecotasa;
                             }
                         }
 
@@ -362,7 +362,7 @@ namespace APIServices.Conflux.Helpers.Rates
                         && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
                     {
                         price.AmountBeforeTax = PriorityRateDiscount(price.AmountBeforeTax, vDayRate.Discount);
-                        price.AmountAfterTax = PriorityRateDiscount(price.AmountAfterTax, vDayRate.Discount);
+                        price.AmountAfterTax = (bool) (PlusTax)? PriorityRateDiscount(price.AmountAfterTax, vDayRate.Discount) : PriorityRateDiscount(price.AmountAfterTax, vDayRate.Discount) + vDayRate.Ecotasa;
                     }
                 }
             }
@@ -375,7 +375,7 @@ namespace APIServices.Conflux.Helpers.Rates
                         && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
                     {
                         price.AmountBeforeTax = PriorityRateDiscount(price.AmountBeforeTax, vDayRate.DayDiscount);
-                        price.AmountAfterTax = PriorityRateDiscount(price.AmountAfterTax, vDayRate.DayDiscount);
+                        price.AmountAfterTax =(bool)(PlusTax)? PriorityRateDiscount(price.AmountAfterTax, vDayRate.DayDiscount) : PriorityRateDiscount(price.AmountAfterTax, vDayRate.DayDiscount) + vDayRate.Ecotasa;
                     }
                 }
             }
@@ -404,7 +404,7 @@ namespace APIServices.Conflux.Helpers.Rates
                                 && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
                             {
                                 price.AmountBeforeTax = PriorityRateDiscount(price.AmountBeforeTax, vDayRate.DayDiscount);
-                                price.AmountAfterTax = PriorityRateDiscount(price.AmountAfterTax, vDayRate.DayDiscount);
+                                price.AmountAfterTax =(bool)(PlusTax)? PriorityRateDiscount(price.AmountAfterTax, vDayRate.DayDiscount) : PriorityRateDiscount(price.AmountAfterTax, vDayRate.DayDiscount) + vDayRate.Ecotasa;
                             }
                         }
 
@@ -423,7 +423,7 @@ namespace APIServices.Conflux.Helpers.Rates
                             {
 
                                 price.AmountBeforeTax = AllDiscounts(price.AmountBeforeTax, vDayRate.DayDiscount);
-                                price.AmountAfterTax = AllDiscounts(price.AmountAfterTax, vDayRate.DayDiscount);
+                                price.AmountAfterTax = (bool)(PlusTax)? AllDiscounts(price.AmountAfterTax, vDayRate.DayDiscount) : AllDiscounts(price.AmountAfterTax, vDayRate.DayDiscount) + vDayRate.Ecotasa;
 
                             }
 
@@ -442,7 +442,7 @@ namespace APIServices.Conflux.Helpers.Rates
                                 && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
                             {
                                 price.AmountBeforeTax = AdditionalDiscount(price.AmountBeforeTax, vDayRate.DayDiscount, vDayRate.Discount);
-                                price.AmountAfterTax = AdditionalDiscount(price.AmountAfterTax, vDayRate.DayDiscount, vDayRate.Discount);
+                                price.AmountAfterTax = (bool)(PlusTax)? AdditionalDiscount(price.AmountAfterTax, vDayRate.DayDiscount, vDayRate.Discount) : AdditionalDiscount(price.AmountAfterTax, vDayRate.DayDiscount, vDayRate.Discount) + vDayRate.Ecotasa;
                             }
                         }
 
@@ -458,7 +458,7 @@ namespace APIServices.Conflux.Helpers.Rates
                         && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
                     {
                         price.AmountBeforeTax = PriorityRateDiscount(price.AmountBeforeTax, vDayRate.Discount);
-                        price.AmountAfterTax = PriorityRateDiscount(price.AmountAfterTax, vDayRate.Discount);
+                        price.AmountAfterTax = (bool)(PlusTax)? PriorityRateDiscount(price.AmountAfterTax, vDayRate.Discount) : PriorityRateDiscount(price.AmountAfterTax, vDayRate.Discount) + vDayRate.Ecotasa;
                     }
                 }
             }
@@ -471,7 +471,7 @@ namespace APIServices.Conflux.Helpers.Rates
                         && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
                     {
                         price.AmountBeforeTax = PriorityRateDiscount(price.AmountBeforeTax, vDayRate.DayDiscount);
-                        price.AmountAfterTax = PriorityRateDiscount(price.AmountAfterTax, vDayRate.DayDiscount);
+                        price.AmountAfterTax = (bool)(PlusTax)? PriorityRateDiscount(price.AmountAfterTax, vDayRate.DayDiscount) : PriorityRateDiscount(price.AmountAfterTax, vDayRate.DayDiscount) + vDayRate.Ecotasa;
                     }
                 }
             }
@@ -903,7 +903,7 @@ namespace APIServices.Conflux.Helpers.Rates
                                 && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
                             {
                                 price.AmountBeforeTax = PriorityRateDiscount(price.AmountBeforeTax, vDayRate.DayDiscount);
-                                price.AmountAfterTax = PriorityRateDiscount(price.AmountAfterTax, vDayRate.DayDiscount);
+                                price.AmountAfterTax = (bool)(PlusTax)? PriorityRateDiscount(price.AmountAfterTax, vDayRate.DayDiscount) : PriorityRateDiscount(price.AmountAfterTax, vDayRate.DayDiscount) + vDayRate.Ecotasa;
                             }
                         }
 
@@ -922,7 +922,7 @@ namespace APIServices.Conflux.Helpers.Rates
                             {
 
                                 price.AmountBeforeTax = AllDiscounts(price.AmountBeforeTax, vDayRate.DayDiscount);
-                                price.AmountAfterTax = AllDiscounts(price.AmountAfterTax, vDayRate.DayDiscount);
+                                price.AmountAfterTax = (bool)(PlusTax)? AllDiscounts(price.AmountAfterTax, vDayRate.DayDiscount) : AllDiscounts(price.AmountAfterTax, vDayRate.DayDiscount) + vDayRate.Ecotasa;
 
                             }
 
@@ -941,7 +941,7 @@ namespace APIServices.Conflux.Helpers.Rates
                                 && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
                             {
                                 price.AmountBeforeTax = AdditionalDiscount(price.AmountBeforeTax, vDayRate.DayDiscount, vDayRate.Discount);
-                                price.AmountAfterTax = AdditionalDiscount(price.AmountAfterTax, vDayRate.DayDiscount, vDayRate.Discount);
+                                price.AmountAfterTax = (bool)(PlusTax)? AdditionalDiscount(price.AmountAfterTax, vDayRate.DayDiscount, vDayRate.Discount) : AdditionalDiscount(price.AmountAfterTax, vDayRate.DayDiscount, vDayRate.Discount) + vDayRate.Ecotasa;
                             }
                         }
 
@@ -957,7 +957,7 @@ namespace APIServices.Conflux.Helpers.Rates
                         && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
                     {
                         price.AmountBeforeTax = PriorityRateDiscount(price.AmountBeforeTax, vDayRate.Discount);
-                        price.AmountAfterTax = PriorityRateDiscount(price.AmountAfterTax, vDayRate.Discount);
+                        price.AmountAfterTax =(bool)(PlusTax)? PriorityRateDiscount(price.AmountAfterTax, vDayRate.Discount) : PriorityRateDiscount(price.AmountAfterTax, vDayRate.Discount) + vDayRate.Ecotasa;
                     }
                 }
             }
@@ -970,7 +970,7 @@ namespace APIServices.Conflux.Helpers.Rates
                         && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
                     {
                         price.AmountBeforeTax = PriorityRateDiscount(price.AmountBeforeTax, vDayRate.DayDiscount);
-                        price.AmountAfterTax = PriorityRateDiscount(price.AmountAfterTax, vDayRate.DayDiscount);
+                        price.AmountAfterTax = (bool)(PlusTax)? PriorityRateDiscount(price.AmountAfterTax, vDayRate.DayDiscount) : PriorityRateDiscount(price.AmountAfterTax, vDayRate.DayDiscount) + vDayRate.Ecotasa;
                     }
                 }
             }
@@ -1121,7 +1121,7 @@ namespace APIServices.Conflux.Helpers.Rates
                                 && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
                             {
                                 price.AmountBeforeTax = PriorityRateDiscount(price.AmountBeforeTax, vDayRate.DayDiscount);
-                                price.AmountAfterTax = PriorityRateDiscount(price.AmountAfterTax, vDayRate.DayDiscount);
+                                price.AmountAfterTax = (bool)(PlusTax)? PriorityRateDiscount(price.AmountAfterTax, vDayRate.DayDiscount) : PriorityRateDiscount(price.AmountAfterTax, vDayRate.DayDiscount) + vDayRate.Ecotasa;
                             }
                         }
 
@@ -1140,7 +1140,7 @@ namespace APIServices.Conflux.Helpers.Rates
                             {
 
                                 price.AmountBeforeTax = AllDiscounts(price.AmountBeforeTax, vDayRate.DayDiscount);
-                                price.AmountAfterTax = AllDiscounts(price.AmountAfterTax, vDayRate.DayDiscount);
+                                price.AmountAfterTax = (bool)(PlusTax)? AllDiscounts(price.AmountAfterTax, vDayRate.DayDiscount) : AllDiscounts(price.AmountAfterTax, vDayRate.DayDiscount) + vDayRate.Ecotasa;
 
                             }
 
@@ -1159,7 +1159,7 @@ namespace APIServices.Conflux.Helpers.Rates
                                 && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
                             {
                                 price.AmountBeforeTax = AdditionalDiscount(price.AmountBeforeTax, vDayRate.DayDiscount, vDayRate.Discount);
-                                price.AmountAfterTax = AdditionalDiscount(price.AmountAfterTax, vDayRate.DayDiscount, vDayRate.Discount);
+                                price.AmountAfterTax = (bool)(PlusTax)? AdditionalDiscount(price.AmountAfterTax, vDayRate.DayDiscount, vDayRate.Discount) : AdditionalDiscount(price.AmountAfterTax, vDayRate.DayDiscount, vDayRate.Discount) + vDayRate.Ecotasa;
                             }
                         }
 
@@ -1175,7 +1175,7 @@ namespace APIServices.Conflux.Helpers.Rates
                         && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
                     {
                         price.AmountBeforeTax = PriorityRateDiscount(price.AmountBeforeTax, vDayRate.Discount);
-                        price.AmountAfterTax = PriorityRateDiscount(price.AmountAfterTax, vDayRate.Discount);
+                        price.AmountAfterTax = (bool)(PlusTax)? PriorityRateDiscount(price.AmountAfterTax, vDayRate.Discount) : PriorityRateDiscount(price.AmountAfterTax, vDayRate.Discount) + vDayRate.Ecotasa;
                     }
                 }
             }
@@ -1188,7 +1188,7 @@ namespace APIServices.Conflux.Helpers.Rates
                         && price.AgeQualifyingCode != (int)PersonTypeEnum.ExtraTeeneger)
                     {
                         price.AmountBeforeTax = PriorityRateDiscount(price.AmountBeforeTax, vDayRate.DayDiscount);
-                        price.AmountAfterTax = PriorityRateDiscount(price.AmountAfterTax, vDayRate.DayDiscount);
+                        price.AmountAfterTax = (bool)(PlusTax)? PriorityRateDiscount(price.AmountAfterTax, vDayRate.DayDiscount) : PriorityRateDiscount(price.AmountAfterTax, vDayRate.DayDiscount) + vDayRate.Ecotasa;
                     }
                 }
             }

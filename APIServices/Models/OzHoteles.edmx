@@ -649,6 +649,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vDayRates' no tiene definida n
             
             
             
+            <PropertyRef Name="Ecotasa" />
             <PropertyRef Name="RateId" />
             <PropertyRef Name="HotelId" />
             <PropertyRef Name="RoomId" />
@@ -689,6 +690,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vDayRates' no tiene definida n
           <Property Name="PromoEndDateBookingWindow" Type="smalldatetime" />
           <Property Name="DeletedInGoogle" Type="bit" Nullable="false" />
           <Property Name="DeletedRatePlan" Type="bit" Nullable="false" />
+          <Property Name="Ecotasa" Type="smallmoney" Nullable="false" />
         </EntityType>
         <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'OzHoteles.dbo.vDayRatesExceptions' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
@@ -706,6 +708,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vDayRatesExceptions' no tiene 
             
             
             
+            <PropertyRef Name="Ecotasa" />
             <PropertyRef Name="RateId" />
             <PropertyRef Name="HotelId" />
             <PropertyRef Name="RoomId" />
@@ -746,6 +749,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vDayRatesExceptions' no tiene 
           <Property Name="PromoEndDateBookingWindow" Type="smalldatetime" />
           <Property Name="DeletedInGoogle" Type="bit" Nullable="false" />
           <Property Name="DeletedRatePlan" Type="bit" Nullable="false" />
+          <Property Name="Ecotasa" Type="smallmoney" Nullable="false" />
         </EntityType>
         <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'OzHoteles.dbo.vHotelActives' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
@@ -1579,7 +1583,8 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
     [vDayRates].[PromoStartDateBookingWindow] AS [PromoStartDateBookingWindow], 
     [vDayRates].[PromoEndDateBookingWindow] AS [PromoEndDateBookingWindow], 
     [vDayRates].[DeletedInGoogle] AS [DeletedInGoogle], 
-    [vDayRates].[DeletedRatePlan] AS [DeletedRatePlan]
+    [vDayRates].[DeletedRatePlan] AS [DeletedRatePlan], 
+    [vDayRates].[Ecotasa] AS [Ecotasa]
     FROM [dbo].[vDayRates] AS [vDayRates]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vDayRatesExceptions" EntityType="Self.vDayRatesExceptions" store:Type="Views" store:Schema="dbo">
@@ -1615,7 +1620,8 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
     [vDayRatesExceptions].[PromoStartDateBookingWindow] AS [PromoStartDateBookingWindow], 
     [vDayRatesExceptions].[PromoEndDateBookingWindow] AS [PromoEndDateBookingWindow], 
     [vDayRatesExceptions].[DeletedInGoogle] AS [DeletedInGoogle], 
-    [vDayRatesExceptions].[DeletedRatePlan] AS [DeletedRatePlan]
+    [vDayRatesExceptions].[DeletedRatePlan] AS [DeletedRatePlan], 
+    [vDayRatesExceptions].[Ecotasa] AS [Ecotasa]
     FROM [dbo].[vDayRatesExceptions] AS [vDayRatesExceptions]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vHotelActives" EntityType="Self.vHotelActives" store:Type="Views" store:Schema="dbo">
@@ -3731,6 +3737,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
             <PropertyRef Name="EndDate" />
             <PropertyRef Name="Price" />
             <PropertyRef Name="Language" />
+            <PropertyRef Name="Ecotasa" />
           </Key>
           <Property Name="RateId" Type="Int32" Nullable="false" />
           <Property Name="HotelId" Type="Int32" Nullable="false" />
@@ -3763,6 +3770,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
           <Property Name="PromoEndDateBookingWindow" Type="DateTime" Precision="0" />
           <Property Name="DeletedInGoogle" Type="Boolean" Nullable="false" />
           <Property Name="DeletedRatePlan" Type="Boolean" Nullable="false" />
+          <Property Name="Ecotasa" Type="Decimal" Nullable="false" Precision="10" Scale="4" />
         </EntityType>
         <EntityType Name="vDayRatesExceptions">
           <Key>
@@ -3776,6 +3784,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
             <PropertyRef Name="StartDate" />
             <PropertyRef Name="EndDate" />
             <PropertyRef Name="Language" />
+            <PropertyRef Name="Ecotasa" />
           </Key>
           <Property Name="RateId" Type="Int32" Nullable="false" />
           <Property Name="HotelId" Type="Int32" Nullable="false" />
@@ -3809,6 +3818,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
           <Property Name="PromoEndDateBookingWindow" Type="DateTime" Precision="0" />
           <Property Name="DeletedInGoogle" Type="Boolean" Nullable="false" />
           <Property Name="DeletedRatePlan" Type="Boolean" Nullable="false" />
+          <Property Name="Ecotasa" Type="Decimal" Nullable="false" Precision="10" Scale="4" />
         </EntityType>
         <ComplexType Name="spGetCurrentRatesByHotel_Result4">
           <Property Type="Int32" Name="RateId" Nullable="true" />
@@ -5140,6 +5150,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
           <EntitySetMapping Name="vDayRates">
             <EntityTypeMapping TypeName="Models.vDayRates">
               <MappingFragment StoreEntitySet="vDayRates">
+                <ScalarProperty Name="Ecotasa" ColumnName="Ecotasa" />
                 <ScalarProperty Name="DeletedRatePlan" ColumnName="DeletedRatePlan" />
                 <ScalarProperty Name="DeletedInGoogle" ColumnName="DeletedInGoogle" />
                 <ScalarProperty Name="PromoEndDateBookingWindow" ColumnName="PromoEndDateBookingWindow" />
@@ -5177,6 +5188,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
           <EntitySetMapping Name="vDayRatesExceptions">
             <EntityTypeMapping TypeName="Models.vDayRatesExceptions">
               <MappingFragment StoreEntitySet="vDayRatesExceptions">
+                <ScalarProperty Name="Ecotasa" ColumnName="Ecotasa" />
                 <ScalarProperty Name="DeletedRatePlan" ColumnName="DeletedRatePlan" />
                 <ScalarProperty Name="DeletedInGoogle" ColumnName="DeletedInGoogle" />
                 <ScalarProperty Name="PromoEndDateBookingWindow" ColumnName="PromoEndDateBookingWindow" />

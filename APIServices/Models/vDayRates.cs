@@ -45,5 +45,6 @@ namespace APIServices.Models
         public Nullable<System.DateTime> PromoEndDateBookingWindow { get; set; }
         public bool DeletedInGoogle { get; set; }
         public bool DeletedRatePlan { get; set; }
+        public decimal Ecotasa { get; set; }
     }
 }
