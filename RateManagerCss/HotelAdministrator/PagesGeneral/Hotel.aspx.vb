@@ -279,6 +279,10 @@ Partial Class Hotel
                     chkSendRatesAPICache.Checked = .Item(dsHotel.FIELD_SEND_RATES_API_CACHE)
                 End If
 
+                If Not .IsNull(dsHotel.FIELD_SINC_INVENTORY_OTA) Then
+                    chkSincInventoryOTAS.Checked = .Item(dsHotel.FIELD_SINC_INVENTORY_OTA)
+                End If
+
 
                 Dim sFecha As String
                 sFecha = IIf(.IsNull(dsHotel.FIELD_FECHAAPERTURA), "", .Item(dsHotel.FIELD_FECHAAPERTURA))
@@ -794,6 +798,8 @@ Partial Class Hotel
 
                 .Item(dsHotel.FIELD_SEND_RATES_API_CACHE) = Me.chkSendRatesAPICache.Checked
 
+                .Item(dsHotel.FIELD_SINC_INVENTORY_OTA) = Me.chkSincInventoryOTAS.Checked
+
             End With
 
             LoadDsImpuesto(ds)
@@ -1069,6 +1075,12 @@ Partial Class Hotel
             lblSendRatesAPICache.Text = PortalCulture.GetString("01686", True)
             lblSendRatesAPICache.Visible = True
             chkSendRatesAPICache.Visible = True
+
+
+            lblSincInventoryOTAS.Text = PortalCulture.GetString("01688", True)
+            lblSincInventoryOTAS.Visible = True
+            chkSincInventoryOTAS.Visible = True
+
 
         End If
     End Sub

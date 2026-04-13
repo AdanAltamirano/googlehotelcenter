@@ -29,10 +29,12 @@
 				</TR>				
 				
 				</tr>
-				<tr><td colspan =2 align=left >
-                    <asp:Literal ID="Literal1" runat="server"></asp:Literal>
-                    </td>
-				
+				<tr>
+					<td colspan =2 align=left >
+						<div style="overflow-x:auto;">
+							<asp:Literal ID="Literal1" runat="server"></asp:Literal>
+						</div>						
+                    </td>				
 				</tr>
 			</TABLE> 
 		</td></tr>

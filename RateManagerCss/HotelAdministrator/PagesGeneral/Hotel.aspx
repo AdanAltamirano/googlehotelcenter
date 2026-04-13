@@ -287,6 +287,12 @@
                        <td style="height:16px" align="left">
                            <asp:CheckBox ID="chkSendRatesAPICache" runat="server" CssClass="clsLabel" Visible="false"></asp:CheckBox>
                        </td>
+                         <td style="height:16px" align="right">
+                           <asp:Label ID="lblSincInventoryOTAS" runat="server" CssClass="clsLabel" Visible="false">Sinc Inventario OTAs:</asp:Label>
+                       </td>
+                       <td style="height:16px" align="left">
+                           <asp:CheckBox ID="chkSincInventoryOTAS" runat="server" CssClass="clsLabel" Visible="false"></asp:CheckBox>
+                       </td>
                     </tr>
                     <tr>
                         <td class="dgitem" align="center" colspan="4">

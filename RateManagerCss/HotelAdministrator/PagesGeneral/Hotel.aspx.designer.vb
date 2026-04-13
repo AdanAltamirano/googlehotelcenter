@@ -563,6 +563,24 @@ Partial Public Class Hotel
     Protected WithEvents chkSendRatesAPICache As Global.System.Web.UI.WebControls.CheckBox
 
     '''<summary>
+    '''Control lblSincInventoryOTAS.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblSincInventoryOTAS As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Control chkSincInventoryOTAS.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents chkSincInventoryOTAS As Global.System.Web.UI.WebControls.CheckBox
+
+    '''<summary>
     '''Control lblConfirmationEmail.
     '''</summary>
     '''<remarks>
