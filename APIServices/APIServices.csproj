@@ -108,7 +108,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="WSHotelCommon">
-      <HintPath>..\..\ratemanagercuba\RateManagerCss\bin\WSHotelCommon.dll</HintPath>
+      <HintPath>..\RateManagerCss\bin\WSHotelCommon.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -189,9 +189,6 @@
     <Compile Include="Models\Corporativos.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Corporativos.cs">
-      <DependentUpon>OzHoteles.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Diccionario.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
@@ -268,11 +265,6 @@
       <DependentUpon>OzHoteles.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\DTO\RatesByRatePlan.cs" />
-    <Compile Include="Models\OzHoteles.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>OzHoteles.edmx</DependentUpon>
-    </Compile>
     <Compile Include="Models\OzUniEntities.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

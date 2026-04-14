@@ -11,9 +11,9 @@ Partial Class Hotel
         specifichour
     End Enum
 
-#Region " Código generado por el Diseñador de Web Forms "
+#Region " Cï¿½digo generado por el Diseï¿½ador de Web Forms "
 
-    'El Diseñador de Web Forms requiere esta llamada.
+    'El Diseï¿½ador de Web Forms requiere esta llamada.
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
 
     End Sub
@@ -32,13 +32,13 @@ Partial Class Hotel
     Protected txtGuarantyPolicies As CtrlIdioma
     Protected txtExtraCharges As CtrlIdioma
 
-    'NOTA: el Diseñador de Web Forms necesita la siguiente declaración del marcador de posición.
+    'NOTA: el Diseï¿½ador de Web Forms necesita la siguiente declaraciï¿½n del marcador de posiciï¿½n.
     'No se debe eliminar o mover.
     Private designerPlaceholderDeclaration As System.Object
 
     Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
-        'CODEGEN: el Diseñador de Web Forms requiere esta llamada de método
-        'No la modifique con el editor de código.
+        'CODEGEN: el Diseï¿½ador de Web Forms requiere esta llamada de mï¿½todo
+        'No la modifique con el editor de cï¿½digo.
         InitializeComponent()
     End Sub
 
@@ -47,7 +47,7 @@ Partial Class Hotel
     Private strError As String
 
     Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        'Introducir aquí el código de usuario para inicializar la página
+        'Introducir aquï¿½ el cï¿½digo de usuario para inicializar la pï¿½gina
         If Not MyBase.IsHotelSelected Then MyBase.redirectTo(PaginaBase.pages.Home)
         If Not Me.IsPostBack Then
             lblErrorMail.Visible = False
@@ -842,7 +842,7 @@ Partial Class Hotel
                     sData = getDataXML(MyBase.cInfoActual.Hotel)
                     'me.cInfoActual.perfil = nuevo perfil
                     Me.guardalog("/HotelAdministrator/PagesGeneral/Hotel.aspx", If(publish, PaginaBase.acciones.Publicar, PaginaBase.acciones.Modificar), "Modificacion de los datos del hotel", "", sDataPrev, sData)
-                    If Not publish Then Me.NotifyContentModification("Información del hotel", "Información General")
+                    If Not publish Then Me.NotifyContentModification("Informaciï¿½n del hotel", "Informaciï¿½n General")
                 End If
             End With
             MyBase.redirectTo(PaginaBase.pages.Home)
@@ -858,7 +858,7 @@ Partial Class Hotel
 
         auxControlIdioma.CargaDatosAuxiliares(idDicc, auxTxtIng, auxTxtEsp)
 
-        If bIdioma = True Then 'valida Idioma Español
+        If bIdioma = True Then 'valida Idioma Espaï¿½ol
             If txtControlIdioma.GetES = Nothing Then
                 texto = " "
             Else
@@ -959,7 +959,7 @@ Partial Class Hotel
         Me.lblMaxDiasRenta.Text = PortalCulture.GetString("M000588", True)
         Me.lblPlusTax.Text = PortalCulture.GetString("M000522", True)
         Me.lblImpuesto.Text = PortalCulture.GetString("M0UT00483") & " %:"    '"Impuesto"
-        Me.lblEdadMaximaNiño.Text = PortalCulture.GetString("01322") & " < "
+        Me.lblEdadMaximaNiÃ±o.Text = PortalCulture.GetString("01322") & " < "
         Me.lblDiasAnticipados.Text = PortalCulture.GetString("00396", True)
         Me.lblDays.Text = PortalCulture.GetString("00397")
         Me.lblCheckout.Text = PortalCulture.GetString("M0UT00487", True)
@@ -982,8 +982,8 @@ Partial Class Hotel
         'RequiredFieldValidator11.Text = PortalCulture.GetString("M0UT02696") & " " & PortalCulture.GetString("M0UT02715")
 
         RequiredFieldValidator12.Text = PortalCulture.GetString("M0UT02697") & " " & PortalCulture.GetString("M0UT02715")
-        Rangevalidator2.Text = "" '"Edad min. de Niño es numerico (1-99)"
-        RangeValidator7.Text = PortalCulture.GetString("01168")    '"Edad Max. de Niño es numerico (1-99)"
+        Rangevalidator2.Text = "" '"Edad min. de Niï¿½o es numerico (1-99)"
+        RangeValidator7.Text = PortalCulture.GetString("01168")    '"Edad Max. de Niï¿½o es numerico (1-99)"
         RequiredFieldValidator8.Text = PortalCulture.GetString("M0UT00502")    '"Impuesto es requerido"
         RangeValidator9.Text = PortalCulture.GetString("M0UT00503")    '"Impuesto es numerico (1-99)"
         RequiredFieldValidatorEcotasa.Text = PortalCulture.GetString("01668")
@@ -1046,7 +1046,7 @@ Partial Class Hotel
         lblEdadNinio.Text = PortalCulture.GetString("01324")
         lblJuniorAnios.Text = PortalCulture.GetString("01324")
         lblNoCobrarAnios.Text = PortalCulture.GetString("01324")
-        lblEdadMinimaNiño.Text = PortalCulture.GetString("01323") & " < "
+        lblEdadMinimaNiÃ±o.Text = PortalCulture.GetString("01323") & " < "
         lblMinCuartos.Text = PortalCulture.GetString("01165", True)
         lblMinOcupacion.Text = PortalCulture.GetString("01166", True)
         lblMaxOcupacion.Text = PortalCulture.GetString("01167", True)
