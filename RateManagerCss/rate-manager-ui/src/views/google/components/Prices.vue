@@ -6,19 +6,22 @@
     </details>
     <b-row>
         <b-col md="4">
-            <b-form-group :label="$t('Rate Plans')" class="mt-3">                
-                <multiselect                                     
-                    id="planes"                                   
+            <b-form-group :label="$t('Rate Plans')" class="mt-3">
+                <multiselect
+                    id="planes"
                     v-model="ratePlansList"
-                    label='text'                     
-                    :options="options"
+                    label='text'
+                    group-label="group"
+                    group-values="plans"
+                    :group-select="false"
+                    :options="groupedOptions"
                     track-by="value"
-                    :multiple="true"                                
+                    :multiple="true"
                     :selectLabel="''"
                     :selectedLabel="''"
                     :deselectLabel="''"
                     :placeholder="$t('Rate Plans')"
-                    open-direction="bottom"   
+                    open-direction="bottom"
                     @input="RemoveWhenItsAll">
                 </multiselect>
             </b-form-group>
@@ -92,6 +95,7 @@ export default {
             callApi: false,
             showButton: true,
             ratePlansList:[],
+            groupedOptions:[],
             options:[],
             roomsList:[],
             optionsRooms:[]
@@ -169,18 +173,31 @@ export default {
             };
         },
         loadRatesPlans(hotelId){
-            RoomsClosureService.getRatePlansByHotelIdNoLinks(hotelId)
-            .then(response => {
-                console.log(response.body);
+            Promise.all([
+                RoomsClosureService.getRatePlansByHotelIdNoLinks(hotelId),
+                RoomsClosureService.getAllRatePlansByHotelId(hotelId)
+            ]).then(([activeRes, allRes]) => {
+                const activeIds = new Set(activeRes.body.map(p => p.value));
 
-                this.options.push({
-                    value : "0",
-                    text : this.$t('All')
-                });
+                const activePlans = [
+                    { value: "0", text: this.$t('All') },
+                    ...activeRes.body
+                ];
 
-                response.body.forEach(rateplan => {
-                    this.options.push(rateplan);                
-                });
+                const inactivePlans = allRes.body.filter(p => !activeIds.has(p.value));
+
+                this.groupedOptions = [
+                    { group: this.$t('Active Rate Plans'), plans: activePlans }
+                ];
+
+                if (inactivePlans.length > 0) {
+                    this.groupedOptions.push(
+                        { group: this.$t('Inactive Rate Plans'), plans: inactivePlans }
+                    );
+                }
+
+                // mantener options plano para compatibilidad
+                this.options = activePlans;
             });
         },
         loadRooms(hotelId){

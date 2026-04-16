@@ -121,9 +121,9 @@ Partial Class ctrRateAplication
 
 
 
-#Region " Código generado por el Diseñador de Web Forms "
+#Region " Cï¿½digo generado por el Diseï¿½ador de Web Forms "
 
-    'El Diseñador de Web Forms requiere esta llamada.
+    'El Diseï¿½ador de Web Forms requiere esta llamada.
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
 
     End Sub
@@ -132,15 +132,15 @@ Partial Class ctrRateAplication
     Protected WithEvents lCal2 As System.Web.UI.WebControls.Literal
     Protected WithEvents lblfechas As System.Web.UI.WebControls.Label
 
-    'NOTA: el Diseñador de Web Forms necesita la siguiente declaración del marcador de posición.
+    'NOTA: el Diseï¿½ador de Web Forms necesita la siguiente declaraciï¿½n del marcador de posiciï¿½n.
     'No se debe eliminar o mover.
     Private designerPlaceholderDeclaration As System.Object
 
     Private CurrencyScript As New StringBuilder
 
     Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
-        'CODEGEN: el Diseñador de Web Forms requiere esta llamada de método
-        'No la modifique con el editor de código.
+        'CODEGEN: el Diseï¿½ador de Web Forms requiere esta llamada de mï¿½todo
+        'No la modifique con el editor de cï¿½digo.
         InitializeComponent()
     End Sub
 
@@ -213,7 +213,7 @@ Partial Class ctrRateAplication
     End Function
 
     Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        'Introducir aquí el código de usuario para inicializar la página
+        'Introducir aquï¿½ el cï¿½digo de usuario para inicializar la pï¿½gina
         Me.lblDateError.Visible = False
         If Not IsPostBack Then
             loadDatos()
@@ -346,7 +346,7 @@ Partial Class ctrRateAplication
         End If
         Exit Sub
 
-        'si hay tarifa rack la tarifa se enlazará con dicha tarifa, 
+        'si hay tarifa rack la tarifa se enlazarï¿½ con dicha tarifa, 
         If dv.Count > 0 Then
             Me.RatePlanRow = New RowRatePlan
             Me.RatePlanRow.IDRATEPLAN = dv(0)(RatePlanData.FIELD_IDRATEPLAN)
@@ -469,55 +469,109 @@ Partial Class ctrRateAplication
         Next
 
     End Sub
-    Public Function loadAllRatesplans(Optional ByVal incluirPaquetesSegmentoK As Integer = 0) As RatePlanData
+    Public Function loadAllRatesplans(Optional ByVal incluirPaquetesSegmentoK As Integer = 0, Optional ByVal idHabitacion As Integer = 0) As RatePlanData
         Dim ds As RatePlanData
+        Dim dsActivos As RatePlanData
         Dim idAsoc As Integer = Me.GetIdAsociation
+
         With New RatePlanFacade
             If Not CType(Me.Page, PaginaBase).IsUsuarioHomeAgency Then
-                ds = .GetRatePlanByIdHotel(Me.m_iHotelId, PortalCulture.GetIDCulture, incluirPaquetesSegmentoK, 0, idAsociacion:=idAsoc, DeleteFilter:=1)
+                ' Activos (DeleteFilter:=1)
+                dsActivos = .GetRatePlanByIdHotel(Me.m_iHotelId, PortalCulture.GetIDCulture, incluirPaquetesSegmentoK, 0, idAsociacion:=idAsoc, DeleteFilter:=1)
+                ' Todos incluyendo inactivos (DeleteFilter:=-1)
+                ds = .GetRatePlanByIdHotel(Me.m_iHotelId, PortalCulture.GetIDCulture, incluirPaquetesSegmentoK, 0, idAsociacion:=idAsoc, DeleteFilter:=-1)
             Else
-                ds = .GetRatePlanByConvenio(Me.m_iHotelId, PortalCulture.GetIDCulture, incluirPaquetesSegmentoK, 0, IdUsuario:=CType(Me.Page, PaginaBase).Usuario, idAsociacion:=idAsoc, DeleteFilter:=1)
+                dsActivos = .GetRatePlanByConvenio(Me.m_iHotelId, PortalCulture.GetIDCulture, incluirPaquetesSegmentoK, 0, IdUsuario:=CType(Me.Page, PaginaBase).Usuario, idAsociacion:=idAsoc, DeleteFilter:=1)
+                ds = .GetRatePlanByConvenio(Me.m_iHotelId, PortalCulture.GetIDCulture, incluirPaquetesSegmentoK, 0, IdUsuario:=CType(Me.Page, PaginaBase).Usuario, idAsociacion:=idAsoc, DeleteFilter:=-1)
 
                 Dim dr As DataRow
                 dr = ds.Tables("RatePlans").NewRow
                 dr("idRatePlan") = "RAC"
                 Try
-                    dr("Nombre") = "Estándar"
+                    dr("Nombre") = "Estï¿½ndar"
                 Catch
-                    dr("name") = "Estándar"
+                    dr("name") = "Estï¿½ndar"
                 End Try
                 ds.Tables("RatePlans").ImportRow(dr)
                 ds.Tables("RatePlans").Rows.Add(dr)
             End If
         End With
 
+        ' IDs de planes activos para saber cuï¿½les son inactivos
+        Dim activosIds As New HashSet(Of String)
+        For Each row As DataRow In dsActivos.Tables(RatePlanData.RATEPLAN_TABLE).Rows
+            activosIds.Add(row(RatePlanData.FIELD_IDRATEPLAN).ToString())
+        Next
 
+        ' Links (igual que antes)
         Dim links As New LinkRatePlanData
         With New LinkRatePlanFacade
             links = .getList(Me.m_iHotelId, PortalCulture.GetIDCulture, idAsociacion:=idAsoc)
         End With
-        ds.Tables(RatePlanData.RATEPLAN_TABLE).Columns.Add("texto", System.Type.GetType("System.String"), "substring(" & RatePlanData.FIELD_CODIGOTARIFA & "+ ' ' + '--' + ' ' +" & RatePlanData.FIELD_NAME & ",1,25)")
-        ''eliminar los ratesplan que ya tienen links
-        Dim dv As DataView
-        For Each r As DataRow In ds.Tables(RatePlanData.RATEPLAN_TABLE).Rows
-            dv = links.Tables(LinkRatePlanData.TABLE_LINKRATEPLAN).DefaultView
-            dv.RowFilter = LinkRatePlanData.FIELD_TargetRatePlan & "='" & r(RatePlanData.FIELD_IDRATEPLAN) & "'"
-            ';If dv.Count > 0 Then 'OrElse r(ds.FIELD_SEGMENT) = "K" Then
-            
 
-        Next
+        ' Columna "texto" = "CODIGO -- Nombre" truncado
+        ds.Tables(RatePlanData.RATEPLAN_TABLE).Columns.Add("texto", System.Type.GetType("System.String"),
+        "substring(" & RatePlanData.FIELD_CODIGOTARIFA & "+ ' ' + '--' + ' ' +" & RatePlanData.FIELD_NAME & ",1,25)")
         ds.Tables(RatePlanData.RATEPLAN_TABLE).AcceptChanges()
-        ddlrateplans.DataTextField = "texto" 'ds.FIELD_CODIGOTARIFA
-        ddlrateplans.DataValueField = RatePlanData.FIELD_IDRATEPLAN
-        ddlrateplans.DataSource = ds
-        ddlrateplans.DataBind()
 
+        ' HabitaciÃ³n viene como parÃ¡metro desde la pÃ¡gina padre
+        Dim idHabitacionActual As Integer = idHabitacion
 
+        ' ?? Poblar el dropdown agrupado ??
+        ddlrateplans.Items.Clear()
 
+        ' GRUPO 1: ACTIVOS ï¿½ planes con tarifas para la habitaciï¿½n actual van primero
+        ddlrateplans.Items.Add(New ListItem("?? Planes Activos ??", "__GRP_ACTIVOS__"))
+
+        ' Primero: activos que tienen tarifas para la habitaciÃ³n seleccionada
+        If idHabitacionActual > 0 Then
+            For Each row As DataRow In ds.Tables(RatePlanData.RATEPLAN_TABLE).Rows
+                Dim idPlan As String = row(RatePlanData.FIELD_IDRATEPLAN).ToString()
+                If activosIds.Contains(idPlan) AndAlso TieneTarifaParaHabitacion(idPlan, idHabitacionActual) Then
+                    ddlrateplans.Items.Add(New ListItem("? " & row("texto").ToString(), idPlan))
+                End If
+            Next
+        End If
+
+        ' Despuï¿½s: el resto de activos
+        For Each row As DataRow In ds.Tables(RatePlanData.RATEPLAN_TABLE).Rows
+            Dim idPlan As String = row(RatePlanData.FIELD_IDRATEPLAN).ToString()
+            If activosIds.Contains(idPlan) Then
+                ' Evitar duplicados si ya fue agregado arriba
+                If idHabitacionActual = 0 OrElse Not TieneTarifaParaHabitacion(idPlan, idHabitacionActual) Then
+                    ddlrateplans.Items.Add(New ListItem(row("texto").ToString(), idPlan))
+                End If
+            End If
+        Next
+
+        ' GRUPO 2: INACTIVOS
+        ddlrateplans.Items.Add(New ListItem("?? Planes Inactivos ??", "__GRP_INACTIVOS__"))
+        For Each row As DataRow In ds.Tables(RatePlanData.RATEPLAN_TABLE).Rows
+            Dim idPlan As String = row(RatePlanData.FIELD_IDRATEPLAN).ToString()
+            If Not activosIds.Contains(idPlan) Then
+                ddlrateplans.Items.Add(New ListItem(row("texto").ToString(), idPlan))
+            End If
+        Next
 
         Return ds
     End Function
 
+    ' Helper: consulta si un plan tiene tarifas guardadas para la habitaciÃ³n
+    Private Function TieneTarifaParaHabitacion(ByVal idRatePlan As String, ByVal idHabitacion As Integer) As Boolean
+        If idHabitacion <= 0 Then Return False
+        Try
+            Dim datFares As FaresData
+            Dim idAsoc As Integer = Me.GetIdAsociation
+            With New FaresSystem
+                datFares = .GetFaresByRoomTypeId(idHabitacion, PortalCulture.GetIDCulture, False, 1, idAsociacion:=idAsoc)
+            End With
+            Dim dv As DataView = datFares.Tables(FaresData.FARES_TABLE).DefaultView
+            dv.RowFilter = FaresData.IDRATEPLAN_FIELD & "='" & idRatePlan & "'"
+            Return dv.Count > 0
+        Catch
+            Return False
+        End Try
+    End Function
 
 
     Private Function SaveSegmentRac() As Boolean
@@ -540,7 +594,7 @@ Partial Class ctrRateAplication
         Dim txtDescripcion As New CtrlIdioma
         With New RatePlanAccess
             If .InsertRtPlan(dsRate, idDic, iddic2) Then
-                txtDescripcion.Update("Only Room", "Solo Habitación", idDic)
+                txtDescripcion.Update("Only Room", "Solo Habitaciï¿½n", idDic)
             Else
                 Return False
             End If
@@ -680,7 +734,7 @@ Partial Class ctrRateAplication
                         idtar = datFare.Tables(FaresData.FARES_TABLE).Rows(0)(FaresData.PKIDFARES_FIELD)
                         Addrateplan(datFare, "Descr_rateplan", descr)
                         sdato = Util.Utility.GetXml(FaresData.FARES_TABLE, "UpdateRate", datFare)
-                        'esta condición es para cuando se autollenaran las tarifasrestricciones
+                        'esta condiciï¿½n es para cuando se autollenaran las tarifasrestricciones
                         If Me.Adultos > 0 Then
                             lblError.Visible = True
                             lblError.Text = "restricciones"
@@ -843,7 +897,7 @@ Partial Class ctrRateAplication
         Dim datRestrictions As New FaresRestrictionsData
         For idxAdults As Integer = 1 To Me.Adultos
             For idxChild As Integer = 0 To Me.Ninios
-                'Combinaciond de adultos - niños
+                'Combinaciond de adultos - niï¿½os
                 Dim newRow As DataRow = datRestrictions.Tables(FaresRestrictionsData.FARESRESTRICTION_TABLE).NewRow()
                 With newRow
                     .Item(FaresRestrictionsData.ADULTFARE_FIELD) = 0
@@ -976,11 +1030,11 @@ Partial Class ctrRateAplication
                 Me.txtExtraChildPrice.Text = CDbl(Val(rowFare(FaresData.EXTRACHILDPRICE_FIELD)))
             End If
             If txtExtraTeenPrice.Enabled Then
-                txtExtraTeenPrice.Text = CDbl(IIf(rowFare(FaresData.EXTRATEENPRICE_FIELD) Is DBNull.Value, _
+                txtExtraTeenPrice.Text = CDbl(IIf(rowFare(FaresData.EXTRATEENPRICE_FIELD) Is DBNull.Value,
                                                   0, rowFare(FaresData.EXTRATEENPRICE_FIELD)))
             End If
 
-            txtTeenFare.Text = CDbl(IIf(rowFare(FaresData.RATEENPRICE_FIELD) Is DBNull.Value, _
+            txtTeenFare.Text = CDbl(IIf(rowFare(FaresData.RATEENPRICE_FIELD) Is DBNull.Value,
                                              0, rowFare(FaresData.RATEENPRICE_FIELD)))
 
 
@@ -1113,7 +1167,7 @@ Partial Class ctrRateAplication
     End Sub
 
     Function Nota(ByVal rooom As String, ByVal f1last As String, ByVal f2last As String, ByVal rp As String, ByVal f1 As String, ByVal f2 As String, ByRef sreference As String) As String
-        Dim msg As String = "Se modificó la tarifa de la habitación " & rooom & " de la fecha " & f1last & " a la fecha " & f2last & " con el rateplan " & rp & " su nueva fecha es (o sigue siendo) del " & f1 & " al " & f2 & " el rateplan es (o sigue siendo) " & Me.RatePlanRow.RATECODE
+        Dim msg As String = "Se modificï¿½ la tarifa de la habitaciï¿½n " & rooom & " de la fecha " & f1last & " a la fecha " & f2last & " con el rateplan " & rp & " su nueva fecha es (o sigue siendo) del " & f1 & " al " & f2 & " el rateplan es (o sigue siendo) " & Me.RatePlanRow.RATECODE
         Dim drhotel As DataRow = CType(Me.Page, PaginaBase).HotelInfo
         Dim idioma As String
 
@@ -1176,7 +1230,7 @@ Partial Class ctrRateAplication
             If Me.m_iFareId = 0 Then
                 If SaveNewFare(idRoom, idFare, f1, f2, String.Format("{0} {1}", sroom, rp), sdato) Then
                     scorreo = (New Util.Utility).GeneraCorreoXslt("", sdato)
-                    CType(Me.Page, PaginaBase).guardalog("/Pages/FaresCatalogue.aspx", PaginaBase.acciones.Crear, "Se creó la tarifa de la habitación " & ch.Substring(0, ch.IndexOf("--")) & " de la fecha " & f1 & " a la fecha " & f2 & " con el rateplan " & Me.RatePlanRow.RATECODE, "", "", sdato)
+                    CType(Me.Page, PaginaBase).guardalog("/Pages/FaresCatalogue.aspx", PaginaBase.acciones.Crear, "Se creï¿½ la tarifa de la habitaciï¿½n " & ch.Substring(0, ch.IndexOf("--")) & " de la fecha " & f1 & " a la fecha " & f2 & " con el rateplan " & Me.RatePlanRow.RATECODE, "", "", sdato)
                     flag = True
                 End If
             Else
@@ -1195,7 +1249,7 @@ Partial Class ctrRateAplication
                     'sdatocorreo = CreateAvailHtml(dsBefore, dsFaresUp)
                     scorreo = (New Util.Utility).GeneraCorreoXslt(sdato, sdatodespues)
                     Dim snota As String = Nota(ch, f1last, f2last, rp, f1, f2, sreference)
-                    'CType(Me.Page, PaginaBase).guardalog("/Pages/FaresCatalogue.aspx", PaginaBase.acciones.Modificar, "Se modificó la tarifa de la habitación " & ch & " de la fecha " & f1last & " a la fecha " & f2last & " con el rateplan " & rp & " su nueva fecha es (o sigue siendo) del " & f1 & " al " & f2 & " el rateplan es (o sigue siendo) " & Me.RatePlanRow.RATECODE, "Update Rate", sdato, sdatodespues, sdatocorreo)
+                    'CType(Me.Page, PaginaBase).guardalog("/Pages/FaresCatalogue.aspx", PaginaBase.acciones.Modificar, "Se modificï¿½ la tarifa de la habitaciï¿½n " & ch & " de la fecha " & f1last & " a la fecha " & f2last & " con el rateplan " & rp & " su nueva fecha es (o sigue siendo) del " & f1 & " al " & f2 & " el rateplan es (o sigue siendo) " & Me.RatePlanRow.RATECODE, "Update Rate", sdato, sdatodespues, sdatocorreo)
                     CType(Me.Page, PaginaBase).guardalog("/Pages/FaresCatalogue.aspx", PaginaBase.acciones.Modificar, snota, sreference, sdato, sdatodespues)
                     Dim usuario As String = ""
                     flag = True
@@ -1203,7 +1257,7 @@ Partial Class ctrRateAplication
                 End If
                 m_iFareId = 0
             End If
-            If Me.txtPromoDescription.HasChanges Then CType(Me.Page, PaginaBase).NotifyContentModification("Tarifa de la habitación " & ch & ", y plan tarifario " & Me.RatePlanRow.RATECODE, "Tarifa De Habitacíón")
+            If Me.txtPromoDescription.HasChanges Then CType(Me.Page, PaginaBase).NotifyContentModification("Tarifa de la habitaciï¿½n " & ch & ", y plan tarifario " & Me.RatePlanRow.RATECODE, "Tarifa De Habitacï¿½ï¿½n")
         End If
         Return flag
     End Function
@@ -1372,7 +1426,7 @@ Partial Class ctrRateAplication
     Private Function GetNoteNewRate(ByVal f1 As Date, ByVal f2 As Date, ByVal ch As String) As String
         Dim result As String = String.Empty
 
-        result += "Se creó la tarifa de la habitación "
+        result += "Se creï¿½ la tarifa de la habitaciï¿½n "
         result += " de la fecha" + f1
         result += " a la fecha " + f2
         result += " con el rateplan " + RatePlanRow.RATECODE

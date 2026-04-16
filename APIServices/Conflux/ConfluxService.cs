@@ -32,6 +32,17 @@ namespace APIServices.Conflux
 {
     public partial class ConfluxService
     {
+        // HttpClient singleton — evita agotamiento de sockets TCP (TIME_WAIT)
+        private static readonly HttpClient _sharedClient = new HttpClient()
+        {
+            Timeout = TimeSpan.FromMinutes(50)
+        };
+
+        static ConfluxService()
+        {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+        }
+
         private HttpStatusCode[] validStatusCodes = new[]
         {
             HttpStatusCode.OK,
@@ -437,16 +448,10 @@ namespace APIServices.Conflux
 
                 System.Xml.Linq.XElement otaRS = null;
 
-                using (var client = new HttpClient())
-                {
-                    client.Timeout = TimeSpan.FromMinutes(50);
+                var response = await _sharedClient.PostAsync(uri, httpContent);
+                string result = await response.Content.ReadAsStringAsync();
 
-                    // Llamadas asincrónicas
-                    var response = await client.PostAsync(uri, httpContent);
-                    string result = await response.Content.ReadAsStringAsync();
-
-                    otaRS = HotelRateAmountNotifRS.ParseHotelRateAmountNotifRS(result);
-                }
+                otaRS = HotelRateAmountNotifRS.ParseHotelRateAmountNotifRS(result);
 
                 rateResponse.Xml = otaRS.ToString();
                 rateResponse.RequestXML = soapRequest.ToString();
@@ -472,7 +477,6 @@ namespace APIServices.Conflux
             {
                 if (ratesMessages.RateAmountMessagesList[1].RateAmountMessagesList.Count > 0)
                 {
-                    // Llama a DeleteRatesAsync si la tienes
                     deleteRateResponse = await DeleteRatesAsync(endpointDelete, ratesMessages.RateAmountMessagesList[1]);
                 }
             }
@@ -493,22 +497,17 @@ namespace APIServices.Conflux
                 var xml = HotelRateAmountNotifRQ.CreateHotelRateAmountNotifRQ(ratesMessages.RateAmountMessagesList[0]);
                 var soapRequest = Soap.CreateSoapRequestXml(xml);
 
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                var baseUri = new Uri(ConfigurationManager.AppSettings["confluxApiUrl"].ToString());
+                var fullUri = new Uri(baseUri, endpoint);
 
-                HttpRequestMessage request = new HttpRequestMessage(new HttpMethod("PATCH"), endpoint);
+                HttpRequestMessage request = new HttpRequestMessage(new HttpMethod("PATCH"), fullUri);
                 request.Content = new StringContent(soapRequest.ToString());
 
-                using (var client = new HttpClient())
-                {
-                    client.BaseAddress = new Uri(ConfigurationManager.AppSettings["confluxApiUrl"].ToString());
+                var responseRequest = await _sharedClient.SendAsync(request);
 
-                    var responseRequest = await client.SendAsync(request);
-
-                    rateResponse.Xml = await responseRequest.Content.ReadAsStringAsync();
-                    rateResponse.RequestXML = soapRequest.ToString();
-                    rateResponse.IsSuccess = true;
-
-                }
+                rateResponse.Xml = await responseRequest.Content.ReadAsStringAsync();
+                rateResponse.RequestXML = soapRequest.ToString();
+                rateResponse.IsSuccess = true;
             }
             catch (Exception ex)
             {
@@ -1892,16 +1891,10 @@ namespace APIServices.Conflux
 
                 System.Xml.Linq.XElement otaRS = null;
 
-                using (var client = new HttpClient())
-                {
-                    client.Timeout = TimeSpan.FromMinutes(50);
+                var response = await _sharedClient.SendAsync(request);
+                string result = await response.Content.ReadAsStringAsync();
 
-                    // Asincrónico
-                    var response = await client.SendAsync(request);
-                    string result = await response.Content.ReadAsStringAsync();
-
-                    otaRS = HotelRateAmountNotifRS.ParseHotelRateAmountNotifRS(result);
-                }
+                otaRS = HotelRateAmountNotifRS.ParseHotelRateAmountNotifRS(result);
 
                 res.Xml = otaRS.ToString();
                 res.RequestXML = soapRequest.ToString();
@@ -1945,20 +1938,10 @@ namespace APIServices.Conflux
                     Content = new StringContent(soapRequest.ToString())
                 };
 
-                string otaRS = string.Empty;
+                var response = await _sharedClient.SendAsync(request);
+                string otaRS = await response.Content.ReadAsStringAsync();
 
-                using (var client = new HttpClient())
-                {
-                    client.Timeout = TimeSpan.FromMinutes(50);
-
-                    // Asincrónico
-                    var response = await client.SendAsync(request);
-                    string result = await response.Content.ReadAsStringAsync();
-
-                    otaRS = result;
-                }
-
-                res.Xml = otaRS.ToString();
+                res.Xml = otaRS;
                 res.RequestXML = soapRequest.ToString();
                 res.IsSuccess = true;
             }

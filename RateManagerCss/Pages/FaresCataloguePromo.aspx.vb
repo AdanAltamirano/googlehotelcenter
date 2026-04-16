@@ -262,16 +262,18 @@ Partial Public Class FaresCataloguePromo
             '    SendDeleteToService(rateAmountMessages, info.Hotel, HotelUtilitie.ENDPOINTAPIDELETE, "APICache")
             'End If
 
+            Dim allTasks As New List(Of Task)()
             For Each taskDelegate As Func(Of Task) In tasksToExecute
-                Task.Run(Async Function()
-                             Await semaphore.WaitAsync()
-                             Try
-                                 Await taskDelegate()  ' Aquí se ejecuta MandarTarifasAsync
-                             Finally
-                                 semaphore.Release()
-                             End Try
-                         End Function)
+                allTasks.Add(Task.Run(Async Function()
+                                          Await semaphore.WaitAsync()
+                                          Try
+                                              Await taskDelegate()
+                                          Finally
+                                              semaphore.Release()
+                                          End Try
+                                      End Function))
             Next
+            Task.WaitAll(allTasks.ToArray())
 
             If dgRooms.CurrentPageIndex > 0 And dgRooms.Items.Count = 1 Then
                 dgRooms.CurrentPageIndex = ((dgRooms.CurrentPageIndex * dgRooms.PageSize) \ dgRooms.PageSize) - 1
@@ -351,7 +353,7 @@ Partial Public Class FaresCataloguePromo
             Rooms = .getRooms(Me.cInfoActual.Hotel, PortalCulture.GetIDCulture)
         End With
         Rooms.Tables(RoomsHotelData.TBL_ROOM_HOTEL).Columns.Add("texto", System.Type.GetType("System.String"), "substring(" & RoomsHotelData.FLD_ROOM_CODE & "+ ' ' + '--' + ' ' +" & RoomsHotelData.FLD_NOMBRE & ",1,25)")
-        RatesPlan = ctrRateAplicationExc.loadAllRatesplans(1)
+        RatesPlan = ctrRateAplicationExc.loadAllRatesplans(1, idHabitacion:=Me.idroom)
 
         If MyBase.IdCorporativoUserChain = 4 AndAlso (MyBase.IsHotel Or MyBase.IsUsuarioHotel) Then
             'RatesPlan = RatePlanFilter("C", RatesPlan)
@@ -794,16 +796,18 @@ Partial Public Class FaresCataloguePromo
                         Me.CtrlPlanFaresExc2.ReFill()
                     End If
 
+                    Dim allTasks As New List(Of Task)()
                     For Each taskDelegate As Func(Of Task) In tasksToExecute
-                        Task.Run(Async Function()
-                                     Await semaphore.WaitAsync()
-                                     Try
-                                         Await taskDelegate()  ' Aquí se ejecuta MandarTarifasAsync
-                                     Finally
-                                         semaphore.Release()
-                                     End Try
-                                 End Function)
+                        allTasks.Add(Task.Run(Async Function()
+                                                  Await semaphore.WaitAsync()
+                                                  Try
+                                                      Await taskDelegate()
+                                                  Finally
+                                                      semaphore.Release()
+                                                  End Try
+                                              End Function))
                     Next
+                    Task.WaitAll(allTasks.ToArray())
 
                 End If
             Else
@@ -994,7 +998,14 @@ Partial Public Class FaresCataloguePromo
 
 
         Catch ex As Exception
+            Dim errorsElement As New System.Xml.Linq.XElement("Errors")
+            Dim errorElementProperty As New System.Xml.Linq.XElement("Error")
+            errorElementProperty.Add(New System.Xml.Linq.XAttribute("Type", "3"),
+                                     New System.Xml.Linq.XAttribute("Code", "448"),
+                                     New System.Xml.Linq.XText(ex.Message))
+            errorsElement.Add(errorElementProperty)
 
+            HotelUtilitie.Log(userName, userId, "/Pages/FaresCataloguePromo.aspx", hotelId, Actions.Eliminar, "Error en SendDeleteAsync", "", errorsElement.ToString(), "")
         End Try
 
     End Function
@@ -1005,7 +1016,14 @@ Partial Public Class FaresCataloguePromo
             Try
                 Await SendDeleteToServiceAsync(userName, userId, rateAmountMessages, hotelId, endpoint, service)
             Catch ex As Exception
+                Dim errorsElement As New System.Xml.Linq.XElement("Errors")
+                Dim errorElementProperty As New System.Xml.Linq.XElement("Error")
+                errorElementProperty.Add(New System.Xml.Linq.XAttribute("Type", "3"),
+                                         New System.Xml.Linq.XAttribute("Code", "448"),
+                                         New System.Xml.Linq.XText(ex.Message))
+                errorsElement.Add(errorElementProperty)
 
+                HotelUtilitie.Log(userName, userId, "/Pages/FaresCataloguePromo.aspx", hotelId, Actions.Eliminar, $"Error en SendDeleteIfEnabledAsync {service}", "", errorsElement.ToString(), "")
             End Try
         End If
 
@@ -1076,7 +1094,14 @@ Partial Public Class FaresCataloguePromo
 
 
         Catch ex As Exception
+            Dim errorsElement As New System.Xml.Linq.XElement("Errors")
+            Dim errorElementProperty As New System.Xml.Linq.XElement("Error")
+            errorElementProperty.Add(New System.Xml.Linq.XAttribute("Type", "3"),
+                                     New System.Xml.Linq.XAttribute("Code", "448"),
+                                     New System.Xml.Linq.XText(ex.Message))
+            errorsElement.Add(errorElementProperty)
 
+            HotelUtilitie.Log(userName, userId, "/Pages/FaresCataloguePromo.aspx", hotelId, Actions.Sincronizar, "Error en SendRatesAsync", "", errorsElement.ToString(), "")
         End Try
     End Function
 
@@ -1112,8 +1137,6 @@ Partial Public Class FaresCataloguePromo
     End Function
 
     Private Async Function SendRatesToServiceAsync(ByVal userName As String, ByVal userId As Integer, ByVal ratesForRequest As RatesMessages, ByVal hotelId As Integer, ByVal endpoint As String, ByVal endpointDelete As String, ByVal service As String, Optional ByVal deleteRates As Boolean = True) As Task
-
-        Await Task.Delay(TimeSpan.FromMinutes(1))
 
         Dim confluxService As New APIServices.Conflux.ConfluxService()
 

@@ -505,41 +505,82 @@ Partial Public Class ctrRateAplicationExc
 
     End Sub
 
-    Public Function loadAllRatesplans(Optional ByVal incluirPaquetesSegmentoK As Integer = 0) As RatePlanData
+    Public Function loadAllRatesplans(Optional ByVal incluirPaquetesSegmentoK As Integer = 0, Optional ByVal idHabitacion As Integer = 0) As RatePlanData
         Dim ds As RatePlanData
+        Dim dsActivos As RatePlanData
         Dim idAsoc As Integer = Me.GetIdAsociation
         With New RatePlanFacade
-            ds = .GetRatePlanByIdHotel(Me.m_iHotelId, PortalCulture.GetIDCulture, incluirPaquetesSegmentoK, 0, idAsociacion:=idAsoc, DeleteFilter:=1)
+            dsActivos = .GetRatePlanByIdHotel(Me.m_iHotelId, PortalCulture.GetIDCulture, incluirPaquetesSegmentoK, 0, idAsociacion:=idAsoc, DeleteFilter:=1)
+            ds = .GetRatePlanByIdHotel(Me.m_iHotelId, PortalCulture.GetIDCulture, incluirPaquetesSegmentoK, 0, idAsociacion:=idAsoc, DeleteFilter:=-1)
         End With
+
+        ' IDs de planes activos
+        Dim activosIds As New HashSet(Of String)
+        For Each row As DataRow In dsActivos.Tables(RatePlanData.RATEPLAN_TABLE).Rows
+            activosIds.Add(row(RatePlanData.FIELD_IDRATEPLAN).ToString())
+        Next
 
         Dim links As New LinkRatePlanData
         With New LinkRatePlanFacade
             links = .getList(Me.m_iHotelId, PortalCulture.GetIDCulture, idAsociacion:=idAsoc)
         End With
         ds.Tables(RatePlanData.RATEPLAN_TABLE).Columns.Add("texto", System.Type.GetType("System.String"), "substring(" & RatePlanData.FIELD_CODIGOTARIFA & "+ ' ' + '--' + ' ' +" & RatePlanData.FIELD_NAME & ",1,25)")
-        ''eliminar los ratesplan que ya tienen links
         Dim dv As DataView
         For Each r As DataRow In ds.Tables(RatePlanData.RATEPLAN_TABLE).Rows
             dv = links.Tables(LinkRatePlanData.TABLE_LINKRATEPLAN).DefaultView
             dv.RowFilter = LinkRatePlanData.FIELD_TargetRatePlan & "='" & r(RatePlanData.FIELD_IDRATEPLAN) & "'"
-            ';If dv.Count > 0 Then 'OrElse r(ds.FIELD_SEGMENT) = "K" Then
             If incluirPaquetesSegmentoK = 0 Then
-                If dv.Count > 0 Or r(RatePlanData.FIELD_SEGMENT) = "K" Then
-                    r.Delete()
-                End If
+                If dv.Count > 0 Or r(RatePlanData.FIELD_SEGMENT) = "K" Then r.Delete()
             Else
-                If dv.Count > 0 Then
-                    r.Delete()
-                End If
+                If dv.Count > 0 Then r.Delete()
             End If
-
         Next
         ds.Tables(RatePlanData.RATEPLAN_TABLE).AcceptChanges()
-        ddlrateplans.DataTextField = "texto" 'ds.FIELD_CODIGOTARIFA
-        ddlrateplans.DataValueField = RatePlanData.FIELD_IDRATEPLAN
-        ddlrateplans.DataSource = ds
-        ddlrateplans.DataBind()
+
+        ' Poblar dropdown agrupado Activos / Inactivos
+        ddlrateplans.Items.Clear()
+        ddlrateplans.Items.Add(New ListItem("── Planes Activos ──", "__GRP_ACTIVOS__"))
+        If idHabitacion > 0 Then
+            For Each row As DataRow In ds.Tables(RatePlanData.RATEPLAN_TABLE).Rows
+                Dim idPlan As String = row(RatePlanData.FIELD_IDRATEPLAN).ToString()
+                If activosIds.Contains(idPlan) AndAlso TieneTarifaParaHabitacion(idPlan, idHabitacion) Then
+                    ddlrateplans.Items.Add(New ListItem("★ " & row("texto").ToString(), idPlan))
+                End If
+            Next
+        End If
+        For Each row As DataRow In ds.Tables(RatePlanData.RATEPLAN_TABLE).Rows
+            Dim idPlan As String = row(RatePlanData.FIELD_IDRATEPLAN).ToString()
+            If activosIds.Contains(idPlan) Then
+                If idHabitacion = 0 OrElse Not TieneTarifaParaHabitacion(idPlan, idHabitacion) Then
+                    ddlrateplans.Items.Add(New ListItem(row("texto").ToString(), idPlan))
+                End If
+            End If
+        Next
+        ddlrateplans.Items.Add(New ListItem("── Planes Inactivos ──", "__GRP_INACTIVOS__"))
+        For Each row As DataRow In ds.Tables(RatePlanData.RATEPLAN_TABLE).Rows
+            Dim idPlan As String = row(RatePlanData.FIELD_IDRATEPLAN).ToString()
+            If Not activosIds.Contains(idPlan) Then
+                ddlrateplans.Items.Add(New ListItem(row("texto").ToString(), idPlan))
+            End If
+        Next
+
         Return ds
+    End Function
+
+    Private Function TieneTarifaParaHabitacion(ByVal idRatePlan As String, ByVal idHabitacion As Integer) As Boolean
+        If idHabitacion <= 0 Then Return False
+        Try
+            Dim datFares As FaresData
+            Dim idAsoc As Integer = Me.GetIdAsociation
+            With New FaresSystem
+                datFares = .GetFaresByRoomTypeId(idHabitacion, PortalCulture.GetIDCulture, False, 1, idAsociacion:=idAsoc)
+            End With
+            Dim dv As DataView = datFares.Tables(FaresData.FARES_TABLE).DefaultView
+            dv.RowFilter = FaresData.IDRATEPLAN_FIELD & "='" & idRatePlan & "'"
+            Return dv.Count > 0
+        Catch
+            Return False
+        End Try
     End Function
 
     Private Function SaveSegmentRac() As Boolean

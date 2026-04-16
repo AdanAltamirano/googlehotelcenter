@@ -117,9 +117,9 @@ Partial Class FaresCatalogue
     'End Property
 
 
-#Region " Código generado por el Diseñador de Web Forms "
+#Region " Cï¿½digo generado por el Diseï¿½ador de Web Forms "
 
-    'El Diseñador de Web Forms requiere esta llamada.
+    'El Diseï¿½ador de Web Forms requiere esta llamada.
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
 
     End Sub
@@ -129,13 +129,13 @@ Partial Class FaresCatalogue
     Protected WithEvents CtrlPlanFares2 As ctrlPlanFares
     Protected WithEvents CtrRateAplication1 As ctrRateAplication
     Protected WithEvents CtlMensajes1 As ctlMensajes
-    'NOTA: el Diseñador de Web Forms necesita la siguiente declaración del marcador de posición.
+    'NOTA: el Diseï¿½ador de Web Forms necesita la siguiente declaraciï¿½n del marcador de posiciï¿½n.
     'No se debe eliminar o mover.
     Private designerPlaceholderDeclaration As System.Object
 
     Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
-        'CODEGEN: el Diseñador de Web Forms requiere esta llamada de método
-        'No la modifique con el editor de código.
+        'CODEGEN: el Diseï¿½ador de Web Forms requiere esta llamada de mï¿½todo
+        'No la modifique con el editor de cï¿½digo.
         InitializeComponent()
     End Sub
 
@@ -166,7 +166,7 @@ Partial Class FaresCatalogue
     End Property
 
     Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        'Introducir aquí el código de usuario para inicializar la página
+        'Introducir aquï¿½ el cï¿½digo de usuario para inicializar la pï¿½gina
         If Not MyBase.IsHotelSelected Then MyBase.redirectTo(PaginaBase.pages.Home)
         CtrRateAplication1.m_iHotelId = Me.cInfoActual.Hotel
         If Not IsPostBack Then
@@ -252,7 +252,7 @@ Partial Class FaresCatalogue
                     With New FaresSystem
                         If .DeleteFares(iFareIdTemp) Then
 
-                            Me.guardalog("/Pages/FaresCatalogue.aspx", PaginaBase.acciones.Eliminar, "Se eliminó la tarifa de la habitación " & room.Cells(dgcolumns.codigohabitacion).Text & " de la fecha " & room.Cells(dgcolumns.FechaInicia).Text & " a la fecha " & room.Cells(dgcolumns.FechaFinaliza).Text & " con el rateplan " & labelTemp.Text)
+                            Me.guardalog("/Pages/FaresCatalogue.aspx", PaginaBase.acciones.Eliminar, "Se eliminï¿½ la tarifa de la habitaciï¿½n " & room.Cells(dgcolumns.codigohabitacion).Text & " de la fecha " & room.Cells(dgcolumns.FechaInicia).Text & " a la fecha " & room.Cells(dgcolumns.FechaFinaliza).Text & " con el rateplan " & labelTemp.Text)
 
                             'If isEnabledGoogleRequest Or isEnabledSendingRatesAPICache Then
 
@@ -276,16 +276,18 @@ Partial Class FaresCatalogue
             'End If
 
 
+            Dim allTasks As New List(Of Task)()
             For Each taskDelegate As Func(Of Task) In tasksToExecute
-                Task.Run(Async Function()
-                             Await semaphore.WaitAsync()
-                             Try
-                                 Await taskDelegate()  ' Aquí se ejecuta MandarTarifasAsync
-                             Finally
-                                 semaphore.Release()
-                             End Try
-                         End Function)
+                allTasks.Add(Task.Run(Async Function()
+                                          Await semaphore.WaitAsync()
+                                          Try
+                                              Await taskDelegate()
+                                          Finally
+                                              semaphore.Release()
+                                          End Try
+                                      End Function))
             Next
+            Task.WaitAll(allTasks.ToArray())
 
 
 
@@ -371,7 +373,7 @@ Partial Class FaresCatalogue
             Rooms = .getRooms(Me.cInfoActual.Hotel, PortalCulture.GetIDCulture)
         End With
         Rooms.Tables(RoomsHotelData.TBL_ROOM_HOTEL).Columns.Add("texto", System.Type.GetType("System.String"), "substring(" & RoomsHotelData.FLD_ROOM_CODE & "+ ' ' + '--' + ' ' +" & RoomsHotelData.FLD_NOMBRE & ",1,25)")
-        RatesPlan = CtrRateAplication1.loadAllRatesplans(1)
+        RatesPlan = CtrRateAplication1.loadAllRatesplans(1, idHabitacion:=Me.idroom)
 
         Me.ddlratesplans.DataSource = RatesPlan
         Me.ddlratesplans.DataValueField = Portal.General.Common.Data.RatePlanData.FIELD_IDRATEPLAN
@@ -522,7 +524,7 @@ Partial Class FaresCatalogue
             datFares.Tables(FaresData.FARES_TABLE).Columns.Add("MaxPrice", GetType(System.Double))
             datFares.Tables(FaresData.FARES_TABLE).Columns.Add("MinPrice", GetType(System.Double))
 
-            'Quitamos las tarifas de habitación por día
+            'Quitamos las tarifas de habitaciï¿½n por dï¿½a
             'With datFares.Tables(FaresData.FARES_TABLE)
             '    For i As Integer = 0 To .Rows.Count - 1
             '        If Not DateDiff(DateInterval.Day, .Rows(i).Item(FaresData.STARTDATE_FIELD), .Rows(i).Item(FaresData.ENDDATE_FIELD)) > 1 Then
@@ -658,7 +660,7 @@ Partial Class FaresCatalogue
             iFareId = Integer.Parse(dgRooms.Items(e.Item.ItemIndex).Cells(dgcolumns.idTarifa).Text)
             With New FaresSystem
                 If .DeleteFares(iFareId) Then
-                    Me.guardalog("/Pages/FaresCatalogue.aspx", PaginaBase.acciones.Eliminar, "Se eliminó la tarifa de la habitación " & dgRooms.Items(e.Item.ItemIndex).Cells(dgcolumns.codigohabitacion).Text & " de la fecha " & dgRooms.Items(e.Item.ItemIndex).Cells(dgcolumns.FechaInicia).Text & " a la fecha " & dgRooms.Items(e.Item.ItemIndex).Cells(dgcolumns.FechaFinaliza).Text & " con el rateplan " & dgRooms.Items(e.Item.ItemIndex).Cells(dgcolumns.RatePlan).Text)
+                    Me.guardalog("/Pages/FaresCatalogue.aspx", PaginaBase.acciones.Eliminar, "Se eliminï¿½ la tarifa de la habitaciï¿½n " & dgRooms.Items(e.Item.ItemIndex).Cells(dgcolumns.codigohabitacion).Text & " de la fecha " & dgRooms.Items(e.Item.ItemIndex).Cells(dgcolumns.FechaInicia).Text & " a la fecha " & dgRooms.Items(e.Item.ItemIndex).Cells(dgcolumns.FechaFinaliza).Text & " con el rateplan " & dgRooms.Items(e.Item.ItemIndex).Cells(dgcolumns.RatePlan).Text)
                     If dgRooms.CurrentPageIndex > 0 And dgRooms.Items.Count = 1 Then
                         dgRooms.CurrentPageIndex = ((dgRooms.CurrentPageIndex * dgRooms.PageSize) \ dgRooms.PageSize) - 1
                     End If
@@ -751,7 +753,7 @@ Partial Class FaresCatalogue
                         f1 = CDate(CtrRateAplication1.lstDatesItemI(i).Split("-")(0))
                         f2 = CDate(CtrRateAplication1.lstDatesItemI(i).Split("-")(1))
 
-                        'cuando es modificación la primera se modifica pero las demas son add
+                        'cuando es modificaciï¿½n la primera se modifica pero las demas son add
                         Dim chLast As String, rpLast As String = "", f1Last As String = "", f2Last As String = ""
                         If dgRooms.SelectedIndex <> -1 Then
                             chLast = dgRooms.Items(dgRooms.SelectedIndex).Cells(dgcolumns.codigohabitacion).Text()
@@ -850,18 +852,19 @@ Partial Class FaresCatalogue
                         Me.CtrlPlanFaresExc2.ReFill()
                     End If
 
-                    'Ejecutar Tareas Async
-
+                    'Ejecutar Tareas Async y esperar a que terminen
+                    Dim allTasks As New List(Of Task)()
                     For Each taskDelegate As Func(Of Task) In tasksToExecute
-                        Task.Run(Async Function()
-                                     Await semaphore.WaitAsync()
-                                     Try
-                                         Await taskDelegate()  ' Aquí se ejecuta MandarTarifasAsync
-                                     Finally
-                                         semaphore.Release()
-                                     End Try
-                                 End Function)
+                        allTasks.Add(Task.Run(Async Function()
+                                                  Await semaphore.WaitAsync()
+                                                  Try
+                                                      Await taskDelegate()
+                                                  Finally
+                                                      semaphore.Release()
+                                                  End Try
+                                              End Function))
                     Next
+                    Task.WaitAll(allTasks.ToArray())
 
 
                 End If
@@ -910,7 +913,7 @@ Partial Class FaresCatalogue
         iFareId = CtrRateAplication1.m_iFareId
         With New FaresSystem
             If .DeleteFares(iFareId) Then
-                Me.guardalog("/Pages/FaresCatalogue.aspx", PaginaBase.acciones.Eliminar, "Se eliminó la tarifa de la habitación " & dgRooms.Items(dgRooms.SelectedIndex).Cells(dgcolumns.codigohabitacion).Text & " de la fecha " & dgRooms.Items(dgRooms.SelectedIndex).Cells(dgcolumns.FechaInicia).Text & " a la fecha " & dgRooms.Items(dgRooms.SelectedIndex).Cells(dgcolumns.FechaFinaliza).Text & " con el rateplan " & dgRooms.Items(dgRooms.SelectedIndex).Cells(dgcolumns.RatePlan).Text)
+                Me.guardalog("/Pages/FaresCatalogue.aspx", PaginaBase.acciones.Eliminar, "Se eliminï¿½ la tarifa de la habitaciï¿½n " & dgRooms.Items(dgRooms.SelectedIndex).Cells(dgcolumns.codigohabitacion).Text & " de la fecha " & dgRooms.Items(dgRooms.SelectedIndex).Cells(dgcolumns.FechaInicia).Text & " a la fecha " & dgRooms.Items(dgRooms.SelectedIndex).Cells(dgcolumns.FechaFinaliza).Text & " con el rateplan " & dgRooms.Items(dgRooms.SelectedIndex).Cells(dgcolumns.RatePlan).Text)
                 If dgRooms.CurrentPageIndex > 0 And dgRooms.Items.Count = 1 Then
                     dgRooms.CurrentPageIndex = ((dgRooms.CurrentPageIndex * dgRooms.PageSize) \ dgRooms.PageSize) - 1
                 End If
@@ -1074,8 +1077,6 @@ Partial Class FaresCatalogue
 
     Private Async Function SendRatesToServiceAsync(ByVal userName As String, ByVal userId As Integer, ByVal ratesForRequest As RatesMessages, ByVal hotelId As Integer, ByVal endpoint As String, ByVal endpointDelete As String, ByVal service As String, Optional ByVal deleteRates As Boolean = True) As Task
 
-        Await Task.Delay(TimeSpan.FromMinutes(1))
-
         Dim confluxService As New APIServices.Conflux.ConfluxService()
 
         Dim ratesMessages As RatesMessages = ratesForRequest
@@ -1152,7 +1153,14 @@ Partial Class FaresCatalogue
 
 
         Catch ex As Exception
+            Dim errorsElement As New System.Xml.Linq.XElement("Errors")
+            Dim errorElementProperty As New System.Xml.Linq.XElement("Error")
+            errorElementProperty.Add(New System.Xml.Linq.XAttribute("Type", "3"),
+                                     New System.Xml.Linq.XAttribute("Code", "448"),
+                                     New System.Xml.Linq.XText(ex.Message))
+            errorsElement.Add(errorElementProperty)
 
+            HotelUtilitie.Log(userName, userId, "/Pages/FaresCatalogue.aspx", hotelId, Actions.Sincronizar, "Error en SendRatesAsync", "", errorsElement.ToString(), "")
         End Try
     End Function
 
@@ -1207,7 +1215,14 @@ Partial Class FaresCatalogue
 
 
         Catch ex As Exception
+            Dim errorsElement As New System.Xml.Linq.XElement("Errors")
+            Dim errorElementProperty As New System.Xml.Linq.XElement("Error")
+            errorElementProperty.Add(New System.Xml.Linq.XAttribute("Type", "3"),
+                                     New System.Xml.Linq.XAttribute("Code", "448"),
+                                     New System.Xml.Linq.XText(ex.Message))
+            errorsElement.Add(errorElementProperty)
 
+            HotelUtilitie.Log(userName, userId, "/Pages/FaresCatalogue.aspx", hotelId, Actions.Eliminar, "Error en SendDeleteAsync", "", errorsElement.ToString(), "")
         End Try
 
     End Function
@@ -1218,7 +1233,14 @@ Partial Class FaresCatalogue
             Try
                 Await SendDeleteToServiceAsync(userName, userId, rateAmountMessages, hotelId, endpoint, service)
             Catch ex As Exception
+                Dim errorsElement As New System.Xml.Linq.XElement("Errors")
+                Dim errorElementProperty As New System.Xml.Linq.XElement("Error")
+                errorElementProperty.Add(New System.Xml.Linq.XAttribute("Type", "3"),
+                                         New System.Xml.Linq.XAttribute("Code", "448"),
+                                         New System.Xml.Linq.XText(ex.Message))
+                errorsElement.Add(errorElementProperty)
 
+                HotelUtilitie.Log(userName, userId, "/Pages/FaresCatalogue.aspx", hotelId, Actions.Eliminar, $"Error en SendDeleteIfEnabledAsync {service}", "", errorsElement.ToString(), "")
             End Try
         End If
 

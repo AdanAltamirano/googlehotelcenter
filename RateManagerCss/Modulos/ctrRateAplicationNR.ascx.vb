@@ -185,9 +185,9 @@ Partial Class ctrRateAplicationNR
     End Property
 
 
-#Region " Código generado por el Diseñador de Web Forms "
+#Region " Cï¿½digo generado por el Diseï¿½ador de Web Forms "
 
-    'El Diseñador de Web Forms requiere esta llamada.
+    'El Diseï¿½ador de Web Forms requiere esta llamada.
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
 
     End Sub
@@ -196,13 +196,13 @@ Partial Class ctrRateAplicationNR
     Protected WithEvents lCal2 As System.Web.UI.WebControls.Literal
     Protected WithEvents lblfechas As System.Web.UI.WebControls.Label
 
-    'NOTA: el Diseñador de Web Forms necesita la siguiente declaración del marcador de posición.
+    'NOTA: el Diseï¿½ador de Web Forms necesita la siguiente declaraciï¿½n del marcador de posiciï¿½n.
     'No se debe eliminar o mover.
     Private designerPlaceholderDeclaration As System.Object
 
     Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
-        'CODEGEN: el Diseñador de Web Forms requiere esta llamada de método
-        'No la modifique con el editor de código.
+        'CODEGEN: el Diseï¿½ador de Web Forms requiere esta llamada de mï¿½todo
+        'No la modifique con el editor de cï¿½digo.
         InitializeComponent()
     End Sub
 
@@ -249,7 +249,7 @@ Partial Class ctrRateAplicationNR
     End Sub
 
     Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        'Introducir aquí el código de usuario para inicializar la página
+        'Introducir aquï¿½ el cï¿½digo de usuario para inicializar la pï¿½gina
         Me.reqAdultFare.Enabled = (Me.IsSupervisor)
         Me.reqChildFare.Enabled = (Me.IsSupervisor)
         Me.reqTeenFare.Enabled = (Me.IsSupervisor)
@@ -346,7 +346,7 @@ Partial Class ctrRateAplicationNR
             'Validacion del minimo y maximo porcentaje de ganancia
 
 
-            'Validacion de maximos y minimos porcentajes de ganacia de adultos extras y niños extras
+            'Validacion de maximos y minimos porcentajes de ganacia de adultos extras y niï¿½os extras
             'Extra Adult
             Me.txtExtraAdultPriceNR.Attributes.Add("onChange", "javascript:CheckValContract('" & TextBoxPorcMin.ClientID & "','" & TextBoxPorcMax.ClientID & "','" & txtExtraAdultPriceNR.ClientID & "','" & txtExtraAdultPrice.ClientID & "','" & lblAdultExtValMax.ClientID & "','" & lblAdultExtValMin.ClientID & "','" & PlusTaxProperty & "', '" & EcotasaProperty & "')")
             'Me.txtExtraAdultPrice.Attributes.Add("onChange", "javascript:CheckValContractUv('" & TextBoxPorcMin.ClientID & "','" & TextBoxPorcMax.ClientID & "','" & txtExtraAdultPriceNR.ClientID & "','" & txtExtraAdultPrice.ClientID & "','" & lblAdultExtValMax.ClientID & "','" & lblAdultExtValMin.ClientID & "')")
@@ -492,7 +492,7 @@ Partial Class ctrRateAplicationNR
         'Dim dv As DataView
         'dv = ds.Tables(ds.RATEPLAN_TABLE).DefaultView
         'dv.RowFilter = ds.FIELD_SegmentRacPrinc & "=1 and " & ds.FIELD_SEGMENT & "='R'"
-        ''si hay tarifa rack la tarifa se enlazará con dicha tarifa, 
+        ''si hay tarifa rack la tarifa se enlazarï¿½ con dicha tarifa, 
         'If dv.Count > 0 Then
         '    Me.RatePlanRow = New RowRatePlanNR
         '    Me.RatePlanRow.IDRATEPLAN = dv(0)(ds.FIELD_IDRATEPLAN)
@@ -646,7 +646,7 @@ Partial Class ctrRateAplicationNR
 
     End Sub
 
-    Public Function loadAllRatesplans(Optional ByVal incluirPaquetesSegmentoK As Integer = 0) As RatePlanData
+    Public Function loadAllRatesplans(Optional ByVal incluirPaquetesSegmentoK As Integer = 0, Optional ByVal idHabitacion As Integer = 0) As RatePlanData
 
         Dim ds As RatePlanData
         Dim idAsoc As Integer = Me.GetIdAsociation
@@ -755,7 +755,7 @@ Partial Class ctrRateAplicationNR
         Dim txtDescripcion As New CtrlIdioma
         With New RatePlanAccess
             If .InsertRtPlan(dsRate, idDic, iddic2) Then
-                txtDescripcion.Update("Only Room", "Solo Habitación", idDic)
+                txtDescripcion.Update("Only Room", "Solo Habitaciï¿½n", idDic)
             Else
                 Return False
             End If
@@ -908,7 +908,7 @@ Partial Class ctrRateAplicationNR
                     If .InsertFares(datFare) Then
 
                         idtar = datFare.Tables(FaresData.FARES_TABLE).Rows(0)(FaresData.PKIDFARES_FIELD)
-                        'esta condición es para cuando se autollenaran las tarifasrestricciones
+                        'esta condiciï¿½n es para cuando se autollenaran las tarifasrestricciones
                         If Me.Adultos > 0 Then
                             If Not SaveFaresRestrictions(idtar) Then Return False
                         End If
@@ -1280,7 +1280,7 @@ Partial Class ctrRateAplicationNR
         Dim datRestrictions As New FaresRestrictionsData
         For idxAdults As Integer = 1 To Me.Adultos
             For idxChild As Integer = 0 To Me.Ninios
-                'Combinaciond de adultos - niños
+                'Combinaciond de adultos - niï¿½os
                 Dim newRow As DataRow = datRestrictions.Tables(FaresRestrictionsData.FARESRESTRICTION_TABLE).NewRow()
                 With newRow
                     .Item(FaresRestrictionsData.ADULTFARE_FIELD) = 0
@@ -1642,18 +1642,18 @@ Partial Class ctrRateAplicationNR
             If Me.m_iFareId = 0 Then
                 If SaveNewFare(idRoom, idFare, f1, f2, String.Format("{0} {1}", sroom, rp), sData) Then
                     scorreo = (New Util.Utility).GeneraCorreoXslt(sDataPrev, sData)
-                    CType(Me.Page, PaginaBase).guardalog("/Pages/FaresCatalogue.aspx", PaginaBase.acciones.Crear, "Se creó la tarifa de la habitación " & ch.Substring(0, ch.IndexOf("--")) & " de la fecha " & f1 & " a la fecha " & f2 & " con el rateplan " & Me.RatePlanRow.RATECODE, "", sDataPrev, sData)
+                    CType(Me.Page, PaginaBase).guardalog("/Pages/FaresCatalogue.aspx", PaginaBase.acciones.Crear, "Se creï¿½ la tarifa de la habitaciï¿½n " & ch.Substring(0, ch.IndexOf("--")) & " de la fecha " & f1 & " a la fecha " & f2 & " con el rateplan " & Me.RatePlanRow.RATECODE, "", sDataPrev, sData)
                     flag = True
                 End If
             Else
                 If UpdateFare(idRoom, f1, f2, sDataPrev, String.Format("{0} {1}", sroom, rp), sData, scorreo, publish) Then
                     scorreo = (New Util.Utility).GeneraCorreoXslt(sDataPrev, sData)
-                    CType(Me.Page, PaginaBase).guardalog("/Pages/FaresCatalogue.aspx", PaginaBase.acciones.Modificar, "Se modificó la tarifa de la habitación " & ch & " de la fecha " & f1last & " a la fecha " & f2last & " con el rateplan " & rp & " su nueva fecha es (o sigue siendo) del " & f1 & " al " & f2 & " el rateplan es (o sigue siendo) " & Me.RatePlanRow.RATECODE, "", sDataPrev, sData)
+                    CType(Me.Page, PaginaBase).guardalog("/Pages/FaresCatalogue.aspx", PaginaBase.acciones.Modificar, "Se modificï¿½ la tarifa de la habitaciï¿½n " & ch & " de la fecha " & f1last & " a la fecha " & f2last & " con el rateplan " & rp & " su nueva fecha es (o sigue siendo) del " & f1 & " al " & f2 & " el rateplan es (o sigue siendo) " & Me.RatePlanRow.RATECODE, "", sDataPrev, sData)
                     flag = True
                 End If
                 m_iFareId = 0
             End If
-            If Me.txtPromoDescription.HasChanges Then CType(Me.Page, PaginaBase).NotifyContentModification("Tarifa neta de la habitación " & ch & ", y plan tarifario " & Me.RatePlanRow.RATECODE, "Tarifas Netas")
+            If Me.txtPromoDescription.HasChanges Then CType(Me.Page, PaginaBase).NotifyContentModification("Tarifa neta de la habitaciï¿½n " & ch & ", y plan tarifario " & Me.RatePlanRow.RATECODE, "Tarifas Netas")
         End If
         Return flag
     End Function

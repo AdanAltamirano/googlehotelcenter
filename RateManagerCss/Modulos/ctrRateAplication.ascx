@@ -200,6 +200,35 @@
             t.style.display = c.checked ? "" : "none";
         }
     }
+
+    // Convierte items separadores en <optgroup> de Activos / Inactivos
+    function convertirGruposRatePlans() {
+        var sel = document.getElementById('<%= Me.ddlrateplans.ClientID %>');
+        if (!sel) return;
+        var opciones = Array.prototype.slice.call(sel.options);
+        sel.innerHTML = '';
+        var grupoActual = null;
+        opciones.forEach(function (opt) {
+            if (opt.value === '__GRP_ACTIVOS__' || opt.value === '__GRP_INACTIVOS__') {
+                grupoActual = document.createElement('optgroup');
+                grupoActual.label = opt.text.replace(/[â”€]/g, '').trim();
+                sel.appendChild(grupoActual);
+            } else {
+                var newOpt = document.createElement('option');
+                newOpt.value = opt.value;
+                newOpt.text  = opt.text;
+                if (opt.selected) newOpt.selected = true;
+                (grupoActual || sel).appendChild(newOpt);
+            }
+        });
+    }
+
+    $(document).ready(function () { convertirGruposRatePlans(); });
+    if (typeof Sys !== 'undefined') {
+        Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
+            convertirGruposRatePlans();
+        });
+    }
 </script>
 
 
@@ -373,7 +402,7 @@
     <!-- INICIO OcUPACION POR HABITACION -->
     <tr>
         <td class="dgItem" colspan="6" align="center">
-            <asp:Label ID="lblOccupation" runat="server" CssClass="clsLabel" EnableViewState="False">Ocupación por habitación</asp:Label></td>
+            <asp:Label ID="lblOccupation" runat="server" CssClass="clsLabel" EnableViewState="False">Ocupaciï¿½n por habitaciï¿½n</asp:Label></td>
     </tr>
     <tr>
         <td colspan="6" align="right">
@@ -449,7 +478,7 @@
                                 <asp:ListItem Value="15">15</asp:ListItem>
                             </asp:DropDownList></td>
                         <td align="right">
-                            <asp:Label ID="lblNumberChildrens" runat="server" CssClass="clslabel" EnableViewState="False"> Niños:</asp:Label></td>
+                            <asp:Label ID="lblNumberChildrens" runat="server" CssClass="clslabel" EnableViewState="False"> Niï¿½os:</asp:Label></td>
                         <td>
                             <asp:DropDownList ID="lstNumberChildrens" runat="server">
                                 <asp:ListItem Value="-1">&nbsp;</asp:ListItem>
@@ -605,7 +634,7 @@
                         <td align="left" width="33%">
                             <asp:Label ID="lblPrecio" runat="server" CssClass="clsLabel" EnableViewState="False">Adulto:</asp:Label></td>
                         <td align="left" width="33%">
-                            <asp:Label ID="LblChildPrice" runat="server" CssClass="clsLabel" EnableViewState="False">Niño</asp:Label></td>
+                            <asp:Label ID="LblChildPrice" runat="server" CssClass="clsLabel" EnableViewState="False">Niï¿½o</asp:Label></td>
                         <td align="left" width="33%">
                             <asp:Label ID="lblAdolescentePrice" runat="server" CssClass="clsLabel" EnableViewState="False">Adolescente</asp:Label></td>
                     </tr>
@@ -616,14 +645,14 @@
                             <asp:RequiredFieldValidator ID="reqAdultFare" runat="server" CssClass="Validators" ControlToValidate="txtAdultFare"
                                 ErrorMessage="*" ForeColor=" " Display="Dynamic"></asp:RequiredFieldValidator>
                             <asp:RegularExpressionValidator ID="RVPrecio" runat="server" CssClass="Validators" ControlToValidate="txtAdultFare"
-                                ErrorMessage="Precio Inválido" ForeColor=" " Display="Dynamic" ValidationExpression="^([0-9]*|\d*\.\d{1}?\d*)$"></asp:RegularExpressionValidator></td>
+                                ErrorMessage="Precio Invï¿½lido" ForeColor=" " Display="Dynamic" ValidationExpression="^([0-9]*|\d*\.\d{1}?\d*)$"></asp:RegularExpressionValidator></td>
                         <td align="left" valign="top">
                             <asp:TextBox ID="txtChildFare" runat="server" CssClass="TextBox currency" Columns="10" MaxLength="10">0</asp:TextBox>
                             <span class="currency"></span>
                             <asp:RequiredFieldValidator ID="reqChildFare" runat="server" CssClass="Validators" ControlToValidate="txtChildFare"
                                 ErrorMessage="*" ForeColor=" " Display="Dynamic"></asp:RequiredFieldValidator>
                             <asp:RegularExpressionValidator ID="Regularexpressionvalidator1" runat="server" CssClass="Validators" ControlToValidate="txtChildFare"
-                                ErrorMessage="Precio Inválido" ForeColor=" " Display="Dynamic" ValidationExpression="^([0-9]*|\d*\.\d{1}?\d*)$"></asp:RegularExpressionValidator></td>
+                                ErrorMessage="Precio Invï¿½lido" ForeColor=" " Display="Dynamic" ValidationExpression="^([0-9]*|\d*\.\d{1}?\d*)$"></asp:RegularExpressionValidator></td>
                         <td align="left" valign="top">
                             <asp:TextBox ID="txtTeenFare" runat="server" CssClass="TextBox currency" Columns="10" MaxLength="10">0</asp:TextBox>
                             <% If txtTeenFare.Visible Then%>
@@ -631,7 +660,7 @@
                             <asp:RequiredFieldValidator ID="reqTeenFare" runat="server" CssClass="Validators" ControlToValidate="txtTeenFare"
                                 ErrorMessage="*" ForeColor=" " Display="Dynamic"></asp:RequiredFieldValidator>
                             <asp:RegularExpressionValidator ID="rxvAdoslecenteFare" runat="server" CssClass="Validators" ControlToValidate="txtTeenFare"
-                                ErrorMessage="Precio Inválido" ForeColor=" " Display="Dynamic" ValidationExpression="^([0-9]*|\d*\.\d{1}?\d*)$"></asp:RegularExpressionValidator></td>
+                                ErrorMessage="Precio Invï¿½lido" ForeColor=" " Display="Dynamic" ValidationExpression="^([0-9]*|\d*\.\d{1}?\d*)$"></asp:RegularExpressionValidator></td>
 
                         <% End If%>
                     </tr>
@@ -644,7 +673,7 @@
                         <td align="left" width="33%">
                             <asp:Label ID="lblExtraAdult" runat="server" CssClass="clsLabel" EnableViewState="False">Adulto extra:</asp:Label></td>
                         <td align="left" width="33%">
-                            <asp:Label ID="lblExtraChildPrice" runat="server" CssClass="clsLabel" EnableViewState="False">Niño extra:</asp:Label></td>
+                            <asp:Label ID="lblExtraChildPrice" runat="server" CssClass="clsLabel" EnableViewState="False">Niï¿½o extra:</asp:Label></td>
                         <td align="left" width="33%">
                             <asp:Label ID="lblExtraAdolescente" runat="server" CssClass="clsLabel" EnableViewState="False">Adolescente extra:</asp:Label>
                         </td>
@@ -656,7 +685,7 @@
                             <asp:RequiredFieldValidator ID="reqExtraAdultPrice" runat="server" CssClass="Validators" ControlToValidate="txtExtraAdultPrice"
                                 ErrorMessage="*" ForeColor=" " Display="Dynamic"></asp:RequiredFieldValidator>
                             <asp:RegularExpressionValidator ID="valAdultExtraPrice" runat="server" CssClass="Validators" ControlToValidate="txtExtraAdultPrice"
-                                ErrorMessage="Precio Inválido" ForeColor=" " Display="Dynamic" ValidationExpression="^([0-9]*|\d*\.\d{1}?\d*)$"></asp:RegularExpressionValidator>
+                                ErrorMessage="Precio Invï¿½lido" ForeColor=" " Display="Dynamic" ValidationExpression="^([0-9]*|\d*\.\d{1}?\d*)$"></asp:RegularExpressionValidator>
                         </td>
                         <td align="left" valign="top">
                             <asp:TextBox ID="txtExtraChildPrice" runat="server" CssClass="TextBox currency" Columns="10" MaxLength="10"></asp:TextBox>
@@ -664,7 +693,7 @@
                             <asp:RequiredFieldValidator ID="reqExtraChildPrice" runat="server" CssClass="Validators" ControlToValidate="txtExtraChildPrice"
                                 ErrorMessage="*" ForeColor=" " Display="Dynamic"></asp:RequiredFieldValidator>
                             <asp:RegularExpressionValidator ID="valExtraChildPrice" runat="server" CssClass="Validators" ControlToValidate="txtExtraChildPrice"
-                                ErrorMessage="Precio Inválido" ForeColor=" " Display="Dynamic" ValidationExpression="^([0-9]*|\d*\.\d{1}?\d*)$"></asp:RegularExpressionValidator>
+                                ErrorMessage="Precio Invï¿½lido" ForeColor=" " Display="Dynamic" ValidationExpression="^([0-9]*|\d*\.\d{1}?\d*)$"></asp:RegularExpressionValidator>
                         </td>
                         <td align="left" valign="top">
                             <asp:TextBox ID="txtExtraTeenPrice" runat="server" CssClass="TextBox currency" Columns="10" MaxLength="10">0</asp:TextBox>
@@ -673,7 +702,7 @@
                             <asp:RequiredFieldValidator ID="reqExtraTeenPrice" runat="server" CssClass="Validators" ControlToValidate="txtExtraTeenPrice"
                                 ErrorMessage="*" ForeColor=" " Display="Dynamic"></asp:RequiredFieldValidator>
                             <asp:RegularExpressionValidator ID="rxvExtraTeenprice" runat="server" CssClass="Validators" ControlToValidate="txtExtraTeenPrice"
-                                ErrorMessage="Precio Inválido" ForeColor=" " Display="Dynamic" ValidationExpression="^([0-9]*|\d*\.\d{1}?\d*)$"></asp:RegularExpressionValidator>
+                                ErrorMessage="Precio Invï¿½lido" ForeColor=" " Display="Dynamic" ValidationExpression="^([0-9]*|\d*\.\d{1}?\d*)$"></asp:RegularExpressionValidator>
                             <% End If%>          
                         </td>
                     </tr>

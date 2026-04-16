@@ -609,7 +609,7 @@ Partial Public Class ctrRateAplicationNRpromo
 
     End Sub
 
-    Public Function loadAllRatesplans(Optional ByVal incluirPaquetesSegmentoK As Integer = 0) As RatePlanData
+    Public Function loadAllRatesplans(Optional ByVal incluirPaquetesSegmentoK As Integer = 0, Optional ByVal idHabitacion As Integer = 0) As RatePlanData
         Dim ds As RatePlanData
         Dim idAsoc As Integer = GetIdAsociation()
         With New RatePlanFacade
