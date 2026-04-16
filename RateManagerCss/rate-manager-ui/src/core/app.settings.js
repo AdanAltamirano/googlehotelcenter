@@ -13,7 +13,8 @@ const appConfig = {
         isHotelUser:window.app.isHotelUser,
         isHotelCompany:window.app.isHotelCompany,
         isUsuarioHotelAssociation: window.app.isUsuarioHotelAssociation,
-        code: window.app.code
+        code: window.app.code,
+        redirectFrom:window.app.redirectFrom
     },
     google:{
         isEnabledGoogleRequest: window.app.isEnabledGoogleRequest,

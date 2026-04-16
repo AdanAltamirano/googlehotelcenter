@@ -14,6 +14,8 @@
           <Property Name="IdHotelArpon" Type="nvarchar(max)" />
           <Property Name="UrlArpon" Type="nvarchar(max)" />
           <Property Name="AgencyArpon" Type="nvarchar(max)" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="eMailsToNotif" Type="nvarchar" MaxLength="500" Nullable="false" />
         </EntityType>
         <EntityType Name="RatePlansIPH_Arpon">
           <Key>
@@ -117,16 +119,6 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRatePromosReservations' no ti
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="OzArpon" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="HotelIPH_Arpon">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IdHotelIP" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="IdHotelArpon" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="UrlArpon" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="AgencyArpon" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="RatePlansIPH_Arpon">
           <Key>
             <PropertyRef Name="Id" />
@@ -146,11 +138,11 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRatePromosReservations' no ti
           <Property Name="idHotelIP" Type="Int32" />
         </EntityType>
         <EntityContainer Name="ArponEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="HotelIPH_Arpon" EntityType="Self.HotelIPH_Arpon" />
           <EntitySet Name="RatePlansIPH_Arpon" EntityType="Self.RatePlansIPH_Arpon" />
           <EntitySet Name="RoomsIPH_Arpon" EntityType="Self.RoomsIPH_Arpon" />
           <EntitySet Name="TipoHabitaciones_Hoteles" EntityType="OzArpon.TipoHabitaciones_Hoteles" />
           <EntitySet Name="vRatePromosReservations" EntityType="OzArpon.vRatePromosReservations" />
+          <EntitySet Name="HotelIPH_Arpon" EntityType="OzArpon.HotelIPH_Arpon" />
         </EntityContainer>
         <EntityType Name="TipoHabitaciones_Hoteles">
           <Key>
@@ -210,23 +202,24 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRatePromosReservations' no ti
           <Property Name="Texto" Type="String" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
           <Property Name="idDetalleReservacion" Type="Int32" Nullable="false" />
         </EntityType>
+        <EntityType Name="HotelIPH_Arpon">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdHotelIP" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IdHotelArpon" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UrlArpon" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AgencyArpon" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="eMailsToNotif" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="OzArponStoreContainer" CdmEntityContainer="ArponEntities">
-          <EntitySetMapping Name="HotelIPH_Arpon">
-            <EntityTypeMapping TypeName="OzArpon.HotelIPH_Arpon">
-              <MappingFragment StoreEntitySet="HotelIPH_Arpon">
-                <ScalarProperty Name="AgencyArpon" ColumnName="AgencyArpon" />
-                <ScalarProperty Name="UrlArpon" ColumnName="UrlArpon" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="IdHotelIP" ColumnName="IdHotelIP" />
-                <ScalarProperty Name="IdHotelArpon" ColumnName="IdHotelArpon" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="RatePlansIPH_Arpon">
             <EntityTypeMapping TypeName="OzArpon.RatePlansIPH_Arpon">
               <MappingFragment StoreEntitySet="RatePlansIPH_Arpon">
@@ -299,6 +292,19 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRatePromosReservations' no ti
                 <ScalarProperty Name="idHotel" ColumnName="idHotel" />
                 <ScalarProperty Name="NoReservacion" ColumnName="NoReservacion" />
                 <ScalarProperty Name="idReservacion" ColumnName="idReservacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HotelIPH_Arpon">
+            <EntityTypeMapping TypeName="OzArpon.HotelIPH_Arpon">
+              <MappingFragment StoreEntitySet="HotelIPH_Arpon">
+                <ScalarProperty Name="eMailsToNotif" ColumnName="eMailsToNotif" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="AgencyArpon" ColumnName="AgencyArpon" />
+                <ScalarProperty Name="UrlArpon" ColumnName="UrlArpon" />
+                <ScalarProperty Name="IdHotelArpon" ColumnName="IdHotelArpon" />
+                <ScalarProperty Name="IdHotelIP" ColumnName="IdHotelIP" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

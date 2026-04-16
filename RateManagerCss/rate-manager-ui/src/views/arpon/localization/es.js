@@ -9,5 +9,7 @@ export default {
     'Rooms' : 'Habitaciones',
     'Rooms Saved' : 'Habitaciones Guardadas',
     'Exit' : 'Cerrar',
-    'Agency' : 'Agencia'
+    'Agency' : 'Agencia',
+    'Emails To Notif': 'Correos a Notificar',
+    'Send Reservations' : 'Enviar Reservas'
 }

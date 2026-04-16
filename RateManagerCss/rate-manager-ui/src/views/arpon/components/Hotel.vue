@@ -22,6 +22,23 @@
 					<td>
 						<b-form-input class="w-400" v-model="urlArpon" required></b-form-input>
 					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><strong>{{$t('Emails To Notif')}}</strong></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td>
+						<b-form-input class="w-300" v-model="emails" required></b-form-input>
+					</td>
+					<td>
+						<b-form-checkbox v-model="active">
+							<strong>{{$t('Send Reservations')}}</strong>
+						</b-form-checkbox>
+					</td>
 					<td>
 						<div v-if="callApi" class="vld-parent" style="width:70px;height:70px;">
 							<loading style="display:block !important;" :active="true" :is-full-page="false" color="#007bff"></loading>
@@ -53,6 +70,8 @@ export default {
 			arponId: '',
 			urlArpon: '',
 			agencyArpon: '',
+			emails: '',
+			active:false,
 			callApi:false,
 			showButton:true
 		}
@@ -95,6 +114,8 @@ export default {
 				this.arponId = response.body.idHotelArpon;
 				this.urlArpon = response.body.urlArpon;
 				this.agencyArpon = response.body.agencyArpon;
+				this.emails = response.body.eMailsToNotif;
+				this.active = response.body.active;
 				this.callApi = false;
 			})
 			.catch(error => {
@@ -109,7 +130,9 @@ export default {
 				IdHotelIp : this.hotelId,
 				IdHotelArpon : this.arponId,
 				UrlArpon : this.urlArpon,
-				AgencyArpon: this.agencyArpon
+				AgencyArpon: this.agencyArpon,
+				Active : this.active,
+				eMailsToNotif : this.emails
 			}
 
 			ArponService.SaveHotelArpon(this.hotelId, payload)
