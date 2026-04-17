@@ -1,3 +1,4 @@
+Imports System.Web.Services
 Imports Portal.Hotel.Common.Data
 Imports Portal.Hotel.Facade
 Imports Portal.General.Common.Data
@@ -786,4 +787,15 @@ Partial Class RatesPlans
                  End Function)
     End Sub
 
+
+    <WebMethod()>
+    Public Shared Function GetLatestGHCStatus(ByVal ratePlanId As String) As String
+        Using db As New OzHotelesEntities()
+            Dim latestSync = db.GoogleSyncHistory.Where(Function(s) s.RatePlanId = ratePlanId).OrderByDescending(Function(s) s.Timestamp).FirstOrDefault()
+            If latestSync IsNot Nothing Then
+                Return latestSync.Status
+            End If
+            Return "None"
+        End Using
+    End Function
 End Class
