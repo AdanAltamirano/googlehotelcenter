@@ -112,6 +112,39 @@
         }
     </style>
 
+
+
+    <script type="text/javascript">
+        function updateGHCStatuses() {
+            jQuery(".ghc-status").each(function() {
+                var span = jQuery(this);
+                var id = span.attr("id").replace("ghc_status_", "");
+                if (id) {
+                    jQuery.ajax({
+                        type: "POST",
+                        url: "RatesPlans.aspx/GetLatestGHCStatus",
+                        data: JSON.stringify({ ratePlanId: id }),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function(response) {
+                            var status = response.d;
+                            var color = "gray";
+                            if (status === "Success") color = "green";
+                            else if (status === "Failed") color = "red";
+                            else if (status === "Pending") color = "orange";
+                            span.text(status).css("color", color);
+                        }
+                    });
+                }
+            });
+        }
+        jQuery(document).ready(function() {
+            updateGHCStatuses();
+            setInterval(updateGHCStatuses, 30000);
+        });
+    </script>
+
+
 </head>
 
 <script>
@@ -266,8 +299,14 @@
                         <HeaderStyle Width="40%"></HeaderStyle>
                     </asp:BoundColumn>
                     <asp:BoundColumn DataField="Segment" HeaderText="Segmento">
-                        <HeaderStyle Width="23%"></HeaderStyle>
+                        <HeaderStyle Width="15%"></HeaderStyle>
                     </asp:BoundColumn>
+                    <asp:TemplateColumn HeaderText="GHC Status">
+                        <HeaderStyle Width="8%"></HeaderStyle>
+                        <ItemTemplate>
+                            <span id="ghc_status_<%# Eval("idrateplan") %>" class="ghc-status">-</span>
+                        </ItemTemplate>
+                    </asp:TemplateColumn>
                     <asp:TemplateColumn>
                         <HeaderStyle Width="10%"></HeaderStyle>
                         <ItemTemplate>
