@@ -22,10 +22,11 @@ Este documento detalla las debilidades identificadas en los procesos de creació
 
 ## 2. Debilidades en la Lógica de Negocio y Parsers
 
-### 2.1 Límite Hardcoded de Precio (170,000)
+### 2.1 Manejo del Límite de Precio de Google (170,000)
 **Ubicación:** `APIServices/Conflux/Parser/Parser.cs`, métodos `GeneralAuxCreateRateAmountMessage` y `RateAuxCreateRateAmountMessage`.
-- **Descripción:** Existe una validación que solo permite enviar tarifas si el precio es menor o igual a **170,000**.
-- **Impacto:** Cualquier tarifa que supere este monto (posible en ciertas monedas o suites de lujo) es ignorada por el parser y **no se envía a Google**, dejando el canal desactualizado sin previo aviso al administrador.
+- **Descripción:** El sistema implementa una restricción propia de Google Hotel Center que prohíbe el envío de tarifas superiores a **170,000**.
+- **Debilidad Identificada:** Aunque el límite es una regla externa obligatoria, el sistema actual **ignora silenciosamente** cualquier tarifa que supere este monto durante la generación del mensaje (parser).
+- **Impacto:** Si un hotel carga una tarifa superior a este umbral (especialmente común en monedas con valores nominales altos), el proceso de sincronización simplemente descarta el registro. Al no haber una notificación o error visible para el usuario, el administrador percibe que la sincronización "falló" sin causa aparente, cuando en realidad fue un descarte preventivo no informado.
 
 ### 2.2 Sincronización Desacoplada (Precios vs. Disponibilidad)
 **Ubicación:** `RatesController.vb`, métodos `ExecuteServices` y `SendRatesIfEnabledAsync`.
@@ -54,6 +55,6 @@ Este documento detalla las debilidades identificadas en los procesos de creació
 
 ## Recomendaciones Inmediatas
 1. **Implementar una Cola de Mensajes (Outbox Pattern):** En lugar de `Task.Run`, guardar las actualizaciones pendientes en una tabla de la DB y procesarlas con un servicio en segundo plano que garantice reintentos en caso de fallo.
-2. **Eliminar el límite de 170,000:** Mover este tipo de validaciones a configuraciones por hotel o eliminarlas si no tienen un sustento técnico actual.
+2. **Validación Visual del Límite de Google:** En lugar de descartar la tarifa silenciosamente en el código interno (APIServices), implementar una validación en la interfaz de usuario que advierta al administrador cuando una tarifa excede el límite permitido por Google antes de intentar guardarla.
 3. **Mejorar el Logging de Errores:** Asegurar que cualquier fallo en la comunicación con Conflux/Google sea visible de forma prominente en el panel de administración del hotel.
 4. **Sincronización de Consistencia:** Crear un proceso nocturno que compare la base de datos local con lo que tiene Google Hotel Center y corrija las discrepancias automáticamente.
