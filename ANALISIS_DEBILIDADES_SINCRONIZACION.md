@@ -59,8 +59,10 @@ Para resolver los fallos de sincronización, se proponen tres niveles de interve
 
 ### Nivel 1: Correcciones Técnicas Inmediatas (Quick Wins)
 1. **Sustitución de `Task.Run` por persistencia:** En lugar de disparar una tarea asíncrona volátil, registrar la intención de actualización en una tabla de "Pendientes de Sincronización" dentro de la misma transacción de la base de datos.
-2. **Validación Previa (Pre-flight Checks):** Antes de permitir el guardado en la UI, ejecutar la lógica del parser para detectar errores conocidos (como el límite de 170,000 o falta de campos obligatorios) y mostrar advertencias al usuario.
-3. **Logging Orientado a Diagnóstico:** Centralizar los logs de comunicación con Google vinculándolos a un `Correlation ID` que permita rastrear una edición en la UI desde que se guarda en la DB hasta que el API de Google devuelve (o no) una respuesta.
+2. **Implementación de Tabla de Auditoría y Respaldo (Sincronizaciones):** Crear una tabla específica (ej. `GoogleSyncHistory`) que almacene el historial exacto de lo enviado. Esto servirá como confirmación y respaldo de que la información salió del sistema hacia Google.
+    - **Campos sugeridos:** `IdHotel`, `RequestXML` (el mensaje OTA exacto), `ResponseXML` (la respuesta de Google), `Status` (Éxito/Error), `Timestamp`, `Usuario` y `TipoOperacion` (Create/Update/Delete).
+3. **Validación Previa (Pre-flight Checks):** Antes de permitir el guardado en la UI, ejecutar la lógica del parser para detectar errores conocidos (como el límite de 170,000 o falta de campos obligatorios) y mostrar advertencias al usuario.
+4. **Logging Orientado a Diagnóstico:** Centralizar los logs de comunicación con Google vinculándolos a un `Correlation ID` que permita rastrear una edición en la UI desde que se guarda en la DB hasta que el API de Google devuelve (o no) una respuesta.
 
 ### Nivel 2: Mejoras de Procesos y Visibilidad
 4. **Dashboard de Estado de Sincronización:** Crear una pantalla donde el administrador pueda ver en tiempo real cuántas tarifas están "Sincronizadas", "Pendientes" o "Fallidas". Esto elimina la incertidumbre de si el cambio llegó a Google.
