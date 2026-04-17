@@ -53,8 +53,21 @@ Este documento detalla las debilidades identificadas en los procesos de creació
 
 ---
 
-## Recomendaciones Inmediatas
-1. **Implementar una Cola de Mensajes (Outbox Pattern):** En lugar de `Task.Run`, guardar las actualizaciones pendientes en una tabla de la DB y procesarlas con un servicio en segundo plano que garantice reintentos en caso de fallo.
-2. **Validación Visual del Límite de Google:** En lugar de descartar la tarifa silenciosamente en el código interno (APIServices), implementar una validación en la interfaz de usuario que advierta al administrador cuando una tarifa excede el límite permitido por Google antes de intentar guardarla.
-3. **Mejorar el Logging de Errores:** Asegurar que cualquier fallo en la comunicación con Conflux/Google sea visible de forma prominente en el panel de administración del hotel.
-4. **Sincronización de Consistencia:** Crear un proceso nocturno que compare la base de datos local con lo que tiene Google Hotel Center y corrija las discrepancias automáticamente.
+## Estrategias de Solución Recomendadas
+
+Para resolver los fallos de sincronización, se proponen tres niveles de intervención, desde correcciones rápidas hasta cambios arquitectónicos de fondo.
+
+### Nivel 1: Correcciones Técnicas Inmediatas (Quick Wins)
+1. **Sustitución de `Task.Run` por persistencia:** En lugar de disparar una tarea asíncrona volátil, registrar la intención de actualización en una tabla de "Pendientes de Sincronización" dentro de la misma transacción de la base de datos.
+2. **Validación Previa (Pre-flight Checks):** Antes de permitir el guardado en la UI, ejecutar la lógica del parser para detectar errores conocidos (como el límite de 170,000 o falta de campos obligatorios) y mostrar advertencias al usuario.
+3. **Logging Orientado a Diagnóstico:** Centralizar los logs de comunicación con Google vinculándolos a un `Correlation ID` que permita rastrear una edición en la UI desde que se guarda en la DB hasta que el API de Google devuelve (o no) una respuesta.
+
+### Nivel 2: Mejoras de Procesos y Visibilidad
+4. **Dashboard de Estado de Sincronización:** Crear una pantalla donde el administrador pueda ver en tiempo real cuántas tarifas están "Sincronizadas", "Pendientes" o "Fallidas". Esto elimina la incertidumbre de si el cambio llegó a Google.
+5. **Botón de "Sincronización Forzada":** Implementar una función que permita al administrador reenviar todos los precios y cierres de un plan tarifario específico a Google, útil para corregir discrepancias puntuales sin tener que editar los datos.
+6. **Mecanismo de Reintento con Backoff:** Si el API de Conflux falla por problemas de red o saturación, el sistema debe reintentar automáticamente en intervalos crecientes (ej. 1 min, 5 min, 15 min) antes de marcarlo como error definitivo.
+
+### Nivel 3: Cambios de Arquitectura (Solución Definitiva)
+7. **Patrón Outbox con Worker Dedicado:** Implementar un servicio de Windows o un Job (ej. Hangfire) que procese la tabla de "Pendientes". Este worker debe ser el único responsable de la comunicación externa, garantizando que si el servidor se reinicia, el trabajo se reanude donde quedó.
+8. **Sincronización Basada en Estado (Checksums):** Almacenar un "Hash" o firma de la última versión de la tarifa enviada exitosamente a Google. Un proceso de auditoría puede comparar periódicamente el Hash de la DB local contra el enviado a Google para detectar y corregir desincronizaciones silenciosas automáticamente.
+9. **Consolidación de Mensajes (Bundling):** Agrupar actualizaciones de precios y disponibilidad en un solo proceso lógico para asegurar que Google reciba la imagen completa de la oferta del hotel, evitando estados inconsistentes donde el precio es nuevo pero el cierre es viejo.
