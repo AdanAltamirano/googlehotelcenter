@@ -1,4 +1,4 @@
-﻿﻿Imports System.Xml.Linq
+﻿﻿﻿﻿Imports System.Xml.Linq
 Imports System.Web.Http
 Imports APIServices
 Imports APIServices.Models
@@ -399,7 +399,7 @@ Namespace API.Controllers
             Return xml
         End Function
 
-                Private Sub SendClosureToService(ByVal rateId As Integer, ByVal startDate As Date, ByVal endDate As Date, ByVal endpoint As String, ByVal service As String, ByVal info As companyInfo)
+        Private Sub SendClosureToService(ByVal rateId As Integer, ByVal startDate As Date, ByVal endDate As Date, ByVal endpoint As String, ByVal service As String, ByVal info As companyInfo)
 
             Dim requests As List(Of XDocument) = New List(Of XDocument)
 
@@ -442,7 +442,7 @@ Namespace API.Controllers
                 End If
             Next
 
-        End Function
+        End Sub
 
 
         Private Sub SendRatesToService(ByVal ratesMessages As RatesMessages, ByVal endpoint As String, ByVal endpointDelete As String, ByVal hotelId As Integer, ByVal service As String, Optional ByVal deleteRates As Boolean = True)

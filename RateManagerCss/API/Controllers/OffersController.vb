@@ -1,4 +1,4 @@
-﻿﻿Imports System.Web.Http
+﻿﻿﻿﻿﻿Imports System.Web.Http
 Imports System.Threading
 Imports System.Threading.Tasks
 Imports APIServices
@@ -73,7 +73,7 @@ Namespace API.Controllers
                     Dim promotionRatePlanId As String = RQ.Id & plan
                     Dim ratePlanNameId As String = HotelUtilitie.GetRatePlanNameById(plan, hotelId) & " - " & RQ.Name.Esp
 
-                    tasksToExecuteInsertPromoRatePlan.Add(Function() InsertPromoRatePlanAsync(userName, userId, info.Hotel, info.Empresa, isEnabledGoogleRequest, promotionRatePlanId, ratePlanNameId, RQ.Description.Esp, "ES")
+                    tasksToExecuteInsertPromoRatePlan.Add(Function() InsertPromoRatePlanAsync(userName, userId, info.Hotel, info.Empresa, isEnabledGoogleRequest, promotionRatePlanId, ratePlanNameId, RQ.Description.Esp, "ES"))
 
                     'Dim mensaje As String = String.Format("Sincronizar Nuevo  Codigo de Promocion con RatePlan {0}", promotionRatePlanId)
                     'Dim res As RatePlanResponse = HotelUtilitie.ConfluxServiceHelper.InsertRatePlan(info.Hotel, info.Empresa, promotionRatePlanId, ratePlanNameId, RQ.Description.Esp, "ES")
@@ -127,7 +127,7 @@ Namespace API.Controllers
                     Dim promotionRatePlanId As String = RQ.Id & plan
                     Dim ratePlanNameId As String = HotelUtilitie.GetRatePlanNameById(plan, hotelId) & " - " & RQ.Name.Esp
 
-                    tasksToExecuteInsertPromoRatePlan.Add(Function() InsertPromoRatePlanAsync(userName, userId, info.Hotel, info.Empresa, isEnabledGoogleRequest, promotionRatePlanId, ratePlanNameId, RQ.Description.Esp, "ES")
+                    tasksToExecuteInsertPromoRatePlan.Add(Function() InsertPromoRatePlanAsync(userName, userId, info.Hotel, info.Empresa, isEnabledGoogleRequest, promotionRatePlanId, ratePlanNameId, RQ.Description.Esp, "ES"))
 
 
                     'Dim mensaje As String = String.Format("Sincronizar Modificacion Codigo de Promocion con RatePlan {0}", promotionRatePlanId)
@@ -138,7 +138,7 @@ Namespace API.Controllers
                 Dim deleteRates As Boolean = False
                 Dim endDateDelete As Date = Nothing
                 Dim column As String = "idTipoHabitacion_Hotel"
-                Dim filterRooms As String = $" AND {column} IN ({String.Join(", ", auxOffer.ApplicableFor.Rooms.Select(Function(id) id.ToString())})"
+                Dim filterRooms As String = $" AND {column} IN ({String.Join(", ", auxOffer.ApplicableFor.Rooms.Select(Function(id) id.ToString()))})"
                 Dim roomsList As List(Of DataRow) = New List(Of DataRow)
                 Dim roomCodesList As List(Of String) = New List(Of String)
 
@@ -163,7 +163,7 @@ Namespace API.Controllers
                 '        Dim endDate As Date = CType(RQ.StartDate, Date).AddDays(-1)
 
                 '        Dim column As String = "idTipoHabitacion_Hotel"
-                '        Dim filterRooms As String = $" AND {column} IN ({String.Join(", ", auxOffer.ApplicableFor.Rooms.Select(Function(id) id.ToString())})"
+                '        Dim filterRooms As String = $" AND {column} IN ({String.Join(", ", auxOffer.ApplicableFor.Rooms.Select(Function(id) id.ToString()))})"
 
                 '        Dim roomsList As List(Of DataRow) = RoomsHelper.GetRoomsByHotel(hotelId, filterRooms)
                 '        Dim roomCodesList As List(Of String) = roomsList.Select(Function(r) r.ItemArray(22).ToString()).ToList()
@@ -214,7 +214,7 @@ Namespace API.Controllers
                     Return NoContent()
                 End If
             End With
-            Return BadRequest(New KeyValuePair(Of String, String)("0", "No se pudo activar la promoción")
+            Return BadRequest(New KeyValuePair(Of String, String)("0", "No se pudo activar la promoción"))
         End Function
 
         'POST api/promotions/disable/1978/code/PR04
@@ -255,7 +255,7 @@ Namespace API.Controllers
                     Return NoContent()
                 End If
             End With
-            Return BadRequest(New KeyValuePair(Of String, String)("0", "No se pudo desactivar la promoción")
+            Return BadRequest(New KeyValuePair(Of String, String)("0", "No se pudo desactivar la promoción"))
         End Function
 
         Private Sub ExecuteServices(ByVal hotelId As Integer, ByVal companyId As Integer, ByVal idRatePlan As String, ByVal isEnabledGoogleRequest As Boolean, ByVal isEnabledSendingRatesAPICache As Boolean)
@@ -310,7 +310,7 @@ Namespace API.Controllers
             End If
         End Sub
 
-        Private Sub ExecuteServicesDelete(ByVal hotelId As Integer, ByVal companyId As Integer, ByVal isEnabledGoogleRequest As Boolean, ByVal isEnabledSendingRatesAPICache As Boolean, ByVal vDayRatesPromotion As List(Of vDayRates), ByVal vDayRatesPromotionException As List(Of vDayRatesExceptions)
+        Private Sub ExecuteServicesDelete(ByVal hotelId As Integer, ByVal companyId As Integer, ByVal isEnabledGoogleRequest As Boolean, ByVal isEnabledSendingRatesAPICache As Boolean, ByVal vDayRatesPromotion As List(Of vDayRates), ByVal vDayRatesPromotionException As List(Of vDayRatesExceptions))
 
             Dim rateAmountMessages As RateAmountMessages = Nothing
             Dim rateAmountMessagesPromotion As RateAmountMessages = Nothing
@@ -438,7 +438,7 @@ Namespace API.Controllers
                                                           Finally
                                                               semaphore.Release()
                                                           End Try
-                                                      End Function)
+                                                      End Function))
             Next
 
 
@@ -499,7 +499,7 @@ Namespace API.Controllers
                     Dim errorElementProperty As New System.Xml.Linq.XElement("Error")
                     errorElementProperty.Add(New System.Xml.Linq.XAttribute("Type", "3"),
                                              New System.Xml.Linq.XAttribute("Code", "448"),
-                                             New System.Xml.Linq.XText(ex.Message)
+                                             New System.Xml.Linq.XText(ex.Message))
                     errorsElement.Add(errorElementProperty)
 
                     HotelUtilitie.Log(userName, userId, "/rate-manager-ui/dist/Promotions.aspx", hotelId, Actions.Sincronizar, $"Error al sincronizar con {serviceName}", "", errorsElement.ToString(), "")
@@ -517,11 +517,11 @@ Namespace API.Controllers
 
             Dim note As String = IIf(isException,
                              String.Format("Sincronizar exception Promotions {0}", service),
-                             String.Format("Sincronizar Promotions {0}", service)
+                             String.Format("Sincronizar Promotions {0}", service))
 
             Dim noteDelete As String = IIf(isException,
                                    String.Format("Eliminar exception Promotions {0}", service),
-                                   String.Format("Eliminar Promotions {0}", service)
+                                   String.Format("Eliminar Promotions {0}", service))
 
 
             Dim confluxService As New ConfluxService()
@@ -610,7 +610,7 @@ Namespace API.Controllers
                     Dim errorElementProperty As New System.Xml.Linq.XElement("Error")
                     errorElementProperty.Add(New System.Xml.Linq.XAttribute("Type", "3"),
                                              New System.Xml.Linq.XAttribute("Code", "448"),
-                                             New System.Xml.Linq.XText(ex.Message)
+                                             New System.Xml.Linq.XText(ex.Message))
                     errorsElement.Add(errorElementProperty)
 
                     HotelUtilitie.Log(userName, userId, "/rate-manager-ui/dist/Promotions.aspx", hotelId, Actions.Sincronizar, $"Error al sincronizar eliminar con {service}", "", errorsElement.ToString(), "")
