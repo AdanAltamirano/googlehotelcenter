@@ -1,0 +1,278 @@
+# Sincronización con Google Hotel Center — Fase 1 (Implementada) + Diseño Fase 2
+
+Documento de referencia sobre los cambios aplicados y el plan para la siguiente fase.
+
+---
+
+## 1. Qué se implementó en Fase 1
+
+### 1.1 Logging del descarte silencioso de tarifas > 170,000
+
+**Problema original:** Cuando una tarifa superaba el límite de Google (170,000), el parser devolvía `null` y la tarifa se descartaba sin dejar rastro. El usuario veía "éxito" en la UI, pero Google nunca se actualizaba con esa tarifa.
+
+**Cambio aplicado:** `APIServices/Conflux/Parser/Parser.cs`
+
+- Se extrajo el literal `170000` a la constante `public const decimal GOOGLE_MAX_PRICE = 170000m;`
+- Se agregó el método privado estático `LogDiscardedRate(...)` que escribe al mismo sistema de logs que `PaginaBase.WriteLog` (archivos de texto en `Log_Path` de `web.config`).
+- Los 4 métodos del parser que antes descartaban silenciosamente ahora llaman a `LogDiscardedRate`:
+  - `GeneralAuxCreateRateAmountMessage` — tarifa normal.
+  - `GeneralAuxCreateRateAmountMessagePromotion` — tarifa normal con promoción.
+  - `RateAuxCreateRateAmountMessage` — tarifa aux.
+  - `RateAuxCreateRateAmountMessagePromotion` — tarifa aux con promoción.
+
+**Archivo de salida:** `C:\logs\ratemanager\GoogleRateDiscard_YYYYMMDD.log`
+
+**Formato de línea:**
+
+```
+2026/04/17 14:32:18.123 ==> DISCARDED-OVER-LIMIT (170,000): HotelId=1978 RateId=4521 RatePlanId=BAR RoomId=12 Range=2026-05-01..2026-05-15 Field=Price Price=185000
+```
+
+**Campos registrados:**
+
+| Campo | Significado |
+|---|---|
+| `HotelId` | ID del hotel |
+| `RateId` | ID de la tarifa |
+| `RatePlanId` | Código del plan tarifario |
+| `RoomId` | ID del tipo de habitación |
+| `Range` | Rango de fechas afectado |
+| `Field` | `Price` / `ExceptionPrice` / `PromoPrice` / `PromoExceptionPrice` |
+| `Price` | Valor que excedió el límite |
+
+**Impacto operativo:** Nulo. Solo lectura. Si `Log_Path` no existe o no está configurado, el logger falla silenciosamente sin afectar la sincronización.
+
+### 1.2 Corrección del typo `SendRatesAync` → `SendRatesAsync`
+
+**Archivo:** `RateManagerCss/API/Controllers/RatesController.vb`
+
+Rename del método en 3 referencias (dos llamadas + una definición). Cambio puramente cosmético, sin impacto funcional.
+
+---
+
+## 2. Fase 2 — Diseño de la tabla `GoogleSyncHistory` (propuesto, NO implementado)
+
+El objetivo es tener un **registro estructurado de cada sincronización** con Google/APICache, consultable desde una pantalla de administración, en lugar de depender solo de los logs textuales en DB (`Log`) y de archivos.
+
+### 2.1 Definición SQL propuesta
+
+```sql
+CREATE TABLE GoogleSyncHistory (
+    Id                 BIGINT         IDENTITY(1,1) PRIMARY KEY,
+    IdHotel            INT            NOT NULL,
+    IdCompany          INT            NULL,
+    ServiceName        VARCHAR(30)    NOT NULL,    -- 'Conflux' | 'APICache'
+    TipoOperacion      VARCHAR(40)    NOT NULL,    -- ver tabla 2.2
+    RatePlanId         VARCHAR(50)    NULL,
+    RoomCode           VARCHAR(50)    NULL,
+    StartDate          DATE           NULL,
+    EndDate            DATE           NULL,
+    RequestXML         NVARCHAR(MAX)  NULL,        -- mensaje OTA enviado
+    ResponseXML        NVARCHAR(MAX)  NULL,        -- respuesta cruda de Google/APICache
+    Status             VARCHAR(20)    NOT NULL,    -- 'Pending' | 'Success' | 'Failed'
+    HttpStatusCode     INT            NULL,        -- 200, 400, 500, timeout=-1
+    ErrorMessage       NVARCHAR(1000) NULL,        -- resumen si Status='Failed'
+    DurationMs         INT            NULL,        -- tiempo de la llamada HTTP
+    Usuario            NVARCHAR(100)  NULL,
+    CreatedAt          DATETIME2      NOT NULL DEFAULT SYSUTCDATETIME(),
+    CONSTRAINT CK_GoogleSyncHistory_Status CHECK (Status IN ('Pending','Success','Failed')),
+    CONSTRAINT CK_GoogleSyncHistory_Service CHECK (ServiceName IN ('Conflux','APICache'))
+);
+
+CREATE INDEX IX_GoogleSyncHistory_Hotel_Date
+    ON GoogleSyncHistory(IdHotel, CreatedAt DESC);
+
+CREATE INDEX IX_GoogleSyncHistory_Status
+    ON GoogleSyncHistory(Status, CreatedAt DESC)
+    WHERE Status = 'Failed';
+
+CREATE INDEX IX_GoogleSyncHistory_RatePlan
+    ON GoogleSyncHistory(IdHotel, RatePlanId, CreatedAt DESC);
+```
+
+### 2.2 Valores válidos para `TipoOperacion`
+
+| Valor | Operación origen |
+|---|---|
+| `UpdateRate` | Envío de tarifas (precios) |
+| `UpdateRatePatch` | Envío de tarifas vía PATCH (APICache) |
+| `DeleteRate` | Borrado de tarifas |
+| `DeleteRatePatch` | Borrado vía PATCH (APICache) |
+| `InsertRatePlan` | Alta de plan tarifario |
+| `UpdateRestrictionLockRate` | Envío de cierres |
+| `UpdateRestrictionPatch` | Cierres vía PATCH |
+
+### 2.3 Vista sugerida para consulta rápida
+
+```sql
+CREATE VIEW vGoogleSyncHistoryLatest AS
+SELECT TOP 1000
+    Id, IdHotel, ServiceName, TipoOperacion, RatePlanId,
+    StartDate, EndDate, Status, HttpStatusCode, ErrorMessage,
+    DurationMs, Usuario, CreatedAt
+FROM GoogleSyncHistory
+ORDER BY CreatedAt DESC;
+```
+
+---
+
+## 3. Puntos exactos del código donde se insertaría en `GoogleSyncHistory`
+
+La estrategia recomendada es **interceptar en `ConfluxService.cs`** (un solo archivo) en vez de tocar cada controller. Así toda mutación a Google pasa por el mismo punto.
+
+**Archivo:** `APIServices/Conflux/ConfluxService.cs`
+
+### 3.1 Métodos a interceptar
+
+| Método | Línea actual | `TipoOperacion` a registrar |
+|---|---|---|
+| `InsertRatePlanAsync` | 154 | `InsertRatePlan` |
+| `UpdateRateAsync` | 437 | `UpdateRate` |
+| `UpdateRatePatchAsync` | 487 | `UpdateRatePatch` |
+| `UpdateRestrictionAsync` | 1659 | `UpdateRestrictionLockRate` |
+| `UpdateRestrictionPatchAsync` | 1709 | `UpdateRestrictionPatch` |
+| `DeleteRatesAsync` | 1875 | `DeleteRate` |
+| `DeleteRatesPatchAsync` | 1922 | `DeleteRatePatch` |
+
+### 3.2 Patrón de inserción sugerido (pseudocódigo)
+
+```csharp
+public async Task<Tuple<RateResponse, RateResponse>> UpdateRateAsync(
+    RatesMessages ratesMessages, string endpoint, string endpointDelete, bool deleteRates = true)
+{
+    // 1) Insertar fila "Pending" con RequestXML
+    long syncId = GoogleSyncHistoryRepo.InsertPending(
+        hotelId: ratesMessages.HotelCodeV2,
+        serviceName: endpoint.Contains("apicache") ? "APICache" : "Conflux",
+        tipoOperacion: "UpdateRate",
+        requestXml: ratesMessages.ToXml());
+
+    var stopwatch = Stopwatch.StartNew();
+
+    try
+    {
+        // 2) Lógica actual (llamada HTTP a Google/APICache) ...
+        var result = /* código existente */;
+
+        // 3) Actualizar a "Success" con ResponseXML y duración
+        GoogleSyncHistoryRepo.MarkSuccess(
+            syncId, result.Item1.Xml, (int)stopwatch.ElapsedMilliseconds, httpStatusCode: 200);
+
+        return result;
+    }
+    catch (Exception ex)
+    {
+        GoogleSyncHistoryRepo.MarkFailed(
+            syncId, ex.Message, (int)stopwatch.ElapsedMilliseconds);
+        throw;
+    }
+}
+```
+
+### 3.3 Nueva clase sugerida: `GoogleSyncHistoryRepo`
+
+**Ubicación propuesta:** `APIServices/GoogleSyncHistoryRepo.cs`
+
+Tres métodos públicos:
+
+- `long InsertPending(int hotelId, string serviceName, string tipoOperacion, string requestXml, ...)` — inserta fila con `Status='Pending'`, retorna `Id`.
+- `void MarkSuccess(long id, string responseXml, int durationMs, int httpStatusCode)` — UPDATE.
+- `void MarkFailed(long id, string errorMessage, int durationMs)` — UPDATE.
+
+Todas las escrituras deben ir envueltas en `try/catch` para que un fallo de logging **nunca** rompa la sincronización real.
+
+---
+
+## 4. Cómo un usuario vería los cambios
+
+### 4.1 Hoy (Fase 1)
+
+| Para ver... | Dónde |
+|---|---|
+| Tarifas descartadas por exceder 170,000 | `C:\logs\ratemanager\GoogleRateDiscard_YYYYMMDD.log` |
+| Intentos de sincronización con respuesta | Tabla `Log` (campos `datos` / `datosDespues` contienen el XML) |
+
+### 4.2 Después de Fase 2 (propuesto)
+
+Crear una pantalla administrativa tipo:
+
+```
+/rate-manager-ui/dist/sync-history.aspx?hotelId=1978
+```
+
+Con filtros por:
+
+- Rango de fechas
+- `Status` (Pending / Success / Failed)
+- `ServiceName` (Conflux / APICache)
+- `RatePlanId`
+- `TipoOperacion`
+
+Y mostrando por cada registro: fecha, operación, status, duración, botón "ver XML request/response".
+
+### 4.3 Consultas SQL útiles (temporales hasta tener la UI)
+
+**Últimos 50 envíos fallidos de un hotel:**
+
+```sql
+SELECT TOP 50 *
+FROM GoogleSyncHistory
+WHERE IdHotel = 1978 AND Status = 'Failed'
+ORDER BY CreatedAt DESC;
+```
+
+**Resumen diario por hotel:**
+
+```sql
+SELECT
+    CAST(CreatedAt AS DATE) AS Dia,
+    ServiceName,
+    Status,
+    COUNT(*) AS Total,
+    AVG(DurationMs) AS DuracionPromedio
+FROM GoogleSyncHistory
+WHERE IdHotel = 1978 AND CreatedAt >= DATEADD(DAY, -7, SYSUTCDATETIME())
+GROUP BY CAST(CreatedAt AS DATE), ServiceName, Status
+ORDER BY Dia DESC;
+```
+
+**Detectar tarifas que se reenvían una y otra vez (posible loop):**
+
+```sql
+SELECT IdHotel, RatePlanId, COUNT(*) AS Reintentos
+FROM GoogleSyncHistory
+WHERE CreatedAt >= DATEADD(HOUR, -1, SYSUTCDATETIME())
+GROUP BY IdHotel, RatePlanId
+HAVING COUNT(*) > 10;
+```
+
+---
+
+## 5. Plan de trabajo sugerido para Fase 2
+
+| Paso | Esfuerzo | Riesgo |
+|---|---|---|
+| 1. Crear tabla `GoogleSyncHistory` + índices en el ambiente de desarrollo | 1h | Bajo |
+| 2. Crear `GoogleSyncHistoryRepo` con los 3 métodos | 3h | Bajo |
+| 3. Integrar en los 7 métodos de `ConfluxService.cs` | 4h | Medio (tocar código de producción) |
+| 4. Probar en dev: hacer guardados y verificar filas en la tabla | 2h | Bajo |
+| 5. Pantalla de consulta básica (lista + filtro por hotel y fecha) | 1-2 días | Bajo |
+| 6. Deploy a staging → producción | — | Medio |
+
+**Total estimado:** ~3 días de desarrollo + pruebas.
+
+---
+
+## 6. Validación de Fase 1 (checklist)
+
+- [ ] El proyecto compila sin errores (`APIServices` y `RateManagerCss`).
+- [ ] Guardar una tarifa normal en la UI — verificar que sigue funcionando igual que antes.
+- [ ] Guardar una tarifa con precio > 170,000 — verificar:
+  - [ ] La tarifa se guarda en BD local.
+  - [ ] Aparece una línea nueva en `C:\logs\ratemanager\GoogleRateDiscard_YYYYMMDD.log`.
+  - [ ] En Google Hotel Center esa tarifa NO aparece (comportamiento esperado, ya existía antes).
+- [ ] El método `SendRatesAsync` se llama correctamente desde `RateAdd` y `RateUpdate` (ya no dice `SendRatesAync`).
+
+---
+
+_Última actualización: 2026-04-17_
