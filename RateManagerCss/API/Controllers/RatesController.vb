@@ -76,7 +76,7 @@ Namespace API.Controllers
                 '    End If
                 'End If
 
-                SendRatesAync(userName, userId, info.Hotel, info.Empresa, logRates, False)
+                SendRatesAsync(userName, userId, info.Hotel, info.Empresa, logRates, False)
 
                 Try
                     'Guardar Log
@@ -139,7 +139,7 @@ Namespace API.Controllers
                 '    End If
                 'End If
 
-                SendRatesAync(username, userId, info.Hotel, info.Empresa, logRates, True, RQ.StartDate, RQ.EndDate)
+                SendRatesAsync(username, userId, info.Hotel, info.Empresa, logRates, True, RQ.StartDate, RQ.EndDate)
 
                 Try
                     'Guardar Log
@@ -494,7 +494,7 @@ Namespace API.Controllers
         End Sub
 
 
-        Private Sub SendRatesAync(ByVal userName As String, ByVal userId As Integer, ByVal hotelId As Integer, ByVal companyId As Integer, ByVal rates As IEnumerable(Of Tarifas), ByVal useDateFilter As Boolean, Optional startDate As Date? = Nothing, Optional endDate As Date? = Nothing)
+        Private Sub SendRatesAsync(ByVal userName As String, ByVal userId As Integer, ByVal hotelId As Integer, ByVal companyId As Integer, ByVal rates As IEnumerable(Of Tarifas), ByVal useDateFilter As Boolean, Optional startDate As Date? = Nothing, Optional endDate As Date? = Nothing)
 
             Dim maxConcurrentTasks As Integer = 5
             Dim semaphore As New SemaphoreSlim(maxConcurrentTasks)

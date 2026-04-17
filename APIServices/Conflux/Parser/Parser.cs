@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using APIServices.Models;
 using APIServices.Helpers.Room;
@@ -16,6 +17,32 @@ namespace APIServices.Conflux.Parser
     {
 
         public static bool ParserSendRatesToGoogle { get; set; } = true;
+
+        // Límite de precio impuesto por Google Hotel Center.
+        // Las tarifas que lo superan se descartan en el parser; LogDiscardedRate deja traza del descarte.
+        public const decimal GOOGLE_MAX_PRICE = 170000m;
+
+        private static void LogDiscardedRate(int hotelId, int rateId, string ratePlanId, int roomId,
+                                             DateTime startDate, DateTime endDate, string field, decimal price)
+        {
+            try
+            {
+                string path = ConfigurationManager.AppSettings["Log_Path"];
+                if (string.IsNullOrEmpty(path) || !Directory.Exists(path)) return;
+
+                string fileName = string.Format("{0}GoogleRateDiscard_{1}.log", path, DateTime.Now.ToString("yyyyMMdd"));
+                string msg = string.Format(
+                    "{0} ==> DISCARDED-OVER-LIMIT ({1:N0}): HotelId={2} RateId={3} RatePlanId={4} RoomId={5} Range={6:yyyy-MM-dd}..{7:yyyy-MM-dd} Field={8} Price={9}",
+                    DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff"),
+                    GOOGLE_MAX_PRICE, hotelId, rateId, ratePlanId, roomId, startDate, endDate, field, price);
+
+                File.AppendAllText(fileName, msg + Environment.NewLine);
+            }
+            catch
+            {
+                // Nunca fallar la sincronización por un error de logging
+            }
+        }
 
         //General
         public static Models.Rates.Response.RatesMessages ToRateAmountMessages(List<spGetCurrentRatesByHotel_Result4> currentRates, int hotelId, int companyId, bool? plusTax, decimal? tax, string currency, DateTime? startDate, DateTime? endDate)
@@ -1256,8 +1283,27 @@ namespace APIServices.Conflux.Parser
 
             if (ParserSendRatesToGoogle)
             {
-                RateAmountMessage rateAmountMessage = (vDayRate.Price <= 170000) ? RatesHelpers.CreateRateAmountMessage(currentRate, vDayRate) : null;
-                RateAmountMessage rateAmountMessageException = (vDayRate.ExceptionPrice <= 170000) ? RatesHelpers.CreateRateAmountMessageException(currentRate, vDayRate) : null;
+                RateAmountMessage rateAmountMessage = null;
+                if (vDayRate.Price <= GOOGLE_MAX_PRICE)
+                {
+                    rateAmountMessage = RatesHelpers.CreateRateAmountMessage(currentRate, vDayRate);
+                }
+                else
+                {
+                    LogDiscardedRate(vDayRate.HotelId, vDayRate.RateId, vDayRate.RatePlanId, vDayRate.RoomId,
+                                     vDayRate.StartDate, vDayRate.EndDate, "Price", vDayRate.Price);
+                }
+
+                RateAmountMessage rateAmountMessageException = null;
+                if (vDayRate.ExceptionPrice <= GOOGLE_MAX_PRICE)
+                {
+                    rateAmountMessageException = RatesHelpers.CreateRateAmountMessageException(currentRate, vDayRate);
+                }
+                else
+                {
+                    LogDiscardedRate(vDayRate.HotelId, vDayRate.RateId, vDayRate.RatePlanId, vDayRate.RoomId,
+                                     vDayRate.StartDate, vDayRate.EndDate, "ExceptionPrice", vDayRate.ExceptionPrice);
+                }
 
                 if (rateAmountMessage != null) rateAmountMessages.RateAmountMessagesList.Add(rateAmountMessage);
                 if (rateAmountMessageException != null) rateAmountMessagesExceptions.RateAmountMessagesList.Add(rateAmountMessageException);
@@ -1279,8 +1325,27 @@ namespace APIServices.Conflux.Parser
 
             if (ParserSendRatesToGoogle)
             {
-                RateAmountMessage rateAmountMessage = (vDayRate.Price <= 170000) ? RatesHelpers.CreateRateAmountMessage(currentRate, vDayRate) : null;
-                RateAmountMessage rateAmountMessageException = (vDayRate.ExceptionPrice <= 170000) ? RatesHelpers.CreateRateAmountMessageException(currentRate, vDayRate) : null;
+                RateAmountMessage rateAmountMessage = null;
+                if (vDayRate.Price <= GOOGLE_MAX_PRICE)
+                {
+                    rateAmountMessage = RatesHelpers.CreateRateAmountMessage(currentRate, vDayRate);
+                }
+                else if (vDayRate.Price.HasValue)
+                {
+                    LogDiscardedRate(vDayRate.HotelId, vDayRate.RateId, vDayRate.RatePlanId, vDayRate.RoomId,
+                                     vDayRate.StartDate, vDayRate.EndDate, "PromoPrice", vDayRate.Price.Value);
+                }
+
+                RateAmountMessage rateAmountMessageException = null;
+                if (vDayRate.ExceptionPrice <= GOOGLE_MAX_PRICE)
+                {
+                    rateAmountMessageException = RatesHelpers.CreateRateAmountMessageException(currentRate, vDayRate);
+                }
+                else
+                {
+                    LogDiscardedRate(vDayRate.HotelId, vDayRate.RateId, vDayRate.RatePlanId, vDayRate.RoomId,
+                                     vDayRate.StartDate, vDayRate.EndDate, "PromoExceptionPrice", vDayRate.ExceptionPrice);
+                }
 
                 if (rateAmountMessage != null) rateAmountMessages.RateAmountMessagesList.Add(rateAmountMessage);
                 if (rateAmountMessageException != null) rateAmountMessagesExceptions.RateAmountMessagesList.Add(rateAmountMessageException);
@@ -1305,7 +1370,16 @@ namespace APIServices.Conflux.Parser
         {
             if (ParserSendRatesToGoogle)
             {
-                RateAmountMessage rateAmountMessage = (vDayRate.Price <= 170000) ? RatesHelpers.CreateRateAmountMessage(vDayRate) : null;
+                RateAmountMessage rateAmountMessage = null;
+                if (vDayRate.Price <= GOOGLE_MAX_PRICE)
+                {
+                    rateAmountMessage = RatesHelpers.CreateRateAmountMessage(vDayRate);
+                }
+                else
+                {
+                    LogDiscardedRate(vDayRate.HotelId, vDayRate.RateId, vDayRate.RatePlanId, vDayRate.RoomId,
+                                     vDayRate.StartDate, vDayRate.EndDate, "Price", vDayRate.Price);
+                }
 
                 if (rateAmountMessage != null) rateAmountMessages.RateAmountMessagesList.Add(rateAmountMessage);
             }
@@ -1321,7 +1395,16 @@ namespace APIServices.Conflux.Parser
         {
             if (ParserSendRatesToGoogle)
             {
-                RateAmountMessage rateAmountMessage = (vDayRate.Price <= 170000) ? RatesHelpers.CreateRateAmountMessage(vDayRate) : null;
+                RateAmountMessage rateAmountMessage = null;
+                if (vDayRate.Price <= GOOGLE_MAX_PRICE)
+                {
+                    rateAmountMessage = RatesHelpers.CreateRateAmountMessage(vDayRate);
+                }
+                else if (vDayRate.Price.HasValue)
+                {
+                    LogDiscardedRate(vDayRate.HotelId, vDayRate.RateId, vDayRate.RatePlanId, vDayRate.RoomId,
+                                     vDayRate.StartDate, vDayRate.EndDate, "PromoPrice", vDayRate.Price.Value);
+                }
 
                 if (rateAmountMessage != null) rateAmountMessages.RateAmountMessagesList.Add(rateAmountMessage);
             }
