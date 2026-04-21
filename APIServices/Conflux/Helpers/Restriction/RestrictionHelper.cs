@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Configuration;
 using System.Data;
+using System.Linq;
 using System.Collections.Generic;
 using APIServices.Models;
 using APIServices.Conflux.OTA.Models.Restrictions;
 using System.Globalization;
+using APIServices.Conflux.Models.Restrictions.Rate;
 
 namespace APIServices.Conflux.Helpers.Restriction
 {
@@ -197,8 +199,220 @@ namespace APIServices.Conflux.Helpers.Restriction
 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="hotelId"></param>
+        /// <param name="restricion"></param>
+        /// <returns></returns>
+        public static List<spGetRestrictionsByHotel_Result> GetAllRestrictionsByAvailableRate(int hotelId, Models.Restrictions.Restricion restricion)
+        {
+            List<APIServices.Conflux.spGetRestrictionsByHotel_Result> listRestrictionsByHotel = new List<APIServices.Conflux.spGetRestrictionsByHotel_Result>();
+
+            using (ConfluxEntities confluxEntities = new ConfluxEntities())
+            {
+
+                if ((restricion.RatePlansList.Length == 1 && restricion.RatePlansList[0] == "0") &&
+                   (restricion.RoomsList.Length == 1 && restricion.RoomsList[0] == 0))
+                {
+                    // Todos los planes con todas las habitaciones
+
+                    listRestrictionsByHotel = confluxEntities.spGetRestrictionsByHotel(hotelId, restricion.StartDate.Value.Date, restricion.EndDate.Value.Date, null, null).ToList();
+
+                }
+                else if ((restricion.RatePlansList.Length == 1 && restricion.RatePlansList[0] == "0") &&
+                            ((restricion.RoomsList.Length == 1 && restricion.RoomsList[0] != 0) || restricion.RoomsList.Length > 1))
+                {
+                    // Todos los planes con habitaciones seleccionadas
+
+                    foreach (var roomId in restricion.RoomsList)
+                    {
+                        var restrictionsByHotelTemp = confluxEntities.spGetRestrictionsByHotel(hotelId, restricion.StartDate.Value.Date, restricion.EndDate.Value.Date, roomId, null).ToList();
+                        listRestrictionsByHotel.AddRange(restrictionsByHotelTemp);
+                    }
 
 
+                }
+                else if ((restricion.RoomsList.Length == 1 && restricion.RoomsList[0] == 0) &&
+                            ((restricion.RatePlansList.Length == 1 && restricion.RatePlansList[0] != "0") || restricion.RatePlansList.Length > 1))
+                {
+                    // Todas las habitaciones con planes seleccionados
+
+                    foreach (var rateplanId in restricion.RatePlansList)
+                    {
+                        var restrictionsByHotelTemp = confluxEntities.spGetRestrictionsByHotel(hotelId, restricion.StartDate.Value.Date, restricion.EndDate.Value.Date, null, rateplanId).ToList();
+                        listRestrictionsByHotel.AddRange(restrictionsByHotelTemp);
+                    }
+
+                }
+                else
+                {
+                    // Planes seleccionados con habitaciones seleccionadas
+
+                    foreach (var roomId in restricion.RoomsList)
+                    {
+                        foreach (var rateplanId in restricion.RatePlansList)
+                        {
+                            var restrictionsByHotelTemp = confluxEntities.spGetRestrictionsByHotel(hotelId, restricion.StartDate.Value.Date, restricion.EndDate.Value.Date, roomId, rateplanId).ToList();
+                            listRestrictionsByHotel.AddRange(restrictionsByHotelTemp);
+                        }
+                    }
+                }
+            }
+
+            return listRestrictionsByHotel;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="restrictions"></param>
+        /// <returns></returns>
+        public static List<RateRestrictionDto> BuildRestrictionsByAvaillableRate(List<spGetRestrictionsByHotel_Result> restrictions,int hotelId)
+        {
+            return restrictions
+                .GroupBy(x => x.RateId)
+                .Select(g =>
+                {
+                        var baseRow = g.First();
+
+                        return new RateRestrictionDto
+                        {
+                           RateId = baseRow.RateId,
+                           RoomId = baseRow.RoomId,
+                           RoomCode = baseRow.RoomCode,
+
+                           RestrictionsHotel = new HotelRestrictionsDto
+                           {
+                               HotelId = hotelId,
+                               HotelMinDays = baseRow.HotelMinDays,
+                               HotelMaxDays = baseRow.HotelMaxDays,
+                               HotelMinAdvDays = baseRow.HotelMinAdvDays,
+                               HotelMaxAdvDays = baseRow.HotelMaxAdvDays
+                           },
+
+                           RoomsLinked = string.IsNullOrEmpty(baseRow.RoomsLinked)
+                               ? new List<string>()
+                               : baseRow.RoomsLinked.Split(',').ToList(),
+
+                                RatePlan = new RatePlanDto
+                                {
+                                    RatePlanId = baseRow.RatePlanId,
+                                    RateCode = baseRow.RateCode,
+
+                                    RestrictionsRate = new RateRestrictionsDto
+                                    {
+                                        MinDays = baseRow.MinDays,
+                                        MaxDays = baseRow.MaxDays,
+                                        MinAdvDays = baseRow.MinAdvDays,
+                                        MaxAdvDays = baseRow.MaxAdvDays
+                                    },
+
+                                    RestrictionsRatePlan = new RatePlanRestrictionsDto
+                                    {
+                                        RatePlanMinDays = baseRow.RatePlanMinDays,
+                                        RatePlanMaxDays = baseRow.RatePlanMaxDays,
+                                        RatePlanMinAdvDays = baseRow.RatePlanMinAdvDays,
+                                        RatePlanMaxAdvDays = baseRow.RatePlanMaxAdvDays
+                                    },
+
+                                    LinkedRatePlans = g
+                                        .Where(x => x.HasRatePlanLinked == 1)
+                                        .Select(x => new LinkedRatePlanDto
+                                        {
+                                            RateCode = x.RateCodeLinked,
+                                            MinDays = x.RatePlanLinkedMinDays,
+                                            MaxDays = x.RatePlanLinkedMaxDays,
+                                            MinAdvDays = x.RatePlanLinkedMinAdvDays,
+                                            MaxAdvDays = x.RatePlanLinkedMaxAdvDays
+                                        })
+                                        .GroupBy(x => x.RateCode) // evita duplicados
+                                        .Select(x => x.First())
+                                        .ToList()
+                                }
+                        };
+                }).ToList();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="listRestrictionDto"></param>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
+        public static void AddPromotionsByAvailableRate(ref List<RateRestrictionDto> listRestrictionDto, DateTime? startDate, DateTime? endDate)
+        {
+            using (ConfluxEntities confluxEntities = new ConfluxEntities())
+            { 
+                foreach (var restriction in listRestrictionDto)
+                {
+                    var listPromotions = confluxEntities.vRatesPromotions.Where(vrp => vrp.RateId == restriction.RateId && vrp.HotelId == vrp.HotelId
+                                                                          && vrp.RoomId == restriction.RoomId && vrp.DeletedRatePlan == false && vrp.Language == 1);
+
+                    foreach(var promotion in listPromotions)
+                    {
+                        if (IsPromotionValid(promotion, startDate, endDate))
+                        {
+                            PromotionDto promotionTemp = new PromotionDto()
+                            {
+                                RateId = promotion.RateId,
+                                HotelId = promotion.HotelId,
+                                RatePlanId = promotion.RatePlanId,
+                                ParentRatePlanId = promotion.ParentRatePlanId,
+                                PromoRatePlanId = promotion.PromoRatePlanId,
+                                PromotionMinDays = promotion.MinDays,
+                                PromotionMaxDays = promotion.MaxDays,
+                                PromotionMinAdvDays = promotion.MinAdvDays,
+                                PromotionMaxAdvDays = promotion.MaxAdvDays
+                            };
+
+                            restriction.Promotions.Add(promotionTemp);
+                        }
+                    }
+
+                }
+            }
+        }
+
+
+
+        public static bool IsPromotionValid(vRatesPromotion promotion,DateTime? searchStart, DateTime? searchEnd)
+        {
+            // Booking Window
+            if (promotion.PromoStartDateBookingWindow.HasValue && promotion.PromoEndDateBookingWindow.HasValue)
+            {
+                if (!IsOverlapping(searchStart, searchEnd,promotion.PromoStartDateBookingWindow.Value,promotion.PromoEndDateBookingWindow.Value))
+                {
+                    return false;
+                }
+            }
+
+            // TravelWindow
+            if (promotion.PromoStartDateTravelWindow.HasValue && promotion.PromoEndDateTravelWindow.HasValue)
+            {
+                if (!IsOverlapping(searchStart, searchEnd, promotion.PromoStartDateTravelWindow.Value, promotion.PromoEndDateTravelWindow.Value))
+                {
+                    return false;
+                }
+            }
+
+            // Rate
+            if (promotion.RateStartDate.HasValue && promotion.RateEndDate.HasValue)
+            {
+                if (!IsOverlapping(searchStart, searchEnd, promotion.RateStartDate.Value, promotion.RateEndDate.Value))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+
+        private static bool IsOverlapping(DateTime? start1, DateTime? end1, DateTime? start2, DateTime? end2)
+        {
+            return start1 <= end2 && end1 >= start2;
+        }
 
     }
 }

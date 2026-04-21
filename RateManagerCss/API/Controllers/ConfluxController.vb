@@ -172,8 +172,8 @@ Namespace API.Controllers
         End Function
 
 
-        <Route("updaterestrictions/{hotelId:int}"), HttpPost>
-        Public Function UpdateRestrictions(ByVal hotelId As Integer, <FromBody> closure As APIServices.Conflux.Models.Closure.Closure) As HttpResponseMessage
+        <Route("updateclosure/{hotelId:int}"), HttpPost>
+        Public Function UpdateClosure(ByVal hotelId As Integer, <FromBody> closure As APIServices.Conflux.Models.Closure.Closure) As HttpResponseMessage
 
             Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
             Dim priorityRequests As List(Of List(Of System.Xml.Linq.XDocument)) = ConfluxService.GetClosureMessagesV2(hotelId, info.Empresa, closure)
@@ -249,6 +249,14 @@ Namespace API.Controllers
             End If
 
             Return Ok(toObject)
+
+        End Function
+
+        <Route("updaterestrictions/{hotelId:int}"), HttpPost>
+        Public Function UpdateRestrictions(ByVal hotelId As Integer, <FromBody> restriction As APIServices.Conflux.Models.Restrictions.Restricion) As HttpResponseMessage
+            Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
+
+            ConfluxService.GetRestricionsMessages(hotelId, info.Empresa, restriction)
 
         End Function
 
