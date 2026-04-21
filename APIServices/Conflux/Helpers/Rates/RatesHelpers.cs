@@ -25,41 +25,79 @@ namespace APIServices.Conflux.Helpers.Rates
         }
 
         #region vDayRate
-        public static List<vDayRates> GetVDayRate(int rateId, DateTime startDate, DateTime endDate)
+        public static List<vDayRates> GetVDayRate(int rateId, DateTime startDate, DateTime endDate,bool deleted = true)
         {
             List<vDayRates> vDayRate = null;
 
-            using (OzHotelesEntities dbContext = new OzHotelesEntities())
+            if (deleted)
             {
-                vDayRate = dbContext.vDayRates.Where(
-                    dr => dr.RateId == rateId
-                    && dr.StartDate >= startDate
-                    && dr.EndDate <= endDate
-                    && dr.EndDate >= startDate
-                    && dr.Language == 1)
-                    .AsNoTracking()
-                    .OrderBy(vdr => vdr.StartDate)
-                    .ToList();
+                using (OzHotelesEntities dbContext = new OzHotelesEntities())
+                {
+                    vDayRate = dbContext.vDayRates.Where(
+                        dr => dr.RateId == rateId
+                        && dr.StartDate >= startDate
+                        && dr.EndDate <= endDate
+                        && dr.EndDate >= startDate
+                        && dr.Language == 1)
+                        .AsNoTracking()
+                        .OrderBy(vdr => vdr.StartDate)
+                        .ToList();
+                }
+            }
+            else
+            {
+                using (OzHotelesEntities dbContext = new OzHotelesEntities())
+                {
+                    vDayRate = dbContext.vDayRates.Where(
+                        dr => dr.RateId == rateId
+                        && dr.StartDate >= startDate
+                        && dr.EndDate <= endDate
+                        && dr.EndDate >= startDate
+                        && dr.Language == 1
+                        && dr.DeletedRatePlan == deleted)
+                        .AsNoTracking()
+                        .OrderBy(vdr => vdr.StartDate)
+                        .ToList();
+                }
             }
 
             return vDayRate;
         }
 
-        public static List<vDayRatesExceptions> GetVDayRateException(int rateId, DateTime startDate, DateTime endDate)
+        public static List<vDayRatesExceptions> GetVDayRateException(int rateId, DateTime startDate, DateTime endDate, bool deleted = true)
         {
             List<vDayRatesExceptions> vDayRate = null;
 
-            using (OzHotelesEntities dbContext = new OzHotelesEntities())
+            if (deleted)
             {
-                vDayRate = dbContext.vDayRatesExceptions.Where(
-                    dr => dr.RateId == rateId
-                    && dr.StartDate >= startDate
-                    && dr.EndDate <= endDate
-                    && dr.EndDate >= startDate
-                    && dr.Language == 1)
-                    .AsNoTracking()
-                    .OrderBy(vdr => vdr.StartDate)
-                    .ToList();
+                using (OzHotelesEntities dbContext = new OzHotelesEntities())
+                {
+                    vDayRate = dbContext.vDayRatesExceptions.Where(
+                        dr => dr.RateId == rateId
+                        && dr.StartDate >= startDate
+                        && dr.EndDate <= endDate
+                        && dr.EndDate >= startDate
+                        && dr.Language == 1
+                        && dr.DeletedRatePlan == deleted)
+                        .AsNoTracking()
+                        .OrderBy(vdr => vdr.StartDate)
+                        .ToList();
+                }
+            }
+            else
+            {
+                using (OzHotelesEntities dbContext = new OzHotelesEntities())
+                {
+                    vDayRate = dbContext.vDayRatesExceptions.Where(
+                        dr => dr.RateId == rateId
+                        && dr.StartDate >= startDate
+                        && dr.EndDate <= endDate
+                        && dr.EndDate >= startDate
+                        && dr.Language == 1)
+                        .AsNoTracking()
+                        .OrderBy(vdr => vdr.StartDate)
+                        .ToList();
+                }
             }
 
             return vDayRate;

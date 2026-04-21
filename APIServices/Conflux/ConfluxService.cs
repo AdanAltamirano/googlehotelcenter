@@ -539,7 +539,7 @@ namespace APIServices.Conflux
             return new Tuple<RateResponse, RateResponse>(rateResponse, deleteRateResponse);
         }
 
-        public RatesMessages GetRateMessages(int rateId, DateTime startDate, DateTime endDate, int hotelId, int companyId, TypeRateEnum typeRate)
+        public RatesMessages GetRateMessages(int rateId, DateTime startDate, DateTime endDate, int hotelId, int companyId, TypeRateEnum typeRate,bool deletedRatePlan)
         {
             RatesMessages ratesMessages = null;
 
@@ -549,10 +549,10 @@ namespace APIServices.Conflux
             switch (typeRate)
             {
                 case TypeRateEnum.RoomRate:
-                    rates = APIServices.Conflux.Helpers.Rates.RatesHelpers.GetVDayRate(rateId, startDate, endDate);
+                    rates = APIServices.Conflux.Helpers.Rates.RatesHelpers.GetVDayRate(rateId, startDate, endDate,deletedRatePlan);
                     break;
                 case TypeRateEnum.RoomRatePromotion:
-                    ratesExceptions = APIServices.Conflux.Helpers.Rates.RatesHelpers.GetVDayRateException(rateId, startDate, endDate);
+                    ratesExceptions = APIServices.Conflux.Helpers.Rates.RatesHelpers.GetVDayRateException(rateId, startDate, endDate,deletedRatePlan);
                     break;
             }
 

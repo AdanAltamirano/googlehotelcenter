@@ -783,7 +783,7 @@ namespace APIServices.Conflux.Parser.Restriction
 
             char[] segmentsNoRates = string.Concat(splitSegmentsNoRates).ToCharArray();
 
-            List<vDayRates> vDayRates = RatesHelpers.GetVDayRate(currentRate);
+            List<vDayRates> vDayRates = RatesHelpers.GetVDayRate(currentRate,false);
 
             foreach (var vDayRate in vDayRates)
             {
@@ -838,7 +838,7 @@ namespace APIServices.Conflux.Parser.Restriction
 
             char[] segmentsNoRates = string.Concat(splitSegmentsNoRates).ToCharArray();
 
-            List<vDayRatesExceptions> vDayRates = RatesHelpers.GetVDayRateException(currentRate);
+            List<vDayRatesExceptions> vDayRates = RatesHelpers.GetVDayRateException(currentRate,false);
 
             foreach (var vDayRate in vDayRates)
             {
