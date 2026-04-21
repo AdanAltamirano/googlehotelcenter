@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using APIServices.Models;
 using APIServices.Helpers.Room;
 using APIServices.Conflux.OTA.Models.Restrictions;
-
+using APIServices.Conflux.Models.Restrictions.Rate;
 
 namespace APIServices.Conflux.Helpers.Restriction
 {
@@ -74,6 +74,88 @@ namespace APIServices.Conflux.Helpers.Restriction
 
         }
 
+        public static List<LengthOfStay> CreateLenghtStay(HotelRestrictionsDto restrictionsHotel, AllRatePlanRestrictionsDto rateplanRestrictions, RateRestrictionsDto rateRestricions, PromotionDto promotionRestrictions)
+        {
+            List<LengthOfStay> lengthOfStays = new List<LengthOfStay>();
+
+            //Si hay de hotel se mandan esas
+            if (restrictionsHotel.HotelMinDays > 0 || restrictionsHotel.HotelMaxDays > 0)
+            {
+                LengthOfStay lengthOfStayMin = new LengthOfStay()
+                {
+                    MinMaxMessageType = "SetMinLOS",
+                    Time = restrictionsHotel.HotelMinDays
+                };
+
+                LengthOfStay lengthOfStayMax = new LengthOfStay()
+                {
+                    MinMaxMessageType = "SetMaxLOS",
+                    Time = restrictionsHotel.HotelMaxDays
+                };
+
+                lengthOfStays.Add(lengthOfStayMin);
+                lengthOfStays.Add(lengthOfStayMax);
+            }
+            else
+            {
+                if(promotionRestrictions != null)
+                {
+                    if(promotionRestrictions.PromotionMinDays > 0 || promotionRestrictions.PromotionMaxDays > 0)
+                    {
+                        LengthOfStay lengthOfStayMin = new LengthOfStay()
+                        {
+                            MinMaxMessageType = "SetMinLOS",
+                            Time = promotionRestrictions.PromotionMinDays
+                        };
+
+                        LengthOfStay lengthOfStayMax = new LengthOfStay()
+                        {
+                            MinMaxMessageType = "SetMaxLOS",
+                            Time = promotionRestrictions.PromotionMaxDays
+                        };
+
+                        lengthOfStays.Add(lengthOfStayMin);
+                        lengthOfStays.Add(lengthOfStayMax);
+                    }
+                }
+                else if(rateplanRestrictions.MinDays > 0 || rateplanRestrictions.MaxDays > 0)
+                {
+                    LengthOfStay lengthOfStayMin = new LengthOfStay()
+                    {
+                        MinMaxMessageType = "SetMinLOS",
+                        Time = rateplanRestrictions.MinDays
+                    };
+
+                    LengthOfStay lengthOfStayMax = new LengthOfStay()
+                    {
+                        MinMaxMessageType = "SetMaxLOS",
+                        Time = rateplanRestrictions.MaxDays
+                    };
+
+                    lengthOfStays.Add(lengthOfStayMin);
+                    lengthOfStays.Add(lengthOfStayMax);
+                }
+                else if(rateRestricions.MinDays > 0 || rateRestricions.MaxDays > 0)
+                {
+                    LengthOfStay lengthOfStayMin = new LengthOfStay()
+                    {
+                        MinMaxMessageType = "SetMinLOS",
+                        Time = rateRestricions.MinDays
+                    };
+
+                    LengthOfStay lengthOfStayMax = new LengthOfStay()
+                    {
+                        MinMaxMessageType = "SetMaxLOS",
+                        Time = rateRestricions.MaxDays
+                    };
+
+                    lengthOfStays.Add(lengthOfStayMin);
+                    lengthOfStays.Add(lengthOfStayMax);
+                }
+            }
+
+            return lengthOfStays;
+        }
 
     }
 }

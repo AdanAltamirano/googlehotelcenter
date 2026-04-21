@@ -72,9 +72,21 @@ namespace APIServices.Conflux.Models.Restrictions.Rate
         public string RatePlanId { get; set; }
         public string ParentRatePlanId { get; set; }
         public string PromoRatePlanId { get; set; }
+        public int RoomId { get; set; }
+        public string RoomCode { get; set; }
         public int PromotionMinDays { get; set; }
         public int PromotionMaxDays { get; set; }
         public int PromotionMinAdvDays { get; set; }
         public int PromotionMaxAdvDays { get; set; }
     }
+
+    public class AllRatePlanRestrictionsDto
+    {
+        public string RateCode { get; set; }
+        public int MinDays { get; set; }
+        public int MaxDays { get; set; }
+        public int MinAdvDays { get; set; }
+        public int MaxAdvDays { get; set; }
+    }
+
 }

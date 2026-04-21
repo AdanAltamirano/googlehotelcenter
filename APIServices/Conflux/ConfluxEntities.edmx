@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ConfluxModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ConfluxModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRatesPromotions' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="vRatesPromotions">
@@ -27,16 +27,17 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRatesPromotions' no tiene def
             <PropertyRef Name="MinAdvDays" />
             <PropertyRef Name="MaxAdvDays" />
             <PropertyRef Name="RateId" />
+            <PropertyRef Name="RoomId" />
+            <PropertyRef Name="RatePlanId" />
             <PropertyRef Name="StartDate" />
             <PropertyRef Name="EndDate" />
-            <PropertyRef Name="RatePlanId" />
             <PropertyRef Name="Language" />
-            <PropertyRef Name="RoomId" />
             <PropertyRef Name="PromoRatePlanId" />
           </Key>
           <Property Name="RateId" Type="int" Nullable="false" />
           <Property Name="HotelId" Type="int" Nullable="false" />
           <Property Name="RoomId" Type="int" Nullable="false" />
+          <Property Name="RoomCode" Type="nvarchar" MaxLength="4" />
           <Property Name="RatePlanId" Type="nvarchar" MaxLength="54" Nullable="false" />
           <Property Name="RatePlanName" Type="nvarchar" MaxLength="80" />
           <Property Name="Segment" Type="char" MaxLength="1" />
@@ -88,6 +89,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRatesPromotions' no tiene def
     [vRatesPromotions].[RateId] AS [RateId], 
     [vRatesPromotions].[HotelId] AS [HotelId], 
     [vRatesPromotions].[RoomId] AS [RoomId], 
+    [vRatesPromotions].[RoomCode] AS [RoomCode], 
     [vRatesPromotions].[RatePlanId] AS [RatePlanId], 
     [vRatesPromotions].[RatePlanName] AS [RatePlanName], 
     [vRatesPromotions].[Segment] AS [Segment], 
@@ -128,8 +130,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRatesPromotions' no tiene def
     FROM [dbo].[vRatesPromotions] AS [vRatesPromotions]</DefiningQuery>
           </EntitySet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ConfluxModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -200,6 +201,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRatesPromotions' no tiene def
           <Property Name="MaxDays" Type="Byte" Nullable="false" />
           <Property Name="MinAdvDays" Type="Byte" Nullable="false" />
           <Property Name="MaxAdvDays" Type="Int32" Nullable="false" />
+          <Property Name="RoomCode" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityContainer Name="ConfluxEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="vRatesPromotions" EntityType="Self.vRatesPromotion" />
@@ -248,6 +250,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRatesPromotions' no tiene def
           <EntitySetMapping Name="vRatesPromotions">
             <EntityTypeMapping TypeName="ConfluxModel.vRatesPromotion">
               <MappingFragment StoreEntitySet="vRatesPromotions">
+                <ScalarProperty Name="RoomCode" ColumnName="RoomCode" />
                 <ScalarProperty Name="RateId" ColumnName="RateId" />
                 <ScalarProperty Name="HotelId" ColumnName="HotelId" />
                 <ScalarProperty Name="RoomId" ColumnName="RoomId" />

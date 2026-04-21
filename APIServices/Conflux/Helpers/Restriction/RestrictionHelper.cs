@@ -358,6 +358,8 @@ namespace APIServices.Conflux.Helpers.Restriction
                                 RateId = promotion.RateId,
                                 HotelId = promotion.HotelId,
                                 RatePlanId = promotion.RatePlanId,
+                                RoomId = promotion.RoomId,
+                                RoomCode = promotion.RoomCode,
                                 ParentRatePlanId = promotion.ParentRatePlanId,
                                 PromoRatePlanId = promotion.PromoRatePlanId,
                                 PromotionMinDays = promotion.MinDays,

@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using APIServices.Conflux.Parser.Restriction;
+using APIServices.Conflux.Models.Restrictions.Rate;
 
 namespace APIServices.Conflux
 {
@@ -11,15 +10,17 @@ namespace APIServices.Conflux
 
         private ConfluxEntities confluxEntities = new ConfluxEntities();
 
-        private void GetGeneralRestriction(int hotelId, int companyId)
+        private void GetOccupationMessages(List<RateRestrictionDto> listRestrictionDto,DateTime? startDate,DateTime? endDate)
         {
-            //Restricciones por hotel
-
-
-
+            var availStatusMessages = RestrictionsParser.ToAvailStatusMessagesOccupation(listRestrictionDto, startDate, endDate);
 
         }
 
+        private void GetAdvancedDaysMessages(List<RateRestrictionDto> listRestrictionDto, DateTime? startDate, DateTime? endDate)
+        {
+            //var availStatusMessages = RestrictionsParser.ToAvailStatusMessagesAdvancedDays(listRestrictionDto, startDate, endDate);
+
+        }
 
     }
 }

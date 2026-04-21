@@ -10,6 +10,7 @@ using APIServices.Conflux.Helpers.Rates;
 using APIServices.Conflux.Helpers.Restriction;
 using APIServices.Conflux.Models.Restrictions;
 using APIServices.Conflux.OTA.Models.Restrictions;
+using APIServices.Conflux.Models.Restrictions.Rate;
 
 
 namespace APIServices.Conflux.Parser.Restriction
@@ -340,6 +341,84 @@ namespace APIServices.Conflux.Parser.Restriction
                 }
 
             }
+
+            return availStatusMessages;
+        }
+
+        public static AvailStatusMessages ToAvailStatusMessagesOccupation(List<RateRestrictionDto> listRestrictionDto,DateTime? startDate, DateTime? endDate)
+        {
+            AvailStatusMessages availStatusMessages = new AvailStatusMessages()
+            {
+                HotelCode = HotelCode,
+                AvailStatusMessageList = new List<AvailStatusMessage>()
+            };
+
+            foreach(var restriction in listRestrictionDto) 
+            {
+                List<string> AllRooms = new List<string>();
+                AllRooms.Add(restriction.RoomCode);
+                if(restriction.RoomsLinked != null) AllRooms.AddRange(restriction.RoomsLinked);
+
+                List<AllRatePlanRestrictionsDto> AllRatePlans = new List<AllRatePlanRestrictionsDto>();
+                AllRatePlans.Add(new AllRatePlanRestrictionsDto
+                {
+                    RateCode = restriction.RatePlan.RatePlanId,
+                    MinDays = restriction.RatePlan.RestrictionsRatePlan.RatePlanMinDays,
+                    MaxDays = restriction.RatePlan.RestrictionsRatePlan.RatePlanMaxDays
+
+                });
+
+                if (restriction.RatePlan.LinkedRatePlans != null)
+                {
+                    AllRatePlans.AddRange(
+                        restriction.RatePlan.LinkedRatePlans.Select(x => new AllRatePlanRestrictionsDto
+                        {
+                            RateCode = x.RateCode,
+                            MinDays = x.MinDays,
+                            MaxDays = x.MaxDays
+                        })
+                    );
+                }
+
+                foreach(var room in AllRooms)
+                {
+                    foreach(var rateplan in AllRatePlans)
+                    {
+                        AvailStatusMessage availStatusMessage = new AvailStatusMessage();
+                        availStatusMessage.StatusApplicationControl = new StatusApplicationControl()
+                        {
+                            Start = startDate.Value.Date,
+                            End = endDate.Value.Date,
+                            InvTypeCode = room ?? "",
+                            RatePlanCode = rateplan.RateCode
+                        };
+
+                        availStatusMessage.LengthsOfStay = RestrictionHelper.CreateLenghtStay(restriction.RestrictionsHotel,rateplan,restriction.RatePlan.RestrictionsRate,null);
+
+                        availStatusMessages.AvailStatusMessageList.Add(availStatusMessage);
+                    }
+                }
+
+                //Promociones
+
+                foreach(var promotion in restriction.Promotions)
+                {
+                    AvailStatusMessage availStatusMessage = new AvailStatusMessage();
+                    availStatusMessage.StatusApplicationControl = new StatusApplicationControl()
+                    {
+                        Start = startDate.Value.Date,
+                        End = endDate.Value.Date,
+                        InvTypeCode = promotion.RoomCode ?? "",
+                        RatePlanCode = promotion.RatePlanId
+                    };
+
+                    var ratePlanRules = AllRatePlans.First(arp => arp.RateCode == promotion.ParentRatePlanId);
+
+                    availStatusMessage.LengthsOfStay = RestrictionHelper.CreateLenghtStay(restriction.RestrictionsHotel, ratePlanRules, restriction.RatePlan.RestrictionsRate, promotion);
+                    availStatusMessages.AvailStatusMessageList.Add(availStatusMessage);
+                }
+            }
+
 
             return availStatusMessages;
         }

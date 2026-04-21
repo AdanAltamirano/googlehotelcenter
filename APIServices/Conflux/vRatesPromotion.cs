@@ -54,5 +54,6 @@ namespace APIServices.Conflux
         public byte MaxDays { get; set; }
         public byte MinAdvDays { get; set; }
         public int MaxAdvDays { get; set; }
+        public string RoomCode { get; set; }
     }
 }

@@ -1270,6 +1270,10 @@ namespace APIServices.Conflux
             var restrictionsBuilded = Helpers.Restriction.RestrictionHelper.BuildRestrictionsByAvaillableRate(restrictionsByAvailableRate,hotelId);
 
             Helpers.Restriction.RestrictionHelper.AddPromotionsByAvailableRate(ref restrictionsBuilded,restricion.StartDate,restricion.EndDate);
+            //Estancia Min y Max
+            GetOccupationMessages(restrictionsBuilded,restricion.StartDate,restricion.EndDate);
+            //Dias Avanzados
+            GetAdvancedDaysMessages(restrictionsBuilded, restricion.StartDate, restricion.EndDate);
             
 
             //dos diferentes request uno por estancia y tro por dias avanzados
