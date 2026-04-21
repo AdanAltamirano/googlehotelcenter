@@ -1018,28 +1018,28 @@ namespace APIServices
                 bool availableOnPortal = (bool)hotelData.Tables[0].Rows[0]["AvailOnPortal"];
 
                 // Si no esta disponible en portal
-                if (!availableOnPortal)
-                {
+                //if (!availableOnPortal)
+                //{
 
-                    string roomName = room[RoomsHotelData.FLD_NOMBRE].ToString();
-                    string roomCode = room[RoomsHotelData.FLD_ROOM_CODE].ToString();
+                //    string roomName = room[RoomsHotelData.FLD_NOMBRE].ToString();
+                //    string roomCode = room[RoomsHotelData.FLD_ROOM_CODE].ToString();
 
-                    CodeRoomModel codeRoomModel = new CodeRoomModel();
-                    codeRoomModel.Code = roomCode;
-                    codeRoomModel.RoomName = roomName;
+                //    CodeRoomModel codeRoomModel = new CodeRoomModel();
+                //    codeRoomModel.Code = roomCode;
+                //    codeRoomModel.RoomName = roomName;
 
-                    int diff = (endDate.Date - startDate.Date).Days;
-                    codeRoomModel.Status = new string[diff + 1];
-                    for (int i = 0; i <= diff; i++)
-                    {
-                        codeRoomModel.Status[i] = "C";
-                    }
+                //    int diff = (endDate.Date - startDate.Date).Days;
+                //    codeRoomModel.Status = new string[diff + 1];
+                //    for (int i = 0; i <= diff; i++)
+                //    {
+                //        codeRoomModel.Status[i] = "C";
+                //    }
 
-                    rateRoomsClosureModel.CodeRoomModelsList.Add(codeRoomModel);
+                //    rateRoomsClosureModel.CodeRoomModelsList.Add(codeRoomModel);
 
-                }
-                else
-                {
+                //}
+                //else
+                //{
                     // Si hay cierre o no llegada para esa fecha en la habitacion
                     if (dtLock.Rows.Count != 0)
                     {
@@ -1121,7 +1121,7 @@ namespace APIServices
                         rateRoomsClosureModel.CodeRoomModelsList.Add(codeRoomModel);
 
                     }
-                }
+                //}
 
             } // End for each room
         }
