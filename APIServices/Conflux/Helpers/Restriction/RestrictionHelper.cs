@@ -376,8 +376,6 @@ namespace APIServices.Conflux.Helpers.Restriction
             }
         }
 
-
-
         public static bool IsPromotionValid(vRatesPromotion promotion,DateTime? searchStart, DateTime? searchEnd)
         {
             // Booking Window

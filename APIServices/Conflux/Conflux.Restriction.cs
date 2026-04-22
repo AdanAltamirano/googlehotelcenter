@@ -10,15 +10,17 @@ namespace APIServices.Conflux
 
         private ConfluxEntities confluxEntities = new ConfluxEntities();
 
-        private void GetOccupationMessages(List<RateRestrictionDto> listRestrictionDto,DateTime? startDate,DateTime? endDate)
+        private OTA.Models.Restrictions.AvailStatusMessages GetOccupationAvailStatusMessages(List<RateRestrictionDto> listRestrictionDto,DateTime? startDate,DateTime? endDate)
         {
             var availStatusMessages = RestrictionsParser.ToAvailStatusMessagesOccupation(listRestrictionDto, startDate, endDate);
 
+            return availStatusMessages;
+
         }
 
-        private void GetAdvancedDaysMessages(List<RateRestrictionDto> listRestrictionDto, DateTime? startDate, DateTime? endDate)
+        private void GetAdvancedDaysAvailStatusMessages(List<RateRestrictionDto> listRestrictionDto, DateTime? startDate, DateTime? endDate)
         {
-            //var availStatusMessages = RestrictionsParser.ToAvailStatusMessagesAdvancedDays(listRestrictionDto, startDate, endDate);
+            var availStatusMessages = RestrictionsParser.ToAvailStatusMessagesAdvancedDays(listRestrictionDto, startDate, endDate);
 
         }
 

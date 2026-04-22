@@ -423,6 +423,24 @@ namespace APIServices.Conflux.Parser.Restriction
             return availStatusMessages;
         }
 
+        public static AvailStatusMessages ToAvailStatusMessagesAdvancedDays(List<RateRestrictionDto> listRestrictionDto, DateTime? startDate, DateTime? endDate)
+        {
+            AvailStatusMessages availStatusMessages = new AvailStatusMessages()
+            {
+                HotelCode = HotelCode,
+                AvailStatusMessageList = new List<AvailStatusMessage>()
+            };
+
+            foreach (var restriction in listRestrictionDto)
+            {
+
+
+
+            }
+
+            return availStatusMessages;
+        }
+
         #region Promociones
 
         //General Promociones
