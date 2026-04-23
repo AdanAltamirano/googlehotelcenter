@@ -553,6 +553,7 @@ namespace APIServices.Conflux.Helpers.Rates
 
         public static List<BaseGuestAmount> BaseGuestAmountApplyingTaxes(List<spGetPricesByRate_Result> prices, spGetCurrentRatesByHotel_Result4 currentRate)
         {
+            int minAdults = Convert.ToInt32(currentRate.MinAdults);
             int maxAdults = Convert.ToInt32(currentRate.MaxAdults);
             int maxChildren = Convert.ToInt32(currentRate.MaxChildren);
 
@@ -564,9 +565,9 @@ namespace APIServices.Conflux.Helpers.Rates
 
                     //Adultos
 
-                    for (var i = 0; i < maxAdults; i++)
+                    for (var i = minAdults; i <= maxAdults; i++)
                     {
-                        var price = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Adult);
+                        var price = prices.First(p => p.Quantity == (i) && p.PersonType == (int)PersonTypeEnum.Adult);
 
                         var amountBeforeTax = decimal.Round((decimal)(price.Price / (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
 
@@ -649,9 +650,9 @@ namespace APIServices.Conflux.Helpers.Rates
 
                     //Adultos
 
-                    for (var i = 0; i < maxAdults; i++)
+                    for (var i = minAdults; i <= maxAdults; i++)
                     {
-                        var price = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Adult);
+                        var price = prices.First(p => p.Quantity == (i) && p.PersonType == (int)PersonTypeEnum.Adult);
 
                         var amountAfterTax = decimal.Round((decimal)(price.Price * (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
 
@@ -736,6 +737,7 @@ namespace APIServices.Conflux.Helpers.Rates
 
         public static List<BaseGuestAmount> BaseGuestAmountApplyingTaxes(List<spGetPricesByRateException_Result> prices, spGetCurrentRatesByHotel_Result4 currentRate)
         {
+            int minAdults = Convert.ToInt32(currentRate.MinAdults);
             int maxAdults = Convert.ToInt32(currentRate.MaxAdults);
             int maxChildren = Convert.ToInt32(currentRate.MaxChildren);
 
@@ -747,9 +749,9 @@ namespace APIServices.Conflux.Helpers.Rates
 
                     //Adultos
 
-                    for (var i = 0; i < maxAdults; i++)
+                    for (var i = minAdults; i <= maxAdults; i++)
                     {
-                        var price = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Adult);
+                        var price = prices.First(p => p.Quantity == (i) && p.PersonType == (int)PersonTypeEnum.Adult);
 
                         if (price.Price > 0)
                         {
@@ -833,9 +835,9 @@ namespace APIServices.Conflux.Helpers.Rates
                     break;
                 case false:
 
-                    for (var i = 0; i < maxAdults; i++)
+                    for (var i = minAdults; i <= maxAdults; i++)
                     {
-                        var price = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Adult);
+                        var price = prices.First(p => p.Quantity == (i) && p.PersonType == (int)PersonTypeEnum.Adult);
 
                         if (price.Price > 0)
                         {
@@ -1019,6 +1021,7 @@ namespace APIServices.Conflux.Helpers.Rates
 
         public static List<BaseGuestAmount> BaseGuestAmountApplyingTaxes(List<spGetPricesByRatePromotion_Result> prices, spGetCurrentRatesByHotel_Result4 currentRate)
         {
+            int minAdults = Convert.ToInt32(currentRate.MinAdults);
             int maxAdults = Convert.ToInt32(currentRate.MaxAdults);
             int maxChildren = Convert.ToInt32(currentRate.MaxChildren);
 
@@ -1030,9 +1033,9 @@ namespace APIServices.Conflux.Helpers.Rates
 
                     //Adultos
 
-                    for (var i = 0; i < maxAdults; i++)
+                    for (var i = minAdults; i <= maxAdults; i++)
                     {
-                        var price = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Adult);
+                        var price = prices.First(p => p.Quantity == (i) && p.PersonType == (int)PersonTypeEnum.Adult);
 
                         var amountBeforeTax = decimal.Round((decimal)(price.Price / (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
 
@@ -1085,9 +1088,9 @@ namespace APIServices.Conflux.Helpers.Rates
 
                     //Adultos
 
-                    for (var i = 0; i < maxAdults; i++)
+                    for (var i = minAdults; i <= maxAdults; i++)
                     {
-                        var price = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Adult);
+                        var price = prices.First(p => p.Quantity == (i) && p.PersonType == (int)PersonTypeEnum.Adult);
 
                         var amountAfterTax = decimal.Round((decimal)(price.Price * (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
 
@@ -1237,6 +1240,7 @@ namespace APIServices.Conflux.Helpers.Rates
 
         public static List<BaseGuestAmount> BaseGuestAmountApplyingTaxes(List<spGetPricesByRatePromotionException_Result> prices, spGetCurrentRatesByHotel_Result4 currentRate)
         {
+            int minAdults = Convert.ToInt32(currentRate.MinAdults);
             int maxAdults = Convert.ToInt32(currentRate.MaxAdults);
             int maxChildren = Convert.ToInt32(currentRate.MaxChildren);
 
@@ -1248,9 +1252,9 @@ namespace APIServices.Conflux.Helpers.Rates
 
                     //Adultos
 
-                    for (var i = 0; i < maxAdults; i++)
+                    for (var i = minAdults; i <= maxAdults; i++)
                     {
-                        var price = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Adult);
+                        var price = prices.First(p => p.Quantity == (i) && p.PersonType == (int)PersonTypeEnum.Adult);
 
                         var amountBeforeTax = decimal.Round((decimal)(price.Price / (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
 
@@ -1300,9 +1304,9 @@ namespace APIServices.Conflux.Helpers.Rates
                 case false:
 
                     //Adults
-                    for (var i = 0; i < maxAdults; i++)
+                    for (var i = minAdults; i <= maxAdults; i++)
                     {
-                        var price = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Adult);
+                        var price = prices.First(p => p.Quantity == (i) && p.PersonType == (int)PersonTypeEnum.Adult);
 
                         var amountAfterTax = decimal.Round((decimal)(price.Price * (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
 
