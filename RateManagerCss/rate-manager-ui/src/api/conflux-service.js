@@ -15,6 +15,7 @@ const createUser = Vue.resource(`${process.env.VUE_APP_API_URL}/conflux/create/u
 const usersConnectivities = Vue.resource(`${process.env.VUE_APP_API_URL}/conflux/users/connectivity{?filter,orderBy,pageSize,page}`)
 const userHasPermission = Vue.resource(`${process.env.VUE_APP_API_URL}/conflux/delete/permission`);
 const deleteRates = Vue.resource(`${process.env.VUE_APP_API_URL}/conflux/deleterates/{hotelid}`);
+const syncHistory = Vue.resource(`${process.env.VUE_APP_API_URL}/conflux/synchistory/{hotelid}{?status,tipoOperacion,pageSize,page}`);
 
 export default {
     /**
@@ -78,6 +79,9 @@ export default {
      */
     DeleteRates(hotelid, payload){
         return deleteRates.save({hotelid},payload);
+    },
+    GetSyncHistory(hotelid, { status, tipoOperacion, pageSize, page } = {}) {
+        return syncHistory.get({ hotelid, status, tipoOperacion, pageSize, page });
     }
 }
 

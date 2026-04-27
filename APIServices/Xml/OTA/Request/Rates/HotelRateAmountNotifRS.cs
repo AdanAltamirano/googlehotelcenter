@@ -16,21 +16,24 @@ namespace APIServices.Xml.OTA.Request.Rates
 
         public static bool IsSuccessRequest(XElement hotelRateAmountNotifRS)
         {
-
             bool isSuccessRequest = false;
 
-            if(hotelRateAmountNotifRS.Element(ns + "Success") != null)
-            {
+            if (hotelRateAmountNotifRS.Element(ns + "Success") != null)
                 isSuccessRequest = true;
-            }
 
-            if (hotelRateAmountNotifRS.Element(ns + "Errors") != null)
+            var errorsElement = hotelRateAmountNotifRS.Element(ns + "Errors");
+            if (errorsElement != null)
             {
-                isSuccessRequest = false;
+                // Un <Errors><Error /></Errors> con el nodo Error completamente vacío
+                // (sin atributos ni texto) es un false-positive de Conflux — lo ignoramos.
+                bool hasRealErrors = errorsElement.Elements(ns + "Error")
+                    .Any(e => e.HasAttributes || !string.IsNullOrWhiteSpace(e.Value));
+
+                if (hasRealErrors)
+                    isSuccessRequest = false;
             }
 
             return isSuccessRequest;
-
         }
 
     }

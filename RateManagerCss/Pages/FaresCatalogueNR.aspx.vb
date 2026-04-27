@@ -270,9 +270,12 @@ Partial Class FaresCatalogueNR
 
                     Dim vDayRates As List(Of vDayRates) = Helpers.Rates.RatesHelpers.GetVDayRate(iFareIdTemp, startDate, endDate)
 
+                    Dim deletedRateXml As String = Util.DeleteLogHelper.BuildDeletedRateXml(iFareIdTemp)
                     With New FaresSystem
                         If .DeleteFares(iFareIdTemp) Then
-                            Me.guardalog("/Pages/FaresCatalogueNR.aspx", PaginaBase.acciones.Eliminar, "Se elimin� la tarifa de la habitaci�n " & room.Cells(dgcolumns.codigohabitacion).Text & " de la fecha " & room.Cells(dgcolumns.FechaInicia).Text & " a la fecha " & room.Cells(dgcolumns.FechaFinaliza).Text & " con el rateplan " & labelTemp.Text)
+                            Me.guardalog("/Pages/FaresCatalogueNR.aspx", PaginaBase.acciones.Eliminar, _
+                                "Se elimin� la tarifa de la habitaci�n " & room.Cells(dgcolumns.codigohabitacion).Text & " de la fecha " & room.Cells(dgcolumns.FechaInicia).Text & " a la fecha " & room.Cells(dgcolumns.FechaFinaliza).Text & " con el rateplan " & labelTemp.Text, _
+                                "", deletedRateXml, String.Empty, info.Hotel)
                             'If isEnabledGoogleRequest Or isEnabledSendingRatesAPICache Then
                             '    Parser.Parser.ToRateAmountMessagesDelete(vDayRates, Nothing, TypeRateEnum.RoomRate, RateAmountMessages.RateAmountMessagesList)
                             'End If
@@ -646,9 +649,12 @@ Partial Class FaresCatalogueNR
         ElseIf e.CommandName = "Delete" Then
 
             iFareId = Integer.Parse(dgRooms.Items(e.Item.ItemIndex).Cells(dgcolumns.idTarifa).Text)
+            Dim deletedRateXmlItem As String = Util.DeleteLogHelper.BuildDeletedRateXml(iFareId)
             With New FaresSystem
                 If .DeleteFares(iFareId) Then
-                    Me.guardalog("/Pages/FaresCatalogue.aspx", PaginaBase.acciones.Eliminar, "Se elimin� la tarifa de la habitaci�n " & dgRooms.Items(e.Item.ItemIndex).Cells(dgcolumns.codigohabitacion).Text & " de la fecha " & dgRooms.Items(e.Item.ItemIndex).Cells(dgcolumns.FechaInicia).Text & " a la fecha " & dgRooms.Items(e.Item.ItemIndex).Cells(dgcolumns.FechaFinaliza).Text & " con el rateplan " & dgRooms.Items(e.Item.ItemIndex).Cells(dgcolumns.RatePlan).Text)
+                    Me.guardalog("/Pages/FaresCatalogue.aspx", PaginaBase.acciones.Eliminar, _
+                        "Se elimin� la tarifa de la habitaci�n " & dgRooms.Items(e.Item.ItemIndex).Cells(dgcolumns.codigohabitacion).Text & " de la fecha " & dgRooms.Items(e.Item.ItemIndex).Cells(dgcolumns.FechaInicia).Text & " a la fecha " & dgRooms.Items(e.Item.ItemIndex).Cells(dgcolumns.FechaFinaliza).Text & " con el rateplan " & dgRooms.Items(e.Item.ItemIndex).Cells(dgcolumns.RatePlan).Text, _
+                        "", deletedRateXmlItem, String.Empty)
                     If dgRooms.CurrentPageIndex > 0 And dgRooms.Items.Count = 1 Then
                         dgRooms.CurrentPageIndex = ((dgRooms.CurrentPageIndex * dgRooms.PageSize) \ dgRooms.PageSize) - 1
                     End If
@@ -935,9 +941,12 @@ Partial Class FaresCatalogueNR
     Private Sub btnDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Dim iFareId As Integer
         iFareId = CtrRateAplication1.m_iFareId
+        Dim deletedRateXmlBtn As String = Util.DeleteLogHelper.BuildDeletedRateXml(iFareId)
         With New FaresSystem
             If .DeleteFares(iFareId) Then
-                Me.guardalog("/Pages/FaresCatalogue.aspx", PaginaBase.acciones.Eliminar, "Se elimin� la tarifa de la habitaci�n " & dgRooms.Items(dgRooms.SelectedIndex).Cells(dgcolumns.codigohabitacion).Text & " de la fecha " & dgRooms.Items(dgRooms.SelectedIndex).Cells(dgcolumns.FechaInicia).Text & " a la fecha " & dgRooms.Items(dgRooms.SelectedIndex).Cells(dgcolumns.FechaFinaliza).Text & " con el rateplan " & dgRooms.Items(dgRooms.SelectedIndex).Cells(dgcolumns.RatePlan).Text)
+                Me.guardalog("/Pages/FaresCatalogue.aspx", PaginaBase.acciones.Eliminar, _
+                    "Se elimin� la tarifa de la habitaci�n " & dgRooms.Items(dgRooms.SelectedIndex).Cells(dgcolumns.codigohabitacion).Text & " de la fecha " & dgRooms.Items(dgRooms.SelectedIndex).Cells(dgcolumns.FechaInicia).Text & " a la fecha " & dgRooms.Items(dgRooms.SelectedIndex).Cells(dgcolumns.FechaFinaliza).Text & " con el rateplan " & dgRooms.Items(dgRooms.SelectedIndex).Cells(dgcolumns.RatePlan).Text, _
+                    "", deletedRateXmlBtn, String.Empty)
                 If dgRooms.CurrentPageIndex > 0 And dgRooms.Items.Count = 1 Then
                     dgRooms.CurrentPageIndex = ((dgRooms.CurrentPageIndex * dgRooms.PageSize) \ dgRooms.PageSize) - 1
                 End If

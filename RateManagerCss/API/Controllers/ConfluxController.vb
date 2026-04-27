@@ -1,10 +1,13 @@
-﻿Imports System.Web.Http
+﻿Imports System.Data
+Imports System.Data.Entity
+Imports System.Web.Http
 Imports System.Net.Http
 Imports System.Xml.Linq
 Imports NinjAPI
 Imports NinjAPI.Query
 Imports APIServices.Conflux
 Imports APIServices.Conflux.Enum
+Imports APIServices.GoogleSync
 Imports APIServices.Models
 Imports APIServices.Conflux.Models.User
 Imports APIServices.Conflux.Models.User.Response
@@ -257,6 +260,14 @@ Namespace API.Controllers
 
             Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
 
+            ' Capturar XML de tarifas ANTES de eliminar para poder visualizarlas en el log
+            Dim deletedRatesXml As String = String.Empty
+            Try
+                deletedRatesXml = BuildDeletedRatesXml(hotelId, delete)
+            Catch
+                ' Si falla la captura no interrumpimos la eliminación
+            End Try
+
             Dim result As DeleteResponse = Nothing
 
             If Utitlities.Hotel.HotelUtilitie.IsEnableGoogleRequest(hotelId) Then
@@ -271,7 +282,7 @@ Namespace API.Controllers
                     Return BadRequest(result.Error)
                 End If
 
-                LogDelete(hotelId, "Conflux", result)
+                LogDelete(hotelId, "Conflux", result, deletedRatesXml)
             End If
 
             Dim resultAPICache As DeleteResponse = Nothing
@@ -285,7 +296,7 @@ Namespace API.Controllers
 
                 resultAPICache = ConfluxService.UpdateDelete(soapRequests, Utitlities.Hotel.HotelUtilitie.ENDPOINTAPIDELETE)
 
-                LogDelete(hotelId, "APICache", resultAPICache)
+                LogDelete(hotelId, "APICache", resultAPICache, deletedRatesXml)
             End If
 
             Dim toObject As Object = Nothing
@@ -298,6 +309,13 @@ Namespace API.Controllers
                 toObject = resultAPICache
             End If
 
+            Return Ok(toObject)
+        End Function
+
+        <Route("synchistory/{hotelId:int}"), HttpGet>
+        Public Function GetSyncHistory(ByVal hotelId As Integer, Optional ByVal status As String = Nothing, Optional ByVal tipoOperacion As String = Nothing, Optional ByVal pageSize As Integer = 50, Optional ByVal page As Integer = 1) As HttpResponseMessage
+            Dim result As SyncHistoryResult = GoogleSyncAuditService.GetHistory(hotelId, pageSize, page, status, tipoOperacion)
+            Dim toObject As Object = result
             Return Ok(toObject)
         End Function
 
@@ -351,13 +369,21 @@ Namespace API.Controllers
 
         End Sub
 
-        Private Sub LogDelete(ByVal hotelId As Integer, ByVal serviceToSent As String, ByVal result As DeleteResponse)
+        Private Sub LogDelete(ByVal hotelId As Integer, ByVal serviceToSent As String, ByVal result As DeleteResponse, Optional ByVal deletedRatesXml As String = "")
             Dim index As Integer = 1
 
             If Not result.IsSuccess Then
                 Dim note As String = String.Format("Error Eliminar Tarifas {1} con el hotel: {0}", hotelId, serviceToSent)
                 Log(note, result.Xml, hotelId, String.Empty)
             Else
+
+                ' Un log "maestro" con el detalle de las tarifas eliminadas (visible en LogDetalle via Tarifas.xslt)
+                If Not String.IsNullOrEmpty(deletedRatesXml) Then
+                    Dim noteMaster As String = String.Format("Se eliminaron tarifas en {0} del hotel: {1}", serviceToSent, hotelId)
+                    With (New PaginaBase)
+                        .guardalog("/rate-manager-ui/dist/channel-rates-update.aspx", acciones.Eliminar, noteMaster, "", deletedRatesXml, String.Empty, hotelId:=hotelId)
+                    End With
+                End If
 
                 For Each request As DeleteHttpResponse In result.DeleteHttpResponseList
                     Dim note As String = String.Format("Eliminar Tarifas request numero {0} Tarifas {1} con el hotel: ", (index), serviceToSent)
@@ -367,6 +393,112 @@ Namespace API.Controllers
 
             End If
         End Sub
+
+        ''' <summary>
+        ''' Construye un XML &lt;Tarifas&gt;&lt;UpdateRate/&gt;...&lt;/Tarifas&gt; con las tarifas que coinciden
+        ''' con los criterios del delete (rate plans + promos + rooms + rango de fechas).
+        ''' Se invoca ANTES de la eliminación para que el log conserve el detalle.
+        ''' </summary>
+        Private Function BuildDeletedRatesXml(ByVal hotelId As Integer, ByVal delete As APIServices.Conflux.Models.Delete.Delete) As String
+            Try
+                ' 1) Resolver los rate plans "efectivos" que se borrarán (considerando promos concatenadas)
+                Dim effectivePlans As New List(Of String)
+
+                Dim ratePlans As List(Of String) = If(delete.RatePlansList Is Nothing, New List(Of String)(), delete.RatePlansList.ToList())
+                Dim promotions As List(Of String) = If(delete.PromosList Is Nothing, New List(Of String)(), delete.PromosList.ToList())
+
+                If delete.EnableRatePlans Then
+                    For Each rp As String In ratePlans
+                        If Not String.IsNullOrEmpty(rp) AndAlso rp <> "0" Then
+                            effectivePlans.Add(rp)
+                        End If
+                    Next
+                End If
+
+                If delete.EnablePromotions Then
+                    For Each promo As String In promotions
+                        If String.IsNullOrEmpty(promo) OrElse promo = "0" Then Continue For
+                        For Each rp As String In ratePlans
+                            If String.IsNullOrEmpty(rp) OrElse rp = "0" Then Continue For
+                            effectivePlans.Add(promo & rp)
+                        Next
+                    Next
+                End If
+
+                If effectivePlans.Count = 0 Then Return String.Empty
+
+                ' 2) Preparar filtro de habitaciones y fechas
+                Dim roomIds As Integer() = If(delete.RoomsList, New Integer() {})
+                Dim hasAllRooms As Boolean = (roomIds.Length = 1 AndAlso roomIds(0) = 0) OrElse roomIds.Length = 0
+                Dim startDate As DateTime = If(delete.StartDate.HasValue, delete.StartDate.Value.Date, DateTime.MinValue)
+                Dim endDate As DateTime = If(delete.EndDate.HasValue, delete.EndDate.Value.Date, DateTime.MaxValue)
+
+                Dim rates As List(Of Tarifas) = Nothing
+
+                ' 3) Consultar las tarifas que coinciden con el filtro
+                Using dbContext As New OzHotelesEntities()
+                    Dim q As IQueryable(Of Tarifas) = dbContext.Tarifas.AsNoTracking()
+                    q = q.Where(Function(t) effectivePlans.Contains(t.idrateplan))
+
+                    If Not hasAllRooms Then
+                        q = q.Where(Function(t) roomIds.Contains(t.idTipoHabitacion_Hotel))
+                    End If
+
+                    If delete.StartDate.HasValue Then
+                        q = q.Where(Function(t) t.FechaFinaliza >= startDate)
+                    End If
+                    If delete.EndDate.HasValue Then
+                        q = q.Where(Function(t) t.FechaInicia <= endDate)
+                    End If
+
+                    rates = q.ToList()
+                End Using
+
+                If rates Is Nothing OrElse rates.Count = 0 Then Return String.Empty
+
+                ' 4) Construir XML con FaresData (misma estructura que CreateXml en RatesController)
+                Dim datFare As New FaresData()
+                With datFare.Tables(FaresData.FARES_TABLE)
+                    For Each rate As Tarifas In rates
+                        Dim rowFare As DataRow = .NewRow()
+                        rowFare(FaresData.PKIDFARES_FIELD) = rate.idTarifa
+                        rowFare(FaresData.HOTELROOMTYPEID_FIELD) = rate.idTipoHabitacion_Hotel
+                        rowFare(FaresData.STARTDATE_FIELD) = rate.FechaInicia
+                        rowFare(FaresData.ENDDATE_FIELD) = rate.FechaFinaliza
+                        rowFare(FaresData.PRICE_FIELD) = rate.Precio
+                        rowFare(FaresData.NINIORATE) = If(rate.NiniosRate.HasValue, rate.NiniosRate.Value, 0D)
+                        rowFare(FaresData.RATEENPRICE_FIELD) = If(rate.PrecioAdolescente.HasValue, rate.PrecioAdolescente.Value, 0D)
+                        rowFare(FaresData.EXTRAADULTPRICE_FIELD) = rate.PrecioExtraAdulto
+                        rowFare(FaresData.EXTRACHILDPRICE_FIELD) = rate.PrecioExtraNinio
+                        rowFare(FaresData.EXTRATEENPRICE_FIELD) = If(rate.PrecioAdolescenteExtra.HasValue, rate.PrecioAdolescenteExtra.Value, 0D)
+                        rowFare(FaresData.PRICENR_FIELD) = If(rate.PrecioNR.HasValue, rate.PrecioNR.Value, 0D)
+                        rowFare(FaresData.NINIORATENR) = If(rate.NiniosRateNR.HasValue, rate.NiniosRateNR.Value, 0D)
+                        rowFare(FaresData.RATEENPRICENR_FIELD) = If(rate.PrecioAdolescenteNR.HasValue, rate.PrecioAdolescenteNR.Value, 0D)
+                        rowFare(FaresData.EXTRAADULTPRICENR_FIELD) = If(rate.PrecioExtraAdultoNR.HasValue, rate.PrecioExtraAdultoNR.Value, 0D)
+                        rowFare(FaresData.EXTRACHILDPRICENR_FIELD) = If(rate.PrecioExtraNinioNR.HasValue, rate.PrecioExtraNinioNR.Value, 0D)
+                        rowFare(FaresData.EXTRATEENPRICENR_FIELD) = If(rate.PrecioAdolescenteExtraNR.HasValue, rate.PrecioAdolescenteExtraNR.Value, 0D)
+                        rowFare(FaresData.RATETYPE_FIELD) = If(rate.TipoTarifa, String.Empty)
+                        rowFare(FaresData.RATECODE_FIELD) = If(rate.CodigoTarifa, String.Empty)
+                        rowFare(FaresData.EXCEPTION_FIELD) = If(rate.Excepciones, String.Empty)
+                        rowFare(FaresData.NOARRIVOS_FIELD) = If(rate.NoArrivos, String.Empty)
+                        rowFare(FaresData.IDRATEPLAN_FIELD) = If(rate.idrateplan, String.Empty)
+                        rowFare(FaresData.RULESDEFAULT) = If(rate.RateRulesDefault.HasValue, rate.RateRulesDefault.Value, True)
+                        rowFare(FaresData.IDDICCDESCPROM_FIELD) = If(rate.idDiccPromoDesc.HasValue, rate.idDiccPromoDesc.Value, 0)
+                        .Rows.Add(rowFare)
+                    Next
+                End With
+
+                ' Columna auxiliar usada por el XSLT para mostrar el plan/habitación
+                datFare.Tables(0).Columns.Add("Descr_rateplan")
+                For i As Integer = 0 To rates.Count - 1
+                    datFare.Tables(0).Rows(i)("Descr_rateplan") = String.Format("Hab {0} · {1}", rates(i).idTipoHabitacion_Hotel, rates(i).idrateplan)
+                Next
+
+                Return Util.Utility.GetXml(FaresData.FARES_TABLE, "UpdateRate", datFare)
+            Catch ex As Exception
+                Return String.Empty
+            End Try
+        End Function
 
         Private Sub LogClosure(ByVal hotelId As Integer, ByVal service As String, ByVal restrictionList As List(Of Restriction))
             For Each restriction As Restriction In restrictionList

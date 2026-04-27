@@ -27,6 +27,7 @@ Partial Class RatesPlans
         code
         name
         segment
+        ghcStatus
         edit
         eliminar
         activar
@@ -44,20 +45,20 @@ Partial Class RatesPlans
         End Set
     End Property
 
-#Region " Código generado por el Diseñador de Web Forms "
+#Region " Cï¿½digo generado por el Diseï¿½ador de Web Forms "
 
-    'El Diseñador de Web Forms requiere esta llamada.
+    'El Diseï¿½ador de Web Forms requiere esta llamada.
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
 
     End Sub
 
-    'NOTA: el Diseñador de Web Forms necesita la siguiente declaración del marcador de posición.
+    'NOTA: el Diseï¿½ador de Web Forms necesita la siguiente declaraciï¿½n del marcador de posiciï¿½n.
     'No se debe eliminar o mover.
     Private designerPlaceholderDeclaration As System.Object
 
     Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
-        'CODEGEN: el Diseñador de Web Forms requiere esta llamada de método
-        'No la modifique con el editor de código.
+        'CODEGEN: el Diseï¿½ador de Web Forms requiere esta llamada de mï¿½todo
+        'No la modifique con el editor de cï¿½digo.
         InitializeComponent()
     End Sub
 
@@ -69,7 +70,7 @@ Partial Class RatesPlans
     End Sub
 
     Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        'Introducir aquí el código de usuario para inicializar la página        
+        'Introducir aquï¿½ el cï¿½digo de usuario para inicializar la pï¿½gina        
         If Not MyBase.IsHotelSelected Then MyBase.redirectTo(PaginaBase.pages.Home)
         If MyBase.IsSupervisor Or MyBase.isUserChain Or MyBase.IsUsuarioHotelAssociation Then
             ctrrateplan1.Supervisor = True
@@ -119,7 +120,7 @@ Partial Class RatesPlans
             Else
                 ds = .GetRatePlanByIdHotel(MyBase.cInfoActual.Hotel, PortalCulture.GetIDCulture, 1, 1, idAsociacion:=idAsoc, DeleteFilter:=Integer.Parse(ddlDeletedFilter.SelectedValue))
 
-                'Se comentó para que se muestren todos los rates plan, ya que los hoteles requieren manipular información aunque sean netrate. Solo se les restringe la parte de los contratos
+                'Se comentï¿½ para que se muestren todos los rates plan, ya que los hoteles requieren manipular informaciï¿½n aunque sean netrate. Solo se les restringe la parte de los contratos
                 'If MyBase.IsSupervisor Or MyBase.IsUsuarioHotelAssociation Then
                 '    'Mostramos todos los rateplans incluidos los de tarifas netas.
                 '    ds = .GetRatePlanByIdHotel(MyBase.cInfoActual.Hotel, PortalCulture.GetIDCulture, 1, 1, idAsociacion:=idAsoc, DeleteFilter:=Integer.Parse(ddlDeletedFilter.SelectedValue))
@@ -151,7 +152,7 @@ Partial Class RatesPlans
             dv = ds.Tables(0).DefaultView
             'dv.RowFilter = sFiltro
             dv.RowFilter = "isPromo is null " & IIf(sFiltro = "", "", " and " & sFiltro)
-            'dsegmentos se utilizará en el databound
+            'dsegmentos se utilizarï¿½ en el databound
             dsegmentos = New DataSet
             dsegmentos.ReadXml(Server.MapPath(Request.ApplicationPath & "/Data/Segmentos.xml"))
             .DataKeyField = RatePlanData.FIELD_IDRATEPLAN
@@ -378,7 +379,7 @@ Partial Class RatesPlans
 
                     Dim ratePlanIdDeletedTemp As String = Me.grid.Items(e.Item.ItemIndex).Cells(dgcolumns.idrateplan).Text
 
-                    Me.guardalog("/Pages/RatesPlans.aspx", PaginaBase.acciones.Eliminar, "Eliminó el rateplan con el id " & Me.grid.Items(e.Item.ItemIndex).Cells(dgcolumns.idrateplan).Text & " y el codigo de tarifa " & Me.grid.Items(e.Item.ItemIndex).Cells(dgcolumns.codigotarifa).Text)
+                    Me.guardalog("/Pages/RatesPlans.aspx", PaginaBase.acciones.Eliminar, "Eliminï¿½ el rateplan con el id " & Me.grid.Items(e.Item.ItemIndex).Cells(dgcolumns.idrateplan).Text & " y el codigo de tarifa " & Me.grid.Items(e.Item.ItemIndex).Cells(dgcolumns.codigotarifa).Text)
                     If grid.CurrentPageIndex > 0 And grid.Items.Count = 1 Then
                         grid.CurrentPageIndex = ((grid.CurrentPageIndex * grid.PageSize) \ grid.PageSize) - 1
                     End If
@@ -422,6 +423,7 @@ Partial Class RatesPlans
             End With
             'ScriptManager.RegisterStartupScript(Me.Page, Me.GetType(), "ShowInfo", "ShowNewInfo(0);", True)
         ElseIf e.CommandName = "Active" Then
+            Dim ratePlanIdActive As String = Me.grid.Items(e.Item.ItemIndex).Cells(dgcolumns.idrateplan).Text
             With New RatePlanFacade
                 If .LogicActiveRatePlan(Me.cInfoActual.Hotel, grid.DataKeys(e.Item.ItemIndex)) Then
                     ctrrateplan1.clearConfDealData()
@@ -431,6 +433,10 @@ Partial Class RatesPlans
                     lblError.Visible = False
                     lblErrorSource.Visible = False
                     MostrarCmdNew(True)
+
+                    Dim userName As String = CType(Me.Page, PaginaBase).ReadUserCookie.GetValue(0)
+                    Dim userId As Integer = CType(Me.Page, PaginaBase).UserIdentityName
+                    SendAsync(info.Hotel, info.Empresa, ratePlanIdActive, userName, userId)
                 End If
             End With
         End If
@@ -711,11 +717,62 @@ Partial Class RatesPlans
     End Sub
 
 
+    Private Sub SendAsync(ByVal hotelId As Integer, ByVal companyId As Integer, ByVal ratePlanId As String, ByVal userName As String, ByVal userId As String)
+        Task.Run(Async Function()
+
+                     Dim isEnabledGoogleRequest As Boolean = HotelUtilitie.IsEnableGoogleRequest(hotelId)
+                     Dim isEnabledSendRatesAPICache As Boolean = HotelUtilitie.IsEnableSendRatesAPICache(hotelId)
+
+                     ' Registro de nivel plan â€” siempre se crea
+                     Dim diagXml As String = String.Format("<ActivateRatePlan hotelId=""{0}"" ratePlanId=""{1}"" isEnabledGoogle=""{2}"" isEnabledAPICache=""{3}"" />", hotelId, ratePlanId, isEnabledGoogleRequest, isEnabledSendRatesAPICache)
+                     APIServices.GoogleSync.GoogleSyncAuditService.LogSyncAttempt(hotelId, "ActivateRatePlan", diagXml, ratePlanId:=ratePlanId, user:=userName)
+
+                     Dim confluxService As New APIServices.Conflux.ConfluxService()
+
+                     If isEnabledGoogleRequest Then
+                         confluxService.ConfluxSendRatesToGoogle = True
+                         Dim ratesForRequest = confluxService.GetRateMessages(hotelId, ratePlanId, companyId, TypeRateEnum.RoomRate)
+                         Dim ratesForRequestPromotion = confluxService.GetRateMessages(hotelId, ratePlanId, companyId, TypeRateEnum.RoomRatePromotion)
+
+                         If ratesForRequest IsNot Nothing AndAlso ratesForRequest.RateAmountMessagesList(0).RateAmountMessagesList.Count > 0 Then
+                             Dim res = Await confluxService.UpdateRateAsync(ratesForRequest, HotelUtilitie.ENDPOINT, HotelUtilitie.ENDPOINTDELETE, True)
+                             HotelUtilitie.Log(userName, userId, "/Pages/RatesPlans.aspx", hotelId, RateManager.Utitlities.Hotel.Actions.Sincronizar, "Activar plan Conflux", "", res.Item1.RequestXML, res.Item1.Xml)
+                         End If
+
+                         If ratesForRequestPromotion IsNot Nothing AndAlso ratesForRequestPromotion.RateAmountMessagesList(0).RateAmountMessagesList.Count > 0 Then
+                             Dim resPromotion = Await confluxService.UpdateRateAsync(ratesForRequestPromotion, HotelUtilitie.ENDPOINT, HotelUtilitie.ENDPOINTDELETE, True)
+                             HotelUtilitie.Log(userName, userId, "/Pages/RatesPlans.aspx", hotelId, RateManager.Utitlities.Hotel.Actions.Sincronizar, "Activar plan promo Conflux", "", resPromotion.Item1.RequestXML, resPromotion.Item1.Xml)
+                         End If
+                     End If
+
+                     If isEnabledSendRatesAPICache Then
+                         confluxService.ConfluxSendRatesToGoogle = False
+                         Dim ratesForRequestAPICache = confluxService.GetRateMessages(hotelId, ratePlanId, companyId, TypeRateEnum.RoomRate)
+                         Dim ratesForRequestPromotionAPICache = confluxService.GetRateMessages(hotelId, ratePlanId, companyId, TypeRateEnum.RoomRatePromotion)
+
+                         If ratesForRequestAPICache IsNot Nothing AndAlso ratesForRequestAPICache.RateAmountMessagesList(0).RateAmountMessagesList.Count > 0 Then
+                             Dim resAPICache = Await confluxService.UpdateRatePatchAsync(ratesForRequestAPICache, HotelUtilitie.ENDPOINTAPI, HotelUtilitie.ENDPOINTAPIDELETE, False)
+                             HotelUtilitie.Log(userName, userId, "/Pages/RatesPlans.aspx", hotelId, RateManager.Utitlities.Hotel.Actions.Sincronizar, "Activar plan APICache", "", resAPICache.Item1.RequestXML, resAPICache.Item1.Xml)
+                         End If
+
+                         If ratesForRequestPromotionAPICache IsNot Nothing AndAlso ratesForRequestPromotionAPICache.RateAmountMessagesList(0).RateAmountMessagesList.Count > 0 Then
+                             Dim resPromotionAPICache = Await confluxService.UpdateRatePatchAsync(ratesForRequestPromotionAPICache, HotelUtilitie.ENDPOINTAPI, HotelUtilitie.ENDPOINTAPIDELETE, False)
+                             HotelUtilitie.Log(userName, userId, "/Pages/RatesPlans.aspx", hotelId, RateManager.Utitlities.Hotel.Actions.Sincronizar, "Activar plan promo APICache", "", resPromotionAPICache.Item1.RequestXML, resPromotionAPICache.Item1.Xml)
+                         End If
+                     End If
+
+                 End Function)
+    End Sub
+
     Private Sub DeleteAsync(ByVal hotelId As Integer, ByVal companyId As Integer, ByVal ratePlanIdDelete As String, ByVal userName As String, ByVal userId As String)
         Task.Run(Async Function()
 
                      Dim isEnabledGoogleRequest As Boolean = HotelUtilitie.IsEnableGoogleRequest(hotelId)
                      Dim isEnabledSendRatesAPICache As Boolean = HotelUtilitie.IsEnableSendRatesAPICache(hotelId)
+
+                     ' Registro de nivel plan â€” siempre se crea
+                     Dim diagXml As String = String.Format("<DeactivateRatePlan hotelId=""{0}"" ratePlanId=""{1}"" isEnabledGoogle=""{2}"" isEnabledAPICache=""{3}"" />", hotelId, ratePlanIdDelete, isEnabledGoogleRequest, isEnabledSendRatesAPICache)
+                     APIServices.GoogleSync.GoogleSyncAuditService.LogSyncAttempt(hotelId, "DeactivateRatePlan", diagXml, ratePlanId:=ratePlanIdDelete, user:=userName)
 
                      Dim messagesToDelete As APIServices.Conflux.OTA.Models.Rates.RateAmountMessages = Nothing
 
@@ -732,7 +789,7 @@ Partial Class RatesPlans
 
                              Dim soapRequests As List(Of XDocument) = ConfluxService.GetSoapRequests(messagesToDelete)
 
-                             Dim result As DeleteResponse = Await ConfluxService.UpdateDeleteAsync(soapRequests, HotelUtilitie.ENDPOINTDELETE)
+                             Dim result As DeleteResponse = Await ConfluxService.UpdateDeleteAsync(soapRequests, HotelUtilitie.ENDPOINTDELETE, hotelId)
 
                              If Not result.IsSuccess Then
                                  Dim note As String = String.Format("Error Eliminar Tarifas {1} con el hotel: {0}", hotelId, "Conflux")
@@ -759,7 +816,7 @@ Partial Class RatesPlans
 
                              Dim soapRequests As List(Of XDocument) = ConfluxService.GetSoapRequests(messagesToDelete)
 
-                             Dim result As DeleteResponse = Await ConfluxService.UpdateDeleteAsync(soapRequests, HotelUtilitie.ENDPOINTAPIDELETE)
+                             Dim result As DeleteResponse = Await ConfluxService.UpdateDeleteAsync(soapRequests, HotelUtilitie.ENDPOINTAPIDELETE, hotelId)
 
                              If Not result.IsSuccess Then
                                  Dim note As String = String.Format("Error Eliminar Tarifas {1} con el hotel: {0}", hotelId, "APICache")

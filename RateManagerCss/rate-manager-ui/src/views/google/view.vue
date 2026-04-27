@@ -47,6 +47,10 @@
                     <b-tab :title="$t('Delete Rates')" v-if="hasPermission && (isEnabledGoogleRequest || isEnabledAPICacheRequest)">
                         <delete-rates :hotelId="hotelId" :isEnabledGoogle="isEnabledGoogleRequest" :isEnabledAPICache="isEnabledAPICacheRequest" :dates="dates"></delete-rates>
                     </b-tab>
+
+                    <b-tab :title="$t('History')">
+                        <sync-history :hotelId="hotelId"></sync-history>
+                    </b-tab>
                 </b-tabs>
             </div>
             <div></div>
@@ -59,6 +63,7 @@ import Prices from "./components/Prices.vue";
 import Closure from "./components/Closure.vue";
 import Inventory from "./components/Inventory.vue";
 import DeleteRates from "./components/DeleteRates.vue";
+import SyncHistory from "./components/SyncHistory.vue";
 import { GetUserPermission } from '../../api/conflux-service';
 
 export default {
@@ -66,7 +71,8 @@ export default {
         Prices,
         Closure,
         Inventory,
-        DeleteRates
+        DeleteRates,
+        SyncHistory
     },
     created(){
 

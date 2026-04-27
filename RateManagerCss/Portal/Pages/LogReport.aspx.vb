@@ -1,9 +1,10 @@
 Imports System.Data.SqlClient
 Imports System.Configuration.ConfigurationManager
-Imports System.Xml
 Imports Portal.General.Facade
+
 Partial Class LogReport
     Inherits PaginaBase
+
     Enum dgcolumns
         Usuario
         hplPagina
@@ -17,222 +18,253 @@ Partial Class LogReport
         showlink
     End Enum
 
-#Region " Código generado por el Diseñador de Web Forms "
+    ' Filter values captured before DataBind so ItemDataBound can read them
+    Private _accionFilter  As String  = "-1"
+    Private _usuarioFilter As String  = ""
+    Private _totalRecords  As Integer = 0
 
-    'El Diseñador de Web Forms requiere esta llamada.
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+#Region "Page events"
 
+    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        If Not Me.IsHotelSelected Then
+            Me.redirectTo(PaginaBase.pages.SearchHotel)
+        End If
+
+        If Not IsPostBack Then
+            Me.txtInicio.Text = Now.Date.ToString("MM/dd/yyyy")
+            Me.txtFinal.Text  = Now.Date.ToString("MM/dd/yyyy")
+
+            LoadHotelDropdown()
+            LoadAccionDropdown()
+        End If
+
+        btnSearch.OnClientClick = "return FireUpdateStatus();"
     End Sub
 
-    'NOTA: el Diseñador de Web Forms necesita la siguiente declaración del marcador de posición.
-    'No se debe eliminar o mover.
-    Private designerPlaceholderDeclaration As System.Object
-
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
-        'CODEGEN: el Diseñador de Web Forms requiere esta llamada de método
-        'No la modifique con el editor de código.
-        InitializeComponent()
+    Private Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.PreRender
+        lbltitle.Text  = PortalCulture.GetString("01467")
+        lblInicio.Text = PortalCulture.GetString("00108", True)
+        lblFinal.Text  = PortalCulture.GetString("00109", True)
+        btnSearch.Text = PortalCulture.GetString("M0BT0000115")
+        lblAccion.Text = "AcciÃ³n:"
+        lblUsuario.Text = "Usuario:"
     End Sub
 
 #End Region
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        'Introducir aquí el código de usuario para inicializar la página
+#Region "Data loading"
 
-        Dim reader As SqlDataReader
+    Private Sub LoadHotelDropdown()
+        ddlHoteles.DataTextField  = "NombreEmpresa"
+        ddlHoteles.DataValueField = "ID"
 
-        If Not Me.IsHotelSelected Then
-
-            Me.redirectTo(PaginaBase.pages.SearchHotel)
+        If Me.IsSupervisor Then
+            Dim data As DataSet  = GetCompanies()
+            Dim dv   As DataView = data.Tables(0).DefaultView
+            dv.RowFilter = "ID is not null and ID<>0"
+            Me.ddlHoteles.DataSource = dv
+            Me.ddlHoteles.DataBind()
+        Else
+            Dim reader As SqlDataReader
+            With New HotelSistema
+                If Not MyBase.IsUsuarioHotelAssociation Then
+                    reader = .GetHotelsCompanyByUserId(Usuario)
+                Else
+                    reader = .GetHotelsCompanyByUserIdAssociation(Usuario)
+                End If
+            End With
+            While reader.Read
+                ddlHoteles.Items.Add(New ListItem(reader.Item("Nombre"), reader.Item("idHotel")))
+            End While
         End If
-        If Not IsPostBack Then
-            Me.txtInicio.Text = Now.Date.ToString("MM/dd/yyyy")
-            Me.txtFinal.Text = Now.Date.ToString("MM/dd/yyyy")
-            ddlHoteles.DataTextField = "NombreEmpresa"
-            ddlHoteles.DataValueField = "ID"
-            Dim data As DataSet, dv As DataView
-            If Me.IsSupervisor Then
-                data = getCompanys()
-                dv = data.Tables(0).DefaultView
-                dv.RowFilter = "ID is not null and ID<>0"
-                Me.ddlHoteles.DataSource = dv
-                Me.ddlHoteles.DataBind()
-                Me.ddlHoteles.Items.Insert(0, "All")
-                Me.ddlHoteles.Items(0).Value = 0
-            Else
-                With New HotelSistema
-                    If Not MyBase.IsUsuarioHotelAssociation Then
-                        reader = .GetHotelsCompanyByUserId(Usuario)
-                    Else
-                        reader = .GetHotelsCompanyByUserIdAssociation(Usuario)
-                    End If
-                End With
-                While reader.Read
-                    Dim item As New ListItem(reader.Item("Nombre"), reader.Item("idHotel"))
-                    ddlHoteles.Items.Add(item)
-                End While
-                Me.ddlHoteles.Items.Insert(0, "All")
-                Me.ddlHoteles.Items(0).Value = 0
-            End If
 
-            If ddlHoteles.Items.Count > 1 Then
-                ddlHoteles.SelectedIndex = ddlHoteles.Items.IndexOf(ddlHoteles.Items.FindByValue(cInfoActual.Hotel))
-            End If
+        Me.ddlHoteles.Items.Insert(0, New ListItem("All", "0"))
 
+        If ddlHoteles.Items.Count > 1 Then
+            ddlHoteles.SelectedIndex = ddlHoteles.Items.IndexOf(ddlHoteles.Items.FindByValue(cInfoActual.Hotel))
         End If
-        btnSearch.OnClientClick = "return FireUpdateStatus();"
     End Sub
 
-
-    Public Shared Function ToDate(ByVal sDate As String) As Date
-        Dim d1 As String
-
-        Try
-            d1 = System.DateTime.Parse(sDate, _
-                                       New System.Globalization.CultureInfo("en-US", True), _
-                                       System.Globalization. _
-                                       DateTimeStyles.NoCurrentDateDefault)
-        Catch ex As Exception
-            Try
-                d1 = System.DateTime.Parse(sDate, _
-                                        New System.Globalization.CultureInfo("es-MX", True), _
-                                        System.Globalization. _
-                                        DateTimeStyles.NoCurrentDateDefault)
-
-            Catch ex1 As Exception
-                Return sDate
-            End Try
-        End Try
-        Return d1
-    End Function
+    Private Sub LoadAccionDropdown()
+        ddlAccion.Items.Clear()
+        ddlAccion.Items.Add(New ListItem("Todas",        "-1"))
+        ddlAccion.Items.Add(New ListItem("CreaciÃ³n",      "0"))
+        ddlAccion.Items.Add(New ListItem("ModificaciÃ³n",  "1"))
+        ddlAccion.Items.Add(New ListItem("EliminaciÃ³n",   "2"))
+        ddlAccion.Items.Add(New ListItem("LogIn",         "3"))
+        ddlAccion.Items.Add(New ListItem("EnvÃ­o tarifa",  "8"))
+    End Sub
 
     Private Sub loaddatos()
-        Dim name As String
-        Dim TblHoteles As String = "Hoteles"
-        Dim datos As LogData
-        Dim ci As System.Globalization.CultureInfo
-        ci = System.Threading.Thread.CurrentThread.CurrentCulture
+        ' Capture filters before DataBind triggers ItemDataBound
+        _accionFilter  = ddlAccion.SelectedValue
+        _usuarioFilter = txtUsuario.Text.Trim()
+        _totalRecords  = 0
+
+        Dim ci As System.Globalization.CultureInfo = System.Threading.Thread.CurrentThread.CurrentCulture
         System.Threading.Thread.CurrentThread.CurrentCulture = New System.Globalization.CultureInfo(PortalCulture.GetCulture.ToString)
 
-        datos = Leerlog(ToDate(txtInicio.Text), ToDate(txtFinal.Text), Me.ddlHoteles.SelectedItem.Value)
+        Dim datos As LogData = Leerlog(ToDate(txtInicio.Text), ToDate(txtFinal.Text), Me.ddlHoteles.SelectedItem.Value)
+
         If Me.ddlHoteles.SelectedItem.Value = 0 Then
-            Dim dr As DataRow
-            dr = datos.Tables("hoteles").NewRow()
+            Dim dr As DataRow = datos.Tables("hoteles").NewRow()
             dr("idhotel") = 0
-            dr("nombre") = PortalCulture.GetString("00172")
+            dr("nombre")  = PortalCulture.GetString("00172")
             datos.Tables("hoteles").Rows.Add(dr)
         End If
-        If (datos.Tables.Count = 2) Then
+
+        If datos.Tables.Count = 2 Then
             Me.dlHoteles.DataKeyField = "idhotel"
-            Me.dlHoteles.DataMember = datos.Tables("hoteles").TableName
-            Me.dlHoteles.DataSource = datos
+            Me.dlHoteles.DataMember  = datos.Tables("hoteles").TableName
+            Me.dlHoteles.DataSource  = datos
             Me.dlHoteles.DataBind()
         End If
+
         System.Threading.Thread.CurrentThread.CurrentCulture = ci
+
+        If _totalRecords > 0 Then
+            lblTotal.Text = String.Format("{0} registro(s) encontrado(s)", _totalRecords)
+        Else
+            lblTotal.Text = "No se encontraron registros para los filtros seleccionados."
+        End If
     End Sub
+
+    Private Function GetCompanies() As DataSet
+        Dim conn    As New SqlConnection(AppSettings("PortalConectionString"))
+        Dim command As New SqlCommand("spCompanySearchCompanys", conn)
+        command.CommandType = CommandType.StoredProcedure
+        command.Parameters.Add(New SqlParameter("@idRubro", AppSettings("idRubro")))
+        Dim adapter As New SqlDataAdapter(command)
+        Dim ds      As New DataSet
+        adapter.Fill(ds)
+        Return ds
+    End Function
+
+#End Region
+
+#Region "Button events"
 
     Private Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
         loaddatos()
     End Sub
-    Private Function getCompanys() As DataSet
-        Dim conection As New SqlConnection(AppSettings("PortalConectionString"))
-        Dim command As New SqlCommand("spCompanySearchCompanys", conection)
-        With command
-            .CommandType = CommandType.StoredProcedure
-            .Parameters.Add(New SqlParameter("@idRubro", AppSettings("idRubro")))
-        End With
-        Dim adapter As New SqlDataAdapter(command)
-        Dim dRes As New DataSet
-        adapter.Fill(dRes)
-        Return dRes
-    End Function
 
-    Private Sub Page_PreRender1(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.PreRender
-        lbltitle.text = PortalCulture.GetString("01467")
-        Me.lblInicio.Text = PortalCulture.GetString("00108", True)
-        Me.lblFinal.Text = PortalCulture.GetString("00109", True)
-        btnSearch.Text = PortalCulture.GetString("M0BT0000115")
-    End Sub
+#End Region
 
-    Private Sub RedirectDetails(ByVal id As String)
-        Me.redirectTo(PaginaBase.pages.DetailLog, String.Format("?id={0}", id))
-    End Sub
+#Region "DataList / DataGrid binding"
 
-    Private Sub dglog_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs)
-        If e.CommandName = "DetalleLog" Then
-            Dim idlog As Integer
-            idlog = Integer.Parse(e.Item.Cells(dgcolumns.idLog).Text)
-            RedirectDetails(idlog)
+    Private Sub dlHoteles_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataListItemEventArgs) Handles dlHoteles.ItemDataBound
+        Dim ds As DataSet = TryCast(dlHoteles.DataSource, DataSet)
+        If ds Is Nothing OrElse ds.Tables.Count < 2 Then Return
+
+        Dim dv As DataView = ds.Tables("Log").DefaultView
+
+        ' Build RowFilter: hotel + optional action + optional user
+        Dim filterParts As New System.Collections.Generic.List(Of String)
+        filterParts.Add("isnull(Hotel,0)=" & dlHoteles.DataKeys(e.Item.ItemIndex))
+
+        If _accionFilter <> "-1" Then
+            filterParts.Add("Accion=" & _accionFilter)
         End If
+        If Not String.IsNullOrEmpty(_usuarioFilter) Then
+            Dim safeUser As String = _usuarioFilter.Replace("'", "''")
+            filterParts.Add("Usuario LIKE '%" & safeUser & "%'")
+        End If
+
+        dv.RowFilter = String.Join(" AND ", filterParts.ToArray())
+
+        Dim dg    As DataGrid  = e.Item.FindControl("dgLog")
+        Dim tshow As Web.UI.HtmlControls.HtmlTable = e.Item.FindControl("tshow")
+
+        If dg Is Nothing Then Return
+
+        If dv.Count = 0 Then
+            ' Hide hotel section entirely when no matching records
+            e.Item.Visible = False
+            Return
+        End If
+
+        ' Wire up the expand/collapse click on the hotel header
+        If Not tshow Is Nothing Then
+            tshow.Rows(0).Cells(0).Attributes.Add("onclick",
+                "showHotel('" & dg.ClientID & "','" & tshow.Rows(0).Cells(0).ClientID & "');")
+        End If
+
+        AddHandler dg.ItemDataBound, AddressOf dglog_ItemDataBound
+        dg.DataSource = dv
+        dg.DataBind()
+        dg.Visible = True
+        _totalRecords += dv.Count
     End Sub
 
     Private Sub dglog_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs)
-        If e.Item.ItemType = ListItemType.Item Or e.Item.ItemType = ListItemType.AlternatingItem Then
-            If e.Item.Cells(dgcolumns.Accion).Text = acciones.Crear Then
-                e.Item.Cells(dgcolumns.Accion).Text = "Creación"
-            ElseIf e.Item.Cells(dgcolumns.Accion).Text = acciones.Eliminar Then
-                e.Item.Cells(dgcolumns.Accion).Text = "Eliminación"
-            ElseIf e.Item.Cells(dgcolumns.Accion).Text = acciones.Modificar Then
-                e.Item.Cells(dgcolumns.Accion).Text = "Modificación"
-            ElseIf e.Item.Cells(dgcolumns.Accion).Text = acciones.LogIn Then
-                e.Item.Cells(dgcolumns.Accion).Text = "LogIn"
+        If e.Item.ItemType = ListItemType.Item OrElse e.Item.ItemType = ListItemType.AlternatingItem Then
+
+            ' â”€â”€ Translate numeric action code to colored badge â”€â”€
+            Dim accionVal As Integer
+            If Integer.TryParse(e.Item.Cells(dgcolumns.Accion).Text, accionVal) Then
+                Select Case accionVal
+                    Case 0 : e.Item.Cells(dgcolumns.Accion).Text = "<span class='badge badge-create'>CreaciÃ³n</span>"
+                    Case 1 : e.Item.Cells(dgcolumns.Accion).Text = "<span class='badge badge-edit'>ModificaciÃ³n</span>"
+                    Case 2 : e.Item.Cells(dgcolumns.Accion).Text = "<span class='badge badge-delete'>EliminaciÃ³n</span>"
+                    Case 3 : e.Item.Cells(dgcolumns.Accion).Text = "<span class='badge badge-login'>LogIn</span>"
+                    Case 8 : e.Item.Cells(dgcolumns.Accion).Text = "<span class='badge badge-send'>EnvÃ­o tarifa</span>"
+                    Case Else : e.Item.Cells(dgcolumns.Accion).Text = "<span class='badge badge-other'>AcciÃ³n " & accionVal & "</span>"
+                End Select
             End If
-            Dim hpl As HyperLink
-            hpl = e.Item.FindControl("hplPagina")
+
+            ' â”€â”€ Format date and time columns â”€â”€
             e.Item.Cells(dgcolumns.Fecha).Text = CDate(e.Item.Cells(dgcolumns.Fecha).Text).ToString("MMM/dd/yyyy")
             e.Item.Cells(dgcolumns.Hora).Text = CDate(e.Item.Cells(dgcolumns.Hora).Text).ToString("T", New System.Globalization.CultureInfo("de-DE"))
+
+            ' â”€â”€ Page hyperlink â”€â”€
+            Dim hpl As HyperLink = e.Item.FindControl("hplPagina")
             If Not hpl Is Nothing Then
-                hpl.NavigateUrl = GeRequestApplicationPath(e.Item.Cells(dgcolumns.Pagina).Text) ' "/" & e.Item.Cells(dgcolumns.Pagina).Text
+                hpl.NavigateUrl = GeRequestApplicationPath(e.Item.Cells(dgcolumns.Pagina).Text)
                 hpl.Text = PortalCulture.GetString("00393")
             End If
 
-            Dim hplDetail As HyperLink
-            Dim idlog As Integer
+            ' â”€â”€ Detail hyperlink (only shown when log has data) â”€â”€
             Dim bshowlink As Byte
-
             Byte.TryParse(e.Item.Cells(dgcolumns.showlink).Text, bshowlink)
-            idlog = Integer.Parse(e.Item.Cells(dgcolumns.idLog).Text)
-            hplDetail = e.Item.FindControl("lnkDetalle")
-            hplDetail.NavigateUrl = GeRequestApplicationPath("/Portal/Pages/LogDetalle.aspx") & "?id=" & idlog
-            hplDetail.Text = PortalCulture.GetString("00903")
-            hplDetail.Visible = (bshowlink = 1)
+            Dim idlog As Integer = Integer.Parse(e.Item.Cells(dgcolumns.idLog).Text)
+            Dim hplDetail As HyperLink = e.Item.FindControl("lnkDetalle")
+            If Not hplDetail Is Nothing Then
+                hplDetail.NavigateUrl = GeRequestApplicationPath("/Portal/Pages/LogDetalle.aspx") & "?id=" & idlog
+                hplDetail.Text = PortalCulture.GetString("00903")
+                hplDetail.CssClass = "detail-link"
+                hplDetail.Visible = (bshowlink = 1)
+            End If
 
         ElseIf e.Item.ItemType = ListItemType.Header Then
             e.Item.Cells(dgcolumns.Usuario).Text = PortalCulture.GetString("M000027")
-            e.Item.Cells(dgcolumns.Accion).Text = PortalCulture.GetString("00425")
-            e.Item.Cells(dgcolumns.Fecha).Text = PortalCulture.GetString("M000120")
-            e.Item.Cells(dgcolumns.Hora).Text = PortalCulture.GetString("00426")
-            e.Item.Cells(dgcolumns.Nota).Text = PortalCulture.GetString("00427")
+            e.Item.Cells(dgcolumns.Accion).Text  = PortalCulture.GetString("00425")
+            e.Item.Cells(dgcolumns.Fecha).Text   = PortalCulture.GetString("M000120")
+            e.Item.Cells(dgcolumns.Hora).Text    = PortalCulture.GetString("00426")
+            e.Item.Cells(dgcolumns.Nota).Text    = PortalCulture.GetString("00427")
             e.Item.Cells(dgcolumns.detalle).Text = PortalCulture.GetString("00903")
         End If
     End Sub
-    Private Sub dlHoteles_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataListItemEventArgs) Handles dlHoteles.ItemDataBound
-        Dim dv As DataView
-        Dim dg As DataGrid
-        Dim htls As String()
-        Dim tshow As HtmlTable
-        Dim ds As DataSet
-        ds = CType(dlHoteles.DataSource, DataSet)
-        If ds.Tables.Count > 1 Then
-            dv = ds.Tables("Log").DefaultView
-            dv.RowFilter = "isnull(Hotel,0)" & "=" & dlHoteles.DataKeys(e.Item.ItemIndex)
-            dg = e.Item.FindControl("dgLog")
-            If Not dg Is Nothing Then
-                dg.Visible = False
-                AddHandler dg.ItemDataBound, AddressOf dglog_ItemDataBound
-                tshow = e.Item.FindControl("tshow")
-                If Not tshow Is Nothing Then
-                    tshow.Rows(0).Cells(0).Attributes.Add("onclick", "showHotel('" & dg.ClientID & "','" & tshow.Rows(0).Cells(0).ClientID & "');")
-                End If
-                dg.DataSource = dv
-                dg.DataBind()
-                If dv.Count > 0 Then
-                    dg.Visible = True
-                    e.Item.Visible = False
-                End If
-            End If
-        End If
-    End Sub
 
+#End Region
+
+#Region "Helpers"
+
+    Public Shared Function ToDate(ByVal sDate As String) As Date
+        Try
+            Return System.DateTime.Parse(sDate,
+                New System.Globalization.CultureInfo("en-US", True),
+                System.Globalization.DateTimeStyles.NoCurrentDateDefault)
+        Catch
+            Try
+                Return System.DateTime.Parse(sDate,
+                    New System.Globalization.CultureInfo("es-MX", True),
+                    System.Globalization.DateTimeStyles.NoCurrentDateDefault)
+            Catch
+                Return CDate(sDate)
+            End Try
+        End Try
+    End Function
+
+#End Region
 
 End Class

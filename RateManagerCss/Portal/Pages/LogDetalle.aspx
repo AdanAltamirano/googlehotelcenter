@@ -1,4 +1,4 @@
-﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="LogDetalle.aspx.vb" Inherits="RateManager.LogDetalle" %>
+<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="LogDetalle.aspx.vb" Inherits="RateManager.LogDetalle" %>
 
 <%@ Register TagPrefix="uc1" TagName="ctrlFooter" Src="../Modules/ctrlFooter.ascx" %>
 <%@ Register TagPrefix="uc1" TagName="CtrMenu" Src="../Modules/CtrMenu.ascx" %>
@@ -21,24 +21,24 @@
          </div>
         <table id="bookingcontainer" cellSpacing="0" cellPadding="2" width="790" border="0">
 		<tr><td>
-		    <TABLE cellSpacing="0" cellPadding="0" width="100%" align="center" border="0">				
+		    <TABLE cellSpacing="0" cellPadding="0" width="100%" align="center" border="0">
 				<TR>
-					<td colspan=2>					
+					<td colspan=2>
 					<asp:LinkButton ID="LinkButton1" runat="server">Go to Log list</asp:LinkButton>
 					</td>
-				</TR>				
-				
+				</TR>
+
 				</tr>
 				<tr>
 					<td colspan =2 align=left >
 						<div style="overflow-x:auto;">
 							<asp:Literal ID="Literal1" runat="server"></asp:Literal>
-						</div>						
-                    </td>				
+						</div>
+                    </td>
 				</tr>
-			</TABLE> 
+			</TABLE>
 		</td></tr>
-		</table> 
+		</table>
 
     </form>
 </body>

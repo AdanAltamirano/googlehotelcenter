@@ -24,6 +24,23 @@ namespace APIServices.Conflux.Helpers.Rates
             Currency = currency;
         }
 
+        private static void LogMissingPrice(spGetCurrentRatesByHotel_Result4 currentRate, int missingQuantity, int maxCount, string availableQuantities, bool plusTax, string personType, string callerContext)
+        {
+            try
+            {
+                var rateId = currentRate?.RateId;
+                var ratePlanId = currentRate?.RatePlanId;
+                var hotelIdValue = currentRate?.HotelId ?? HotelId;
+                System.Diagnostics.Trace.WriteLine(string.Format(
+                    "[MissingPrice] hotelId={0} rateId={1} ratePlanId={2} personType={3} missingQuantity={4} maxCount={5} availableQuantities={6} plusTax={7} caller={8}",
+                    hotelIdValue, rateId, ratePlanId, personType, missingQuantity, maxCount, availableQuantities, plusTax, callerContext));
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Trace.WriteLine("[LogMissingPrice FAILED] " + ex);
+            }
+        }
+
         #region vDayRate
         public static List<vDayRates> GetVDayRate(int rateId, DateTime startDate, DateTime endDate)
         {
@@ -525,22 +542,39 @@ namespace APIServices.Conflux.Helpers.Rates
                 case true:
 
                     //Adultos
-
-                    for (var i = 0; i < maxAdults; i++)
+                    // Iteramos sobre los precios Adult que realmente existen (limitados al techo maxAdults)
+                    // en lugar de iterar 1..maxAdults y reportar como "faltante" cada cupo no vendido.
                     {
-                        var price = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Adult);
+                        var adultPrices = prices
+                            .Where(p => p.PersonType == (int)PersonTypeEnum.Adult
+                                        && p.Quantity.HasValue
+                                        && p.Quantity.Value >= 1
+                                        && p.Quantity.Value <= maxAdults)
+                            .GroupBy(p => p.Quantity)
+                            .Select(g => g.First())
+                            .OrderBy(p => p.Quantity)
+                            .ToList();
 
-                        var amountBeforeTax = decimal.Round((decimal)(price.Price / (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
-
-                        BaseGuestAmount baseGuestAmount = new BaseGuestAmount()
+                        foreach (var price in adultPrices)
                         {
-                            AmountBeforeTax = amountBeforeTax,
-                            AmountAfterTax = price.Price,
-                            NumberOfGuests = price.Quantity.ToString(),
-                            AgeQualifyingCode = price.PersonType
-                        };
+                            var amountBeforeTax = decimal.Round((decimal)(price.Price / (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
 
-                        baseGuestAmounts.Add(baseGuestAmount);
+                            BaseGuestAmount baseGuestAmount = new BaseGuestAmount()
+                            {
+                                AmountBeforeTax = amountBeforeTax,
+                                AmountAfterTax = price.Price,
+                                NumberOfGuests = price.Quantity.ToString(),
+                                AgeQualifyingCode = price.PersonType
+                            };
+
+                            baseGuestAmounts.Add(baseGuestAmount);
+                        }
+
+                        if (!adultPrices.Any() && maxAdults > 0)
+                        {
+                            var availableAdult = string.Join(",", prices.Where(p => p.PersonType == (int)PersonTypeEnum.Adult).Select(p => p.Quantity.ToString()));
+                            LogMissingPrice(currentRate, 0, maxAdults, availableAdult, true, "Adult", "spGetPricesByRate_NoAdultPrices");
+                        }
                     }
 
                     //Ninios
@@ -610,22 +644,39 @@ namespace APIServices.Conflux.Helpers.Rates
                 case false:
 
                     //Adultos
-
-                    for (var i = 0; i < maxAdults; i++)
+                    // Iteramos sobre los precios Adult que realmente existen (limitados al techo maxAdults)
+                    // en lugar de iterar 1..maxAdults y reportar como "faltante" cada cupo no vendido.
                     {
-                        var price = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Adult);
+                        var adultPrices = prices
+                            .Where(p => p.PersonType == (int)PersonTypeEnum.Adult
+                                        && p.Quantity.HasValue
+                                        && p.Quantity.Value >= 1
+                                        && p.Quantity.Value <= maxAdults)
+                            .GroupBy(p => p.Quantity)
+                            .Select(g => g.First())
+                            .OrderBy(p => p.Quantity)
+                            .ToList();
 
-                        var amountAfterTax = decimal.Round((decimal)(price.Price * (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
-
-                        BaseGuestAmount baseGuestAmount = new BaseGuestAmount()
+                        foreach (var price in adultPrices)
                         {
-                            AmountBeforeTax = price.Price,
-                            AmountAfterTax = amountAfterTax,
-                            NumberOfGuests = price.Quantity.ToString(),
-                            AgeQualifyingCode = price.PersonType
-                        };
+                            var amountAfterTax = decimal.Round((decimal)(price.Price * (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
 
-                        baseGuestAmounts.Add(baseGuestAmount);
+                            BaseGuestAmount baseGuestAmount = new BaseGuestAmount()
+                            {
+                                AmountBeforeTax = price.Price,
+                                AmountAfterTax = amountAfterTax,
+                                NumberOfGuests = price.Quantity.ToString(),
+                                AgeQualifyingCode = price.PersonType
+                            };
+
+                            baseGuestAmounts.Add(baseGuestAmount);
+                        }
+
+                        if (!adultPrices.Any() && maxAdults > 0)
+                        {
+                            var availableAdult = string.Join(",", prices.Where(p => p.PersonType == (int)PersonTypeEnum.Adult).Select(p => p.Quantity.ToString()));
+                            LogMissingPrice(currentRate, 0, maxAdults, availableAdult, false, "Adult", "spGetPricesByRate_NoAdultPrices");
+                        }
                     }
 
                     //Ninios
@@ -708,25 +759,41 @@ namespace APIServices.Conflux.Helpers.Rates
                 case true:
 
                     //Adultos
-
-                    for (var i = 0; i < maxAdults; i++)
+                    // Iteramos sobre los precios Adult que realmente existen (limitados al techo maxAdults)
+                    // en lugar de iterar 1..maxAdults y reportar como "faltante" cada cupo no vendido.
                     {
-                        var price = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Adult);
+                        var adultPrices = prices
+                            .Where(p => p.PersonType == (int)PersonTypeEnum.Adult
+                                        && p.Quantity.HasValue
+                                        && p.Quantity.Value >= 1
+                                        && p.Quantity.Value <= maxAdults)
+                            .GroupBy(p => p.Quantity)
+                            .Select(g => g.First())
+                            .OrderBy(p => p.Quantity)
+                            .ToList();
 
-                        if (price.Price > 0)
+                        foreach (var price in adultPrices)
                         {
-
-                            var amountBeforeTax = decimal.Round((decimal)(price.Price / (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
-
-                            BaseGuestAmount baseGuestAmount = new BaseGuestAmount()
+                            if (price.Price > 0)
                             {
-                                AmountBeforeTax = amountBeforeTax,
-                                AmountAfterTax = price.Price,
-                                NumberOfGuests = price.Quantity.ToString(),
-                                AgeQualifyingCode = price.PersonType
-                            };
+                                var amountBeforeTax = decimal.Round((decimal)(price.Price / (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
 
-                            baseGuestAmounts.Add(baseGuestAmount);
+                                BaseGuestAmount baseGuestAmount = new BaseGuestAmount()
+                                {
+                                    AmountBeforeTax = amountBeforeTax,
+                                    AmountAfterTax = price.Price,
+                                    NumberOfGuests = price.Quantity.ToString(),
+                                    AgeQualifyingCode = price.PersonType
+                                };
+
+                                baseGuestAmounts.Add(baseGuestAmount);
+                            }
+                        }
+
+                        if (!adultPrices.Any() && maxAdults > 0)
+                        {
+                            var availableAdult = string.Join(",", prices.Where(p => p.PersonType == (int)PersonTypeEnum.Adult).Select(p => p.Quantity.ToString()));
+                            LogMissingPrice(currentRate, 0, maxAdults, availableAdult, true, "Adult", "spGetPricesByRateException_NoAdultPrices");
                         }
                     }
 
@@ -795,24 +862,41 @@ namespace APIServices.Conflux.Helpers.Rates
                     break;
                 case false:
 
-                    for (var i = 0; i < maxAdults; i++)
+                    // Iteramos sobre los precios Adult que realmente existen (limitados al techo maxAdults)
+                    // en lugar de iterar 1..maxAdults y reportar como "faltante" cada cupo no vendido.
                     {
-                        var price = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Adult);
+                        var adultPrices = prices
+                            .Where(p => p.PersonType == (int)PersonTypeEnum.Adult
+                                        && p.Quantity.HasValue
+                                        && p.Quantity.Value >= 1
+                                        && p.Quantity.Value <= maxAdults)
+                            .GroupBy(p => p.Quantity)
+                            .Select(g => g.First())
+                            .OrderBy(p => p.Quantity)
+                            .ToList();
 
-                        if (price.Price > 0)
+                        foreach (var price in adultPrices)
                         {
-
-                            var amountAfterTax = decimal.Round((decimal)(price.Price * (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
-
-                            BaseGuestAmount baseGuestAmount = new BaseGuestAmount()
+                            if (price.Price > 0)
                             {
-                                AmountBeforeTax = price.Price,
-                                AmountAfterTax = amountAfterTax,
-                                NumberOfGuests = price.Quantity.ToString(),
-                                AgeQualifyingCode = price.PersonType
-                            };
+                                var amountAfterTax = decimal.Round((decimal)(price.Price * (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
 
-                            baseGuestAmounts.Add(baseGuestAmount);
+                                BaseGuestAmount baseGuestAmount = new BaseGuestAmount()
+                                {
+                                    AmountBeforeTax = price.Price,
+                                    AmountAfterTax = amountAfterTax,
+                                    NumberOfGuests = price.Quantity.ToString(),
+                                    AgeQualifyingCode = price.PersonType
+                                };
+
+                                baseGuestAmounts.Add(baseGuestAmount);
+                            }
+                        }
+
+                        if (!adultPrices.Any() && maxAdults > 0)
+                        {
+                            var availableAdult = string.Join(",", prices.Where(p => p.PersonType == (int)PersonTypeEnum.Adult).Select(p => p.Quantity.ToString()));
+                            LogMissingPrice(currentRate, 0, maxAdults, availableAdult, false, "Adult", "spGetPricesByRateException_NoAdultPrices");
                         }
                     }
 
@@ -821,7 +905,7 @@ namespace APIServices.Conflux.Helpers.Rates
                         var priceChild = prices.FirstOrDefault(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Child);
 
                         var priceTeeneger = prices.FirstOrDefault(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Teeneger);
- 
+
                         if (priceChild != null && priceChild.Price > 0)
                         {
                             var amountAfterTaxChild = decimal.Round((decimal)(priceChild.Price * (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
@@ -991,52 +1075,73 @@ namespace APIServices.Conflux.Helpers.Rates
                 case true:
 
                     //Adultos
-
-                    for (var i = 0; i < maxAdults; i++)
+                    // Iteramos sobre los precios Adult que realmente existen (limitados al techo maxAdults)
+                    // en lugar de iterar 1..maxAdults y reportar como "faltante" cada cupo no vendido.
                     {
-                        var price = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Adult);
+                        var adultPrices = prices
+                            .Where(p => p.PersonType == (int)PersonTypeEnum.Adult
+                                        && p.Quantity.HasValue
+                                        && p.Quantity.Value >= 1
+                                        && p.Quantity.Value <= maxAdults)
+                            .GroupBy(p => p.Quantity)
+                            .Select(g => g.First())
+                            .OrderBy(p => p.Quantity)
+                            .ToList();
 
-                        var amountBeforeTax = decimal.Round((decimal)(price.Price / (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
-
-                        BaseGuestAmount baseGuestAmount = new BaseGuestAmount()
+                        foreach (var price in adultPrices)
                         {
-                            AmountBeforeTax = amountBeforeTax,
-                            AmountAfterTax = price.Price,
-                            NumberOfGuests = price.Quantity.ToString(),
-                            AgeQualifyingCode = price.PersonType                            
-                        };
+                            var amountBeforeTax = decimal.Round((decimal)(price.Price / (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
 
-                        baseGuestAmounts.Add(baseGuestAmount);
+                            BaseGuestAmount baseGuestAmount = new BaseGuestAmount()
+                            {
+                                AmountBeforeTax = amountBeforeTax,
+                                AmountAfterTax = price.Price,
+                                NumberOfGuests = price.Quantity.ToString(),
+                                AgeQualifyingCode = price.PersonType
+                            };
+
+                            baseGuestAmounts.Add(baseGuestAmount);
+                        }
+
+                        if (!adultPrices.Any() && maxAdults > 0)
+                        {
+                            var availableAdult = string.Join(",", prices.Where(p => p.PersonType == (int)PersonTypeEnum.Adult).Select(p => p.Quantity.ToString()));
+                            LogMissingPrice(currentRate, 0, maxAdults, availableAdult, true, "Adult", "spGetPricesByRatePromotion_NoAdultPrices");
+                        }
                     }
 
                     //Ninios
 
                     for (var i = 0; i < maxChildren; i++)
                     {
-                        var priceChild = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Child);
-                        var amountBeforeTaxChild = decimal.Round((decimal)(priceChild.Price / (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
+                        var priceChild = prices.FirstOrDefault(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Child);
+                        var priceTeeneger = prices.FirstOrDefault(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Teeneger);
 
-                        var priceTeeneger = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Teeneger);
-                        var amountBeforeTaxTeeneger = decimal.Round((decimal)(priceTeeneger.Price / (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
-
-                        BaseGuestAmount baseGuestAmountChild = new BaseGuestAmount()
+                        if (priceChild != null)
                         {
-                            AmountBeforeTax = amountBeforeTaxChild,
-                            AmountAfterTax = priceChild.Price,
-                            NumberOfGuests = priceChild.Quantity.ToString(),
-                            AgeQualifyingCode = priceChild.PersonType
-                        };
+                            var amountBeforeTaxChild = decimal.Round((decimal)(priceChild.Price / (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
+                            BaseGuestAmount baseGuestAmountChild = new BaseGuestAmount()
+                            {
+                                AmountBeforeTax = amountBeforeTaxChild,
+                                AmountAfterTax = priceChild.Price,
+                                NumberOfGuests = priceChild.Quantity.ToString(),
+                                AgeQualifyingCode = priceChild.PersonType
+                            };
+                            baseGuestAmounts.Add(baseGuestAmountChild);
+                        }
 
-                        BaseGuestAmount baseGuestAmountTeeneger = new BaseGuestAmount()
+                        if (priceTeeneger != null)
                         {
-                            AmountBeforeTax = amountBeforeTaxTeeneger,
-                            AmountAfterTax = priceTeeneger.Price,
-                            NumberOfGuests = priceTeeneger.Quantity.ToString(),
-                            AgeQualifyingCode = priceTeeneger.PersonType
-                        };
-
-                        baseGuestAmounts.Add(baseGuestAmountChild);
-                        baseGuestAmounts.Add(baseGuestAmountTeeneger);
+                            var amountBeforeTaxTeeneger = decimal.Round((decimal)(priceTeeneger.Price / (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
+                            BaseGuestAmount baseGuestAmountTeeneger = new BaseGuestAmount()
+                            {
+                                AmountBeforeTax = amountBeforeTaxTeeneger,
+                                AmountAfterTax = priceTeeneger.Price,
+                                NumberOfGuests = priceTeeneger.Quantity.ToString(),
+                                AgeQualifyingCode = priceTeeneger.PersonType
+                            };
+                            baseGuestAmounts.Add(baseGuestAmountTeeneger);
+                        }
                     }
 
 
@@ -1046,52 +1151,73 @@ namespace APIServices.Conflux.Helpers.Rates
                 case false:
 
                     //Adultos
-
-                    for (var i = 0; i < maxAdults; i++)
+                    // Iteramos sobre los precios Adult que realmente existen (limitados al techo maxAdults)
+                    // en lugar de iterar 1..maxAdults y reportar como "faltante" cada cupo no vendido.
                     {
-                        var price = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Adult);
+                        var adultPrices = prices
+                            .Where(p => p.PersonType == (int)PersonTypeEnum.Adult
+                                        && p.Quantity.HasValue
+                                        && p.Quantity.Value >= 1
+                                        && p.Quantity.Value <= maxAdults)
+                            .GroupBy(p => p.Quantity)
+                            .Select(g => g.First())
+                            .OrderBy(p => p.Quantity)
+                            .ToList();
 
-                        var amountAfterTax = decimal.Round((decimal)(price.Price * (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
-
-                        BaseGuestAmount baseGuestAmount = new BaseGuestAmount()
+                        foreach (var price in adultPrices)
                         {
-                            AmountBeforeTax = price.Price,
-                            AmountAfterTax = amountAfterTax,
-                            NumberOfGuests = price.Quantity.ToString(),
-                            AgeQualifyingCode = price.PersonType
-                        };
+                            var amountAfterTax = decimal.Round((decimal)(price.Price * (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
 
-                        baseGuestAmounts.Add(baseGuestAmount);
+                            BaseGuestAmount baseGuestAmount = new BaseGuestAmount()
+                            {
+                                AmountBeforeTax = price.Price,
+                                AmountAfterTax = amountAfterTax,
+                                NumberOfGuests = price.Quantity.ToString(),
+                                AgeQualifyingCode = price.PersonType
+                            };
+
+                            baseGuestAmounts.Add(baseGuestAmount);
+                        }
+
+                        if (!adultPrices.Any() && maxAdults > 0)
+                        {
+                            var availableAdult = string.Join(",", prices.Where(p => p.PersonType == (int)PersonTypeEnum.Adult).Select(p => p.Quantity.ToString()));
+                            LogMissingPrice(currentRate, 0, maxAdults, availableAdult, false, "Adult", "spGetPricesByRatePromotion_NoAdultPrices");
+                        }
                     }
 
                     //Ninios
 
                     for (var i = 0; i < maxChildren; i++)
                     {
-                        var priceChild = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Child);
-                        var amountAfterTaxChild = decimal.Round((decimal)(priceChild.Price * (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
+                        var priceChild = prices.FirstOrDefault(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Child);
+                        var priceTeeneger = prices.FirstOrDefault(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Teeneger);
 
-                        var priceTeeneger = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Teeneger);
-                        var amountAfterTaxTeeneger = decimal.Round((decimal)(priceTeeneger.Price * (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
-
-                        BaseGuestAmount baseGuestAmountChild = new BaseGuestAmount()
+                        if (priceChild != null)
                         {
-                            AmountBeforeTax = priceChild.Price,
-                            AmountAfterTax = amountAfterTaxChild,
-                            NumberOfGuests = priceChild.Quantity.ToString(),
-                            AgeQualifyingCode = priceChild.PersonType
-                        };
+                            var amountAfterTaxChild = decimal.Round((decimal)(priceChild.Price * (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
+                            BaseGuestAmount baseGuestAmountChild = new BaseGuestAmount()
+                            {
+                                AmountBeforeTax = priceChild.Price,
+                                AmountAfterTax = amountAfterTaxChild,
+                                NumberOfGuests = priceChild.Quantity.ToString(),
+                                AgeQualifyingCode = priceChild.PersonType
+                            };
+                            baseGuestAmounts.Add(baseGuestAmountChild);
+                        }
 
-                        BaseGuestAmount baseGuestAmountTeeneger = new BaseGuestAmount()
+                        if (priceTeeneger != null)
                         {
-                            AmountBeforeTax = priceTeeneger.Price,
-                            AmountAfterTax = amountAfterTaxTeeneger,
-                            NumberOfGuests = priceTeeneger.Quantity.ToString(),
-                            AgeQualifyingCode = priceTeeneger.PersonType
-                        };
-
-                        baseGuestAmounts.Add(baseGuestAmountChild);
-                        baseGuestAmounts.Add(baseGuestAmountTeeneger);
+                            var amountAfterTaxTeeneger = decimal.Round((decimal)(priceTeeneger.Price * (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
+                            BaseGuestAmount baseGuestAmountTeeneger = new BaseGuestAmount()
+                            {
+                                AmountBeforeTax = priceTeeneger.Price,
+                                AmountAfterTax = amountAfterTaxTeeneger,
+                                NumberOfGuests = priceTeeneger.Quantity.ToString(),
+                                AgeQualifyingCode = priceTeeneger.PersonType
+                            };
+                            baseGuestAmounts.Add(baseGuestAmountTeeneger);
+                        }
                     }
 
 
@@ -1209,52 +1335,73 @@ namespace APIServices.Conflux.Helpers.Rates
                 case true:
 
                     //Adultos
-
-                    for (var i = 0; i < maxAdults; i++)
+                    // Iteramos sobre los precios Adult que realmente existen (limitados al techo maxAdults)
+                    // en lugar de iterar 1..maxAdults y reportar como "faltante" cada cupo no vendido.
                     {
-                        var price = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Adult);
+                        var adultPrices = prices
+                            .Where(p => p.PersonType == (int)PersonTypeEnum.Adult
+                                        && p.Quantity.HasValue
+                                        && p.Quantity.Value >= 1
+                                        && p.Quantity.Value <= maxAdults)
+                            .GroupBy(p => p.Quantity)
+                            .Select(g => g.First())
+                            .OrderBy(p => p.Quantity)
+                            .ToList();
 
-                        var amountBeforeTax = decimal.Round((decimal)(price.Price / (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
-
-                        BaseGuestAmount baseGuestAmount = new BaseGuestAmount()
+                        foreach (var price in adultPrices)
                         {
-                            AmountBeforeTax = amountBeforeTax,
-                            AmountAfterTax = price.Price,
-                            NumberOfGuests = price.Quantity.ToString(),
-                            AgeQualifyingCode = price.PersonType
-                        };
+                            var amountBeforeTax = decimal.Round((decimal)(price.Price / (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
 
-                        baseGuestAmounts.Add(baseGuestAmount);
+                            BaseGuestAmount baseGuestAmount = new BaseGuestAmount()
+                            {
+                                AmountBeforeTax = amountBeforeTax,
+                                AmountAfterTax = price.Price,
+                                NumberOfGuests = price.Quantity.ToString(),
+                                AgeQualifyingCode = price.PersonType
+                            };
+
+                            baseGuestAmounts.Add(baseGuestAmount);
+                        }
+
+                        if (!adultPrices.Any() && maxAdults > 0)
+                        {
+                            var availableAdult = string.Join(",", prices.Where(p => p.PersonType == (int)PersonTypeEnum.Adult).Select(p => p.Quantity.ToString()));
+                            LogMissingPrice(currentRate, 0, maxAdults, availableAdult, true, "Adult", "spGetPricesByRatePromotionException_NoAdultPrices");
+                        }
                     }
 
                     //Ninios
 
                     for (var i = 0; i < maxChildren; i++)
                     {
-                        var priceChild = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Child);
-                        var amountBeforeTaxChild = decimal.Round((decimal)(priceChild.Price / (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
+                        var priceChild = prices.FirstOrDefault(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Child);
+                        var priceTeeneger = prices.FirstOrDefault(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Teeneger);
 
-                        var priceTeeneger = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Teeneger);
-                        var amountBeforeTaxTeeneger = decimal.Round((decimal)(priceTeeneger.Price / (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
-
-                        BaseGuestAmount baseGuestAmountChild = new BaseGuestAmount()
+                        if (priceChild != null)
                         {
-                            AmountBeforeTax = amountBeforeTaxChild,
-                            AmountAfterTax = priceChild.Price,
-                            NumberOfGuests = priceChild.Quantity.ToString(),
-                            AgeQualifyingCode = priceChild.PersonType
-                        };
+                            var amountBeforeTaxChild = decimal.Round((decimal)(priceChild.Price / (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
+                            BaseGuestAmount baseGuestAmountChild = new BaseGuestAmount()
+                            {
+                                AmountBeforeTax = amountBeforeTaxChild,
+                                AmountAfterTax = priceChild.Price,
+                                NumberOfGuests = priceChild.Quantity.ToString(),
+                                AgeQualifyingCode = priceChild.PersonType
+                            };
+                            baseGuestAmounts.Add(baseGuestAmountChild);
+                        }
 
-                        BaseGuestAmount baseGuestAmountTeeneger = new BaseGuestAmount()
+                        if (priceTeeneger != null)
                         {
-                            AmountBeforeTax = amountBeforeTaxTeeneger,
-                            AmountAfterTax = priceTeeneger.Price,
-                            NumberOfGuests = priceTeeneger.Quantity.ToString(),
-                            AgeQualifyingCode = priceTeeneger.PersonType
-                        };
-
-                        baseGuestAmounts.Add(baseGuestAmountChild);
-                        baseGuestAmounts.Add(baseGuestAmountTeeneger);
+                            var amountBeforeTaxTeeneger = decimal.Round((decimal)(priceTeeneger.Price / (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
+                            BaseGuestAmount baseGuestAmountTeeneger = new BaseGuestAmount()
+                            {
+                                AmountBeforeTax = amountBeforeTaxTeeneger,
+                                AmountAfterTax = priceTeeneger.Price,
+                                NumberOfGuests = priceTeeneger.Quantity.ToString(),
+                                AgeQualifyingCode = priceTeeneger.PersonType
+                            };
+                            baseGuestAmounts.Add(baseGuestAmountTeeneger);
+                        }
                     }
 
 
@@ -1262,51 +1409,73 @@ namespace APIServices.Conflux.Helpers.Rates
                 case false:
 
                     //Adults
-                    for (var i = 0; i < maxAdults; i++)
+                    // Iteramos sobre los precios Adult que realmente existen (limitados al techo maxAdults)
+                    // en lugar de iterar 1..maxAdults y reportar como "faltante" cada cupo no vendido.
                     {
-                        var price = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Adult);
+                        var adultPrices = prices
+                            .Where(p => p.PersonType == (int)PersonTypeEnum.Adult
+                                        && p.Quantity.HasValue
+                                        && p.Quantity.Value >= 1
+                                        && p.Quantity.Value <= maxAdults)
+                            .GroupBy(p => p.Quantity)
+                            .Select(g => g.First())
+                            .OrderBy(p => p.Quantity)
+                            .ToList();
 
-                        var amountAfterTax = decimal.Round((decimal)(price.Price * (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
-
-                        BaseGuestAmount baseGuestAmount = new BaseGuestAmount()
+                        foreach (var price in adultPrices)
                         {
-                            AmountBeforeTax = price.Price,
-                            AmountAfterTax = amountAfterTax,
-                            NumberOfGuests = price.Quantity.ToString(),
-                            AgeQualifyingCode = price.PersonType
-                        };
+                            var amountAfterTax = decimal.Round((decimal)(price.Price * (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
 
-                        baseGuestAmounts.Add(baseGuestAmount);
+                            BaseGuestAmount baseGuestAmount = new BaseGuestAmount()
+                            {
+                                AmountBeforeTax = price.Price,
+                                AmountAfterTax = amountAfterTax,
+                                NumberOfGuests = price.Quantity.ToString(),
+                                AgeQualifyingCode = price.PersonType
+                            };
+
+                            baseGuestAmounts.Add(baseGuestAmount);
+                        }
+
+                        if (!adultPrices.Any() && maxAdults > 0)
+                        {
+                            var availableAdult = string.Join(",", prices.Where(p => p.PersonType == (int)PersonTypeEnum.Adult).Select(p => p.Quantity.ToString()));
+                            LogMissingPrice(currentRate, 0, maxAdults, availableAdult, false, "Adult", "spGetPricesByRatePromotionException_NoAdultPrices");
+                        }
                     }
 
                     //Ninios
 
                     for (var i = 0; i < maxChildren; i++)
                     {
-                        var priceChild = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Child);
-                        var amountAfterTaxChild = decimal.Round((decimal)(priceChild.Price * (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
+                        var priceChild = prices.FirstOrDefault(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Child);
+                        var priceTeeneger = prices.FirstOrDefault(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Teeneger);
 
-                        var priceTeeneger = prices.First(p => p.Quantity == (i + 1) && p.PersonType == (int)PersonTypeEnum.Teeneger);
-                        var amountAfterTaxTeeneger = decimal.Round((decimal)(priceTeeneger.Price * (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
-
-                        BaseGuestAmount baseGuestAmountChild = new BaseGuestAmount()
+                        if (priceChild != null)
                         {
-                            AmountBeforeTax = priceChild.Price,
-                            AmountAfterTax = amountAfterTaxChild,
-                            NumberOfGuests = priceChild.Quantity.ToString(),
-                            AgeQualifyingCode = priceChild.PersonType
-                        };
+                            var amountAfterTaxChild = decimal.Round((decimal)(priceChild.Price * (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
+                            BaseGuestAmount baseGuestAmountChild = new BaseGuestAmount()
+                            {
+                                AmountBeforeTax = priceChild.Price,
+                                AmountAfterTax = amountAfterTaxChild,
+                                NumberOfGuests = priceChild.Quantity.ToString(),
+                                AgeQualifyingCode = priceChild.PersonType
+                            };
+                            baseGuestAmounts.Add(baseGuestAmountChild);
+                        }
 
-                        BaseGuestAmount baseGuestAmountTeeneger = new BaseGuestAmount()
+                        if (priceTeeneger != null)
                         {
-                            AmountBeforeTax = priceTeeneger.Price,
-                            AmountAfterTax = amountAfterTaxTeeneger,
-                            NumberOfGuests = priceTeeneger.Quantity.ToString(),
-                            AgeQualifyingCode = priceTeeneger.PersonType
-                        };
-
-                        baseGuestAmounts.Add(baseGuestAmountChild);
-                        baseGuestAmounts.Add(baseGuestAmountTeeneger);
+                            var amountAfterTaxTeeneger = decimal.Round((decimal)(priceTeeneger.Price * (1 + (Tax / 100))), 2, MidpointRounding.AwayFromZero);
+                            BaseGuestAmount baseGuestAmountTeeneger = new BaseGuestAmount()
+                            {
+                                AmountBeforeTax = priceTeeneger.Price,
+                                AmountAfterTax = amountAfterTaxTeeneger,
+                                NumberOfGuests = priceTeeneger.Quantity.ToString(),
+                                AgeQualifyingCode = priceTeeneger.PersonType
+                            };
+                            baseGuestAmounts.Add(baseGuestAmountTeeneger);
+                        }
                     }
 
 

@@ -186,6 +186,23 @@
           <Property Name="EndDate" Type="smalldatetime" />
           <Property Name="idRepl4" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
+        <EntityType Name="GoogleSyncHistory">
+          <Key>
+            <PropertyRef Name="IdSync" />
+          </Key>
+          <Property Name="IdSync" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdHotel" Type="int" Nullable="false" />
+          <Property Name="RequestXML" Type="xml" />
+          <Property Name="ResponseXML" Type="xml" />
+          <Property Name="Status" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Timestamp" Type="datetime" Nullable="false" />
+          <Property Name="Usuario" Type="varchar" MaxLength="100" />
+          <Property Name="TipoOperacion" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="RatePlanId" Type="varchar" MaxLength="100" />
+          <Property Name="RoomId" Type="int" />
+          <Property Name="ErrorMessage" Type="nvarchar(max)" />
+          <Property Name="CorrelationId" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
         <EntityType Name="Log">
           <Key>
             <PropertyRef Name="idLog" />
@@ -1496,6 +1513,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
           <EntitySet Name="Hoteles" EntityType="Self.Hoteles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Indice" EntityType="Self.Indice" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LockRoomTypes" EntityType="Self.LockRoomTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GoogleSyncHistory" EntityType="Self.GoogleSyncHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Log" EntityType="Self.Log" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PrepagoRatesPlan" EntityType="Self.PrepagoRatesPlan" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Promociones_RatePlan" EntityType="Self.Promociones_RatePlan" Schema="dbo" store:Type="Tables" />
@@ -2182,6 +2200,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
           </FunctionImport>
 					<EntitySet Name="UsuarioHotel" EntityType="Models.UsuarioHotel" />
 					<EntitySet Name="vUsersConnectivity" EntityType="Models.vUsersConnectivity" />
+					<EntitySet Name="GoogleSyncHistory" EntityType="Models.GoogleSyncHistory" />
 					<EntitySet Name="Log" EntityType="Models.Log" />
 					<EntitySet Name="vReservationDetails" EntityType="Models.vReservationDetails" />
           <FunctionImport Name="spGetReservationHotelItem" ReturnType="Collection(Models.spGetReservationHotelItem_Result)">
@@ -3506,6 +3525,23 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
 					<Property Name="HotelId" Type="Int32" />
 					<Property Name="Url" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
 					<Property Name="TypePms" Type="Int16" Nullable="false" />
+				</EntityType>
+				<EntityType Name="GoogleSyncHistory">
+					<Key>
+						<PropertyRef Name="IdSync" />
+					</Key>
+					<Property Name="IdSync" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+					<Property Name="IdHotel" Type="Int32" Nullable="false" />
+					<Property Name="RequestXML" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+					<Property Name="ResponseXML" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+					<Property Name="Status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+					<Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="3" />
+					<Property Name="Usuario" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+					<Property Name="TipoOperacion" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+					<Property Name="RatePlanId" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+					<Property Name="RoomId" Type="Int32" />
+					<Property Name="ErrorMessage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+					<Property Name="CorrelationId" Type="Guid" Nullable="false" />
 				</EntityType>
 				<EntityType Name="Log">
 					<Key>
@@ -4958,6 +4994,24 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
 								<ScalarProperty Name="Password" ColumnName="Password" />
 								<ScalarProperty Name="User" ColumnName="User" />
 								<ScalarProperty Name="UserId" ColumnName="UserId" />
+							</MappingFragment>
+						</EntityTypeMapping>
+					</EntitySetMapping>
+					<EntitySetMapping Name="GoogleSyncHistory">
+						<EntityTypeMapping TypeName="Models.GoogleSyncHistory">
+							<MappingFragment StoreEntitySet="GoogleSyncHistory">
+								<ScalarProperty Name="IdSync" ColumnName="IdSync" />
+								<ScalarProperty Name="IdHotel" ColumnName="IdHotel" />
+								<ScalarProperty Name="RequestXML" ColumnName="RequestXML" />
+								<ScalarProperty Name="ResponseXML" ColumnName="ResponseXML" />
+								<ScalarProperty Name="Status" ColumnName="Status" />
+								<ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+								<ScalarProperty Name="Usuario" ColumnName="Usuario" />
+								<ScalarProperty Name="TipoOperacion" ColumnName="TipoOperacion" />
+								<ScalarProperty Name="RatePlanId" ColumnName="RatePlanId" />
+								<ScalarProperty Name="RoomId" ColumnName="RoomId" />
+								<ScalarProperty Name="ErrorMessage" ColumnName="ErrorMessage" />
+								<ScalarProperty Name="CorrelationId" ColumnName="CorrelationId" />
 							</MappingFragment>
 						</EntityTypeMapping>
 					</EntitySetMapping>

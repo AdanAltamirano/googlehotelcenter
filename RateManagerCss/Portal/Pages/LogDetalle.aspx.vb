@@ -61,9 +61,15 @@ Partial Public Class LogDetalle
                 ds.DataSetName = dst.DataSetName
             End If
 
-            fileXsl = String.Concat(ConfigurationManager.AppSettings("pathRM"), String.Format("xslt\{0}\{1}.xslt", PortalCulture.GetCulture.ToString.Substring(0, 2), sname))
-            'fileXsl = String.Concat("C:\ProyectosNet35\RateManager\RateManager\RateManager\Correos\xslt\es\", String.Format("{0}.xslt", sname))
-            If System.IO.File.Exists(fileXsl) Then
+            ' Caso ELIMINACION: solo hay datos en FIELD_DATOS (antes) y FIELD_DATOSDESPUES
+            ' viene vacio (placeholder "Inventario"). Usar el DataSetName de DATOS para
+            ' resolver correctamente el XSLT (p.ej. "Tarifas").
+            If sname = "Inventario" AndAlso Not String.IsNullOrEmpty(ds.DataSetName) AndAlso ds.DataSetName <> "Inventario" AndAlso ds.DataSetName <> "NewDataSet" Then
+                sname = ds.DataSetName
+            End If
+
+            fileXsl = ResolveXsltPath(sname)
+            If Not String.IsNullOrEmpty(fileXsl) AndAlso System.IO.File.Exists(fileXsl) Then
                 oXmlTextReader = New XmlTextReader(ds.GetXml(), XmlNodeType.Document, Nothing)
                 xdd = New XmlDataDocument(ds)
                 trans.Load(fileXsl)
@@ -76,6 +82,50 @@ Partial Public Class LogDetalle
         Catch ex As Exception
             Literal1.Text = PortalCulture.GetString("01361")   '"NO HAY DETALLE PARA ESTE LOG, CONSULTE CON EL ADMINISTRADOR"
         End Try
+    End Function
+
+    ''' <summary>
+    ''' Resuelve la ruta al archivo XSLT intentando varias ubicaciones en orden:
+    '''   1) Ruta relativa a la app (~/Data/xslt/{cultura}/{nombre}.xslt)  → funciona en local y producción
+    '''   2) Config "pathRM" (compatibilidad con despliegues existentes)
+    '''   3) Cultura "en" como último fallback si la cultura actual no tiene XSLT
+    ''' Devuelve la primera ruta que exista, o String.Empty si ninguna existe.
+    ''' </summary>
+    Private Function ResolveXsltPath(ByVal sname As String) As String
+        Dim culture As String = PortalCulture.GetCulture.ToString.Substring(0, 2).ToLower()
+        Dim relative As String = String.Format("xslt\{0}\{1}.xslt", culture, sname)
+        Dim candidate As String
+
+        ' 1) Ruta relativa a la aplicación (la más portable)
+        Try
+            candidate = Server.MapPath("~/Data/" & relative)
+            If System.IO.File.Exists(candidate) Then Return candidate
+        Catch
+            ' Server.MapPath puede fallar en contextos especiales; ignorar y seguir
+        End Try
+
+        ' 2) Config pathRM (usado en producción)
+        Dim configPath As String = ConfigurationManager.AppSettings("pathRM")
+        If Not String.IsNullOrEmpty(configPath) Then
+            candidate = String.Concat(configPath, relative)
+            If System.IO.File.Exists(candidate) Then Return candidate
+        End If
+
+        ' 3) Fallback a la cultura "en" si no existe en la cultura actual
+        If culture <> "en" Then
+            Dim relativeEn As String = String.Format("xslt\en\{0}.xslt", sname)
+            Try
+                candidate = Server.MapPath("~/Data/" & relativeEn)
+                If System.IO.File.Exists(candidate) Then Return candidate
+            Catch
+            End Try
+            If Not String.IsNullOrEmpty(configPath) Then
+                candidate = String.Concat(configPath, relativeEn)
+                If System.IO.File.Exists(candidate) Then Return candidate
+            End If
+        End If
+
+        Return String.Empty
     End Function
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load

@@ -1,4 +1,4 @@
-﻿﻿Imports System.Xml.Linq
+﻿Imports System.Xml.Linq
 Imports System.Web.Http
 Imports APIServices
 Imports APIServices.Models
@@ -399,7 +399,7 @@ Namespace API.Controllers
             Return xml
         End Function
 
-                Private Sub SendClosureToService(ByVal rateId As Integer, ByVal startDate As Date, ByVal endDate As Date, ByVal endpoint As String, ByVal service As String, ByVal info As companyInfo)
+        Private Sub SendClosureToService(ByVal rateId As Integer, ByVal startDate As Date, ByVal endDate As Date, ByVal endpoint As String, ByVal service As String, ByVal info As companyInfo)
 
             Dim requests As List(Of XDocument) = New List(Of XDocument)
 
@@ -421,9 +421,7 @@ Namespace API.Controllers
             Dim confluxService As New APIServices.Conflux.ConfluxService()
 
             For Each request As XDocument In requests
-                Dim correlationIdReq As Guid = APIServices.GoogleSync.GoogleSyncAuditService.LogSyncAttempt(info.Hotel, "ClosureRequest", request.ToString())
-                Dim response As Conflux.Models.Restrictions.Response.RestrictionResponse = HotelUtilitie.ConfluxServiceHelper.UpdateRestriction(request, endpoint, RestrictionEnum.LockRate)
-                APIServices.GoogleSync.GoogleSyncAuditService.UpdateSyncStatus(correlationIdReq, response.IsSuccess, response.Xml, If(response.IsSuccess, "", response.Error.Value))
+                Dim response As Conflux.Models.Restrictions.Response.RestrictionResponse = HotelUtilitie.ConfluxServiceHelper.UpdateRestriction(request, endpoint, RestrictionEnum.LockRate, info.Hotel)
                 restrictionResponseList.Add(response)
             Next
 
@@ -441,8 +439,7 @@ Namespace API.Controllers
                     End With
                 End If
             Next
-
-        End Function
+        End Sub
 
 
         Private Sub SendRatesToService(ByVal ratesMessages As RatesMessages, ByVal endpoint As String, ByVal endpointDelete As String, ByVal hotelId As Integer, ByVal service As String, Optional ByVal deleteRates As Boolean = True)
@@ -572,22 +569,17 @@ Namespace API.Controllers
 
         End Function
 
-                Private Async Function SendRatesToServiceAsync(ByVal userName As String, ByVal userId As Integer, ByVal ratesForRequest As RatesMessages, ByVal hotelId As Integer, ByVal endpoint As String, ByVal endpointDelete As String, ByVal service As String, Optional ByVal deleteRates As Boolean = True) As Task
+        Private Async Function SendRatesToServiceAsync(ByVal userName As String, ByVal userId As Integer, ByVal ratesForRequest As RatesMessages, ByVal hotelId As Integer, ByVal endpoint As String, ByVal endpointDelete As String, ByVal service As String, Optional ByVal deleteRates As Boolean = True) As Task
 
             Dim confluxService As New APIServices.Conflux.ConfluxService()
             Dim ratesMessages As RatesMessages = ratesForRequest
             Dim res As Tuple(Of RateResponse, RateResponse) = Nothing
-
-            Dim xmlRQ = APIServices.Xml.OTA.Request.Rates.HotelRateAmountNotifRQ.CreateHotelRateAmountNotifRQ(ratesMessages.RateAmountMessagesList(0)).ToString()
-            Dim correlationIdRate As Guid = APIServices.GoogleSync.GoogleSyncAuditService.LogSyncAttempt(hotelId, "UpdateRate", xmlRQ, user:=userName)
 
             If service = "APICache" Then
                 res = Await confluxService.UpdateRatePatchAsync(ratesMessages, endpoint, endpointDelete, deleteRates)
             Else
                 res = Await confluxService.UpdateRateAsync(ratesMessages, endpoint, endpointDelete, deleteRates)
             End If
-
-            APIServices.GoogleSync.GoogleSyncAuditService.UpdateSyncStatus(correlationIdRate, res.Item1.IsSuccess, res.Item1.Xml, If(res.Item1.IsSuccess, "", res.Item1.Error.Value))
 
             Dim note As String = String.Format("Tarifa envida a {0}", service)
             Dim noteDelete As String = String.Format("Eliminar tarifas {0}", service)
@@ -600,7 +592,7 @@ Namespace API.Controllers
 
         End Function
 
-                Private Async Function SendClosureToServiceAsync(ByVal userName As String, ByVal userId As Integer, ByVal rateId As Integer, ByVal startDate As Date, ByVal endDate As Date,
+        Private Async Function SendClosureToServiceAsync(ByVal userName As String, ByVal userId As Integer, ByVal rateId As Integer, ByVal startDate As Date, ByVal endDate As Date,
                                              ByVal endpoint As String, ByVal service As String, ByVal hotelId As Integer, ByVal companyId As Integer) As Task
 
             Dim requests As List(Of XDocument) = New List(Of XDocument)
@@ -625,15 +617,12 @@ Namespace API.Controllers
 
             For Each request As XDocument In requests
                 Dim response As Conflux.Models.Restrictions.Response.RestrictionResponse = Nothing
-                Dim correlationIdReq As Guid = APIServices.GoogleSync.GoogleSyncAuditService.LogSyncAttempt(hotelId, "ClosureRequest", request.ToString(), user:=userName)
-
                 If service = "APICache" Then
-                    response = Await confluxService.UpdateRestrictionPatchAsync(request, endpoint, RestrictionEnum.LockRate)
+                    response = Await confluxService.UpdateRestrictionPatchAsync(request, endpoint, RestrictionEnum.LockRate, hotelId)
                 Else
-                    response = Await confluxService.UpdateRestrictionAsync(request, endpoint, RestrictionEnum.LockRate)
+                    response = Await confluxService.UpdateRestrictionAsync(request, endpoint, RestrictionEnum.LockRate, hotelId)
                 End If
 
-                APIServices.GoogleSync.GoogleSyncAuditService.UpdateSyncStatus(correlationIdReq, response.IsSuccess, response.Xml, If(response.IsSuccess, "", response.Error.Value))
                 restrictionResponseList.Add(response)
             Next
 

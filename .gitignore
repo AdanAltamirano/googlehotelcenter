@@ -226,3 +226,6 @@ __pycache__/
 # tools/
 web.config
 /RateManagerCss/ExcelConflux
+SINCRONIZACION_GHC_FASE1.md
+GOOGLE_SYNC_HISTORY_ESTADO_ACTUAL.md
+*.md

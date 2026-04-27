@@ -1,4 +1,7 @@
-﻿﻿Imports System.Web.Http
+﻿Imports System.Data
+Imports System.Data.Entity
+Imports System.Xml.Linq
+Imports System.Web.Http
 Imports System.Threading
 Imports System.Threading.Tasks
 Imports APIServices
@@ -73,7 +76,7 @@ Namespace API.Controllers
                     Dim promotionRatePlanId As String = RQ.Id & plan
                     Dim ratePlanNameId As String = HotelUtilitie.GetRatePlanNameById(plan, hotelId) & " - " & RQ.Name.Esp
 
-                    tasksToExecuteInsertPromoRatePlan.Add(Function() InsertPromoRatePlanAsync(userName, userId, info.Hotel, info.Empresa, isEnabledGoogleRequest, promotionRatePlanId, ratePlanNameId, RQ.Description.Esp, "ES")
+                    tasksToExecuteInsertPromoRatePlan.Add(Function() InsertPromoRatePlanAsync(userName, userId, info.Hotel, info.Empresa, isEnabledGoogleRequest, promotionRatePlanId, ratePlanNameId, RQ.Description.Esp, "ES"))
 
                     'Dim mensaje As String = String.Format("Sincronizar Nuevo  Codigo de Promocion con RatePlan {0}", promotionRatePlanId)
                     'Dim res As RatePlanResponse = HotelUtilitie.ConfluxServiceHelper.InsertRatePlan(info.Hotel, info.Empresa, promotionRatePlanId, ratePlanNameId, RQ.Description.Esp, "ES")
@@ -127,7 +130,7 @@ Namespace API.Controllers
                     Dim promotionRatePlanId As String = RQ.Id & plan
                     Dim ratePlanNameId As String = HotelUtilitie.GetRatePlanNameById(plan, hotelId) & " - " & RQ.Name.Esp
 
-                    tasksToExecuteInsertPromoRatePlan.Add(Function() InsertPromoRatePlanAsync(userName, userId, info.Hotel, info.Empresa, isEnabledGoogleRequest, promotionRatePlanId, ratePlanNameId, RQ.Description.Esp, "ES")
+                    tasksToExecuteInsertPromoRatePlan.Add(Function() InsertPromoRatePlanAsync(userName, userId, info.Hotel, info.Empresa, isEnabledGoogleRequest, promotionRatePlanId, ratePlanNameId, RQ.Description.Esp, "ES"))
 
 
                     'Dim mensaje As String = String.Format("Sincronizar Modificacion Codigo de Promocion con RatePlan {0}", promotionRatePlanId)
@@ -138,7 +141,7 @@ Namespace API.Controllers
                 Dim deleteRates As Boolean = False
                 Dim endDateDelete As Date = Nothing
                 Dim column As String = "idTipoHabitacion_Hotel"
-                Dim filterRooms As String = $" AND {column} IN ({String.Join(", ", auxOffer.ApplicableFor.Rooms.Select(Function(id) id.ToString())})"
+                Dim filterRooms As String = $" AND {column} IN ({String.Join(", ", auxOffer.ApplicableFor.Rooms.Select(Function(id) id.ToString()))})"
                 Dim roomsList As List(Of DataRow) = New List(Of DataRow)
                 Dim roomCodesList As List(Of String) = New List(Of String)
 
@@ -214,7 +217,7 @@ Namespace API.Controllers
                     Return NoContent()
                 End If
             End With
-            Return BadRequest(New KeyValuePair(Of String, String)("0", "No se pudo activar la promoción")
+            Return BadRequest(New KeyValuePair(Of String, String)("0", "No se pudo activar la promoción"))
         End Function
 
         'POST api/promotions/disable/1978/code/PR04
@@ -236,10 +239,28 @@ Namespace API.Controllers
                 vDayRatesPromotionException = RatesHelpers.GetVDayRatePromotionException(info.Hotel, code)
             End If
 
+            ' Capturar XML de tarifas relacionadas al plan ANTES de eliminarlo
+            Dim deletedRatesXml As String = String.Empty
+            Try
+                deletedRatesXml = BuildDeletedRatesXmlForPlan(hotelId, code)
+            Catch
+                ' No interrumpir la eliminación si falla la captura
+            End Try
+
             With New RatePlanFacade
                 If .LogicDeleteRatePlan(hotelId, code) Then
-                    With New PaginaBase
-                        .guardalog("/rate-manager-ui/dist/Promotions.aspx", PaginaBase.acciones.Eliminar, "Eliminó la promoción con el codigo de tarifa " & code)
+
+                    ' Determinar cuántas tarifas subsecuentes quedaron asociadas (para la nota)
+                    Dim deletedCount As Integer = CountRatesInXml(deletedRatesXml)
+                    Dim nota As String
+                    If deletedCount > 0 Then
+                        nota = String.Format("Eliminó la promoción con el codigo de tarifa {0} y sus {1} tarifa(s) asociada(s)", code, deletedCount)
+                    Else
+                        nota = "Eliminó la promoción con el codigo de tarifa " & code
+                    End If
+
+                    With (New PaginaBase)
+                        .guardalog("/rate-manager-ui/dist/Promotions.aspx", PaginaBase.acciones.Eliminar, nota, "", deletedRatesXml, String.Empty, hotelId:=hotelId)
                     End With
 
                     Task.Run(Async Function()
@@ -255,7 +276,82 @@ Namespace API.Controllers
                     Return NoContent()
                 End If
             End With
-            Return BadRequest(New KeyValuePair(Of String, String)("0", "No se pudo desactivar la promoción")
+            Return BadRequest(New KeyValuePair(Of String, String)("0", "No se pudo desactivar la promoción"))
+        End Function
+
+        ''' <summary>
+        ''' Construye XML &lt;Tarifas&gt;&lt;UpdateRate/&gt;...&lt;/Tarifas&gt; con las tarifas asociadas a un plan
+        ''' (campo idrateplan). Incluye también los planes con prefijo de promoción (promo+plan).
+        ''' Se invoca ANTES de LogicDeleteRatePlan.
+        ''' </summary>
+        Private Function BuildDeletedRatesXmlForPlan(ByVal hotelId As Integer, ByVal planCode As String) As String
+            Try
+                If String.IsNullOrEmpty(planCode) Then Return String.Empty
+
+                Dim rates As List(Of Tarifas) = Nothing
+
+                Using dbContext As New OzHotelesEntities()
+                    ' Tarifas donde el plan coincide exactamente o donde el plan es una promo que termina en <planCode>
+                    Dim q As IQueryable(Of Tarifas) = dbContext.Tarifas.AsNoTracking().
+                        Where(Function(t) t.idrateplan = planCode OrElse t.idrateplan.EndsWith(planCode) OrElse t.idrateplan.StartsWith(planCode))
+                    rates = q.ToList()
+                End Using
+
+                If rates Is Nothing OrElse rates.Count = 0 Then Return String.Empty
+
+                Dim datFare As New FaresData()
+                With datFare.Tables(FaresData.FARES_TABLE)
+                    For Each rate As Tarifas In rates
+                        Dim rowFare As DataRow = .NewRow()
+                        rowFare(FaresData.PKIDFARES_FIELD) = rate.idTarifa
+                        rowFare(FaresData.HOTELROOMTYPEID_FIELD) = rate.idTipoHabitacion_Hotel
+                        rowFare(FaresData.STARTDATE_FIELD) = rate.FechaInicia
+                        rowFare(FaresData.ENDDATE_FIELD) = rate.FechaFinaliza
+                        rowFare(FaresData.PRICE_FIELD) = rate.Precio
+                        rowFare(FaresData.NINIORATE) = If(rate.NiniosRate.HasValue, rate.NiniosRate.Value, 0D)
+                        rowFare(FaresData.RATEENPRICE_FIELD) = If(rate.PrecioAdolescente.HasValue, rate.PrecioAdolescente.Value, 0D)
+                        rowFare(FaresData.EXTRAADULTPRICE_FIELD) = rate.PrecioExtraAdulto
+                        rowFare(FaresData.EXTRACHILDPRICE_FIELD) = rate.PrecioExtraNinio
+                        rowFare(FaresData.EXTRATEENPRICE_FIELD) = If(rate.PrecioAdolescenteExtra.HasValue, rate.PrecioAdolescenteExtra.Value, 0D)
+                        rowFare(FaresData.PRICENR_FIELD) = If(rate.PrecioNR.HasValue, rate.PrecioNR.Value, 0D)
+                        rowFare(FaresData.NINIORATENR) = If(rate.NiniosRateNR.HasValue, rate.NiniosRateNR.Value, 0D)
+                        rowFare(FaresData.RATEENPRICENR_FIELD) = If(rate.PrecioAdolescenteNR.HasValue, rate.PrecioAdolescenteNR.Value, 0D)
+                        rowFare(FaresData.EXTRAADULTPRICENR_FIELD) = If(rate.PrecioExtraAdultoNR.HasValue, rate.PrecioExtraAdultoNR.Value, 0D)
+                        rowFare(FaresData.EXTRACHILDPRICENR_FIELD) = If(rate.PrecioExtraNinioNR.HasValue, rate.PrecioExtraNinioNR.Value, 0D)
+                        rowFare(FaresData.EXTRATEENPRICENR_FIELD) = If(rate.PrecioAdolescenteExtraNR.HasValue, rate.PrecioAdolescenteExtraNR.Value, 0D)
+                        rowFare(FaresData.RATETYPE_FIELD) = If(rate.TipoTarifa, String.Empty)
+                        rowFare(FaresData.RATECODE_FIELD) = If(rate.CodigoTarifa, String.Empty)
+                        rowFare(FaresData.EXCEPTION_FIELD) = If(rate.Excepciones, String.Empty)
+                        rowFare(FaresData.NOARRIVOS_FIELD) = If(rate.NoArrivos, String.Empty)
+                        rowFare(FaresData.IDRATEPLAN_FIELD) = If(rate.idrateplan, String.Empty)
+                        rowFare(FaresData.RULESDEFAULT) = If(rate.RateRulesDefault.HasValue, rate.RateRulesDefault.Value, True)
+                        rowFare(FaresData.IDDICCDESCPROM_FIELD) = If(rate.idDiccPromoDesc.HasValue, rate.idDiccPromoDesc.Value, 0)
+                        .Rows.Add(rowFare)
+                    Next
+                End With
+
+                datFare.Tables(0).Columns.Add("Descr_rateplan")
+                For i As Integer = 0 To rates.Count - 1
+                    datFare.Tables(0).Rows(i)("Descr_rateplan") = String.Format("Hab {0} · {1}", rates(i).idTipoHabitacion_Hotel, rates(i).idrateplan)
+                Next
+
+                Return Util.Utility.GetXml(FaresData.FARES_TABLE, "UpdateRate", datFare)
+            Catch ex As Exception
+                Return String.Empty
+            End Try
+        End Function
+
+        ''' <summary>
+        ''' Cuenta los nodos UpdateRate dentro de un XML generado por BuildDeletedRatesXmlForPlan.
+        ''' </summary>
+        Private Function CountRatesInXml(ByVal xml As String) As Integer
+            If String.IsNullOrEmpty(xml) Then Return 0
+            Try
+                Dim doc As XDocument = XDocument.Parse(xml)
+                Return doc.Descendants("UpdateRate").Count()
+            Catch
+                Return 0
+            End Try
         End Function
 
         Private Sub ExecuteServices(ByVal hotelId As Integer, ByVal companyId As Integer, ByVal idRatePlan As String, ByVal isEnabledGoogleRequest As Boolean, ByVal isEnabledSendingRatesAPICache As Boolean)
@@ -310,7 +406,7 @@ Namespace API.Controllers
             End If
         End Sub
 
-        Private Sub ExecuteServicesDelete(ByVal hotelId As Integer, ByVal companyId As Integer, ByVal isEnabledGoogleRequest As Boolean, ByVal isEnabledSendingRatesAPICache As Boolean, ByVal vDayRatesPromotion As List(Of vDayRates), ByVal vDayRatesPromotionException As List(Of vDayRatesExceptions)
+        Private Sub ExecuteServicesDelete(ByVal hotelId As Integer, ByVal companyId As Integer, ByVal isEnabledGoogleRequest As Boolean, ByVal isEnabledSendingRatesAPICache As Boolean, ByVal vDayRatesPromotion As List(Of vDayRates), ByVal vDayRatesPromotionException As List(Of vDayRatesExceptions))
 
             Dim rateAmountMessages As RateAmountMessages = Nothing
             Dim rateAmountMessagesPromotion As RateAmountMessages = Nothing
@@ -438,7 +534,7 @@ Namespace API.Controllers
                                                           Finally
                                                               semaphore.Release()
                                                           End Try
-                                                      End Function)
+                                                      End Function))
             Next
 
 
@@ -499,7 +595,7 @@ Namespace API.Controllers
                     Dim errorElementProperty As New System.Xml.Linq.XElement("Error")
                     errorElementProperty.Add(New System.Xml.Linq.XAttribute("Type", "3"),
                                              New System.Xml.Linq.XAttribute("Code", "448"),
-                                             New System.Xml.Linq.XText(ex.Message)
+                                             New System.Xml.Linq.XText(ex.Message))
                     errorsElement.Add(errorElementProperty)
 
                     HotelUtilitie.Log(userName, userId, "/rate-manager-ui/dist/Promotions.aspx", hotelId, Actions.Sincronizar, $"Error al sincronizar con {serviceName}", "", errorsElement.ToString(), "")
@@ -517,11 +613,11 @@ Namespace API.Controllers
 
             Dim note As String = IIf(isException,
                              String.Format("Sincronizar exception Promotions {0}", service),
-                             String.Format("Sincronizar Promotions {0}", service)
+                             String.Format("Sincronizar Promotions {0}", service))
 
             Dim noteDelete As String = IIf(isException,
                                    String.Format("Eliminar exception Promotions {0}", service),
-                                   String.Format("Eliminar Promotions {0}", service)
+                                   String.Format("Eliminar Promotions {0}", service))
 
 
             Dim confluxService As New ConfluxService()
@@ -530,14 +626,11 @@ Namespace API.Controllers
 
             Dim res As Tuple(Of RateResponse, RateResponse) = Nothing
 
-            Dim xmlRQ = APIServices.Xml.OTA.Request.Rates.HotelRateAmountNotifRQ.CreateHotelRateAmountNotifRQ(ratesMessages.RateAmountMessagesList(0)).ToString()
-            Dim correlationId As Guid = APIServices.GoogleSync.GoogleSyncAuditService.LogSyncAttempt(hotelId, "UpdatePromotionRate", xmlRQ, user:=userName)
             If service = "APICache" Then
                 res = Await confluxService.UpdateRatePatchAsync(ratesMessages, endpoint, endpointDelete, deleteRates)
             Else
                 res = Await confluxService.UpdateRateAsync(ratesMessages, endpoint, endpointDelete, deleteRates)
             End If
-            APIServices.GoogleSync.GoogleSyncAuditService.UpdateSyncStatus(correlationId, res.Item1.IsSuccess, res.Item1.Xml, If(res.Item1.IsSuccess, "", res.Item1.Error.Value))
 
             HotelUtilitie.Log(userName, userId, "/rate-manager-ui/dist/Promotions.aspx", hotelId, Actions.Sincronizar, note, "", res.Item1.RequestXML, res.Item1.Xml)
 
@@ -610,7 +703,7 @@ Namespace API.Controllers
                     Dim errorElementProperty As New System.Xml.Linq.XElement("Error")
                     errorElementProperty.Add(New System.Xml.Linq.XAttribute("Type", "3"),
                                              New System.Xml.Linq.XAttribute("Code", "448"),
-                                             New System.Xml.Linq.XText(ex.Message)
+                                             New System.Xml.Linq.XText(ex.Message))
                     errorsElement.Add(errorElementProperty)
 
                     HotelUtilitie.Log(userName, userId, "/rate-manager-ui/dist/Promotions.aspx", hotelId, Actions.Sincronizar, $"Error al sincronizar eliminar con {service}", "", errorsElement.ToString(), "")
@@ -629,8 +722,6 @@ Namespace API.Controllers
 
             Dim rateResponseDelete As RateResponse = Nothing
 
-            Dim xmlRQ = APIServices.Xml.OTA.Request.Rates.HotelRateAmountNotifRQ.CreateHotelRateAmountNotifRQDelete(deleteMessages).ToString()
-            Dim correlationId As Guid = APIServices.GoogleSync.GoogleSyncAuditService.LogSyncAttempt(hotelId, "DeletePromotionRate", xmlRQ, user:=userName)
             If service = "APICache" Then
 
                 rateResponseDelete = Await confluxService.DeleteRatesPatchAsync(endpoint, deleteMessages)
@@ -638,7 +729,6 @@ Namespace API.Controllers
             Else
                 rateResponseDelete = Await confluxService.DeleteRatesAsync(endpoint, deleteMessages)
             End If
-            APIServices.GoogleSync.GoogleSyncAuditService.UpdateSyncStatus(correlationId, rateResponseDelete.IsSuccess, rateResponseDelete.Xml, If(rateResponseDelete.IsSuccess, "", rateResponseDelete.Error.Value))
 
             HotelUtilitie.Log(userName, userId, "/rate-manager-ui/dist/Promotions.aspx", hotelId, Actions.Eliminar, note, "", rateResponseDelete.RequestXML, rateResponseDelete.Xml)
 

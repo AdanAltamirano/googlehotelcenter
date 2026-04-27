@@ -3481,6 +3481,7 @@
     </Compile>
     <Compile Include="Portal\PortalPartnersCfg.vb" />
     <Compile Include="Portal\Util.vb" />
+    <Compile Include="Portal\UtilDeleteLog.vb" />
     <Compile Include="Registro\ActivitiesInformation.aspx.designer.vb">
       <DependentUpon>ActivitiesInformation.aspx</DependentUpon>
     </Compile>

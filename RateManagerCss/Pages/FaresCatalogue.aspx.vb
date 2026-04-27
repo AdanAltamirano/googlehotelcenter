@@ -249,10 +249,15 @@ Partial Class FaresCatalogue
                     Dim vDayRates As List(Of vDayRates) = Helpers.Rates.RatesHelpers.GetVDayRate(iFareIdTemp, startDate, endDate)
 
 
+                    ' Capturar XML de la tarifa ANTES de eliminar para mostrarla en el LogDetalle
+                    Dim deletedRateXml As String = Util.DeleteLogHelper.BuildDeletedRateXml(iFareIdTemp)
+
                     With New FaresSystem
                         If .DeleteFares(iFareIdTemp) Then
 
-                            Me.guardalog("/Pages/FaresCatalogue.aspx", PaginaBase.acciones.Eliminar, "Se elimin� la tarifa de la habitaci�n " & room.Cells(dgcolumns.codigohabitacion).Text & " de la fecha " & room.Cells(dgcolumns.FechaInicia).Text & " a la fecha " & room.Cells(dgcolumns.FechaFinaliza).Text & " con el rateplan " & labelTemp.Text)
+                            Me.guardalog("/Pages/FaresCatalogue.aspx", PaginaBase.acciones.Eliminar, _
+                                "Se elimin� la tarifa de la habitaci�n " & room.Cells(dgcolumns.codigohabitacion).Text & " de la fecha " & room.Cells(dgcolumns.FechaInicia).Text & " a la fecha " & room.Cells(dgcolumns.FechaFinaliza).Text & " con el rateplan " & labelTemp.Text, _
+                                "", deletedRateXml, String.Empty, info.Hotel)
 
                             'If isEnabledGoogleRequest Or isEnabledSendingRatesAPICache Then
 
@@ -658,9 +663,13 @@ Partial Class FaresCatalogue
         ElseIf e.CommandName = "Delete" Then
 
             iFareId = Integer.Parse(dgRooms.Items(e.Item.ItemIndex).Cells(dgcolumns.idTarifa).Text)
+            ' Capturar XML de la tarifa ANTES de eliminar para mostrarla en el LogDetalle
+            Dim deletedRateXmlItem As String = Util.DeleteLogHelper.BuildDeletedRateXml(iFareId)
             With New FaresSystem
                 If .DeleteFares(iFareId) Then
-                    Me.guardalog("/Pages/FaresCatalogue.aspx", PaginaBase.acciones.Eliminar, "Se elimin� la tarifa de la habitaci�n " & dgRooms.Items(e.Item.ItemIndex).Cells(dgcolumns.codigohabitacion).Text & " de la fecha " & dgRooms.Items(e.Item.ItemIndex).Cells(dgcolumns.FechaInicia).Text & " a la fecha " & dgRooms.Items(e.Item.ItemIndex).Cells(dgcolumns.FechaFinaliza).Text & " con el rateplan " & dgRooms.Items(e.Item.ItemIndex).Cells(dgcolumns.RatePlan).Text)
+                    Me.guardalog("/Pages/FaresCatalogue.aspx", PaginaBase.acciones.Eliminar, _
+                        "Se elimin� la tarifa de la habitaci�n " & dgRooms.Items(e.Item.ItemIndex).Cells(dgcolumns.codigohabitacion).Text & " de la fecha " & dgRooms.Items(e.Item.ItemIndex).Cells(dgcolumns.FechaInicia).Text & " a la fecha " & dgRooms.Items(e.Item.ItemIndex).Cells(dgcolumns.FechaFinaliza).Text & " con el rateplan " & dgRooms.Items(e.Item.ItemIndex).Cells(dgcolumns.RatePlan).Text, _
+                        "", deletedRateXmlItem, String.Empty)
                     If dgRooms.CurrentPageIndex > 0 And dgRooms.Items.Count = 1 Then
                         dgRooms.CurrentPageIndex = ((dgRooms.CurrentPageIndex * dgRooms.PageSize) \ dgRooms.PageSize) - 1
                     End If
@@ -911,9 +920,13 @@ Partial Class FaresCatalogue
     Private Sub btnDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Dim iFareId As Integer
         iFareId = CtrRateAplication1.m_iFareId
+        ' Capturar XML de la tarifa ANTES de eliminar para mostrarla en el LogDetalle
+        Dim deletedRateXmlBtn As String = Util.DeleteLogHelper.BuildDeletedRateXml(iFareId)
         With New FaresSystem
             If .DeleteFares(iFareId) Then
-                Me.guardalog("/Pages/FaresCatalogue.aspx", PaginaBase.acciones.Eliminar, "Se elimin� la tarifa de la habitaci�n " & dgRooms.Items(dgRooms.SelectedIndex).Cells(dgcolumns.codigohabitacion).Text & " de la fecha " & dgRooms.Items(dgRooms.SelectedIndex).Cells(dgcolumns.FechaInicia).Text & " a la fecha " & dgRooms.Items(dgRooms.SelectedIndex).Cells(dgcolumns.FechaFinaliza).Text & " con el rateplan " & dgRooms.Items(dgRooms.SelectedIndex).Cells(dgcolumns.RatePlan).Text)
+                Me.guardalog("/Pages/FaresCatalogue.aspx", PaginaBase.acciones.Eliminar, _
+                    "Se elimin� la tarifa de la habitaci�n " & dgRooms.Items(dgRooms.SelectedIndex).Cells(dgcolumns.codigohabitacion).Text & " de la fecha " & dgRooms.Items(dgRooms.SelectedIndex).Cells(dgcolumns.FechaInicia).Text & " a la fecha " & dgRooms.Items(dgRooms.SelectedIndex).Cells(dgcolumns.FechaFinaliza).Text & " con el rateplan " & dgRooms.Items(dgRooms.SelectedIndex).Cells(dgcolumns.RatePlan).Text, _
+                    "", deletedRateXmlBtn, String.Empty)
                 If dgRooms.CurrentPageIndex > 0 And dgRooms.Items.Count = 1 Then
                     dgRooms.CurrentPageIndex = ((dgRooms.CurrentPageIndex * dgRooms.PageSize) \ dgRooms.PageSize) - 1
                 End If
@@ -1033,9 +1046,9 @@ Partial Class FaresCatalogue
             Dim response As Models.Restrictions.Response.RestrictionResponse = Nothing
 
             If service = "APICache" Then
-                response = Await confluxService.UpdateRestrictionPatchAsync(request, endpoint, RestrictionEnum.LockRate)
+                response = Await confluxService.UpdateRestrictionPatchAsync(request, endpoint, RestrictionEnum.LockRate, hotelId)
             Else
-                response = Await confluxService.UpdateRestrictionAsync(request, endpoint, RestrictionEnum.LockRate)
+                response = Await confluxService.UpdateRestrictionAsync(request, endpoint, RestrictionEnum.LockRate, hotelId)
             End If
 
             restrictionResponseList.Add(response)
@@ -1124,6 +1137,7 @@ Partial Class FaresCatalogue
 
 
     Private Async Function SendRatesAsync(ByVal hotelId As Integer, ByVal companyId As Integer, ByVal rateId As Integer, ByVal startDate As Date, ByVal endDate As Date, ByVal userName As String, ByVal userId As Integer) As Task
+
         Try
 
             Dim confluxService As New APIServices.Conflux.ConfluxService()
@@ -1132,12 +1146,16 @@ Partial Class FaresCatalogue
             Dim isEnabledSendingRatesAPICache As Boolean = HotelUtilitie.IsEnableSendRatesAPICache(hotelId)
 
             confluxService.ConfluxSendRatesToGoogle = True
-            Dim ratesForRequest As RatesMessages = If(isEnabledGoogleRequest,
-                                            confluxService.GetRateMessages(rateId, startDate, endDate, hotelId, companyId, TypeRateEnum.RoomRate), Nothing)
+            Dim ratesForRequest As RatesMessages = Nothing
+            If isEnabledGoogleRequest Then
+                ratesForRequest = confluxService.GetRateMessages(rateId, startDate, endDate, hotelId, companyId, TypeRateEnum.RoomRate)
+            End If
 
             confluxService.ConfluxSendRatesToGoogle = False
-            Dim ratesForRequestAPICache As RatesMessages = If(isEnabledSendingRatesAPICache,
-                                            confluxService.GetRateMessages(rateId, startDate, endDate, hotelId, companyId, TypeRateEnum.RoomRate), Nothing)
+            Dim ratesForRequestAPICache As RatesMessages = Nothing
+            If isEnabledSendingRatesAPICache Then
+                ratesForRequestAPICache = confluxService.GetRateMessages(rateId, startDate, endDate, hotelId, companyId, TypeRateEnum.RoomRate)
+            End If
 
             ' Enviar tarifas a Conflux
             Await SendRatesIfEnabledAsync(userName, userId, isEnabledGoogleRequest, ratesForRequest, hotelId, companyId, rateId,
@@ -1169,7 +1187,6 @@ Partial Class FaresCatalogue
                                                 ByVal rateId As Integer, ByVal startDate As Date, ByVal endDate As Date,
                                                 ByVal endpoint As String, ByVal endpointDelete As String,
                                                 ByVal closureEndpoint As String, ByVal serviceName As String, ByVal deleteRates As Boolean) As Task
-
 
         If isEnabled AndAlso ratesForRequest IsNot Nothing Then
             Try

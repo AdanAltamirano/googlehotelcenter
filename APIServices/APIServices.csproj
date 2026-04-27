@@ -228,6 +228,8 @@
     <Compile Include="Models\GetMappedHotelsWithRatePlan_Result.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\GoogleSyncHistory.cs" />
+    <Compile Include="googleSync\GoogleSyncAuditService.cs" />
     <Compile Include="Models\HotelCanales.cs">
       <DependentUpon>OzHoteles.tt</DependentUpon>
     </Compile>
@@ -575,9 +577,6 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="googleSync\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

@@ -8,6 +8,7 @@ using APIServices.Conflux.Models.Delete.Response;
 using APIServices.Conflux.Helpers.RatesPlan;
 using APIServices.Conflux.Helpers.Rooms;
 using APIServices.Conflux.OTA.Models.Rates;
+using APIServices.GoogleSync;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -31,7 +32,7 @@ namespace APIServices.Conflux
 
         }
 
-        public DeleteResponse UpdateDelete(List<XDocument> documents, string endpoint)
+        public DeleteResponse UpdateDelete(List<XDocument> documents, string endpoint, int hotelId = 0)
         {
             DeleteResponse res = new DeleteResponse();
 
@@ -42,6 +43,9 @@ namespace APIServices.Conflux
                 foreach (XDocument document in documents)
                 {
                     DeleteHttpResponse deleteHttpResponse = new DeleteHttpResponse();
+
+                    Guid correlationId = Guid.Empty;
+                    try { correlationId = GoogleSyncAuditService.LogSyncAttempt(hotelId, "DeleteRatePlan", document.ToString()); } catch { }
 
                     var request = new HttpRequestMessage
                     {
@@ -54,17 +58,17 @@ namespace APIServices.Conflux
 
                     using (var client = new HttpClient())
                     {
-
                         client.Timeout = TimeSpan.FromMinutes(50);
                         var response = client.SendAsync(request).Result;
-
-                        result = response.Content.ReadAsStringAsync().Result; //regresa un xml
+                        result = response.Content.ReadAsStringAsync().Result;
                     }
 
                     deleteHttpResponse.Xml = result;
                     deleteHttpResponse.XmlRequest = document.ToString();
                     deleteHttpResponse.IsSuccess = true;
                     res.DeleteHttpResponseList.Add(deleteHttpResponse);
+
+                    try { GoogleSyncAuditService.UpdateSyncStatus(correlationId, true, result, default(KeyValuePair<string, string>)); } catch { }
 
                     System.Threading.Thread.Sleep(TimeSpan.FromSeconds(1));
                 }
@@ -80,15 +84,13 @@ namespace APIServices.Conflux
                 errorElementProperty.Add(new System.Xml.Linq.XAttribute("Type", "3"), new System.Xml.Linq.XAttribute("Code", "448"), new System.Xml.Linq.XText(ex.Message));
                 errorsElement.Add(errorElementProperty);
                 res.Xml = errorsElement.ToString();
-
             }
-
 
             return res;
 
         }
 
-        public async Task<DeleteResponse> UpdateDeleteAsync(List<XDocument> documents, string endpoint)
+        public async Task<DeleteResponse> UpdateDeleteAsync(List<XDocument> documents, string endpoint, int hotelId = 0)
         {
             DeleteResponse res = new DeleteResponse();
 
@@ -99,6 +101,9 @@ namespace APIServices.Conflux
                 foreach (XDocument document in documents)
                 {
                     DeleteHttpResponse deleteHttpResponse = new DeleteHttpResponse();
+
+                    Guid correlationId = Guid.Empty;
+                    try { correlationId = GoogleSyncAuditService.LogSyncAttempt(hotelId, "DeleteRatePlan", document.ToString()); } catch { }
 
                     var request = new HttpRequestMessage
                     {
@@ -112,11 +117,7 @@ namespace APIServices.Conflux
                     using (var client = new HttpClient())
                     {
                         client.Timeout = TimeSpan.FromMinutes(50);
-
-                        
                         var response = await client.SendAsync(request);
-
-                        
                         result = await response.Content.ReadAsStringAsync();
                     }
 
@@ -125,7 +126,8 @@ namespace APIServices.Conflux
                     deleteHttpResponse.IsSuccess = true;
                     res.DeleteHttpResponseList.Add(deleteHttpResponse);
 
-                    
+                    try { GoogleSyncAuditService.UpdateSyncStatus(correlationId, true, result, default(KeyValuePair<string, string>)); } catch { }
+
                     await Task.Delay(TimeSpan.FromSeconds(1));
                 }
 

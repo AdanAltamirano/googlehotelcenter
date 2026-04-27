@@ -1,31 +1,32 @@
-﻿using System;
-using System.Configuration;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Net;
-using System.Net.Http;
-using System.Collections.Generic;
-using System.Xml.Linq;
-using APIServices.Models;
-using APIServices.Conflux.Enum;
+﻿using APIServices.Conflux.Enum;
+using APIServices.Conflux.Models.RatePlan.Response;
+using APIServices.Conflux.Models.Rates.Response;
+using APIServices.Conflux.Models.Restrictions.Response;
+using APIServices.Conflux.Models.Restrictions.Room.Response;
 using APIServices.Conflux.Models.User;
 using APIServices.Conflux.Models.User.Response;
 using APIServices.Conflux.OTA.Models.Rates;
-using APIServices.Conflux.Models.Rates.Response;
-using APIServices.Conflux.Models.Restrictions.Response;
-using APIServices.Conflux.Models.RatePlan.Response;
-using APIServices.Conflux.Models.Restrictions.Room.Response;
 using APIServices.Conflux.Parser.RatePlan;
 using APIServices.Conflux.Parser.Restriction;
-using APIServices.Xml.Soap;
+using APIServices.GoogleSync;
+using APIServices.Models;
+using APIServices.Xml.OTA.Request.RatePlan;
 using APIServices.Xml.OTA.Request.Rates;
 using APIServices.Xml.OTA.Request.Restrictions;
-using APIServices.Xml.OTA.Request.RatePlan;
-using Portal.General.Facade;
-using Portal.Hotel.Facade;
-using Portal.Hotel.Common.Data;
+using APIServices.Xml.Soap;
 using Portal.General.Common.Data;
+using Portal.General.Facade;
+using Portal.Hotel.Common.Data;
+using Portal.Hotel.Facade;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Xml.Linq;
 
 
 namespace APIServices.Conflux
@@ -155,6 +156,8 @@ namespace APIServices.Conflux
         {
             var response = new RatePlanResponse();
             string googleChannelId = ConfigurationManager.AppSettings["GoogleChannelID"];
+            Guid correlationId = Guid.Empty;
+            try { correlationId = GoogleSyncAuditService.LogSyncAttempt(hotelId, "InsertRatePlan", null, ratePlanId: ratePlanId); } catch { }
 
             try
             {
@@ -188,6 +191,7 @@ namespace APIServices.Conflux
                 response.Response = ex.Message;
             }
 
+            try { GoogleSyncAuditService.UpdateSyncStatus(correlationId, response.StatusCode == 200 || response.StatusCode == 204, response.Response, default(KeyValuePair<string, string>)); } catch { }
             return response;
 
         }
@@ -377,6 +381,10 @@ namespace APIServices.Conflux
         {
             RateResponse rateResponse = new RateResponse();
             RateResponse deleteRateResponse = null;
+            int hotelId = ratesMessages.RateAmountMessagesList[0].HotelCodeV2;
+            string firstRatePlan = ratesMessages.RateAmountMessagesList[0].RateAmountMessagesList.FirstOrDefault()?.statusApplicationControl?.RatePlanCode;
+            Guid correlationId = Guid.Empty;
+            try { correlationId = GoogleSyncAuditService.LogSyncAttempt(hotelId, "UpdateRate", null, ratePlanId: firstRatePlan); } catch { }
 
             try
             {
@@ -431,6 +439,7 @@ namespace APIServices.Conflux
                 if (ratesMessages.RateAmountMessagesList[1].RateAmountMessagesList.Count > 0) deleteRateResponse = DeleteRates(endpointDelete, ratesMessages.RateAmountMessagesList[1]);
             }
 
+            try { GoogleSyncAuditService.UpdateSyncStatus(correlationId, rateResponse.IsSuccess, rateResponse.Xml, rateResponse.Error); } catch { }
             return new Tuple<RateResponse, RateResponse>(rateResponse, deleteRateResponse);
         }
 
@@ -438,11 +447,14 @@ namespace APIServices.Conflux
         {
             RateResponse rateResponse = new RateResponse();
             RateResponse deleteRateResponse = null;
+            int hotelId = ratesMessages.RateAmountMessagesList[0].HotelCodeV2;
+            string firstRatePlan = ratesMessages.RateAmountMessagesList[0].RateAmountMessagesList.FirstOrDefault()?.statusApplicationControl?.RatePlanCode;
+            var soapRequest = Soap.CreateSoapRequestXml(HotelRateAmountNotifRQ.CreateHotelRateAmountNotifRQ(ratesMessages.RateAmountMessagesList[0]));
+            Guid correlationId = Guid.Empty;
+            try { correlationId = GoogleSyncAuditService.LogSyncAttempt(hotelId, "UpdateRate", soapRequest.ToString(), ratePlanId: firstRatePlan); } catch { }
 
             try
             {
-                var xml = HotelRateAmountNotifRQ.CreateHotelRateAmountNotifRQ(ratesMessages.RateAmountMessagesList[0]);
-                var soapRequest = Soap.CreateSoapRequestXml(xml);
                 HttpContent httpContent = new StringContent(soapRequest.ToString());
                 var uri = new Uri(endpoint);
 
@@ -480,7 +492,7 @@ namespace APIServices.Conflux
                     deleteRateResponse = await DeleteRatesAsync(endpointDelete, ratesMessages.RateAmountMessagesList[1]);
                 }
             }
-
+            try { GoogleSyncAuditService.UpdateSyncStatus(correlationId, rateResponse.IsSuccess, rateResponse.Xml, rateResponse.Error); } catch { }
             return new Tuple<RateResponse, RateResponse>(rateResponse, deleteRateResponse);
         }
 
@@ -488,14 +500,14 @@ namespace APIServices.Conflux
         {
             RateResponse rateResponse = new RateResponse();
             RateResponse deleteRateResponse = null;
-
+            int hotelId = ratesMessages.RateAmountMessagesList[0].HotelCodeV2;
+            string firstRatePlan = ratesMessages.RateAmountMessagesList[0].RateAmountMessagesList.FirstOrDefault()?.statusApplicationControl?.RatePlanCode;
+            ratesMessages.RateAmountMessagesList[0].HotelCode = ratesMessages.RateAmountMessagesList[0].HotelCodeV2;
+            var soapRequest = Soap.CreateSoapRequestXml(HotelRateAmountNotifRQ.CreateHotelRateAmountNotifRQ(ratesMessages.RateAmountMessagesList[0]));
+            Guid correlationId = Guid.Empty;
+            try { correlationId = GoogleSyncAuditService.LogSyncAttempt(hotelId, "UpdateRatePatch", soapRequest.ToString(), ratePlanId: firstRatePlan); } catch { }
             try
             {
-
-                ratesMessages.RateAmountMessagesList[0].HotelCode = ratesMessages.RateAmountMessagesList[0].HotelCodeV2;
-
-                var xml = HotelRateAmountNotifRQ.CreateHotelRateAmountNotifRQ(ratesMessages.RateAmountMessagesList[0]);
-                var soapRequest = Soap.CreateSoapRequestXml(xml);
 
                 var baseUri = new Uri(ConfigurationManager.AppSettings["confluxApiUrl"].ToString());
                 var fullUri = new Uri(baseUri, endpoint);
@@ -533,8 +545,7 @@ namespace APIServices.Conflux
                     deleteRateResponse = await DeleteRatesPatchAsync(endpointDelete, ratesMessages.RateAmountMessagesList[1]);
                 }
             }
-
-
+            try { GoogleSyncAuditService.UpdateSyncStatus(correlationId, rateResponse.IsSuccess, rateResponse.Xml, rateResponse.Error); } catch { }
             return new Tuple<RateResponse, RateResponse>(rateResponse, deleteRateResponse);
         }
 
@@ -1598,9 +1609,11 @@ namespace APIServices.Conflux
             RoomsClosureController
             AvailabilityRestrictions
         */
-        public RestrictionResponse UpdateRestriction(XDocument document,string endpoint, RestrictionEnum restrictionEnum)
+        public RestrictionResponse UpdateRestriction(XDocument document,string endpoint, RestrictionEnum restrictionEnum, int hotelId = 0)
         {
             RestrictionResponse res = new RestrictionResponse();
+            Guid correlationId = Guid.Empty;
+            try { correlationId = GoogleSyncAuditService.LogSyncAttempt(hotelId, "UpdateRestriction", document?.ToString()); } catch { }
 
             try
             {
@@ -1652,13 +1665,16 @@ namespace APIServices.Conflux
 
             }
 
+            try { GoogleSyncAuditService.UpdateSyncStatus(correlationId, res.IsSuccess, res.Xml, res.Error); } catch { }
             return res;
 
         }
 
-        public async Task<RestrictionResponse> UpdateRestrictionAsync(XDocument document, string endpoint, RestrictionEnum restrictionEnum)
+        public async Task<RestrictionResponse> UpdateRestrictionAsync(XDocument document, string endpoint, RestrictionEnum restrictionEnum, int hotelId = 0)
         {
             RestrictionResponse res = new RestrictionResponse();
+            Guid correlationId = Guid.Empty;
+            try { correlationId = GoogleSyncAuditService.LogSyncAttempt(hotelId, "UpdateRestriction", document?.ToString()); } catch { }
 
             try
             {
@@ -1703,12 +1719,15 @@ namespace APIServices.Conflux
                 res.Xml = errorsElement.ToString();
             }
 
+            try { GoogleSyncAuditService.UpdateSyncStatus(correlationId, res.IsSuccess, res.Xml, res.Error); } catch { }
             return res;
         }
 
-        public async Task<RestrictionResponse> UpdateRestrictionPatchAsync(XDocument document, string endpoint, RestrictionEnum restrictionEnum)
+        public async Task<RestrictionResponse> UpdateRestrictionPatchAsync(XDocument document, string endpoint, RestrictionEnum restrictionEnum, int hotelId = 0)
         {
             RestrictionResponse res = new RestrictionResponse();
+            Guid correlationId = Guid.Empty;
+            try { correlationId = GoogleSyncAuditService.LogSyncAttempt(hotelId, "UpdateRestrictionPatch", document?.ToString()); } catch { }
 
             try
             {
@@ -1749,13 +1768,16 @@ namespace APIServices.Conflux
                 res.Xml = errorsElement.ToString();
             }
 
+            try { GoogleSyncAuditService.UpdateSyncStatus(correlationId, res.IsSuccess, res.Xml, res.Error); } catch { }
             return res;
         }
 
         public RateResponse DeleteRates(string endpoint,RateAmountMessages rateAmountMessages)
         {
-
             RateResponse res = new RateResponse();
+            string firstRatePlan = rateAmountMessages.RateAmountMessagesList.FirstOrDefault()?.statusApplicationControl?.RatePlanCode;
+            Guid correlationId = Guid.Empty;
+            try { correlationId = GoogleSyncAuditService.LogSyncAttempt(rateAmountMessages.HotelCodeV2, "DeleteRate", null, ratePlanId: firstRatePlan); } catch { }
 
             try
             {
@@ -1808,6 +1830,7 @@ namespace APIServices.Conflux
 
             }
 
+            try { GoogleSyncAuditService.UpdateSyncStatus(correlationId, res.IsSuccess, res.Xml, res.Error); } catch { }
             return res;
 
         }
@@ -1815,6 +1838,9 @@ namespace APIServices.Conflux
         public RateResponse DeleteRatesPatch(string endpoint, RateAmountMessages rateAmountMessages)
         {
             RateResponse res = new RateResponse();
+            string firstRatePlan = rateAmountMessages.RateAmountMessagesList.FirstOrDefault()?.statusApplicationControl?.RatePlanCode;
+            Guid correlationId = Guid.Empty;
+            try { correlationId = GoogleSyncAuditService.LogSyncAttempt(rateAmountMessages.HotelCodeV2, "DeleteRatePatch", null, ratePlanId: firstRatePlan); } catch { }
 
             try
             {
@@ -1869,17 +1895,20 @@ namespace APIServices.Conflux
                 res.Xml = errorsElement.ToString();
             }
 
+            try { GoogleSyncAuditService.UpdateSyncStatus(correlationId, res.IsSuccess, res.Xml, res.Error); } catch { }
             return res;
         }
 
         public async Task<RateResponse> DeleteRatesAsync(string endpoint, RateAmountMessages rateAmountMessages)
         {
             RateResponse res = new RateResponse();
+            string firstRatePlan = rateAmountMessages.RateAmountMessagesList.FirstOrDefault()?.statusApplicationControl?.RatePlanCode;
+            var soapRequest = Soap.CreateSoapRequestXml(HotelRateAmountNotifRQ.CreateHotelRateAmountNotifRQDelete(rateAmountMessages));
+            Guid correlationId = Guid.Empty;
+            try { correlationId = GoogleSyncAuditService.LogSyncAttempt(rateAmountMessages.HotelCodeV2, "DeleteRate", soapRequest.ToString(), ratePlanId: firstRatePlan); } catch { }
 
             try
             {
-                var xml = HotelRateAmountNotifRQ.CreateHotelRateAmountNotifRQDelete(rateAmountMessages);
-                var soapRequest = Soap.CreateSoapRequestXml(xml);
                 var uri = new Uri(endpoint);
 
                 var request = new HttpRequestMessage
@@ -1916,19 +1945,21 @@ namespace APIServices.Conflux
                 res.Xml = errorsElement.ToString();
             }
 
+            try { GoogleSyncAuditService.UpdateSyncStatus(correlationId, res.IsSuccess, res.Xml, res.Error); } catch { }
             return res;
         }
 
         public async Task<RateResponse> DeleteRatesPatchAsync(string endpoint, RateAmountMessages rateAmountMessages)
         {
             RateResponse res = new RateResponse();
+            string firstRatePlan = rateAmountMessages.RateAmountMessagesList.FirstOrDefault()?.statusApplicationControl?.RatePlanCode;
+            rateAmountMessages.HotelCode = rateAmountMessages.HotelCodeV2;
+            var soapRequest = Soap.CreateSoapRequestXml(HotelRateAmountNotifRQ.CreateHotelRateAmountNotifRQDelete(rateAmountMessages));
+            Guid correlationId = Guid.Empty;
+            try { correlationId = GoogleSyncAuditService.LogSyncAttempt(rateAmountMessages.HotelCodeV2, "DeleteRatePatch", soapRequest.ToString(), ratePlanId: firstRatePlan); } catch { }
 
             try
             {
-                rateAmountMessages.HotelCode = rateAmountMessages.HotelCodeV2;
-
-                var xml = HotelRateAmountNotifRQ.CreateHotelRateAmountNotifRQDelete(rateAmountMessages);
-                var soapRequest = Soap.CreateSoapRequestXml(xml);
                 var uri = new Uri(endpoint);
 
                 var request = new HttpRequestMessage
@@ -1961,6 +1992,7 @@ namespace APIServices.Conflux
                 res.Xml = errorsElement.ToString();
             }
 
+            try { GoogleSyncAuditService.UpdateSyncStatus(correlationId, res.IsSuccess, res.Xml, res.Error); } catch { }
             return res;
         }
 
