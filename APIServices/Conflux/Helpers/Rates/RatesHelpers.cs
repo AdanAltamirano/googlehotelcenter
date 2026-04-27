@@ -329,7 +329,7 @@ namespace APIServices.Conflux.Helpers.Rates
         {
             List<BaseGuestAmount> updatedPrices = null;
 
-            updatedPrices = BaseGuestAmountApplyingTaxes(prices, currentRate);
+            updatedPrices = BaseGuestAmountApplyingTaxes(prices, currentRate,vDayRate);
 
             if (vDayRate.DayDiscount > 0 && vDayRate.Discount > 0)
             {
@@ -425,7 +425,7 @@ namespace APIServices.Conflux.Helpers.Rates
         {
             List<BaseGuestAmount> updatedPrices = null;
 
-            updatedPrices = BaseGuestAmountApplyingTaxes(prices, currentRate);
+            updatedPrices = BaseGuestAmountApplyingTaxes(prices, currentRate,vDayRate);
 
             if (vDayRate.Discount > 0 && vDayRate.DayDiscount > 0)
             {
@@ -551,11 +551,14 @@ namespace APIServices.Conflux.Helpers.Rates
 
         }
 
-        public static List<BaseGuestAmount> BaseGuestAmountApplyingTaxes(List<spGetPricesByRate_Result> prices, spGetCurrentRatesByHotel_Result4 currentRate)
+        public static List<BaseGuestAmount> BaseGuestAmountApplyingTaxes(List<spGetPricesByRate_Result> prices, spGetCurrentRatesByHotel_Result4 currentRate,vDayRates vDayRate)
         {
-            int minAdults = Convert.ToInt32(currentRate.MinAdults);
-            int maxAdults = Convert.ToInt32(currentRate.MaxAdults);
-            int maxChildren = Convert.ToInt32(currentRate.MaxChildren);
+
+            
+
+            int minAdults = (vDayRate.RateMinAdults != null)? Convert.ToInt32(vDayRate.RateMinAdults) : Convert.ToInt32(currentRate.MinAdults);
+            int maxAdults = (vDayRate.RateMaxAdults != null)? Convert.ToInt32(vDayRate.RateMaxAdults) :Convert.ToInt32(currentRate.MaxAdults);
+            int maxChildren = (vDayRate.RateMaxChildren != null)? Convert.ToInt32(vDayRate.RateMaxChildren) : Convert.ToInt32(currentRate.MaxChildren);
 
             List<BaseGuestAmount> baseGuestAmounts = new List<BaseGuestAmount>();
 
@@ -735,11 +738,12 @@ namespace APIServices.Conflux.Helpers.Rates
             return baseGuestAmounts;
         }
 
-        public static List<BaseGuestAmount> BaseGuestAmountApplyingTaxes(List<spGetPricesByRateException_Result> prices, spGetCurrentRatesByHotel_Result4 currentRate)
+        public static List<BaseGuestAmount> BaseGuestAmountApplyingTaxes(List<spGetPricesByRateException_Result> prices, spGetCurrentRatesByHotel_Result4 currentRate,vDayRates vDayRate)
         {
-            int minAdults = Convert.ToInt32(currentRate.MinAdults);
-            int maxAdults = Convert.ToInt32(currentRate.MaxAdults);
-            int maxChildren = Convert.ToInt32(currentRate.MaxChildren);
+
+            int minAdults = (vDayRate.RateMinAdults != null) ? Convert.ToInt32(vDayRate.RateMinAdults) : Convert.ToInt32(currentRate.MinAdults);
+            int maxAdults = (vDayRate.RateMaxAdults != null) ? Convert.ToInt32(vDayRate.RateMaxAdults) : Convert.ToInt32(currentRate.MaxAdults);
+            int maxChildren = (vDayRate.RateMaxChildren != null) ? Convert.ToInt32(vDayRate.RateMaxChildren) : Convert.ToInt32(currentRate.MaxChildren);
 
             List<BaseGuestAmount> baseGuestAmounts = new List<BaseGuestAmount>();
 
@@ -927,7 +931,7 @@ namespace APIServices.Conflux.Helpers.Rates
         {
             List<BaseGuestAmount> updatedPrices = null;
 
-            updatedPrices = BaseGuestAmountApplyingTaxes(prices, currentRate);
+            updatedPrices = BaseGuestAmountApplyingTaxes(prices, currentRate,vDayRate);
 
             if (vDayRate.Discount > 0 && vDayRate.DayDiscount > 0)
             {
@@ -1019,11 +1023,12 @@ namespace APIServices.Conflux.Helpers.Rates
 
         }
 
-        public static List<BaseGuestAmount> BaseGuestAmountApplyingTaxes(List<spGetPricesByRatePromotion_Result> prices, spGetCurrentRatesByHotel_Result4 currentRate)
+        public static List<BaseGuestAmount> BaseGuestAmountApplyingTaxes(List<spGetPricesByRatePromotion_Result> prices, spGetCurrentRatesByHotel_Result4 currentRate,vDayRatesExceptions vDayRate)
         {
-            int minAdults = Convert.ToInt32(currentRate.MinAdults);
-            int maxAdults = Convert.ToInt32(currentRate.MaxAdults);
-            int maxChildren = Convert.ToInt32(currentRate.MaxChildren);
+
+            int minAdults = (vDayRate.RateMinAdults != null) ? Convert.ToInt32(vDayRate.RateMinAdults) : Convert.ToInt32(currentRate.MinAdults);
+            int maxAdults = (vDayRate.RateMaxAdults != null) ? Convert.ToInt32(vDayRate.RateMaxAdults) : Convert.ToInt32(currentRate.MaxAdults);
+            int maxChildren = (vDayRate.RateMaxChildren != null) ? Convert.ToInt32(vDayRate.RateMaxChildren) : Convert.ToInt32(currentRate.MaxChildren);
 
             List<BaseGuestAmount> baseGuestAmounts = new List<BaseGuestAmount>();
 
@@ -1146,7 +1151,7 @@ namespace APIServices.Conflux.Helpers.Rates
         {
             List<BaseGuestAmount> updatedPrices = null;
 
-            updatedPrices = BaseGuestAmountApplyingTaxes(prices, currentRate);
+            updatedPrices = BaseGuestAmountApplyingTaxes(prices, currentRate,vDayRate);
 
             if (vDayRate.Discount > 0 && vDayRate.DayDiscount > 0)
             {
@@ -1238,11 +1243,12 @@ namespace APIServices.Conflux.Helpers.Rates
 
         }
 
-        public static List<BaseGuestAmount> BaseGuestAmountApplyingTaxes(List<spGetPricesByRatePromotionException_Result> prices, spGetCurrentRatesByHotel_Result4 currentRate)
+        public static List<BaseGuestAmount> BaseGuestAmountApplyingTaxes(List<spGetPricesByRatePromotionException_Result> prices, spGetCurrentRatesByHotel_Result4 currentRate,vDayRatesExceptions vDayRate)
         {
-            int minAdults = Convert.ToInt32(currentRate.MinAdults);
-            int maxAdults = Convert.ToInt32(currentRate.MaxAdults);
-            int maxChildren = Convert.ToInt32(currentRate.MaxChildren);
+
+            int minAdults = (vDayRate.RateMinAdults != null) ? Convert.ToInt32(vDayRate.RateMinAdults) : Convert.ToInt32(currentRate.MinAdults);
+            int maxAdults = (vDayRate.RateMaxAdults != null) ? Convert.ToInt32(vDayRate.RateMaxAdults) : Convert.ToInt32(currentRate.MaxAdults);
+            int maxChildren = (vDayRate.RateMaxChildren != null) ? Convert.ToInt32(vDayRate.RateMaxChildren) : Convert.ToInt32(currentRate.MaxChildren);
 
             List<BaseGuestAmount> baseGuestAmounts = new List<BaseGuestAmount>();
 

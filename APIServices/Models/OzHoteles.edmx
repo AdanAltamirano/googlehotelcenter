@@ -691,6 +691,11 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vDayRates' no tiene definida n
           <Property Name="DeletedInGoogle" Type="bit" Nullable="false" />
           <Property Name="DeletedRatePlan" Type="bit" Nullable="false" />
           <Property Name="Ecotasa" Type="smallmoney" Nullable="false" />
+          <Property Name="RatePeople" Type="tinyint" />
+          <Property Name="RateMinAdults" Type="tinyint" />
+          <Property Name="RateMaxAdults" Type="tinyint" />
+          <Property Name="RateMaxChildren" Type="tinyint" />
+          <Property Name="RateExtraPeople" Type="tinyint" />
         </EntityType>
         <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'OzHoteles.dbo.vDayRatesExceptions' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
@@ -750,6 +755,11 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vDayRatesExceptions' no tiene 
           <Property Name="DeletedInGoogle" Type="bit" Nullable="false" />
           <Property Name="DeletedRatePlan" Type="bit" Nullable="false" />
           <Property Name="Ecotasa" Type="smallmoney" Nullable="false" />
+          <Property Name="RatePeople" Type="tinyint" />
+          <Property Name="RateMinAdults" Type="tinyint" />
+          <Property Name="RateMaxAdults" Type="tinyint" />
+          <Property Name="RateMaxChildren" Type="tinyint" />
+          <Property Name="RateExtraPeople" Type="tinyint" />
         </EntityType>
         <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'OzHoteles.dbo.vHotelActives' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
@@ -1584,7 +1594,12 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
     [vDayRates].[PromoEndDateBookingWindow] AS [PromoEndDateBookingWindow], 
     [vDayRates].[DeletedInGoogle] AS [DeletedInGoogle], 
     [vDayRates].[DeletedRatePlan] AS [DeletedRatePlan], 
-    [vDayRates].[Ecotasa] AS [Ecotasa]
+    [vDayRates].[Ecotasa] AS [Ecotasa], 
+    [vDayRates].[RatePeople] AS [RatePeople], 
+    [vDayRates].[RateMinAdults] AS [RateMinAdults], 
+    [vDayRates].[RateMaxAdults] AS [RateMaxAdults], 
+    [vDayRates].[RateMaxChildren] AS [RateMaxChildren], 
+    [vDayRates].[RateExtraPeople] AS [RateExtraPeople]
     FROM [dbo].[vDayRates] AS [vDayRates]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vDayRatesExceptions" EntityType="Self.vDayRatesExceptions" store:Type="Views" store:Schema="dbo">
@@ -1621,7 +1636,12 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
     [vDayRatesExceptions].[PromoEndDateBookingWindow] AS [PromoEndDateBookingWindow], 
     [vDayRatesExceptions].[DeletedInGoogle] AS [DeletedInGoogle], 
     [vDayRatesExceptions].[DeletedRatePlan] AS [DeletedRatePlan], 
-    [vDayRatesExceptions].[Ecotasa] AS [Ecotasa]
+    [vDayRatesExceptions].[Ecotasa] AS [Ecotasa], 
+    [vDayRatesExceptions].[RatePeople] AS [RatePeople], 
+    [vDayRatesExceptions].[RateMinAdults] AS [RateMinAdults], 
+    [vDayRatesExceptions].[RateMaxAdults] AS [RateMaxAdults], 
+    [vDayRatesExceptions].[RateMaxChildren] AS [RateMaxChildren], 
+    [vDayRatesExceptions].[RateExtraPeople] AS [RateExtraPeople]
     FROM [dbo].[vDayRatesExceptions] AS [vDayRatesExceptions]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vHotelActives" EntityType="Self.vHotelActives" store:Type="Views" store:Schema="dbo">
@@ -3771,6 +3791,11 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
           <Property Name="DeletedInGoogle" Type="Boolean" Nullable="false" />
           <Property Name="DeletedRatePlan" Type="Boolean" Nullable="false" />
           <Property Name="Ecotasa" Type="Decimal" Nullable="false" Precision="10" Scale="4" />
+          <Property Name="RatePeople" Type="Byte" />
+          <Property Name="RateMinAdults" Type="Byte" />
+          <Property Name="RateMaxAdults" Type="Byte" />
+          <Property Name="RateMaxChildren" Type="Byte" />
+          <Property Name="RateExtraPeople" Type="Byte" />
         </EntityType>
         <EntityType Name="vDayRatesExceptions">
           <Key>
@@ -3819,6 +3844,11 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
           <Property Name="DeletedInGoogle" Type="Boolean" Nullable="false" />
           <Property Name="DeletedRatePlan" Type="Boolean" Nullable="false" />
           <Property Name="Ecotasa" Type="Decimal" Nullable="false" Precision="10" Scale="4" />
+          <Property Name="RatePeople" Type="Byte" />
+          <Property Name="RateMinAdults" Type="Byte" />
+          <Property Name="RateMaxAdults" Type="Byte" />
+          <Property Name="RateMaxChildren" Type="Byte" />
+          <Property Name="RateExtraPeople" Type="Byte" />
         </EntityType>
         <ComplexType Name="spGetCurrentRatesByHotel_Result4">
           <Property Type="Int32" Name="RateId" Nullable="true" />
@@ -5150,6 +5180,11 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
           <EntitySetMapping Name="vDayRates">
             <EntityTypeMapping TypeName="Models.vDayRates">
               <MappingFragment StoreEntitySet="vDayRates">
+                <ScalarProperty Name="RateExtraPeople" ColumnName="RateExtraPeople" />
+                <ScalarProperty Name="RateMaxChildren" ColumnName="RateMaxChildren" />
+                <ScalarProperty Name="RateMaxAdults" ColumnName="RateMaxAdults" />
+                <ScalarProperty Name="RateMinAdults" ColumnName="RateMinAdults" />
+                <ScalarProperty Name="RatePeople" ColumnName="RatePeople" />
                 <ScalarProperty Name="Ecotasa" ColumnName="Ecotasa" />
                 <ScalarProperty Name="DeletedRatePlan" ColumnName="DeletedRatePlan" />
                 <ScalarProperty Name="DeletedInGoogle" ColumnName="DeletedInGoogle" />
@@ -5188,6 +5223,11 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vUsersConnectivity' no tiene d
           <EntitySetMapping Name="vDayRatesExceptions">
             <EntityTypeMapping TypeName="Models.vDayRatesExceptions">
               <MappingFragment StoreEntitySet="vDayRatesExceptions">
+                <ScalarProperty Name="RateExtraPeople" ColumnName="RateExtraPeople" />
+                <ScalarProperty Name="RateMaxChildren" ColumnName="RateMaxChildren" />
+                <ScalarProperty Name="RateMaxAdults" ColumnName="RateMaxAdults" />
+                <ScalarProperty Name="RateMinAdults" ColumnName="RateMinAdults" />
+                <ScalarProperty Name="RatePeople" ColumnName="RatePeople" />
                 <ScalarProperty Name="Ecotasa" ColumnName="Ecotasa" />
                 <ScalarProperty Name="DeletedRatePlan" ColumnName="DeletedRatePlan" />
                 <ScalarProperty Name="DeletedInGoogle" ColumnName="DeletedInGoogle" />

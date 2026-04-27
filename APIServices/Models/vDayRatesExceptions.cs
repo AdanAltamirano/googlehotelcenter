@@ -47,5 +47,10 @@ namespace APIServices.Models
         public bool DeletedInGoogle { get; set; }
         public bool DeletedRatePlan { get; set; }
         public decimal Ecotasa { get; set; }
+        public Nullable<byte> RatePeople { get; set; }
+        public Nullable<byte> RateMinAdults { get; set; }
+        public Nullable<byte> RateMaxAdults { get; set; }
+        public Nullable<byte> RateMaxChildren { get; set; }
+        public Nullable<byte> RateExtraPeople { get; set; }
     }
 }
