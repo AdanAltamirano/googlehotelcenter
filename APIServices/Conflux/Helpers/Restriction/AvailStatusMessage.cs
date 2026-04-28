@@ -98,64 +98,93 @@ namespace APIServices.Conflux.Helpers.Restriction
             }
             else
             {
-                if(promotionRestrictions != null)
+                LengthOfStay lengthOfStayMin = null;
+                LengthOfStay lengthOfStayMax = null;
+
+                if (promotionRestrictions != null)
                 {
                     if(promotionRestrictions.PromotionMinDays > 0 || promotionRestrictions.PromotionMaxDays > 0)
                     {
-                        LengthOfStay lengthOfStayMin = new LengthOfStay()
+                        lengthOfStayMin = new LengthOfStay()
                         {
                             MinMaxMessageType = "SetMinLOS",
                             Time = promotionRestrictions.PromotionMinDays
                         };
 
-                        LengthOfStay lengthOfStayMax = new LengthOfStay()
+                        lengthOfStayMax = new LengthOfStay()
                         {
                             MinMaxMessageType = "SetMaxLOS",
                             Time = promotionRestrictions.PromotionMaxDays
                         };
-
-                        lengthOfStays.Add(lengthOfStayMin);
-                        lengthOfStays.Add(lengthOfStayMax);
                     }
                 }
-                else if(rateplanRestrictions.MinDays > 0 || rateplanRestrictions.MaxDays > 0)
+
+                if(rateplanRestrictions.MinDays > 0 || rateplanRestrictions.MaxDays > 0)
                 {
-                    LengthOfStay lengthOfStayMin = new LengthOfStay()
-                    {
-                        MinMaxMessageType = "SetMinLOS",
-                        Time = rateplanRestrictions.MinDays
-                    };
+                    if (lengthOfStayMin == null) lengthOfStayMin = new LengthOfStay();
+                    if (lengthOfStayMax == null) lengthOfStayMax = new LengthOfStay();
 
-                    LengthOfStay lengthOfStayMax = new LengthOfStay()
-                    {
-                        MinMaxMessageType = "SetMaxLOS",
-                        Time = rateplanRestrictions.MaxDays
-                    };
+                    lengthOfStayMin.MinMaxMessageType = "SetMinLOS";
+                    lengthOfStayMin.Time = rateplanRestrictions.MinDays;
 
-                    lengthOfStays.Add(lengthOfStayMin);
-                    lengthOfStays.Add(lengthOfStayMax);
+                    lengthOfStayMax.MinMaxMessageType = "SetMaxLOS";
+                    lengthOfStayMax.Time = rateplanRestrictions.MaxDays;
                 }
-                else if(rateRestricions.MinDays > 0 || rateRestricions.MaxDays > 0)
+                
+                if(rateRestricions.MinDays > 0 || rateRestricions.MaxDays > 0)
                 {
-                    LengthOfStay lengthOfStayMin = new LengthOfStay()
-                    {
-                        MinMaxMessageType = "SetMinLOS",
-                        Time = rateRestricions.MinDays
-                    };
 
-                    LengthOfStay lengthOfStayMax = new LengthOfStay()
-                    {
-                        MinMaxMessageType = "SetMaxLOS",
-                        Time = rateRestricions.MaxDays
-                    };
+                    if (lengthOfStayMin == null) lengthOfStayMin = new LengthOfStay();
+                    if (lengthOfStayMax == null) lengthOfStayMax = new LengthOfStay();
 
-                    lengthOfStays.Add(lengthOfStayMin);
-                    lengthOfStays.Add(lengthOfStayMax);
+
+                    lengthOfStayMin.MinMaxMessageType = "SetMinLOS";
+                    lengthOfStayMin.Time = rateRestricions.MinDays;
+
+                    lengthOfStayMax.MinMaxMessageType = "SetMaxLOS";
+                    lengthOfStayMax.Time = rateRestricions.MaxDays;
                 }
+
+                lengthOfStays.Add(lengthOfStayMin);
+                lengthOfStays.Add(lengthOfStayMax);
+
             }
 
             return lengthOfStays;
         }
 
+        public static AdvanceBookingRestriction CreateAdvanceBookingRestriction(AllRatePlanRestrictionsDto rateplanRestrictions, RateRestrictionsDto rateRestricions, PromotionDto promotionRestrictions)
+        {
+            AdvanceBookingRestriction advanceBookingRestriction = null;
+
+            if(promotionRestrictions != null)
+            {
+                if (promotionRestrictions.PromotionMinAdvDays > 0 || promotionRestrictions.PromotionMaxAdvDays > 0)
+                {
+                    if (advanceBookingRestriction == null) advanceBookingRestriction = new AdvanceBookingRestriction();
+
+                    advanceBookingRestriction.MinAdvancedBookingOffset = promotionRestrictions.PromotionMinAdvDays.ToString();
+                    advanceBookingRestriction.MaxAdvancedBookingOffset = promotionRestrictions.PromotionMaxAdvDays.ToString();
+                }
+            }
+            if(rateplanRestrictions.MinAdvDays > 0 || rateplanRestrictions.MaxAdvDays > 0)
+            {
+                if (advanceBookingRestriction == null) advanceBookingRestriction = new AdvanceBookingRestriction();
+
+                advanceBookingRestriction.MinAdvancedBookingOffset = rateplanRestrictions.MinAdvDays.ToString();
+                advanceBookingRestriction.MaxAdvancedBookingOffset = rateplanRestrictions.MaxAdvDays.ToString();
+            }
+
+            if (rateRestricions.MinAdvDays > 0 || rateRestricions.MaxAdvDays > 0)
+            {
+                if (advanceBookingRestriction == null) advanceBookingRestriction = new AdvanceBookingRestriction();
+
+                advanceBookingRestriction.MinAdvancedBookingOffset = rateRestricions.MinAdvDays.ToString();
+                advanceBookingRestriction.MaxAdvancedBookingOffset = rateRestricions.MaxAdvDays.ToString();
+            }
+
+
+            return advanceBookingRestriction;
+        }
     }
 }

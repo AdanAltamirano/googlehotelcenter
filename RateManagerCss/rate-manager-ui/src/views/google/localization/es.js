@@ -45,6 +45,10 @@ export default {
     'Include Rates Of RatePlans' : 'Incluir Tarifas de Planes Tarifarios',
     'Rates Eliminated' : 'Tarifas Eliminadas',
     'Choose Dates' : 'Elegir Fechas',
-    'Enable Google Prices Or Rates APICache in Content / General Information' : 'Habilitar Precios Google ó Tarifas APICache en Contenido / Información General'
+    'Enable Google Prices Or Rates APICache in Content / General Information' : 'Habilitar Precios Google ó Tarifas APICache en Contenido / Información General',
+    'This action will only send the restrictions to Google Hotel Center from the selected dates' : 'Esta acción sólo enviará las reglas a Google Hotel Center a partir de las fechas seleccionadas',
+    'Update Restrictions' : 'Sincronizar Reglas',
+    'Restrictions Updated' : 'Reglas Actualizadas',
+    'Restrictions' : 'Reglas'
 
 }

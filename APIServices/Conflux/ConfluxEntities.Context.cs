@@ -28,6 +28,7 @@ namespace APIServices.Conflux
         }
     
         public virtual DbSet<vRatesPromotion> vRatesPromotions { get; set; }
+        public virtual DbSet<vRatesPromotionsException> vRatesPromotionsExceptions { get; set; }
     
         public virtual ObjectResult<spGetRestrictionsByHotel_Result> spGetRestrictionsByHotel(Nullable<int> idHotel, Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, Nullable<int> roomId, string rateplanId)
         {
@@ -52,6 +53,31 @@ namespace APIServices.Conflux
                 new ObjectParameter("rateplanId", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetRestrictionsByHotel_Result>("spGetRestrictionsByHotel", idHotelParameter, startDateParameter, endDateParameter, roomIdParameter, rateplanIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetRestrictionsExceptionsByHotel_Result> spGetRestrictionsExceptionsByHotel(Nullable<int> idHotel, Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, Nullable<int> roomId, string rateplanId)
+        {
+            var idHotelParameter = idHotel.HasValue ?
+                new ObjectParameter("idHotel", idHotel) :
+                new ObjectParameter("idHotel", typeof(int));
+    
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("startDate", startDate) :
+                new ObjectParameter("startDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("endDate", endDate) :
+                new ObjectParameter("endDate", typeof(System.DateTime));
+    
+            var roomIdParameter = roomId.HasValue ?
+                new ObjectParameter("roomId", roomId) :
+                new ObjectParameter("roomId", typeof(int));
+    
+            var rateplanIdParameter = rateplanId != null ?
+                new ObjectParameter("rateplanId", rateplanId) :
+                new ObjectParameter("rateplanId", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetRestrictionsExceptionsByHotel_Result>("spGetRestrictionsExceptionsByHotel", idHotelParameter, startDateParameter, endDateParameter, roomIdParameter, rateplanIdParameter);
         }
     }
 }

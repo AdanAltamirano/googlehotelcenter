@@ -1,6 +1,6 @@
 <template>
     <div class="">        
-        <details class="text-primary">{{$t('This action will only send the closings to Google Hotel Center from the selected dates')}}</details>
+        <details class="text-primary">{{$t('This action will only send the restrictions to Google Hotel Center from the selected dates')}}</details>
         <b-row>
             <b-col md="4">
                 <b-form-group :label="$t('Rate Plans')" class="mt-3">                
@@ -44,7 +44,7 @@
         </div>
         <div else class="mt-4">
             <b-button :disabled="!isEnabledGoogle && !isEnabledAPICache" class="mt-1" v-if="showButton" variant="primary" @click="updateRestrictions()">
-                {{$t('Update Closures')}}
+                {{$t('Update Restrictions')}}
             </b-button>
         </div>
         <div class="mt-3">
@@ -127,22 +127,13 @@ export default {
             this.showButton = false;
             this.callApi = true;
 
-            ConfluxService.UpdateClosure(this.hotelId,payload)
+            ConfluxService.UpdateRestrictions(this.hotelId,payload)
             .then(response =>{
 
-                let component = Vue.extend(RestrictionAlert);
-                let instance = new component({
-                    propsData:{
-                        restrictions: response.body.restrictions
-                    }
-                });
-
-                instance.$mount();
-                let html = $("<div>").append(instance.$el);
-                console.log(html);
+                console.log(response);
                 this.callApi = false;
                 this.showButton = true;
-                this.$appAlert(this.successHTML(this.$t('Closures'),html));
+                this.$appAlert(this.success(this.$t("Restrictions Updated")));
 
             })
             .catch(error => {
@@ -150,6 +141,18 @@ export default {
                 this.showButton = true;
                 this.$appAlert(this.error(this.$t('System Error')))
             });
+        },
+        success(title) {
+            return {
+                type: "success",
+                title: title,
+                showCancelButton: true,
+                showConfirmButton:false,
+                cancelButtonText: this.$t("Exit"),
+                cancelButtonColor: "#d33",
+                showConfirmButton: false,
+                time: 2500,               
+            };
         },
         successHTML(title, html) {
             return {
@@ -229,5 +232,5 @@ export default {
         },       
     }
 }
-</script>
 
+</script>

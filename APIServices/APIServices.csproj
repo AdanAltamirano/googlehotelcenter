@@ -157,6 +157,7 @@
     <Compile Include="Conflux\Models\OTA\Rates\RateAmountMessage.cs" />
     <Compile Include="Conflux\Models\OTA\Rates\RateAmountMessages.cs" />
     <Compile Include="Conflux\Models\OTA\Rates\StatusApplicationControl.cs" />
+    <Compile Include="Conflux\Models\OTA\Restrictions\AdvanceBookingRestriction.cs" />
     <Compile Include="Conflux\Models\OTA\Restrictions\AvailStatusMessage.cs" />
     <Compile Include="Conflux\Models\OTA\Restrictions\AvailStatusMessages.cs" />
     <Compile Include="Conflux\Models\OTA\Restrictions\LengthOfStay.cs" />
@@ -182,7 +183,13 @@
     <Compile Include="Conflux\spGetRestrictionsByHotel_Result.cs">
       <DependentUpon>ConfluxEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Conflux\spGetRestrictionsExceptionsByHotel_Result.cs">
+      <DependentUpon>ConfluxEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Conflux\vRatesPromotion.cs">
+      <DependentUpon>ConfluxEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Conflux\vRatesPromotionsException.cs">
       <DependentUpon>ConfluxEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Currency\CurrencyService.cs" />

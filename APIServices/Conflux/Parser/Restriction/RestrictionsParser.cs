@@ -390,12 +390,27 @@ namespace APIServices.Conflux.Parser.Restriction
                             Start = startDate.Value.Date,
                             End = endDate.Value.Date,
                             InvTypeCode = room ?? "",
-                            RatePlanCode = rateplan.RateCode
+                            RatePlanCode = rateplan.RateCode,
+                            //Se inicializa en false para que no mande dias en restricciones
+                            ApplyMon = false,
+                            ApplyTue = false,
+                            ApplyWed = false,
+                            ApplyThu = false,
+                            ApplyFri = false,
+                            ApplySat = false,
+                            ApplySun = false
+                            
                         };
 
-                        availStatusMessage.LengthsOfStay = RestrictionHelper.CreateLenghtStay(restriction.RestrictionsHotel,rateplan,restriction.RatePlan.RestrictionsRate,null);
+                        var lenghtStayTemp = RestrictionHelper.CreateLenghtStay(restriction.RestrictionsHotel, rateplan, restriction.RatePlan.RestrictionsRate, null);
 
-                        availStatusMessages.AvailStatusMessageList.Add(availStatusMessage);
+                        if(lenghtStayTemp.Count > 0)
+                        {
+                            availStatusMessage.LengthsOfStay = lenghtStayTemp;
+
+                            availStatusMessages.AvailStatusMessageList.Add(availStatusMessage);
+                        }
+
                     }
                 }
 
@@ -409,13 +424,26 @@ namespace APIServices.Conflux.Parser.Restriction
                         Start = startDate.Value.Date,
                         End = endDate.Value.Date,
                         InvTypeCode = promotion.RoomCode ?? "",
-                        RatePlanCode = promotion.RatePlanId
+                        RatePlanCode = promotion.RatePlanId,
+                        ApplyMon = false,
+                        ApplyTue = false,
+                        ApplyWed = false,
+                        ApplyThu = false,
+                        ApplyFri = false,
+                        ApplySat = false,
+                        ApplySun = false
                     };
 
                     var ratePlanRules = AllRatePlans.First(arp => arp.RateCode == promotion.ParentRatePlanId);
 
-                    availStatusMessage.LengthsOfStay = RestrictionHelper.CreateLenghtStay(restriction.RestrictionsHotel, ratePlanRules, restriction.RatePlan.RestrictionsRate, promotion);
-                    availStatusMessages.AvailStatusMessageList.Add(availStatusMessage);
+                    var lenghtStayTemp = RestrictionHelper.CreateLenghtStay(restriction.RestrictionsHotel, ratePlanRules, restriction.RatePlan.RestrictionsRate, promotion);
+
+                    if(lenghtStayTemp.Count > 0)
+                    {
+                        availStatusMessage.LengthsOfStay = lenghtStayTemp;
+                        availStatusMessages.AvailStatusMessageList.Add(availStatusMessage);
+
+                    }
                 }
             }
 
@@ -433,8 +461,95 @@ namespace APIServices.Conflux.Parser.Restriction
 
             foreach (var restriction in listRestrictionDto)
             {
+                List<string> AllRooms = new List<string>();
+                AllRooms.Add(restriction.RoomCode);
+                if (restriction.RoomsLinked != null) AllRooms.AddRange(restriction.RoomsLinked);
+
+                List<AllRatePlanRestrictionsDto> AllRatePlans = new List<AllRatePlanRestrictionsDto>();
+                AllRatePlans.Add(new AllRatePlanRestrictionsDto
+                {
+                    RateCode = restriction.RatePlan.RatePlanId,
+                    MinAdvDays = restriction.RatePlan.RestrictionsRatePlan.RatePlanMinAdvDays,
+                    MaxAdvDays = restriction.RatePlan.RestrictionsRatePlan.RatePlanMaxAdvDays
+
+                });
+
+                if (restriction.RatePlan.LinkedRatePlans != null)
+                {
+                    AllRatePlans.AddRange(
+                        restriction.RatePlan.LinkedRatePlans.Select(x => new AllRatePlanRestrictionsDto
+                        {
+                            RateCode = x.RateCode,
+                            MinAdvDays = x.MinAdvDays,
+                            MaxAdvDays = x.MaxAdvDays
+                        })
+                    );
+                }
 
 
+                foreach (var room in AllRooms)
+                {
+                    foreach (var rateplan in AllRatePlans)
+                    {
+                        AvailStatusMessage availStatusMessage = new AvailStatusMessage();
+                        availStatusMessage.StatusApplicationControl = new StatusApplicationControl()
+                        {
+                            Start = startDate.Value.Date,
+                            End = endDate.Value.Date,
+                            InvTypeCode = room ?? "",
+                            RatePlanCode = rateplan.RateCode,
+                            //Se inicializa en false para que no mande dias en restricciones
+                            ApplyMon = false,
+                            ApplyTue = false,
+                            ApplyWed = false,
+                            ApplyThu = false,
+                            ApplyFri = false,
+                            ApplySat = false,
+                            ApplySun = false
+                        };
+
+                        var advanceBookingRestrictionTemp = RestrictionHelper.CreateAdvanceBookingRestriction(rateplan, restriction.RatePlan.RestrictionsRate, null);
+
+                        if(advanceBookingRestrictionTemp != null)
+                        {
+                            availStatusMessage.AdvanceBookingRestriction = advanceBookingRestrictionTemp;
+
+                            availStatusMessages.AvailStatusMessageList.Add(availStatusMessage);
+                        }
+
+                    }
+                }
+
+                //Promociones
+
+                foreach (var promotion in restriction.Promotions)
+                {
+                    AvailStatusMessage availStatusMessage = new AvailStatusMessage();
+                    availStatusMessage.StatusApplicationControl = new StatusApplicationControl()
+                    {
+                        Start = startDate.Value.Date,
+                        End = endDate.Value.Date,
+                        InvTypeCode = promotion.RoomCode ?? "",
+                        RatePlanCode = promotion.RatePlanId,
+                        ApplyMon = false,
+                        ApplyTue = false,
+                        ApplyWed = false,
+                        ApplyThu = false,
+                        ApplyFri = false,
+                        ApplySat = false,
+                        ApplySun = false
+                    };
+
+                    var ratePlanRules = AllRatePlans.First(arp => arp.RateCode == promotion.ParentRatePlanId);
+
+                    var advanceBookingRestrictionTemp = RestrictionHelper.CreateAdvanceBookingRestriction(ratePlanRules, restriction.RatePlan.RestrictionsRate, promotion);
+
+                    if(advanceBookingRestrictionTemp != null)
+                    {
+                        availStatusMessage.AdvanceBookingRestriction = advanceBookingRestrictionTemp;
+                        availStatusMessages.AvailStatusMessageList.Add(availStatusMessage);
+                    }
+                }
 
             }
 

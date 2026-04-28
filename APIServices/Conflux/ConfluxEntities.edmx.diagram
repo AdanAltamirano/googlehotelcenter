@@ -4,8 +4,9 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="4c13167b346342efb50e79d5258f9215" Name="Diagram1" ZoomLevel="23">
+      <Diagram DiagramId="4c13167b346342efb50e79d5258f9215" Name="Diagram1" ZoomLevel="82">
         <EntityTypeShape EntityType="ConfluxModel.vRatesPromotion" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfluxModel.vRatesPromotionsException" Width="1.5" PointX="3.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

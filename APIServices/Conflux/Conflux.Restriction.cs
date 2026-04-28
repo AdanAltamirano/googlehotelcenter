@@ -18,9 +18,11 @@ namespace APIServices.Conflux
 
         }
 
-        private void GetAdvancedDaysAvailStatusMessages(List<RateRestrictionDto> listRestrictionDto, DateTime? startDate, DateTime? endDate)
+        private OTA.Models.Restrictions.AvailStatusMessages GetAdvancedDaysAvailStatusMessages(List<RateRestrictionDto> listRestrictionDto, DateTime? startDate, DateTime? endDate)
         {
             var availStatusMessages = RestrictionsParser.ToAvailStatusMessagesAdvancedDays(listRestrictionDto, startDate, endDate);
+
+            return availStatusMessages;
 
         }
 

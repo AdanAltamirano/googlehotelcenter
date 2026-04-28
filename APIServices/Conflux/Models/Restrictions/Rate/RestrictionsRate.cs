@@ -67,12 +67,12 @@ namespace APIServices.Conflux.Models.Restrictions.Rate
 
     public class PromotionDto
     {
-        public int RateId { get; set; }
+        public int? RateId { get; set; }
         public int HotelId { get; set; }
         public string RatePlanId { get; set; }
         public string ParentRatePlanId { get; set; }
         public string PromoRatePlanId { get; set; }
-        public int RoomId { get; set; }
+        public int? RoomId { get; set; }
         public string RoomCode { get; set; }
         public int PromotionMinDays { get; set; }
         public int PromotionMaxDays { get; set; }
