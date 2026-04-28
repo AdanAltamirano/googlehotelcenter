@@ -596,6 +596,42 @@ Partial Class RatesPlans
         MostrarCmdNew(True)
     End Sub
 
+    Private Function BuildAffectedRatesXml(ByVal hotelId As Integer, ByVal ratePlanId As String, ByVal deleted As Boolean) As String
+        Dim currentRates As List(Of spGetCurrentRatesByHotel_Result4)
+        Try
+            Using dbContext As New OzHotelesEntities()
+                currentRates = dbContext.spGetCurrentRatesByHotel(hotelId:=hotelId, rateplanId:=ratePlanId, roomId:=Nothing, startDate:=Nothing, endDate:=Nothing, deleted:=deleted).ToList()
+            End Using
+        Catch ex As Exception
+            Return String.Format("<AffectedRates count=""0"" error=""{0}"" />", XmlEscape(ex.Message))
+        End Try
+
+        Dim sb As New System.Text.StringBuilder()
+        sb.AppendFormat("<AffectedRates count=""{0}"">", currentRates.Count)
+        For Each r As spGetCurrentRatesByHotel_Result4 In currentRates
+            Dim typeRateStr As String = If(r.TypeRate = 1, "RoomRate", "RoomRatePromotion")
+            Dim rateIdStr As String = If(r.RateId.HasValue, r.RateId.Value.ToString(), "")
+            Dim roomIdStr As String = If(r.RoomId.HasValue, r.RoomId.Value.ToString(), "")
+            Dim startStr As String = If(r.StartDate.HasValue, r.StartDate.Value.ToString("yyyy-MM-dd"), "")
+            Dim endStr As String = If(r.EndDate.HasValue, r.EndDate.Value.ToString("yyyy-MM-dd"), "")
+            sb.AppendFormat("<Rate rateId=""{0}"" rateCode=""{1}"" roomId=""{2}"" roomCode=""{3}"" startDate=""{4}"" endDate=""{5}"" type=""{6}"" />",
+                rateIdStr,
+                XmlEscape(r.RateCode),
+                roomIdStr,
+                XmlEscape(r.RoomCode),
+                startStr,
+                endStr,
+                typeRateStr)
+        Next
+        sb.Append("</AffectedRates>")
+        Return sb.ToString()
+    End Function
+
+    Private Function XmlEscape(ByVal value As String) As String
+        If String.IsNullOrEmpty(value) Then Return ""
+        Return value.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("""", "&quot;").Replace("'", "&apos;")
+    End Function
+
     Private Function GetDeleteMessagesGoogle(ByVal hotelId As Integer, ByVal companyId As Integer, ByVal ratePlanId As String) As APIServices.Conflux.OTA.Models.Rates.RateAmountMessages
 
         Dim deleteRateAmountMessages As New APIServices.Conflux.OTA.Models.Rates.RateAmountMessages()
@@ -724,42 +760,50 @@ Partial Class RatesPlans
                      Dim isEnabledSendRatesAPICache As Boolean = HotelUtilitie.IsEnableSendRatesAPICache(hotelId)
 
                      ' Registro de nivel plan — siempre se crea
-                     Dim diagXml As String = String.Format("<ActivateRatePlan hotelId=""{0}"" ratePlanId=""{1}"" isEnabledGoogle=""{2}"" isEnabledAPICache=""{3}"" />", hotelId, ratePlanId, isEnabledGoogleRequest, isEnabledSendRatesAPICache)
-                     APIServices.GoogleSync.GoogleSyncAuditService.LogSyncAttempt(hotelId, "ActivateRatePlan", diagXml, ratePlanId:=ratePlanId, user:=userName)
+                     Dim affectedRatesXmlActivate As String = BuildAffectedRatesXml(hotelId, ratePlanId, deleted:=False)
+                     Dim diagXml As String = String.Format("<ActivateRatePlan hotelId=""{0}"" ratePlanId=""{1}"" isEnabledGoogle=""{2}"" isEnabledAPICache=""{3}"">{4}</ActivateRatePlan>", hotelId, ratePlanId, isEnabledGoogleRequest, isEnabledSendRatesAPICache, affectedRatesXmlActivate)
+                     Dim correlationIdActivate As Guid = APIServices.GoogleSync.GoogleSyncAuditService.LogSyncAttempt(hotelId, "ActivateRatePlan", diagXml, ratePlanId:=ratePlanId, user:=userName)
 
-                     Dim confluxService As New APIServices.Conflux.ConfluxService()
+                     Try
+                         Dim confluxService As New APIServices.Conflux.ConfluxService()
 
-                     If isEnabledGoogleRequest Then
-                         confluxService.ConfluxSendRatesToGoogle = True
-                         Dim ratesForRequest = confluxService.GetRateMessages(hotelId, ratePlanId, companyId, TypeRateEnum.RoomRate)
-                         Dim ratesForRequestPromotion = confluxService.GetRateMessages(hotelId, ratePlanId, companyId, TypeRateEnum.RoomRatePromotion)
+                         If isEnabledGoogleRequest Then
+                             confluxService.ConfluxSendRatesToGoogle = True
+                             Dim ratesForRequest = confluxService.GetRateMessages(hotelId, ratePlanId, companyId, TypeRateEnum.RoomRate)
+                             Dim ratesForRequestPromotion = confluxService.GetRateMessages(hotelId, ratePlanId, companyId, TypeRateEnum.RoomRatePromotion)
 
-                         If ratesForRequest IsNot Nothing AndAlso ratesForRequest.RateAmountMessagesList(0).RateAmountMessagesList.Count > 0 Then
-                             Dim res = Await confluxService.UpdateRateAsync(ratesForRequest, HotelUtilitie.ENDPOINT, HotelUtilitie.ENDPOINTDELETE, True)
-                             HotelUtilitie.Log(userName, userId, "/Pages/RatesPlans.aspx", hotelId, RateManager.Utitlities.Hotel.Actions.Sincronizar, "Activar plan Conflux", "", res.Item1.RequestXML, res.Item1.Xml)
+                             If ratesForRequest IsNot Nothing AndAlso ratesForRequest.RateAmountMessagesList(0).RateAmountMessagesList.Count > 0 Then
+                                 Dim res = Await confluxService.UpdateRateAsync(ratesForRequest, HotelUtilitie.ENDPOINT, HotelUtilitie.ENDPOINTDELETE, True)
+                                 HotelUtilitie.Log(userName, userId, "/Pages/RatesPlans.aspx", hotelId, RateManager.Utitlities.Hotel.Actions.Sincronizar, "Activar plan Conflux", "", res.Item1.RequestXML, res.Item1.Xml)
+                             End If
+
+                             If ratesForRequestPromotion IsNot Nothing AndAlso ratesForRequestPromotion.RateAmountMessagesList(0).RateAmountMessagesList.Count > 0 Then
+                                 Dim resPromotion = Await confluxService.UpdateRateAsync(ratesForRequestPromotion, HotelUtilitie.ENDPOINT, HotelUtilitie.ENDPOINTDELETE, True)
+                                 HotelUtilitie.Log(userName, userId, "/Pages/RatesPlans.aspx", hotelId, RateManager.Utitlities.Hotel.Actions.Sincronizar, "Activar plan promo Conflux", "", resPromotion.Item1.RequestXML, resPromotion.Item1.Xml)
+                             End If
                          End If
 
-                         If ratesForRequestPromotion IsNot Nothing AndAlso ratesForRequestPromotion.RateAmountMessagesList(0).RateAmountMessagesList.Count > 0 Then
-                             Dim resPromotion = Await confluxService.UpdateRateAsync(ratesForRequestPromotion, HotelUtilitie.ENDPOINT, HotelUtilitie.ENDPOINTDELETE, True)
-                             HotelUtilitie.Log(userName, userId, "/Pages/RatesPlans.aspx", hotelId, RateManager.Utitlities.Hotel.Actions.Sincronizar, "Activar plan promo Conflux", "", resPromotion.Item1.RequestXML, resPromotion.Item1.Xml)
-                         End If
-                     End If
+                         If isEnabledSendRatesAPICache Then
+                             confluxService.ConfluxSendRatesToGoogle = False
+                             Dim ratesForRequestAPICache = confluxService.GetRateMessages(hotelId, ratePlanId, companyId, TypeRateEnum.RoomRate)
+                             Dim ratesForRequestPromotionAPICache = confluxService.GetRateMessages(hotelId, ratePlanId, companyId, TypeRateEnum.RoomRatePromotion)
 
-                     If isEnabledSendRatesAPICache Then
-                         confluxService.ConfluxSendRatesToGoogle = False
-                         Dim ratesForRequestAPICache = confluxService.GetRateMessages(hotelId, ratePlanId, companyId, TypeRateEnum.RoomRate)
-                         Dim ratesForRequestPromotionAPICache = confluxService.GetRateMessages(hotelId, ratePlanId, companyId, TypeRateEnum.RoomRatePromotion)
+                             If ratesForRequestAPICache IsNot Nothing AndAlso ratesForRequestAPICache.RateAmountMessagesList(0).RateAmountMessagesList.Count > 0 Then
+                                 Dim resAPICache = Await confluxService.UpdateRatePatchAsync(ratesForRequestAPICache, HotelUtilitie.ENDPOINTAPI, HotelUtilitie.ENDPOINTAPIDELETE, False)
+                                 HotelUtilitie.Log(userName, userId, "/Pages/RatesPlans.aspx", hotelId, RateManager.Utitlities.Hotel.Actions.Sincronizar, "Activar plan APICache", "", resAPICache.Item1.RequestXML, resAPICache.Item1.Xml)
+                             End If
 
-                         If ratesForRequestAPICache IsNot Nothing AndAlso ratesForRequestAPICache.RateAmountMessagesList(0).RateAmountMessagesList.Count > 0 Then
-                             Dim resAPICache = Await confluxService.UpdateRatePatchAsync(ratesForRequestAPICache, HotelUtilitie.ENDPOINTAPI, HotelUtilitie.ENDPOINTAPIDELETE, False)
-                             HotelUtilitie.Log(userName, userId, "/Pages/RatesPlans.aspx", hotelId, RateManager.Utitlities.Hotel.Actions.Sincronizar, "Activar plan APICache", "", resAPICache.Item1.RequestXML, resAPICache.Item1.Xml)
+                             If ratesForRequestPromotionAPICache IsNot Nothing AndAlso ratesForRequestPromotionAPICache.RateAmountMessagesList(0).RateAmountMessagesList.Count > 0 Then
+                                 Dim resPromotionAPICache = Await confluxService.UpdateRatePatchAsync(ratesForRequestPromotionAPICache, HotelUtilitie.ENDPOINTAPI, HotelUtilitie.ENDPOINTAPIDELETE, False)
+                                 HotelUtilitie.Log(userName, userId, "/Pages/RatesPlans.aspx", hotelId, RateManager.Utitlities.Hotel.Actions.Sincronizar, "Activar plan promo APICache", "", resPromotionAPICache.Item1.RequestXML, resPromotionAPICache.Item1.Xml)
+                             End If
                          End If
 
-                         If ratesForRequestPromotionAPICache IsNot Nothing AndAlso ratesForRequestPromotionAPICache.RateAmountMessagesList(0).RateAmountMessagesList.Count > 0 Then
-                             Dim resPromotionAPICache = Await confluxService.UpdateRatePatchAsync(ratesForRequestPromotionAPICache, HotelUtilitie.ENDPOINTAPI, HotelUtilitie.ENDPOINTAPIDELETE, False)
-                             HotelUtilitie.Log(userName, userId, "/Pages/RatesPlans.aspx", hotelId, RateManager.Utitlities.Hotel.Actions.Sincronizar, "Activar plan promo APICache", "", resPromotionAPICache.Item1.RequestXML, resPromotionAPICache.Item1.Xml)
-                         End If
-                     End If
+                         APIServices.GoogleSync.GoogleSyncAuditService.UpdateSyncStatus(correlationIdActivate, True)
+
+                     Catch ex As Exception
+                         APIServices.GoogleSync.GoogleSyncAuditService.UpdateSyncStatus(correlationIdActivate, False, errorMessage:=ex.Message)
+                     End Try
 
                  End Function)
     End Sub
@@ -771,75 +815,73 @@ Partial Class RatesPlans
                      Dim isEnabledSendRatesAPICache As Boolean = HotelUtilitie.IsEnableSendRatesAPICache(hotelId)
 
                      ' Registro de nivel plan — siempre se crea
-                     Dim diagXml As String = String.Format("<DeactivateRatePlan hotelId=""{0}"" ratePlanId=""{1}"" isEnabledGoogle=""{2}"" isEnabledAPICache=""{3}"" />", hotelId, ratePlanIdDelete, isEnabledGoogleRequest, isEnabledSendRatesAPICache)
-                     APIServices.GoogleSync.GoogleSyncAuditService.LogSyncAttempt(hotelId, "DeactivateRatePlan", diagXml, ratePlanId:=ratePlanIdDelete, user:=userName)
+                     Dim affectedRatesXmlDeactivate As String = BuildAffectedRatesXml(hotelId, ratePlanIdDelete, deleted:=True)
+                     Dim diagXml As String = String.Format("<DeactivateRatePlan hotelId=""{0}"" ratePlanId=""{1}"" isEnabledGoogle=""{2}"" isEnabledAPICache=""{3}"">{4}</DeactivateRatePlan>", hotelId, ratePlanIdDelete, isEnabledGoogleRequest, isEnabledSendRatesAPICache, affectedRatesXmlDeactivate)
+                     Dim correlationIdDeactivate As Guid = APIServices.GoogleSync.GoogleSyncAuditService.LogSyncAttempt(hotelId, "DeactivateRatePlan", diagXml, ratePlanId:=ratePlanIdDelete, user:=userName)
 
-                     Dim messagesToDelete As APIServices.Conflux.OTA.Models.Rates.RateAmountMessages = Nothing
+                     Try
+                         Dim messagesToDelete As APIServices.Conflux.OTA.Models.Rates.RateAmountMessages = Nothing
 
-                     If isEnabledGoogleRequest Or isEnabledSendRatesAPICache Then
-                         messagesToDelete = GetDeleteMessagesGoogle(hotelId, companyId, ratePlanIdDelete)
-                     End If
+                         If isEnabledGoogleRequest Or isEnabledSendRatesAPICache Then
+                             messagesToDelete = GetDeleteMessagesGoogle(hotelId, companyId, ratePlanIdDelete)
+                         End If
 
-                     Dim ConfluxService As ConfluxService = New ConfluxService()
+                         Dim ConfluxService As ConfluxService = New ConfluxService()
+                         Dim overallSuccess As Boolean = True
 
+                         If messagesToDelete IsNot Nothing Then
 
-                     If messagesToDelete IsNot Nothing Then
+                             If isEnabledGoogleRequest Then
 
-                         If isEnabledGoogleRequest Then
+                                 Dim soapRequests As List(Of XDocument) = ConfluxService.GetSoapRequests(messagesToDelete)
 
-                             Dim soapRequests As List(Of XDocument) = ConfluxService.GetSoapRequests(messagesToDelete)
+                                 Dim result As DeleteResponse = Await ConfluxService.UpdateDeleteAsync(soapRequests, HotelUtilitie.ENDPOINTDELETE, hotelId)
 
-                             Dim result As DeleteResponse = Await ConfluxService.UpdateDeleteAsync(soapRequests, HotelUtilitie.ENDPOINTDELETE, hotelId)
+                                 If Not result.IsSuccess Then
+                                     overallSuccess = False
+                                     Dim note As String = String.Format("Error Eliminar Tarifas {1} con el hotel: {0}", hotelId, "Conflux")
+                                     HotelUtilitie.Log(userName, userId, "/Pages/RatesPlans.aspx", hotelId, RateManager.Utitlities.Hotel.Actions.Sincronizar, note, "", "", "")
+                                 Else
+                                     Dim index As Integer = 1
+                                     For Each request As DeleteHttpResponse In result.DeleteHttpResponseList
+                                         Dim note As String = String.Format("Eliminar Tarifas request numero {0} Tarifas {1} con el hotel: ", (index), "Conflux")
+                                         HotelUtilitie.Log(userName, userId, "/Pages/RatesPlans.aspx", hotelId, RateManager.Utitlities.Hotel.Actions.Eliminar, note, "", request.XmlRequest, request.Xml)
+                                         index += 1
+                                     Next
+                                 End If
 
-                             If Not result.IsSuccess Then
-                                 Dim note As String = String.Format("Error Eliminar Tarifas {1} con el hotel: {0}", hotelId, "Conflux")
+                             End If
 
-                                 HotelUtilitie.Log(userName, userId, "/Pages/RatesPlans.aspx", hotelId, RateManager.Utitlities.Hotel.Actions.Sincronizar, note, "", "", "")
-                             Else
-                                 Dim index As Integer = 1
+                             If isEnabledSendRatesAPICache Then
 
-                                 For Each request As DeleteHttpResponse In result.DeleteHttpResponseList
-                                     Dim note As String = String.Format("Eliminar Tarifas request numero {0} Tarifas {1} con el hotel: ", (index), "Conflux")
+                                 messagesToDelete.HotelCode = messagesToDelete.HotelCodeV2
 
-                                     HotelUtilitie.Log(userName, userId, "/Pages/RatesPlans.aspx", hotelId, RateManager.Utitlities.Hotel.Actions.Eliminar, note, "", request.XmlRequest, request.Xml)
-                                     index += 1
-                                 Next
+                                 Dim soapRequests As List(Of XDocument) = ConfluxService.GetSoapRequests(messagesToDelete)
+
+                                 Dim result As DeleteResponse = Await ConfluxService.UpdateDeleteAsync(soapRequests, HotelUtilitie.ENDPOINTAPIDELETE, hotelId)
+
+                                 If Not result.IsSuccess Then
+                                     overallSuccess = False
+                                     Dim note As String = String.Format("Error Eliminar Tarifas {1} con el hotel: {0}", hotelId, "APICache")
+                                     HotelUtilitie.Log(userName, userId, "/Pages/RatesPlans.aspx", hotelId, RateManager.Utitlities.Hotel.Actions.Sincronizar, note, "", "", "")
+                                 Else
+                                     Dim index As Integer = 1
+                                     For Each request As DeleteHttpResponse In result.DeleteHttpResponseList
+                                         Dim note As String = String.Format("Eliminar Tarifas request numero {0} Tarifas {1} con el hotel: ", (index), "APICache")
+                                         HotelUtilitie.Log(userName, userId, "/Pages/RatesPlans.aspx", hotelId, RateManager.Utitlities.Hotel.Actions.Eliminar, note, "", request.XmlRequest, request.Xml)
+                                         index += 1
+                                     Next
+                                 End If
 
                              End If
 
                          End If
 
+                         APIServices.GoogleSync.GoogleSyncAuditService.UpdateSyncStatus(correlationIdDeactivate, overallSuccess)
 
-                         If isEnabledSendRatesAPICache Then
-
-                             messagesToDelete.HotelCode = messagesToDelete.HotelCodeV2
-
-                             Dim soapRequests As List(Of XDocument) = ConfluxService.GetSoapRequests(messagesToDelete)
-
-                             Dim result As DeleteResponse = Await ConfluxService.UpdateDeleteAsync(soapRequests, HotelUtilitie.ENDPOINTAPIDELETE, hotelId)
-
-                             If Not result.IsSuccess Then
-                                 Dim note As String = String.Format("Error Eliminar Tarifas {1} con el hotel: {0}", hotelId, "APICache")
-
-                                 HotelUtilitie.Log(userName, userId, "/Pages/RatesPlans.aspx", hotelId, RateManager.Utitlities.Hotel.Actions.Sincronizar, note, "", "", "")
-                             Else
-                                 Dim index As Integer = 1
-
-                                 For Each request As DeleteHttpResponse In result.DeleteHttpResponseList
-                                     Dim note As String = String.Format("Eliminar Tarifas request numero {0} Tarifas {1} con el hotel: ", (index), "APICache")
-
-                                     HotelUtilitie.Log(userName, userId, "/Pages/RatesPlans.aspx", hotelId, RateManager.Utitlities.Hotel.Actions.Eliminar, note, "", request.XmlRequest, request.Xml)
-                                     index += 1
-                                 Next
-
-                             End If
-
-
-                         End If
-
-
-
-                     End If
+                     Catch ex As Exception
+                         APIServices.GoogleSync.GoogleSyncAuditService.UpdateSyncStatus(correlationIdDeactivate, False, errorMessage:=ex.Message)
+                     End Try
 
                  End Function)
     End Sub
