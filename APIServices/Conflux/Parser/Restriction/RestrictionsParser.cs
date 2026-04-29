@@ -347,6 +347,8 @@ namespace APIServices.Conflux.Parser.Restriction
 
         public static AvailStatusMessages ToAvailStatusMessagesOccupation(List<RateRestrictionDto> listRestrictionDto,DateTime? startDate, DateTime? endDate)
         {
+            DateTime startDateTemp = (startDate.Value.Date < DateTime.Now.Date) ? DateTime.Now.Date : startDate.Value.Date;
+
             AvailStatusMessages availStatusMessages = new AvailStatusMessages()
             {
                 HotelCode = HotelCode,
@@ -387,7 +389,7 @@ namespace APIServices.Conflux.Parser.Restriction
                         AvailStatusMessage availStatusMessage = new AvailStatusMessage();
                         availStatusMessage.StatusApplicationControl = new StatusApplicationControl()
                         {
-                            Start = startDate.Value.Date,
+                            Start = startDateTemp,
                             End = endDate.Value.Date,
                             InvTypeCode = room ?? "",
                             RatePlanCode = rateplan.RateCode,
@@ -421,7 +423,7 @@ namespace APIServices.Conflux.Parser.Restriction
                     AvailStatusMessage availStatusMessage = new AvailStatusMessage();
                     availStatusMessage.StatusApplicationControl = new StatusApplicationControl()
                     {
-                        Start = startDate.Value.Date,
+                        Start = startDateTemp,
                         End = endDate.Value.Date,
                         InvTypeCode = promotion.RoomCode ?? "",
                         RatePlanCode = promotion.RatePlanId,
@@ -453,6 +455,8 @@ namespace APIServices.Conflux.Parser.Restriction
 
         public static AvailStatusMessages ToAvailStatusMessagesAdvancedDays(List<RateRestrictionDto> listRestrictionDto, DateTime? startDate, DateTime? endDate)
         {
+            DateTime startDateTemp = (startDate.Value.Date < DateTime.Now.Date) ? DateTime.Now.Date : startDate.Value.Date;
+
             AvailStatusMessages availStatusMessages = new AvailStatusMessages()
             {
                 HotelCode = HotelCode,
@@ -494,7 +498,7 @@ namespace APIServices.Conflux.Parser.Restriction
                         AvailStatusMessage availStatusMessage = new AvailStatusMessage();
                         availStatusMessage.StatusApplicationControl = new StatusApplicationControl()
                         {
-                            Start = startDate.Value.Date,
+                            Start = startDateTemp,
                             End = endDate.Value.Date,
                             InvTypeCode = room ?? "",
                             RatePlanCode = rateplan.RateCode,
@@ -527,7 +531,7 @@ namespace APIServices.Conflux.Parser.Restriction
                     AvailStatusMessage availStatusMessage = new AvailStatusMessage();
                     availStatusMessage.StatusApplicationControl = new StatusApplicationControl()
                     {
-                        Start = startDate.Value.Date,
+                        Start = startDateTemp,
                         End = endDate.Value.Date,
                         InvTypeCode = promotion.RoomCode ?? "",
                         RatePlanCode = promotion.RatePlanId,

@@ -1305,50 +1305,6 @@ namespace APIServices.Conflux
 
             return priorityRequests;
 
-
-            //dos diferentes request uno por estancia y tro por dias avanzados
-            //Minimo y maximo de noches RQ validar que tenga 
-            //Dias Avanzados Min y Dias Avanzados Max validar que tenga
-
-            //si hay restriciiones por hotel no se mandan por plan tarifario ni por tarifa en base as minimo y maximo de noches.
-            //si no hay hotel se mandan las dos porque si la tarifa no tiene restricciones se manda la del plan tarifario en base as minimo , 
-            //maximo de noches, dias avanzados minimos y dias avanzados maxioms.
-
-
-            //RAC D2Q Hotel , plan tarifario, tarifa
-            //BAR1 D2Q Hotel
-            //BAR5 D2Q Hotel
-
-            //nivel -> hotel, plan tarifario y el de tarifa
-
-            //RAC vinculos BAR1 BAR5
-            //D2Q vinculos 331
-
-            //Promocion Activa BAR9
-
-            //ya no toma en cuenta el vincu
-            //BAR9BAR1 si el plan vinculado esta seleccionado en la promocion se agrega , en la habitacion vinculada aplica igual
-            //BAR9RAC-TOma en cuenta si el hote tiene estancia minima y estancia maxima
-            //    sino tiene hotel en estancia, se agarran las rglas de la promo si tiene,luego las del plan y luego las de la tarifa  va sobreescribiendo las reglas de la estancia.
-
-            //    BAR9RAC D2Q tiene estancia 1 min 2 max
-            //    RAC D2Q 3 min 4 max
-
-
-            //BAR9RAC estancia
-            //    reglas promo
-            //    reglas plan
-            //    reglas tarifa
-
-            //if(relgas promo si tiene aplica)
-
-            //    if(reglas plan si tiene aplica)
-
-            //if(reglas tarifa)
-
-            //GetGeneralRestriction(hotelId, companyId);
-            //GetRQPOREstancia
-            //GETRQPORDIASAVANZADOS
         }
 
         public List<XDocument> GetRestrictionsOccupationXMLList(List<Models.Restrictions.Rate.RateRestrictionDto> listRestrictionDto, DateTime? startDate, DateTime? endDate)
