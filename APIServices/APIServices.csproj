@@ -113,6 +113,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AgencyService.cs" />
+    <Compile Include="Conflux\Conflux.Restriction.cs" />
+    <Compile Include="Conflux\ConfluxEntities.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ConfluxEntities.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Conflux\ConfluxEntities.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ConfluxEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Conflux\ConfluxEntities.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ConfluxEntities.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Conflux\ConfluxService.Closure.cs" />
     <Compile Include="Conflux\ConfluxService.cs" />
     <Compile Include="Conflux\ConfluxService.Delete.cs" />
@@ -141,6 +157,7 @@
     <Compile Include="Conflux\Models\OTA\Rates\RateAmountMessage.cs" />
     <Compile Include="Conflux\Models\OTA\Rates\RateAmountMessages.cs" />
     <Compile Include="Conflux\Models\OTA\Rates\StatusApplicationControl.cs" />
+    <Compile Include="Conflux\Models\OTA\Restrictions\AdvanceBookingRestriction.cs" />
     <Compile Include="Conflux\Models\OTA\Restrictions\AvailStatusMessage.cs" />
     <Compile Include="Conflux\Models\OTA\Restrictions\AvailStatusMessages.cs" />
     <Compile Include="Conflux\Models\OTA\Restrictions\LengthOfStay.cs" />
@@ -152,6 +169,7 @@
     <Compile Include="Conflux\Models\Rates\RatePrice.cs" />
     <Compile Include="Conflux\Models\Rates\Response\Rate.cs" />
     <Compile Include="Conflux\Models\Rates\Response\RateResponse.cs" />
+    <Compile Include="Conflux\Models\Restrictions\Rate\RestrictionsRate.cs" />
     <Compile Include="Conflux\Models\Restrictions\Response\Restriction.cs" />
     <Compile Include="Conflux\Models\Restrictions\Response\RestrictionResponse.cs" />
     <Compile Include="Conflux\Models\Restrictions\Restriction.cs" />
@@ -162,6 +180,18 @@
     <Compile Include="Conflux\Parser\Parser.cs" />
     <Compile Include="Conflux\Parser\RatePlan\RatePlanParser.cs" />
     <Compile Include="Conflux\Parser\Restriction\RestrictionsParser.cs" />
+    <Compile Include="Conflux\spGetRestrictionsByHotel_Result.cs">
+      <DependentUpon>ConfluxEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Conflux\spGetRestrictionsExceptionsByHotel_Result.cs">
+      <DependentUpon>ConfluxEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Conflux\vRatesPromotion.cs">
+      <DependentUpon>ConfluxEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Conflux\vRatesPromotionsException.cs">
+      <DependentUpon>ConfluxEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Currency\CurrencyService.cs" />
     <Compile Include="Dictionary.cs" />
     <Compile Include="Extension\ConfigurationExtensions.cs" />
@@ -522,6 +552,13 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="ClassDiagram1.cd" />
+    <EntityDeploy Include="Conflux\ConfluxEntities.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ConfluxEntities.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Conflux\ConfluxEntities.edmx.diagram">
+      <DependentUpon>ConfluxEntities.edmx</DependentUpon>
+    </None>
     <None Include="Models\OzHoteles.edmx.diagram">
       <DependentUpon>OzHoteles.edmx</DependentUpon>
     </None>
@@ -542,6 +579,16 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Conflux\ConfluxEntities.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ConfluxEntities.edmx</DependentUpon>
+      <LastGenOutput>ConfluxEntities.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Conflux\ConfluxEntities.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ConfluxEntities.edmx</DependentUpon>
+      <LastGenOutput>ConfluxEntities.cs</LastGenOutput>
+    </Content>
     <Content Include="Service\Arpon\ArponEntities.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>ArponEntities.edmx</DependentUpon>

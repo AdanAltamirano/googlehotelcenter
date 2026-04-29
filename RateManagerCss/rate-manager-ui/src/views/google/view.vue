@@ -43,6 +43,10 @@
                     <b-tab :title="$t('Inventory')">
                         <inventory :hotelId="hotelId" :isEnabledGoogle="isEnabledGoogleRequest" :isEnabledAPICache="isEnabledAPICacheRequest"  :dates="dates"></inventory>
                     </b-tab>
+                    
+                    <b-tab :title="$t('Restrictions')">
+                        <restrictions :hotelId="hotelId" :isEnabledGoogle="isEnabledGoogleRequest" :isEnabledAPICache="isEnabledAPICacheRequest"  :dates="dates"></restrictions>
+                    </b-tab>
 
                     <b-tab :title="$t('Delete Rates')" v-if="hasPermission && (isEnabledGoogleRequest || isEnabledAPICacheRequest)">
                         <delete-rates :hotelId="hotelId" :isEnabledGoogle="isEnabledGoogleRequest" :isEnabledAPICache="isEnabledAPICacheRequest" :dates="dates"></delete-rates>
@@ -58,18 +62,21 @@
 import Prices from "./components/Prices.vue";
 import Closure from "./components/Closure.vue";
 import Inventory from "./components/Inventory.vue";
+import Restrictions from "./components/Restrictions.vue";
 import DeleteRates from "./components/DeleteRates.vue";
 import { GetUserPermission } from '../../api/conflux-service';
+
 
 export default {
     components: {
         Prices,
         Closure,
         Inventory,
-        DeleteRates
+        DeleteRates,
+        Restrictions
     },
     created(){
-
+        
         const start = new Date();
        
         let dateEnd = new Date();

@@ -172,8 +172,8 @@ Namespace API.Controllers
         End Function
 
 
-        <Route("updaterestrictions/{hotelId:int}"), HttpPost>
-        Public Function UpdateRestrictions(ByVal hotelId As Integer, <FromBody> closure As APIServices.Conflux.Models.Closure.Closure) As HttpResponseMessage
+        <Route("updateclosure/{hotelId:int}"), HttpPost>
+        Public Function UpdateClosure(ByVal hotelId As Integer, <FromBody> closure As APIServices.Conflux.Models.Closure.Closure) As HttpResponseMessage
 
             Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
             Dim priorityRequests As List(Of List(Of System.Xml.Linq.XDocument)) = ConfluxService.GetClosureMessagesV2(hotelId, info.Empresa, closure)
@@ -246,6 +246,57 @@ Namespace API.Controllers
 
             If resultAPICache IsNot Nothing And result Is Nothing Then
                 toObject = resultAPICache
+            End If
+
+            Return Ok(toObject)
+
+        End Function
+
+        <Route("updaterestrictions/{hotelId:int}"), HttpPost>
+        Public Function UpdateRestrictions(ByVal hotelId As Integer, <FromBody> restriction As APIServices.Conflux.Models.Restrictions.Restricion) As HttpResponseMessage
+            Dim info As companyInfo = CType(HttpContext.Current.Session("infoCompany"), companyInfo)
+
+            Dim priorityRequests As List(Of List(Of System.Xml.Linq.XDocument)) = ConfluxService.GetRestricionsMessages(hotelId, info.Empresa, restriction)
+
+            Dim isEnabledGoogle As Boolean = Utitlities.Hotel.HotelUtilitie.IsEnableGoogleRequest(hotelId)
+            Dim isEnabledAPICache As Boolean = Utitlities.Hotel.HotelUtilitie.IsEnableSendRatesAPICache(hotelId)
+
+            Dim result As RestrictionResponseV2 = Nothing
+            Dim resultAPICache As RestrictionResponseV2 = Nothing
+
+            If isEnabledGoogle Then
+
+                result = ConfluxService.UpdateRestrictionNoClosure(Utitlities.Hotel.HotelUtilitie.ENDPOINTRESTRICTIONS, priorityRequests)
+
+                If Not result.IsSuccess Then
+                    Log("Error Sincronizar Restricciones con el hotel: ", result.Xml, hotelId)
+                    Return BadRequest(result.Error)
+                End If
+
+                LogRestrictions(hotelId, "Conflux", result.Restrictions)
+
+            End If
+
+            If isEnabledAPICache Then
+
+                Dim priorityRequestsAPICache As List(Of List(Of System.Xml.Linq.XDocument)) = ConfluxService.GetRestricionsMessages(hotelId, hotelId, restriction)
+
+                resultAPICache = ConfluxService.UpdateRestrictionNoClosure(Utitlities.Hotel.HotelUtilitie.ENDPOINTRESTRICTIONS, priorityRequestsAPICache)
+
+                If Not resultAPICache.IsSuccess Then
+                    Log("Error Sincronizar Restricciones APICache con el hotel: ", result.Xml, hotelId)
+                    Return BadRequest(resultAPICache.Error)
+                Else
+                    LogRestrictions(hotelId, "APICache", resultAPICache.Restrictions)
+                End If
+
+            End If
+
+
+            Dim toObject As Object = Nothing
+
+            If result IsNot Nothing Then
+                toObject = result
             End If
 
             Return Ok(toObject)
@@ -400,6 +451,17 @@ Namespace API.Controllers
                             index += 1
                         End While
                 End Select
+            Next
+        End Sub
+
+        Private Sub LogRestrictions(ByVal hotelId As Integer, ByVal service As String, ByVal restrictionList As List(Of RestrictionV2))
+            For Each restriction As RestrictionV2 In restrictionList
+                Dim index As Integer = 0
+                While index < restriction.Xml.Count()
+                    Dim note As String = String.Format("Sincronizar request numero {0} Restriccion {1} con el hotel: ", (index + 1), service)
+                    Log(note, restriction.Xml(index).ToString(), hotelId, requestXMl:=restriction.XmlRequest(index).ToString())
+                    index += 1
+                End While
             Next
         End Sub
 

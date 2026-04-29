@@ -8,6 +8,7 @@ if (Vue.http.interceptors.indexOf(Interceptor) === -1) {
 }
 
 const updateRates = Vue.resource(`${process.env.VUE_APP_API_URL}/conflux/updaterates/{hotelid}`);
+const updateClosure = Vue.resource(`${process.env.VUE_APP_API_URL}/conflux/updateclosure/{hotelid}`);
 const updateRestrictions = Vue.resource(`${process.env.VUE_APP_API_URL}/conflux/updaterestrictions/{hotelid}`);
 const updateInventory = Vue.resource(`${process.env.VUE_APP_API_URL}/conflux/inventory/{hotelid}`);
 const hotels = Vue.resource(`${process.env.VUE_APP_API_URL}/conflux/hotels{?filter,orderBy,pageSize,page}`);
@@ -62,6 +63,12 @@ export default {
      */
     UpdateInventory(hotelid, payload){
         return updateInventory.save({hotelid},payload);
+    },
+    /**
+     * @param hotelid
+     */
+    UpdateClosure(hotelid,payload){
+        return updateClosure.save({hotelid},payload);
     },
     /**
      * @param hotelid
