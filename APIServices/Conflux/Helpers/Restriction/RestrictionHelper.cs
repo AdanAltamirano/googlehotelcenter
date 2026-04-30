@@ -476,7 +476,8 @@ namespace APIServices.Conflux.Helpers.Restriction
 
                     var listPromotions = confluxEntities.vRatesPromotions.Where(vrp => vrp.RateId == restriction.RateId && vrp.HotelId == vrp.HotelId
                                                                      && vrp.RoomId == restriction.RoomId && vrp.DeletedRatePlan == false
-                                                                     && vrp.Language == 1);                         
+                                                                     && vrp.Language == 1 && vrp.IsMobileRate == false && vrp.IsCallCenterOnly == false
+                                                                     && !new[] { "N", "C", "O" }.Contains(vrp.Segment));                         
                     foreach(var promotion in listPromotions)
                     {
                         if (IsPromotionValid(promotion, startDate, endDate))
@@ -515,7 +516,8 @@ namespace APIServices.Conflux.Helpers.Restriction
 
                     var listPromotions = confluxEntities.vRatesPromotionsExceptions.Where(vrp => vrp.RateId == restriction.RateId && vrp.HotelId == vrp.HotelId
                                                                      && vrp.RoomId == restriction.RoomId && vrp.DeletedRatePlan == false
-                                                                     && vrp.Language == 1);
+                                                                     && vrp.Language == 1 && vrp.IsMobileRate == false && vrp.IsCallCenterOnly == false
+                                                                     && !new[] { "N", "C", "O" }.Contains(vrp.Segment));
                     foreach (var promotion in listPromotions)
                     {
                         if (IsPromotionValid(promotion, startDate, endDate))

@@ -436,6 +436,8 @@ namespace APIServices.Conflux.Parser.Restriction
                         ApplySun = false
                     };
 
+                    
+
                     var ratePlanRules = AllRatePlans.First(arp => arp.RateCode == promotion.ParentRatePlanId);
 
                     var lenghtStayTemp = RestrictionHelper.CreateLenghtStay(restriction.RestrictionsHotel, ratePlanRules, restriction.RatePlan.RestrictionsRate, promotion);

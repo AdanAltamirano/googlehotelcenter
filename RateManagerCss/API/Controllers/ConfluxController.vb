@@ -259,10 +259,10 @@ Namespace API.Controllers
             Dim priorityRequests As List(Of List(Of System.Xml.Linq.XDocument)) = ConfluxService.GetRestricionsMessages(hotelId, info.Empresa, restriction)
 
             Dim isEnabledGoogle As Boolean = Utitlities.Hotel.HotelUtilitie.IsEnableGoogleRequest(hotelId)
-            Dim isEnabledAPICache As Boolean = Utitlities.Hotel.HotelUtilitie.IsEnableSendRatesAPICache(hotelId)
+            'Dim isEnabledAPICache As Boolean = Utitlities.Hotel.HotelUtilitie.IsEnableSendRatesAPICache(hotelId)
 
-            Dim result As RestrictionResponseV2 = Nothing
-            Dim resultAPICache As RestrictionResponseV2 = Nothing
+            Dim result As RestrictionResponseV2 = New RestrictionResponseV2
+            ' Dim resultAPICache As RestrictionResponseV2 = Nothing
 
             If isEnabledGoogle Then
 
@@ -277,20 +277,20 @@ Namespace API.Controllers
 
             End If
 
-            If isEnabledAPICache Then
+            'If isEnabledAPICache Then
 
-                Dim priorityRequestsAPICache As List(Of List(Of System.Xml.Linq.XDocument)) = ConfluxService.GetRestricionsMessages(hotelId, hotelId, restriction)
+            '    Dim priorityRequestsAPICache As List(Of List(Of System.Xml.Linq.XDocument)) = ConfluxService.GetRestricionsMessages(hotelId, hotelId, restriction)
 
-                resultAPICache = ConfluxService.UpdateRestrictionNoClosure(Utitlities.Hotel.HotelUtilitie.ENDPOINTRESTRICTIONS, priorityRequestsAPICache)
+            '    resultAPICache = ConfluxService.UpdateRestrictionNoClosure(Utitlities.Hotel.HotelUtilitie.ENDPOINTRESTRICTIONS, priorityRequestsAPICache)
 
-                If Not resultAPICache.IsSuccess Then
-                    Log("Error Sincronizar Restricciones APICache con el hotel: ", result.Xml, hotelId)
-                    Return BadRequest(resultAPICache.Error)
-                Else
-                    LogRestrictions(hotelId, "APICache", resultAPICache.Restrictions)
-                End If
+            '    If Not resultAPICache.IsSuccess Then
+            '        Log("Error Sincronizar Restricciones APICache con el hotel: ", result.Xml, hotelId)
+            '        Return BadRequest(resultAPICache.Error)
+            '    Else
+            '        LogRestrictions(hotelId, "APICache", resultAPICache.Restrictions)
+            '    End If
 
-            End If
+            'End If
 
 
             Dim toObject As Object = Nothing
