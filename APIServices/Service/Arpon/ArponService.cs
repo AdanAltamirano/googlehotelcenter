@@ -71,7 +71,9 @@ namespace APIServices.Service.Arpon
                             IdHotelIP = hotelIPH_Arpon.IdHotelIp,
                             IdHotelArpon = hotelIPH_Arpon.IdHotelArpon,
                             UrlArpon = hotelIPH_Arpon.UrlArpon,
-                            AgencyArpon = hotelIPH_Arpon.AgencyArpon
+                            AgencyArpon = hotelIPH_Arpon.AgencyArpon,
+                            Active = hotelIPH_Arpon.Active,
+                            eMailsToNotif = hotelIPH_Arpon.eMailsToNotif
                         };
 
                         arponEntities.HotelIPH_Arpon.Add(hotelArpon);
@@ -82,6 +84,8 @@ namespace APIServices.Service.Arpon
                         _hotelIPH_Arpon.IdHotelArpon = hotelIPH_Arpon.IdHotelArpon;
                         _hotelIPH_Arpon.UrlArpon = hotelIPH_Arpon.UrlArpon;
                         _hotelIPH_Arpon.AgencyArpon = hotelIPH_Arpon.AgencyArpon;
+                        _hotelIPH_Arpon.Active = hotelIPH_Arpon.Active;
+                        _hotelIPH_Arpon.eMailsToNotif = hotelIPH_Arpon.eMailsToNotif;
                     }
 
                     arponEntities.SaveChanges();
@@ -197,6 +201,8 @@ namespace APIServices.Service.Arpon
                         hotelIPH_Arpon_Model.IdHotelArpon = hotelArpon.IdHotelArpon;
                         hotelIPH_Arpon_Model.UrlArpon = hotelArpon.UrlArpon ?? string.Empty;
                         hotelIPH_Arpon_Model.AgencyArpon = hotelArpon.AgencyArpon ?? string.Empty;
+                        hotelIPH_Arpon_Model.Active = hotelArpon.Active;
+                        hotelIPH_Arpon_Model.eMailsToNotif = hotelArpon.eMailsToNotif ?? string.Empty;
                     }
 
                 }

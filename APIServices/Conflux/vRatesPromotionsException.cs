@@ -7,22 +7,22 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace APIServices.Models
+namespace APIServices.Conflux
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class vDayRatesExceptions
+    public partial class vRatesPromotionsException
     {
-        public int RateId { get; set; }
+        public Nullable<int> RateId { get; set; }
         public int HotelId { get; set; }
-        public int RoomId { get; set; }
+        public Nullable<int> RoomId { get; set; }
+        public string RoomCode { get; set; }
         public string RatePlanId { get; set; }
         public string RatePlanName { get; set; }
         public string Segment { get; set; }
-        public System.DateTime StartDate { get; set; }
-        public System.DateTime EndDate { get; set; }
-        public string ApplyDayMap { get; set; }
+        public Nullable<System.DateTime> StartDate { get; set; }
+        public Nullable<System.DateTime> EndDate { get; set; }
         public string PromoDays { get; set; }
         public string NoArrivalsMap { get; set; }
         public string NoDeparturesMap { get; set; }
@@ -38,19 +38,22 @@ namespace APIServices.Models
         public string Currency { get; set; }
         public string ParentRatePlanId { get; set; }
         public bool IsPromotion { get; set; }
-        public int Language { get; set; }
-        public bool IsMobileRate { get; set; }
-        public bool IsCallCenterOnly { get; set; }
+        public Nullable<int> Language { get; set; }
+        public Nullable<bool> IsMobileRate { get; set; }
+        public Nullable<bool> IsCallCenterOnly { get; set; }
         public string PromoRatePlanId { get; set; }
+        public Nullable<System.DateTime> RateStartDate { get; set; }
+        public Nullable<System.DateTime> RateEndDate { get; set; }
+        public Nullable<System.DateTime> PromoStartDateTravelWindow { get; set; }
+        public Nullable<System.DateTime> PromoEndDateTravelWindow { get; set; }
         public Nullable<System.DateTime> PromoStartDateBookingWindow { get; set; }
         public Nullable<System.DateTime> PromoEndDateBookingWindow { get; set; }
         public bool DeletedInGoogle { get; set; }
         public bool DeletedRatePlan { get; set; }
         public decimal Ecotasa { get; set; }
-        public Nullable<byte> RatePeople { get; set; }
-        public Nullable<byte> RateMinAdults { get; set; }
-        public Nullable<byte> RateMaxAdults { get; set; }
-        public Nullable<byte> RateMaxChildren { get; set; }
-        public Nullable<byte> RateExtraPeople { get; set; }
+        public byte MinDays { get; set; }
+        public byte MaxDays { get; set; }
+        public byte MinAdvDays { get; set; }
+        public int MaxAdvDays { get; set; }
     }
 }

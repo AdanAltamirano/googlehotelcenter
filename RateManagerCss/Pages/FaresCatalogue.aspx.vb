@@ -1020,7 +1020,7 @@ Partial Class FaresCatalogue
 
         Dim requests As List(Of XDocument) = New List(Of XDocument)
 
-        Dim vDayRatesForClosure As List(Of vDayRates) = Helpers.Rates.RatesHelpers.GetVDayRate(rateId, startDate, endDate)
+        Dim vDayRatesForClosure As List(Of vDayRates) = Helpers.Rates.RatesHelpers.GetVDayRate(rateId, startDate, endDate, False)
 
         If service = "APICache" Then
             RestrictionsParser.Init(hotelId)
@@ -1146,16 +1146,12 @@ Partial Class FaresCatalogue
             Dim isEnabledSendingRatesAPICache As Boolean = HotelUtilitie.IsEnableSendRatesAPICache(hotelId)
 
             confluxService.ConfluxSendRatesToGoogle = True
-            Dim ratesForRequest As RatesMessages = Nothing
-            If isEnabledGoogleRequest Then
-                ratesForRequest = confluxService.GetRateMessages(rateId, startDate, endDate, hotelId, companyId, TypeRateEnum.RoomRate)
-            End If
+            Dim ratesForRequest As RatesMessages = If(isEnabledGoogleRequest,
+                                            confluxService.GetRateMessages(rateId, startDate, endDate, hotelId, companyId, TypeRateEnum.RoomRate, False), Nothing)
 
             confluxService.ConfluxSendRatesToGoogle = False
-            Dim ratesForRequestAPICache As RatesMessages = Nothing
-            If isEnabledSendingRatesAPICache Then
-                ratesForRequestAPICache = confluxService.GetRateMessages(rateId, startDate, endDate, hotelId, companyId, TypeRateEnum.RoomRate)
-            End If
+            Dim ratesForRequestAPICache As RatesMessages = If(isEnabledSendingRatesAPICache,
+                                            confluxService.GetRateMessages(rateId, startDate, endDate, hotelId, companyId, TypeRateEnum.RoomRate, False), Nothing)
 
             ' Enviar tarifas a Conflux
             Await SendRatesIfEnabledAsync(userName, userId, isEnabledGoogleRequest, ratesForRequest, hotelId, companyId, rateId,

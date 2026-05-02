@@ -224,17 +224,23 @@ namespace APIServices.Xml.OTA.Request.Restrictions
 
                     }
 
+                    availStatusMessageXml.Add(statusApplicationControl);
 
-                    XElement restrictionStatus = new XElement(blank + "RestrictionStatus",
-                        new XAttribute("Status", availStatusMessagesList[index].RestrictionStatus.Status));
-
-                    if (!string.IsNullOrEmpty(availStatusMessagesList[index].RestrictionStatus.Restriction))
+                    //Restriction Status
+                    if (availStatusMessagesList[index].RestrictionStatus != null)
                     {
-                        restrictionStatus.Add(new XAttribute("Restriction", availStatusMessagesList[index].RestrictionStatus.Restriction));
+                        XElement restrictionStatus = new XElement(blank + "RestrictionStatus",
+                            new XAttribute("Status", availStatusMessagesList[index].RestrictionStatus.Status));
+
+                        if (!string.IsNullOrEmpty(availStatusMessagesList[index].RestrictionStatus.Restriction))
+                        {
+                            restrictionStatus.Add(new XAttribute("Restriction", availStatusMessagesList[index].RestrictionStatus.Restriction));
+                        }
+
+                        availStatusMessageXml.Add(restrictionStatus);
                     }
 
-                    availStatusMessageXml.Add(statusApplicationControl, restrictionStatus);
-
+                    //Lenght Of Stay
                     if (availStatusMessagesList[index].LengthsOfStay.Count > 0)
                     {
                         XElement lengthsOfStay = new XElement(blank + "LengthsOfStay");
@@ -249,6 +255,15 @@ namespace APIServices.Xml.OTA.Request.Restrictions
                         }
 
                         availStatusMessageXml.Add(lengthsOfStay);
+                    }
+
+                    if(availStatusMessagesList[index].AdvanceBookingRestriction != null)
+                    {
+                        XElement advanceBookingRestriction = new XElement(blank + "AdvanceBookingRestriction",
+                            new XAttribute("MinAdvancedBookingOffset", availStatusMessagesList[index].AdvanceBookingRestriction.MinAdvancedBookingOffset),
+                            new XAttribute("MaxAdvancedBookingOffset", availStatusMessagesList[index].AdvanceBookingRestriction.MaxAdvancedBookingOffset));
+
+                        availStatusMessageXml.Add(advanceBookingRestriction);
                     }
 
                     //Calcular Bytes del mensaje

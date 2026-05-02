@@ -71,6 +71,7 @@
                         </td>
                         <td align="left" width="178">
                             <asp:DropDownList ID="cmbCheckinHora" runat="server" Width="60px">
+                                <asp:ListItem Value="00">00</asp:ListItem>
                                 <asp:ListItem Value="01">01</asp:ListItem>
                                 <asp:ListItem Value="02">02</asp:ListItem>
                                 <asp:ListItem Value="03">03</asp:ListItem>
@@ -108,6 +109,7 @@
                         </td>
                         <td align="left">
                             <asp:DropDownList ID="cmbCheckoutHora" runat="server" Width="60px">
+                                <asp:ListItem Value="00">00</asp:ListItem>
                                 <asp:ListItem Value="01">01</asp:ListItem>
                                 <asp:ListItem Value="02">02</asp:ListItem>
                                 <asp:ListItem Value="03">03</asp:ListItem>

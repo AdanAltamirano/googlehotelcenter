@@ -89,6 +89,7 @@ Partial Class Welcome1
 
             Session("urlCurrent") = Me.GeRequestApplicationPath("/Portal/Pages/Welcome.aspx")
             hplLIsting.NavigateUrl = UrlPage(PaginaBase.pages.ReservationList)
+            'hplLIsting.NavigateUrl = UrlPage(PaginaBase.pages.ReservationListUI) & "?redirectfrom=Welcome"
             hplVerifyRes.NavigateUrl = UrlPage(PaginaBase.pages.ConfirmReservas)
             hplStatus.NavigateUrl = UrlPage(PaginaBase.pages.HotelStatus)
             hplInventory.NavigateUrl = UrlPage(pages.InventarioHotel)

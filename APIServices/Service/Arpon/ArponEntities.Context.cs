@@ -25,10 +25,10 @@ namespace APIServices.Service.Arpon
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<HotelIPH_Arpon> HotelIPH_Arpon { get; set; }
         public virtual DbSet<RatePlansIPH_Arpon> RatePlansIPH_Arpon { get; set; }
         public virtual DbSet<RoomsIPH_Arpon> RoomsIPH_Arpon { get; set; }
         public virtual DbSet<TipoHabitaciones_Hoteles> TipoHabitaciones_Hoteles { get; set; }
         public virtual DbSet<vRatePromosReservations> vRatePromosReservations { get; set; }
+        public virtual DbSet<HotelIPH_Arpon> HotelIPH_Arpon { get; set; }
     }
 }

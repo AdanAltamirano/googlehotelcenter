@@ -665,6 +665,7 @@ namespace APIServices.Conflux.Helpers.Rates
             spGetCurrentRatesByHotel_Result4 roomCapactity = new spGetCurrentRatesByHotel_Result4()
             {
                 MaxAdults = room.MaxAdultsOccupancy,
+                MinAdults = room.MinAdultsOccupancy,
                 MaxChildren = room.MaxChildrenOccupancy
             };
 
@@ -824,6 +825,7 @@ namespace APIServices.Conflux.Helpers.Rates
             //Se va usar para la cantidad maxima de adultos y ninios
             spGetCurrentRatesByHotel_Result4 roomCapacity = new spGetCurrentRatesByHotel_Result4()
             {
+                MinAdults = room.MinAdultsOccupancy,
                 MaxAdults = room.MaxAdultsOccupancy,
                 MaxChildren = room.MaxChildrenOccupancy
             };

@@ -29,6 +29,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 
 
+
 namespace APIServices.Conflux
 {
     public partial class ConfluxService
@@ -549,7 +550,7 @@ namespace APIServices.Conflux
             return new Tuple<RateResponse, RateResponse>(rateResponse, deleteRateResponse);
         }
 
-        public RatesMessages GetRateMessages(int rateId, DateTime startDate, DateTime endDate, int hotelId, int companyId, TypeRateEnum typeRate)
+        public RatesMessages GetRateMessages(int rateId, DateTime startDate, DateTime endDate, int hotelId, int companyId, TypeRateEnum typeRate,bool deletedRatePlan)
         {
             RatesMessages ratesMessages = null;
 
@@ -559,10 +560,10 @@ namespace APIServices.Conflux
             switch (typeRate)
             {
                 case TypeRateEnum.RoomRate:
-                    rates = APIServices.Conflux.Helpers.Rates.RatesHelpers.GetVDayRate(rateId, startDate, endDate);
+                    rates = APIServices.Conflux.Helpers.Rates.RatesHelpers.GetVDayRate(rateId, startDate, endDate,deletedRatePlan);
                     break;
                 case TypeRateEnum.RoomRatePromotion:
-                    ratesExceptions = APIServices.Conflux.Helpers.Rates.RatesHelpers.GetVDayRateException(rateId, startDate, endDate);
+                    ratesExceptions = APIServices.Conflux.Helpers.Rates.RatesHelpers.GetVDayRateException(rateId, startDate, endDate,deletedRatePlan);
                     break;
             }
 
@@ -1267,6 +1268,104 @@ namespace APIServices.Conflux
 
         }
 
+        public List<List<XDocument>> GetRestricionsMessages(int hotelId, int companyId, APIServices.Conflux.Models.Restrictions.Restricion restricion)
+        {
+
+            int size = 4;
+            List<List<XDocument>> priorityRequests = new List<List<XDocument>>(size);
+
+            for (int i = 0; i < size; i++)
+            {
+                priorityRequests.Add(null);
+            }
+
+            RestrictionsParser.Init(companyId);
+
+            List<APIServices.Conflux.spGetRestrictionsByHotel_Result> listRestrictionsByHotels = new List<APIServices.Conflux.spGetRestrictionsByHotel_Result>();
+
+            //Tabla Tarifas
+            var restrictionsByAvailableRate = Helpers.Restriction.RestrictionHelper.GetAllRestrictionsByAvailableRate(hotelId,restricion);
+
+            var restrictionsBuilded = Helpers.Restriction.RestrictionHelper.BuildRestrictionsByAvaillableRate(restrictionsByAvailableRate,hotelId);
+
+            Helpers.Restriction.RestrictionHelper.AddPromotionsByAvailableRate(ref restrictionsBuilded,restricion.StartDate,restricion.EndDate);
+
+            //Estancia Tabla Tarifas RQ
+            var occupationSoapRQList = GetRestrictionsOccupationXMLList(restrictionsBuilded, restricion.StartDate, restricion.EndDate);
+            if(occupationSoapRQList.Count > 0) priorityRequests[0] = occupationSoapRQList;
+
+            //Dias Avanzados Tabla Tarifas RQ
+            var advancedDaysSoapRQList = GetRestrctionsAdvancedDaysXMLList(restrictionsBuilded,restricion.StartDate,restricion.EndDate);          
+            if(advancedDaysSoapRQList.Count > 0) priorityRequests[1] = advancedDaysSoapRQList;
+
+            //Tabla Tarifas Excepciones
+            var restrictionsByAvailableRateException = Helpers.Restriction.RestrictionHelper.GetAllRestrictionsByAvailableRateException(hotelId, restricion);
+
+            var restrictionsExceptionsBuilded = Helpers.Restriction.RestrictionHelper.BuildRestrictionsByAvaillableRate(restrictionsByAvailableRateException,hotelId);
+
+            Helpers.Restriction.RestrictionHelper.AddPromotionsByAvailableRateException(ref restrictionsExceptionsBuilded, restricion.StartDate, restricion.EndDate);
+
+            //Estancia Tabla Tarifas Excepciones RQ
+            var occupationExceptionSoapRQList = GetRestrictionsOccupationXMLList(restrictionsExceptionsBuilded, restricion.StartDate, restricion.EndDate);
+            if(occupationExceptionSoapRQList.Count > 0)priorityRequests[2] = occupationExceptionSoapRQList;
+
+            //Dias Avanzados Tabla Tarifas Exceptiones RQ
+            var advanvedDaysExceptionSoapRQList = GetRestrctionsAdvancedDaysXMLList(restrictionsExceptionsBuilded, restricion.StartDate, restricion.EndDate);
+            if(advanvedDaysExceptionSoapRQList.Count > 0) priorityRequests[3] = advanvedDaysExceptionSoapRQList;
+
+            return priorityRequests;
+
+        }
+
+        public List<XDocument> GetRestrictionsOccupationXMLList(List<Models.Restrictions.Rate.RateRestrictionDto> listRestrictionDto, DateTime? startDate, DateTime? endDate)
+        {
+
+            List<XDocument> occupationSoapRQList = new List<XDocument>();
+
+            //Estancia Min y Max Mensajes Para RQ
+            var occupationAvailsStatusMessages = GetOccupationAvailStatusMessages(listRestrictionDto, startDate, endDate);
+
+            if (occupationAvailsStatusMessages.AvailStatusMessageList.Count > 0)
+            {
+                //Estancia Crear RQ
+                List<XElement> occupationHotelAvailNotifList = HotelAvailNotifRQ.CreateHotelAvailNotifRQList(occupationAvailsStatusMessages);
+
+                foreach (XElement occupationHotelAvailNotif in occupationHotelAvailNotifList)
+                {
+                    var occupationSoapRQ = Soap.CreateSoapRequestXml(occupationHotelAvailNotif);
+
+                    occupationSoapRQList.Add(occupationSoapRQ);
+                }
+            }
+
+            return occupationSoapRQList;
+
+        }
+
+        public List<XDocument> GetRestrctionsAdvancedDaysXMLList(List<Models.Restrictions.Rate.RateRestrictionDto> listRestrictionDto, DateTime? startDate, DateTime? endDate)
+        {
+            List<XDocument> advancedDaysSoapRQList = new List<XDocument>();
+
+            //Dias Avanzados Mensages Para RQ
+            var advancedDaysAvailStatusMessages = GetAdvancedDaysAvailStatusMessages(listRestrictionDto, startDate, endDate);
+
+            if (advancedDaysAvailStatusMessages.AvailStatusMessageList.Count > 0)
+            {
+                //Dias Avanzados Crear RQ
+                List<XElement> advancedDaysHotelAvailNotifList = HotelAvailNotifRQ.CreateHotelAvailNotifRQList(advancedDaysAvailStatusMessages);
+
+                //Dias Avanzados
+
+                foreach (XElement advanedDaysHotelAvailNotif in advancedDaysHotelAvailNotifList)
+                {
+                    var advancedDaysSoapRQ = Soap.CreateSoapRequestXml(advanedDaysHotelAvailNotif);
+
+                    advancedDaysSoapRQList.Add(advancedDaysSoapRQ);
+                }
+            }
+
+            return advancedDaysSoapRQList;
+        }
 
         public RestrictionResponse UpdateRestriction(string endpoint, List<List<XDocument>> priorityRequests)
         {
@@ -1420,6 +1519,61 @@ namespace APIServices.Conflux
             return res;
         }
 
+        public RestrictionResponseV2 UpdateRestrictionNoClosure(string endpoint, List<List<XDocument>> priorityRequests)
+        {
+            RestrictionResponseV2 res = new RestrictionResponseV2();
+
+            var uri = new Uri(endpoint);
+
+            try
+            {
+                foreach (var priorityRequest in priorityRequests)
+                {
+                    RestrictionV2 restriction = new RestrictionV2();
+
+                    if (priorityRequest != null)
+                    {
+
+                        foreach (var soapRequest in priorityRequest)
+                        {
+                            System.Xml.Linq.XElement otaRS = null;
+                            HttpContent httpContent = new StringContent(soapRequest.ToString());
+
+                            using (var client = new HttpClient())
+                            {
+                                client.Timeout = TimeSpan.FromMinutes(50);
+                                var response = client.PostAsync(uri, httpContent).Result;
+
+                                string result = response.Content.ReadAsStringAsync().Result; //regresa un xml
+                                otaRS = HotelAvailNotifRS.ParseHotelAvailNotifRS(result); //Cambiar
+                            }
+
+                            //Repuesta API
+                            restriction.Xml.Add(otaRS.ToString());
+                            restriction.XmlRequest.Add(soapRequest.ToString());
+                            restriction.IsSuccess = HotelAvailNotifRS.IsSuccessRequest(otaRS);
+                        }
+
+                        res.Restrictions.Add(restriction);
+                    }
+                }
+
+                res.IsSuccess = true;
+
+            }
+            catch (Exception ex)
+            {
+                res.IsSuccess = false;
+                res.Error = new KeyValuePair<string, string>("448", ex.Message);
+                var errorsElement = new System.Xml.Linq.XElement("Errors");
+                var errorElementProperty = new System.Xml.Linq.XElement("Error");
+                errorElementProperty.Add(new System.Xml.Linq.XAttribute("Type", "3"), new System.Xml.Linq.XAttribute("Code", "448"), new System.Xml.Linq.XText(ex.Message));
+                errorsElement.Add(errorElementProperty);
+                res.Xml = errorsElement.ToString();
+            }
+
+            return res;
+        }
 
         public List<XDocument> GetClosureRatesMessages(int hotelId, int companyId, APIServices.Conflux.Models.Closure.Closure closure)
         {

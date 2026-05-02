@@ -1,4 +1,10 @@
 <%@ Page Language="vb" AutoEventWireup="false" Inherits="RateManager.PaginaBase" %>
+<script runat="server">
+    Public RedirectFrom As String = ""
+    Private Sub Page_Init(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Init     
+        RedirectFrom = If(Request.QueryString("redirectfrom"), "")   
+    End Sub
+</script>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,6 +25,7 @@
                 isSupervisor : '<%= Me.IsSupervisor%>',
                 isHotelUser : '<%= Me.IsUsuarioHotel%>',
                 isHotelCompany : '<%= Me.IsHotel%>',
+                redirectFrom: '<%= Me.RedirectFrom%>'
             };
     </script>
     <div id="app"></div>

@@ -100,5 +100,12 @@ namespace APIServices.Conflux.Models.Restrictions
         public bool ElectronicBidet { get; set; }
     }
 
+    public class Restricion
+    {
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
+        public string[] RatePlansList { get; set; }
+        public int[] RoomsList { get; set; }
+    }
 
 }

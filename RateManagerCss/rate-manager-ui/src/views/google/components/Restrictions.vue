@@ -1,24 +1,21 @@
 <template>
     <div class="">        
-        <details class="text-primary">{{$t('This action will only send the closings to Google Hotel Center from the selected dates')}}</details>
+        <details class="text-primary">{{$t('This action will only send the restrictions to Google Hotel Center from the selected dates')}}</details>
         <b-row>
             <b-col md="4">
-                <b-form-group :label="$t('Rate Plans')" class="mt-3">
-                    <multiselect
-                        id="planes"
+                <b-form-group :label="$t('Rate Plans')" class="mt-3">                
+                    <multiselect                    
+                        id="planes"                                   
                         v-model="ratePlansList"
-                        label='text'
-                        group-label="group"
-                        group-values="plans"
-                        :group-select="false"
-                        :options="groupedOptions"
+                        label='text'                     
+                        :options="options"
                         track-by="value"
-                        :multiple="true"
+                        :multiple="true"                                
                         :selectLabel="''"
                         :selectedLabel="''"
                         :deselectLabel="''"
                         :placeholder="$t('Rate Plans')"
-                        open-direction="bottom"
+                        open-direction="bottom"   
                         @input="RemoveWhenItsAll">
                     </multiselect>
                 </b-form-group>
@@ -47,7 +44,7 @@
         </div>
         <div else class="mt-4">
             <b-button :disabled="!isEnabledGoogle && !isEnabledAPICache" class="mt-1" v-if="showButton" variant="primary" @click="updateRestrictions()">
-                {{$t('Update Closures')}}
+                {{$t('Update Restrictions')}}
             </b-button>
         </div>
         <div class="mt-3">
@@ -94,7 +91,6 @@ export default {
             callApi: false,
             showButton: true,
             ratePlansList:[],
-            groupedOptions:[],
             options:[],
             roomsList:[],
             optionsRooms:[]
@@ -131,22 +127,13 @@ export default {
             this.showButton = false;
             this.callApi = true;
 
-            ConfluxService.UpdateClosure(this.hotelId,payload)
+            ConfluxService.UpdateRestrictions(this.hotelId,payload)
             .then(response =>{
 
-                let component = Vue.extend(RestrictionAlert);
-                let instance = new component({
-                    propsData:{
-                        restrictions: response.body.restrictions
-                    }
-                });
-
-                instance.$mount();
-                let html = $("<div>").append(instance.$el);
-                console.log(html);
+                console.log(response);
                 this.callApi = false;
                 this.showButton = true;
-                this.$appAlert(this.successHTML(this.$t('Closures'),html));
+                this.$appAlert(this.success(this.$t("Restrictions Updated")));
 
             })
             .catch(error => {
@@ -154,6 +141,18 @@ export default {
                 this.showButton = true;
                 this.$appAlert(this.error(this.$t('System Error')))
             });
+        },
+        success(title) {
+            return {
+                type: "success",
+                title: title,
+                showCancelButton: true,
+                showConfirmButton:false,
+                cancelButtonText: this.$t("Exit"),
+                cancelButtonColor: "#d33",
+                showConfirmButton: false,
+                time: 2500,               
+            };
         },
         successHTML(title, html) {
             return {
@@ -179,30 +178,18 @@ export default {
             };
         },
         loadRatesPlans(hotelId){
-            Promise.all([
-                RoomsClosureService.getRatePlansByHotelIdSegmentsValids(hotelId),
-                RoomsClosureService.getAllRatePlansByHotelIdSegmentsValids(hotelId)
-            ]).then(([activeRes, allRes]) => {
-                const activeIds = new Set(activeRes.body.map(p => p.value));
+            RoomsClosureService.getRatePlansByHotelIdSegmentsValids(hotelId)
+            .then(response => {
+                console.log(response.body);
 
-                const activePlans = [
-                    { value: "0", text: this.$t('All') },
-                    ...activeRes.body
-                ];
+                this.options.push({
+                    value : "0",
+                    text : this.$t('All')
+                });
 
-                const inactivePlans = allRes.body.filter(p => !activeIds.has(p.value));
-
-                this.groupedOptions = [
-                    { group: this.$t('Active Rate Plans'), plans: activePlans }
-                ];
-
-                if (inactivePlans.length > 0) {
-                    this.groupedOptions.push(
-                        { group: this.$t('Inactive Rate Plans'), plans: inactivePlans }
-                    );
-                }
-
-                this.options = activePlans;
+                response.body.forEach(rateplan => {
+                    this.options.push(rateplan);                
+                });
             });
         },
         loadRooms(hotelId){
@@ -245,5 +232,5 @@ export default {
         },       
     }
 }
-</script>
 
+</script>

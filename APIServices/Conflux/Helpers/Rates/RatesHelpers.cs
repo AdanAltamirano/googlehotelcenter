@@ -42,41 +42,79 @@ namespace APIServices.Conflux.Helpers.Rates
         }
 
         #region vDayRate
-        public static List<vDayRates> GetVDayRate(int rateId, DateTime startDate, DateTime endDate)
+        public static List<vDayRates> GetVDayRate(int rateId, DateTime startDate, DateTime endDate,bool deleted = true)
         {
             List<vDayRates> vDayRate = null;
 
-            using (OzHotelesEntities dbContext = new OzHotelesEntities())
+            if (deleted)
             {
-                vDayRate = dbContext.vDayRates.Where(
-                    dr => dr.RateId == rateId
-                    && dr.StartDate >= startDate
-                    && dr.EndDate <= endDate
-                    && dr.EndDate >= startDate
-                    && dr.Language == 1)
-                    .AsNoTracking()
-                    .OrderBy(vdr => vdr.StartDate)
-                    .ToList();
+                using (OzHotelesEntities dbContext = new OzHotelesEntities())
+                {
+                    vDayRate = dbContext.vDayRates.Where(
+                        dr => dr.RateId == rateId
+                        && dr.StartDate >= startDate
+                        && dr.EndDate <= endDate
+                        && dr.EndDate >= startDate
+                        && dr.Language == 1)
+                        .AsNoTracking()
+                        .OrderBy(vdr => vdr.StartDate)
+                        .ToList();
+                }
+            }
+            else
+            {
+                using (OzHotelesEntities dbContext = new OzHotelesEntities())
+                {
+                    vDayRate = dbContext.vDayRates.Where(
+                        dr => dr.RateId == rateId
+                        && dr.StartDate >= startDate
+                        && dr.EndDate <= endDate
+                        && dr.EndDate >= startDate
+                        && dr.Language == 1
+                        && dr.DeletedRatePlan == deleted)
+                        .AsNoTracking()
+                        .OrderBy(vdr => vdr.StartDate)
+                        .ToList();
+                }
             }
 
             return vDayRate;
         }
 
-        public static List<vDayRatesExceptions> GetVDayRateException(int rateId, DateTime startDate, DateTime endDate)
+        public static List<vDayRatesExceptions> GetVDayRateException(int rateId, DateTime startDate, DateTime endDate, bool deleted = true)
         {
             List<vDayRatesExceptions> vDayRate = null;
 
-            using (OzHotelesEntities dbContext = new OzHotelesEntities())
+            if (deleted)
             {
-                vDayRate = dbContext.vDayRatesExceptions.Where(
-                    dr => dr.RateId == rateId
-                    && dr.StartDate >= startDate
-                    && dr.EndDate <= endDate
-                    && dr.EndDate >= startDate
-                    && dr.Language == 1)
-                    .AsNoTracking()
-                    .OrderBy(vdr => vdr.StartDate)
-                    .ToList();
+                using (OzHotelesEntities dbContext = new OzHotelesEntities())
+                {
+                    vDayRate = dbContext.vDayRatesExceptions.Where(
+                        dr => dr.RateId == rateId
+                        && dr.StartDate >= startDate
+                        && dr.EndDate <= endDate
+                        && dr.EndDate >= startDate
+                        && dr.Language == 1
+                        && dr.DeletedRatePlan == deleted)
+                        .AsNoTracking()
+                        .OrderBy(vdr => vdr.StartDate)
+                        .ToList();
+                }
+            }
+            else
+            {
+                using (OzHotelesEntities dbContext = new OzHotelesEntities())
+                {
+                    vDayRate = dbContext.vDayRatesExceptions.Where(
+                        dr => dr.RateId == rateId
+                        && dr.StartDate >= startDate
+                        && dr.EndDate <= endDate
+                        && dr.EndDate >= startDate
+                        && dr.Language == 1)
+                        .AsNoTracking()
+                        .OrderBy(vdr => vdr.StartDate)
+                        .ToList();
+                }
             }
 
             return vDayRate;
@@ -308,7 +346,7 @@ namespace APIServices.Conflux.Helpers.Rates
         {
             List<BaseGuestAmount> updatedPrices = null;
 
-            updatedPrices = BaseGuestAmountApplyingTaxes(prices, currentRate);
+            updatedPrices = BaseGuestAmountApplyingTaxes(prices, currentRate,vDayRate);
 
             if (vDayRate.DayDiscount > 0 && vDayRate.Discount > 0)
             {
@@ -404,7 +442,7 @@ namespace APIServices.Conflux.Helpers.Rates
         {
             List<BaseGuestAmount> updatedPrices = null;
 
-            updatedPrices = BaseGuestAmountApplyingTaxes(prices, currentRate);
+            updatedPrices = BaseGuestAmountApplyingTaxes(prices, currentRate,vDayRate);
 
             if (vDayRate.Discount > 0 && vDayRate.DayDiscount > 0)
             {
@@ -530,10 +568,14 @@ namespace APIServices.Conflux.Helpers.Rates
 
         }
 
-        public static List<BaseGuestAmount> BaseGuestAmountApplyingTaxes(List<spGetPricesByRate_Result> prices, spGetCurrentRatesByHotel_Result4 currentRate)
+        public static List<BaseGuestAmount> BaseGuestAmountApplyingTaxes(List<spGetPricesByRate_Result> prices, spGetCurrentRatesByHotel_Result4 currentRate,vDayRates vDayRate)
         {
-            int maxAdults = Convert.ToInt32(currentRate.MaxAdults);
-            int maxChildren = Convert.ToInt32(currentRate.MaxChildren);
+
+            
+
+            int minAdults = (vDayRate.RateMinAdults != null)? Convert.ToInt32(vDayRate.RateMinAdults) : Convert.ToInt32(currentRate.MinAdults);
+            int maxAdults = (vDayRate.RateMaxAdults != null)? Convert.ToInt32(vDayRate.RateMaxAdults) :Convert.ToInt32(currentRate.MaxAdults);
+            int maxChildren = (vDayRate.RateMaxChildren != null)? Convert.ToInt32(vDayRate.RateMaxChildren) : Convert.ToInt32(currentRate.MaxChildren);
 
             List<BaseGuestAmount> baseGuestAmounts = new List<BaseGuestAmount>();
 
@@ -542,6 +584,7 @@ namespace APIServices.Conflux.Helpers.Rates
                 case true:
 
                     //Adultos
+<<<<<<< HEAD
                     // Iteramos sobre los precios Adult que realmente existen (limitados al techo maxAdults)
                     // en lugar de iterar 1..maxAdults y reportar como "faltante" cada cupo no vendido.
                     {
@@ -554,6 +597,12 @@ namespace APIServices.Conflux.Helpers.Rates
                             .Select(g => g.First())
                             .OrderBy(p => p.Quantity)
                             .ToList();
+=======
+
+                    for (var i = minAdults; i <= maxAdults; i++)
+                    {
+                        var price = prices.First(p => p.Quantity == (i) && p.PersonType == (int)PersonTypeEnum.Adult);
+>>>>>>> Prod_Mex
 
                         foreach (var price in adultPrices)
                         {
@@ -644,6 +693,7 @@ namespace APIServices.Conflux.Helpers.Rates
                 case false:
 
                     //Adultos
+<<<<<<< HEAD
                     // Iteramos sobre los precios Adult que realmente existen (limitados al techo maxAdults)
                     // en lugar de iterar 1..maxAdults y reportar como "faltante" cada cupo no vendido.
                     {
@@ -656,6 +706,12 @@ namespace APIServices.Conflux.Helpers.Rates
                             .Select(g => g.First())
                             .OrderBy(p => p.Quantity)
                             .ToList();
+=======
+
+                    for (var i = minAdults; i <= maxAdults; i++)
+                    {
+                        var price = prices.First(p => p.Quantity == (i) && p.PersonType == (int)PersonTypeEnum.Adult);
+>>>>>>> Prod_Mex
 
                         foreach (var price in adultPrices)
                         {
@@ -747,10 +803,12 @@ namespace APIServices.Conflux.Helpers.Rates
             return baseGuestAmounts;
         }
 
-        public static List<BaseGuestAmount> BaseGuestAmountApplyingTaxes(List<spGetPricesByRateException_Result> prices, spGetCurrentRatesByHotel_Result4 currentRate)
+        public static List<BaseGuestAmount> BaseGuestAmountApplyingTaxes(List<spGetPricesByRateException_Result> prices, spGetCurrentRatesByHotel_Result4 currentRate,vDayRates vDayRate)
         {
-            int maxAdults = Convert.ToInt32(currentRate.MaxAdults);
-            int maxChildren = Convert.ToInt32(currentRate.MaxChildren);
+
+            int minAdults = (vDayRate.RateMinAdults != null) ? Convert.ToInt32(vDayRate.RateMinAdults) : Convert.ToInt32(currentRate.MinAdults);
+            int maxAdults = (vDayRate.RateMaxAdults != null) ? Convert.ToInt32(vDayRate.RateMaxAdults) : Convert.ToInt32(currentRate.MaxAdults);
+            int maxChildren = (vDayRate.RateMaxChildren != null) ? Convert.ToInt32(vDayRate.RateMaxChildren) : Convert.ToInt32(currentRate.MaxChildren);
 
             List<BaseGuestAmount> baseGuestAmounts = new List<BaseGuestAmount>();
 
@@ -759,6 +817,7 @@ namespace APIServices.Conflux.Helpers.Rates
                 case true:
 
                     //Adultos
+<<<<<<< HEAD
                     // Iteramos sobre los precios Adult que realmente existen (limitados al techo maxAdults)
                     // en lugar de iterar 1..maxAdults y reportar como "faltante" cada cupo no vendido.
                     {
@@ -771,6 +830,12 @@ namespace APIServices.Conflux.Helpers.Rates
                             .Select(g => g.First())
                             .OrderBy(p => p.Quantity)
                             .ToList();
+=======
+
+                    for (var i = minAdults; i <= maxAdults; i++)
+                    {
+                        var price = prices.First(p => p.Quantity == (i) && p.PersonType == (int)PersonTypeEnum.Adult);
+>>>>>>> Prod_Mex
 
                         foreach (var price in adultPrices)
                         {
@@ -862,6 +927,7 @@ namespace APIServices.Conflux.Helpers.Rates
                     break;
                 case false:
 
+<<<<<<< HEAD
                     // Iteramos sobre los precios Adult que realmente existen (limitados al techo maxAdults)
                     // en lugar de iterar 1..maxAdults y reportar como "faltante" cada cupo no vendido.
                     {
@@ -874,6 +940,11 @@ namespace APIServices.Conflux.Helpers.Rates
                             .Select(g => g.First())
                             .OrderBy(p => p.Quantity)
                             .ToList();
+=======
+                    for (var i = minAdults; i <= maxAdults; i++)
+                    {
+                        var price = prices.First(p => p.Quantity == (i) && p.PersonType == (int)PersonTypeEnum.Adult);
+>>>>>>> Prod_Mex
 
                         foreach (var price in adultPrices)
                         {
@@ -971,7 +1042,7 @@ namespace APIServices.Conflux.Helpers.Rates
         {
             List<BaseGuestAmount> updatedPrices = null;
 
-            updatedPrices = BaseGuestAmountApplyingTaxes(prices, currentRate);
+            updatedPrices = BaseGuestAmountApplyingTaxes(prices, currentRate,vDayRate);
 
             if (vDayRate.Discount > 0 && vDayRate.DayDiscount > 0)
             {
@@ -1063,10 +1134,12 @@ namespace APIServices.Conflux.Helpers.Rates
 
         }
 
-        public static List<BaseGuestAmount> BaseGuestAmountApplyingTaxes(List<spGetPricesByRatePromotion_Result> prices, spGetCurrentRatesByHotel_Result4 currentRate)
+        public static List<BaseGuestAmount> BaseGuestAmountApplyingTaxes(List<spGetPricesByRatePromotion_Result> prices, spGetCurrentRatesByHotel_Result4 currentRate,vDayRatesExceptions vDayRate)
         {
-            int maxAdults = Convert.ToInt32(currentRate.MaxAdults);
-            int maxChildren = Convert.ToInt32(currentRate.MaxChildren);
+
+            int minAdults = (vDayRate.RateMinAdults != null) ? Convert.ToInt32(vDayRate.RateMinAdults) : Convert.ToInt32(currentRate.MinAdults);
+            int maxAdults = (vDayRate.RateMaxAdults != null) ? Convert.ToInt32(vDayRate.RateMaxAdults) : Convert.ToInt32(currentRate.MaxAdults);
+            int maxChildren = (vDayRate.RateMaxChildren != null) ? Convert.ToInt32(vDayRate.RateMaxChildren) : Convert.ToInt32(currentRate.MaxChildren);
 
             List<BaseGuestAmount> baseGuestAmounts = new List<BaseGuestAmount>();
 
@@ -1075,6 +1148,7 @@ namespace APIServices.Conflux.Helpers.Rates
                 case true:
 
                     //Adultos
+<<<<<<< HEAD
                     // Iteramos sobre los precios Adult que realmente existen (limitados al techo maxAdults)
                     // en lugar de iterar 1..maxAdults y reportar como "faltante" cada cupo no vendido.
                     {
@@ -1087,6 +1161,12 @@ namespace APIServices.Conflux.Helpers.Rates
                             .Select(g => g.First())
                             .OrderBy(p => p.Quantity)
                             .ToList();
+=======
+
+                    for (var i = minAdults; i <= maxAdults; i++)
+                    {
+                        var price = prices.First(p => p.Quantity == (i) && p.PersonType == (int)PersonTypeEnum.Adult);
+>>>>>>> Prod_Mex
 
                         foreach (var price in adultPrices)
                         {
@@ -1151,6 +1231,7 @@ namespace APIServices.Conflux.Helpers.Rates
                 case false:
 
                     //Adultos
+<<<<<<< HEAD
                     // Iteramos sobre los precios Adult que realmente existen (limitados al techo maxAdults)
                     // en lugar de iterar 1..maxAdults y reportar como "faltante" cada cupo no vendido.
                     {
@@ -1163,6 +1244,12 @@ namespace APIServices.Conflux.Helpers.Rates
                             .Select(g => g.First())
                             .OrderBy(p => p.Quantity)
                             .ToList();
+=======
+
+                    for (var i = minAdults; i <= maxAdults; i++)
+                    {
+                        var price = prices.First(p => p.Quantity == (i) && p.PersonType == (int)PersonTypeEnum.Adult);
+>>>>>>> Prod_Mex
 
                         foreach (var price in adultPrices)
                         {
@@ -1231,7 +1318,7 @@ namespace APIServices.Conflux.Helpers.Rates
         {
             List<BaseGuestAmount> updatedPrices = null;
 
-            updatedPrices = BaseGuestAmountApplyingTaxes(prices, currentRate);
+            updatedPrices = BaseGuestAmountApplyingTaxes(prices, currentRate,vDayRate);
 
             if (vDayRate.Discount > 0 && vDayRate.DayDiscount > 0)
             {
@@ -1323,10 +1410,12 @@ namespace APIServices.Conflux.Helpers.Rates
 
         }
 
-        public static List<BaseGuestAmount> BaseGuestAmountApplyingTaxes(List<spGetPricesByRatePromotionException_Result> prices, spGetCurrentRatesByHotel_Result4 currentRate)
+        public static List<BaseGuestAmount> BaseGuestAmountApplyingTaxes(List<spGetPricesByRatePromotionException_Result> prices, spGetCurrentRatesByHotel_Result4 currentRate,vDayRatesExceptions vDayRate)
         {
-            int maxAdults = Convert.ToInt32(currentRate.MaxAdults);
-            int maxChildren = Convert.ToInt32(currentRate.MaxChildren);
+
+            int minAdults = (vDayRate.RateMinAdults != null) ? Convert.ToInt32(vDayRate.RateMinAdults) : Convert.ToInt32(currentRate.MinAdults);
+            int maxAdults = (vDayRate.RateMaxAdults != null) ? Convert.ToInt32(vDayRate.RateMaxAdults) : Convert.ToInt32(currentRate.MaxAdults);
+            int maxChildren = (vDayRate.RateMaxChildren != null) ? Convert.ToInt32(vDayRate.RateMaxChildren) : Convert.ToInt32(currentRate.MaxChildren);
 
             List<BaseGuestAmount> baseGuestAmounts = new List<BaseGuestAmount>();
 
@@ -1335,6 +1424,7 @@ namespace APIServices.Conflux.Helpers.Rates
                 case true:
 
                     //Adultos
+<<<<<<< HEAD
                     // Iteramos sobre los precios Adult que realmente existen (limitados al techo maxAdults)
                     // en lugar de iterar 1..maxAdults y reportar como "faltante" cada cupo no vendido.
                     {
@@ -1347,6 +1437,12 @@ namespace APIServices.Conflux.Helpers.Rates
                             .Select(g => g.First())
                             .OrderBy(p => p.Quantity)
                             .ToList();
+=======
+
+                    for (var i = minAdults; i <= maxAdults; i++)
+                    {
+                        var price = prices.First(p => p.Quantity == (i) && p.PersonType == (int)PersonTypeEnum.Adult);
+>>>>>>> Prod_Mex
 
                         foreach (var price in adultPrices)
                         {
@@ -1409,6 +1505,7 @@ namespace APIServices.Conflux.Helpers.Rates
                 case false:
 
                     //Adults
+<<<<<<< HEAD
                     // Iteramos sobre los precios Adult que realmente existen (limitados al techo maxAdults)
                     // en lugar de iterar 1..maxAdults y reportar como "faltante" cada cupo no vendido.
                     {
@@ -1421,6 +1518,11 @@ namespace APIServices.Conflux.Helpers.Rates
                             .Select(g => g.First())
                             .OrderBy(p => p.Quantity)
                             .ToList();
+=======
+                    for (var i = minAdults; i <= maxAdults; i++)
+                    {
+                        var price = prices.First(p => p.Quantity == (i) && p.PersonType == (int)PersonTypeEnum.Adult);
+>>>>>>> Prod_Mex
 
                         foreach (var price in adultPrices)
                         {

@@ -460,7 +460,7 @@ Namespace API.Controllers
 
         Private Sub ExecuteServices(ByVal isEnabledGoogleRequest As Boolean, ByVal isEnabledSendingRatesAPICache As Boolean, ByVal hotelId As Integer, ByVal rate As Tarifas, ByVal info As companyInfo)
 
-            Dim ratesForRequest As RatesMessages = HotelUtilitie.ConfluxServiceHelper.GetRateMessages(rate.idTarifa, rate.FechaInicia, rate.FechaFinaliza, hotelId, info.Empresa, TypeRateEnum.RoomRate)
+            Dim ratesForRequest As RatesMessages = HotelUtilitie.ConfluxServiceHelper.GetRateMessages(rate.idTarifa, rate.FechaInicia, rate.FechaFinaliza, hotelId, info.Empresa, TypeRateEnum.RoomRate, False)
 
             If isEnabledGoogleRequest Then
                 Try
@@ -516,11 +516,11 @@ Namespace API.Controllers
                              For Each rate As Tarifas In ratesIEnumerable
 
                                  confluxService.ConfluxSendRatesToGoogle = True
-                                 Dim ratesForRequest As RatesMessages = confluxService.GetRateMessages(rate.idTarifa, rate.FechaInicia, rate.FechaFinaliza, hotelId, companyId, TypeRateEnum.RoomRate)
+                                 Dim ratesForRequest As RatesMessages = confluxService.GetRateMessages(rate.idTarifa, rate.FechaInicia, rate.FechaFinaliza, hotelId, companyId, TypeRateEnum.RoomRate, False)
 
 
                                  confluxService.ConfluxSendRatesToGoogle = False
-                                 Dim ratesForRequestAPICache As RatesMessages = confluxService.GetRateMessages(rate.idTarifa, rate.FechaInicia, rate.FechaFinaliza, hotelId, companyId, TypeRateEnum.RoomRate)
+                                 Dim ratesForRequestAPICache As RatesMessages = confluxService.GetRateMessages(rate.idTarifa, rate.FechaInicia, rate.FechaFinaliza, hotelId, companyId, TypeRateEnum.RoomRate, False)
 
 
                                  ' Enviar tarifas a Conflux
@@ -596,7 +596,8 @@ Namespace API.Controllers
                                              ByVal endpoint As String, ByVal service As String, ByVal hotelId As Integer, ByVal companyId As Integer) As Task
 
             Dim requests As List(Of XDocument) = New List(Of XDocument)
-            Dim vDayRatesForClosure As List(Of vDayRates) = Conflux.Helpers.Rates.RatesHelpers.GetVDayRate(rateId, startDate, endDate)
+
+            Dim vDayRatesForClosure As List(Of vDayRates) = Conflux.Helpers.Rates.RatesHelpers.GetVDayRate(rateId, startDate, endDate, False)
 
             If service = "APICache" Then
                 RestrictionsParser.Init(hotelId)
