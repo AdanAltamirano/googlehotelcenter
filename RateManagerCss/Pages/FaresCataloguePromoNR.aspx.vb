@@ -1053,7 +1053,7 @@ Partial Public Class FaresCataloguePromoNR
 
     Private Async Function SendDeleteIfEnabledAsync(ByVal userName As String, ByVal userId As Integer, ByVal hotelId As Integer, ByVal rateAmountMessages As RateAmountMessages, ByVal isEnabled As Boolean, ByVal endpoint As String, ByVal service As String) As Task
 
-        If isEnabled Then
+        If isEnabled AndAlso rateAmountMessages.RateAmountMessagesList IsNot Nothing AndAlso rateAmountMessages.RateAmountMessagesList.Count > 0 Then
             Try
                 Await SendDeleteToServiceAsync(userName, userId, rateAmountMessages, hotelId, endpoint, service)
             Catch ex As Exception

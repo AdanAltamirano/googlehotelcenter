@@ -26,12 +26,14 @@ namespace APIServices.Xml.OTA.Request.Rates
             if (errorsElement != null)
             {
                 // Un <Errors><Error /></Errors> con el nodo Error completamente vacío
-                // (sin atributos ni texto) es un false-positive de Conflux — lo ignoramos.
+                // (sin atributos ni texto) es un false-positive de Conflux — lo tratamos como éxito.
                 bool hasRealErrors = errorsElement.Elements(ns + "Error")
                     .Any(e => e.HasAttributes || !string.IsNullOrWhiteSpace(e.Value));
 
                 if (hasRealErrors)
                     isSuccessRequest = false;
+                else
+                    isSuccessRequest = true; // false-positive de Conflux: <Error /> vacío = OK
             }
 
             return isSuccessRequest;

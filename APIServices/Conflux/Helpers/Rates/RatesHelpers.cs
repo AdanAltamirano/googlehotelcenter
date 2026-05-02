@@ -584,7 +584,6 @@ namespace APIServices.Conflux.Helpers.Rates
                 case true:
 
                     //Adultos
-<<<<<<< HEAD
                     // Iteramos sobre los precios Adult que realmente existen (limitados al techo maxAdults)
                     // en lugar de iterar 1..maxAdults y reportar como "faltante" cada cupo no vendido.
                     {
@@ -597,12 +596,6 @@ namespace APIServices.Conflux.Helpers.Rates
                             .Select(g => g.First())
                             .OrderBy(p => p.Quantity)
                             .ToList();
-=======
-
-                    for (var i = minAdults; i <= maxAdults; i++)
-                    {
-                        var price = prices.First(p => p.Quantity == (i) && p.PersonType == (int)PersonTypeEnum.Adult);
->>>>>>> Prod_Mex
 
                         foreach (var price in adultPrices)
                         {
@@ -693,7 +686,6 @@ namespace APIServices.Conflux.Helpers.Rates
                 case false:
 
                     //Adultos
-<<<<<<< HEAD
                     // Iteramos sobre los precios Adult que realmente existen (limitados al techo maxAdults)
                     // en lugar de iterar 1..maxAdults y reportar como "faltante" cada cupo no vendido.
                     {
@@ -706,12 +698,6 @@ namespace APIServices.Conflux.Helpers.Rates
                             .Select(g => g.First())
                             .OrderBy(p => p.Quantity)
                             .ToList();
-=======
-
-                    for (var i = minAdults; i <= maxAdults; i++)
-                    {
-                        var price = prices.First(p => p.Quantity == (i) && p.PersonType == (int)PersonTypeEnum.Adult);
->>>>>>> Prod_Mex
 
                         foreach (var price in adultPrices)
                         {
@@ -817,7 +803,6 @@ namespace APIServices.Conflux.Helpers.Rates
                 case true:
 
                     //Adultos
-<<<<<<< HEAD
                     // Iteramos sobre los precios Adult que realmente existen (limitados al techo maxAdults)
                     // en lugar de iterar 1..maxAdults y reportar como "faltante" cada cupo no vendido.
                     {
@@ -830,12 +815,6 @@ namespace APIServices.Conflux.Helpers.Rates
                             .Select(g => g.First())
                             .OrderBy(p => p.Quantity)
                             .ToList();
-=======
-
-                    for (var i = minAdults; i <= maxAdults; i++)
-                    {
-                        var price = prices.First(p => p.Quantity == (i) && p.PersonType == (int)PersonTypeEnum.Adult);
->>>>>>> Prod_Mex
 
                         foreach (var price in adultPrices)
                         {
@@ -927,7 +906,6 @@ namespace APIServices.Conflux.Helpers.Rates
                     break;
                 case false:
 
-<<<<<<< HEAD
                     // Iteramos sobre los precios Adult que realmente existen (limitados al techo maxAdults)
                     // en lugar de iterar 1..maxAdults y reportar como "faltante" cada cupo no vendido.
                     {
@@ -940,11 +918,6 @@ namespace APIServices.Conflux.Helpers.Rates
                             .Select(g => g.First())
                             .OrderBy(p => p.Quantity)
                             .ToList();
-=======
-                    for (var i = minAdults; i <= maxAdults; i++)
-                    {
-                        var price = prices.First(p => p.Quantity == (i) && p.PersonType == (int)PersonTypeEnum.Adult);
->>>>>>> Prod_Mex
 
                         foreach (var price in adultPrices)
                         {
@@ -1148,7 +1121,6 @@ namespace APIServices.Conflux.Helpers.Rates
                 case true:
 
                     //Adultos
-<<<<<<< HEAD
                     // Iteramos sobre los precios Adult que realmente existen (limitados al techo maxAdults)
                     // en lugar de iterar 1..maxAdults y reportar como "faltante" cada cupo no vendido.
                     {
@@ -1161,12 +1133,6 @@ namespace APIServices.Conflux.Helpers.Rates
                             .Select(g => g.First())
                             .OrderBy(p => p.Quantity)
                             .ToList();
-=======
-
-                    for (var i = minAdults; i <= maxAdults; i++)
-                    {
-                        var price = prices.First(p => p.Quantity == (i) && p.PersonType == (int)PersonTypeEnum.Adult);
->>>>>>> Prod_Mex
 
                         foreach (var price in adultPrices)
                         {
@@ -1231,7 +1197,6 @@ namespace APIServices.Conflux.Helpers.Rates
                 case false:
 
                     //Adultos
-<<<<<<< HEAD
                     // Iteramos sobre los precios Adult que realmente existen (limitados al techo maxAdults)
                     // en lugar de iterar 1..maxAdults y reportar como "faltante" cada cupo no vendido.
                     {
@@ -1244,12 +1209,6 @@ namespace APIServices.Conflux.Helpers.Rates
                             .Select(g => g.First())
                             .OrderBy(p => p.Quantity)
                             .ToList();
-=======
-
-                    for (var i = minAdults; i <= maxAdults; i++)
-                    {
-                        var price = prices.First(p => p.Quantity == (i) && p.PersonType == (int)PersonTypeEnum.Adult);
->>>>>>> Prod_Mex
 
                         foreach (var price in adultPrices)
                         {
@@ -1424,7 +1383,6 @@ namespace APIServices.Conflux.Helpers.Rates
                 case true:
 
                     //Adultos
-<<<<<<< HEAD
                     // Iteramos sobre los precios Adult que realmente existen (limitados al techo maxAdults)
                     // en lugar de iterar 1..maxAdults y reportar como "faltante" cada cupo no vendido.
                     {
@@ -1437,12 +1395,6 @@ namespace APIServices.Conflux.Helpers.Rates
                             .Select(g => g.First())
                             .OrderBy(p => p.Quantity)
                             .ToList();
-=======
-
-                    for (var i = minAdults; i <= maxAdults; i++)
-                    {
-                        var price = prices.First(p => p.Quantity == (i) && p.PersonType == (int)PersonTypeEnum.Adult);
->>>>>>> Prod_Mex
 
                         foreach (var price in adultPrices)
                         {
@@ -1505,7 +1457,6 @@ namespace APIServices.Conflux.Helpers.Rates
                 case false:
 
                     //Adults
-<<<<<<< HEAD
                     // Iteramos sobre los precios Adult que realmente existen (limitados al techo maxAdults)
                     // en lugar de iterar 1..maxAdults y reportar como "faltante" cada cupo no vendido.
                     {
@@ -1518,11 +1469,6 @@ namespace APIServices.Conflux.Helpers.Rates
                             .Select(g => g.First())
                             .OrderBy(p => p.Quantity)
                             .ToList();
-=======
-                    for (var i = minAdults; i <= maxAdults; i++)
-                    {
-                        var price = prices.First(p => p.Quantity == (i) && p.PersonType == (int)PersonTypeEnum.Adult);
->>>>>>> Prod_Mex
 
                         foreach (var price in adultPrices)
                         {
