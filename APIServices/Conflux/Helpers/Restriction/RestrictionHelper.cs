@@ -340,6 +340,8 @@ namespace APIServices.Conflux.Helpers.Restriction
                            RateId = baseRow.RateId,
                            RoomId = baseRow.RoomId,
                            RoomCode = baseRow.RoomCode,
+                           StartDate = baseRow.StarDate,
+                           EndDate = baseRow.EndDate,
 
                            RestrictionsHotel = new HotelRestrictionsDto
                            {
@@ -406,6 +408,8 @@ namespace APIServices.Conflux.Helpers.Restriction
                         RateId = baseRow.RateId,
                         RoomId = baseRow.RoomId,
                         RoomCode = baseRow.RoomCode,
+                        StartDate = baseRow.StartDate,
+                        EndDate = baseRow.EndDate,
 
                         RestrictionsHotel = new HotelRestrictionsDto
                         {
@@ -494,7 +498,9 @@ namespace APIServices.Conflux.Helpers.Restriction
                                 PromotionMinDays = promotion.MinDays,
                                 PromotionMaxDays = promotion.MaxDays,
                                 PromotionMinAdvDays = promotion.MinAdvDays,
-                                PromotionMaxAdvDays = promotion.MaxAdvDays
+                                PromotionMaxAdvDays = promotion.MaxAdvDays,
+                                StartDate = promotion.PromoStartDateTravelWindow.Value,
+                                EndDate = promotion.PromoEndDateTravelWindow.Value
                             };
 
                             restriction.Promotions.Add(promotionTemp);
@@ -534,7 +540,9 @@ namespace APIServices.Conflux.Helpers.Restriction
                                 PromotionMinDays = promotion.MinDays,
                                 PromotionMaxDays = promotion.MaxDays,
                                 PromotionMinAdvDays = promotion.MinAdvDays,
-                                PromotionMaxAdvDays = promotion.MaxAdvDays
+                                PromotionMaxAdvDays = promotion.MaxAdvDays,
+                                StartDate = promotion.PromoStartDateTravelWindow.Value,
+                                EndDate = promotion.PromoEndDateTravelWindow.Value
                             };
 
                             restriction.Promotions.Add(promotionTemp);

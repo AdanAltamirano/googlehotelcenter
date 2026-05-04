@@ -14,6 +14,8 @@ namespace APIServices.Conflux
     public partial class spGetRestrictionsByHotel_Result
     {
         public int RateId { get; set; }
+        public System.DateTime StarDate { get; set; }
+        public System.DateTime EndDate { get; set; }
         public int RoomId { get; set; }
         public string RoomCode { get; set; }
         public string RateCode { get; set; }

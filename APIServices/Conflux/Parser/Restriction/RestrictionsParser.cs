@@ -347,8 +347,6 @@ namespace APIServices.Conflux.Parser.Restriction
 
         public static AvailStatusMessages ToAvailStatusMessagesOccupation(List<RateRestrictionDto> listRestrictionDto,DateTime? startDate, DateTime? endDate)
         {
-            DateTime startDateTemp = (startDate.Value.Date < DateTime.Now.Date) ? DateTime.Now.Date : startDate.Value.Date;
-
             AvailStatusMessages availStatusMessages = new AvailStatusMessages()
             {
                 HotelCode = HotelCode,
@@ -366,7 +364,9 @@ namespace APIServices.Conflux.Parser.Restriction
                 {
                     RateCode = restriction.RatePlan.RatePlanId,
                     MinDays = restriction.RatePlan.RestrictionsRatePlan.RatePlanMinDays,
-                    MaxDays = restriction.RatePlan.RestrictionsRatePlan.RatePlanMaxDays
+                    MaxDays = restriction.RatePlan.RestrictionsRatePlan.RatePlanMaxDays,
+                    StartDate = restriction.StartDate,
+                    EndDate = restriction.EndDate
 
                 });
 
@@ -377,7 +377,9 @@ namespace APIServices.Conflux.Parser.Restriction
                         {
                             RateCode = x.RateCode,
                             MinDays = x.MinDays,
-                            MaxDays = x.MaxDays
+                            MaxDays = x.MaxDays,
+                            StartDate = restriction.StartDate,
+                            EndDate = restriction.EndDate
                         })
                     );
                 }
@@ -389,8 +391,8 @@ namespace APIServices.Conflux.Parser.Restriction
                         AvailStatusMessage availStatusMessage = new AvailStatusMessage();
                         availStatusMessage.StatusApplicationControl = new StatusApplicationControl()
                         {
-                            Start = startDateTemp,
-                            End = endDate.Value.Date,
+                            Start = (rateplan.StartDate.Date < DateTime.Now.Date) ? DateTime.Now.Date : rateplan.StartDate.Date,
+                            End = (rateplan.EndDate.Date < DateTime.Now.Date)? DateTime.Now.Date   : rateplan.EndDate.Date,
                             InvTypeCode = room ?? "",
                             RatePlanCode = rateplan.RateCode,
                             //Se inicializa en false para que no mande dias en restricciones
@@ -423,8 +425,8 @@ namespace APIServices.Conflux.Parser.Restriction
                     AvailStatusMessage availStatusMessage = new AvailStatusMessage();
                     availStatusMessage.StatusApplicationControl = new StatusApplicationControl()
                     {
-                        Start = startDateTemp,
-                        End = endDate.Value.Date,
+                        Start = (promotion.StartDate.Date < DateTime.Now.Date)? DateTime.Now.Date : promotion.StartDate.Date,
+                        End = promotion.EndDate.Date,
                         InvTypeCode = promotion.RoomCode ?? "",
                         RatePlanCode = promotion.RatePlanId,
                         ApplyMon = false,
@@ -457,8 +459,6 @@ namespace APIServices.Conflux.Parser.Restriction
 
         public static AvailStatusMessages ToAvailStatusMessagesAdvancedDays(List<RateRestrictionDto> listRestrictionDto, DateTime? startDate, DateTime? endDate)
         {
-            DateTime startDateTemp = (startDate.Value.Date < DateTime.Now.Date) ? DateTime.Now.Date : startDate.Value.Date;
-
             AvailStatusMessages availStatusMessages = new AvailStatusMessages()
             {
                 HotelCode = HotelCode,
@@ -476,7 +476,9 @@ namespace APIServices.Conflux.Parser.Restriction
                 {
                     RateCode = restriction.RatePlan.RatePlanId,
                     MinAdvDays = restriction.RatePlan.RestrictionsRatePlan.RatePlanMinAdvDays,
-                    MaxAdvDays = restriction.RatePlan.RestrictionsRatePlan.RatePlanMaxAdvDays
+                    MaxAdvDays = restriction.RatePlan.RestrictionsRatePlan.RatePlanMaxAdvDays,
+                    StartDate = restriction.StartDate,
+                    EndDate = restriction.EndDate
 
                 });
 
@@ -487,7 +489,9 @@ namespace APIServices.Conflux.Parser.Restriction
                         {
                             RateCode = x.RateCode,
                             MinAdvDays = x.MinAdvDays,
-                            MaxAdvDays = x.MaxAdvDays
+                            MaxAdvDays = x.MaxAdvDays,
+                            StartDate = restriction.StartDate,
+                            EndDate = restriction.EndDate
                         })
                     );
                 }
@@ -500,8 +504,8 @@ namespace APIServices.Conflux.Parser.Restriction
                         AvailStatusMessage availStatusMessage = new AvailStatusMessage();
                         availStatusMessage.StatusApplicationControl = new StatusApplicationControl()
                         {
-                            Start = startDateTemp,
-                            End = endDate.Value.Date,
+                            Start = (rateplan.StartDate.Date < DateTime.Now.Date) ? DateTime.Now.Date : rateplan.StartDate.Date,
+                            End = (rateplan.EndDate.Date < DateTime.Now.Date)? DateTime.Now.Date : rateplan.EndDate.Date,
                             InvTypeCode = room ?? "",
                             RatePlanCode = rateplan.RateCode,
                             //Se inicializa en false para que no mande dias en restricciones
@@ -533,8 +537,8 @@ namespace APIServices.Conflux.Parser.Restriction
                     AvailStatusMessage availStatusMessage = new AvailStatusMessage();
                     availStatusMessage.StatusApplicationControl = new StatusApplicationControl()
                     {
-                        Start = startDateTemp,
-                        End = endDate.Value.Date,
+                        Start = (promotion.StartDate.Date < DateTime.Now.Date)? DateTime.Now.Date : promotion.StartDate.Date,
+                        End = promotion.EndDate,
                         InvTypeCode = promotion.RoomCode ?? "",
                         RatePlanCode = promotion.RatePlanId,
                         ApplyMon = false,

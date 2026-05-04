@@ -321,6 +321,7 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRatesPromotionsExceptions' no
         </EntityType>
         <EntityContainer Name="ConfluxEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="vRatesPromotions" EntityType="Self.vRatesPromotion" />
+          <EntitySet Name="vRatesPromotionsExceptions" EntityType="ConfluxModel.vRatesPromotionsException" />
           <FunctionImport Name="spGetRestrictionsByHotel" ReturnType="Collection(ConfluxModel.spGetRestrictionsByHotel_Result)">
             <Parameter Name="idHotel" Mode="In" Type="Int32" />
             <Parameter Name="startDate" Mode="In" Type="DateTime" />
@@ -328,7 +329,6 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRatesPromotionsExceptions' no
             <Parameter Name="roomId" Mode="In" Type="Int32" />
             <Parameter Name="rateplanId" Mode="In" Type="String" />
           </FunctionImport>
-          <EntitySet Name="vRatesPromotionsExceptions" EntityType="ConfluxModel.vRatesPromotionsException" />
           <FunctionImport Name="spGetRestrictionsExceptionsByHotel" ReturnType="Collection(ConfluxModel.spGetRestrictionsExceptionsByHotel_Result)">
             <Parameter Name="idHotel" Mode="In" Type="Int32" />
             <Parameter Name="startDate" Mode="In" Type="DateTime" />
@@ -337,34 +337,6 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRatesPromotionsExceptions' no
             <Parameter Name="rateplanId" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
-        <ComplexType Name="spGetRestrictionsByHotel_Result">
-          <Property Type="Int32" Name="RateId" Nullable="false" />
-          <Property Type="Int32" Name="RoomId" Nullable="false" />
-          <Property Type="String" Name="RoomCode" Nullable="true" MaxLength="4" />
-          <Property Type="String" Name="RateCode" Nullable="true" MaxLength="8" />
-          <Property Type="String" Name="RatePlanId" Nullable="true" MaxLength="4" />
-          <Property Type="Byte" Name="MinDays" Nullable="false" />
-          <Property Type="Byte" Name="MaxDays" Nullable="false" />
-          <Property Type="Byte" Name="MinAdvDays" Nullable="false" />
-          <Property Type="Int32" Name="MaxAdvDays" Nullable="false" />
-          <Property Type="Byte" Name="RatePlanMinDays" Nullable="false" />
-          <Property Type="Byte" Name="RatePlanMaxDays" Nullable="false" />
-          <Property Type="Byte" Name="RatePlanMinAdvDays" Nullable="false" />
-          <Property Type="Int32" Name="RatePlanMaxAdvDays" Nullable="false" />
-          <Property Type="Int16" Name="HotelMinDays" Nullable="false" />
-          <Property Type="Byte" Name="HotelMaxDays" Nullable="false" />
-          <Property Type="Int32" Name="HotelMinAdvDays" Nullable="false" />
-          <Property Type="Int32" Name="HotelMaxAdvDays" Nullable="false" />
-          <Property Type="Byte" Name="RatePlanLinkedMinDays" Nullable="false" />
-          <Property Type="Byte" Name="RatePlanLinkedMaxDays" Nullable="false" />
-          <Property Type="Byte" Name="RatePlanLinkedMinAdvDays" Nullable="false" />
-          <Property Type="Int32" Name="RatePlanLinkedMaxAdvDays" Nullable="false" />
-          <Property Type="Int32" Name="HasRoomLinked" Nullable="false" />
-          <Property Type="String" Name="RoomIdsLinked" Nullable="true" />
-          <Property Type="String" Name="RoomsLinked" Nullable="true" />
-          <Property Type="Int32" Name="HasRatePlanLinked" Nullable="false" />
-          <Property Type="String" Name="RateCodeLinked" Nullable="true" MaxLength="50" />
-        </ComplexType>
         <EntityType Name="vRatesPromotionsException">
           <Key>
             <PropertyRef Name="HotelId" />
@@ -427,8 +399,40 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRatesPromotionsExceptions' no
           <Property Name="MinAdvDays" Type="Byte" Nullable="false" />
           <Property Name="MaxAdvDays" Type="Int32" Nullable="false" />
         </EntityType>
+        <ComplexType Name="spGetRestrictionsByHotel_Result">
+          <Property Type="Int32" Name="RateId" Nullable="false" />
+          <Property Type="DateTime" Name="StarDate" Nullable="false" Precision="16" />
+          <Property Type="DateTime" Name="EndDate" Nullable="false" Precision="16" />
+          <Property Type="Int32" Name="RoomId" Nullable="false" />
+          <Property Type="String" Name="RoomCode" Nullable="true" MaxLength="4" />
+          <Property Type="String" Name="RateCode" Nullable="true" MaxLength="8" />
+          <Property Type="String" Name="RatePlanId" Nullable="true" MaxLength="4" />
+          <Property Type="Byte" Name="MinDays" Nullable="false" />
+          <Property Type="Byte" Name="MaxDays" Nullable="false" />
+          <Property Type="Byte" Name="MinAdvDays" Nullable="false" />
+          <Property Type="Int32" Name="MaxAdvDays" Nullable="false" />
+          <Property Type="Byte" Name="RatePlanMinDays" Nullable="false" />
+          <Property Type="Byte" Name="RatePlanMaxDays" Nullable="false" />
+          <Property Type="Byte" Name="RatePlanMinAdvDays" Nullable="false" />
+          <Property Type="Int32" Name="RatePlanMaxAdvDays" Nullable="false" />
+          <Property Type="Int16" Name="HotelMinDays" Nullable="false" />
+          <Property Type="Byte" Name="HotelMaxDays" Nullable="false" />
+          <Property Type="Int32" Name="HotelMinAdvDays" Nullable="false" />
+          <Property Type="Int32" Name="HotelMaxAdvDays" Nullable="false" />
+          <Property Type="Byte" Name="RatePlanLinkedMinDays" Nullable="false" />
+          <Property Type="Byte" Name="RatePlanLinkedMaxDays" Nullable="false" />
+          <Property Type="Byte" Name="RatePlanLinkedMinAdvDays" Nullable="false" />
+          <Property Type="Int32" Name="RatePlanLinkedMaxAdvDays" Nullable="false" />
+          <Property Type="Int32" Name="HasRoomLinked" Nullable="false" />
+          <Property Type="String" Name="RoomIdsLinked" Nullable="true" />
+          <Property Type="String" Name="RoomsLinked" Nullable="true" />
+          <Property Type="Int32" Name="HasRatePlanLinked" Nullable="false" />
+          <Property Type="String" Name="RateCodeLinked" Nullable="true" MaxLength="50" />
+        </ComplexType>
         <ComplexType Name="spGetRestrictionsExceptionsByHotel_Result">
           <Property Type="Int32" Name="RateId" Nullable="false" />
+          <Property Type="DateTime" Name="StartDate" Nullable="false" Precision="16" />
+          <Property Type="DateTime" Name="EndDate" Nullable="false" Precision="16" />
           <Property Type="Int32" Name="RoomId" Nullable="false" />
           <Property Type="String" Name="RoomCode" Nullable="true" MaxLength="4" />
           <Property Type="String" Name="RateCode" Nullable="false" MaxLength="8" />
@@ -508,38 +512,6 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRatesPromotionsExceptions' no
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="spGetRestrictionsByHotel" FunctionName="ConfluxModel.Store.spGetRestrictionsByHotel">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="ConfluxModel.spGetRestrictionsByHotel_Result">
-                <ScalarProperty Name="RateId" ColumnName="RateId" />
-                <ScalarProperty Name="RoomId" ColumnName="RoomId" />
-                <ScalarProperty Name="RoomCode" ColumnName="RoomCode" />
-                <ScalarProperty Name="RateCode" ColumnName="RateCode" />
-                <ScalarProperty Name="RatePlanId" ColumnName="RatePlanId" />
-                <ScalarProperty Name="MinDays" ColumnName="MinDays" />
-                <ScalarProperty Name="MaxDays" ColumnName="MaxDays" />
-                <ScalarProperty Name="MinAdvDays" ColumnName="MinAdvDays" />
-                <ScalarProperty Name="MaxAdvDays" ColumnName="MaxAdvDays" />
-                <ScalarProperty Name="RatePlanMinDays" ColumnName="RatePlanMinDays" />
-                <ScalarProperty Name="RatePlanMaxDays" ColumnName="RatePlanMaxDays" />
-                <ScalarProperty Name="RatePlanMinAdvDays" ColumnName="RatePlanMinAdvDays" />
-                <ScalarProperty Name="RatePlanMaxAdvDays" ColumnName="RatePlanMaxAdvDays" />
-                <ScalarProperty Name="HotelMinDays" ColumnName="HotelMinDays" />
-                <ScalarProperty Name="HotelMaxDays" ColumnName="HotelMaxDays" />
-                <ScalarProperty Name="HotelMinAdvDays" ColumnName="HotelMinAdvDays" />
-                <ScalarProperty Name="HotelMaxAdvDays" ColumnName="HotelMaxAdvDays" />
-                <ScalarProperty Name="RatePlanLinkedMinDays" ColumnName="RatePlanLinkedMinDays" />
-                <ScalarProperty Name="RatePlanLinkedMaxDays" ColumnName="RatePlanLinkedMaxDays" />
-                <ScalarProperty Name="RatePlanLinkedMinAdvDays" ColumnName="RatePlanLinkedMinAdvDays" />
-                <ScalarProperty Name="RatePlanLinkedMaxAdvDays" ColumnName="RatePlanLinkedMaxAdvDays" />
-                <ScalarProperty Name="HasRoomLinked" ColumnName="HasRoomLinked" />
-                <ScalarProperty Name="RoomIdsLinked" ColumnName="RoomIdsLinked" />
-                <ScalarProperty Name="RoomsLinked" ColumnName="RoomsLinked" />
-                <ScalarProperty Name="HasRatePlanLinked" ColumnName="HasRatePlanLinked" />
-                <ScalarProperty Name="RateCodeLinked" ColumnName="RateCodeLinked" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <EntitySetMapping Name="vRatesPromotionsExceptions">
             <EntityTypeMapping TypeName="ConfluxModel.vRatesPromotionsException">
               <MappingFragment StoreEntitySet="vRatesPromotionsExceptions">
@@ -587,10 +559,46 @@ advertencia 6002: La tabla o vista 'OzHoteles.dbo.vRatesPromotionsExceptions' no
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spGetRestrictionsByHotel" FunctionName="ConfluxModel.Store.spGetRestrictionsByHotel">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ConfluxModel.spGetRestrictionsByHotel_Result">
+                <ScalarProperty Name="RateId" ColumnName="RateId" />
+                <ScalarProperty Name="StarDate" ColumnName="StarDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="RoomId" ColumnName="RoomId" />
+                <ScalarProperty Name="RoomCode" ColumnName="RoomCode" />
+                <ScalarProperty Name="RateCode" ColumnName="RateCode" />
+                <ScalarProperty Name="RatePlanId" ColumnName="RatePlanId" />
+                <ScalarProperty Name="MinDays" ColumnName="MinDays" />
+                <ScalarProperty Name="MaxDays" ColumnName="MaxDays" />
+                <ScalarProperty Name="MinAdvDays" ColumnName="MinAdvDays" />
+                <ScalarProperty Name="MaxAdvDays" ColumnName="MaxAdvDays" />
+                <ScalarProperty Name="RatePlanMinDays" ColumnName="RatePlanMinDays" />
+                <ScalarProperty Name="RatePlanMaxDays" ColumnName="RatePlanMaxDays" />
+                <ScalarProperty Name="RatePlanMinAdvDays" ColumnName="RatePlanMinAdvDays" />
+                <ScalarProperty Name="RatePlanMaxAdvDays" ColumnName="RatePlanMaxAdvDays" />
+                <ScalarProperty Name="HotelMinDays" ColumnName="HotelMinDays" />
+                <ScalarProperty Name="HotelMaxDays" ColumnName="HotelMaxDays" />
+                <ScalarProperty Name="HotelMinAdvDays" ColumnName="HotelMinAdvDays" />
+                <ScalarProperty Name="HotelMaxAdvDays" ColumnName="HotelMaxAdvDays" />
+                <ScalarProperty Name="RatePlanLinkedMinDays" ColumnName="RatePlanLinkedMinDays" />
+                <ScalarProperty Name="RatePlanLinkedMaxDays" ColumnName="RatePlanLinkedMaxDays" />
+                <ScalarProperty Name="RatePlanLinkedMinAdvDays" ColumnName="RatePlanLinkedMinAdvDays" />
+                <ScalarProperty Name="RatePlanLinkedMaxAdvDays" ColumnName="RatePlanLinkedMaxAdvDays" />
+                <ScalarProperty Name="HasRoomLinked" ColumnName="HasRoomLinked" />
+                <ScalarProperty Name="RoomIdsLinked" ColumnName="RoomIdsLinked" />
+                <ScalarProperty Name="RoomsLinked" ColumnName="RoomsLinked" />
+                <ScalarProperty Name="HasRatePlanLinked" ColumnName="HasRatePlanLinked" />
+                <ScalarProperty Name="RateCodeLinked" ColumnName="RateCodeLinked" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="spGetRestrictionsExceptionsByHotel" FunctionName="ConfluxModel.Store.spGetRestrictionsExceptionsByHotel">
             <ResultMapping>
               <ComplexTypeMapping TypeName="ConfluxModel.spGetRestrictionsExceptionsByHotel_Result">
                 <ScalarProperty Name="RateId" ColumnName="RateId" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
                 <ScalarProperty Name="RoomId" ColumnName="RoomId" />
                 <ScalarProperty Name="RoomCode" ColumnName="RoomCode" />
                 <ScalarProperty Name="RateCode" ColumnName="RateCode" />
