@@ -11,6 +11,8 @@ namespace APIServices.Conflux.Models.Restrictions.Rate
         public int RateId { get; set; }
         public int RoomId { get; set; }
         public string RoomCode { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
 
         public HotelRestrictionsDto RestrictionsHotel { get; set; }
         public List<string> RoomsLinked { get; set; }
@@ -78,6 +80,8 @@ namespace APIServices.Conflux.Models.Restrictions.Rate
         public int PromotionMaxDays { get; set; }
         public int PromotionMinAdvDays { get; set; }
         public int PromotionMaxAdvDays { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
     }
 
     public class AllRatePlanRestrictionsDto
@@ -87,6 +91,8 @@ namespace APIServices.Conflux.Models.Restrictions.Rate
         public int MaxDays { get; set; }
         public int MinAdvDays { get; set; }
         public int MaxAdvDays { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
     }
 
 }

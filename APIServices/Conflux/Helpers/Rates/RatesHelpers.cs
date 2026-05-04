@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data.Entity;
 using System.Linq;
 using System.Collections.Generic;
@@ -1525,7 +1525,6 @@ namespace APIServices.Conflux.Helpers.Rates
                             baseGuestAmounts.Add(baseGuestAmountTeeneger);
                         }
                     }
-
 
                     break;
             }
